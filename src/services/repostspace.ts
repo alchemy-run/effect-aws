@@ -119,26 +119,22 @@ export type GroupCount = number;
 //# Schemas
 export type AccessorIdList = string[];
 export const AccessorIdList = S.Array(S.String);
-export type ChannelRole = "ASKER" | "EXPERT" | "MODERATOR" | "SUPPORTREQUESTOR";
-export const ChannelRole = S.Literal(
-  "ASKER",
-  "EXPERT",
-  "MODERATOR",
-  "SUPPORTREQUESTOR",
-);
+export type ChannelRole =
+  | "ASKER"
+  | "EXPERT"
+  | "MODERATOR"
+  | "SUPPORTREQUESTOR"
+  | (string & {});
+export const ChannelRole = S.String;
 export type Role =
   | "EXPERT"
   | "MODERATOR"
   | "ADMINISTRATOR"
-  | "SUPPORTREQUESTOR";
-export const Role = S.Literal(
-  "EXPERT",
-  "MODERATOR",
-  "ADMINISTRATOR",
-  "SUPPORTREQUESTOR",
-);
-export type TierLevel = "BASIC" | "STANDARD";
-export const TierLevel = S.Literal("BASIC", "STANDARD");
+  | "SUPPORTREQUESTOR"
+  | (string & {});
+export const Role = S.String;
+export type TierLevel = "BASIC" | "STANDARD" | (string & {});
+export const TierLevel = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export interface BatchAddChannelRoleToAccessorsInput {
@@ -548,8 +544,8 @@ export interface UpdateChannelOutput {}
 export const UpdateChannelOutput = S.suspend(() => S.Struct({})).annotations({
   identifier: "UpdateChannelOutput",
 }) as any as S.Schema<UpdateChannelOutput>;
-export type FeatureEnableParameter = "ENABLED" | "DISABLED";
-export const FeatureEnableParameter = S.Literal("ENABLED", "DISABLED");
+export type FeatureEnableParameter = "ENABLED" | "DISABLED" | (string & {});
+export const FeatureEnableParameter = S.String;
 export type AllowedDomainsList = string | redacted.Redacted<string>[];
 export const AllowedDomainsList = S.Array(SensitiveString);
 export interface SupportedEmailDomainsParameters {
@@ -601,23 +597,17 @@ export type ChannelStatus =
   | "CREATE_FAILED"
   | "DELETED"
   | "DELETING"
-  | "DELETE_FAILED";
-export const ChannelStatus = S.Literal(
-  "CREATED",
-  "CREATING",
-  "CREATE_FAILED",
-  "DELETED",
-  "DELETING",
-  "DELETE_FAILED",
-);
-export type ConfigurationStatus = "CONFIGURED" | "UNCONFIGURED";
-export const ConfigurationStatus = S.Literal("CONFIGURED", "UNCONFIGURED");
-export type VanityDomainStatus = "PENDING" | "APPROVED" | "UNAPPROVED";
-export const VanityDomainStatus = S.Literal(
-  "PENDING",
-  "APPROVED",
-  "UNAPPROVED",
-);
+  | "DELETE_FAILED"
+  | (string & {});
+export const ChannelStatus = S.String;
+export type ConfigurationStatus = "CONFIGURED" | "UNCONFIGURED" | (string & {});
+export const ConfigurationStatus = S.String;
+export type VanityDomainStatus =
+  | "PENDING"
+  | "APPROVED"
+  | "UNAPPROVED"
+  | (string & {});
+export const VanityDomainStatus = S.String;
 export type UserAdmins = string[];
 export const UserAdmins = S.Array(S.String);
 export type GroupAdmins = string[];
@@ -712,12 +702,12 @@ export type ChannelRoleList = ChannelRole[];
 export const ChannelRoleList = S.Array(ChannelRole);
 export type RoleList = Role[];
 export const RoleList = S.Array(Role);
-export type FeatureEnableStatus = "ENABLED" | "DISABLED" | "NOT_ALLOWED";
-export const FeatureEnableStatus = S.Literal(
-  "ENABLED",
-  "DISABLED",
-  "NOT_ALLOWED",
-);
+export type FeatureEnableStatus =
+  | "ENABLED"
+  | "DISABLED"
+  | "NOT_ALLOWED"
+  | (string & {});
+export const FeatureEnableStatus = S.String;
 export type ChannelRoles = { [key: string]: ChannelRole[] | undefined };
 export const ChannelRoles = S.Record({
   key: S.String,
@@ -927,13 +917,9 @@ export type ValidationExceptionReason =
   | "unknownOperation"
   | "cannotParse"
   | "fieldValidationFailed"
-  | "other";
-export const ValidationExceptionReason = S.Literal(
-  "unknownOperation",
-  "cannotParse",
-  "fieldValidationFailed",
-  "other",
-);
+  | "other"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 export interface ValidationExceptionField {
   name: string;
   message: string;

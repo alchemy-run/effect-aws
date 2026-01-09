@@ -172,13 +172,9 @@ export type ShardIteratorType =
   | "TRIM_HORIZON"
   | "LATEST"
   | "AT_SEQUENCE_NUMBER"
-  | "AFTER_SEQUENCE_NUMBER";
-export const ShardIteratorType = S.Literal(
-  "TRIM_HORIZON",
-  "LATEST",
-  "AT_SEQUENCE_NUMBER",
-  "AFTER_SEQUENCE_NUMBER",
-);
+  | "AFTER_SEQUENCE_NUMBER"
+  | (string & {});
+export const ShardIteratorType = S.String;
 export interface GetRecordsInput {
   ShardIterator: string;
   Limit?: number;
@@ -248,8 +244,8 @@ export const ListStreamsInput = S.suspend(() =>
 ).annotations({
   identifier: "ListStreamsInput",
 }) as any as S.Schema<ListStreamsInput>;
-export type ShardFilterType = "CHILD_SHARDS";
-export const ShardFilterType = S.Literal("CHILD_SHARDS");
+export type ShardFilterType = "CHILD_SHARDS" | (string & {});
+export const ShardFilterType = S.String;
 export interface ShardFilter {
   Type?: ShardFilterType;
   ShardId?: string;
@@ -294,8 +290,8 @@ export const GetShardIteratorOutput = S.suspend(() =>
 ).annotations({
   identifier: "GetShardIteratorOutput",
 }) as any as S.Schema<GetShardIteratorOutput>;
-export type OperationType = "INSERT" | "MODIFY" | "REMOVE";
-export const OperationType = S.Literal("INSERT", "MODIFY", "REMOVE");
+export type OperationType = "INSERT" | "MODIFY" | "REMOVE" | (string & {});
+export const OperationType = S.String;
 export interface Stream {
   StreamArn?: string;
   TableName?: string;
@@ -314,13 +310,9 @@ export type StreamViewType =
   | "NEW_IMAGE"
   | "OLD_IMAGE"
   | "NEW_AND_OLD_IMAGES"
-  | "KEYS_ONLY";
-export const StreamViewType = S.Literal(
-  "NEW_IMAGE",
-  "OLD_IMAGE",
-  "NEW_AND_OLD_IMAGES",
-  "KEYS_ONLY",
-);
+  | "KEYS_ONLY"
+  | (string & {});
+export const StreamViewType = S.String;
 export interface ListStreamsOutput {
   Streams?: Stream[];
   LastEvaluatedStreamArn?: string;
@@ -333,13 +325,13 @@ export const ListStreamsOutput = S.suspend(() =>
 ).annotations({
   identifier: "ListStreamsOutput",
 }) as any as S.Schema<ListStreamsOutput>;
-export type StreamStatus = "ENABLING" | "ENABLED" | "DISABLING" | "DISABLED";
-export const StreamStatus = S.Literal(
-  "ENABLING",
-  "ENABLED",
-  "DISABLING",
-  "DISABLED",
-);
+export type StreamStatus =
+  | "ENABLING"
+  | "ENABLED"
+  | "DISABLING"
+  | "DISABLED"
+  | (string & {});
+export const StreamStatus = S.String;
 export interface Identity {
   PrincipalId?: string;
   Type?: string;
@@ -347,8 +339,8 @@ export interface Identity {
 export const Identity = S.suspend(() =>
   S.Struct({ PrincipalId: S.optional(S.String), Type: S.optional(S.String) }),
 ).annotations({ identifier: "Identity" }) as any as S.Schema<Identity>;
-export type KeyType = "HASH" | "RANGE";
-export const KeyType = S.Literal("HASH", "RANGE");
+export type KeyType = "HASH" | "RANGE" | (string & {});
+export const KeyType = S.String;
 export type StringSetAttributeValue = string[];
 export const StringSetAttributeValue = S.Array(S.String);
 export type NumberSetAttributeValue = string[];

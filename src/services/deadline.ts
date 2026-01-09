@@ -202,8 +202,8 @@ export type QueueIds = string[];
 export const QueueIds = S.Array(S.String);
 export type FleetIds = string[];
 export const FleetIds = S.Array(S.String);
-export type Period = "HOURLY" | "DAILY" | "WEEKLY" | "MONTHLY";
-export const Period = S.Literal("HOURLY", "DAILY", "WEEKLY", "MONTHLY");
+export type Period = "HOURLY" | "DAILY" | "WEEKLY" | "MONTHLY" | (string & {});
+export const Period = S.String;
 export type UsageGroupByField =
   | "QUEUE_ID"
   | "FLEET_ID"
@@ -211,20 +211,13 @@ export type UsageGroupByField =
   | "USER_ID"
   | "USAGE_TYPE"
   | "INSTANCE_TYPE"
-  | "LICENSE_PRODUCT";
-export const UsageGroupByField = S.Literal(
-  "QUEUE_ID",
-  "FLEET_ID",
-  "JOB_ID",
-  "USER_ID",
-  "USAGE_TYPE",
-  "INSTANCE_TYPE",
-  "LICENSE_PRODUCT",
-);
+  | "LICENSE_PRODUCT"
+  | (string & {});
+export const UsageGroupByField = S.String;
 export type UsageGroupBy = UsageGroupByField[];
 export const UsageGroupBy = S.Array(UsageGroupByField);
-export type UsageStatistic = "SUM" | "MIN" | "MAX" | "AVG";
-export const UsageStatistic = S.Literal("SUM", "MIN", "MAX", "AVG");
+export type UsageStatistic = "SUM" | "MIN" | "MAX" | "AVG" | (string & {});
+export const UsageStatistic = S.String;
 export type UsageStatistics = UsageStatistic[];
 export const UsageStatistics = S.Array(UsageStatistic);
 export type StringList = string[];
@@ -232,129 +225,103 @@ export const StringList = S.Array(S.String);
 export type UpdateQueueFleetAssociationStatus =
   | "ACTIVE"
   | "STOP_SCHEDULING_AND_COMPLETE_TASKS"
-  | "STOP_SCHEDULING_AND_CANCEL_TASKS";
-export const UpdateQueueFleetAssociationStatus = S.Literal(
-  "ACTIVE",
-  "STOP_SCHEDULING_AND_COMPLETE_TASKS",
-  "STOP_SCHEDULING_AND_CANCEL_TASKS",
-);
+  | "STOP_SCHEDULING_AND_CANCEL_TASKS"
+  | (string & {});
+export const UpdateQueueFleetAssociationStatus = S.String;
 export type UpdateQueueLimitAssociationStatus =
   | "ACTIVE"
   | "STOP_LIMIT_USAGE_AND_COMPLETE_TASKS"
-  | "STOP_LIMIT_USAGE_AND_CANCEL_TASKS";
-export const UpdateQueueLimitAssociationStatus = S.Literal(
-  "ACTIVE",
-  "STOP_LIMIT_USAGE_AND_COMPLETE_TASKS",
-  "STOP_LIMIT_USAGE_AND_CANCEL_TASKS",
-);
-export type DeadlinePrincipalType = "USER" | "GROUP";
-export const DeadlinePrincipalType = S.Literal("USER", "GROUP");
-export type MembershipLevel = "VIEWER" | "CONTRIBUTOR" | "OWNER" | "MANAGER";
-export const MembershipLevel = S.Literal(
-  "VIEWER",
-  "CONTRIBUTOR",
-  "OWNER",
-  "MANAGER",
-);
-export type StorageProfileOperatingSystemFamily = "WINDOWS" | "LINUX" | "MACOS";
-export const StorageProfileOperatingSystemFamily = S.Literal(
-  "WINDOWS",
-  "LINUX",
-  "MACOS",
-);
-export type BudgetStatus = "ACTIVE" | "INACTIVE";
-export const BudgetStatus = S.Literal("ACTIVE", "INACTIVE");
+  | "STOP_LIMIT_USAGE_AND_CANCEL_TASKS"
+  | (string & {});
+export const UpdateQueueLimitAssociationStatus = S.String;
+export type DeadlinePrincipalType = "USER" | "GROUP" | (string & {});
+export const DeadlinePrincipalType = S.String;
+export type MembershipLevel =
+  | "VIEWER"
+  | "CONTRIBUTOR"
+  | "OWNER"
+  | "MANAGER"
+  | (string & {});
+export const MembershipLevel = S.String;
+export type StorageProfileOperatingSystemFamily =
+  | "WINDOWS"
+  | "LINUX"
+  | "MACOS"
+  | (string & {});
+export const StorageProfileOperatingSystemFamily = S.String;
+export type BudgetStatus = "ACTIVE" | "INACTIVE" | (string & {});
+export const BudgetStatus = S.String;
 export type FleetStatus =
   | "ACTIVE"
   | "CREATE_IN_PROGRESS"
   | "UPDATE_IN_PROGRESS"
   | "CREATE_FAILED"
   | "UPDATE_FAILED"
-  | "SUSPENDED";
-export const FleetStatus = S.Literal(
-  "ACTIVE",
-  "CREATE_IN_PROGRESS",
-  "UPDATE_IN_PROGRESS",
-  "CREATE_FAILED",
-  "UPDATE_FAILED",
-  "SUSPENDED",
-);
-export type UpdatedWorkerStatus = "STARTED" | "STOPPING" | "STOPPED";
-export const UpdatedWorkerStatus = S.Literal("STARTED", "STOPPING", "STOPPED");
+  | "SUSPENDED"
+  | (string & {});
+export const FleetStatus = S.String;
+export type UpdatedWorkerStatus =
+  | "STARTED"
+  | "STOPPING"
+  | "STOPPED"
+  | (string & {});
+export const UpdatedWorkerStatus = S.String;
 export type DefaultQueueBudgetAction =
   | "NONE"
   | "STOP_SCHEDULING_AND_COMPLETE_TASKS"
-  | "STOP_SCHEDULING_AND_CANCEL_TASKS";
-export const DefaultQueueBudgetAction = S.Literal(
-  "NONE",
-  "STOP_SCHEDULING_AND_COMPLETE_TASKS",
-  "STOP_SCHEDULING_AND_CANCEL_TASKS",
-);
+  | "STOP_SCHEDULING_AND_CANCEL_TASKS"
+  | (string & {});
+export const DefaultQueueBudgetAction = S.String;
 export type RequiredFileSystemLocationNames = string[];
 export const RequiredFileSystemLocationNames = S.Array(S.String);
 export type AllowedStorageProfileIds = string[];
 export const AllowedStorageProfileIds = S.Array(S.String);
-export type QueueStatus = "IDLE" | "SCHEDULING" | "SCHEDULING_BLOCKED";
-export const QueueStatus = S.Literal(
-  "IDLE",
-  "SCHEDULING",
-  "SCHEDULING_BLOCKED",
-);
-export type EnvironmentTemplateType = "JSON" | "YAML";
-export const EnvironmentTemplateType = S.Literal("JSON", "YAML");
-export type JobTemplateType = "JSON" | "YAML";
-export const JobTemplateType = S.Literal("JSON", "YAML");
-export type CreateJobTargetTaskRunStatus = "READY" | "SUSPENDED";
-export const CreateJobTargetTaskRunStatus = S.Literal("READY", "SUSPENDED");
+export type QueueStatus =
+  | "IDLE"
+  | "SCHEDULING"
+  | "SCHEDULING_BLOCKED"
+  | (string & {});
+export const QueueStatus = S.String;
+export type EnvironmentTemplateType = "JSON" | "YAML" | (string & {});
+export const EnvironmentTemplateType = S.String;
+export type JobTemplateType = "JSON" | "YAML" | (string & {});
+export const JobTemplateType = S.String;
+export type CreateJobTargetTaskRunStatus =
+  | "READY"
+  | "SUSPENDED"
+  | (string & {});
+export const CreateJobTargetTaskRunStatus = S.String;
 export type JobTargetTaskRunStatus =
   | "READY"
   | "FAILED"
   | "SUCCEEDED"
   | "CANCELED"
   | "SUSPENDED"
-  | "PENDING";
-export const JobTargetTaskRunStatus = S.Literal(
-  "READY",
-  "FAILED",
-  "SUCCEEDED",
-  "CANCELED",
-  "SUSPENDED",
-  "PENDING",
-);
-export type UpdateJobLifecycleStatus = "ARCHIVED";
-export const UpdateJobLifecycleStatus = S.Literal("ARCHIVED");
-export type SessionLifecycleTargetStatus = "ENDED";
-export const SessionLifecycleTargetStatus = S.Literal("ENDED");
+  | "PENDING"
+  | (string & {});
+export const JobTargetTaskRunStatus = S.String;
+export type UpdateJobLifecycleStatus = "ARCHIVED" | (string & {});
+export const UpdateJobLifecycleStatus = S.String;
+export type SessionLifecycleTargetStatus = "ENDED" | (string & {});
+export const SessionLifecycleTargetStatus = S.String;
 export type StepTargetTaskRunStatus =
   | "READY"
   | "FAILED"
   | "SUCCEEDED"
   | "CANCELED"
   | "SUSPENDED"
-  | "PENDING";
-export const StepTargetTaskRunStatus = S.Literal(
-  "READY",
-  "FAILED",
-  "SUCCEEDED",
-  "CANCELED",
-  "SUSPENDED",
-  "PENDING",
-);
+  | "PENDING"
+  | (string & {});
+export const StepTargetTaskRunStatus = S.String;
 export type TaskTargetRunStatus =
   | "READY"
   | "FAILED"
   | "SUCCEEDED"
   | "CANCELED"
   | "SUSPENDED"
-  | "PENDING";
-export const TaskTargetRunStatus = S.Literal(
-  "READY",
-  "FAILED",
-  "SUCCEEDED",
-  "CANCELED",
-  "SUSPENDED",
-  "PENDING",
-);
+  | "PENDING"
+  | (string & {});
+export const TaskTargetRunStatus = S.String;
 export type SubnetIdList = string[];
 export const SubnetIdList = S.Array(S.String);
 export type SecurityGroupIdList = string[];
@@ -665,8 +632,8 @@ export const ListTagsForResourceRequest = S.suspend(() =>
 ).annotations({
   identifier: "ListTagsForResourceRequest",
 }) as any as S.Schema<ListTagsForResourceRequest>;
-export type LogicalOperator = "AND" | "OR";
-export const LogicalOperator = S.Literal("AND", "OR");
+export type LogicalOperator = "AND" | "OR" | (string & {});
+export const LogicalOperator = S.String;
 export interface SearchGroupedFilterExpressions {
   filters: SearchFilterExpression[];
   operator: LogicalOperator;
@@ -689,8 +656,8 @@ export const UserJobsFirst = S.suspend(() =>
 ).annotations({
   identifier: "UserJobsFirst",
 }) as any as S.Schema<UserJobsFirst>;
-export type SortOrder = "ASCENDING" | "DESCENDING";
-export const SortOrder = S.Literal("ASCENDING", "DESCENDING");
+export type SortOrder = "ASCENDING" | "DESCENDING" | (string & {});
+export const SortOrder = S.String;
 export interface FieldSortExpression {
   sortOrder: SortOrder;
   name: string;
@@ -1351,8 +1318,8 @@ export interface UpdateLimitResponse {}
 export const UpdateLimitResponse = S.suspend(() => S.Struct({})).annotations({
   identifier: "UpdateLimitResponse",
 }) as any as S.Schema<UpdateLimitResponse>;
-export type FileSystemLocationType = "SHARED" | "LOCAL";
-export const FileSystemLocationType = S.Literal("SHARED", "LOCAL");
+export type FileSystemLocationType = "SHARED" | "LOCAL" | (string & {});
+export const FileSystemLocationType = S.String;
 export interface FileSystemLocation {
   name: string;
   path: string;
@@ -1509,11 +1476,11 @@ export const GetFleetRequest = S.suspend(() =>
 ).annotations({
   identifier: "GetFleetRequest",
 }) as any as S.Schema<GetFleetRequest>;
-export type AutoScalingMode = "NO_SCALING" | "EVENT_BASED_AUTO_SCALING";
-export const AutoScalingMode = S.Literal(
-  "NO_SCALING",
-  "EVENT_BASED_AUTO_SCALING",
-);
+export type AutoScalingMode =
+  | "NO_SCALING"
+  | "EVENT_BASED_AUTO_SCALING"
+  | (string & {});
+export const AutoScalingMode = S.String;
 export interface VCpuCountRange {
   min: number;
   max?: number;
@@ -1532,8 +1499,8 @@ export const MemoryMiBRange = S.suspend(() =>
 ).annotations({
   identifier: "MemoryMiBRange",
 }) as any as S.Schema<MemoryMiBRange>;
-export type AcceleratorType = "gpu";
-export const AcceleratorType = S.Literal("gpu");
+export type AcceleratorType = "gpu" | (string & {});
+export const AcceleratorType = S.String;
 export type AcceleratorTypes = AcceleratorType[];
 export const AcceleratorTypes = S.Array(AcceleratorType);
 export interface AcceleratorCountRange {
@@ -1557,14 +1524,11 @@ export const AcceleratorTotalMemoryMiBRange = S.suspend(() =>
 export type CustomerManagedFleetOperatingSystemFamily =
   | "WINDOWS"
   | "LINUX"
-  | "MACOS";
-export const CustomerManagedFleetOperatingSystemFamily = S.Literal(
-  "WINDOWS",
-  "LINUX",
-  "MACOS",
-);
-export type CpuArchitectureType = "x86_64" | "arm64";
-export const CpuArchitectureType = S.Literal("x86_64", "arm64");
+  | "MACOS"
+  | (string & {});
+export const CustomerManagedFleetOperatingSystemFamily = S.String;
+export type CpuArchitectureType = "x86_64" | "arm64" | (string & {});
+export const CpuArchitectureType = S.String;
 export interface FleetAmountCapability {
   name: string;
   min: number;
@@ -1620,11 +1584,9 @@ export const CustomerManagedWorkerCapabilities = S.suspend(() =>
 }) as any as S.Schema<CustomerManagedWorkerCapabilities>;
 export type TagPropagationMode =
   | "NO_PROPAGATION"
-  | "PROPAGATE_TAGS_TO_WORKERS_AT_LAUNCH";
-export const TagPropagationMode = S.Literal(
-  "NO_PROPAGATION",
-  "PROPAGATE_TAGS_TO_WORKERS_AT_LAUNCH",
-);
+  | "PROPAGATE_TAGS_TO_WORKERS_AT_LAUNCH"
+  | (string & {});
+export const TagPropagationMode = S.String;
 export interface CustomerManagedFleetConfiguration {
   mode: AutoScalingMode;
   workerCapabilities: CustomerManagedWorkerCapabilities;
@@ -1641,11 +1603,11 @@ export const CustomerManagedFleetConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "CustomerManagedFleetConfiguration",
 }) as any as S.Schema<CustomerManagedFleetConfiguration>;
-export type ServiceManagedFleetOperatingSystemFamily = "WINDOWS" | "LINUX";
-export const ServiceManagedFleetOperatingSystemFamily = S.Literal(
-  "WINDOWS",
-  "LINUX",
-);
+export type ServiceManagedFleetOperatingSystemFamily =
+  | "WINDOWS"
+  | "LINUX"
+  | (string & {});
+export const ServiceManagedFleetOperatingSystemFamily = S.String;
 export interface Ec2EbsVolume {
   sizeGiB?: number;
   iops?: number;
@@ -1658,8 +1620,8 @@ export const Ec2EbsVolume = S.suspend(() =>
     throughputMiB: S.optional(S.Number),
   }),
 ).annotations({ identifier: "Ec2EbsVolume" }) as any as S.Schema<Ec2EbsVolume>;
-export type AcceleratorName = "t4" | "a10g" | "l4" | "l40s";
-export const AcceleratorName = S.Literal("t4", "a10g", "l4", "l40s");
+export type AcceleratorName = "t4" | "a10g" | "l4" | "l40s" | (string & {});
+export const AcceleratorName = S.String;
 export interface AcceleratorSelection {
   name: AcceleratorName;
   runtime?: string;
@@ -1713,8 +1675,12 @@ export const ServiceManagedEc2InstanceCapabilities = S.suspend(() =>
 ).annotations({
   identifier: "ServiceManagedEc2InstanceCapabilities",
 }) as any as S.Schema<ServiceManagedEc2InstanceCapabilities>;
-export type Ec2MarketType = "on-demand" | "spot" | "wait-and-save";
-export const Ec2MarketType = S.Literal("on-demand", "spot", "wait-and-save");
+export type Ec2MarketType =
+  | "on-demand"
+  | "spot"
+  | "wait-and-save"
+  | (string & {});
+export const Ec2MarketType = S.String;
 export interface ServiceManagedEc2InstanceMarketOptions {
   type: Ec2MarketType;
 }
@@ -2222,8 +2188,11 @@ export interface WindowsUser {
 export const WindowsUser = S.suspend(() =>
   S.Struct({ user: S.String, passwordArn: S.String }),
 ).annotations({ identifier: "WindowsUser" }) as any as S.Schema<WindowsUser>;
-export type RunAs = "QUEUE_CONFIGURED_USER" | "WORKER_AGENT_USER";
-export const RunAs = S.Literal("QUEUE_CONFIGURED_USER", "WORKER_AGENT_USER");
+export type RunAs =
+  | "QUEUE_CONFIGURED_USER"
+  | "WORKER_AGENT_USER"
+  | (string & {});
+export const RunAs = S.String;
 export interface JobRunAsUser {
   posix?: PosixUser;
   windows?: WindowsUser;
@@ -3681,46 +3650,32 @@ export const ListMonitorsRequest = S.suspend(() =>
 }) as any as S.Schema<ListMonitorsRequest>;
 export type BudgetActionType =
   | "STOP_SCHEDULING_AND_COMPLETE_TASKS"
-  | "STOP_SCHEDULING_AND_CANCEL_TASKS";
-export const BudgetActionType = S.Literal(
-  "STOP_SCHEDULING_AND_COMPLETE_TASKS",
-  "STOP_SCHEDULING_AND_CANCEL_TASKS",
-);
-export type JobAttachmentsFileSystem = "COPIED" | "VIRTUAL";
-export const JobAttachmentsFileSystem = S.Literal("COPIED", "VIRTUAL");
+  | "STOP_SCHEDULING_AND_CANCEL_TASKS"
+  | (string & {});
+export const BudgetActionType = S.String;
+export type JobAttachmentsFileSystem = "COPIED" | "VIRTUAL" | (string & {});
+export const JobAttachmentsFileSystem = S.String;
 export type QueueFleetAssociationStatus =
   | "ACTIVE"
   | "STOP_SCHEDULING_AND_COMPLETE_TASKS"
   | "STOP_SCHEDULING_AND_CANCEL_TASKS"
-  | "STOPPED";
-export const QueueFleetAssociationStatus = S.Literal(
-  "ACTIVE",
-  "STOP_SCHEDULING_AND_COMPLETE_TASKS",
-  "STOP_SCHEDULING_AND_CANCEL_TASKS",
-  "STOPPED",
-);
+  | "STOPPED"
+  | (string & {});
+export const QueueFleetAssociationStatus = S.String;
 export type QueueLimitAssociationStatus =
   | "ACTIVE"
   | "STOP_LIMIT_USAGE_AND_COMPLETE_TASKS"
   | "STOP_LIMIT_USAGE_AND_CANCEL_TASKS"
-  | "STOPPED";
-export const QueueLimitAssociationStatus = S.Literal(
-  "ACTIVE",
-  "STOP_LIMIT_USAGE_AND_COMPLETE_TASKS",
-  "STOP_LIMIT_USAGE_AND_CANCEL_TASKS",
-  "STOPPED",
-);
+  | "STOPPED"
+  | (string & {});
+export const QueueLimitAssociationStatus = S.String;
 export type SessionsStatisticsAggregationStatus =
   | "IN_PROGRESS"
   | "TIMEOUT"
   | "FAILED"
-  | "COMPLETED";
-export const SessionsStatisticsAggregationStatus = S.Literal(
-  "IN_PROGRESS",
-  "TIMEOUT",
-  "FAILED",
-  "COMPLETED",
-);
+  | "COMPLETED"
+  | (string & {});
+export const SessionsStatisticsAggregationStatus = S.String;
 export type SessionsStatisticsResources =
   | { queueIds: string[]; fleetIds?: never }
   | { queueIds?: never; fleetIds: string[] };
@@ -3757,8 +3712,12 @@ export const BudgetActionToRemove = S.suspend(() =>
 }) as any as S.Schema<BudgetActionToRemove>;
 export type BudgetActionsToRemove = BudgetActionToRemove[];
 export const BudgetActionsToRemove = S.Array(BudgetActionToRemove);
-export type AutoScalingStatus = "GROWING" | "STEADY" | "SHRINKING";
-export const AutoScalingStatus = S.Literal("GROWING", "STEADY", "SHRINKING");
+export type AutoScalingStatus =
+  | "GROWING"
+  | "STEADY"
+  | "SHRINKING"
+  | (string & {});
+export const AutoScalingStatus = S.String;
 export type WorkerStatus =
   | "CREATED"
   | "STARTED"
@@ -3767,24 +3726,14 @@ export type WorkerStatus =
   | "NOT_RESPONDING"
   | "NOT_COMPATIBLE"
   | "RUNNING"
-  | "IDLE";
-export const WorkerStatus = S.Literal(
-  "CREATED",
-  "STARTED",
-  "STOPPING",
-  "STOPPED",
-  "NOT_RESPONDING",
-  "NOT_COMPATIBLE",
-  "RUNNING",
-  "IDLE",
-);
+  | "IDLE"
+  | (string & {});
+export const WorkerStatus = S.String;
 export type QueueBlockedReason =
   | "NO_BUDGET_CONFIGURED"
-  | "BUDGET_THRESHOLD_REACHED";
-export const QueueBlockedReason = S.Literal(
-  "NO_BUDGET_CONFIGURED",
-  "BUDGET_THRESHOLD_REACHED",
-);
+  | "BUDGET_THRESHOLD_REACHED"
+  | (string & {});
+export const QueueBlockedReason = S.String;
 export type JobLifecycleStatus =
   | "CREATE_IN_PROGRESS"
   | "CREATE_FAILED"
@@ -3794,18 +3743,9 @@ export type JobLifecycleStatus =
   | "UPDATE_IN_PROGRESS"
   | "UPDATE_FAILED"
   | "UPDATE_SUCCEEDED"
-  | "ARCHIVED";
-export const JobLifecycleStatus = S.Literal(
-  "CREATE_IN_PROGRESS",
-  "CREATE_FAILED",
-  "CREATE_COMPLETE",
-  "UPLOAD_IN_PROGRESS",
-  "UPLOAD_FAILED",
-  "UPDATE_IN_PROGRESS",
-  "UPDATE_FAILED",
-  "UPDATE_SUCCEEDED",
-  "ARCHIVED",
-);
+  | "ARCHIVED"
+  | (string & {});
+export const JobLifecycleStatus = S.String;
 export type TaskRunStatus =
   | "PENDING"
   | "READY"
@@ -3818,21 +3758,9 @@ export type TaskRunStatus =
   | "CANCELED"
   | "FAILED"
   | "SUCCEEDED"
-  | "NOT_COMPATIBLE";
-export const TaskRunStatus = S.Literal(
-  "PENDING",
-  "READY",
-  "ASSIGNED",
-  "STARTING",
-  "SCHEDULED",
-  "INTERRUPTING",
-  "RUNNING",
-  "SUSPENDED",
-  "CANCELED",
-  "FAILED",
-  "SUCCEEDED",
-  "NOT_COMPATIBLE",
-);
+  | "NOT_COMPATIBLE"
+  | (string & {});
+export const TaskRunStatus = S.String;
 export interface S3Location {
   bucketName: string;
   key: string;
@@ -3845,14 +3773,9 @@ export type SessionLifecycleStatus =
   | "UPDATE_IN_PROGRESS"
   | "UPDATE_SUCCEEDED"
   | "UPDATE_FAILED"
-  | "ENDED";
-export const SessionLifecycleStatus = S.Literal(
-  "STARTED",
-  "UPDATE_IN_PROGRESS",
-  "UPDATE_SUCCEEDED",
-  "UPDATE_FAILED",
-  "ENDED",
-);
+  | "ENDED"
+  | (string & {});
+export const SessionLifecycleStatus = S.String;
 export type SessionActionStatus =
   | "ASSIGNED"
   | "RUNNING"
@@ -3864,44 +3787,25 @@ export type SessionActionStatus =
   | "NEVER_ATTEMPTED"
   | "SCHEDULED"
   | "RECLAIMING"
-  | "RECLAIMED";
-export const SessionActionStatus = S.Literal(
-  "ASSIGNED",
-  "RUNNING",
-  "CANCELING",
-  "SUCCEEDED",
-  "FAILED",
-  "INTERRUPTED",
-  "CANCELED",
-  "NEVER_ATTEMPTED",
-  "SCHEDULED",
-  "RECLAIMING",
-  "RECLAIMED",
-);
+  | "RECLAIMED"
+  | (string & {});
+export const SessionActionStatus = S.String;
 export type StepLifecycleStatus =
   | "CREATE_COMPLETE"
   | "UPDATE_IN_PROGRESS"
   | "UPDATE_FAILED"
-  | "UPDATE_SUCCEEDED";
-export const StepLifecycleStatus = S.Literal(
-  "CREATE_COMPLETE",
-  "UPDATE_IN_PROGRESS",
-  "UPDATE_FAILED",
-  "UPDATE_SUCCEEDED",
-);
+  | "UPDATE_SUCCEEDED"
+  | (string & {});
+export const StepLifecycleStatus = S.String;
 export type JobParameterDefinitions = any[];
 export const JobParameterDefinitions = S.Array(S.Any);
 export type LicenseEndpointStatus =
   | "CREATE_IN_PROGRESS"
   | "DELETE_IN_PROGRESS"
   | "READY"
-  | "NOT_READY";
-export const LicenseEndpointStatus = S.Literal(
-  "CREATE_IN_PROGRESS",
-  "DELETE_IN_PROGRESS",
-  "READY",
-  "NOT_READY",
-);
+  | "NOT_READY"
+  | (string & {});
+export const LicenseEndpointStatus = S.String;
 export type IpV4Addresses = string[];
 export const IpV4Addresses = S.Array(S.String);
 export type IpV6Addresses = string[];
@@ -3911,16 +3815,11 @@ export type CompletedStatus =
   | "FAILED"
   | "INTERRUPTED"
   | "CANCELED"
-  | "NEVER_ATTEMPTED";
-export const CompletedStatus = S.Literal(
-  "SUCCEEDED",
-  "FAILED",
-  "INTERRUPTED",
-  "CANCELED",
-  "NEVER_ATTEMPTED",
-);
-export type PathFormat = "windows" | "posix";
-export const PathFormat = S.Literal("windows", "posix");
+  | "NEVER_ATTEMPTED"
+  | (string & {});
+export const CompletedStatus = S.String;
+export type PathFormat = "windows" | "posix" | (string & {});
+export const PathFormat = S.String;
 export type OutputRelativeDirectoriesList = string[];
 export const OutputRelativeDirectoriesList = S.Array(S.String);
 export interface GetQueueFleetAssociationResponse {
@@ -4615,8 +4514,8 @@ export const GetMonitorResponse = S.suspend(() =>
 ).annotations({
   identifier: "GetMonitorResponse",
 }) as any as S.Schema<GetMonitorResponse>;
-export type UsageType = "COMPUTE" | "LICENSE";
-export const UsageType = S.Literal("COMPUTE", "LICENSE");
+export type UsageType = "COMPUTE" | "LICENSE" | (string & {});
+export const UsageType = S.String;
 export interface WorkerAmountCapability {
   name: string;
   value: number;
@@ -4706,28 +4605,22 @@ export const ManifestProperties = S.suspend(() =>
 }) as any as S.Schema<ManifestProperties>;
 export type ManifestPropertiesList = ManifestProperties[];
 export const ManifestPropertiesList = S.Array(ManifestProperties);
-export type DependencyConsumerResolutionStatus = "RESOLVED" | "UNRESOLVED";
-export const DependencyConsumerResolutionStatus = S.Literal(
-  "RESOLVED",
-  "UNRESOLVED",
-);
+export type DependencyConsumerResolutionStatus =
+  | "RESOLVED"
+  | "UNRESOLVED"
+  | (string & {});
+export const DependencyConsumerResolutionStatus = S.String;
 export type ComparisonOperator =
   | "EQUAL"
   | "NOT_EQUAL"
   | "GREATER_THAN_EQUAL_TO"
   | "GREATER_THAN"
   | "LESS_THAN_EQUAL_TO"
-  | "LESS_THAN";
-export const ComparisonOperator = S.Literal(
-  "EQUAL",
-  "NOT_EQUAL",
-  "GREATER_THAN_EQUAL_TO",
-  "GREATER_THAN",
-  "LESS_THAN_EQUAL_TO",
-  "LESS_THAN",
-);
-export type SearchTermMatchingType = "FUZZY_MATCH" | "CONTAINS";
-export const SearchTermMatchingType = S.Literal("FUZZY_MATCH", "CONTAINS");
+  | "LESS_THAN"
+  | (string & {});
+export const ComparisonOperator = S.String;
+export type SearchTermMatchingType = "FUZZY_MATCH" | "CONTAINS" | (string & {});
+export const SearchTermMatchingType = S.String;
 export type ExceptionContext = { [key: string]: string | undefined };
 export const ExceptionContext = S.Record({
   key: S.String,
@@ -4794,14 +4687,9 @@ export type StepParameterType =
   | "FLOAT"
   | "STRING"
   | "PATH"
-  | "CHUNK_INT";
-export const StepParameterType = S.Literal(
-  "INT",
-  "FLOAT",
-  "STRING",
-  "PATH",
-  "CHUNK_INT",
-);
+  | "CHUNK_INT"
+  | (string & {});
+export const StepParameterType = S.String;
 export interface StepParameter {
   name: string;
   type: StepParameterType;
@@ -6592,14 +6480,9 @@ export type ConflictExceptionReason =
   | "CONCURRENT_MODIFICATION"
   | "RESOURCE_ALREADY_EXISTS"
   | "RESOURCE_IN_USE"
-  | "STATUS_CONFLICT";
-export const ConflictExceptionReason = S.Literal(
-  "CONFLICT_EXCEPTION",
-  "CONCURRENT_MODIFICATION",
-  "RESOURCE_ALREADY_EXISTS",
-  "RESOURCE_IN_USE",
-  "STATUS_CONFLICT",
-);
+  | "STATUS_CONFLICT"
+  | (string & {});
+export const ConflictExceptionReason = S.String;
 export interface EnvironmentEnterSessionActionDefinitionSummary {
   environmentId: string;
 }
@@ -6973,8 +6856,8 @@ export const SessionActionDefinitionSummary = S.Union(
       SyncInputJobAttachmentsSessionActionDefinitionSummary,
   }),
 );
-export type DesiredWorkerStatus = "STOPPED";
-export const DesiredWorkerStatus = S.Literal("STOPPED");
+export type DesiredWorkerStatus = "STOPPED" | (string & {});
+export const DesiredWorkerStatus = S.String;
 export interface SessionActionSummary {
   sessionActionId: string;
   status: SessionActionStatus;
@@ -7004,12 +6887,9 @@ export const SessionActionSummaries = S.Array(SessionActionSummary);
 export type ServiceQuotaExceededExceptionReason =
   | "SERVICE_QUOTA_EXCEEDED_EXCEPTION"
   | "KMS_KEY_LIMIT_EXCEEDED"
-  | "DEPENDENCY_LIMIT_EXCEEDED";
-export const ServiceQuotaExceededExceptionReason = S.Literal(
-  "SERVICE_QUOTA_EXCEEDED_EXCEPTION",
-  "KMS_KEY_LIMIT_EXCEEDED",
-  "DEPENDENCY_LIMIT_EXCEEDED",
-);
+  | "DEPENDENCY_LIMIT_EXCEEDED"
+  | (string & {});
+export const ServiceQuotaExceededExceptionReason = S.String;
 export type DependenciesList = string[];
 export const DependenciesList = S.Array(S.String);
 export type JobEntityErrorCode =
@@ -7018,15 +6898,9 @@ export type JobEntityErrorCode =
   | "ValidationException"
   | "ResourceNotFoundException"
   | "MaxPayloadSizeExceeded"
-  | "ConflictException";
-export const JobEntityErrorCode = S.Literal(
-  "AccessDeniedException",
-  "InternalServerException",
-  "ValidationException",
-  "ResourceNotFoundException",
-  "MaxPayloadSizeExceeded",
-  "ConflictException",
-);
+  | "ConflictException"
+  | (string & {});
+export const JobEntityErrorCode = S.String;
 export interface ListSessionActionsResponse {
   sessionActions: SessionActionSummary[];
   nextToken?: string;
@@ -7230,13 +7104,9 @@ export type ValidationExceptionReason =
   | "UNKNOWN_OPERATION"
   | "CANNOT_PARSE"
   | "FIELD_VALIDATION_FAILED"
-  | "OTHER";
-export const ValidationExceptionReason = S.Literal(
-  "UNKNOWN_OPERATION",
-  "CANNOT_PARSE",
-  "FIELD_VALIDATION_FAILED",
-  "OTHER",
-);
+  | "OTHER"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 export interface PathMappingRule {
   sourcePathFormat: PathFormat;
   sourcePath: string;

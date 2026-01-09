@@ -215,66 +215,56 @@ export const DescribeSharedVpcConfigurationRequest = S.suspend(() =>
 }) as any as S.Schema<DescribeSharedVpcConfigurationRequest>;
 export type AlternateDNSNames = string[];
 export const AlternateDNSNames = S.Array(S.String);
-export type OpenZFSCopyStrategy = "CLONE" | "FULL_COPY" | "INCREMENTAL_COPY";
-export const OpenZFSCopyStrategy = S.Literal(
-  "CLONE",
-  "FULL_COPY",
-  "INCREMENTAL_COPY",
-);
+export type OpenZFSCopyStrategy =
+  | "CLONE"
+  | "FULL_COPY"
+  | "INCREMENTAL_COPY"
+  | (string & {});
+export const OpenZFSCopyStrategy = S.String;
 export type UpdateOpenZFSVolumeOption =
   | "DELETE_INTERMEDIATE_SNAPSHOTS"
   | "DELETE_CLONED_VOLUMES"
-  | "DELETE_INTERMEDIATE_DATA";
-export const UpdateOpenZFSVolumeOption = S.Literal(
-  "DELETE_INTERMEDIATE_SNAPSHOTS",
-  "DELETE_CLONED_VOLUMES",
-  "DELETE_INTERMEDIATE_DATA",
-);
+  | "DELETE_INTERMEDIATE_DATA"
+  | (string & {});
+export const UpdateOpenZFSVolumeOption = S.String;
 export type UpdateOpenZFSVolumeOptions = UpdateOpenZFSVolumeOption[];
 export const UpdateOpenZFSVolumeOptions = S.Array(UpdateOpenZFSVolumeOption);
-export type S3AccessPointAttachmentType = "OPENZFS" | "ONTAP";
-export const S3AccessPointAttachmentType = S.Literal("OPENZFS", "ONTAP");
+export type S3AccessPointAttachmentType = "OPENZFS" | "ONTAP" | (string & {});
+export const S3AccessPointAttachmentType = S.String;
 export type DataRepositoryTaskType =
   | "EXPORT_TO_REPOSITORY"
   | "IMPORT_METADATA_FROM_REPOSITORY"
   | "RELEASE_DATA_FROM_FILESYSTEM"
-  | "AUTO_RELEASE_DATA";
-export const DataRepositoryTaskType = S.Literal(
-  "EXPORT_TO_REPOSITORY",
-  "IMPORT_METADATA_FROM_REPOSITORY",
-  "RELEASE_DATA_FROM_FILESYSTEM",
-  "AUTO_RELEASE_DATA",
-);
+  | "AUTO_RELEASE_DATA"
+  | (string & {});
+export const DataRepositoryTaskType = S.String;
 export type DataRepositoryTaskPaths = string[];
 export const DataRepositoryTaskPaths = S.Array(S.String);
-export type FileCacheType = "LUSTRE";
-export const FileCacheType = S.Literal("LUSTRE");
+export type FileCacheType = "LUSTRE" | (string & {});
+export const FileCacheType = S.String;
 export type SubnetIds = string[];
 export const SubnetIds = S.Array(S.String);
 export type SecurityGroupIds = string[];
 export const SecurityGroupIds = S.Array(S.String);
-export type FileSystemType = "WINDOWS" | "LUSTRE" | "ONTAP" | "OPENZFS";
-export const FileSystemType = S.Literal(
-  "WINDOWS",
-  "LUSTRE",
-  "ONTAP",
-  "OPENZFS",
-);
-export type StorageType = "SSD" | "HDD" | "INTELLIGENT_TIERING";
-export const StorageType = S.Literal("SSD", "HDD", "INTELLIGENT_TIERING");
-export type NetworkType = "IPV4" | "DUAL";
-export const NetworkType = S.Literal("IPV4", "DUAL");
+export type FileSystemType =
+  | "WINDOWS"
+  | "LUSTRE"
+  | "ONTAP"
+  | "OPENZFS"
+  | (string & {});
+export const FileSystemType = S.String;
+export type StorageType = "SSD" | "HDD" | "INTELLIGENT_TIERING" | (string & {});
+export const StorageType = S.String;
+export type NetworkType = "IPV4" | "DUAL" | (string & {});
+export const NetworkType = S.String;
 export type StorageVirtualMachineRootVolumeSecurityStyle =
   | "UNIX"
   | "NTFS"
-  | "MIXED";
-export const StorageVirtualMachineRootVolumeSecurityStyle = S.Literal(
-  "UNIX",
-  "NTFS",
-  "MIXED",
-);
-export type VolumeType = "ONTAP" | "OPENZFS";
-export const VolumeType = S.Literal("ONTAP", "OPENZFS");
+  | "MIXED"
+  | (string & {});
+export const StorageVirtualMachineRootVolumeSecurityStyle = S.String;
+export type VolumeType = "ONTAP" | "OPENZFS" | (string & {});
+export const VolumeType = S.String;
 export type BackupIds = string[];
 export const BackupIds = S.Array(S.String);
 export type DataRepositoryAssociationIds = string[];
@@ -295,11 +285,9 @@ export type VolumeIds = string[];
 export const VolumeIds = S.Array(S.String);
 export type RestoreOpenZFSVolumeOption =
   | "DELETE_INTERMEDIATE_SNAPSHOTS"
-  | "DELETE_CLONED_VOLUMES";
-export const RestoreOpenZFSVolumeOption = S.Literal(
-  "DELETE_INTERMEDIATE_SNAPSHOTS",
-  "DELETE_CLONED_VOLUMES",
-);
+  | "DELETE_CLONED_VOLUMES"
+  | (string & {});
+export const RestoreOpenZFSVolumeOption = S.String;
 export type RestoreOpenZFSVolumeOptions = RestoreOpenZFSVolumeOption[];
 export const RestoreOpenZFSVolumeOptions = S.Array(RestoreOpenZFSVolumeOption);
 export type TagKeys = string[];
@@ -404,23 +392,16 @@ export const SelfManagedActiveDirectoryConfiguration = S.suspend(() =>
 export type WindowsDeploymentType =
   | "MULTI_AZ_1"
   | "SINGLE_AZ_1"
-  | "SINGLE_AZ_2";
-export const WindowsDeploymentType = S.Literal(
-  "MULTI_AZ_1",
-  "SINGLE_AZ_1",
-  "SINGLE_AZ_2",
-);
+  | "SINGLE_AZ_2"
+  | (string & {});
+export const WindowsDeploymentType = S.String;
 export type WindowsAccessAuditLogLevel =
   | "DISABLED"
   | "SUCCESS_ONLY"
   | "FAILURE_ONLY"
-  | "SUCCESS_AND_FAILURE";
-export const WindowsAccessAuditLogLevel = S.Literal(
-  "DISABLED",
-  "SUCCESS_ONLY",
-  "FAILURE_ONLY",
-  "SUCCESS_AND_FAILURE",
-);
+  | "SUCCESS_AND_FAILURE"
+  | (string & {});
+export const WindowsAccessAuditLogLevel = S.String;
 export interface WindowsAuditLogCreateConfiguration {
   FileAccessAuditLogLevel?: WindowsAccessAuditLogLevel;
   FileShareAccessAuditLogLevel?: WindowsAccessAuditLogLevel;
@@ -435,11 +416,11 @@ export const WindowsAuditLogCreateConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "WindowsAuditLogCreateConfiguration",
 }) as any as S.Schema<WindowsAuditLogCreateConfiguration>;
-export type DiskIopsConfigurationMode = "AUTOMATIC" | "USER_PROVISIONED";
-export const DiskIopsConfigurationMode = S.Literal(
-  "AUTOMATIC",
-  "USER_PROVISIONED",
-);
+export type DiskIopsConfigurationMode =
+  | "AUTOMATIC"
+  | "USER_PROVISIONED"
+  | (string & {});
+export const DiskIopsConfigurationMode = S.String;
 export interface DiskIopsConfiguration {
   Mode?: DiskIopsConfigurationMode;
   Iops?: number;
@@ -504,39 +485,27 @@ export type LustreDeploymentType =
   | "SCRATCH_1"
   | "SCRATCH_2"
   | "PERSISTENT_1"
-  | "PERSISTENT_2";
-export const LustreDeploymentType = S.Literal(
-  "SCRATCH_1",
-  "SCRATCH_2",
-  "PERSISTENT_1",
-  "PERSISTENT_2",
-);
+  | "PERSISTENT_2"
+  | (string & {});
+export const LustreDeploymentType = S.String;
 export type AutoImportPolicyType =
   | "NONE"
   | "NEW"
   | "NEW_CHANGED"
-  | "NEW_CHANGED_DELETED";
-export const AutoImportPolicyType = S.Literal(
-  "NONE",
-  "NEW",
-  "NEW_CHANGED",
-  "NEW_CHANGED_DELETED",
-);
-export type DriveCacheType = "NONE" | "READ";
-export const DriveCacheType = S.Literal("NONE", "READ");
-export type DataCompressionType = "NONE" | "LZ4";
-export const DataCompressionType = S.Literal("NONE", "LZ4");
+  | "NEW_CHANGED_DELETED"
+  | (string & {});
+export const AutoImportPolicyType = S.String;
+export type DriveCacheType = "NONE" | "READ" | (string & {});
+export const DriveCacheType = S.String;
+export type DataCompressionType = "NONE" | "LZ4" | (string & {});
+export const DataCompressionType = S.String;
 export type LustreAccessAuditLogLevel =
   | "DISABLED"
   | "WARN_ONLY"
   | "ERROR_ONLY"
-  | "WARN_ERROR";
-export const LustreAccessAuditLogLevel = S.Literal(
-  "DISABLED",
-  "WARN_ONLY",
-  "ERROR_ONLY",
-  "WARN_ERROR",
-);
+  | "WARN_ERROR"
+  | (string & {});
+export const LustreAccessAuditLogLevel = S.String;
 export interface LustreLogCreateConfiguration {
   Level?: LustreAccessAuditLogLevel;
   Destination?: string;
@@ -563,11 +532,11 @@ export const LustreRootSquashConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "LustreRootSquashConfiguration",
 }) as any as S.Schema<LustreRootSquashConfiguration>;
-export type MetadataConfigurationMode = "AUTOMATIC" | "USER_PROVISIONED";
-export const MetadataConfigurationMode = S.Literal(
-  "AUTOMATIC",
-  "USER_PROVISIONED",
-);
+export type MetadataConfigurationMode =
+  | "AUTOMATIC"
+  | "USER_PROVISIONED"
+  | (string & {});
+export const MetadataConfigurationMode = S.String;
 export interface CreateFileSystemLustreMetadataConfiguration {
   Iops?: number;
   Mode?: MetadataConfigurationMode;
@@ -583,12 +552,9 @@ export const CreateFileSystemLustreMetadataConfiguration = S.suspend(() =>
 export type LustreReadCacheSizingMode =
   | "NO_CACHE"
   | "USER_PROVISIONED"
-  | "PROPORTIONAL_TO_THROUGHPUT_CAPACITY";
-export const LustreReadCacheSizingMode = S.Literal(
-  "NO_CACHE",
-  "USER_PROVISIONED",
-  "PROPORTIONAL_TO_THROUGHPUT_CAPACITY",
-);
+  | "PROPORTIONAL_TO_THROUGHPUT_CAPACITY"
+  | (string & {});
+export const LustreReadCacheSizingMode = S.String;
 export interface LustreReadCacheConfiguration {
   SizingMode?: LustreReadCacheSizingMode;
   SizeGiB?: number;
@@ -652,16 +618,15 @@ export type OpenZFSDeploymentType =
   | "SINGLE_AZ_2"
   | "SINGLE_AZ_HA_1"
   | "SINGLE_AZ_HA_2"
-  | "MULTI_AZ_1";
-export const OpenZFSDeploymentType = S.Literal(
-  "SINGLE_AZ_1",
-  "SINGLE_AZ_2",
-  "SINGLE_AZ_HA_1",
-  "SINGLE_AZ_HA_2",
-  "MULTI_AZ_1",
-);
-export type OpenZFSDataCompressionType = "NONE" | "ZSTD" | "LZ4";
-export const OpenZFSDataCompressionType = S.Literal("NONE", "ZSTD", "LZ4");
+  | "MULTI_AZ_1"
+  | (string & {});
+export const OpenZFSDeploymentType = S.String;
+export type OpenZFSDataCompressionType =
+  | "NONE"
+  | "ZSTD"
+  | "LZ4"
+  | (string & {});
+export const OpenZFSDataCompressionType = S.String;
 export type OpenZFSNfsExportOptions = string[];
 export const OpenZFSNfsExportOptions = S.Array(S.String);
 export interface OpenZFSClientConfiguration {
@@ -688,8 +653,8 @@ export const OpenZFSNfsExport = S.suspend(() =>
 }) as any as S.Schema<OpenZFSNfsExport>;
 export type OpenZFSNfsExports = OpenZFSNfsExport[];
 export const OpenZFSNfsExports = S.Array(OpenZFSNfsExport);
-export type OpenZFSQuotaType = "USER" | "GROUP";
-export const OpenZFSQuotaType = S.Literal("USER", "GROUP");
+export type OpenZFSQuotaType = "USER" | "GROUP" | (string & {});
+export const OpenZFSQuotaType = S.String;
 export interface OpenZFSUserOrGroupQuota {
   Type?: OpenZFSQuotaType;
   Id?: number;
@@ -731,12 +696,9 @@ export const RouteTableIds = S.Array(S.String);
 export type OpenZFSReadCacheSizingMode =
   | "NO_CACHE"
   | "USER_PROVISIONED"
-  | "PROPORTIONAL_TO_THROUGHPUT_CAPACITY";
-export const OpenZFSReadCacheSizingMode = S.Literal(
-  "NO_CACHE",
-  "USER_PROVISIONED",
-  "PROPORTIONAL_TO_THROUGHPUT_CAPACITY",
-);
+  | "PROPORTIONAL_TO_THROUGHPUT_CAPACITY"
+  | (string & {});
+export const OpenZFSReadCacheSizingMode = S.String;
 export interface OpenZFSReadCacheConfiguration {
   SizingMode?: OpenZFSReadCacheSizingMode;
   SizeGiB?: number;
@@ -839,15 +801,15 @@ export const CreateSnapshotRequest = S.suspend(() =>
 ).annotations({
   identifier: "CreateSnapshotRequest",
 }) as any as S.Schema<CreateSnapshotRequest>;
-export type SecurityStyle = "UNIX" | "NTFS" | "MIXED";
-export const SecurityStyle = S.Literal("UNIX", "NTFS", "MIXED");
-export type TieringPolicyName = "SNAPSHOT_ONLY" | "AUTO" | "ALL" | "NONE";
-export const TieringPolicyName = S.Literal(
-  "SNAPSHOT_ONLY",
-  "AUTO",
-  "ALL",
-  "NONE",
-);
+export type SecurityStyle = "UNIX" | "NTFS" | "MIXED" | (string & {});
+export const SecurityStyle = S.String;
+export type TieringPolicyName =
+  | "SNAPSHOT_ONLY"
+  | "AUTO"
+  | "ALL"
+  | "NONE"
+  | (string & {});
+export const TieringPolicyName = S.String;
 export interface TieringPolicy {
   CoolingPeriod?: number;
   Name?: TieringPolicyName;
@@ -860,23 +822,17 @@ export const TieringPolicy = S.suspend(() =>
 ).annotations({
   identifier: "TieringPolicy",
 }) as any as S.Schema<TieringPolicy>;
-export type InputOntapVolumeType = "RW" | "DP";
-export const InputOntapVolumeType = S.Literal("RW", "DP");
+export type InputOntapVolumeType = "RW" | "DP" | (string & {});
+export const InputOntapVolumeType = S.String;
 export type AutocommitPeriodType =
   | "MINUTES"
   | "HOURS"
   | "DAYS"
   | "MONTHS"
   | "YEARS"
-  | "NONE";
-export const AutocommitPeriodType = S.Literal(
-  "MINUTES",
-  "HOURS",
-  "DAYS",
-  "MONTHS",
-  "YEARS",
-  "NONE",
-);
+  | "NONE"
+  | (string & {});
+export const AutocommitPeriodType = S.String;
 export interface AutocommitPeriod {
   Type?: AutocommitPeriodType;
   Value?: number;
@@ -889,12 +845,12 @@ export const AutocommitPeriod = S.suspend(() =>
 ).annotations({
   identifier: "AutocommitPeriod",
 }) as any as S.Schema<AutocommitPeriod>;
-export type PrivilegedDelete = "DISABLED" | "ENABLED" | "PERMANENTLY_DISABLED";
-export const PrivilegedDelete = S.Literal(
-  "DISABLED",
-  "ENABLED",
-  "PERMANENTLY_DISABLED",
-);
+export type PrivilegedDelete =
+  | "DISABLED"
+  | "ENABLED"
+  | "PERMANENTLY_DISABLED"
+  | (string & {});
+export const PrivilegedDelete = S.String;
 export type RetentionPeriodType =
   | "SECONDS"
   | "MINUTES"
@@ -903,17 +859,9 @@ export type RetentionPeriodType =
   | "MONTHS"
   | "YEARS"
   | "INFINITE"
-  | "UNSPECIFIED";
-export const RetentionPeriodType = S.Literal(
-  "SECONDS",
-  "MINUTES",
-  "HOURS",
-  "DAYS",
-  "MONTHS",
-  "YEARS",
-  "INFINITE",
-  "UNSPECIFIED",
-);
+  | "UNSPECIFIED"
+  | (string & {});
+export const RetentionPeriodType = S.String;
 export interface RetentionPeriod {
   Type?: RetentionPeriodType;
   Value?: number;
@@ -940,8 +888,8 @@ export const SnaplockRetentionPeriod = S.suspend(() =>
 ).annotations({
   identifier: "SnaplockRetentionPeriod",
 }) as any as S.Schema<SnaplockRetentionPeriod>;
-export type SnaplockType = "COMPLIANCE" | "ENTERPRISE";
-export const SnaplockType = S.Literal("COMPLIANCE", "ENTERPRISE");
+export type SnaplockType = "COMPLIANCE" | "ENTERPRISE" | (string & {});
+export const SnaplockType = S.String;
 export interface CreateSnaplockConfiguration {
   AuditLogVolume?: boolean;
   AutocommitPeriod?: AutocommitPeriod;
@@ -962,8 +910,8 @@ export const CreateSnaplockConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "CreateSnaplockConfiguration",
 }) as any as S.Schema<CreateSnaplockConfiguration>;
-export type VolumeStyle = "FLEXVOL" | "FLEXGROUP";
-export const VolumeStyle = S.Literal("FLEXVOL", "FLEXGROUP");
+export type VolumeStyle = "FLEXVOL" | "FLEXGROUP" | (string & {});
+export const VolumeStyle = S.String;
 export type Aggregates = string[];
 export const Aggregates = S.Array(S.String);
 export interface CreateAggregateConfiguration {
@@ -1111,16 +1059,9 @@ export type FilterName =
   | "volume-id"
   | "data-repository-type"
   | "file-cache-id"
-  | "file-cache-type";
-export const FilterName = S.Literal(
-  "file-system-id",
-  "backup-type",
-  "file-system-type",
-  "volume-id",
-  "data-repository-type",
-  "file-cache-id",
-  "file-cache-type",
-);
+  | "file-cache-type"
+  | (string & {});
+export const FilterName = S.String;
 export type FilterValues = string[];
 export const FilterValues = S.Array(S.String);
 export interface Filter {
@@ -1335,8 +1276,8 @@ export interface UntagResourceResponse {}
 export const UntagResourceResponse = S.suspend(() => S.Struct({})).annotations({
   identifier: "UntagResourceResponse",
 }) as any as S.Schema<UntagResourceResponse>;
-export type EventType = "NEW" | "CHANGED" | "DELETED";
-export const EventType = S.Literal("NEW", "CHANGED", "DELETED");
+export type EventType = "NEW" | "CHANGED" | "DELETED" | (string & {});
+export const EventType = S.String;
 export type EventTypes = EventType[];
 export const EventTypes = S.Array(EventType);
 export interface AutoImportPolicy {
@@ -1415,77 +1356,65 @@ export const UpdateSnapshotRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateSnapshotRequest",
 }) as any as S.Schema<UpdateSnapshotRequest>;
-export type ReportFormat = "REPORT_CSV_20191124";
-export const ReportFormat = S.Literal("REPORT_CSV_20191124");
-export type ReportScope = "FAILED_FILES_ONLY";
-export const ReportScope = S.Literal("FAILED_FILES_ONLY");
-export type FileCacheLustreDeploymentType = "CACHE_1";
-export const FileCacheLustreDeploymentType = S.Literal("CACHE_1");
+export type ReportFormat = "REPORT_CSV_20191124" | (string & {});
+export const ReportFormat = S.String;
+export type ReportScope = "FAILED_FILES_ONLY" | (string & {});
+export const ReportScope = S.String;
+export type FileCacheLustreDeploymentType = "CACHE_1" | (string & {});
+export const FileCacheLustreDeploymentType = S.String;
 export type SubDirectoriesPaths = string[];
 export const SubDirectoriesPaths = S.Array(S.String);
 export type OntapDeploymentType =
   | "MULTI_AZ_1"
   | "SINGLE_AZ_1"
   | "SINGLE_AZ_2"
-  | "MULTI_AZ_2";
-export const OntapDeploymentType = S.Literal(
-  "MULTI_AZ_1",
-  "SINGLE_AZ_1",
-  "SINGLE_AZ_2",
-  "MULTI_AZ_2",
-);
+  | "MULTI_AZ_2"
+  | (string & {});
+export const OntapDeploymentType = S.String;
 export type DeleteFileSystemOpenZFSOption =
-  "DELETE_CHILD_VOLUMES_AND_SNAPSHOTS";
-export const DeleteFileSystemOpenZFSOption = S.Literal(
-  "DELETE_CHILD_VOLUMES_AND_SNAPSHOTS",
-);
+  | "DELETE_CHILD_VOLUMES_AND_SNAPSHOTS"
+  | (string & {});
+export const DeleteFileSystemOpenZFSOption = S.String;
 export type DeleteFileSystemOpenZFSOptions = DeleteFileSystemOpenZFSOption[];
 export const DeleteFileSystemOpenZFSOptions = S.Array(
   DeleteFileSystemOpenZFSOption,
 );
-export type DeleteOpenZFSVolumeOption = "DELETE_CHILD_VOLUMES_AND_SNAPSHOTS";
-export const DeleteOpenZFSVolumeOption = S.Literal(
-  "DELETE_CHILD_VOLUMES_AND_SNAPSHOTS",
-);
+export type DeleteOpenZFSVolumeOption =
+  | "DELETE_CHILD_VOLUMES_AND_SNAPSHOTS"
+  | (string & {});
+export const DeleteOpenZFSVolumeOption = S.String;
 export type DeleteOpenZFSVolumeOptions = DeleteOpenZFSVolumeOption[];
 export const DeleteOpenZFSVolumeOptions = S.Array(DeleteOpenZFSVolumeOption);
 export type DataRepositoryTaskFilterName =
   | "file-system-id"
   | "task-lifecycle"
   | "data-repository-association-id"
-  | "file-cache-id";
-export const DataRepositoryTaskFilterName = S.Literal(
-  "file-system-id",
-  "task-lifecycle",
-  "data-repository-association-id",
-  "file-cache-id",
-);
+  | "file-cache-id"
+  | (string & {});
+export const DataRepositoryTaskFilterName = S.String;
 export type DataRepositoryTaskFilterValues = string[];
 export const DataRepositoryTaskFilterValues = S.Array(S.String);
 export type S3AccessPointAttachmentsFilterName =
   | "file-system-id"
   | "volume-id"
-  | "type";
-export const S3AccessPointAttachmentsFilterName = S.Literal(
-  "file-system-id",
-  "volume-id",
-  "type",
-);
+  | "type"
+  | (string & {});
+export const S3AccessPointAttachmentsFilterName = S.String;
 export type S3AccessPointAttachmentsFilterValues = string[];
 export const S3AccessPointAttachmentsFilterValues = S.Array(S.String);
-export type SnapshotFilterName = "file-system-id" | "volume-id";
-export const SnapshotFilterName = S.Literal("file-system-id", "volume-id");
+export type SnapshotFilterName = "file-system-id" | "volume-id" | (string & {});
+export const SnapshotFilterName = S.String;
 export type SnapshotFilterValues = string[];
 export const SnapshotFilterValues = S.Array(S.String);
-export type StorageVirtualMachineFilterName = "file-system-id";
-export const StorageVirtualMachineFilterName = S.Literal("file-system-id");
+export type StorageVirtualMachineFilterName = "file-system-id" | (string & {});
+export const StorageVirtualMachineFilterName = S.String;
 export type StorageVirtualMachineFilterValues = string[];
 export const StorageVirtualMachineFilterValues = S.Array(S.String);
-export type VolumeFilterName = "file-system-id" | "storage-virtual-machine-id";
-export const VolumeFilterName = S.Literal(
-  "file-system-id",
-  "storage-virtual-machine-id",
-);
+export type VolumeFilterName =
+  | "file-system-id"
+  | "storage-virtual-machine-id"
+  | (string & {});
+export const VolumeFilterName = S.String;
 export type VolumeFilterValues = string[];
 export const VolumeFilterValues = S.Array(S.String);
 export type DataRepositoryTaskLifecycle =
@@ -1494,15 +1423,9 @@ export type DataRepositoryTaskLifecycle =
   | "FAILED"
   | "SUCCEEDED"
   | "CANCELED"
-  | "CANCELING";
-export const DataRepositoryTaskLifecycle = S.Literal(
-  "PENDING",
-  "EXECUTING",
-  "FAILED",
-  "SUCCEEDED",
-  "CANCELED",
-  "CANCELING",
-);
+  | "CANCELING"
+  | (string & {});
+export const DataRepositoryTaskLifecycle = S.String;
 export type VolumeLifecycle =
   | "CREATING"
   | "CREATED"
@@ -1510,16 +1433,9 @@ export type VolumeLifecycle =
   | "FAILED"
   | "MISCONFIGURED"
   | "PENDING"
-  | "AVAILABLE";
-export const VolumeLifecycle = S.Literal(
-  "CREATING",
-  "CREATED",
-  "DELETING",
-  "FAILED",
-  "MISCONFIGURED",
-  "PENDING",
-  "AVAILABLE",
-);
+  | "AVAILABLE"
+  | (string & {});
+export const VolumeLifecycle = S.String;
 export interface CompletionReport {
   Enabled?: boolean;
   Path?: string;
@@ -1591,44 +1507,26 @@ export type BackupLifecycle =
   | "DELETED"
   | "FAILED"
   | "PENDING"
-  | "COPYING";
-export const BackupLifecycle = S.Literal(
-  "AVAILABLE",
-  "CREATING",
-  "TRANSFERRING",
-  "DELETED",
-  "FAILED",
-  "PENDING",
-  "COPYING",
-);
+  | "COPYING"
+  | (string & {});
+export const BackupLifecycle = S.String;
 export type DataRepositoryLifecycle =
   | "CREATING"
   | "AVAILABLE"
   | "MISCONFIGURED"
   | "UPDATING"
   | "DELETING"
-  | "FAILED";
-export const DataRepositoryLifecycle = S.Literal(
-  "CREATING",
-  "AVAILABLE",
-  "MISCONFIGURED",
-  "UPDATING",
-  "DELETING",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const DataRepositoryLifecycle = S.String;
 export type FileCacheLifecycle =
   | "AVAILABLE"
   | "CREATING"
   | "DELETING"
   | "UPDATING"
-  | "FAILED";
-export const FileCacheLifecycle = S.Literal(
-  "AVAILABLE",
-  "CREATING",
-  "DELETING",
-  "UPDATING",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const FileCacheLifecycle = S.String;
 export interface DeleteFileSystemWindowsConfiguration {
   SkipFinalBackup?: boolean;
   FinalBackupTags?: Tag[];
@@ -1671,28 +1569,18 @@ export type SnapshotLifecycle =
   | "PENDING"
   | "CREATING"
   | "DELETING"
-  | "AVAILABLE";
-export const SnapshotLifecycle = S.Literal(
-  "PENDING",
-  "CREATING",
-  "DELETING",
-  "AVAILABLE",
-);
+  | "AVAILABLE"
+  | (string & {});
+export const SnapshotLifecycle = S.String;
 export type StorageVirtualMachineLifecycle =
   | "CREATED"
   | "CREATING"
   | "DELETING"
   | "FAILED"
   | "MISCONFIGURED"
-  | "PENDING";
-export const StorageVirtualMachineLifecycle = S.Literal(
-  "CREATED",
-  "CREATING",
-  "DELETING",
-  "FAILED",
-  "MISCONFIGURED",
-  "PENDING",
-);
+  | "PENDING"
+  | (string & {});
+export const StorageVirtualMachineLifecycle = S.String;
 export interface DeleteVolumeOntapConfiguration {
   SkipFinalBackup?: boolean;
   FinalBackupTags?: Tag[];
@@ -1736,16 +1624,9 @@ export type FileSystemLifecycle =
   | "DELETING"
   | "MISCONFIGURED"
   | "UPDATING"
-  | "MISCONFIGURED_UNAVAILABLE";
-export const FileSystemLifecycle = S.Literal(
-  "AVAILABLE",
-  "CREATING",
-  "FAILED",
-  "DELETING",
-  "MISCONFIGURED",
-  "UPDATING",
-  "MISCONFIGURED_UNAVAILABLE",
-);
+  | "MISCONFIGURED_UNAVAILABLE"
+  | (string & {});
+export const FileSystemLifecycle = S.String;
 export interface FileSystemFailureDetails {
   Message?: string;
 }
@@ -1776,11 +1657,11 @@ export const SelfManagedActiveDirectoryAttributes = S.suspend(() =>
 ).annotations({
   identifier: "SelfManagedActiveDirectoryAttributes",
 }) as any as S.Schema<SelfManagedActiveDirectoryAttributes>;
-export type FileSystemMaintenanceOperation = "PATCHING" | "BACKING_UP";
-export const FileSystemMaintenanceOperation = S.Literal(
-  "PATCHING",
-  "BACKING_UP",
-);
+export type FileSystemMaintenanceOperation =
+  | "PATCHING"
+  | "BACKING_UP"
+  | (string & {});
+export const FileSystemMaintenanceOperation = S.String;
 export type FileSystemMaintenanceOperations = FileSystemMaintenanceOperation[];
 export const FileSystemMaintenanceOperations = S.Array(
   FileSystemMaintenanceOperation,
@@ -1790,14 +1671,9 @@ export type AliasLifecycle =
   | "CREATING"
   | "DELETING"
   | "CREATE_FAILED"
-  | "DELETE_FAILED";
-export const AliasLifecycle = S.Literal(
-  "AVAILABLE",
-  "CREATING",
-  "DELETING",
-  "CREATE_FAILED",
-  "DELETE_FAILED",
-);
+  | "DELETE_FAILED"
+  | (string & {});
+export const AliasLifecycle = S.String;
 export interface Alias {
   Name?: string;
   Lifecycle?: AliasLifecycle;
@@ -2190,15 +2066,9 @@ export type S3AccessPointAttachmentLifecycle =
   | "DELETING"
   | "UPDATING"
   | "FAILED"
-  | "MISCONFIGURED";
-export const S3AccessPointAttachmentLifecycle = S.Literal(
-  "AVAILABLE",
-  "CREATING",
-  "DELETING",
-  "UPDATING",
-  "FAILED",
-  "MISCONFIGURED",
-);
+  | "MISCONFIGURED"
+  | (string & {});
+export const S3AccessPointAttachmentLifecycle = S.String;
 export interface UpdateFileCacheLustreConfiguration {
   WeeklyMaintenanceStartTime?: string;
 }
@@ -2325,14 +2195,14 @@ export const UpdateOpenZFSVolumeConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "UpdateOpenZFSVolumeConfiguration",
 }) as any as S.Schema<UpdateOpenZFSVolumeConfiguration>;
-export type OpenZFSFileSystemUserType = "POSIX";
-export const OpenZFSFileSystemUserType = S.Literal("POSIX");
-export type OntapFileSystemUserType = "UNIX" | "WINDOWS";
-export const OntapFileSystemUserType = S.Literal("UNIX", "WINDOWS");
-export type Unit = "DAYS";
-export const Unit = S.Literal("DAYS");
-export type NfsVersion = "NFS3";
-export const NfsVersion = S.Literal("NFS3");
+export type OpenZFSFileSystemUserType = "POSIX" | (string & {});
+export const OpenZFSFileSystemUserType = S.String;
+export type OntapFileSystemUserType = "UNIX" | "WINDOWS" | (string & {});
+export const OntapFileSystemUserType = S.String;
+export type Unit = "DAYS" | (string & {});
+export const Unit = S.String;
+export type NfsVersion = "NFS3" | (string & {});
+export const NfsVersion = S.String;
 export type RepositoryDnsIps = string[];
 export const RepositoryDnsIps = S.Array(S.String);
 export interface CancelDataRepositoryTaskResponse {
@@ -3113,24 +2983,9 @@ export type AdministrativeActionType =
   | "MISCONFIGURED_STATE_RECOVERY"
   | "VOLUME_UPDATE_WITH_SNAPSHOT"
   | "VOLUME_INITIALIZE_WITH_SNAPSHOT"
-  | "DOWNLOAD_DATA_FROM_BACKUP";
-export const AdministrativeActionType = S.Literal(
-  "FILE_SYSTEM_UPDATE",
-  "STORAGE_OPTIMIZATION",
-  "FILE_SYSTEM_ALIAS_ASSOCIATION",
-  "FILE_SYSTEM_ALIAS_DISASSOCIATION",
-  "VOLUME_UPDATE",
-  "SNAPSHOT_UPDATE",
-  "RELEASE_NFS_V3_LOCKS",
-  "VOLUME_RESTORE",
-  "THROUGHPUT_OPTIMIZATION",
-  "IOPS_OPTIMIZATION",
-  "STORAGE_TYPE_OPTIMIZATION",
-  "MISCONFIGURED_STATE_RECOVERY",
-  "VOLUME_UPDATE_WITH_SNAPSHOT",
-  "VOLUME_INITIALIZE_WITH_SNAPSHOT",
-  "DOWNLOAD_DATA_FROM_BACKUP",
-);
+  | "DOWNLOAD_DATA_FROM_BACKUP"
+  | (string & {});
+export const AdministrativeActionType = S.String;
 export type Status =
   | "FAILED"
   | "IN_PROGRESS"
@@ -3139,17 +2994,9 @@ export type Status =
   | "UPDATED_OPTIMIZING"
   | "OPTIMIZING"
   | "PAUSED"
-  | "CANCELLED";
-export const Status = S.Literal(
-  "FAILED",
-  "IN_PROGRESS",
-  "PENDING",
-  "COMPLETED",
-  "UPDATED_OPTIMIZING",
-  "OPTIMIZING",
-  "PAUSED",
-  "CANCELLED",
-);
+  | "CANCELLED"
+  | (string & {});
+export const Status = S.String;
 export interface S3AccessPointVpcConfiguration {
   VpcId?: string;
 }
@@ -3158,14 +3005,14 @@ export const S3AccessPointVpcConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "S3AccessPointVpcConfiguration",
 }) as any as S.Schema<S3AccessPointVpcConfiguration>;
-export type BackupType = "AUTOMATIC" | "USER_INITIATED" | "AWS_BACKUP";
-export const BackupType = S.Literal(
-  "AUTOMATIC",
-  "USER_INITIATED",
-  "AWS_BACKUP",
-);
-export type ResourceType = "FILE_SYSTEM" | "VOLUME";
-export const ResourceType = S.Literal("FILE_SYSTEM", "VOLUME");
+export type BackupType =
+  | "AUTOMATIC"
+  | "USER_INITIATED"
+  | "AWS_BACKUP"
+  | (string & {});
+export const BackupType = S.String;
+export type ResourceType = "FILE_SYSTEM" | "VOLUME" | (string & {});
+export const ResourceType = S.String;
 export interface DurationSinceLastAccess {
   Unit?: Unit;
   Value?: number;
@@ -3318,10 +3165,10 @@ export const ActiveDirectoryBackupAttributes = S.suspend(() =>
 ).annotations({
   identifier: "ActiveDirectoryBackupAttributes",
 }) as any as S.Schema<ActiveDirectoryBackupAttributes>;
-export type FlexCacheEndpointType = "NONE" | "ORIGIN" | "CACHE";
-export const FlexCacheEndpointType = S.Literal("NONE", "ORIGIN", "CACHE");
-export type OntapVolumeType = "RW" | "DP" | "LS";
-export const OntapVolumeType = S.Literal("RW", "DP", "LS");
+export type FlexCacheEndpointType = "NONE" | "ORIGIN" | "CACHE" | (string & {});
+export const FlexCacheEndpointType = S.String;
+export type OntapVolumeType = "RW" | "DP" | "LS" | (string & {});
+export const OntapVolumeType = S.String;
 export interface SnaplockConfiguration {
   AuditLogVolume?: boolean;
   AutocommitPeriod?: AutocommitPeriod;
@@ -3576,13 +3423,9 @@ export type StorageVirtualMachineSubtype =
   | "DEFAULT"
   | "DP_DESTINATION"
   | "SYNC_DESTINATION"
-  | "SYNC_SOURCE";
-export const StorageVirtualMachineSubtype = S.Literal(
-  "DEFAULT",
-  "DP_DESTINATION",
-  "SYNC_DESTINATION",
-  "SYNC_SOURCE",
-);
+  | "SYNC_SOURCE"
+  | (string & {});
+export const StorageVirtualMachineSubtype = S.String;
 export interface StorageVirtualMachine {
   ActiveDirectoryConfiguration?: SvmActiveDirectoryConfiguration;
   CreationTime?: Date;
@@ -4590,19 +4433,9 @@ export type ServiceLimit =
   | "STORAGE_VIRTUAL_MACHINES_PER_FILE_SYSTEM"
   | "VOLUMES_PER_FILE_SYSTEM"
   | "TOTAL_SSD_IOPS"
-  | "FILE_CACHE_COUNT";
-export const ServiceLimit = S.Literal(
-  "FILE_SYSTEM_COUNT",
-  "TOTAL_THROUGHPUT_CAPACITY",
-  "TOTAL_STORAGE",
-  "TOTAL_USER_INITIATED_BACKUPS",
-  "TOTAL_USER_TAGS",
-  "TOTAL_IN_PROGRESS_COPY_BACKUPS",
-  "STORAGE_VIRTUAL_MACHINES_PER_FILE_SYSTEM",
-  "VOLUMES_PER_FILE_SYSTEM",
-  "TOTAL_SSD_IOPS",
-  "FILE_CACHE_COUNT",
-);
+  | "FILE_CACHE_COUNT"
+  | (string & {});
+export const ServiceLimit = S.String;
 export interface CopySnapshotAndUpdateVolumeResponse {
   VolumeId?: string;
   Lifecycle?: VolumeLifecycle;
@@ -5306,14 +5139,9 @@ export type ActiveDirectoryErrorType =
   | "INCOMPATIBLE_DOMAIN_MODE"
   | "WRONG_VPC"
   | "INVALID_NETWORK_TYPE"
-  | "INVALID_DOMAIN_STAGE";
-export const ActiveDirectoryErrorType = S.Literal(
-  "DOMAIN_NOT_FOUND",
-  "INCOMPATIBLE_DOMAIN_MODE",
-  "WRONG_VPC",
-  "INVALID_NETWORK_TYPE",
-  "INVALID_DOMAIN_STAGE",
-);
+  | "INVALID_DOMAIN_STAGE"
+  | (string & {});
+export const ActiveDirectoryErrorType = S.String;
 export type DataRepositoryTasks = DataRepositoryTask[];
 export const DataRepositoryTasks = S.Array(DataRepositoryTask);
 export interface S3AccessPointAttachment {

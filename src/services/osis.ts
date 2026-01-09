@@ -637,8 +637,8 @@ export type SubnetIds = string[];
 export const SubnetIds = S.Array(S.String);
 export type SecurityGroupIds = string[];
 export const SecurityGroupIds = S.Array(S.String);
-export type VpcEndpointManagement = "CUSTOMER" | "SERVICE";
-export const VpcEndpointManagement = S.Literal("CUSTOMER", "SERVICE");
+export type VpcEndpointManagement = "CUSTOMER" | "SERVICE" | (string & {});
+export const VpcEndpointManagement = S.String;
 export interface PipelineEndpointVpcOptions {
   SubnetIds?: string[];
   SecurityGroupIds?: string[];
@@ -754,19 +754,9 @@ export type PipelineStatus =
   | "STARTING"
   | "START_FAILED"
   | "STOPPING"
-  | "STOPPED";
-export const PipelineStatus = S.Literal(
-  "CREATING",
-  "ACTIVE",
-  "UPDATING",
-  "DELETING",
-  "CREATE_FAILED",
-  "UPDATE_FAILED",
-  "STARTING",
-  "START_FAILED",
-  "STOPPING",
-  "STOPPED",
-);
+  | "STOPPED"
+  | (string & {});
+export const PipelineStatus = S.String;
 export interface PipelineStatusReason {
   Description?: string;
 }
@@ -814,8 +804,8 @@ export const VpcEndpoint = S.suspend(() =>
 ).annotations({ identifier: "VpcEndpoint" }) as any as S.Schema<VpcEndpoint>;
 export type VpcEndpointsList = VpcEndpoint[];
 export const VpcEndpointsList = S.Array(VpcEndpoint);
-export type VpcEndpointServiceName = "OPENSEARCH_SERVERLESS";
-export const VpcEndpointServiceName = S.Literal("OPENSEARCH_SERVERLESS");
+export type VpcEndpointServiceName = "OPENSEARCH_SERVERLESS" | (string & {});
+export const VpcEndpointServiceName = S.String;
 export interface ServiceVpcEndpoint {
   ServiceName?: VpcEndpointServiceName;
   VpcEndpointId?: string;
@@ -916,28 +906,18 @@ export type ChangeProgressStatuses =
   | "PENDING"
   | "IN_PROGRESS"
   | "COMPLETED"
-  | "FAILED";
-export const ChangeProgressStatuses = S.Literal(
-  "PENDING",
-  "IN_PROGRESS",
-  "COMPLETED",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const ChangeProgressStatuses = S.String;
 export type PipelineEndpointStatus =
   | "CREATING"
   | "ACTIVE"
   | "CREATE_FAILED"
   | "DELETING"
   | "REVOKING"
-  | "REVOKED";
-export const PipelineEndpointStatus = S.Literal(
-  "CREATING",
-  "ACTIVE",
-  "CREATE_FAILED",
-  "DELETING",
-  "REVOKING",
-  "REVOKED",
-);
+  | "REVOKED"
+  | (string & {});
+export const PipelineEndpointStatus = S.String;
 export interface PipelineBlueprint {
   BlueprintName?: string;
   PipelineConfigurationBody?: string;
@@ -1045,13 +1025,9 @@ export type ChangeProgressStageStatuses =
   | "PENDING"
   | "IN_PROGRESS"
   | "COMPLETED"
-  | "FAILED";
-export const ChangeProgressStageStatuses = S.Literal(
-  "PENDING",
-  "IN_PROGRESS",
-  "COMPLETED",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const ChangeProgressStageStatuses = S.String;
 export interface CreatePipelineRequest {
   PipelineName: string;
   MinUnits: number;

@@ -381,11 +381,9 @@ export const ListUsersRequest = S.suspend(() =>
 }) as any as S.Schema<ListUsersRequest>;
 export type ConflictExceptionReason =
   | "UNIQUENESS_CONSTRAINT_VIOLATION"
-  | "CONCURRENT_MODIFICATION";
-export const ConflictExceptionReason = S.Literal(
-  "UNIQUENESS_CONSTRAINT_VIOLATION",
-  "CONCURRENT_MODIFICATION",
-);
+  | "CONCURRENT_MODIFICATION"
+  | (string & {});
+export const ConflictExceptionReason = S.String;
 export type ExternalIds = ExternalId[];
 export const ExternalIds = S.Array(ExternalId);
 export interface Name {
@@ -493,8 +491,8 @@ export const Extensions = S.Record({
   key: S.String,
   value: S.UndefinedOr(S.Any),
 });
-export type UserStatus = "ENABLED" | "DISABLED";
-export const UserStatus = S.Literal("ENABLED", "DISABLED");
+export type UserStatus = "ENABLED" | "DISABLED" | (string & {});
+export const UserStatus = S.String;
 export interface GetGroupMembershipIdRequest {
   IdentityStoreId: string;
   GroupId: string;
@@ -777,16 +775,13 @@ export type ResourceType =
   | "USER"
   | "IDENTITY_STORE"
   | "GROUP_MEMBERSHIP"
-  | "RESOURCE_POLICY";
-export const ResourceType = S.Literal(
-  "GROUP",
-  "USER",
-  "IDENTITY_STORE",
-  "GROUP_MEMBERSHIP",
-  "RESOURCE_POLICY",
-);
-export type ResourceNotFoundExceptionReason = "KMS_KEY_NOT_FOUND";
-export const ResourceNotFoundExceptionReason = S.Literal("KMS_KEY_NOT_FOUND");
+  | "RESOURCE_POLICY"
+  | (string & {});
+export const ResourceType = S.String;
+export type ResourceNotFoundExceptionReason =
+  | "KMS_KEY_NOT_FOUND"
+  | (string & {});
+export const ResourceNotFoundExceptionReason = S.String;
 export interface GroupMembershipExistenceResult {
   GroupId?: string;
   MemberId?: MemberId;
@@ -930,13 +925,9 @@ export type ValidationExceptionReason =
   | "KMS_INVALID_ARN"
   | "KMS_INVALID_KEY_USAGE"
   | "KMS_INVALID_STATE"
-  | "KMS_DISABLED";
-export const ValidationExceptionReason = S.Literal(
-  "KMS_INVALID_ARN",
-  "KMS_INVALID_KEY_USAGE",
-  "KMS_INVALID_STATE",
-  "KMS_DISABLED",
-);
+  | "KMS_DISABLED"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 export interface Group {
   GroupId: string;
   DisplayName?: string | redacted.Redacted<string>;

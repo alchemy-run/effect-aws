@@ -130,35 +130,27 @@ export type String39 = string;
 export type Base64String1To4096 = string;
 
 //# Schemas
-export type CertificateAuthorityType = "ROOT" | "SUBORDINATE";
-export const CertificateAuthorityType = S.Literal("ROOT", "SUBORDINATE");
+export type CertificateAuthorityType = "ROOT" | "SUBORDINATE" | (string & {});
+export const CertificateAuthorityType = S.String;
 export type KeyStorageSecurityStandard =
   | "FIPS_140_2_LEVEL_2_OR_HIGHER"
   | "FIPS_140_2_LEVEL_3_OR_HIGHER"
-  | "CCPC_LEVEL_1_OR_HIGHER";
-export const KeyStorageSecurityStandard = S.Literal(
-  "FIPS_140_2_LEVEL_2_OR_HIGHER",
-  "FIPS_140_2_LEVEL_3_OR_HIGHER",
-  "CCPC_LEVEL_1_OR_HIGHER",
-);
+  | "CCPC_LEVEL_1_OR_HIGHER"
+  | (string & {});
+export const KeyStorageSecurityStandard = S.String;
 export type CertificateAuthorityUsageMode =
   | "GENERAL_PURPOSE"
-  | "SHORT_LIVED_CERTIFICATE";
-export const CertificateAuthorityUsageMode = S.Literal(
-  "GENERAL_PURPOSE",
-  "SHORT_LIVED_CERTIFICATE",
-);
-export type AuditReportResponseFormat = "JSON" | "CSV";
-export const AuditReportResponseFormat = S.Literal("JSON", "CSV");
+  | "SHORT_LIVED_CERTIFICATE"
+  | (string & {});
+export const CertificateAuthorityUsageMode = S.String;
+export type AuditReportResponseFormat = "JSON" | "CSV" | (string & {});
+export const AuditReportResponseFormat = S.String;
 export type ActionType =
   | "IssueCertificate"
   | "GetCertificate"
-  | "ListPermissions";
-export const ActionType = S.Literal(
-  "IssueCertificate",
-  "GetCertificate",
-  "ListPermissions",
-);
+  | "ListPermissions"
+  | (string & {});
+export const ActionType = S.String;
 export type ActionList = ActionType[];
 export const ActionList = S.Array(ActionType);
 export type SigningAlgorithm =
@@ -171,21 +163,11 @@ export type SigningAlgorithm =
   | "SM3WITHSM2"
   | "ML_DSA_44"
   | "ML_DSA_65"
-  | "ML_DSA_87";
-export const SigningAlgorithm = S.Literal(
-  "SHA256WITHECDSA",
-  "SHA384WITHECDSA",
-  "SHA512WITHECDSA",
-  "SHA256WITHRSA",
-  "SHA384WITHRSA",
-  "SHA512WITHRSA",
-  "SM3WITHSM2",
-  "ML_DSA_44",
-  "ML_DSA_65",
-  "ML_DSA_87",
-);
-export type ResourceOwner = "SELF" | "OTHER_ACCOUNTS";
-export const ResourceOwner = S.Literal("SELF", "OTHER_ACCOUNTS");
+  | "ML_DSA_87"
+  | (string & {});
+export const SigningAlgorithm = S.String;
+export type ResourceOwner = "SELF" | "OTHER_ACCOUNTS" | (string & {});
+export const ResourceOwner = S.String;
 export type RevocationReason =
   | "UNSPECIFIED"
   | "KEY_COMPROMISE"
@@ -194,17 +176,9 @@ export type RevocationReason =
   | "SUPERSEDED"
   | "CESSATION_OF_OPERATION"
   | "PRIVILEGE_WITHDRAWN"
-  | "A_A_COMPROMISE";
-export const RevocationReason = S.Literal(
-  "UNSPECIFIED",
-  "KEY_COMPROMISE",
-  "CERTIFICATE_AUTHORITY_COMPROMISE",
-  "AFFILIATION_CHANGED",
-  "SUPERSEDED",
-  "CESSATION_OF_OPERATION",
-  "PRIVILEGE_WITHDRAWN",
-  "A_A_COMPROMISE",
-);
+  | "A_A_COMPROMISE"
+  | (string & {});
+export const RevocationReason = S.String;
 export type CertificateAuthorityStatus =
   | "CREATING"
   | "PENDING_CERTIFICATE"
@@ -212,16 +186,9 @@ export type CertificateAuthorityStatus =
   | "DELETED"
   | "DISABLED"
   | "EXPIRED"
-  | "FAILED";
-export const CertificateAuthorityStatus = S.Literal(
-  "CREATING",
-  "PENDING_CERTIFICATE",
-  "ACTIVE",
-  "DELETED",
-  "DISABLED",
-  "EXPIRED",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const CertificateAuthorityStatus = S.String;
 export interface CreateCertificateAuthorityAuditReportRequest {
   CertificateAuthorityArn: string;
   S3BucketName: string;
@@ -549,11 +516,11 @@ export const UntagCertificateAuthorityResponse = S.suspend(() =>
 ).annotations({
   identifier: "UntagCertificateAuthorityResponse",
 }) as any as S.Schema<UntagCertificateAuthorityResponse>;
-export type S3ObjectAcl = "PUBLIC_READ" | "BUCKET_OWNER_FULL_CONTROL";
-export const S3ObjectAcl = S.Literal(
-  "PUBLIC_READ",
-  "BUCKET_OWNER_FULL_CONTROL",
-);
+export type S3ObjectAcl =
+  | "PUBLIC_READ"
+  | "BUCKET_OWNER_FULL_CONTROL"
+  | (string & {});
+export const S3ObjectAcl = S.String;
 export interface CrlDistributionPointExtensionConfiguration {
   OmitExtension: boolean;
 }
@@ -562,8 +529,8 @@ export const CrlDistributionPointExtensionConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "CrlDistributionPointExtensionConfiguration",
 }) as any as S.Schema<CrlDistributionPointExtensionConfiguration>;
-export type CrlType = "COMPLETE" | "PARTITIONED";
-export const CrlType = S.Literal("COMPLETE", "PARTITIONED");
+export type CrlType = "COMPLETE" | "PARTITIONED" | (string & {});
+export const CrlType = S.String;
 export interface CrlConfiguration {
   Enabled: boolean;
   ExpirationInDays?: number;
@@ -643,34 +610,23 @@ export type KeyAlgorithm =
   | "ML_DSA_44"
   | "ML_DSA_65"
   | "ML_DSA_87"
-  | "SM2";
-export const KeyAlgorithm = S.Literal(
-  "RSA_2048",
-  "RSA_3072",
-  "RSA_4096",
-  "EC_prime256v1",
-  "EC_secp384r1",
-  "EC_secp521r1",
-  "ML_DSA_44",
-  "ML_DSA_65",
-  "ML_DSA_87",
-  "SM2",
-);
+  | "SM2"
+  | (string & {});
+export const KeyAlgorithm = S.String;
 export type ValidityPeriodType =
   | "END_DATE"
   | "ABSOLUTE"
   | "DAYS"
   | "MONTHS"
-  | "YEARS";
-export const ValidityPeriodType = S.Literal(
-  "END_DATE",
-  "ABSOLUTE",
-  "DAYS",
-  "MONTHS",
-  "YEARS",
-);
-export type AuditReportStatus = "CREATING" | "SUCCESS" | "FAILED";
-export const AuditReportStatus = S.Literal("CREATING", "SUCCESS", "FAILED");
+  | "YEARS"
+  | (string & {});
+export const ValidityPeriodType = S.String;
+export type AuditReportStatus =
+  | "CREATING"
+  | "SUCCESS"
+  | "FAILED"
+  | (string & {});
+export const AuditReportStatus = S.String;
 export interface Validity {
   Value: number;
   Type: ValidityPeriodType;
@@ -681,12 +637,9 @@ export const Validity = S.suspend(() =>
 export type FailureReason =
   | "REQUEST_TIMED_OUT"
   | "UNSUPPORTED_ALGORITHM"
-  | "OTHER";
-export const FailureReason = S.Literal(
-  "REQUEST_TIMED_OUT",
-  "UNSUPPORTED_ALGORITHM",
-  "OTHER",
-);
+  | "OTHER"
+  | (string & {});
+export const FailureReason = S.String;
 export interface CustomAttribute {
   ObjectIdentifier: string;
   Value: string;
@@ -761,12 +714,9 @@ export const KeyUsage = S.suspend(() =>
 export type AccessMethodType =
   | "CA_REPOSITORY"
   | "RESOURCE_PKI_MANIFEST"
-  | "RESOURCE_PKI_NOTIFY";
-export const AccessMethodType = S.Literal(
-  "CA_REPOSITORY",
-  "RESOURCE_PKI_MANIFEST",
-  "RESOURCE_PKI_NOTIFY",
-);
+  | "RESOURCE_PKI_NOTIFY"
+  | (string & {});
+export const AccessMethodType = S.String;
 export interface AccessMethod {
   CustomObjectIdentifier?: string;
   AccessMethodType?: AccessMethodType;
@@ -996,18 +946,9 @@ export type ExtendedKeyUsageType =
   | "OCSP_SIGNING"
   | "SMART_CARD_LOGIN"
   | "DOCUMENT_SIGNING"
-  | "CERTIFICATE_TRANSPARENCY";
-export const ExtendedKeyUsageType = S.Literal(
-  "SERVER_AUTH",
-  "CLIENT_AUTH",
-  "CODE_SIGNING",
-  "EMAIL_PROTECTION",
-  "TIME_STAMPING",
-  "OCSP_SIGNING",
-  "SMART_CARD_LOGIN",
-  "DOCUMENT_SIGNING",
-  "CERTIFICATE_TRANSPARENCY",
-);
+  | "CERTIFICATE_TRANSPARENCY"
+  | (string & {});
+export const ExtendedKeyUsageType = S.String;
 export interface Permission {
   CertificateAuthorityArn?: string;
   CreatedAt?: Date;
@@ -1066,8 +1007,8 @@ export const DescribeCertificateAuthorityResponse = S.suspend(() =>
 ).annotations({
   identifier: "DescribeCertificateAuthorityResponse",
 }) as any as S.Schema<DescribeCertificateAuthorityResponse>;
-export type PolicyQualifierId = "CPS";
-export const PolicyQualifierId = S.Literal("CPS");
+export type PolicyQualifierId = "CPS" | (string & {});
+export const PolicyQualifierId = S.String;
 export interface ListPermissionsResponse {
   NextToken?: string;
   Permissions?: Permission[];

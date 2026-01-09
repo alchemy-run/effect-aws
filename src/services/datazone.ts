@@ -208,19 +208,15 @@ export type AggregationAttributeValue = string;
 export type AggregationAttributeDisplayValue = string;
 
 //# Schemas
-export type DataZoneEntityType = "DOMAIN_UNIT";
-export const DataZoneEntityType = S.Literal("DOMAIN_UNIT");
+export type DataZoneEntityType = "DOMAIN_UNIT" | (string & {});
+export const DataZoneEntityType = S.String;
 export type TargetEntityType =
   | "DOMAIN_UNIT"
   | "ENVIRONMENT_BLUEPRINT_CONFIGURATION"
   | "ENVIRONMENT_PROFILE"
-  | "ASSET_TYPE";
-export const TargetEntityType = S.Literal(
-  "DOMAIN_UNIT",
-  "ENVIRONMENT_BLUEPRINT_CONFIGURATION",
-  "ENVIRONMENT_PROFILE",
-  "ASSET_TYPE",
-);
+  | "ASSET_TYPE"
+  | (string & {});
+export const TargetEntityType = S.String;
 export type ManagedPolicyType =
   | "CREATE_DOMAIN_UNIT"
   | "OVERRIDE_DOMAIN_UNIT_OWNERS"
@@ -235,74 +231,55 @@ export type ManagedPolicyType =
   | "CREATE_ENVIRONMENT"
   | "CREATE_ENVIRONMENT_FROM_BLUEPRINT"
   | "CREATE_PROJECT_FROM_PROJECT_PROFILE"
-  | "USE_ASSET_TYPE";
-export const ManagedPolicyType = S.Literal(
-  "CREATE_DOMAIN_UNIT",
-  "OVERRIDE_DOMAIN_UNIT_OWNERS",
-  "ADD_TO_PROJECT_MEMBER_POOL",
-  "OVERRIDE_PROJECT_OWNERS",
-  "CREATE_GLOSSARY",
-  "CREATE_FORM_TYPE",
-  "CREATE_ASSET_TYPE",
-  "CREATE_PROJECT",
-  "CREATE_ENVIRONMENT_PROFILE",
-  "DELEGATE_CREATE_ENVIRONMENT_PROFILE",
-  "CREATE_ENVIRONMENT",
-  "CREATE_ENVIRONMENT_FROM_BLUEPRINT",
-  "CREATE_PROJECT_FROM_PROJECT_PROFILE",
-  "USE_ASSET_TYPE",
-);
-export type GovernedEntityType = "ASSET";
-export const GovernedEntityType = S.Literal("ASSET");
+  | "USE_ASSET_TYPE"
+  | (string & {});
+export const ManagedPolicyType = S.String;
+export type GovernedEntityType = "ASSET" | (string & {});
+export const GovernedEntityType = S.String;
 export type GovernedGlossaryTerms = string[];
 export const GovernedGlossaryTerms = S.Array(S.String);
-export type AttributeEntityType = "ASSET" | "LISTING";
-export const AttributeEntityType = S.Literal("ASSET", "LISTING");
+export type AttributeEntityType = "ASSET" | "LISTING" | (string & {});
+export const AttributeEntityType = S.String;
 export type AttributesList = string[];
 export const AttributesList = S.Array(S.String);
-export type ResolutionStrategy = "MANUAL";
-export const ResolutionStrategy = S.Literal("MANUAL");
-export type ConnectionScope = "DOMAIN" | "PROJECT";
-export const ConnectionScope = S.Literal("DOMAIN", "PROJECT");
+export type ResolutionStrategy = "MANUAL" | (string & {});
+export const ResolutionStrategy = S.String;
+export type ConnectionScope = "DOMAIN" | "PROJECT" | (string & {});
+export const ConnectionScope = S.String;
 export type GlossaryTerms = string[];
 export const GlossaryTerms = S.Array(S.String);
-export type EntityType = "ASSET" | "DATA_PRODUCT";
-export const EntityType = S.Literal("ASSET", "DATA_PRODUCT");
-export type ChangeAction = "PUBLISH" | "UNPUBLISH";
-export const ChangeAction = S.Literal("PUBLISH", "UNPUBLISH");
+export type EntityType = "ASSET" | "DATA_PRODUCT" | (string & {});
+export const EntityType = S.String;
+export type ChangeAction = "PUBLISH" | "UNPUBLISH" | (string & {});
+export const ChangeAction = S.String;
 export type UserDesignation =
   | "PROJECT_OWNER"
   | "PROJECT_CONTRIBUTOR"
   | "PROJECT_CATALOG_VIEWER"
   | "PROJECT_CATALOG_CONSUMER"
-  | "PROJECT_CATALOG_STEWARD";
-export const UserDesignation = S.Literal(
-  "PROJECT_OWNER",
-  "PROJECT_CONTRIBUTOR",
-  "PROJECT_CATALOG_VIEWER",
-  "PROJECT_CATALOG_CONSUMER",
-  "PROJECT_CATALOG_STEWARD",
-);
-export type Status = "ENABLED" | "DISABLED";
-export const Status = S.Literal("ENABLED", "DISABLED");
+  | "PROJECT_CATALOG_STEWARD"
+  | (string & {});
+export const UserDesignation = S.String;
+export type Status = "ENABLED" | "DISABLED" | (string & {});
+export const Status = S.String;
 export type AuthorizedPrincipalIdentifiers = string[];
 export const AuthorizedPrincipalIdentifiers = S.Array(S.String);
 export type ApplicableAssetTypes = string[];
 export const ApplicableAssetTypes = S.Array(S.String);
-export type UserType = "IAM_USER" | "IAM_ROLE" | "SSO_USER";
-export const UserType = S.Literal("IAM_USER", "IAM_ROLE", "SSO_USER");
-export type TimeSeriesEntityType = "ASSET" | "LISTING";
-export const TimeSeriesEntityType = S.Literal("ASSET", "LISTING");
-export type UserProfileType = "IAM" | "SSO";
-export const UserProfileType = S.Literal("IAM", "SSO");
-export type SortFieldAccountPool = "NAME";
-export const SortFieldAccountPool = S.Literal("NAME");
-export type SortOrder = "ASCENDING" | "DESCENDING";
-export const SortOrder = S.Literal("ASCENDING", "DESCENDING");
-export type FilterStatus = "VALID" | "INVALID";
-export const FilterStatus = S.Literal("VALID", "INVALID");
-export type SortFieldConnection = "NAME";
-export const SortFieldConnection = S.Literal("NAME");
+export type UserType = "IAM_USER" | "IAM_ROLE" | "SSO_USER" | (string & {});
+export const UserType = S.String;
+export type TimeSeriesEntityType = "ASSET" | "LISTING" | (string & {});
+export const TimeSeriesEntityType = S.String;
+export type UserProfileType = "IAM" | "SSO" | (string & {});
+export const UserProfileType = S.String;
+export type SortFieldAccountPool = "NAME" | (string & {});
+export const SortFieldAccountPool = S.String;
+export type SortOrder = "ASCENDING" | "DESCENDING" | (string & {});
+export const SortOrder = S.String;
+export type FilterStatus = "VALID" | "INVALID" | (string & {});
+export const FilterStatus = S.String;
+export type SortFieldConnection = "NAME" | (string & {});
+export const SortFieldConnection = S.String;
 export type ConnectionType =
   | "ATHENA"
   | "BIGQUERY"
@@ -325,31 +302,9 @@ export type ConnectionType =
   | "VERTICA"
   | "WORKFLOWS_MWAA"
   | "AMAZON_Q"
-  | "MLFLOW";
-export const ConnectionType = S.Literal(
-  "ATHENA",
-  "BIGQUERY",
-  "DATABRICKS",
-  "DOCUMENTDB",
-  "DYNAMODB",
-  "HYPERPOD",
-  "IAM",
-  "MYSQL",
-  "OPENSEARCH",
-  "ORACLE",
-  "POSTGRESQL",
-  "REDSHIFT",
-  "S3",
-  "SAPHANA",
-  "SNOWFLAKE",
-  "SPARK",
-  "SQLSERVER",
-  "TERADATA",
-  "VERTICA",
-  "WORKFLOWS_MWAA",
-  "AMAZON_Q",
-  "MLFLOW",
-);
+  | "MLFLOW"
+  | (string & {});
+export const ConnectionType = S.String;
 export type DataAssetActivityStatus =
   | "FAILED"
   | "PUBLISHING_FAILED"
@@ -358,17 +313,9 @@ export type DataAssetActivityStatus =
   | "SKIPPED_ALREADY_IMPORTED"
   | "SKIPPED_ARCHIVED"
   | "SKIPPED_NO_ACCESS"
-  | "UNCHANGED";
-export const DataAssetActivityStatus = S.Literal(
-  "FAILED",
-  "PUBLISHING_FAILED",
-  "SUCCEEDED_CREATED",
-  "SUCCEEDED_UPDATED",
-  "SKIPPED_ALREADY_IMPORTED",
-  "SKIPPED_ARCHIVED",
-  "SKIPPED_NO_ACCESS",
-  "UNCHANGED",
-);
+  | "UNCHANGED"
+  | (string & {});
+export const DataAssetActivityStatus = S.String;
 export type EnvironmentStatus =
   | "ACTIVE"
   | "CREATING"
@@ -382,22 +329,9 @@ export type EnvironmentStatus =
   | "DISABLED"
   | "EXPIRED"
   | "DELETED"
-  | "INACCESSIBLE";
-export const EnvironmentStatus = S.Literal(
-  "ACTIVE",
-  "CREATING",
-  "UPDATING",
-  "DELETING",
-  "CREATE_FAILED",
-  "UPDATE_FAILED",
-  "DELETE_FAILED",
-  "VALIDATION_FAILED",
-  "SUSPENDED",
-  "DISABLED",
-  "EXPIRED",
-  "DELETED",
-  "INACCESSIBLE",
-);
+  | "INACCESSIBLE"
+  | (string & {});
+export const EnvironmentStatus = S.String;
 export type JobRunStatus =
   | "SCHEDULED"
   | "IN_PROGRESS"
@@ -406,96 +340,80 @@ export type JobRunStatus =
   | "FAILED"
   | "ABORTED"
   | "TIMED_OUT"
-  | "CANCELED";
-export const JobRunStatus = S.Literal(
-  "SCHEDULED",
-  "IN_PROGRESS",
-  "SUCCESS",
-  "PARTIALLY_SUCCEEDED",
-  "FAILED",
-  "ABORTED",
-  "TIMED_OUT",
-  "CANCELED",
-);
+  | "CANCELED"
+  | (string & {});
+export const JobRunStatus = S.String;
 export type LineageEventProcessingStatus =
   | "REQUESTED"
   | "PROCESSING"
   | "SUCCESS"
-  | "FAILED";
-export const LineageEventProcessingStatus = S.Literal(
-  "REQUESTED",
-  "PROCESSING",
-  "SUCCESS",
-  "FAILED",
-);
-export type EdgeDirection = "UPSTREAM" | "DOWNSTREAM";
-export const EdgeDirection = S.Literal("UPSTREAM", "DOWNSTREAM");
-export type NotificationType = "TASK" | "EVENT";
-export const NotificationType = S.Literal("TASK", "EVENT");
+  | "FAILED"
+  | (string & {});
+export const LineageEventProcessingStatus = S.String;
+export type EdgeDirection = "UPSTREAM" | "DOWNSTREAM" | (string & {});
+export const EdgeDirection = S.String;
+export type NotificationType = "TASK" | "EVENT" | (string & {});
+export const NotificationType = S.String;
 export type NotificationSubjects = string[];
 export const NotificationSubjects = S.Array(S.String);
-export type TaskStatus = "ACTIVE" | "INACTIVE";
-export const TaskStatus = S.Literal("ACTIVE", "INACTIVE");
-export type SortFieldProject = "NAME";
-export const SortFieldProject = S.Literal("NAME");
-export type SortKey = "CREATED_AT" | "UPDATED_AT";
-export const SortKey = S.Literal("CREATED_AT", "UPDATED_AT");
-export type SubscriptionRequestStatus = "PENDING" | "ACCEPTED" | "REJECTED";
-export const SubscriptionRequestStatus = S.Literal(
-  "PENDING",
-  "ACCEPTED",
-  "REJECTED",
-);
-export type SubscriptionStatus = "APPROVED" | "REVOKED" | "CANCELLED";
-export const SubscriptionStatus = S.Literal("APPROVED", "REVOKED", "CANCELLED");
+export type TaskStatus = "ACTIVE" | "INACTIVE" | (string & {});
+export const TaskStatus = S.String;
+export type SortFieldProject = "NAME" | (string & {});
+export const SortFieldProject = S.String;
+export type SortKey = "CREATED_AT" | "UPDATED_AT" | (string & {});
+export const SortKey = S.String;
+export type SubscriptionRequestStatus =
+  | "PENDING"
+  | "ACCEPTED"
+  | "REJECTED"
+  | (string & {});
+export const SubscriptionRequestStatus = S.String;
+export type SubscriptionStatus =
+  | "APPROVED"
+  | "REVOKED"
+  | "CANCELLED"
+  | (string & {});
+export const SubscriptionStatus = S.String;
 export type InventorySearchScope =
   | "ASSET"
   | "GLOSSARY"
   | "GLOSSARY_TERM"
-  | "DATA_PRODUCT";
-export const InventorySearchScope = S.Literal(
-  "ASSET",
-  "GLOSSARY",
-  "GLOSSARY_TERM",
-  "DATA_PRODUCT",
-);
+  | "DATA_PRODUCT"
+  | (string & {});
+export const InventorySearchScope = S.String;
 export type SearchOutputAdditionalAttribute =
   | "FORMS"
   | "TIME_SERIES_DATA_POINT_FORMS"
-  | "TEXT_MATCH_RATIONALE";
-export const SearchOutputAdditionalAttribute = S.Literal(
-  "FORMS",
-  "TIME_SERIES_DATA_POINT_FORMS",
-  "TEXT_MATCH_RATIONALE",
-);
+  | "TEXT_MATCH_RATIONALE"
+  | (string & {});
+export const SearchOutputAdditionalAttribute = S.String;
 export type SearchOutputAdditionalAttributes =
   SearchOutputAdditionalAttribute[];
 export const SearchOutputAdditionalAttributes = S.Array(
   SearchOutputAdditionalAttribute,
 );
-export type GroupSearchType = "SSO_GROUP" | "DATAZONE_SSO_GROUP";
-export const GroupSearchType = S.Literal("SSO_GROUP", "DATAZONE_SSO_GROUP");
-export type TypesSearchScope = "ASSET_TYPE" | "FORM_TYPE" | "LINEAGE_NODE_TYPE";
-export const TypesSearchScope = S.Literal(
-  "ASSET_TYPE",
-  "FORM_TYPE",
-  "LINEAGE_NODE_TYPE",
-);
+export type GroupSearchType =
+  | "SSO_GROUP"
+  | "DATAZONE_SSO_GROUP"
+  | (string & {});
+export const GroupSearchType = S.String;
+export type TypesSearchScope =
+  | "ASSET_TYPE"
+  | "FORM_TYPE"
+  | "LINEAGE_NODE_TYPE"
+  | (string & {});
+export const TypesSearchScope = S.String;
 export type UserSearchType =
   | "SSO_USER"
   | "DATAZONE_USER"
   | "DATAZONE_SSO_USER"
-  | "DATAZONE_IAM_USER";
-export const UserSearchType = S.Literal(
-  "SSO_USER",
-  "DATAZONE_USER",
-  "DATAZONE_SSO_USER",
-  "DATAZONE_IAM_USER",
-);
+  | "DATAZONE_IAM_USER"
+  | (string & {});
+export const UserSearchType = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
-export type GroupProfileStatus = "ASSIGNED" | "NOT_ASSIGNED";
-export const GroupProfileStatus = S.Literal("ASSIGNED", "NOT_ASSIGNED");
+export type GroupProfileStatus = "ASSIGNED" | "NOT_ASSIGNED" | (string & {});
+export const GroupProfileStatus = S.String;
 export type SubscriptionGrantStatus =
   | "GRANT_PENDING"
   | "REVOKE_PENDING"
@@ -504,28 +422,16 @@ export type SubscriptionGrantStatus =
   | "GRANTED"
   | "REVOKED"
   | "GRANT_FAILED"
-  | "REVOKE_FAILED";
-export const SubscriptionGrantStatus = S.Literal(
-  "GRANT_PENDING",
-  "REVOKE_PENDING",
-  "GRANT_IN_PROGRESS",
-  "REVOKE_IN_PROGRESS",
-  "GRANTED",
-  "REVOKED",
-  "GRANT_FAILED",
-  "REVOKE_FAILED",
-);
+  | "REVOKE_FAILED"
+  | (string & {});
+export const SubscriptionGrantStatus = S.String;
 export type UserProfileStatus =
   | "ASSIGNED"
   | "NOT_ASSIGNED"
   | "ACTIVATED"
-  | "DEACTIVATED";
-export const UserProfileStatus = S.Literal(
-  "ASSIGNED",
-  "NOT_ASSIGNED",
-  "ACTIVATED",
-  "DEACTIVATED",
-);
+  | "DEACTIVATED"
+  | (string & {});
+export const UserProfileStatus = S.String;
 export interface FormInput {
   formName: string;
   typeIdentifier?: string;
@@ -542,8 +448,8 @@ export const FormInput = S.suspend(() =>
 ).annotations({ identifier: "FormInput" }) as any as S.Schema<FormInput>;
 export type FormInputList = FormInput[];
 export const FormInputList = S.Array(FormInput);
-export type EnableSetting = "ENABLED" | "DISABLED";
-export const EnableSetting = S.Literal("ENABLED", "DISABLED");
+export type EnableSetting = "ENABLED" | "DISABLED" | (string & {});
+export const EnableSetting = S.String;
 export type DataSourceStatus =
   | "CREATING"
   | "FAILED_CREATION"
@@ -552,68 +458,46 @@ export type DataSourceStatus =
   | "FAILED_UPDATE"
   | "RUNNING"
   | "DELETING"
-  | "FAILED_DELETION";
-export const DataSourceStatus = S.Literal(
-  "CREATING",
-  "FAILED_CREATION",
-  "READY",
-  "UPDATING",
-  "FAILED_UPDATE",
-  "RUNNING",
-  "DELETING",
-  "FAILED_DELETION",
-);
+  | "FAILED_DELETION"
+  | (string & {});
+export const DataSourceStatus = S.String;
 export type DataSourceRunStatus =
   | "REQUESTED"
   | "RUNNING"
   | "FAILED"
   | "PARTIALLY_SUCCEEDED"
-  | "SUCCESS";
-export const DataSourceRunStatus = S.Literal(
-  "REQUESTED",
-  "RUNNING",
-  "FAILED",
-  "PARTIALLY_SUCCEEDED",
-  "SUCCESS",
-);
-export type DomainVersion = "V1" | "V2";
-export const DomainVersion = S.Literal("V1", "V2");
+  | "SUCCESS"
+  | (string & {});
+export const DataSourceRunStatus = S.String;
+export type DomainVersion = "V1" | "V2" | (string & {});
+export const DomainVersion = S.String;
 export type DomainStatus =
   | "CREATING"
   | "AVAILABLE"
   | "CREATION_FAILED"
   | "DELETING"
   | "DELETED"
-  | "DELETION_FAILED";
-export const DomainStatus = S.Literal(
-  "CREATING",
-  "AVAILABLE",
-  "CREATION_FAILED",
-  "DELETING",
-  "DELETED",
-  "DELETION_FAILED",
-);
+  | "DELETION_FAILED"
+  | (string & {});
+export const DomainStatus = S.String;
 export type EnabledRegionList = string[];
 export const EnabledRegionList = S.Array(S.String);
-export type FormTypeStatus = "ENABLED" | "DISABLED";
-export const FormTypeStatus = S.Literal("ENABLED", "DISABLED");
-export type GlossaryStatus = "DISABLED" | "ENABLED";
-export const GlossaryStatus = S.Literal("DISABLED", "ENABLED");
-export type GlossaryUsageRestriction = "ASSET_GOVERNED_TERMS";
-export const GlossaryUsageRestriction = S.Literal("ASSET_GOVERNED_TERMS");
+export type FormTypeStatus = "ENABLED" | "DISABLED" | (string & {});
+export const FormTypeStatus = S.String;
+export type GlossaryStatus = "DISABLED" | "ENABLED" | (string & {});
+export const GlossaryStatus = S.String;
+export type GlossaryUsageRestriction = "ASSET_GOVERNED_TERMS" | (string & {});
+export const GlossaryUsageRestriction = S.String;
 export type GlossaryUsageRestrictions = GlossaryUsageRestriction[];
 export const GlossaryUsageRestrictions = S.Array(GlossaryUsageRestriction);
-export type GlossaryTermStatus = "ENABLED" | "DISABLED";
-export const GlossaryTermStatus = S.Literal("ENABLED", "DISABLED");
+export type GlossaryTermStatus = "ENABLED" | "DISABLED" | (string & {});
+export const GlossaryTermStatus = S.String;
 export type MetadataGenerationRunType =
   | "BUSINESS_DESCRIPTIONS"
   | "BUSINESS_NAMES"
-  | "BUSINESS_GLOSSARY_ASSOCIATIONS";
-export const MetadataGenerationRunType = S.Literal(
-  "BUSINESS_DESCRIPTIONS",
-  "BUSINESS_NAMES",
-  "BUSINESS_GLOSSARY_ASSOCIATIONS",
-);
+  | "BUSINESS_GLOSSARY_ASSOCIATIONS"
+  | (string & {});
+export const MetadataGenerationRunType = S.String;
 export type MetadataGenerationRunTypes = MetadataGenerationRunType[];
 export const MetadataGenerationRunTypes = S.Array(MetadataGenerationRunType);
 export type MetadataGenerationRunStatus =
@@ -622,31 +506,21 @@ export type MetadataGenerationRunStatus =
   | "CANCELED"
   | "SUCCEEDED"
   | "FAILED"
-  | "PARTIALLY_SUCCEEDED";
-export const MetadataGenerationRunStatus = S.Literal(
-  "SUBMITTED",
-  "IN_PROGRESS",
-  "CANCELED",
-  "SUCCEEDED",
-  "FAILED",
-  "PARTIALLY_SUCCEEDED",
-);
+  | "PARTIALLY_SUCCEEDED"
+  | (string & {});
+export const MetadataGenerationRunStatus = S.String;
 export type RuleAction =
   | "CREATE_LISTING_CHANGE_SET"
-  | "CREATE_SUBSCRIPTION_REQUEST";
-export const RuleAction = S.Literal(
-  "CREATE_LISTING_CHANGE_SET",
-  "CREATE_SUBSCRIPTION_REQUEST",
-);
-export type RuleTargetType = "DOMAIN_UNIT";
-export const RuleTargetType = S.Literal("DOMAIN_UNIT");
+  | "CREATE_SUBSCRIPTION_REQUEST"
+  | (string & {});
+export const RuleAction = S.String;
+export type RuleTargetType = "DOMAIN_UNIT" | (string & {});
+export const RuleTargetType = S.String;
 export type RuleType =
   | "METADATA_FORM_ENFORCEMENT"
-  | "GLOSSARY_TERM_ENFORCEMENT";
-export const RuleType = S.Literal(
-  "METADATA_FORM_ENFORCEMENT",
-  "GLOSSARY_TERM_ENFORCEMENT",
-);
+  | "GLOSSARY_TERM_ENFORCEMENT"
+  | (string & {});
+export const RuleType = S.String;
 export type ProjectIds = string[];
 export const ProjectIds = S.Array(S.String);
 export type AssetTypeIdentifiers = string[];
@@ -2990,12 +2864,9 @@ export const GroupPolicyGrantPrincipal = S.Union(
 export type ProjectDesignation =
   | "OWNER"
   | "CONTRIBUTOR"
-  | "PROJECT_CATALOG_STEWARD";
-export const ProjectDesignation = S.Literal(
-  "OWNER",
-  "CONTRIBUTOR",
-  "PROJECT_CATALOG_STEWARD",
-);
+  | "PROJECT_CATALOG_STEWARD"
+  | (string & {});
+export const ProjectDesignation = S.String;
 export interface DomainUnitFilterForProject {
   domainUnit: string;
   includeChildDomainUnits?: boolean;
@@ -3028,8 +2899,8 @@ export const ProjectPolicyGrantPrincipal = S.suspend(() =>
 ).annotations({
   identifier: "ProjectPolicyGrantPrincipal",
 }) as any as S.Schema<ProjectPolicyGrantPrincipal>;
-export type DomainUnitDesignation = "OWNER";
-export const DomainUnitDesignation = S.Literal("OWNER");
+export type DomainUnitDesignation = "OWNER" | (string & {});
+export const DomainUnitDesignation = S.String;
 export interface AllDomainUnitsGrantFilter {}
 export const AllDomainUnitsGrantFilter = S.suspend(() =>
   S.Struct({}),
@@ -3987,8 +3858,8 @@ export const ResourceTagParameter = S.suspend(() =>
 }) as any as S.Schema<ResourceTagParameter>;
 export type ProjectResourceTagParameters = ResourceTagParameter[];
 export const ProjectResourceTagParameters = S.Array(ResourceTagParameter);
-export type DeploymentMode = "ON_CREATE" | "ON_DEMAND";
-export const DeploymentMode = S.Literal("ON_CREATE", "ON_DEMAND");
+export type DeploymentMode = "ON_CREATE" | "ON_DEMAND" | (string & {});
+export const DeploymentMode = S.String;
 export interface EnvironmentConfigurationParameter {
   name?: string;
   value?: string;
@@ -4467,8 +4338,8 @@ export const DeleteDataProductOutput = S.suspend(() =>
 ).annotations({
   identifier: "DeleteDataProductOutput",
 }) as any as S.Schema<DeleteDataProductOutput>;
-export type DataProductItemType = "ASSET";
-export const DataProductItemType = S.Literal("ASSET");
+export type DataProductItemType = "ASSET" | (string & {});
+export const DataProductItemType = S.String;
 export type ItemGlossaryTerms = string[];
 export const ItemGlossaryTerms = S.Array(S.String);
 export interface DataProductItem {
@@ -4613,73 +4484,9 @@ export type Timezone =
   | "US_CENTRAL"
   | "US_EASTERN"
   | "US_MOUNTAIN"
-  | "US_PACIFIC";
-export const Timezone = S.Literal(
-  "UTC",
-  "AFRICA_JOHANNESBURG",
-  "AMERICA_MONTREAL",
-  "AMERICA_SAO_PAULO",
-  "ASIA_BAHRAIN",
-  "ASIA_BANGKOK",
-  "ASIA_CALCUTTA",
-  "ASIA_DUBAI",
-  "ASIA_HONG_KONG",
-  "ASIA_JAKARTA",
-  "ASIA_KUALA_LUMPUR",
-  "ASIA_SEOUL",
-  "ASIA_SHANGHAI",
-  "ASIA_SINGAPORE",
-  "ASIA_TAIPEI",
-  "ASIA_TOKYO",
-  "AUSTRALIA_MELBOURNE",
-  "AUSTRALIA_SYDNEY",
-  "CANADA_CENTRAL",
-  "CET",
-  "CST6CDT",
-  "ETC_GMT",
-  "ETC_GMT0",
-  "ETC_GMT_ADD_0",
-  "ETC_GMT_ADD_1",
-  "ETC_GMT_ADD_10",
-  "ETC_GMT_ADD_11",
-  "ETC_GMT_ADD_12",
-  "ETC_GMT_ADD_2",
-  "ETC_GMT_ADD_3",
-  "ETC_GMT_ADD_4",
-  "ETC_GMT_ADD_5",
-  "ETC_GMT_ADD_6",
-  "ETC_GMT_ADD_7",
-  "ETC_GMT_ADD_8",
-  "ETC_GMT_ADD_9",
-  "ETC_GMT_NEG_0",
-  "ETC_GMT_NEG_1",
-  "ETC_GMT_NEG_10",
-  "ETC_GMT_NEG_11",
-  "ETC_GMT_NEG_12",
-  "ETC_GMT_NEG_13",
-  "ETC_GMT_NEG_14",
-  "ETC_GMT_NEG_2",
-  "ETC_GMT_NEG_3",
-  "ETC_GMT_NEG_4",
-  "ETC_GMT_NEG_5",
-  "ETC_GMT_NEG_6",
-  "ETC_GMT_NEG_7",
-  "ETC_GMT_NEG_8",
-  "ETC_GMT_NEG_9",
-  "EUROPE_DUBLIN",
-  "EUROPE_LONDON",
-  "EUROPE_PARIS",
-  "EUROPE_STOCKHOLM",
-  "EUROPE_ZURICH",
-  "ISRAEL",
-  "MEXICO_GENERAL",
-  "MST7MDT",
-  "PACIFIC_AUCKLAND",
-  "US_CENTRAL",
-  "US_EASTERN",
-  "US_MOUNTAIN",
-  "US_PACIFIC",
-);
+  | "US_PACIFIC"
+  | (string & {});
+export const Timezone = S.String;
 export interface ScheduleConfiguration {
   timezone?: Timezone;
   schedule?: string;
@@ -4689,8 +4496,8 @@ export const ScheduleConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "ScheduleConfiguration",
 }) as any as S.Schema<ScheduleConfiguration>;
-export type FilterExpressionType = "INCLUDE" | "EXCLUDE";
-export const FilterExpressionType = S.Literal("INCLUDE", "EXCLUDE");
+export type FilterExpressionType = "INCLUDE" | "EXCLUDE" | (string & {});
+export const FilterExpressionType = S.String;
 export interface FilterExpression {
   type: FilterExpressionType;
   expression: string;
@@ -5049,10 +4856,10 @@ export const GetDomainInput = S.suspend(() =>
 ).annotations({
   identifier: "GetDomainInput",
 }) as any as S.Schema<GetDomainInput>;
-export type AuthType = "IAM_IDC" | "DISABLED";
-export const AuthType = S.Literal("IAM_IDC", "DISABLED");
-export type UserAssignment = "AUTOMATIC" | "MANUAL";
-export const UserAssignment = S.Literal("AUTOMATIC", "MANUAL");
+export type AuthType = "IAM_IDC" | "DISABLED" | (string & {});
+export const AuthType = S.String;
+export type UserAssignment = "AUTOMATIC" | "MANUAL" | (string & {});
+export const UserAssignment = S.String;
 export interface SingleSignOn {
   type?: AuthType;
   userAssignment?: UserAssignment;
@@ -5816,8 +5623,8 @@ export const GetRuleInput = S.suspend(() =>
     ),
   ),
 ).annotations({ identifier: "GetRuleInput" }) as any as S.Schema<GetRuleInput>;
-export type RuleScopeSelectionMode = "ALL" | "SPECIFIC";
-export const RuleScopeSelectionMode = S.Literal("ALL", "SPECIFIC");
+export type RuleScopeSelectionMode = "ALL" | "SPECIFIC" | (string & {});
+export const RuleScopeSelectionMode = S.String;
 export type RuleAssetTypeList = string[];
 export const RuleAssetTypeList = S.Array(S.String);
 export interface AssetTypesForRule {
@@ -6006,16 +5813,16 @@ export const ListRulesInput = S.suspend(() =>
 ).annotations({
   identifier: "ListRulesInput",
 }) as any as S.Schema<ListRulesInput>;
-export type AcceptRuleBehavior = "ALL" | "NONE";
-export const AcceptRuleBehavior = S.Literal("ALL", "NONE");
+export type AcceptRuleBehavior = "ALL" | "NONE" | (string & {});
+export const AcceptRuleBehavior = S.String;
 export type FilterIds = string[];
 export const FilterIds = S.Array(S.String);
 export interface Unit {}
 export const Unit = S.suspend(() => S.Struct({})).annotations({
   identifier: "Unit",
 }) as any as S.Schema<Unit>;
-export type RejectRuleBehavior = "ALL" | "NONE";
-export const RejectRuleBehavior = S.Literal("ALL", "NONE");
+export type RejectRuleBehavior = "ALL" | "NONE" | (string & {});
+export const RejectRuleBehavior = S.String;
 export type PredictionChoices = number[];
 export const PredictionChoices = S.Array(S.Number);
 export type FilterList = FilterClause[];
@@ -6027,16 +5834,11 @@ export type OverallDeploymentStatus =
   | "IN_PROGRESS"
   | "SUCCESSFUL"
   | "FAILED_VALIDATION"
-  | "FAILED_DEPLOYMENT";
-export const OverallDeploymentStatus = S.Literal(
-  "PENDING_DEPLOYMENT",
-  "IN_PROGRESS",
-  "SUCCESSFUL",
-  "FAILED_VALIDATION",
-  "FAILED_DEPLOYMENT",
-);
-export type MetadataGenerationTargetType = "ASSET";
-export const MetadataGenerationTargetType = S.Literal("ASSET");
+  | "FAILED_DEPLOYMENT"
+  | (string & {});
+export const OverallDeploymentStatus = S.String;
+export type MetadataGenerationTargetType = "ASSET" | (string & {});
+export const MetadataGenerationTargetType = S.String;
 export interface AcceptRule {
   rule?: AcceptRuleBehavior;
   threshold?: number;
@@ -6097,8 +5899,8 @@ export const AwsLocation = S.suspend(() =>
     iamConnectionId: S.optional(S.String),
   }),
 ).annotations({ identifier: "AwsLocation" }) as any as S.Schema<AwsLocation>;
-export type ListingStatus = "CREATING" | "ACTIVE" | "INACTIVE";
-export const ListingStatus = S.Literal("CREATING", "ACTIVE", "INACTIVE");
+export type ListingStatus = "CREATING" | "ACTIVE" | "INACTIVE" | (string & {});
+export const ListingStatus = S.String;
 export interface AssetTargetNameMap {
   assetId: string;
   targetName: string;
@@ -6129,37 +5931,24 @@ export type SubscriptionGrantOverallStatus =
   | "REVOKE_FAILED"
   | "GRANT_AND_REVOKE_FAILED"
   | "COMPLETED"
-  | "INACCESSIBLE";
-export const SubscriptionGrantOverallStatus = S.Literal(
-  "PENDING",
-  "IN_PROGRESS",
-  "GRANT_FAILED",
-  "REVOKE_FAILED",
-  "GRANT_AND_REVOKE_FAILED",
-  "COMPLETED",
-  "INACCESSIBLE",
-);
-export type ConfigurationStatus = "COMPLETED" | "FAILED";
-export const ConfigurationStatus = S.Literal("COMPLETED", "FAILED");
-export type JobType = "LINEAGE";
-export const JobType = S.Literal("LINEAGE");
-export type JobRunMode = "SCHEDULED" | "ON_DEMAND";
-export const JobRunMode = S.Literal("SCHEDULED", "ON_DEMAND");
+  | "INACCESSIBLE"
+  | (string & {});
+export const SubscriptionGrantOverallStatus = S.String;
+export type ConfigurationStatus = "COMPLETED" | "FAILED" | (string & {});
+export const ConfigurationStatus = S.String;
+export type JobType = "LINEAGE" | (string & {});
+export const JobType = S.String;
+export type JobRunMode = "SCHEDULED" | "ON_DEMAND" | (string & {});
+export const JobRunMode = S.String;
 export type ProjectStatus =
   | "ACTIVE"
   | "DELETING"
   | "DELETE_FAILED"
   | "UPDATING"
   | "UPDATE_FAILED"
-  | "MOVING";
-export const ProjectStatus = S.Literal(
-  "ACTIVE",
-  "DELETING",
-  "DELETE_FAILED",
-  "UPDATING",
-  "UPDATE_FAILED",
-  "MOVING",
-);
+  | "MOVING"
+  | (string & {});
+export const ProjectStatus = S.String;
 export interface SubscribedProject {
   id?: string;
   name?: string | redacted.Redacted<string>;
@@ -6259,8 +6048,8 @@ export const AssetScope = S.suspend(() =>
     errorMessage: S.optional(S.String),
   }),
 ).annotations({ identifier: "AssetScope" }) as any as S.Schema<AssetScope>;
-export type S3Permission = "READ" | "WRITE";
-export const S3Permission = S.Literal("READ", "WRITE");
+export type S3Permission = "READ" | "WRITE" | (string & {});
+export const S3Permission = S.String;
 export type S3Permissions = S3Permission[];
 export const S3Permissions = S.Array(S3Permission);
 export type Permissions = { s3: S3Permission[] };
@@ -6445,14 +6234,14 @@ export interface FailureCause {
 export const FailureCause = S.suspend(() =>
   S.Struct({ message: S.optional(S.String) }),
 ).annotations({ identifier: "FailureCause" }) as any as S.Schema<FailureCause>;
-export type DataProductStatus = "CREATED" | "CREATING" | "CREATE_FAILED";
-export const DataProductStatus = S.Literal(
-  "CREATED",
-  "CREATING",
-  "CREATE_FAILED",
-);
-export type DataSourceRunType = "PRIORITIZED" | "SCHEDULED";
-export const DataSourceRunType = S.Literal("PRIORITIZED", "SCHEDULED");
+export type DataProductStatus =
+  | "CREATED"
+  | "CREATING"
+  | "CREATE_FAILED"
+  | (string & {});
+export const DataProductStatus = S.String;
+export type DataSourceRunType = "PRIORITIZED" | "SCHEDULED" | (string & {});
+export const DataSourceRunType = S.String;
 export type DomainUnitIds = string[];
 export const DomainUnitIds = S.Array(S.String);
 export type GlobalParameterMap = { [key: string]: string | undefined };
@@ -7507,8 +7296,11 @@ export const Resource = S.suspend(() =>
 ).annotations({ identifier: "Resource" }) as any as S.Schema<Resource>;
 export type ResourceList = Resource[];
 export const ResourceList = S.Array(Resource);
-export type ConfigurableActionTypeAuthorization = "IAM" | "HTTPS";
-export const ConfigurableActionTypeAuthorization = S.Literal("IAM", "HTTPS");
+export type ConfigurableActionTypeAuthorization =
+  | "IAM"
+  | "HTTPS"
+  | (string & {});
+export const ConfigurableActionTypeAuthorization = S.String;
 export interface ConfigurableActionParameter {
   key?: string;
   value?: string;
@@ -7538,19 +7330,15 @@ export const ConfigurableEnvironmentAction = S.suspend(() =>
 }) as any as S.Schema<ConfigurableEnvironmentAction>;
 export type EnvironmentActionList = ConfigurableEnvironmentAction[];
 export const EnvironmentActionList = S.Array(ConfigurableEnvironmentAction);
-export type DeploymentType = "CREATE" | "UPDATE" | "DELETE";
-export const DeploymentType = S.Literal("CREATE", "UPDATE", "DELETE");
+export type DeploymentType = "CREATE" | "UPDATE" | "DELETE" | (string & {});
+export const DeploymentType = S.String;
 export type DeploymentStatus =
   | "IN_PROGRESS"
   | "SUCCESSFUL"
   | "FAILED"
-  | "PENDING_DEPLOYMENT";
-export const DeploymentStatus = S.Literal(
-  "IN_PROGRESS",
-  "SUCCESSFUL",
-  "FAILED",
-  "PENDING_DEPLOYMENT",
-);
+  | "PENDING_DEPLOYMENT"
+  | (string & {});
+export const DeploymentStatus = S.String;
 export interface EnvironmentError {
   code?: string;
   message: string;
@@ -8170,16 +7958,9 @@ export type DataSourceErrorType =
   | "RESOURCE_NOT_FOUND_EXCEPTION"
   | "SERVICE_QUOTA_EXCEEDED_EXCEPTION"
   | "THROTTLING_EXCEPTION"
-  | "VALIDATION_EXCEPTION";
-export const DataSourceErrorType = S.Literal(
-  "ACCESS_DENIED_EXCEPTION",
-  "CONFLICT_EXCEPTION",
-  "INTERNAL_SERVER_EXCEPTION",
-  "RESOURCE_NOT_FOUND_EXCEPTION",
-  "SERVICE_QUOTA_EXCEEDED_EXCEPTION",
-  "THROTTLING_EXCEPTION",
-  "VALIDATION_EXCEPTION",
-);
+  | "VALIDATION_EXCEPTION"
+  | (string & {});
+export const DataSourceErrorType = S.String;
 export interface DataSourceErrorMessage {
   errorType: DataSourceErrorType;
   errorDetail?: string;
@@ -8199,16 +7980,9 @@ export type SelfGrantStatus =
   | "REVOKE_IN_PROGRESS"
   | "GRANTED"
   | "GRANT_FAILED"
-  | "REVOKE_FAILED";
-export const SelfGrantStatus = S.Literal(
-  "GRANT_PENDING",
-  "REVOKE_PENDING",
-  "GRANT_IN_PROGRESS",
-  "REVOKE_IN_PROGRESS",
-  "GRANTED",
-  "GRANT_FAILED",
-  "REVOKE_FAILED",
-);
+  | "REVOKE_FAILED"
+  | (string & {});
+export const SelfGrantStatus = S.String;
 export interface SelfGrantStatusDetail {
   databaseName: string;
   schemaName?: string;
@@ -9155,18 +8929,11 @@ export type Protocol =
   | "JDBC"
   | "LIVY"
   | "ODBC"
-  | "PRISM";
-export const Protocol = S.Literal(
-  "ATHENA",
-  "GLUE_INTERACTIVE_SESSION",
-  "HTTPS",
-  "JDBC",
-  "LIVY",
-  "ODBC",
-  "PRISM",
-);
-export type ResourceTagSource = "PROJECT" | "PROJECT_PROFILE";
-export const ResourceTagSource = S.Literal("PROJECT", "PROJECT_PROFILE");
+  | "PRISM"
+  | (string & {});
+export const Protocol = S.String;
+export type ResourceTagSource = "PROJECT" | "PROJECT_PROFILE" | (string & {});
+export const ResourceTagSource = S.String;
 export interface AthenaPropertiesPatch {
   workgroupName?: string;
 }
@@ -9319,13 +9086,9 @@ export type LineageImportStatus =
   | "IN_PROGRESS"
   | "SUCCESS"
   | "FAILED"
-  | "PARTIALLY_SUCCEEDED";
-export const LineageImportStatus = S.Literal(
-  "IN_PROGRESS",
-  "SUCCESS",
-  "FAILED",
-  "PARTIALLY_SUCCEEDED",
-);
+  | "PARTIALLY_SUCCEEDED"
+  | (string & {});
+export const LineageImportStatus = S.String;
 export type RowFilterList = RowFilter[];
 export const RowFilterList = S.Array(
   S.suspend(() => RowFilter).annotations({ identifier: "RowFilter" }),
@@ -9343,24 +9106,11 @@ export type GlueConnectionType =
   | "SAPHANA"
   | "SQLSERVER"
   | "TERADATA"
-  | "VERTICA";
-export const GlueConnectionType = S.Literal(
-  "SNOWFLAKE",
-  "BIGQUERY",
-  "DOCUMENTDB",
-  "DYNAMODB",
-  "MYSQL",
-  "OPENSEARCH",
-  "ORACLE",
-  "POSTGRESQL",
-  "REDSHIFT",
-  "SAPHANA",
-  "SQLSERVER",
-  "TERADATA",
-  "VERTICA",
-);
-export type ComputeEnvironments = "SPARK" | "ATHENA" | "PYTHON";
-export const ComputeEnvironments = S.Literal("SPARK", "ATHENA", "PYTHON");
+  | "VERTICA"
+  | (string & {});
+export const GlueConnectionType = S.String;
+export type ComputeEnvironments = "SPARK" | "ATHENA" | "PYTHON" | (string & {});
+export const ComputeEnvironments = S.String;
 export type ComputeEnvironmentsList = ComputeEnvironments[];
 export const ComputeEnvironmentsList = S.Array(ComputeEnvironments);
 export interface AssetPermission {
@@ -9879,28 +9629,17 @@ export type ConnectionStatus =
   | "READY"
   | "UPDATING"
   | "UPDATE_FAILED"
-  | "DELETED";
-export const ConnectionStatus = S.Literal(
-  "CREATING",
-  "CREATE_FAILED",
-  "DELETING",
-  "DELETE_FAILED",
-  "READY",
-  "UPDATING",
-  "UPDATE_FAILED",
-  "DELETED",
-);
-export type AuthenticationType = "BASIC" | "OAUTH2" | "CUSTOM";
-export const AuthenticationType = S.Literal("BASIC", "OAUTH2", "CUSTOM");
+  | "DELETED"
+  | (string & {});
+export const ConnectionStatus = S.String;
+export type AuthenticationType = "BASIC" | "OAUTH2" | "CUSTOM" | (string & {});
+export const AuthenticationType = S.String;
 export type OAuth2GrantType =
   | "AUTHORIZATION_CODE"
   | "CLIENT_CREDENTIALS"
-  | "JWT_BEARER";
-export const OAuth2GrantType = S.Literal(
-  "AUTHORIZATION_CODE",
-  "CLIENT_CREDENTIALS",
-  "JWT_BEARER",
-);
+  | "JWT_BEARER"
+  | (string & {});
+export const OAuth2GrantType = S.String;
 export interface OAuth2ClientApplication {
   userManagedClientApplicationClientId?: string;
   aWSManagedClientApplicationReference?: string;
@@ -10074,8 +9813,8 @@ export const GluePropertiesOutput = S.suspend(() =>
 ).annotations({
   identifier: "GluePropertiesOutput",
 }) as any as S.Schema<GluePropertiesOutput>;
-export type HyperPodOrchestrator = "EKS" | "SLURM";
-export const HyperPodOrchestrator = S.Literal("EKS", "SLURM");
+export type HyperPodOrchestrator = "EKS" | "SLURM" | (string & {});
+export const HyperPodOrchestrator = S.String;
 export interface HyperPodPropertiesOutput {
   clusterName: string;
   clusterArn?: string;
@@ -10142,8 +9881,8 @@ export const RedshiftPropertiesOutput = S.suspend(() =>
 ).annotations({
   identifier: "RedshiftPropertiesOutput",
 }) as any as S.Schema<RedshiftPropertiesOutput>;
-export type GovernanceType = "AWS_MANAGED" | "USER_MANAGED";
-export const GovernanceType = S.Literal("AWS_MANAGED", "USER_MANAGED");
+export type GovernanceType = "AWS_MANAGED" | "USER_MANAGED" | (string & {});
+export const GovernanceType = S.String;
 export interface ManagedEndpointCredentials {
   id?: string;
   token?: string;
@@ -11125,14 +10864,9 @@ export type NotificationRole =
   | "PROJECT_CONTRIBUTOR"
   | "PROJECT_VIEWER"
   | "DOMAIN_OWNER"
-  | "PROJECT_SUBSCRIBER";
-export const NotificationRole = S.Literal(
-  "PROJECT_OWNER",
-  "PROJECT_CONTRIBUTOR",
-  "PROJECT_VIEWER",
-  "DOMAIN_OWNER",
-  "PROJECT_SUBSCRIBER",
-);
+  | "PROJECT_SUBSCRIBER"
+  | (string & {});
+export const NotificationRole = S.String;
 export type EnvironmentFailureReasonsList = EnvironmentError[];
 export const EnvironmentFailureReasonsList = S.Array(EnvironmentError);
 export interface AcceptPredictionsOutput {
@@ -12619,15 +12353,9 @@ export type OpenLineageRunState =
   | "COMPLETE"
   | "ABORT"
   | "FAIL"
-  | "OTHER";
-export const OpenLineageRunState = S.Literal(
-  "START",
-  "RUNNING",
-  "COMPLETE",
-  "ABORT",
-  "FAIL",
-  "OTHER",
-);
+  | "OTHER"
+  | (string & {});
+export const OpenLineageRunState = S.String;
 export interface NameIdentifier {
   name?: string;
   namespace?: string;
@@ -12639,8 +12367,8 @@ export const NameIdentifier = S.suspend(() =>
 }) as any as S.Schema<NameIdentifier>;
 export type NameIdentifiers = NameIdentifier[];
 export const NameIdentifiers = S.Array(NameIdentifier);
-export type NotificationResourceType = "PROJECT";
-export const NotificationResourceType = S.Literal("PROJECT");
+export type NotificationResourceType = "PROJECT" | (string & {});
+export const NotificationResourceType = S.String;
 export interface BasicAuthenticationCredentials {
   userName?: string;
   password?: string;

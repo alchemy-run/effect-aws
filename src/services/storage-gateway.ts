@@ -205,8 +205,8 @@ export type FileSystemAssociationSyncErrorCode = string;
 //# Schemas
 export type DiskIds = string[];
 export const DiskIds = S.Array(S.String);
-export type EncryptionType = "SseS3" | "SseKms" | "DsseKms";
-export const EncryptionType = S.Literal("SseS3", "SseKms", "DsseKms");
+export type EncryptionType = "SseS3" | "SseKms" | "DsseKms" | (string & {});
+export const EncryptionType = S.String;
 export type ObjectACL =
   | "private"
   | "public-read"
@@ -214,26 +214,26 @@ export type ObjectACL =
   | "authenticated-read"
   | "bucket-owner-read"
   | "bucket-owner-full-control"
-  | "aws-exec-read";
-export const ObjectACL = S.Literal(
-  "private",
-  "public-read",
-  "public-read-write",
-  "authenticated-read",
-  "bucket-owner-read",
-  "bucket-owner-full-control",
-  "aws-exec-read",
-);
+  | "aws-exec-read"
+  | (string & {});
+export const ObjectACL = S.String;
 export type FileShareClientList = string[];
 export const FileShareClientList = S.Array(S.String);
 export type UserList = string[];
 export const UserList = S.Array(S.String);
-export type CaseSensitivity = "ClientSpecified" | "CaseSensitive";
-export const CaseSensitivity = S.Literal("ClientSpecified", "CaseSensitive");
-export type TapeStorageClass = "DEEP_ARCHIVE" | "GLACIER";
-export const TapeStorageClass = S.Literal("DEEP_ARCHIVE", "GLACIER");
-export type RetentionLockType = "COMPLIANCE" | "GOVERNANCE" | "NONE";
-export const RetentionLockType = S.Literal("COMPLIANCE", "GOVERNANCE", "NONE");
+export type CaseSensitivity =
+  | "ClientSpecified"
+  | "CaseSensitive"
+  | (string & {});
+export const CaseSensitivity = S.String;
+export type TapeStorageClass = "DEEP_ARCHIVE" | "GLACIER" | (string & {});
+export const TapeStorageClass = S.String;
+export type RetentionLockType =
+  | "COMPLIANCE"
+  | "GOVERNANCE"
+  | "NONE"
+  | (string & {});
+export const RetentionLockType = S.String;
 export type VolumeARNs = string[];
 export const VolumeARNs = S.Array(S.String);
 export type FileSystemAssociationARNList = string[];
@@ -252,19 +252,15 @@ export type FolderList = string[];
 export const FolderList = S.Array(S.String);
 export type TagKeys = string[];
 export const TagKeys = S.Array(S.String);
-export type GatewayCapacity = "Small" | "Medium" | "Large";
-export const GatewayCapacity = S.Literal("Small", "Medium", "Large");
+export type GatewayCapacity = "Small" | "Medium" | "Large" | (string & {});
+export const GatewayCapacity = S.String;
 export type SMBSecurityStrategy =
   | "ClientSpecified"
   | "MandatorySigning"
   | "MandatoryEncryption"
-  | "MandatoryEncryptionNoAes128";
-export const SMBSecurityStrategy = S.Literal(
-  "ClientSpecified",
-  "MandatorySigning",
-  "MandatoryEncryption",
-  "MandatoryEncryptionNoAes128",
-);
+  | "MandatoryEncryptionNoAes128"
+  | (string & {});
+export const SMBSecurityStrategy = S.String;
 export interface AddCacheInput {
   GatewayARN: string;
   DiskIds: string[];
@@ -2290,20 +2286,20 @@ export const UpdateVTLDeviceTypeInput = S.suspend(() =>
 }) as any as S.Schema<UpdateVTLDeviceTypeInput>;
 export type IpAddressList = string[];
 export const IpAddressList = S.Array(S.String);
-export type CacheReportFilterName = "UploadState" | "UploadFailureReason";
-export const CacheReportFilterName = S.Literal(
-  "UploadState",
-  "UploadFailureReason",
-);
+export type CacheReportFilterName =
+  | "UploadState"
+  | "UploadFailureReason"
+  | (string & {});
+export const CacheReportFilterName = S.String;
 export type CacheReportFilterValues = string[];
 export const CacheReportFilterValues = S.Array(S.String);
 export type DaysOfWeek = number[];
 export const DaysOfWeek = S.Array(S.Number);
-export type AutomaticUpdatePolicy = "ALL_VERSIONS" | "EMERGENCY_VERSIONS_ONLY";
-export const AutomaticUpdatePolicy = S.Literal(
-  "ALL_VERSIONS",
-  "EMERGENCY_VERSIONS_ONLY",
-);
+export type AutomaticUpdatePolicy =
+  | "ALL_VERSIONS"
+  | "EMERGENCY_VERSIONS_ONLY"
+  | (string & {});
+export const AutomaticUpdatePolicy = S.String;
 export interface EndpointNetworkConfiguration {
   IpAddresses?: string[];
 }
@@ -2312,27 +2308,21 @@ export const EndpointNetworkConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "EndpointNetworkConfiguration",
 }) as any as S.Schema<EndpointNetworkConfiguration>;
-export type AvailabilityMonitorTestStatus = "COMPLETE" | "FAILED" | "PENDING";
-export const AvailabilityMonitorTestStatus = S.Literal(
-  "COMPLETE",
-  "FAILED",
-  "PENDING",
-);
+export type AvailabilityMonitorTestStatus =
+  | "COMPLETE"
+  | "FAILED"
+  | "PENDING"
+  | (string & {});
+export const AvailabilityMonitorTestStatus = S.String;
 export type HostEnvironment =
   | "VMWARE"
   | "HYPER-V"
   | "EC2"
   | "KVM"
   | "OTHER"
-  | "SNOWBALL";
-export const HostEnvironment = S.Literal(
-  "VMWARE",
-  "HYPER-V",
-  "EC2",
-  "KVM",
-  "OTHER",
-  "SNOWBALL",
-);
+  | "SNOWBALL"
+  | (string & {});
+export const HostEnvironment = S.String;
 export type SupportedGatewayCapacities = GatewayCapacity[];
 export const SupportedGatewayCapacities = S.Array(GatewayCapacity);
 export type ActiveDirectoryStatus =
@@ -2343,30 +2333,17 @@ export type ActiveDirectoryStatus =
   | "NETWORK_ERROR"
   | "TIMEOUT"
   | "UNKNOWN_ERROR"
-  | "INSUFFICIENT_PERMISSIONS";
-export const ActiveDirectoryStatus = S.Literal(
-  "ACCESS_DENIED",
-  "DETACHED",
-  "JOINED",
-  "JOINING",
-  "NETWORK_ERROR",
-  "TIMEOUT",
-  "UNKNOWN_ERROR",
-  "INSUFFICIENT_PERMISSIONS",
-);
+  | "INSUFFICIENT_PERMISSIONS"
+  | (string & {});
+export const ActiveDirectoryStatus = S.String;
 export type CacheReportStatus =
   | "IN_PROGRESS"
   | "COMPLETED"
   | "CANCELED"
   | "FAILED"
-  | "ERROR";
-export const CacheReportStatus = S.Literal(
-  "IN_PROGRESS",
-  "COMPLETED",
-  "CANCELED",
-  "FAILED",
-  "ERROR",
-);
+  | "ERROR"
+  | (string & {});
+export const CacheReportStatus = S.String;
 export interface CacheReportFilter {
   Name: CacheReportFilterName;
   Values: string[];
@@ -3415,12 +3392,12 @@ export const UpdateVTLDeviceTypeOutput = S.suspend(() =>
 ).annotations({
   identifier: "UpdateVTLDeviceTypeOutput",
 }) as any as S.Schema<UpdateVTLDeviceTypeOutput>;
-export type FileShareType = "NFS" | "SMB";
-export const FileShareType = S.Literal("NFS", "SMB");
+export type FileShareType = "NFS" | "SMB" | (string & {});
+export const FileShareType = S.String;
 export type DiskAttributeList = string[];
 export const DiskAttributeList = S.Array(S.String);
-export type PoolStatus = "ACTIVE" | "DELETED";
-export const PoolStatus = S.Literal("ACTIVE", "DELETED");
+export type PoolStatus = "ACTIVE" | "DELETED" | (string & {});
+export const PoolStatus = S.String;
 export interface ChapInfo {
   TargetARN?: string;
   SecretToAuthenticateInitiator?: string | redacted.Redacted<string>;
@@ -4302,71 +4279,9 @@ export type ErrorCode =
   | "VolumeIdInvalid"
   | "VolumeInUse"
   | "VolumeNotFound"
-  | "VolumeNotReady";
-export const ErrorCode = S.Literal(
-  "ActivationKeyExpired",
-  "ActivationKeyInvalid",
-  "ActivationKeyNotFound",
-  "GatewayInternalError",
-  "GatewayNotConnected",
-  "GatewayNotFound",
-  "GatewayProxyNetworkConnectionBusy",
-  "AuthenticationFailure",
-  "BandwidthThrottleScheduleNotFound",
-  "Blocked",
-  "CannotExportSnapshot",
-  "ChapCredentialNotFound",
-  "DiskAlreadyAllocated",
-  "DiskDoesNotExist",
-  "DiskSizeGreaterThanVolumeMaxSize",
-  "DiskSizeLessThanVolumeSize",
-  "DiskSizeNotGigAligned",
-  "DuplicateCertificateInfo",
-  "DuplicateSchedule",
-  "EndpointNotFound",
-  "IAMNotSupported",
-  "InitiatorInvalid",
-  "InitiatorNotFound",
-  "InternalError",
-  "InvalidGateway",
-  "InvalidEndpoint",
-  "InvalidParameters",
-  "InvalidSchedule",
-  "LocalStorageLimitExceeded",
-  "LunAlreadyAllocated ",
-  "LunInvalid",
-  "JoinDomainInProgress",
-  "MaximumContentLengthExceeded",
-  "MaximumTapeCartridgeCountExceeded",
-  "MaximumVolumeCountExceeded",
-  "NetworkConfigurationChanged",
-  "NoDisksAvailable",
-  "NotImplemented",
-  "NotSupported",
-  "OperationAborted",
-  "OutdatedGateway",
-  "ParametersNotImplemented",
-  "RegionInvalid",
-  "RequestTimeout",
-  "ServiceUnavailable",
-  "SnapshotDeleted",
-  "SnapshotIdInvalid",
-  "SnapshotInProgress",
-  "SnapshotNotFound",
-  "SnapshotScheduleNotFound",
-  "StagingAreaFull",
-  "StorageFailure",
-  "TapeCartridgeNotFound",
-  "TargetAlreadyExists",
-  "TargetInvalid",
-  "TargetNotFound",
-  "UnauthorizedOperation",
-  "VolumeAlreadyExists",
-  "VolumeIdInvalid",
-  "VolumeInUse",
-  "VolumeNotFound",
-  "VolumeNotReady",
-);
+  | "VolumeNotReady"
+  | (string & {});
+export const ErrorCode = S.String;
 export interface FileSystemAssociationStatusDetail {
   ErrorCode?: string;
 }

@@ -104,21 +104,21 @@ export type ErrorCause = string;
 export type ErrorDetails = string;
 
 //# Schemas
-export type PackageContentType = "application/zip";
-export const PackageContentType = S.Literal("application/zip");
-export type DescriptorContentType = "text/plain";
-export const DescriptorContentType = S.Literal("text/plain");
+export type PackageContentType = "application/zip" | (string & {});
+export const PackageContentType = S.String;
+export type DescriptorContentType = "text/plain" | (string & {});
+export const DescriptorContentType = S.String;
 export type TagKeys = string[];
 export const TagKeys = S.Array(S.String);
-export type OperationalState = "ENABLED" | "DISABLED";
-export const OperationalState = S.Literal("ENABLED", "DISABLED");
-export type UpdateSolNetworkType = "MODIFY_VNF_INFORMATION" | "UPDATE_NS";
-export const UpdateSolNetworkType = S.Literal(
-  "MODIFY_VNF_INFORMATION",
-  "UPDATE_NS",
-);
-export type NsdOperationalState = "ENABLED" | "DISABLED";
-export const NsdOperationalState = S.Literal("ENABLED", "DISABLED");
+export type OperationalState = "ENABLED" | "DISABLED" | (string & {});
+export const OperationalState = S.String;
+export type UpdateSolNetworkType =
+  | "MODIFY_VNF_INFORMATION"
+  | "UPDATE_NS"
+  | (string & {});
+export const UpdateSolNetworkType = S.String;
+export type NsdOperationalState = "ENABLED" | "DISABLED" | (string & {});
+export const NsdOperationalState = S.String;
 export interface CancelSolNetworkOperationInput {
   nsLcmOpOccId: string;
 }
@@ -842,19 +842,23 @@ export const ValidateSolNetworkPackageContentInput = S.suspend(() =>
 ).annotations({
   identifier: "ValidateSolNetworkPackageContentInput",
 }) as any as S.Schema<ValidateSolNetworkPackageContentInput>;
-export type NsdOnboardingState = "CREATED" | "ONBOARDED" | "ERROR";
-export const NsdOnboardingState = S.Literal("CREATED", "ONBOARDED", "ERROR");
-export type NsdUsageState = "IN_USE" | "NOT_IN_USE";
-export const NsdUsageState = S.Literal("IN_USE", "NOT_IN_USE");
-export type VnfInstantiationState = "INSTANTIATED" | "NOT_INSTANTIATED";
-export const VnfInstantiationState = S.Literal(
-  "INSTANTIATED",
-  "NOT_INSTANTIATED",
-);
-export type OnboardingState = "CREATED" | "ONBOARDED" | "ERROR";
-export const OnboardingState = S.Literal("CREATED", "ONBOARDED", "ERROR");
-export type UsageState = "IN_USE" | "NOT_IN_USE";
-export const UsageState = S.Literal("IN_USE", "NOT_IN_USE");
+export type NsdOnboardingState =
+  | "CREATED"
+  | "ONBOARDED"
+  | "ERROR"
+  | (string & {});
+export const NsdOnboardingState = S.String;
+export type NsdUsageState = "IN_USE" | "NOT_IN_USE" | (string & {});
+export const NsdUsageState = S.String;
+export type VnfInstantiationState =
+  | "INSTANTIATED"
+  | "NOT_INSTANTIATED"
+  | (string & {});
+export const VnfInstantiationState = S.String;
+export type OnboardingState = "CREATED" | "ONBOARDED" | "ERROR" | (string & {});
+export const OnboardingState = S.String;
+export type UsageState = "IN_USE" | "NOT_IN_USE" | (string & {});
+export const UsageState = S.String;
 export type NsState =
   | "INSTANTIATED"
   | "NOT_INSTANTIATED"
@@ -866,35 +870,23 @@ export type NsState =
   | "INSTANTIATE_IN_PROGRESS"
   | "INTENT_TO_UPDATE_IN_PROGRESS"
   | "UPDATE_IN_PROGRESS"
-  | "TERMINATE_IN_PROGRESS";
-export const NsState = S.Literal(
-  "INSTANTIATED",
-  "NOT_INSTANTIATED",
-  "UPDATED",
-  "IMPAIRED",
-  "UPDATE_FAILED",
-  "STOPPED",
-  "DELETED",
-  "INSTANTIATE_IN_PROGRESS",
-  "INTENT_TO_UPDATE_IN_PROGRESS",
-  "UPDATE_IN_PROGRESS",
-  "TERMINATE_IN_PROGRESS",
-);
+  | "TERMINATE_IN_PROGRESS"
+  | (string & {});
+export const NsState = S.String;
 export type NsLcmOperationState =
   | "PROCESSING"
   | "COMPLETED"
   | "FAILED"
   | "CANCELLING"
-  | "CANCELLED";
-export const NsLcmOperationState = S.Literal(
-  "PROCESSING",
-  "COMPLETED",
-  "FAILED",
-  "CANCELLING",
-  "CANCELLED",
-);
-export type LcmOperationType = "INSTANTIATE" | "UPDATE" | "TERMINATE";
-export const LcmOperationType = S.Literal("INSTANTIATE", "UPDATE", "TERMINATE");
+  | "CANCELLED"
+  | (string & {});
+export const NsLcmOperationState = S.String;
+export type LcmOperationType =
+  | "INSTANTIATE"
+  | "UPDATE"
+  | "TERMINATE"
+  | (string & {});
+export const LcmOperationType = S.String;
 export type VnfPkgIdList = string[];
 export const VnfPkgIdList = S.Array(S.String);
 export interface UpdateSolNetworkModify {
@@ -1098,8 +1090,8 @@ export const UpdateSolNetworkPackageOutput = S.suspend(() =>
 ).annotations({
   identifier: "UpdateSolNetworkPackageOutput",
 }) as any as S.Schema<UpdateSolNetworkPackageOutput>;
-export type VnfOperationalState = "STARTED" | "STOPPED";
-export const VnfOperationalState = S.Literal("STARTED", "STOPPED");
+export type VnfOperationalState = "STARTED" | "STOPPED" | (string & {});
+export const VnfOperationalState = S.String;
 export type TaskStatus =
   | "SCHEDULED"
   | "STARTED"
@@ -1107,16 +1099,9 @@ export type TaskStatus =
   | "COMPLETED"
   | "ERROR"
   | "SKIPPED"
-  | "CANCELLED";
-export const TaskStatus = S.Literal(
-  "SCHEDULED",
-  "STARTED",
-  "IN_PROGRESS",
-  "COMPLETED",
-  "ERROR",
-  "SKIPPED",
-  "CANCELLED",
-);
+  | "CANCELLED"
+  | (string & {});
+export const TaskStatus = S.String;
 export interface GetSolFunctionInstanceMetadata {
   createdAt: Date;
   lastModified: Date;

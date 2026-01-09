@@ -289,8 +289,14 @@ function deserializeValue(ast: AST.AST, value: unknown): unknown {
     const elTag = getIdentifier(elAST);
     const unwrapped = unwrapArrayValue(value, elTag, ["member", "item"]);
 
+    // Empty wrapper elements return undefined - treat as empty array
+    if (unwrapped == null || unwrapped === "") return undefined;
+
     const items = Array.isArray(unwrapped) ? unwrapped : [unwrapped];
-    return items.map((item) => deserializeValue(elAST, item));
+    // Filter out undefined items (from empty nested wrappers)
+    return items
+      .map((item) => deserializeValue(elAST, item))
+      .filter((item) => item !== undefined);
   }
 
   // Handle strings
@@ -350,8 +356,16 @@ function deserializeObject(
       const elTag = getIdentifier(elAST);
       const arrayValue = unwrapArrayValue(propValue, elTag, ["item", "member"]);
 
-      const items = Array.isArray(arrayValue) ? arrayValue : [arrayValue];
-      result[key] = items.map((item) => deserializeValue(elAST, item));
+      // Empty wrapper elements return undefined - treat as empty array
+      if (arrayValue == null || arrayValue === "") {
+        result[key] = [];
+      } else {
+        const items = Array.isArray(arrayValue) ? arrayValue : [arrayValue];
+        // Filter out undefined items (from empty nested wrappers)
+        result[key] = items
+          .map((item) => deserializeValue(elAST, item))
+          .filter((item) => item !== undefined);
+      }
     } else {
       result[key] = deserializeValue(prop.type, propValue);
     }

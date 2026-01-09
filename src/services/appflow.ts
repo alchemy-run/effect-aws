@@ -224,41 +224,17 @@ export type ConnectorType =
   | "CustomerProfiles"
   | "SAPOData"
   | "CustomConnector"
-  | "Pardot";
-export const ConnectorType = S.Literal(
-  "Salesforce",
-  "Singular",
-  "Slack",
-  "Redshift",
-  "S3",
-  "Marketo",
-  "Googleanalytics",
-  "Zendesk",
-  "Servicenow",
-  "Datadog",
-  "Trendmicro",
-  "Snowflake",
-  "Dynatrace",
-  "Infornexus",
-  "Amplitude",
-  "Veeva",
-  "EventBridge",
-  "LookoutMetrics",
-  "Upsolver",
-  "Honeycode",
-  "CustomerProfiles",
-  "SAPOData",
-  "CustomConnector",
-  "Pardot",
-);
-export type ConnectionMode = "Public" | "Private";
-export const ConnectionMode = S.Literal("Public", "Private");
+  | "Pardot"
+  | (string & {});
+export const ConnectorType = S.String;
+export type ConnectionMode = "Public" | "Private" | (string & {});
+export const ConnectionMode = S.String;
 export type ConnectorProfileNameList = string[];
 export const ConnectorProfileNameList = S.Array(S.String);
 export type ConnectorTypeList = ConnectorType[];
 export const ConnectorTypeList = S.Array(ConnectorType);
-export type ConnectorProvisioningType = "LAMBDA";
-export const ConnectorProvisioningType = S.Literal("LAMBDA");
+export type ConnectorProvisioningType = "LAMBDA" | (string & {});
+export const ConnectorProvisioningType = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export interface CancelFlowExecutionsRequest {
@@ -909,12 +885,9 @@ export const ProfilePropertiesMap = S.Record({
 export type OAuth2GrantType =
   | "CLIENT_CREDENTIALS"
   | "AUTHORIZATION_CODE"
-  | "JWT_BEARER";
-export const OAuth2GrantType = S.Literal(
-  "CLIENT_CREDENTIALS",
-  "AUTHORIZATION_CODE",
-  "JWT_BEARER",
-);
+  | "JWT_BEARER"
+  | (string & {});
+export const OAuth2GrantType = S.String;
 export type TokenUrlCustomProperties = { [key: string]: string | undefined };
 export const TokenUrlCustomProperties = S.Record({
   key: S.String,
@@ -1277,13 +1250,13 @@ export const SAPODataConnectorProfileCredentials = S.suspend(() =>
 ).annotations({
   identifier: "SAPODataConnectorProfileCredentials",
 }) as any as S.Schema<SAPODataConnectorProfileCredentials>;
-export type AuthenticationType = "OAUTH2" | "APIKEY" | "BASIC" | "CUSTOM";
-export const AuthenticationType = S.Literal(
-  "OAUTH2",
-  "APIKEY",
-  "BASIC",
-  "CUSTOM",
-);
+export type AuthenticationType =
+  | "OAUTH2"
+  | "APIKEY"
+  | "BASIC"
+  | "CUSTOM"
+  | (string & {});
+export const AuthenticationType = S.String;
 export interface ApiKeyCredentials {
   apiKey: string | redacted.Redacted<string>;
   apiSecretKey?: string | redacted.Redacted<string>;
@@ -1475,10 +1448,10 @@ export const UpdateConnectorRegistrationRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateConnectorRegistrationRequest",
 }) as any as S.Schema<UpdateConnectorRegistrationRequest>;
-export type TriggerType = "Scheduled" | "Event" | "OnDemand";
-export const TriggerType = S.Literal("Scheduled", "Event", "OnDemand");
-export type DataPullMode = "Incremental" | "Complete";
-export const DataPullMode = S.Literal("Incremental", "Complete");
+export type TriggerType = "Scheduled" | "Event" | "OnDemand" | (string & {});
+export const TriggerType = S.String;
+export type DataPullMode = "Incremental" | "Complete" | (string & {});
+export const DataPullMode = S.String;
 export interface ScheduledTriggerProperties {
   scheduleExpression: string;
   dataPullMode?: DataPullMode;
@@ -1577,8 +1550,8 @@ export const MarketoSourceProperties = S.suspend(() =>
 ).annotations({
   identifier: "MarketoSourceProperties",
 }) as any as S.Schema<MarketoSourceProperties>;
-export type S3InputFileType = "CSV" | "JSON";
-export const S3InputFileType = S.Literal("CSV", "JSON");
+export type S3InputFileType = "CSV" | "JSON" | (string & {});
+export const S3InputFileType = S.String;
 export interface S3InputFormatConfig {
   s3InputFileType?: S3InputFileType;
 }
@@ -1601,12 +1574,12 @@ export const S3SourceProperties = S.suspend(() =>
 ).annotations({
   identifier: "S3SourceProperties",
 }) as any as S.Schema<S3SourceProperties>;
-export type SalesforceDataTransferApi = "AUTOMATIC" | "BULKV2" | "REST_SYNC";
-export const SalesforceDataTransferApi = S.Literal(
-  "AUTOMATIC",
-  "BULKV2",
-  "REST_SYNC",
-);
+export type SalesforceDataTransferApi =
+  | "AUTOMATIC"
+  | "BULKV2"
+  | "REST_SYNC"
+  | (string & {});
+export const SalesforceDataTransferApi = S.String;
 export interface SalesforceSourceProperties {
   object: string;
   enableDynamicFieldUpdate?: boolean;
@@ -1716,8 +1689,12 @@ export const CustomProperties = S.Record({
   key: S.String,
   value: S.UndefinedOr(S.String),
 });
-export type DataTransferApiType = "SYNC" | "ASYNC" | "AUTOMATIC";
-export const DataTransferApiType = S.Literal("SYNC", "ASYNC", "AUTOMATIC");
+export type DataTransferApiType =
+  | "SYNC"
+  | "ASYNC"
+  | "AUTOMATIC"
+  | (string & {});
+export const DataTransferApiType = S.String;
 export interface DataTransferApi {
   Name?: string;
   Type?: DataTransferApiType;
@@ -1850,14 +1827,24 @@ export const RedshiftDestinationProperties = S.suspend(() =>
 ).annotations({
   identifier: "RedshiftDestinationProperties",
 }) as any as S.Schema<RedshiftDestinationProperties>;
-export type FileType = "CSV" | "JSON" | "PARQUET";
-export const FileType = S.Literal("CSV", "JSON", "PARQUET");
-export type PrefixType = "FILENAME" | "PATH" | "PATH_AND_FILENAME";
-export const PrefixType = S.Literal("FILENAME", "PATH", "PATH_AND_FILENAME");
-export type PrefixFormat = "YEAR" | "MONTH" | "DAY" | "HOUR" | "MINUTE";
-export const PrefixFormat = S.Literal("YEAR", "MONTH", "DAY", "HOUR", "MINUTE");
-export type PathPrefix = "EXECUTION_ID" | "SCHEMA_VERSION";
-export const PathPrefix = S.Literal("EXECUTION_ID", "SCHEMA_VERSION");
+export type FileType = "CSV" | "JSON" | "PARQUET" | (string & {});
+export const FileType = S.String;
+export type PrefixType =
+  | "FILENAME"
+  | "PATH"
+  | "PATH_AND_FILENAME"
+  | (string & {});
+export const PrefixType = S.String;
+export type PrefixFormat =
+  | "YEAR"
+  | "MONTH"
+  | "DAY"
+  | "HOUR"
+  | "MINUTE"
+  | (string & {});
+export const PrefixFormat = S.String;
+export type PathPrefix = "EXECUTION_ID" | "SCHEMA_VERSION" | (string & {});
+export const PathPrefix = S.String;
 export type PathPrefixHierarchy = PathPrefix[];
 export const PathPrefixHierarchy = S.Array(PathPrefix);
 export interface PrefixConfig {
@@ -1872,8 +1859,8 @@ export const PrefixConfig = S.suspend(() =>
     pathPrefixHierarchy: S.optional(PathPrefixHierarchy),
   }),
 ).annotations({ identifier: "PrefixConfig" }) as any as S.Schema<PrefixConfig>;
-export type AggregationType = "None" | "SingleFile";
-export const AggregationType = S.Literal("None", "SingleFile");
+export type AggregationType = "None" | "SingleFile" | (string & {});
+export const AggregationType = S.String;
 export interface AggregationConfig {
   aggregationType?: AggregationType;
   targetFileSize?: number;
@@ -1918,13 +1905,13 @@ export const S3DestinationProperties = S.suspend(() =>
 }) as any as S.Schema<S3DestinationProperties>;
 export type IdFieldNameList = string[];
 export const IdFieldNameList = S.Array(S.String);
-export type WriteOperationType = "INSERT" | "UPSERT" | "UPDATE" | "DELETE";
-export const WriteOperationType = S.Literal(
-  "INSERT",
-  "UPSERT",
-  "UPDATE",
-  "DELETE",
-);
+export type WriteOperationType =
+  | "INSERT"
+  | "UPSERT"
+  | "UPDATE"
+  | "DELETE"
+  | (string & {});
+export const WriteOperationType = S.String;
 export interface SalesforceDestinationProperties {
   object: string;
   idFieldNames?: string[];
@@ -2156,8 +2143,8 @@ export type DestinationFlowConfigList = DestinationFlowConfig[];
 export const DestinationFlowConfigList = S.Array(DestinationFlowConfig);
 export type SourceFields = string[];
 export const SourceFields = S.Array(S.String);
-export type AmplitudeConnectorOperator = "BETWEEN";
-export const AmplitudeConnectorOperator = S.Literal("BETWEEN");
+export type AmplitudeConnectorOperator = "BETWEEN" | (string & {});
+export const AmplitudeConnectorOperator = S.String;
 export type DatadogConnectorOperator =
   | "PROJECTION"
   | "BETWEEN"
@@ -2173,24 +2160,9 @@ export type DatadogConnectorOperator =
   | "VALIDATE_NON_ZERO"
   | "VALIDATE_NON_NEGATIVE"
   | "VALIDATE_NUMERIC"
-  | "NO_OP";
-export const DatadogConnectorOperator = S.Literal(
-  "PROJECTION",
-  "BETWEEN",
-  "EQUAL_TO",
-  "ADDITION",
-  "MULTIPLICATION",
-  "DIVISION",
-  "SUBTRACTION",
-  "MASK_ALL",
-  "MASK_FIRST_N",
-  "MASK_LAST_N",
-  "VALIDATE_NON_NULL",
-  "VALIDATE_NON_ZERO",
-  "VALIDATE_NON_NEGATIVE",
-  "VALIDATE_NUMERIC",
-  "NO_OP",
-);
+  | "NO_OP"
+  | (string & {});
+export const DatadogConnectorOperator = S.String;
 export type DynatraceConnectorOperator =
   | "PROJECTION"
   | "BETWEEN"
@@ -2206,29 +2178,14 @@ export type DynatraceConnectorOperator =
   | "VALIDATE_NON_ZERO"
   | "VALIDATE_NON_NEGATIVE"
   | "VALIDATE_NUMERIC"
-  | "NO_OP";
-export const DynatraceConnectorOperator = S.Literal(
-  "PROJECTION",
-  "BETWEEN",
-  "EQUAL_TO",
-  "ADDITION",
-  "MULTIPLICATION",
-  "DIVISION",
-  "SUBTRACTION",
-  "MASK_ALL",
-  "MASK_FIRST_N",
-  "MASK_LAST_N",
-  "VALIDATE_NON_NULL",
-  "VALIDATE_NON_ZERO",
-  "VALIDATE_NON_NEGATIVE",
-  "VALIDATE_NUMERIC",
-  "NO_OP",
-);
-export type GoogleAnalyticsConnectorOperator = "PROJECTION" | "BETWEEN";
-export const GoogleAnalyticsConnectorOperator = S.Literal(
-  "PROJECTION",
-  "BETWEEN",
-);
+  | "NO_OP"
+  | (string & {});
+export const DynatraceConnectorOperator = S.String;
+export type GoogleAnalyticsConnectorOperator =
+  | "PROJECTION"
+  | "BETWEEN"
+  | (string & {});
+export const GoogleAnalyticsConnectorOperator = S.String;
 export type InforNexusConnectorOperator =
   | "PROJECTION"
   | "BETWEEN"
@@ -2244,24 +2201,9 @@ export type InforNexusConnectorOperator =
   | "VALIDATE_NON_ZERO"
   | "VALIDATE_NON_NEGATIVE"
   | "VALIDATE_NUMERIC"
-  | "NO_OP";
-export const InforNexusConnectorOperator = S.Literal(
-  "PROJECTION",
-  "BETWEEN",
-  "EQUAL_TO",
-  "ADDITION",
-  "MULTIPLICATION",
-  "DIVISION",
-  "SUBTRACTION",
-  "MASK_ALL",
-  "MASK_FIRST_N",
-  "MASK_LAST_N",
-  "VALIDATE_NON_NULL",
-  "VALIDATE_NON_ZERO",
-  "VALIDATE_NON_NEGATIVE",
-  "VALIDATE_NUMERIC",
-  "NO_OP",
-);
+  | "NO_OP"
+  | (string & {});
+export const InforNexusConnectorOperator = S.String;
 export type MarketoConnectorOperator =
   | "PROJECTION"
   | "LESS_THAN"
@@ -2278,25 +2220,9 @@ export type MarketoConnectorOperator =
   | "VALIDATE_NON_ZERO"
   | "VALIDATE_NON_NEGATIVE"
   | "VALIDATE_NUMERIC"
-  | "NO_OP";
-export const MarketoConnectorOperator = S.Literal(
-  "PROJECTION",
-  "LESS_THAN",
-  "GREATER_THAN",
-  "BETWEEN",
-  "ADDITION",
-  "MULTIPLICATION",
-  "DIVISION",
-  "SUBTRACTION",
-  "MASK_ALL",
-  "MASK_FIRST_N",
-  "MASK_LAST_N",
-  "VALIDATE_NON_NULL",
-  "VALIDATE_NON_ZERO",
-  "VALIDATE_NON_NEGATIVE",
-  "VALIDATE_NUMERIC",
-  "NO_OP",
-);
+  | "NO_OP"
+  | (string & {});
+export const MarketoConnectorOperator = S.String;
 export type S3ConnectorOperator =
   | "PROJECTION"
   | "LESS_THAN"
@@ -2317,29 +2243,9 @@ export type S3ConnectorOperator =
   | "VALIDATE_NON_ZERO"
   | "VALIDATE_NON_NEGATIVE"
   | "VALIDATE_NUMERIC"
-  | "NO_OP";
-export const S3ConnectorOperator = S.Literal(
-  "PROJECTION",
-  "LESS_THAN",
-  "GREATER_THAN",
-  "BETWEEN",
-  "LESS_THAN_OR_EQUAL_TO",
-  "GREATER_THAN_OR_EQUAL_TO",
-  "EQUAL_TO",
-  "NOT_EQUAL_TO",
-  "ADDITION",
-  "MULTIPLICATION",
-  "DIVISION",
-  "SUBTRACTION",
-  "MASK_ALL",
-  "MASK_FIRST_N",
-  "MASK_LAST_N",
-  "VALIDATE_NON_NULL",
-  "VALIDATE_NON_ZERO",
-  "VALIDATE_NON_NEGATIVE",
-  "VALIDATE_NUMERIC",
-  "NO_OP",
-);
+  | "NO_OP"
+  | (string & {});
+export const S3ConnectorOperator = S.String;
 export type SalesforceConnectorOperator =
   | "PROJECTION"
   | "LESS_THAN"
@@ -2361,30 +2267,9 @@ export type SalesforceConnectorOperator =
   | "VALIDATE_NON_ZERO"
   | "VALIDATE_NON_NEGATIVE"
   | "VALIDATE_NUMERIC"
-  | "NO_OP";
-export const SalesforceConnectorOperator = S.Literal(
-  "PROJECTION",
-  "LESS_THAN",
-  "CONTAINS",
-  "GREATER_THAN",
-  "BETWEEN",
-  "LESS_THAN_OR_EQUAL_TO",
-  "GREATER_THAN_OR_EQUAL_TO",
-  "EQUAL_TO",
-  "NOT_EQUAL_TO",
-  "ADDITION",
-  "MULTIPLICATION",
-  "DIVISION",
-  "SUBTRACTION",
-  "MASK_ALL",
-  "MASK_FIRST_N",
-  "MASK_LAST_N",
-  "VALIDATE_NON_NULL",
-  "VALIDATE_NON_ZERO",
-  "VALIDATE_NON_NEGATIVE",
-  "VALIDATE_NUMERIC",
-  "NO_OP",
-);
+  | "NO_OP"
+  | (string & {});
+export const SalesforceConnectorOperator = S.String;
 export type ServiceNowConnectorOperator =
   | "PROJECTION"
   | "CONTAINS"
@@ -2406,30 +2291,9 @@ export type ServiceNowConnectorOperator =
   | "VALIDATE_NON_ZERO"
   | "VALIDATE_NON_NEGATIVE"
   | "VALIDATE_NUMERIC"
-  | "NO_OP";
-export const ServiceNowConnectorOperator = S.Literal(
-  "PROJECTION",
-  "CONTAINS",
-  "LESS_THAN",
-  "GREATER_THAN",
-  "BETWEEN",
-  "LESS_THAN_OR_EQUAL_TO",
-  "GREATER_THAN_OR_EQUAL_TO",
-  "EQUAL_TO",
-  "NOT_EQUAL_TO",
-  "ADDITION",
-  "MULTIPLICATION",
-  "DIVISION",
-  "SUBTRACTION",
-  "MASK_ALL",
-  "MASK_FIRST_N",
-  "MASK_LAST_N",
-  "VALIDATE_NON_NULL",
-  "VALIDATE_NON_ZERO",
-  "VALIDATE_NON_NEGATIVE",
-  "VALIDATE_NUMERIC",
-  "NO_OP",
-);
+  | "NO_OP"
+  | (string & {});
+export const ServiceNowConnectorOperator = S.String;
 export type SingularConnectorOperator =
   | "PROJECTION"
   | "EQUAL_TO"
@@ -2444,23 +2308,9 @@ export type SingularConnectorOperator =
   | "VALIDATE_NON_ZERO"
   | "VALIDATE_NON_NEGATIVE"
   | "VALIDATE_NUMERIC"
-  | "NO_OP";
-export const SingularConnectorOperator = S.Literal(
-  "PROJECTION",
-  "EQUAL_TO",
-  "ADDITION",
-  "MULTIPLICATION",
-  "DIVISION",
-  "SUBTRACTION",
-  "MASK_ALL",
-  "MASK_FIRST_N",
-  "MASK_LAST_N",
-  "VALIDATE_NON_NULL",
-  "VALIDATE_NON_ZERO",
-  "VALIDATE_NON_NEGATIVE",
-  "VALIDATE_NUMERIC",
-  "NO_OP",
-);
+  | "NO_OP"
+  | (string & {});
+export const SingularConnectorOperator = S.String;
 export type SlackConnectorOperator =
   | "PROJECTION"
   | "LESS_THAN"
@@ -2480,28 +2330,9 @@ export type SlackConnectorOperator =
   | "VALIDATE_NON_ZERO"
   | "VALIDATE_NON_NEGATIVE"
   | "VALIDATE_NUMERIC"
-  | "NO_OP";
-export const SlackConnectorOperator = S.Literal(
-  "PROJECTION",
-  "LESS_THAN",
-  "GREATER_THAN",
-  "BETWEEN",
-  "LESS_THAN_OR_EQUAL_TO",
-  "GREATER_THAN_OR_EQUAL_TO",
-  "EQUAL_TO",
-  "ADDITION",
-  "MULTIPLICATION",
-  "DIVISION",
-  "SUBTRACTION",
-  "MASK_ALL",
-  "MASK_FIRST_N",
-  "MASK_LAST_N",
-  "VALIDATE_NON_NULL",
-  "VALIDATE_NON_ZERO",
-  "VALIDATE_NON_NEGATIVE",
-  "VALIDATE_NUMERIC",
-  "NO_OP",
-);
+  | "NO_OP"
+  | (string & {});
+export const SlackConnectorOperator = S.String;
 export type TrendmicroConnectorOperator =
   | "PROJECTION"
   | "EQUAL_TO"
@@ -2516,23 +2347,9 @@ export type TrendmicroConnectorOperator =
   | "VALIDATE_NON_ZERO"
   | "VALIDATE_NON_NEGATIVE"
   | "VALIDATE_NUMERIC"
-  | "NO_OP";
-export const TrendmicroConnectorOperator = S.Literal(
-  "PROJECTION",
-  "EQUAL_TO",
-  "ADDITION",
-  "MULTIPLICATION",
-  "DIVISION",
-  "SUBTRACTION",
-  "MASK_ALL",
-  "MASK_FIRST_N",
-  "MASK_LAST_N",
-  "VALIDATE_NON_NULL",
-  "VALIDATE_NON_ZERO",
-  "VALIDATE_NON_NEGATIVE",
-  "VALIDATE_NUMERIC",
-  "NO_OP",
-);
+  | "NO_OP"
+  | (string & {});
+export const TrendmicroConnectorOperator = S.String;
 export type VeevaConnectorOperator =
   | "PROJECTION"
   | "LESS_THAN"
@@ -2554,30 +2371,9 @@ export type VeevaConnectorOperator =
   | "VALIDATE_NON_ZERO"
   | "VALIDATE_NON_NEGATIVE"
   | "VALIDATE_NUMERIC"
-  | "NO_OP";
-export const VeevaConnectorOperator = S.Literal(
-  "PROJECTION",
-  "LESS_THAN",
-  "GREATER_THAN",
-  "CONTAINS",
-  "BETWEEN",
-  "LESS_THAN_OR_EQUAL_TO",
-  "GREATER_THAN_OR_EQUAL_TO",
-  "EQUAL_TO",
-  "NOT_EQUAL_TO",
-  "ADDITION",
-  "MULTIPLICATION",
-  "DIVISION",
-  "SUBTRACTION",
-  "MASK_ALL",
-  "MASK_FIRST_N",
-  "MASK_LAST_N",
-  "VALIDATE_NON_NULL",
-  "VALIDATE_NON_ZERO",
-  "VALIDATE_NON_NEGATIVE",
-  "VALIDATE_NUMERIC",
-  "NO_OP",
-);
+  | "NO_OP"
+  | (string & {});
+export const VeevaConnectorOperator = S.String;
 export type ZendeskConnectorOperator =
   | "PROJECTION"
   | "GREATER_THAN"
@@ -2592,23 +2388,9 @@ export type ZendeskConnectorOperator =
   | "VALIDATE_NON_ZERO"
   | "VALIDATE_NON_NEGATIVE"
   | "VALIDATE_NUMERIC"
-  | "NO_OP";
-export const ZendeskConnectorOperator = S.Literal(
-  "PROJECTION",
-  "GREATER_THAN",
-  "ADDITION",
-  "MULTIPLICATION",
-  "DIVISION",
-  "SUBTRACTION",
-  "MASK_ALL",
-  "MASK_FIRST_N",
-  "MASK_LAST_N",
-  "VALIDATE_NON_NULL",
-  "VALIDATE_NON_ZERO",
-  "VALIDATE_NON_NEGATIVE",
-  "VALIDATE_NUMERIC",
-  "NO_OP",
-);
+  | "NO_OP"
+  | (string & {});
+export const ZendeskConnectorOperator = S.String;
 export type SAPODataConnectorOperator =
   | "PROJECTION"
   | "LESS_THAN"
@@ -2630,30 +2412,9 @@ export type SAPODataConnectorOperator =
   | "VALIDATE_NON_ZERO"
   | "VALIDATE_NON_NEGATIVE"
   | "VALIDATE_NUMERIC"
-  | "NO_OP";
-export const SAPODataConnectorOperator = S.Literal(
-  "PROJECTION",
-  "LESS_THAN",
-  "CONTAINS",
-  "GREATER_THAN",
-  "BETWEEN",
-  "LESS_THAN_OR_EQUAL_TO",
-  "GREATER_THAN_OR_EQUAL_TO",
-  "EQUAL_TO",
-  "NOT_EQUAL_TO",
-  "ADDITION",
-  "MULTIPLICATION",
-  "DIVISION",
-  "SUBTRACTION",
-  "MASK_ALL",
-  "MASK_FIRST_N",
-  "MASK_LAST_N",
-  "VALIDATE_NON_NULL",
-  "VALIDATE_NON_ZERO",
-  "VALIDATE_NON_NEGATIVE",
-  "VALIDATE_NUMERIC",
-  "NO_OP",
-);
+  | "NO_OP"
+  | (string & {});
+export const SAPODataConnectorOperator = S.String;
 export type Operator =
   | "PROJECTION"
   | "LESS_THAN"
@@ -2675,30 +2436,9 @@ export type Operator =
   | "VALIDATE_NON_ZERO"
   | "VALIDATE_NON_NEGATIVE"
   | "VALIDATE_NUMERIC"
-  | "NO_OP";
-export const Operator = S.Literal(
-  "PROJECTION",
-  "LESS_THAN",
-  "GREATER_THAN",
-  "CONTAINS",
-  "BETWEEN",
-  "LESS_THAN_OR_EQUAL_TO",
-  "GREATER_THAN_OR_EQUAL_TO",
-  "EQUAL_TO",
-  "NOT_EQUAL_TO",
-  "ADDITION",
-  "MULTIPLICATION",
-  "DIVISION",
-  "SUBTRACTION",
-  "MASK_ALL",
-  "MASK_FIRST_N",
-  "MASK_LAST_N",
-  "VALIDATE_NON_NULL",
-  "VALIDATE_NON_ZERO",
-  "VALIDATE_NON_NEGATIVE",
-  "VALIDATE_NUMERIC",
-  "NO_OP",
-);
+  | "NO_OP"
+  | (string & {});
+export const Operator = S.String;
 export type PardotConnectorOperator =
   | "PROJECTION"
   | "EQUAL_TO"
@@ -2713,23 +2453,9 @@ export type PardotConnectorOperator =
   | "VALIDATE_NON_NULL"
   | "VALIDATE_NON_ZERO"
   | "VALIDATE_NON_NEGATIVE"
-  | "VALIDATE_NUMERIC";
-export const PardotConnectorOperator = S.Literal(
-  "PROJECTION",
-  "EQUAL_TO",
-  "NO_OP",
-  "ADDITION",
-  "MULTIPLICATION",
-  "DIVISION",
-  "SUBTRACTION",
-  "MASK_ALL",
-  "MASK_FIRST_N",
-  "MASK_LAST_N",
-  "VALIDATE_NON_NULL",
-  "VALIDATE_NON_ZERO",
-  "VALIDATE_NON_NEGATIVE",
-  "VALIDATE_NUMERIC",
-);
+  | "VALIDATE_NUMERIC"
+  | (string & {});
+export const PardotConnectorOperator = S.String;
 export interface ConnectorOperator {
   Amplitude?: AmplitudeConnectorOperator;
   Datadog?: DatadogConnectorOperator;
@@ -2782,19 +2508,9 @@ export type TaskType =
   | "Passthrough"
   | "Truncate"
   | "Validate"
-  | "Partition";
-export const TaskType = S.Literal(
-  "Arithmetic",
-  "Filter",
-  "Map",
-  "Map_all",
-  "Mask",
-  "Merge",
-  "Passthrough",
-  "Truncate",
-  "Validate",
-  "Partition",
-);
+  | "Partition"
+  | (string & {});
+export const TaskType = S.String;
 export type OperatorPropertiesKeys =
   | "VALUE"
   | "VALUES"
@@ -2812,26 +2528,9 @@ export type OperatorPropertiesKeys =
   | "SUBFIELD_CATEGORY_MAP"
   | "EXCLUDE_SOURCE_FIELDS_LIST"
   | "INCLUDE_NEW_FIELDS"
-  | "ORDERED_PARTITION_KEYS_LIST";
-export const OperatorPropertiesKeys = S.Literal(
-  "VALUE",
-  "VALUES",
-  "DATA_TYPE",
-  "UPPER_BOUND",
-  "LOWER_BOUND",
-  "SOURCE_DATA_TYPE",
-  "DESTINATION_DATA_TYPE",
-  "VALIDATION_ACTION",
-  "MASK_VALUE",
-  "MASK_LENGTH",
-  "TRUNCATE_LENGTH",
-  "MATH_OPERATION_FIELDS_ORDER",
-  "CONCAT_FORMAT",
-  "SUBFIELD_CATEGORY_MAP",
-  "EXCLUDE_SOURCE_FIELDS_LIST",
-  "INCLUDE_NEW_FIELDS",
-  "ORDERED_PARTITION_KEYS_LIST",
-);
+  | "ORDERED_PARTITION_KEYS_LIST"
+  | (string & {});
+export const OperatorPropertiesKeys = S.String;
 export type TaskPropertiesMap = { [key in OperatorPropertiesKeys]?: string };
 export const TaskPropertiesMap = S.partial(
   S.Record({ key: OperatorPropertiesKeys, value: S.UndefinedOr(S.String) }),
@@ -2915,15 +2614,9 @@ export type FlowStatus =
   | "Deleted"
   | "Draft"
   | "Errored"
-  | "Suspended";
-export const FlowStatus = S.Literal(
-  "Active",
-  "Deprecated",
-  "Deleted",
-  "Draft",
-  "Errored",
-  "Suspended",
-);
+  | "Suspended"
+  | (string & {});
+export const FlowStatus = S.String;
 export interface CancelFlowExecutionsResponse {
   invalidExecutions?: string[];
 }
@@ -2934,8 +2627,8 @@ export const CancelFlowExecutionsResponse = S.suspend(() =>
 }) as any as S.Schema<CancelFlowExecutionsResponse>;
 export type ConnectorModeList = string[];
 export const ConnectorModeList = S.Array(S.String);
-export type SupportedDataTransferType = "RECORD" | "FILE";
-export const SupportedDataTransferType = S.Literal("RECORD", "FILE");
+export type SupportedDataTransferType = "RECORD" | "FILE" | (string & {});
+export const SupportedDataTransferType = S.String;
 export type SupportedDataTransferTypeList = SupportedDataTransferType[];
 export const SupportedDataTransferTypeList = S.Array(SupportedDataTransferType);
 export interface ConnectorDetail {
@@ -3048,15 +2741,9 @@ export type ScheduleFrequencyType =
   | "DAILY"
   | "WEEKLY"
   | "MONTHLY"
-  | "ONCE";
-export const ScheduleFrequencyType = S.Literal(
-  "BYMINUTE",
-  "HOURLY",
-  "DAILY",
-  "WEEKLY",
-  "MONTHLY",
-  "ONCE",
-);
+  | "ONCE"
+  | (string & {});
+export const ScheduleFrequencyType = S.String;
 export type SchedulingFrequencyTypeList = ScheduleFrequencyType[];
 export const SchedulingFrequencyTypeList = S.Array(ScheduleFrequencyType);
 export type TriggerTypeList = TriggerType[];
@@ -3084,30 +2771,9 @@ export type Operators =
   | "VALIDATE_NON_ZERO"
   | "VALIDATE_NON_NEGATIVE"
   | "VALIDATE_NUMERIC"
-  | "NO_OP";
-export const Operators = S.Literal(
-  "PROJECTION",
-  "LESS_THAN",
-  "GREATER_THAN",
-  "CONTAINS",
-  "BETWEEN",
-  "LESS_THAN_OR_EQUAL_TO",
-  "GREATER_THAN_OR_EQUAL_TO",
-  "EQUAL_TO",
-  "NOT_EQUAL_TO",
-  "ADDITION",
-  "MULTIPLICATION",
-  "DIVISION",
-  "SUBTRACTION",
-  "MASK_ALL",
-  "MASK_FIRST_N",
-  "MASK_LAST_N",
-  "VALIDATE_NON_NULL",
-  "VALIDATE_NON_ZERO",
-  "VALIDATE_NON_NEGATIVE",
-  "VALIDATE_NUMERIC",
-  "NO_OP",
-);
+  | "NO_OP"
+  | (string & {});
+export const Operators = S.String;
 export type SupportedOperatorList = Operators[];
 export const SupportedOperatorList = S.Array(Operators);
 export type SupportedWriteOperationList = WriteOperationType[];
@@ -3117,16 +2783,11 @@ export type ExecutionStatus =
   | "Successful"
   | "Error"
   | "CancelStarted"
-  | "Canceled";
-export const ExecutionStatus = S.Literal(
-  "InProgress",
-  "Successful",
-  "Error",
-  "CancelStarted",
-  "Canceled",
-);
-export type CatalogType = "GLUE";
-export const CatalogType = S.Literal("GLUE");
+  | "Canceled"
+  | (string & {});
+export const ExecutionStatus = S.String;
+export type CatalogType = "GLUE" | (string & {});
+export const CatalogType = S.String;
 export interface AmplitudeMetadata {}
 export const AmplitudeMetadata = S.suspend(() => S.Struct({})).annotations({
   identifier: "AmplitudeMetadata",
@@ -3311,8 +2972,8 @@ export type AuthCodeUrlList = string[];
 export const AuthCodeUrlList = S.Array(S.String);
 export type ConnectorSuppliedValueList = string[];
 export const ConnectorSuppliedValueList = S.Array(S.String);
-export type OAuth2CustomPropType = "TOKEN_URL" | "AUTH_URL";
-export const OAuth2CustomPropType = S.Literal("TOKEN_URL", "AUTH_URL");
+export type OAuth2CustomPropType = "TOKEN_URL" | "AUTH_URL" | (string & {});
+export const OAuth2CustomPropType = S.String;
 export interface OAuth2CustomParameter {
   key?: string;
   isRequired?: boolean;
@@ -3571,25 +3232,17 @@ export const FlowList = S.Array(FlowDefinition);
 export type PrivateConnectionProvisioningStatus =
   | "FAILED"
   | "PENDING"
-  | "CREATED";
-export const PrivateConnectionProvisioningStatus = S.Literal(
-  "FAILED",
-  "PENDING",
-  "CREATED",
-);
+  | "CREATED"
+  | (string & {});
+export const PrivateConnectionProvisioningStatus = S.String;
 export type PrivateConnectionProvisioningFailureCause =
   | "CONNECTOR_AUTHENTICATION"
   | "CONNECTOR_SERVER"
   | "INTERNAL_SERVER"
   | "ACCESS_DENIED"
-  | "VALIDATION";
-export const PrivateConnectionProvisioningFailureCause = S.Literal(
-  "CONNECTOR_AUTHENTICATION",
-  "CONNECTOR_SERVER",
-  "INTERNAL_SERVER",
-  "ACCESS_DENIED",
-  "VALIDATION",
-);
+  | "VALIDATION"
+  | (string & {});
+export const PrivateConnectionProvisioningFailureCause = S.String;
 export interface DescribeConnectorsResponse {
   connectorConfigurations?: {
     [key: string]: ConnectorConfiguration | undefined;

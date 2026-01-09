@@ -174,8 +174,8 @@ export const DescribeLoggingOptionsRequest = S.suspend(() =>
 ).annotations({
   identifier: "DescribeLoggingOptionsRequest",
 }) as any as S.Schema<DescribeLoggingOptionsRequest>;
-export type EvaluationMethod = "BATCH" | "SERIAL";
-export const EvaluationMethod = S.Literal("BATCH", "SERIAL");
+export type EvaluationMethod = "BATCH" | "SERIAL" | (string & {});
+export const EvaluationMethod = S.String;
 export type TagKeys = string[];
 export const TagKeys = S.Array(S.String);
 export interface DeleteAlarmModelRequest {
@@ -480,8 +480,8 @@ export const ListTagsForResourceRequest = S.suspend(() =>
 ).annotations({
   identifier: "ListTagsForResourceRequest",
 }) as any as S.Schema<ListTagsForResourceRequest>;
-export type LoggingLevel = "ERROR" | "INFO" | "DEBUG";
-export const LoggingLevel = S.Literal("ERROR", "INFO", "DEBUG");
+export type LoggingLevel = "ERROR" | "INFO" | "DEBUG" | (string & {});
+export const LoggingLevel = S.String;
 export interface DetectorDebugOption {
   detectorModelName: string;
   keyValue?: string;
@@ -541,8 +541,8 @@ export const SetVariableAction = S.suspend(() =>
 ).annotations({
   identifier: "SetVariableAction",
 }) as any as S.Schema<SetVariableAction>;
-export type PayloadType = "STRING" | "JSON";
-export const PayloadType = S.Literal("STRING", "JSON");
+export type PayloadType = "STRING" | "JSON" | (string & {});
+export const PayloadType = S.String;
 export interface Payload {
   contentExpression: string;
   type: PayloadType;
@@ -935,15 +935,9 @@ export type ComparisonOperator =
   | "LESS"
   | "LESS_OR_EQUAL"
   | "EQUAL"
-  | "NOT_EQUAL";
-export const ComparisonOperator = S.Literal(
-  "GREATER",
-  "GREATER_OR_EQUAL",
-  "LESS",
-  "LESS_OR_EQUAL",
-  "EQUAL",
-  "NOT_EQUAL",
-);
+  | "NOT_EQUAL"
+  | (string & {});
+export const ComparisonOperator = S.String;
 export interface SimpleRule {
   inputProperty: string;
   comparisonOperator: ComparisonOperator;
@@ -1226,15 +1220,11 @@ export type AlarmModelVersionStatus =
   | "ACTIVE"
   | "ACTIVATING"
   | "INACTIVE"
-  | "FAILED";
-export const AlarmModelVersionStatus = S.Literal(
-  "ACTIVE",
-  "ACTIVATING",
-  "INACTIVE",
-  "FAILED",
-);
-export type AnalysisStatus = "RUNNING" | "COMPLETE" | "FAILED";
-export const AnalysisStatus = S.Literal("RUNNING", "COMPLETE", "FAILED");
+  | "FAILED"
+  | (string & {});
+export const AlarmModelVersionStatus = S.String;
+export type AnalysisStatus = "RUNNING" | "COMPLETE" | "FAILED" | (string & {});
+export const AnalysisStatus = S.String;
 export interface DescribeAlarmModelResponse {
   creationTime?: Date;
   alarmModelArn?: string;
@@ -1315,8 +1305,8 @@ export const UpdateAlarmModelResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateAlarmModelResponse",
 }) as any as S.Schema<UpdateAlarmModelResponse>;
-export type AnalysisResultLevel = "INFO" | "WARNING" | "ERROR";
-export const AnalysisResultLevel = S.Literal("INFO", "WARNING", "ERROR");
+export type AnalysisResultLevel = "INFO" | "WARNING" | "ERROR" | (string & {});
+export const AnalysisResultLevel = S.String;
 export type DetectorModelVersionStatus =
   | "ACTIVE"
   | "ACTIVATING"
@@ -1324,16 +1314,9 @@ export type DetectorModelVersionStatus =
   | "DEPRECATED"
   | "DRAFT"
   | "PAUSED"
-  | "FAILED";
-export const DetectorModelVersionStatus = S.Literal(
-  "ACTIVE",
-  "ACTIVATING",
-  "INACTIVE",
-  "DEPRECATED",
-  "DRAFT",
-  "PAUSED",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const DetectorModelVersionStatus = S.String;
 export interface IotEventsInputIdentifier {
   inputName: string;
 }
@@ -1342,13 +1325,13 @@ export const IotEventsInputIdentifier = S.suspend(() =>
 ).annotations({
   identifier: "IotEventsInputIdentifier",
 }) as any as S.Schema<IotEventsInputIdentifier>;
-export type InputStatus = "CREATING" | "UPDATING" | "ACTIVE" | "DELETING";
-export const InputStatus = S.Literal(
-  "CREATING",
-  "UPDATING",
-  "ACTIVE",
-  "DELETING",
-);
+export type InputStatus =
+  | "CREATING"
+  | "UPDATING"
+  | "ACTIVE"
+  | "DELETING"
+  | (string & {});
+export const InputStatus = S.String;
 export interface DetectorModelConfiguration {
   detectorModelName?: string;
   detectorModelVersion?: string;

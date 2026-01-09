@@ -143,100 +143,90 @@ export type OutpostResolverStatusMessage = string;
 export type IpAddressCount = number;
 
 //# Schemas
-export type MutationProtectionStatus = "ENABLED" | "DISABLED";
-export const MutationProtectionStatus = S.Literal("ENABLED", "DISABLED");
-export type Action = "ALLOW" | "BLOCK" | "ALERT";
-export const Action = S.Literal("ALLOW", "BLOCK", "ALERT");
-export type BlockResponse = "NODATA" | "NXDOMAIN" | "OVERRIDE";
-export const BlockResponse = S.Literal("NODATA", "NXDOMAIN", "OVERRIDE");
-export type BlockOverrideDnsType = "CNAME";
-export const BlockOverrideDnsType = S.Literal("CNAME");
+export type MutationProtectionStatus = "ENABLED" | "DISABLED" | (string & {});
+export const MutationProtectionStatus = S.String;
+export type Action = "ALLOW" | "BLOCK" | "ALERT" | (string & {});
+export const Action = S.String;
+export type BlockResponse = "NODATA" | "NXDOMAIN" | "OVERRIDE" | (string & {});
+export const BlockResponse = S.String;
+export type BlockOverrideDnsType = "CNAME" | (string & {});
+export const BlockOverrideDnsType = S.String;
 export type FirewallDomainRedirectionAction =
   | "INSPECT_REDIRECTION_DOMAIN"
-  | "TRUST_REDIRECTION_DOMAIN";
-export const FirewallDomainRedirectionAction = S.Literal(
-  "INSPECT_REDIRECTION_DOMAIN",
-  "TRUST_REDIRECTION_DOMAIN",
-);
-export type DnsThreatProtection = "DGA" | "DNS_TUNNELING" | "DICTIONARY_DGA";
-export const DnsThreatProtection = S.Literal(
-  "DGA",
-  "DNS_TUNNELING",
-  "DICTIONARY_DGA",
-);
-export type ConfidenceThreshold = "LOW" | "MEDIUM" | "HIGH";
-export const ConfidenceThreshold = S.Literal("LOW", "MEDIUM", "HIGH");
+  | "TRUST_REDIRECTION_DOMAIN"
+  | (string & {});
+export const FirewallDomainRedirectionAction = S.String;
+export type DnsThreatProtection =
+  | "DGA"
+  | "DNS_TUNNELING"
+  | "DICTIONARY_DGA"
+  | (string & {});
+export const DnsThreatProtection = S.String;
+export type ConfidenceThreshold = "LOW" | "MEDIUM" | "HIGH" | (string & {});
+export const ConfidenceThreshold = S.String;
 export type SecurityGroupIds = string[];
 export const SecurityGroupIds = S.Array(S.String);
 export type ResolverEndpointDirection =
   | "INBOUND"
   | "OUTBOUND"
-  | "INBOUND_DELEGATION";
-export const ResolverEndpointDirection = S.Literal(
-  "INBOUND",
-  "OUTBOUND",
-  "INBOUND_DELEGATION",
-);
-export type ResolverEndpointType = "IPV6" | "IPV4" | "DUALSTACK";
-export const ResolverEndpointType = S.Literal("IPV6", "IPV4", "DUALSTACK");
-export type Protocol = "DoH" | "Do53" | "DoH-FIPS";
-export const Protocol = S.Literal("DoH", "Do53", "DoH-FIPS");
+  | "INBOUND_DELEGATION"
+  | (string & {});
+export const ResolverEndpointDirection = S.String;
+export type ResolverEndpointType =
+  | "IPV6"
+  | "IPV4"
+  | "DUALSTACK"
+  | (string & {});
+export const ResolverEndpointType = S.String;
+export type Protocol = "DoH" | "Do53" | "DoH-FIPS" | (string & {});
+export const Protocol = S.String;
 export type ProtocolList = Protocol[];
 export const ProtocolList = S.Array(Protocol);
-export type RuleTypeOption = "FORWARD" | "SYSTEM" | "RECURSIVE" | "DELEGATE";
-export const RuleTypeOption = S.Literal(
-  "FORWARD",
-  "SYSTEM",
-  "RECURSIVE",
-  "DELEGATE",
-);
-export type FirewallDomainImportOperation = "REPLACE";
-export const FirewallDomainImportOperation = S.Literal("REPLACE");
+export type RuleTypeOption =
+  | "FORWARD"
+  | "SYSTEM"
+  | "RECURSIVE"
+  | "DELEGATE"
+  | (string & {});
+export const RuleTypeOption = S.String;
+export type FirewallDomainImportOperation = "REPLACE" | (string & {});
+export const FirewallDomainImportOperation = S.String;
 export type FirewallRuleGroupAssociationStatus =
   | "COMPLETE"
   | "DELETING"
-  | "UPDATING";
-export const FirewallRuleGroupAssociationStatus = S.Literal(
-  "COMPLETE",
-  "DELETING",
-  "UPDATING",
-);
-export type SortOrder = "ASCENDING" | "DESCENDING";
-export const SortOrder = S.Literal("ASCENDING", "DESCENDING");
+  | "UPDATING"
+  | (string & {});
+export const FirewallRuleGroupAssociationStatus = S.String;
+export type SortOrder = "ASCENDING" | "DESCENDING" | (string & {});
+export const SortOrder = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export type FirewallFailOpenStatus =
   | "ENABLED"
   | "DISABLED"
-  | "USE_LOCAL_RESOURCE_SETTING";
-export const FirewallFailOpenStatus = S.Literal(
-  "ENABLED",
-  "DISABLED",
-  "USE_LOCAL_RESOURCE_SETTING",
-);
-export type FirewallDomainUpdateOperation = "ADD" | "REMOVE" | "REPLACE";
-export const FirewallDomainUpdateOperation = S.Literal(
-  "ADD",
-  "REMOVE",
-  "REPLACE",
-);
+  | "USE_LOCAL_RESOURCE_SETTING"
+  | (string & {});
+export const FirewallFailOpenStatus = S.String;
+export type FirewallDomainUpdateOperation =
+  | "ADD"
+  | "REMOVE"
+  | "REPLACE"
+  | (string & {});
+export const FirewallDomainUpdateOperation = S.String;
 export type FirewallDomains = string[];
 export const FirewallDomains = S.Array(S.String);
 export type AutodefinedReverseFlag =
   | "ENABLE"
   | "DISABLE"
-  | "USE_LOCAL_RESOURCE_SETTING";
-export const AutodefinedReverseFlag = S.Literal(
-  "ENABLE",
-  "DISABLE",
-  "USE_LOCAL_RESOURCE_SETTING",
-);
-export type Validation = "ENABLE" | "DISABLE" | "USE_LOCAL_RESOURCE_SETTING";
-export const Validation = S.Literal(
-  "ENABLE",
-  "DISABLE",
-  "USE_LOCAL_RESOURCE_SETTING",
-);
+  | "USE_LOCAL_RESOURCE_SETTING"
+  | (string & {});
+export const AutodefinedReverseFlag = S.String;
+export type Validation =
+  | "ENABLE"
+  | "DISABLE"
+  | "USE_LOCAL_RESOURCE_SETTING"
+  | (string & {});
+export const Validation = S.String;
 export interface AssociateResolverQueryLogConfigRequest {
   ResolverQueryLogConfigId: string;
   ResourceId: string;
@@ -1184,14 +1174,9 @@ export type FirewallDomainListStatus =
   | "COMPLETE_IMPORT_FAILED"
   | "IMPORTING"
   | "DELETING"
-  | "UPDATING";
-export const FirewallDomainListStatus = S.Literal(
-  "COMPLETE",
-  "COMPLETE_IMPORT_FAILED",
-  "IMPORTING",
-  "DELETING",
-  "UPDATING",
-);
+  | "UPDATING"
+  | (string & {});
+export const FirewallDomainListStatus = S.String;
 export interface FirewallConfig {
   Id?: string;
   ResourceId?: string;
@@ -1299,16 +1284,9 @@ export type OutpostResolverStatus =
   | "DELETING"
   | "ACTION_NEEDED"
   | "FAILED_CREATION"
-  | "FAILED_DELETION";
-export const OutpostResolverStatus = S.Literal(
-  "CREATING",
-  "OPERATIONAL",
-  "UPDATING",
-  "DELETING",
-  "ACTION_NEEDED",
-  "FAILED_CREATION",
-  "FAILED_DELETION",
-);
+  | "FAILED_DELETION"
+  | (string & {});
+export const OutpostResolverStatus = S.String;
 export interface OutpostResolver {
   Arn?: string;
   CreationTime?: string;
@@ -1347,15 +1325,9 @@ export type ResolverAutodefinedReverseStatus =
   | "DISABLING"
   | "DISABLED"
   | "UPDATING_TO_USE_LOCAL_RESOURCE_SETTING"
-  | "USE_LOCAL_RESOURCE_SETTING";
-export const ResolverAutodefinedReverseStatus = S.Literal(
-  "ENABLING",
-  "ENABLED",
-  "DISABLING",
-  "DISABLED",
-  "UPDATING_TO_USE_LOCAL_RESOURCE_SETTING",
-  "USE_LOCAL_RESOURCE_SETTING",
-);
+  | "USE_LOCAL_RESOURCE_SETTING"
+  | (string & {});
+export const ResolverAutodefinedReverseStatus = S.String;
 export interface ResolverConfig {
   Id?: string;
   ResourceId?: string;
@@ -1380,15 +1352,9 @@ export type ResolverEndpointStatus =
   | "UPDATING"
   | "AUTO_RECOVERING"
   | "ACTION_NEEDED"
-  | "DELETING";
-export const ResolverEndpointStatus = S.Literal(
-  "CREATING",
-  "OPERATIONAL",
-  "UPDATING",
-  "AUTO_RECOVERING",
-  "ACTION_NEEDED",
-  "DELETING",
-);
+  | "DELETING"
+  | (string & {});
+export const ResolverEndpointStatus = S.String;
 export interface ResolverEndpoint {
   Id?: string;
   CreatorRequestId?: string;
@@ -1440,25 +1406,16 @@ export type ResolverQueryLogConfigAssociationStatus =
   | "ACTIVE"
   | "ACTION_NEEDED"
   | "DELETING"
-  | "FAILED";
-export const ResolverQueryLogConfigAssociationStatus = S.Literal(
-  "CREATING",
-  "ACTIVE",
-  "ACTION_NEEDED",
-  "DELETING",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const ResolverQueryLogConfigAssociationStatus = S.String;
 export type ResolverQueryLogConfigAssociationError =
   | "NONE"
   | "DESTINATION_NOT_FOUND"
   | "ACCESS_DENIED"
-  | "INTERNAL_SERVICE_ERROR";
-export const ResolverQueryLogConfigAssociationError = S.Literal(
-  "NONE",
-  "DESTINATION_NOT_FOUND",
-  "ACCESS_DENIED",
-  "INTERNAL_SERVICE_ERROR",
-);
+  | "INTERNAL_SERVICE_ERROR"
+  | (string & {});
+export const ResolverQueryLogConfigAssociationError = S.String;
 export interface ResolverQueryLogConfigAssociation {
   Id?: string;
   ResolverQueryLogConfigId?: string;
@@ -1490,19 +1447,15 @@ export type ResolverQueryLogConfigStatus =
   | "CREATING"
   | "CREATED"
   | "DELETING"
-  | "FAILED";
-export const ResolverQueryLogConfigStatus = S.Literal(
-  "CREATING",
-  "CREATED",
-  "DELETING",
-  "FAILED",
-);
-export type ShareStatus = "NOT_SHARED" | "SHARED_WITH_ME" | "SHARED_BY_ME";
-export const ShareStatus = S.Literal(
-  "NOT_SHARED",
-  "SHARED_WITH_ME",
-  "SHARED_BY_ME",
-);
+  | "FAILED"
+  | (string & {});
+export const ResolverQueryLogConfigStatus = S.String;
+export type ShareStatus =
+  | "NOT_SHARED"
+  | "SHARED_WITH_ME"
+  | "SHARED_BY_ME"
+  | (string & {});
+export const ShareStatus = S.String;
 export interface ResolverQueryLogConfig {
   Id?: string;
   OwnerId?: string;
@@ -1538,14 +1491,9 @@ export type ResolverRuleAssociationStatus =
   | "COMPLETE"
   | "DELETING"
   | "FAILED"
-  | "OVERRIDDEN";
-export const ResolverRuleAssociationStatus = S.Literal(
-  "CREATING",
-  "COMPLETE",
-  "DELETING",
-  "FAILED",
-  "OVERRIDDEN",
-);
+  | "OVERRIDDEN"
+  | (string & {});
+export const ResolverRuleAssociationStatus = S.String;
 export interface ResolverRuleAssociation {
   Id?: string;
   ResolverRuleId?: string;
@@ -1572,13 +1520,9 @@ export type ResolverRuleStatus =
   | "COMPLETE"
   | "DELETING"
   | "UPDATING"
-  | "FAILED";
-export const ResolverRuleStatus = S.Literal(
-  "COMPLETE",
-  "DELETING",
-  "UPDATING",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const ResolverRuleStatus = S.String;
 export interface ResolverRule {
   Id?: string;
   CreatorRequestId?: string;
@@ -1781,12 +1725,12 @@ export const DeleteFirewallRuleResponse = S.suspend(() =>
 ).annotations({
   identifier: "DeleteFirewallRuleResponse",
 }) as any as S.Schema<DeleteFirewallRuleResponse>;
-export type FirewallRuleGroupStatus = "COMPLETE" | "DELETING" | "UPDATING";
-export const FirewallRuleGroupStatus = S.Literal(
-  "COMPLETE",
-  "DELETING",
-  "UPDATING",
-);
+export type FirewallRuleGroupStatus =
+  | "COMPLETE"
+  | "DELETING"
+  | "UPDATING"
+  | (string & {});
+export const FirewallRuleGroupStatus = S.String;
 export interface FirewallRuleGroup {
   Id?: string;
   Arn?: string;
@@ -2248,15 +2192,9 @@ export type ResolverDNSSECValidationStatus =
   | "DISABLING"
   | "DISABLED"
   | "UPDATING_TO_USE_LOCAL_RESOURCE_SETTING"
-  | "USE_LOCAL_RESOURCE_SETTING";
-export const ResolverDNSSECValidationStatus = S.Literal(
-  "ENABLING",
-  "ENABLED",
-  "DISABLING",
-  "DISABLED",
-  "UPDATING_TO_USE_LOCAL_RESOURCE_SETTING",
-  "USE_LOCAL_RESOURCE_SETTING",
-);
+  | "USE_LOCAL_RESOURCE_SETTING"
+  | (string & {});
+export const ResolverDNSSECValidationStatus = S.String;
 export interface ResolverDnssecConfig {
   Id?: string;
   OwnerId?: string;
@@ -2329,22 +2267,9 @@ export type IpAddressStatus =
   | "DELETE_FAILED_FAS_EXPIRED"
   | "UPDATING"
   | "UPDATE_FAILED"
-  | "ISOLATED";
-export const IpAddressStatus = S.Literal(
-  "CREATING",
-  "FAILED_CREATION",
-  "ATTACHING",
-  "ATTACHED",
-  "REMAP_DETACHING",
-  "REMAP_ATTACHING",
-  "DETACHING",
-  "FAILED_RESOURCE_GONE",
-  "DELETING",
-  "DELETE_FAILED_FAS_EXPIRED",
-  "UPDATING",
-  "UPDATE_FAILED",
-  "ISOLATED",
-);
+  | "ISOLATED"
+  | (string & {});
+export const IpAddressStatus = S.String;
 export interface FirewallDomainListMetadata {
   Id?: string;
   Arn?: string;

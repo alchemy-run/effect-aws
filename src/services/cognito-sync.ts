@@ -106,8 +106,8 @@ export type RecordValue = string;
 export type ExceptionMessage = string;
 
 //# Schemas
-export type Platform = "APNS" | "APNS_SANDBOX" | "GCM" | "ADM";
-export const Platform = S.Literal("APNS", "APNS_SANDBOX", "GCM", "ADM");
+export type Platform = "APNS" | "APNS_SANDBOX" | "GCM" | "ADM" | (string & {});
+export const Platform = S.String;
 export interface BulkPublishRequest {
   IdentityPoolId: string;
 }
@@ -485,21 +485,17 @@ export const UnsubscribeFromDatasetResponse = S.suspend(() =>
 }) as any as S.Schema<UnsubscribeFromDatasetResponse>;
 export type ApplicationArnList = string[];
 export const ApplicationArnList = S.Array(S.String);
-export type StreamingStatus = "ENABLED" | "DISABLED";
-export const StreamingStatus = S.Literal("ENABLED", "DISABLED");
-export type Operation = "replace" | "remove";
-export const Operation = S.Literal("replace", "remove");
+export type StreamingStatus = "ENABLED" | "DISABLED" | (string & {});
+export const StreamingStatus = S.String;
+export type Operation = "replace" | "remove" | (string & {});
+export const Operation = S.String;
 export type BulkPublishStatus =
   | "NOT_STARTED"
   | "IN_PROGRESS"
   | "FAILED"
-  | "SUCCEEDED";
-export const BulkPublishStatus = S.Literal(
-  "NOT_STARTED",
-  "IN_PROGRESS",
-  "FAILED",
-  "SUCCEEDED",
-);
+  | "SUCCEEDED"
+  | (string & {});
+export const BulkPublishStatus = S.String;
 export interface Dataset {
   IdentityId?: string;
   DatasetName?: string;

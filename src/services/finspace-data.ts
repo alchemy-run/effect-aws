@@ -134,10 +134,10 @@ export type ColumnDescription = string;
 export type ErrorMessage2 = string;
 
 //# Schemas
-export type ChangeType = "REPLACE" | "APPEND" | "MODIFY";
-export const ChangeType = S.Literal("REPLACE", "APPEND", "MODIFY");
-export type DatasetKind = "TABULAR" | "NON_TABULAR";
-export const DatasetKind = S.Literal("TABULAR", "NON_TABULAR");
+export type ChangeType = "REPLACE" | "APPEND" | "MODIFY" | (string & {});
+export const ChangeType = S.String;
+export type DatasetKind = "TABULAR" | "NON_TABULAR" | (string & {});
+export const DatasetKind = S.String;
 export type SortColumnList = string[];
 export const SortColumnList = S.Array(S.String);
 export type PartitionColumnList = string[];
@@ -149,24 +149,17 @@ export type ApplicationPermission =
   | "ManageAttributeSets"
   | "ViewAuditData"
   | "AccessNotebooks"
-  | "GetTemporaryCredentials";
-export const ApplicationPermission = S.Literal(
-  "CreateDataset",
-  "ManageClusters",
-  "ManageUsersAndGroups",
-  "ManageAttributeSets",
-  "ViewAuditData",
-  "AccessNotebooks",
-  "GetTemporaryCredentials",
-);
+  | "GetTemporaryCredentials"
+  | (string & {});
+export const ApplicationPermission = S.String;
 export type ApplicationPermissionList = ApplicationPermission[];
 export const ApplicationPermissionList = S.Array(ApplicationPermission);
-export type UserType = "SUPER_USER" | "APP_USER";
-export const UserType = S.Literal("SUPER_USER", "APP_USER");
-export type ApiAccess = "ENABLED" | "DISABLED";
-export const ApiAccess = S.Literal("ENABLED", "DISABLED");
-export type LocationType = "INGESTION" | "SAGEMAKER";
-export const LocationType = S.Literal("INGESTION", "SAGEMAKER");
+export type UserType = "SUPER_USER" | "APP_USER" | (string & {});
+export const UserType = S.String;
+export type ApiAccess = "ENABLED" | "DISABLED" | (string & {});
+export const ApiAccess = S.String;
+export type LocationType = "INGESTION" | "SAGEMAKER" | (string & {});
+export const LocationType = S.String;
 export interface AssociateUserToPermissionGroupRequest {
   permissionGroupId: string;
   userId: string;
@@ -767,21 +760,9 @@ export type ColumnDataType =
   | "DATE"
   | "DATETIME"
   | "BOOLEAN"
-  | "BINARY";
-export const ColumnDataType = S.Literal(
-  "STRING",
-  "CHAR",
-  "INTEGER",
-  "TINYINT",
-  "SMALLINT",
-  "BIGINT",
-  "FLOAT",
-  "DOUBLE",
-  "DATE",
-  "DATETIME",
-  "BOOLEAN",
-  "BINARY",
-);
+  | "BINARY"
+  | (string & {});
+export const ColumnDataType = S.String;
 export interface ColumnDefinition {
   dataType?: ColumnDataType;
   columnName?: string;
@@ -907,8 +888,8 @@ export const UpdateUserRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateUserRequest",
 }) as any as S.Schema<UpdateUserRequest>;
-export type ExportFileFormat = "PARQUET" | "DELIMITED_TEXT";
-export const ExportFileFormat = S.Literal("PARQUET", "DELIMITED_TEXT");
+export type ExportFileFormat = "PARQUET" | "DELIMITED_TEXT" | (string & {});
+export const ExportFileFormat = S.String;
 export interface DatasetOwnerInfo {
   name?: string;
   phoneNumber?: string;
@@ -928,21 +909,16 @@ export type IngestionStatus =
   | "FAILED"
   | "SUCCESS"
   | "RUNNING"
-  | "STOP_REQUESTED";
-export const IngestionStatus = S.Literal(
-  "PENDING",
-  "FAILED",
-  "SUCCESS",
-  "RUNNING",
-  "STOP_REQUESTED",
-);
-export type DatasetStatus = "PENDING" | "FAILED" | "SUCCESS" | "RUNNING";
-export const DatasetStatus = S.Literal(
-  "PENDING",
-  "FAILED",
-  "SUCCESS",
-  "RUNNING",
-);
+  | "STOP_REQUESTED"
+  | (string & {});
+export const IngestionStatus = S.String;
+export type DatasetStatus =
+  | "PENDING"
+  | "FAILED"
+  | "SUCCESS"
+  | "RUNNING"
+  | (string & {});
+export const DatasetStatus = S.String;
 export type DataViewStatus =
   | "RUNNING"
   | "STARTING"
@@ -951,28 +927,17 @@ export type DataViewStatus =
   | "TIMEOUT"
   | "SUCCESS"
   | "PENDING"
-  | "FAILED_CLEANUP_FAILED";
-export const DataViewStatus = S.Literal(
-  "RUNNING",
-  "STARTING",
-  "FAILED",
-  "CANCELLED",
-  "TIMEOUT",
-  "SUCCESS",
-  "PENDING",
-  "FAILED_CLEANUP_FAILED",
-);
-export type UserStatus = "CREATING" | "ENABLED" | "DISABLED";
-export const UserStatus = S.Literal("CREATING", "ENABLED", "DISABLED");
+  | "FAILED_CLEANUP_FAILED"
+  | (string & {});
+export const DataViewStatus = S.String;
+export type UserStatus = "CREATING" | "ENABLED" | "DISABLED" | (string & {});
+export const UserStatus = S.String;
 export type PermissionGroupMembershipStatus =
   | "ADDITION_IN_PROGRESS"
   | "ADDITION_SUCCESS"
-  | "REMOVAL_IN_PROGRESS";
-export const PermissionGroupMembershipStatus = S.Literal(
-  "ADDITION_IN_PROGRESS",
-  "ADDITION_SUCCESS",
-  "REMOVAL_IN_PROGRESS",
-);
+  | "REMOVAL_IN_PROGRESS"
+  | (string & {});
+export const PermissionGroupMembershipStatus = S.String;
 export interface PermissionGroup {
   permissionGroupId?: string;
   name?: string | redacted.Redacted<string>;
@@ -1247,17 +1212,9 @@ export type ErrorCategory =
   | "THROTTLING"
   | "INTERNAL_SERVICE_EXCEPTION"
   | "CANCELLED"
-  | "USER_RECOVERABLE";
-export const ErrorCategory = S.Literal(
-  "VALIDATION",
-  "SERVICE_QUOTA_EXCEEDED",
-  "ACCESS_DENIED",
-  "RESOURCE_NOT_FOUND",
-  "THROTTLING",
-  "INTERNAL_SERVICE_EXCEPTION",
-  "CANCELLED",
-  "USER_RECOVERABLE",
-);
+  | "USER_RECOVERABLE"
+  | (string & {});
+export const ErrorCategory = S.String;
 export interface PermissionGroupParams {
   permissionGroupId?: string;
   datasetPermissions?: ResourcePermission[];

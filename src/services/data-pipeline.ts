@@ -107,8 +107,8 @@ export type IdList = string[];
 export const IdList = S.Array(S.String);
 export type StringList = string[];
 export const StringList = S.Array(S.String);
-export type TaskStatus = "FINISHED" | "FAILED" | "FALSE";
-export const TaskStatus = S.Literal("FINISHED", "FAILED", "FALSE");
+export type TaskStatus = "FINISHED" | "FAILED" | "FALSE" | (string & {});
+export const TaskStatus = S.String;
 export interface Tag {
   key: string;
   value: string;
@@ -649,8 +649,14 @@ export const ReportTaskRunnerHeartbeatOutput = S.suspend(() =>
 }) as any as S.Schema<ReportTaskRunnerHeartbeatOutput>;
 export type ValidationMessages = string[];
 export const ValidationMessages = S.Array(S.String);
-export type OperatorType = "EQ" | "REF_EQ" | "LE" | "GE" | "BETWEEN";
-export const OperatorType = S.Literal("EQ", "REF_EQ", "LE", "GE", "BETWEEN");
+export type OperatorType =
+  | "EQ"
+  | "REF_EQ"
+  | "LE"
+  | "GE"
+  | "BETWEEN"
+  | (string & {});
+export const OperatorType = S.String;
 export interface PipelineDescription {
   pipelineId: string;
   name: string;

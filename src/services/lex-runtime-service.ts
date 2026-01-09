@@ -235,48 +235,37 @@ export type DialogActionType =
   | "ConfirmIntent"
   | "ElicitSlot"
   | "Close"
-  | "Delegate";
-export const DialogActionType = S.Literal(
-  "ElicitIntent",
-  "ConfirmIntent",
-  "ElicitSlot",
-  "Close",
-  "Delegate",
-);
-export type FulfillmentState = "Fulfilled" | "Failed" | "ReadyForFulfillment";
-export const FulfillmentState = S.Literal(
-  "Fulfilled",
-  "Failed",
-  "ReadyForFulfillment",
-);
+  | "Delegate"
+  | (string & {});
+export const DialogActionType = S.String;
+export type FulfillmentState =
+  | "Fulfilled"
+  | "Failed"
+  | "ReadyForFulfillment"
+  | (string & {});
+export const FulfillmentState = S.String;
 export type MessageFormatType =
   | "PlainText"
   | "CustomPayload"
   | "SSML"
-  | "Composite";
-export const MessageFormatType = S.Literal(
-  "PlainText",
-  "CustomPayload",
-  "SSML",
-  "Composite",
-);
-export type ConfirmationStatus = "None" | "Confirmed" | "Denied";
-export const ConfirmationStatus = S.Literal("None", "Confirmed", "Denied");
+  | "Composite"
+  | (string & {});
+export const MessageFormatType = S.String;
+export type ConfirmationStatus =
+  | "None"
+  | "Confirmed"
+  | "Denied"
+  | (string & {});
+export const ConfirmationStatus = S.String;
 export type DialogState =
   | "ElicitIntent"
   | "ConfirmIntent"
   | "ElicitSlot"
   | "Fulfilled"
   | "ReadyForFulfillment"
-  | "Failed";
-export const DialogState = S.Literal(
-  "ElicitIntent",
-  "ConfirmIntent",
-  "ElicitSlot",
-  "Fulfilled",
-  "ReadyForFulfillment",
-  "Failed",
-);
+  | "Failed"
+  | (string & {});
+export const DialogState = S.String;
 export type StringMap = { [key: string]: string | undefined };
 export const StringMap = S.Record({
   key: S.String,
@@ -585,8 +574,10 @@ export const PutSessionResponse = S.suspend(() =>
 ).annotations({
   identifier: "PutSessionResponse",
 }) as any as S.Schema<PutSessionResponse>;
-export type ContentType = "application/vnd.amazonaws.card.generic";
-export const ContentType = S.Literal("application/vnd.amazonaws.card.generic");
+export type ContentType =
+  | "application/vnd.amazonaws.card.generic"
+  | (string & {});
+export const ContentType = S.String;
 export interface IntentConfidence {
   score?: number;
 }

@@ -83,10 +83,10 @@ export type ExceptionMessage = string;
 //# Schemas
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
-export type DataType = "float32";
-export const DataType = S.Literal("float32");
-export type DistanceMetric = "euclidean" | "cosine";
-export const DistanceMetric = S.Literal("euclidean", "cosine");
+export type DataType = "float32" | (string & {});
+export const DataType = S.String;
+export type DistanceMetric = "euclidean" | "cosine" | (string & {});
+export const DistanceMetric = S.String;
 export type DeleteVectorsInputList = string[];
 export const DeleteVectorsInputList = S.Array(S.String);
 export type GetVectorsInputList = string[];
@@ -451,8 +451,8 @@ export const ListVectorsInput = S.suspend(() =>
 ).annotations({
   identifier: "ListVectorsInput",
 }) as any as S.Schema<ListVectorsInput>;
-export type SseType = "AES256" | "aws:kms";
-export const SseType = S.Literal("AES256", "aws:kms");
+export type SseType = "AES256" | "aws:kms" | (string & {});
+export const SseType = S.String;
 export type NonFilterableMetadataKeys = string[];
 export const NonFilterableMetadataKeys = S.Array(S.String);
 export type Float32VectorData = number[];

@@ -558,8 +558,8 @@ export const ExportThemesRequest = S.suspend(() =>
 ).annotations({
   identifier: "ExportThemesRequest",
 }) as any as S.Schema<ExportThemesRequest>;
-export type FormActionType = "create" | "update";
-export const FormActionType = S.Literal("create", "update");
+export type FormActionType = "create" | "update" | (string & {});
+export const FormActionType = S.String;
 export interface ExchangeCodeForTokenRequestBody {
   code: string | redacted.Redacted<string>;
   redirectUri: string;
@@ -764,8 +764,8 @@ export const ComponentBindingProperties = S.Record({
   key: S.String,
   value: S.UndefinedOr(ComponentBindingPropertiesValue),
 });
-export type SortDirection = "ASC" | "DESC";
-export const SortDirection = S.Literal("ASC", "DESC");
+export type SortDirection = "ASC" | "DESC" | (string & {});
+export const SortDirection = S.String;
 export interface SortProperty {
   field: string;
   direction: SortDirection;
@@ -980,8 +980,8 @@ export const FormDataTypeConfig = S.suspend(() =>
 ).annotations({
   identifier: "FormDataTypeConfig",
 }) as any as S.Schema<FormDataTypeConfig>;
-export type FixedPosition = "first";
-export const FixedPosition = S.Literal("first");
+export type FixedPosition = "first" | (string & {});
+export const FixedPosition = S.String;
 export type FieldPosition =
   | { fixed: FixedPosition; rightOf?: never; below?: never }
   | { fixed?: never; rightOf: string; below?: never }
@@ -1071,8 +1071,12 @@ export const ValueMappings = S.suspend(() =>
 ).annotations({
   identifier: "ValueMappings",
 }) as any as S.Schema<ValueMappings>;
-export type StorageAccessLevel = "public" | "protected" | "private";
-export const StorageAccessLevel = S.Literal("public", "protected", "private");
+export type StorageAccessLevel =
+  | "public"
+  | "protected"
+  | "private"
+  | (string & {});
+export const StorageAccessLevel = S.String;
 export type StrValues = string[];
 export const StrValues = S.Array(S.String);
 export interface FileUploaderFieldConfig {
@@ -1222,8 +1226,12 @@ export const SectionalElementMap = S.Record({
   key: S.String,
   value: S.UndefinedOr(SectionalElement),
 });
-export type FormButtonsPosition = "top" | "bottom" | "top_and_bottom";
-export const FormButtonsPosition = S.Literal("top", "bottom", "top_and_bottom");
+export type FormButtonsPosition =
+  | "top"
+  | "bottom"
+  | "top_and_bottom"
+  | (string & {});
+export const FormButtonsPosition = S.String;
 export interface FormButton {
   excluded?: boolean;
   children?: string;
@@ -1358,8 +1366,8 @@ export const Theme = S.suspend(() =>
 ).annotations({ identifier: "Theme" }) as any as S.Schema<Theme>;
 export type ThemeList = Theme[];
 export const ThemeList = S.Array(Theme);
-export type CodegenJobGenericDataSourceType = "DataStore";
-export const CodegenJobGenericDataSourceType = S.Literal("DataStore");
+export type CodegenJobGenericDataSourceType = "DataStore" | (string & {});
+export const CodegenJobGenericDataSourceType = S.String;
 export interface ExchangeCodeForTokenRequest {
   provider: string;
   request: ExchangeCodeForTokenRequestBody;
@@ -1619,8 +1627,12 @@ export const CodegenFeatureFlags = S.suspend(() =>
 ).annotations({
   identifier: "CodegenFeatureFlags",
 }) as any as S.Schema<CodegenFeatureFlags>;
-export type CodegenJobStatus = "in_progress" | "failed" | "succeeded";
-export const CodegenJobStatus = S.Literal("in_progress", "failed", "succeeded");
+export type CodegenJobStatus =
+  | "in_progress"
+  | "failed"
+  | "succeeded"
+  | (string & {});
+export const CodegenJobStatus = S.String;
 export interface ComponentChild {
   componentType: string;
   name: string;
@@ -1645,12 +1657,12 @@ export const ComponentChild = S.suspend(() =>
 ).annotations({
   identifier: "ComponentChild",
 }) as any as S.Schema<ComponentChild>;
-export type JSModule = "es2020" | "esnext";
-export const JSModule = S.Literal("es2020", "esnext");
-export type JSTarget = "es2015" | "es2020";
-export const JSTarget = S.Literal("es2015", "es2020");
-export type JSScript = "jsx" | "tsx" | "js";
-export const JSScript = S.Literal("jsx", "tsx", "js");
+export type JSModule = "es2020" | "esnext" | (string & {});
+export const JSModule = S.String;
+export type JSTarget = "es2015" | "es2020" | (string & {});
+export const JSTarget = S.String;
+export type JSScript = "jsx" | "tsx" | "js" | (string & {});
+export const JSScript = S.String;
 export type ComponentPropertyList = ComponentProperty[];
 export const ComponentPropertyList = S.Array(
   S.suspend(
@@ -2071,32 +2083,15 @@ export type CodegenGenericDataFieldDataType =
   | "AWSPhone"
   | "Enum"
   | "Model"
-  | "NonModel";
-export const CodegenGenericDataFieldDataType = S.Literal(
-  "ID",
-  "String",
-  "Int",
-  "Float",
-  "AWSDate",
-  "AWSTime",
-  "AWSDateTime",
-  "AWSTimestamp",
-  "AWSEmail",
-  "AWSURL",
-  "AWSIPAddress",
-  "Boolean",
-  "AWSJSON",
-  "AWSPhone",
-  "Enum",
-  "Model",
-  "NonModel",
-);
-export type GenericDataRelationshipType = "HAS_MANY" | "HAS_ONE" | "BELONGS_TO";
-export const GenericDataRelationshipType = S.Literal(
-  "HAS_MANY",
-  "HAS_ONE",
-  "BELONGS_TO",
-);
+  | "NonModel"
+  | (string & {});
+export const CodegenGenericDataFieldDataType = S.String;
+export type GenericDataRelationshipType =
+  | "HAS_MANY"
+  | "HAS_ONE"
+  | "BELONGS_TO"
+  | (string & {});
+export const GenericDataRelationshipType = S.String;
 export type RelatedModelFieldsList = string[];
 export const RelatedModelFieldsList = S.Array(S.String);
 export type AssociatedFieldsList = string[];

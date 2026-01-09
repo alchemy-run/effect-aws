@@ -211,8 +211,8 @@ export type DashboardNames = string[];
 export const DashboardNames = S.Array(S.String);
 export type InsightRuleNames = string[];
 export const InsightRuleNames = S.Array(S.String);
-export type AlarmType = "CompositeAlarm" | "MetricAlarm";
-export const AlarmType = S.Literal("CompositeAlarm", "MetricAlarm");
+export type AlarmType = "CompositeAlarm" | "MetricAlarm" | (string & {});
+export const AlarmType = S.String;
 export type AlarmTypes = AlarmType[];
 export const AlarmTypes = S.Array(AlarmType);
 export type HistoryItemType =
@@ -220,31 +220,24 @@ export type HistoryItemType =
   | "StateUpdate"
   | "Action"
   | "AlarmContributorStateUpdate"
-  | "AlarmContributorAction";
-export const HistoryItemType = S.Literal(
-  "ConfigurationUpdate",
-  "StateUpdate",
-  "Action",
-  "AlarmContributorStateUpdate",
-  "AlarmContributorAction",
-);
-export type ScanBy = "TimestampDescending" | "TimestampAscending";
-export const ScanBy = S.Literal("TimestampDescending", "TimestampAscending");
-export type StateValue = "OK" | "ALARM" | "INSUFFICIENT_DATA";
-export const StateValue = S.Literal("OK", "ALARM", "INSUFFICIENT_DATA");
+  | "AlarmContributorAction"
+  | (string & {});
+export const HistoryItemType = S.String;
+export type ScanBy =
+  | "TimestampDescending"
+  | "TimestampAscending"
+  | (string & {});
+export const ScanBy = S.String;
+export type StateValue = "OK" | "ALARM" | "INSUFFICIENT_DATA" | (string & {});
+export const StateValue = S.String;
 export type Statistic =
   | "SampleCount"
   | "Average"
   | "Sum"
   | "Minimum"
-  | "Maximum";
-export const Statistic = S.Literal(
-  "SampleCount",
-  "Average",
-  "Sum",
-  "Minimum",
-  "Maximum",
-);
+  | "Maximum"
+  | (string & {});
+export const Statistic = S.String;
 export type StandardUnit =
   | "Seconds"
   | "Microseconds"
@@ -272,38 +265,14 @@ export type StandardUnit =
   | "Gigabits/Second"
   | "Terabits/Second"
   | "Count/Second"
-  | "None";
-export const StandardUnit = S.Literal(
-  "Seconds",
-  "Microseconds",
-  "Milliseconds",
-  "Bytes",
-  "Kilobytes",
-  "Megabytes",
-  "Gigabytes",
-  "Terabytes",
-  "Bits",
-  "Kilobits",
-  "Megabits",
-  "Gigabits",
-  "Terabits",
-  "Percent",
-  "Count",
-  "Bytes/Second",
-  "Kilobytes/Second",
-  "Megabytes/Second",
-  "Gigabytes/Second",
-  "Terabytes/Second",
-  "Bits/Second",
-  "Kilobits/Second",
-  "Megabits/Second",
-  "Gigabits/Second",
-  "Terabits/Second",
-  "Count/Second",
-  "None",
-);
-export type AnomalyDetectorType = "SINGLE_METRIC" | "METRIC_MATH";
-export const AnomalyDetectorType = S.Literal("SINGLE_METRIC", "METRIC_MATH");
+  | "None"
+  | (string & {});
+export const StandardUnit = S.String;
+export type AnomalyDetectorType =
+  | "SINGLE_METRIC"
+  | "METRIC_MATH"
+  | (string & {});
+export const AnomalyDetectorType = S.String;
 export type AnomalyDetectorTypes = AnomalyDetectorType[];
 export const AnomalyDetectorTypes = S.Array(AnomalyDetectorType);
 export type InsightRuleMetricList = string[];
@@ -312,8 +281,8 @@ export type Statistics = Statistic[];
 export const Statistics = S.Array(Statistic);
 export type ExtendedStatistics = string[];
 export const ExtendedStatistics = S.Array(S.String);
-export type RecentlyActive = "PT3H";
-export const RecentlyActive = S.Literal("PT3H");
+export type RecentlyActive = "PT3H" | (string & {});
+export const RecentlyActive = S.String;
 export type ResourceList = string[];
 export const ResourceList = S.Array(S.String);
 export type ComparisonOperator =
@@ -323,25 +292,15 @@ export type ComparisonOperator =
   | "LessThanOrEqualToThreshold"
   | "LessThanLowerOrGreaterThanUpperThreshold"
   | "LessThanLowerThreshold"
-  | "GreaterThanUpperThreshold";
-export const ComparisonOperator = S.Literal(
-  "GreaterThanOrEqualToThreshold",
-  "GreaterThanThreshold",
-  "LessThanThreshold",
-  "LessThanOrEqualToThreshold",
-  "LessThanLowerOrGreaterThanUpperThreshold",
-  "LessThanLowerThreshold",
-  "GreaterThanUpperThreshold",
-);
+  | "GreaterThanUpperThreshold"
+  | (string & {});
+export const ComparisonOperator = S.String;
 export type MetricStreamOutputFormat =
   | "json"
   | "opentelemetry0.7"
-  | "opentelemetry1.0";
-export const MetricStreamOutputFormat = S.Literal(
-  "json",
-  "opentelemetry0.7",
-  "opentelemetry1.0",
-);
+  | "opentelemetry1.0"
+  | (string & {});
+export const MetricStreamOutputFormat = S.String;
 export type MetricStreamNames = string[];
 export const MetricStreamNames = S.Array(S.String);
 export type TagKeyList = string[];
@@ -1363,8 +1322,8 @@ export const DeleteAnomalyDetectorOutput = S.suspend(() =>
 ).annotations({
   identifier: "DeleteAnomalyDetectorOutput",
 }) as any as S.Schema<DeleteAnomalyDetectorOutput>;
-export type EvaluationState = "PARTIAL_DATA";
-export const EvaluationState = S.Literal("PARTIAL_DATA");
+export type EvaluationState = "PARTIAL_DATA" | (string & {});
+export const EvaluationState = S.String;
 export interface MetricAlarm {
   AlarmName?: string;
   AlarmArn?: string;
@@ -1694,21 +1653,18 @@ export const PutManagedInsightRulesInput = S.suspend(() =>
 ).annotations({
   identifier: "PutManagedInsightRulesInput",
 }) as any as S.Schema<PutManagedInsightRulesInput>;
-export type ActionsSuppressedBy = "WaitPeriod" | "ExtensionPeriod" | "Alarm";
-export const ActionsSuppressedBy = S.Literal(
-  "WaitPeriod",
-  "ExtensionPeriod",
-  "Alarm",
-);
+export type ActionsSuppressedBy =
+  | "WaitPeriod"
+  | "ExtensionPeriod"
+  | "Alarm"
+  | (string & {});
+export const ActionsSuppressedBy = S.String;
 export type AnomalyDetectorStateValue =
   | "PENDING_TRAINING"
   | "TRAINED_INSUFFICIENT_DATA"
-  | "TRAINED";
-export const AnomalyDetectorStateValue = S.Literal(
-  "PENDING_TRAINING",
-  "TRAINED_INSUFFICIENT_DATA",
-  "TRAINED",
-);
+  | "TRAINED"
+  | (string & {});
+export const AnomalyDetectorStateValue = S.String;
 export type InsightRuleContributorKeys = string[];
 export const InsightRuleContributorKeys = S.Array(S.String);
 export interface Range {
@@ -2521,13 +2477,9 @@ export type StatusCode =
   | "Complete"
   | "InternalError"
   | "PartialData"
-  | "Forbidden";
-export const StatusCode = S.Literal(
-  "Complete",
-  "InternalError",
-  "PartialData",
-  "Forbidden",
-);
+  | "Forbidden"
+  | (string & {});
+export const StatusCode = S.String;
 export interface MessageData {
   Code?: string;
   Value?: string;

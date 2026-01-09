@@ -89,31 +89,28 @@ export type __timestampIso8601 = Date;
 export type __integerMin5Max100 = number;
 
 //# Schemas
-export type AuthenticationStrategy = "SIMPLE" | "LDAP" | "CONFIG_MANAGED";
-export const AuthenticationStrategy = S.Literal(
-  "SIMPLE",
-  "LDAP",
-  "CONFIG_MANAGED",
-);
+export type AuthenticationStrategy =
+  | "SIMPLE"
+  | "LDAP"
+  | "CONFIG_MANAGED"
+  | (string & {});
+export const AuthenticationStrategy = S.String;
 export type DeploymentMode =
   | "SINGLE_INSTANCE"
   | "ACTIVE_STANDBY_MULTI_AZ"
-  | "CLUSTER_MULTI_AZ";
-export const DeploymentMode = S.Literal(
-  "SINGLE_INSTANCE",
-  "ACTIVE_STANDBY_MULTI_AZ",
-  "CLUSTER_MULTI_AZ",
-);
-export type EngineType = "ACTIVEMQ" | "RABBITMQ";
-export const EngineType = S.Literal("ACTIVEMQ", "RABBITMQ");
+  | "CLUSTER_MULTI_AZ"
+  | (string & {});
+export const DeploymentMode = S.String;
+export type EngineType = "ACTIVEMQ" | "RABBITMQ" | (string & {});
+export const EngineType = S.String;
 export type __listOf__string = string[];
 export const __listOf__string = S.Array(S.String);
-export type BrokerStorageType = "EBS" | "EFS";
-export const BrokerStorageType = S.Literal("EBS", "EFS");
-export type DataReplicationMode = "NONE" | "CRDR";
-export const DataReplicationMode = S.Literal("NONE", "CRDR");
-export type PromoteMode = "SWITCHOVER" | "FAILOVER";
-export const PromoteMode = S.Literal("SWITCHOVER", "FAILOVER");
+export type BrokerStorageType = "EBS" | "EFS" | (string & {});
+export const BrokerStorageType = S.String;
+export type DataReplicationMode = "NONE" | "CRDR" | (string & {});
+export const DataReplicationMode = S.String;
+export type PromoteMode = "SWITCHOVER" | "FAILOVER" | (string & {});
+export const PromoteMode = S.String;
 export type __mapOf__string = { [key: string]: string | undefined };
 export const __mapOf__string = S.Record({
   key: S.String,
@@ -652,16 +649,9 @@ export type DayOfWeek =
   | "THURSDAY"
   | "FRIDAY"
   | "SATURDAY"
-  | "SUNDAY";
-export const DayOfWeek = S.Literal(
-  "MONDAY",
-  "TUESDAY",
-  "WEDNESDAY",
-  "THURSDAY",
-  "FRIDAY",
-  "SATURDAY",
-  "SUNDAY",
-);
+  | "SUNDAY"
+  | (string & {});
+export const DayOfWeek = S.String;
 export interface WeeklyStartTime {
   DayOfWeek?: DayOfWeek;
   TimeOfDay?: string;
@@ -824,16 +814,9 @@ export type BrokerState =
   | "RUNNING"
   | "REBOOT_IN_PROGRESS"
   | "CRITICAL_ACTION_REQUIRED"
-  | "REPLICA";
-export const BrokerState = S.Literal(
-  "CREATION_IN_PROGRESS",
-  "CREATION_FAILED",
-  "DELETION_IN_PROGRESS",
-  "RUNNING",
-  "REBOOT_IN_PROGRESS",
-  "CRITICAL_ACTION_REQUIRED",
-  "REPLICA",
-);
+  | "REPLICA"
+  | (string & {});
+export const BrokerState = S.String;
 export interface ConfigurationRevision {
   Created?: Date;
   Description?: string;
@@ -1040,8 +1023,8 @@ export const ListTagsResponse = S.suspend(() =>
 ).annotations({
   identifier: "ListTagsResponse",
 }) as any as S.Schema<ListTagsResponse>;
-export type ChangeType = "CREATE" | "UPDATE" | "DELETE";
-export const ChangeType = S.Literal("CREATE", "UPDATE", "DELETE");
+export type ChangeType = "CREATE" | "UPDATE" | "DELETE" | (string & {});
+export const ChangeType = S.String;
 export interface UserSummary {
   PendingChange?: ChangeType;
   Username?: string;
@@ -1231,12 +1214,9 @@ export const __listOfDeploymentMode = S.Array(DeploymentMode);
 export type SanitizationWarningReason =
   | "DISALLOWED_ELEMENT_REMOVED"
   | "DISALLOWED_ATTRIBUTE_REMOVED"
-  | "INVALID_ATTRIBUTE_VALUE_REMOVED";
-export const SanitizationWarningReason = S.Literal(
-  "DISALLOWED_ELEMENT_REMOVED",
-  "DISALLOWED_ATTRIBUTE_REMOVED",
-  "INVALID_ATTRIBUTE_VALUE_REMOVED",
-);
+  | "INVALID_ATTRIBUTE_VALUE_REMOVED"
+  | (string & {});
+export const SanitizationWarningReason = S.String;
 export interface ActionRequired {
   ActionRequiredCode?: string;
   ActionRequiredInfo?: string;

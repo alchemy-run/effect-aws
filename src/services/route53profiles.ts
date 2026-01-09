@@ -438,15 +438,9 @@ export type ProfileStatus =
   | "UPDATING"
   | "CREATING"
   | "DELETED"
-  | "FAILED";
-export const ProfileStatus = S.Literal(
-  "COMPLETE",
-  "DELETING",
-  "UPDATING",
-  "CREATING",
-  "DELETED",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const ProfileStatus = S.String;
 export interface ProfileAssociation {
   Id?: string;
   Name?: string;
@@ -541,12 +535,12 @@ export const AssociateProfileRequest = S.suspend(() =>
 ).annotations({
   identifier: "AssociateProfileRequest",
 }) as any as S.Schema<AssociateProfileRequest>;
-export type ShareStatus = "NOT_SHARED" | "SHARED_WITH_ME" | "SHARED_BY_ME";
-export const ShareStatus = S.Literal(
-  "NOT_SHARED",
-  "SHARED_WITH_ME",
-  "SHARED_BY_ME",
-);
+export type ShareStatus =
+  | "NOT_SHARED"
+  | "SHARED_WITH_ME"
+  | "SHARED_BY_ME"
+  | (string & {});
+export const ShareStatus = S.String;
 export interface Profile {
   Id?: string;
   Arn?: string;

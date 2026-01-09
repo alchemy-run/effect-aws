@@ -233,22 +233,15 @@ export type OrganizationResourceCollectionType =
   | "AWS_CLOUD_FORMATION"
   | "AWS_SERVICE"
   | "AWS_ACCOUNT"
-  | "AWS_TAGS";
-export const OrganizationResourceCollectionType = S.Literal(
-  "AWS_CLOUD_FORMATION",
-  "AWS_SERVICE",
-  "AWS_ACCOUNT",
-  "AWS_TAGS",
-);
+  | "AWS_TAGS"
+  | (string & {});
+export const OrganizationResourceCollectionType = S.String;
 export type ResourceCollectionType =
   | "AWS_CLOUD_FORMATION"
   | "AWS_SERVICE"
-  | "AWS_TAGS";
-export const ResourceCollectionType = S.Literal(
-  "AWS_CLOUD_FORMATION",
-  "AWS_SERVICE",
-  "AWS_TAGS",
-);
+  | "AWS_TAGS"
+  | (string & {});
+export const ResourceCollectionType = S.String;
 export type ListInsightsAccountIdList = string[];
 export const ListInsightsAccountIdList = S.Array(S.String);
 export type ListInsightsOrganizationalUnitIdList = string[];
@@ -264,26 +257,15 @@ export type Locale =
   | "KO_KR"
   | "PT_BR"
   | "ZH_CN"
-  | "ZH_TW";
-export const Locale = S.Literal(
-  "DE_DE",
-  "EN_US",
-  "EN_GB",
-  "ES_ES",
-  "FR_FR",
-  "IT_IT",
-  "JA_JP",
-  "KO_KR",
-  "PT_BR",
-  "ZH_CN",
-  "ZH_TW",
-);
-export type InsightType = "REACTIVE" | "PROACTIVE";
-export const InsightType = S.Literal("REACTIVE", "PROACTIVE");
+  | "ZH_TW"
+  | (string & {});
+export const Locale = S.String;
+export type InsightType = "REACTIVE" | "PROACTIVE" | (string & {});
+export const InsightType = S.String;
 export type SearchInsightsAccountIdList = string[];
 export const SearchInsightsAccountIdList = S.Array(S.String);
-export type UpdateResourceCollectionAction = "ADD" | "REMOVE";
-export const UpdateResourceCollectionAction = S.Literal("ADD", "REMOVE");
+export type UpdateResourceCollectionAction = "ADD" | "REMOVE" | (string & {});
+export const UpdateResourceCollectionAction = S.String;
 export interface DeleteInsightRequest {
   Id: string;
 }
@@ -728,8 +710,8 @@ export const RemoveNotificationChannelResponse = S.suspend(() =>
 ).annotations({
   identifier: "RemoveNotificationChannelResponse",
 }) as any as S.Schema<RemoveNotificationChannelResponse>;
-export type EventSourceOptInStatus = "ENABLED" | "DISABLED";
-export const EventSourceOptInStatus = S.Literal("ENABLED", "DISABLED");
+export type EventSourceOptInStatus = "ENABLED" | "DISABLED" | (string & {});
+export const EventSourceOptInStatus = S.String;
 export interface AmazonCodeGuruProfilerIntegration {
   Status?: EventSourceOptInStatus;
 }
@@ -776,21 +758,19 @@ export type EventClass =
   | "DEPLOYMENT"
   | "SECURITY_CHANGE"
   | "CONFIG_CHANGE"
-  | "SCHEMA_CHANGE";
-export const EventClass = S.Literal(
-  "INFRASTRUCTURE",
-  "DEPLOYMENT",
-  "SECURITY_CHANGE",
-  "CONFIG_CHANGE",
-  "SCHEMA_CHANGE",
-);
-export type EventDataSource = "AWS_CLOUD_TRAIL" | "AWS_CODE_DEPLOY";
-export const EventDataSource = S.Literal("AWS_CLOUD_TRAIL", "AWS_CODE_DEPLOY");
-export type ResourcePermission = "FULL_PERMISSION" | "MISSING_PERMISSION";
-export const ResourcePermission = S.Literal(
-  "FULL_PERMISSION",
-  "MISSING_PERMISSION",
-);
+  | "SCHEMA_CHANGE"
+  | (string & {});
+export const EventClass = S.String;
+export type EventDataSource =
+  | "AWS_CLOUD_TRAIL"
+  | "AWS_CODE_DEPLOY"
+  | (string & {});
+export const EventDataSource = S.String;
+export type ResourcePermission =
+  | "FULL_PERMISSION"
+  | "MISSING_PERMISSION"
+  | (string & {});
+export const ResourcePermission = S.String;
 export type ResourceTypeFilter =
   | "LOG_GROUPS"
   | "CLOUDFRONT_DISTRIBUTION"
@@ -818,36 +798,9 @@ export type ResourceTypeFilter =
   | "SNS_TOPIC"
   | "SQS_QUEUE"
   | "STEP_FUNCTIONS_ACTIVITY"
-  | "STEP_FUNCTIONS_STATE_MACHINE";
-export const ResourceTypeFilter = S.Literal(
-  "LOG_GROUPS",
-  "CLOUDFRONT_DISTRIBUTION",
-  "DYNAMODB_TABLE",
-  "EC2_NAT_GATEWAY",
-  "ECS_CLUSTER",
-  "ECS_SERVICE",
-  "EKS_CLUSTER",
-  "ELASTIC_BEANSTALK_ENVIRONMENT",
-  "ELASTIC_LOAD_BALANCER_LOAD_BALANCER",
-  "ELASTIC_LOAD_BALANCING_V2_LOAD_BALANCER",
-  "ELASTIC_LOAD_BALANCING_V2_TARGET_GROUP",
-  "ELASTICACHE_CACHE_CLUSTER",
-  "ELASTICSEARCH_DOMAIN",
-  "KINESIS_STREAM",
-  "LAMBDA_FUNCTION",
-  "OPEN_SEARCH_SERVICE_DOMAIN",
-  "RDS_DB_INSTANCE",
-  "RDS_DB_CLUSTER",
-  "REDSHIFT_CLUSTER",
-  "ROUTE53_HOSTED_ZONE",
-  "ROUTE53_HEALTH_CHECK",
-  "S3_BUCKET",
-  "SAGEMAKER_ENDPOINT",
-  "SNS_TOPIC",
-  "SQS_QUEUE",
-  "STEP_FUNCTIONS_ACTIVITY",
-  "STEP_FUNCTIONS_STATE_MACHINE",
-);
+  | "STEP_FUNCTIONS_STATE_MACHINE"
+  | (string & {});
+export const ResourceTypeFilter = S.String;
 export type ResourceTypeFilters = ResourceTypeFilter[];
 export const ResourceTypeFilters = S.Array(ResourceTypeFilter);
 export type InsightFeedbackOption =
@@ -855,24 +808,19 @@ export type InsightFeedbackOption =
   | "RECOMMENDATION_USEFUL"
   | "ALERT_TOO_SENSITIVE"
   | "DATA_NOISY_ANOMALY"
-  | "DATA_INCORRECT";
-export const InsightFeedbackOption = S.Literal(
-  "VALID_COLLECTION",
-  "RECOMMENDATION_USEFUL",
-  "ALERT_TOO_SENSITIVE",
-  "DATA_NOISY_ANOMALY",
-  "DATA_INCORRECT",
-);
-export type InsightSeverity = "LOW" | "MEDIUM" | "HIGH";
-export const InsightSeverity = S.Literal("LOW", "MEDIUM", "HIGH");
+  | "DATA_INCORRECT"
+  | (string & {});
+export const InsightFeedbackOption = S.String;
+export type InsightSeverity = "LOW" | "MEDIUM" | "HIGH" | (string & {});
+export const InsightSeverity = S.String;
 export type InsightSeverities = InsightSeverity[];
 export const InsightSeverities = S.Array(InsightSeverity);
-export type InsightStatus = "ONGOING" | "CLOSED";
-export const InsightStatus = S.Literal("ONGOING", "CLOSED");
+export type InsightStatus = "ONGOING" | "CLOSED" | (string & {});
+export const InsightStatus = S.String;
 export type InsightStatuses = InsightStatus[];
 export const InsightStatuses = S.Array(InsightStatus);
-export type CostEstimationStatus = "ONGOING" | "COMPLETED";
-export const CostEstimationStatus = S.Literal("ONGOING", "COMPLETED");
+export type CostEstimationStatus = "ONGOING" | "COMPLETED" | (string & {});
+export const CostEstimationStatus = S.String;
 export interface ListMonitoredResourcesFilters {
   ResourcePermission: ResourcePermission;
   ResourceTypeFilters: ResourceTypeFilter[];
@@ -957,34 +905,9 @@ export type ServiceName =
   | "SNS"
   | "SQS"
   | "STEP_FUNCTIONS"
-  | "SWF";
-export const ServiceName = S.Literal(
-  "API_GATEWAY",
-  "APPLICATION_ELB",
-  "AUTO_SCALING_GROUP",
-  "CLOUD_FRONT",
-  "DYNAMO_DB",
-  "EC2",
-  "ECS",
-  "EKS",
-  "ELASTIC_BEANSTALK",
-  "ELASTI_CACHE",
-  "ELB",
-  "ES",
-  "KINESIS",
-  "LAMBDA",
-  "NAT_GATEWAY",
-  "NETWORK_ELB",
-  "RDS",
-  "REDSHIFT",
-  "ROUTE_53",
-  "S3",
-  "SAGE_MAKER",
-  "SNS",
-  "SQS",
-  "STEP_FUNCTIONS",
-  "SWF",
-);
+  | "SWF"
+  | (string & {});
+export const ServiceName = S.String;
 export type ServiceNames = ServiceName[];
 export const ServiceNames = S.Array(ServiceName);
 export interface ServiceCollection {
@@ -1032,25 +955,18 @@ export type NotificationMessageType =
   | "CLOSED_INSIGHT"
   | "NEW_ASSOCIATION"
   | "SEVERITY_UPGRADED"
-  | "NEW_RECOMMENDATION";
-export const NotificationMessageType = S.Literal(
-  "NEW_INSIGHT",
-  "CLOSED_INSIGHT",
-  "NEW_ASSOCIATION",
-  "SEVERITY_UPGRADED",
-  "NEW_RECOMMENDATION",
-);
+  | "NEW_RECOMMENDATION"
+  | (string & {});
+export const NotificationMessageType = S.String;
 export type NotificationMessageTypes = NotificationMessageType[];
 export const NotificationMessageTypes = S.Array(NotificationMessageType);
-export type OptInStatus = "ENABLED" | "DISABLED";
-export const OptInStatus = S.Literal("ENABLED", "DISABLED");
+export type OptInStatus = "ENABLED" | "DISABLED" | (string & {});
+export const OptInStatus = S.String;
 export type ServerSideEncryptionType =
   | "CUSTOMER_MANAGED_KEY"
-  | "AWS_OWNED_KMS_KEY";
-export const ServerSideEncryptionType = S.Literal(
-  "CUSTOMER_MANAGED_KEY",
-  "AWS_OWNED_KMS_KEY",
-);
+  | "AWS_OWNED_KMS_KEY"
+  | (string & {});
+export const ServerSideEncryptionType = S.String;
 export type CostEstimationStackNames = string[];
 export const CostEstimationStackNames = S.Array(S.String);
 export type CostEstimationTagValues = string[];
@@ -1316,12 +1232,12 @@ export const NotificationFilterConfig = S.suspend(() =>
 ).annotations({
   identifier: "NotificationFilterConfig",
 }) as any as S.Schema<NotificationFilterConfig>;
-export type AnomalySeverity = "LOW" | "MEDIUM" | "HIGH";
-export const AnomalySeverity = S.Literal("LOW", "MEDIUM", "HIGH");
-export type AnomalyStatus = "ONGOING" | "CLOSED";
-export const AnomalyStatus = S.Literal("ONGOING", "CLOSED");
-export type AnomalyType = "CAUSAL" | "CONTEXTUAL";
-export const AnomalyType = S.Literal("CAUSAL", "CONTEXTUAL");
+export type AnomalySeverity = "LOW" | "MEDIUM" | "HIGH" | (string & {});
+export const AnomalySeverity = S.String;
+export type AnomalyStatus = "ONGOING" | "CLOSED" | (string & {});
+export const AnomalyStatus = S.String;
+export type AnomalyType = "CAUSAL" | "CONTEXTUAL" | (string & {});
+export const AnomalyType = S.String;
 export interface OpsCenterIntegration {
   OptInStatus?: OptInStatus;
 }
@@ -1352,11 +1268,11 @@ export const KMSServerSideEncryptionIntegration = S.suspend(() =>
 ).annotations({
   identifier: "KMSServerSideEncryptionIntegration",
 }) as any as S.Schema<KMSServerSideEncryptionIntegration>;
-export type CostEstimationServiceResourceState = "ACTIVE" | "INACTIVE";
-export const CostEstimationServiceResourceState = S.Literal(
-  "ACTIVE",
-  "INACTIVE",
-);
+export type CostEstimationServiceResourceState =
+  | "ACTIVE"
+  | "INACTIVE"
+  | (string & {});
+export const CostEstimationServiceResourceState = S.String;
 export interface EventTimeRange {
   FromTime: Date;
   ToTime: Date;
@@ -1495,17 +1411,9 @@ export type CloudWatchMetricsStat =
   | "Maximum"
   | "p99"
   | "p90"
-  | "p50";
-export const CloudWatchMetricsStat = S.Literal(
-  "Sum",
-  "Average",
-  "SampleCount",
-  "Minimum",
-  "Maximum",
-  "p99",
-  "p90",
-  "p50",
-);
+  | "p50"
+  | (string & {});
+export const CloudWatchMetricsStat = S.String;
 export interface TimestampMetricValuePair {
   Timestamp?: Date;
   MetricValue?: number;
@@ -1523,12 +1431,9 @@ export const TimestampMetricValuePairList = S.Array(TimestampMetricValuePair);
 export type CloudWatchMetricDataStatusCode =
   | "Complete"
   | "InternalError"
-  | "PartialData";
-export const CloudWatchMetricDataStatusCode = S.Literal(
-  "Complete",
-  "InternalError",
-  "PartialData",
-);
+  | "PartialData"
+  | (string & {});
+export const CloudWatchMetricDataStatusCode = S.String;
 export interface CloudWatchMetricsDataSummary {
   TimestampMetricValuePairList?: TimestampMetricValuePair[];
   StatusCode?: CloudWatchMetricDataStatusCode;
@@ -2266,17 +2171,9 @@ export type LogAnomalyType =
   | "BLOCK_FORMAT"
   | "NUMERICAL_POINT"
   | "NUMERICAL_NAN"
-  | "NEW_FIELD_NAME";
-export const LogAnomalyType = S.Literal(
-  "KEYWORD",
-  "KEYWORD_TOKEN",
-  "FORMAT",
-  "HTTP_CODE",
-  "BLOCK_FORMAT",
-  "NUMERICAL_POINT",
-  "NUMERICAL_NAN",
-  "NEW_FIELD_NAME",
-);
+  | "NEW_FIELD_NAME"
+  | (string & {});
+export const LogAnomalyType = S.String;
 export interface ProactiveInsight {
   Id?: string;
   Name?: string;
@@ -2598,15 +2495,9 @@ export type ValidationExceptionReason =
   | "FIELD_VALIDATION_FAILED"
   | "OTHER"
   | "INVALID_PARAMETER_COMBINATION"
-  | "PARAMETER_INCONSISTENT_WITH_SERVICE_STATE";
-export const ValidationExceptionReason = S.Literal(
-  "UNKNOWN_OPERATION",
-  "CANNOT_PARSE",
-  "FIELD_VALIDATION_FAILED",
-  "OTHER",
-  "INVALID_PARAMETER_COMBINATION",
-  "PARAMETER_INCONSISTENT_WITH_SERVICE_STATE",
-);
+  | "PARAMETER_INCONSISTENT_WITH_SERVICE_STATE"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 export interface ProactiveAnomalySummary {
   Id?: string;
   Severity?: AnomalySeverity;

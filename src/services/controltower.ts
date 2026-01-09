@@ -110,8 +110,8 @@ export type ParentIdentifier = string;
 export type RegionName = string;
 
 //# Schemas
-export type RemediationType = "INHERITANCE_DRIFT";
-export const RemediationType = S.Literal("INHERITANCE_DRIFT");
+export type RemediationType = "INHERITANCE_DRIFT" | (string & {});
+export const RemediationType = S.String;
 export type RemediationTypes = RemediationType[];
 export const RemediationTypes = S.Array(RemediationType);
 export type TagKeys = string[];
@@ -579,25 +579,21 @@ export type TargetIdentifiers = string[];
 export const TargetIdentifiers = S.Array(S.String);
 export type EnabledControlIdentifiers = string[];
 export const EnabledControlIdentifiers = S.Array(S.String);
-export type ControlOperationStatus = "SUCCEEDED" | "FAILED" | "IN_PROGRESS";
-export const ControlOperationStatus = S.Literal(
-  "SUCCEEDED",
-  "FAILED",
-  "IN_PROGRESS",
-);
+export type ControlOperationStatus =
+  | "SUCCEEDED"
+  | "FAILED"
+  | "IN_PROGRESS"
+  | (string & {});
+export const ControlOperationStatus = S.String;
 export type ControlOperationStatuses = ControlOperationStatus[];
 export const ControlOperationStatuses = S.Array(ControlOperationStatus);
 export type ControlOperationType =
   | "ENABLE_CONTROL"
   | "DISABLE_CONTROL"
   | "UPDATE_ENABLED_CONTROL"
-  | "RESET_ENABLED_CONTROL";
-export const ControlOperationType = S.Literal(
-  "ENABLE_CONTROL",
-  "DISABLE_CONTROL",
-  "UPDATE_ENABLED_CONTROL",
-  "RESET_ENABLED_CONTROL",
-);
+  | "RESET_ENABLED_CONTROL"
+  | (string & {});
+export const ControlOperationType = S.String;
 export type ControlOperationTypes = ControlOperationType[];
 export const ControlOperationTypes = S.Array(ControlOperationType);
 export type EnabledBaselineTargetIdentifiers = string[];
@@ -606,46 +602,46 @@ export type EnabledBaselineBaselineIdentifiers = string[];
 export const EnabledBaselineBaselineIdentifiers = S.Array(S.String);
 export type EnabledBaselineParentIdentifiers = string[];
 export const EnabledBaselineParentIdentifiers = S.Array(S.String);
-export type EnablementStatus = "SUCCEEDED" | "FAILED" | "UNDER_CHANGE";
-export const EnablementStatus = S.Literal(
-  "SUCCEEDED",
-  "FAILED",
-  "UNDER_CHANGE",
-);
+export type EnablementStatus =
+  | "SUCCEEDED"
+  | "FAILED"
+  | "UNDER_CHANGE"
+  | (string & {});
+export const EnablementStatus = S.String;
 export type EnabledBaselineEnablementStatuses = EnablementStatus[];
 export const EnabledBaselineEnablementStatuses = S.Array(EnablementStatus);
-export type EnabledBaselineDriftStatus = "IN_SYNC" | "DRIFTED";
-export const EnabledBaselineDriftStatus = S.Literal("IN_SYNC", "DRIFTED");
+export type EnabledBaselineDriftStatus = "IN_SYNC" | "DRIFTED" | (string & {});
+export const EnabledBaselineDriftStatus = S.String;
 export type EnabledBaselineDriftStatuses = EnabledBaselineDriftStatus[];
 export const EnabledBaselineDriftStatuses = S.Array(EnabledBaselineDriftStatus);
 export type EnablementStatuses = EnablementStatus[];
 export const EnablementStatuses = S.Array(EnablementStatus);
-export type DriftStatus = "DRIFTED" | "IN_SYNC" | "NOT_CHECKING" | "UNKNOWN";
-export const DriftStatus = S.Literal(
-  "DRIFTED",
-  "IN_SYNC",
-  "NOT_CHECKING",
-  "UNKNOWN",
-);
+export type DriftStatus =
+  | "DRIFTED"
+  | "IN_SYNC"
+  | "NOT_CHECKING"
+  | "UNKNOWN"
+  | (string & {});
+export const DriftStatus = S.String;
 export type DriftStatuses = DriftStatus[];
 export const DriftStatuses = S.Array(DriftStatus);
 export type ParentIdentifiers = string[];
 export const ParentIdentifiers = S.Array(S.String);
-export type LandingZoneOperationType = "DELETE" | "CREATE" | "UPDATE" | "RESET";
-export const LandingZoneOperationType = S.Literal(
-  "DELETE",
-  "CREATE",
-  "UPDATE",
-  "RESET",
-);
+export type LandingZoneOperationType =
+  | "DELETE"
+  | "CREATE"
+  | "UPDATE"
+  | "RESET"
+  | (string & {});
+export const LandingZoneOperationType = S.String;
 export type LandingZoneOperationTypes = LandingZoneOperationType[];
 export const LandingZoneOperationTypes = S.Array(LandingZoneOperationType);
-export type LandingZoneOperationStatus = "SUCCEEDED" | "FAILED" | "IN_PROGRESS";
-export const LandingZoneOperationStatus = S.Literal(
-  "SUCCEEDED",
-  "FAILED",
-  "IN_PROGRESS",
-);
+export type LandingZoneOperationStatus =
+  | "SUCCEEDED"
+  | "FAILED"
+  | "IN_PROGRESS"
+  | (string & {});
+export const LandingZoneOperationStatus = S.String;
 export type LandingZoneOperationStatuses = LandingZoneOperationStatus[];
 export const LandingZoneOperationStatuses = S.Array(LandingZoneOperationStatus);
 export interface ControlOperationFilter {
@@ -973,21 +969,21 @@ export type BaselineOperationType =
   | "ENABLE_BASELINE"
   | "DISABLE_BASELINE"
   | "UPDATE_ENABLED_BASELINE"
-  | "RESET_ENABLED_BASELINE";
-export const BaselineOperationType = S.Literal(
-  "ENABLE_BASELINE",
-  "DISABLE_BASELINE",
-  "UPDATE_ENABLED_BASELINE",
-  "RESET_ENABLED_BASELINE",
-);
-export type BaselineOperationStatus = "SUCCEEDED" | "FAILED" | "IN_PROGRESS";
-export const BaselineOperationStatus = S.Literal(
-  "SUCCEEDED",
-  "FAILED",
-  "IN_PROGRESS",
-);
-export type LandingZoneStatus = "ACTIVE" | "PROCESSING" | "FAILED";
-export const LandingZoneStatus = S.Literal("ACTIVE", "PROCESSING", "FAILED");
+  | "RESET_ENABLED_BASELINE"
+  | (string & {});
+export const BaselineOperationType = S.String;
+export type BaselineOperationStatus =
+  | "SUCCEEDED"
+  | "FAILED"
+  | "IN_PROGRESS"
+  | (string & {});
+export const BaselineOperationStatus = S.String;
+export type LandingZoneStatus =
+  | "ACTIVE"
+  | "PROCESSING"
+  | "FAILED"
+  | (string & {});
+export const LandingZoneStatus = S.String;
 export interface BaselineOperation {
   operationIdentifier?: string;
   operationType?: BaselineOperationType;
@@ -1080,8 +1076,8 @@ export const LandingZoneSummary = S.suspend(() =>
 }) as any as S.Schema<LandingZoneSummary>;
 export type LandingZoneSummaries = LandingZoneSummary[];
 export const LandingZoneSummaries = S.Array(LandingZoneSummary);
-export type LandingZoneDriftStatus = "DRIFTED" | "IN_SYNC";
-export const LandingZoneDriftStatus = S.Literal("DRIFTED", "IN_SYNC");
+export type LandingZoneDriftStatus = "DRIFTED" | "IN_SYNC" | (string & {});
+export const LandingZoneDriftStatus = S.String;
 export interface GetBaselineOperationOutput {
   baselineOperation: BaselineOperation;
 }

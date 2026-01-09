@@ -3217,10 +3217,10 @@ export type BytesReturned = number;
 export type RestoreOutputPath = string;
 
 //# Schemas
-export type RequestPayer = "requester";
-export const RequestPayer = S.Literal("requester");
-export type ChecksumType = "COMPOSITE" | "FULL_OBJECT";
-export const ChecksumType = S.Literal("COMPOSITE", "FULL_OBJECT");
+export type RequestPayer = "requester" | (string & {});
+export const RequestPayer = S.String;
+export type ChecksumType = "COMPOSITE" | "FULL_OBJECT" | (string & {});
+export const ChecksumType = S.String;
 export type ObjectCannedACL =
   | "private"
   | "public-read"
@@ -3228,44 +3228,28 @@ export type ObjectCannedACL =
   | "authenticated-read"
   | "aws-exec-read"
   | "bucket-owner-read"
-  | "bucket-owner-full-control";
-export const ObjectCannedACL = S.Literal(
-  "private",
-  "public-read",
-  "public-read-write",
-  "authenticated-read",
-  "aws-exec-read",
-  "bucket-owner-read",
-  "bucket-owner-full-control",
-);
+  | "bucket-owner-full-control"
+  | (string & {});
+export const ObjectCannedACL = S.String;
 export type ChecksumAlgorithm =
   | "CRC32"
   | "CRC32C"
   | "SHA1"
   | "SHA256"
-  | "CRC64NVME";
-export const ChecksumAlgorithm = S.Literal(
-  "CRC32",
-  "CRC32C",
-  "SHA1",
-  "SHA256",
-  "CRC64NVME",
-);
-export type MetadataDirective = "COPY" | "REPLACE";
-export const MetadataDirective = S.Literal("COPY", "REPLACE");
-export type TaggingDirective = "COPY" | "REPLACE";
-export const TaggingDirective = S.Literal("COPY", "REPLACE");
+  | "CRC64NVME"
+  | (string & {});
+export const ChecksumAlgorithm = S.String;
+export type MetadataDirective = "COPY" | "REPLACE" | (string & {});
+export const MetadataDirective = S.String;
+export type TaggingDirective = "COPY" | "REPLACE" | (string & {});
+export const TaggingDirective = S.String;
 export type ServerSideEncryption =
   | "AES256"
   | "aws:fsx"
   | "aws:kms"
-  | "aws:kms:dsse";
-export const ServerSideEncryption = S.Literal(
-  "AES256",
-  "aws:fsx",
-  "aws:kms",
-  "aws:kms:dsse",
-);
+  | "aws:kms:dsse"
+  | (string & {});
+export const ServerSideEncryption = S.String;
 export type StorageClass =
   | "STANDARD"
   | "REDUCED_REDUNDANCY"
@@ -3279,95 +3263,63 @@ export type StorageClass =
   | "SNOW"
   | "EXPRESS_ONEZONE"
   | "FSX_OPENZFS"
-  | "FSX_ONTAP";
-export const StorageClass = S.Literal(
-  "STANDARD",
-  "REDUCED_REDUNDANCY",
-  "STANDARD_IA",
-  "ONEZONE_IA",
-  "INTELLIGENT_TIERING",
-  "GLACIER",
-  "DEEP_ARCHIVE",
-  "OUTPOSTS",
-  "GLACIER_IR",
-  "SNOW",
-  "EXPRESS_ONEZONE",
-  "FSX_OPENZFS",
-  "FSX_ONTAP",
-);
-export type ObjectLockMode = "GOVERNANCE" | "COMPLIANCE";
-export const ObjectLockMode = S.Literal("GOVERNANCE", "COMPLIANCE");
-export type ObjectLockLegalHoldStatus = "ON" | "OFF";
-export const ObjectLockLegalHoldStatus = S.Literal("ON", "OFF");
+  | "FSX_ONTAP"
+  | (string & {});
+export const StorageClass = S.String;
+export type ObjectLockMode = "GOVERNANCE" | "COMPLIANCE" | (string & {});
+export const ObjectLockMode = S.String;
+export type ObjectLockLegalHoldStatus = "ON" | "OFF" | (string & {});
+export const ObjectLockLegalHoldStatus = S.String;
 export type BucketCannedACL =
   | "private"
   | "public-read"
   | "public-read-write"
-  | "authenticated-read";
-export const BucketCannedACL = S.Literal(
-  "private",
-  "public-read",
-  "public-read-write",
-  "authenticated-read",
-);
+  | "authenticated-read"
+  | (string & {});
+export const BucketCannedACL = S.String;
 export type ObjectOwnership =
   | "BucketOwnerPreferred"
   | "ObjectWriter"
-  | "BucketOwnerEnforced";
-export const ObjectOwnership = S.Literal(
-  "BucketOwnerPreferred",
-  "ObjectWriter",
-  "BucketOwnerEnforced",
-);
-export type SessionMode = "ReadOnly" | "ReadWrite";
-export const SessionMode = S.Literal("ReadOnly", "ReadWrite");
-export type ChecksumMode = "ENABLED";
-export const ChecksumMode = S.Literal("ENABLED");
+  | "BucketOwnerEnforced"
+  | (string & {});
+export const ObjectOwnership = S.String;
+export type SessionMode = "ReadOnly" | "ReadWrite" | (string & {});
+export const SessionMode = S.String;
+export type ChecksumMode = "ENABLED" | (string & {});
+export const ChecksumMode = S.String;
 export type ObjectAttributes =
   | "ETag"
   | "Checksum"
   | "ObjectParts"
   | "StorageClass"
-  | "ObjectSize";
-export const ObjectAttributes = S.Literal(
-  "ETag",
-  "Checksum",
-  "ObjectParts",
-  "StorageClass",
-  "ObjectSize",
-);
+  | "ObjectSize"
+  | (string & {});
+export const ObjectAttributes = S.String;
 export type ObjectAttributesList = ObjectAttributes[];
 export const ObjectAttributesList = S.Array(ObjectAttributes);
-export type EncodingType = "url";
-export const EncodingType = S.Literal("url");
-export type OptionalObjectAttributes = "RestoreStatus";
-export const OptionalObjectAttributes = S.Literal("RestoreStatus");
+export type EncodingType = "url" | (string & {});
+export const EncodingType = S.String;
+export type OptionalObjectAttributes = "RestoreStatus" | (string & {});
+export const OptionalObjectAttributes = S.String;
 export type OptionalObjectAttributesList = OptionalObjectAttributes[];
 export const OptionalObjectAttributesList = S.Array(OptionalObjectAttributes);
 export type TransitionDefaultMinimumObjectSize =
   | "varies_by_storage_class"
-  | "all_storage_classes_128K";
-export const TransitionDefaultMinimumObjectSize = S.Literal(
-  "varies_by_storage_class",
-  "all_storage_classes_128K",
-);
-export type ExpressionType = "SQL";
-export const ExpressionType = S.Literal("SQL");
+  | "all_storage_classes_128K"
+  | (string & {});
+export const TransitionDefaultMinimumObjectSize = S.String;
+export type ExpressionType = "SQL" | (string & {});
+export const ExpressionType = S.String;
 export type ReplicationStatus =
   | "COMPLETE"
   | "PENDING"
   | "FAILED"
   | "REPLICA"
-  | "COMPLETED";
-export const ReplicationStatus = S.Literal(
-  "COMPLETE",
-  "PENDING",
-  "FAILED",
-  "REPLICA",
-  "COMPLETED",
-);
-export type RequestCharged = "requester";
-export const RequestCharged = S.Literal("requester");
+  | "COMPLETED"
+  | (string & {});
+export const ReplicationStatus = S.String;
+export type RequestCharged = "requester" | (string & {});
+export const RequestCharged = S.String;
 export interface AbortMultipartUploadRequest {
   Bucket: string;
   Key: string;
@@ -5842,12 +5794,12 @@ export const PutObjectRequest = S.suspend(() =>
 ).annotations({
   identifier: "PutObjectRequest",
 }) as any as S.Schema<PutObjectRequest>;
-export type Type = "CanonicalUser" | "AmazonCustomerByEmail" | "Group";
-export const Type = S.Literal(
-  "CanonicalUser",
-  "AmazonCustomerByEmail",
-  "Group",
-);
+export type Type =
+  | "CanonicalUser"
+  | "AmazonCustomerByEmail"
+  | "Group"
+  | (string & {});
+export const Type = S.String;
 export interface Grantee {
   DisplayName?: string;
   EmailAddress?: string;
@@ -5869,14 +5821,9 @@ export type Permission =
   | "WRITE"
   | "WRITE_ACP"
   | "READ"
-  | "READ_ACP";
-export const Permission = S.Literal(
-  "FULL_CONTROL",
-  "WRITE",
-  "WRITE_ACP",
-  "READ",
-  "READ_ACP",
-);
+  | "READ_ACP"
+  | (string & {});
+export const Permission = S.String;
 export interface Grant {
   Grantee?: Grantee;
   Permission?: Permission;
@@ -6487,50 +6434,17 @@ export type BucketLocationConstraint =
   | "us-gov-east-1"
   | "us-gov-west-1"
   | "us-west-1"
-  | "us-west-2";
-export const BucketLocationConstraint = S.Literal(
-  "af-south-1",
-  "ap-east-1",
-  "ap-northeast-1",
-  "ap-northeast-2",
-  "ap-northeast-3",
-  "ap-south-1",
-  "ap-south-2",
-  "ap-southeast-1",
-  "ap-southeast-2",
-  "ap-southeast-3",
-  "ap-southeast-4",
-  "ap-southeast-5",
-  "ca-central-1",
-  "cn-north-1",
-  "cn-northwest-1",
-  "EU",
-  "eu-central-1",
-  "eu-central-2",
-  "eu-north-1",
-  "eu-south-1",
-  "eu-south-2",
-  "eu-west-1",
-  "eu-west-2",
-  "eu-west-3",
-  "il-central-1",
-  "me-central-1",
-  "me-south-1",
-  "sa-east-1",
-  "us-east-2",
-  "us-gov-east-1",
-  "us-gov-west-1",
-  "us-west-1",
-  "us-west-2",
-);
-export type BucketAbacStatus = "Enabled" | "Disabled";
-export const BucketAbacStatus = S.Literal("Enabled", "Disabled");
-export type BucketAccelerateStatus = "Enabled" | "Suspended";
-export const BucketAccelerateStatus = S.Literal("Enabled", "Suspended");
-export type IntelligentTieringStatus = "Enabled" | "Disabled";
-export const IntelligentTieringStatus = S.Literal("Enabled", "Disabled");
-export type InventoryIncludedObjectVersions = "All" | "Current";
-export const InventoryIncludedObjectVersions = S.Literal("All", "Current");
+  | "us-west-2"
+  | (string & {});
+export const BucketLocationConstraint = S.String;
+export type BucketAbacStatus = "Enabled" | "Disabled" | (string & {});
+export const BucketAbacStatus = S.String;
+export type BucketAccelerateStatus = "Enabled" | "Suspended" | (string & {});
+export const BucketAccelerateStatus = S.String;
+export type IntelligentTieringStatus = "Enabled" | "Disabled" | (string & {});
+export const IntelligentTieringStatus = S.String;
+export type InventoryIncludedObjectVersions = "All" | "Current" | (string & {});
+export const InventoryIncludedObjectVersions = S.String;
 export type InventoryOptionalField =
   | "Size"
   | "LastModifiedDate"
@@ -6547,25 +6461,9 @@ export type InventoryOptionalField =
   | "ChecksumAlgorithm"
   | "ObjectAccessControlList"
   | "ObjectOwner"
-  | "LifecycleExpirationDate";
-export const InventoryOptionalField = S.Literal(
-  "Size",
-  "LastModifiedDate",
-  "StorageClass",
-  "ETag",
-  "IsMultipartUploaded",
-  "ReplicationStatus",
-  "EncryptionStatus",
-  "ObjectLockRetainUntilDate",
-  "ObjectLockMode",
-  "ObjectLockLegalHoldStatus",
-  "IntelligentTieringAccessTier",
-  "BucketKeyStatus",
-  "ChecksumAlgorithm",
-  "ObjectAccessControlList",
-  "ObjectOwner",
-  "LifecycleExpirationDate",
-);
+  | "LifecycleExpirationDate"
+  | (string & {});
+export const InventoryOptionalField = S.String;
 export type InventoryOptionalFields = InventoryOptionalField[];
 export const InventoryOptionalFields = S.Array(
   InventoryOptionalField.pipe(T.XmlName("Field")),
@@ -6576,34 +6474,43 @@ export const EventBridgeConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "EventBridgeConfiguration",
 }) as any as S.Schema<EventBridgeConfiguration>;
-export type Payer = "Requester" | "BucketOwner";
-export const Payer = S.Literal("Requester", "BucketOwner");
-export type MFADelete = "Enabled" | "Disabled";
-export const MFADelete = S.Literal("Enabled", "Disabled");
-export type BucketVersioningStatus = "Enabled" | "Suspended";
-export const BucketVersioningStatus = S.Literal("Enabled", "Suspended");
-export type ObjectLockEnabled = "Enabled";
-export const ObjectLockEnabled = S.Literal("Enabled");
-export type ObjectLockRetentionMode = "GOVERNANCE" | "COMPLIANCE";
-export const ObjectLockRetentionMode = S.Literal("GOVERNANCE", "COMPLIANCE");
-export type RestoreRequestType = "SELECT";
-export const RestoreRequestType = S.Literal("SELECT");
-export type Tier = "Standard" | "Bulk" | "Expedited";
-export const Tier = S.Literal("Standard", "Bulk", "Expedited");
-export type CompressionType = "NONE" | "GZIP" | "BZIP2";
-export const CompressionType = S.Literal("NONE", "GZIP", "BZIP2");
+export type Payer = "Requester" | "BucketOwner" | (string & {});
+export const Payer = S.String;
+export type MFADelete = "Enabled" | "Disabled" | (string & {});
+export const MFADelete = S.String;
+export type BucketVersioningStatus = "Enabled" | "Suspended" | (string & {});
+export const BucketVersioningStatus = S.String;
+export type ObjectLockEnabled = "Enabled" | (string & {});
+export const ObjectLockEnabled = S.String;
+export type ObjectLockRetentionMode =
+  | "GOVERNANCE"
+  | "COMPLIANCE"
+  | (string & {});
+export const ObjectLockRetentionMode = S.String;
+export type RestoreRequestType = "SELECT" | (string & {});
+export const RestoreRequestType = S.String;
+export type Tier = "Standard" | "Bulk" | "Expedited" | (string & {});
+export const Tier = S.String;
+export type CompressionType = "NONE" | "GZIP" | "BZIP2" | (string & {});
+export const CompressionType = S.String;
 export interface ParquetInput {}
 export const ParquetInput = S.suspend(() => S.Struct({})).annotations({
   identifier: "ParquetInput",
 }) as any as S.Schema<ParquetInput>;
-export type InventoryConfigurationState = "ENABLED" | "DISABLED";
-export const InventoryConfigurationState = S.Literal("ENABLED", "DISABLED");
-export type MFADeleteStatus = "Enabled" | "Disabled";
-export const MFADeleteStatus = S.Literal("Enabled", "Disabled");
-export type LocationType = "AvailabilityZone" | "LocalZone";
-export const LocationType = S.Literal("AvailabilityZone", "LocalZone");
-export type ArchiveStatus = "ARCHIVE_ACCESS" | "DEEP_ARCHIVE_ACCESS";
-export const ArchiveStatus = S.Literal("ARCHIVE_ACCESS", "DEEP_ARCHIVE_ACCESS");
+export type InventoryConfigurationState =
+  | "ENABLED"
+  | "DISABLED"
+  | (string & {});
+export const InventoryConfigurationState = S.String;
+export type MFADeleteStatus = "Enabled" | "Disabled" | (string & {});
+export const MFADeleteStatus = S.String;
+export type LocationType = "AvailabilityZone" | "LocalZone" | (string & {});
+export const LocationType = S.String;
+export type ArchiveStatus =
+  | "ARCHIVE_ACCESS"
+  | "DEEP_ARCHIVE_ACCESS"
+  | (string & {});
+export const ArchiveStatus = S.String;
 export interface AnalyticsAndOperator {
   Prefix?: string;
   Tags?: Tag[];
@@ -6625,10 +6532,10 @@ export const AnalyticsFilter = S.Union(
   S.Struct({ Tag: Tag }),
   S.Struct({ And: AnalyticsAndOperator }),
 );
-export type StorageClassAnalysisSchemaVersion = "V_1";
-export const StorageClassAnalysisSchemaVersion = S.Literal("V_1");
-export type AnalyticsS3ExportFileFormat = "CSV";
-export const AnalyticsS3ExportFileFormat = S.Literal("CSV");
+export type StorageClassAnalysisSchemaVersion = "V_1" | (string & {});
+export const StorageClassAnalysisSchemaVersion = S.String;
+export type AnalyticsS3ExportFileFormat = "CSV" | (string & {});
+export const AnalyticsS3ExportFileFormat = S.String;
 export interface AnalyticsS3BucketDestination {
   Format: AnalyticsS3ExportFileFormat;
   BucketAccountId?: string;
@@ -6717,11 +6624,9 @@ export const IntelligentTieringFilter = S.suspend(() =>
 }) as any as S.Schema<IntelligentTieringFilter>;
 export type IntelligentTieringAccessTier =
   | "ARCHIVE_ACCESS"
-  | "DEEP_ARCHIVE_ACCESS";
-export const IntelligentTieringAccessTier = S.Literal(
-  "ARCHIVE_ACCESS",
-  "DEEP_ARCHIVE_ACCESS",
-);
+  | "DEEP_ARCHIVE_ACCESS"
+  | (string & {});
+export const IntelligentTieringAccessTier = S.String;
 export interface Tiering {
   Days: number;
   AccessTier: IntelligentTieringAccessTier;
@@ -6752,8 +6657,8 @@ export type IntelligentTieringConfigurationList =
 export const IntelligentTieringConfigurationList = S.Array(
   IntelligentTieringConfiguration,
 );
-export type InventoryFormat = "CSV" | "ORC" | "Parquet";
-export const InventoryFormat = S.Literal("CSV", "ORC", "Parquet");
+export type InventoryFormat = "CSV" | "ORC" | "Parquet" | (string & {});
+export const InventoryFormat = S.String;
 export interface SSES3 {}
 export const SSES3 = S.suspend(() =>
   S.Struct({}).pipe(T.XmlName("SSE-S3")),
@@ -6814,8 +6719,8 @@ export const InventoryFilter = S.suspend(() =>
 ).annotations({
   identifier: "InventoryFilter",
 }) as any as S.Schema<InventoryFilter>;
-export type InventoryFrequency = "Daily" | "Weekly";
-export const InventoryFrequency = S.Literal("Daily", "Weekly");
+export type InventoryFrequency = "Daily" | "Weekly" | (string & {});
+export const InventoryFrequency = S.String;
 export interface InventorySchedule {
   Frequency: InventoryFrequency;
 }
@@ -6978,13 +6883,13 @@ export interface ScanRange {
 export const ScanRange = S.suspend(() =>
   S.Struct({ Start: S.optional(S.Number), End: S.optional(S.Number) }),
 ).annotations({ identifier: "ScanRange" }) as any as S.Schema<ScanRange>;
-export type DataRedundancy = "SingleAvailabilityZone" | "SingleLocalZone";
-export const DataRedundancy = S.Literal(
-  "SingleAvailabilityZone",
-  "SingleLocalZone",
-);
-export type BucketType = "Directory";
-export const BucketType = S.Literal("Directory");
+export type DataRedundancy =
+  | "SingleAvailabilityZone"
+  | "SingleLocalZone"
+  | (string & {});
+export const DataRedundancy = S.String;
+export type BucketType = "Directory" | (string & {});
+export const BucketType = S.String;
 export type AllowedHeaders = string[];
 export const AllowedHeaders = S.Array(S.String);
 export type AllowedMethods = string[];
@@ -6993,8 +6898,8 @@ export type AllowedOrigins = string[];
 export const AllowedOrigins = S.Array(S.String);
 export type ExposeHeaders = string[];
 export const ExposeHeaders = S.Array(S.String);
-export type ExpirationStatus = "Enabled" | "Disabled";
-export const ExpirationStatus = S.Literal("Enabled", "Disabled");
+export type ExpirationStatus = "Enabled" | "Disabled" | (string & {});
+export const ExpirationStatus = S.String;
 export type Event =
   | "s3:ReducedRedundancyLostObject"
   | "s3:ObjectCreated:*"
@@ -7022,52 +6927,25 @@ export type Event =
   | "s3:LifecycleExpiration:DeleteMarkerCreated"
   | "s3:ObjectTagging:*"
   | "s3:ObjectTagging:Put"
-  | "s3:ObjectTagging:Delete";
-export const Event = S.Literal(
-  "s3:ReducedRedundancyLostObject",
-  "s3:ObjectCreated:*",
-  "s3:ObjectCreated:Put",
-  "s3:ObjectCreated:Post",
-  "s3:ObjectCreated:Copy",
-  "s3:ObjectCreated:CompleteMultipartUpload",
-  "s3:ObjectRemoved:*",
-  "s3:ObjectRemoved:Delete",
-  "s3:ObjectRemoved:DeleteMarkerCreated",
-  "s3:ObjectRestore:*",
-  "s3:ObjectRestore:Post",
-  "s3:ObjectRestore:Completed",
-  "s3:Replication:*",
-  "s3:Replication:OperationFailedReplication",
-  "s3:Replication:OperationNotTracked",
-  "s3:Replication:OperationMissedThreshold",
-  "s3:Replication:OperationReplicatedAfterThreshold",
-  "s3:ObjectRestore:Delete",
-  "s3:LifecycleTransition",
-  "s3:IntelligentTiering",
-  "s3:ObjectAcl:Put",
-  "s3:LifecycleExpiration:*",
-  "s3:LifecycleExpiration:Delete",
-  "s3:LifecycleExpiration:DeleteMarkerCreated",
-  "s3:ObjectTagging:*",
-  "s3:ObjectTagging:Put",
-  "s3:ObjectTagging:Delete",
-);
+  | "s3:ObjectTagging:Delete"
+  | (string & {});
+export const Event = S.String;
 export type EventList = Event[];
 export const EventList = S.Array(Event);
-export type ReplicationRuleStatus = "Enabled" | "Disabled";
-export const ReplicationRuleStatus = S.Literal("Enabled", "Disabled");
-export type Protocol = "http" | "https";
-export const Protocol = S.Literal("http", "https");
-export type FileHeaderInfo = "USE" | "IGNORE" | "NONE";
-export const FileHeaderInfo = S.Literal("USE", "IGNORE", "NONE");
-export type JSONType = "DOCUMENT" | "LINES";
-export const JSONType = S.Literal("DOCUMENT", "LINES");
-export type QuoteFields = "ALWAYS" | "ASNEEDED";
-export const QuoteFields = S.Literal("ALWAYS", "ASNEEDED");
-export type TableSseAlgorithm = "aws:kms" | "AES256";
-export const TableSseAlgorithm = S.Literal("aws:kms", "AES256");
-export type ExpirationState = "ENABLED" | "DISABLED";
-export const ExpirationState = S.Literal("ENABLED", "DISABLED");
+export type ReplicationRuleStatus = "Enabled" | "Disabled" | (string & {});
+export const ReplicationRuleStatus = S.String;
+export type Protocol = "http" | "https" | (string & {});
+export const Protocol = S.String;
+export type FileHeaderInfo = "USE" | "IGNORE" | "NONE" | (string & {});
+export const FileHeaderInfo = S.String;
+export type JSONType = "DOCUMENT" | "LINES" | (string & {});
+export const JSONType = S.String;
+export type QuoteFields = "ALWAYS" | "ASNEEDED" | (string & {});
+export const QuoteFields = S.String;
+export type TableSseAlgorithm = "aws:kms" | "AES256" | (string & {});
+export const TableSseAlgorithm = S.String;
+export type ExpirationState = "ENABLED" | "DISABLED" | (string & {});
+export const ExpirationState = S.String;
 export interface AbortMultipartUploadOutput {
   RequestCharged?: RequestCharged;
 }
@@ -7443,8 +7321,8 @@ export const ServerSideEncryptionByDefault = S.suspend(() =>
 ).annotations({
   identifier: "ServerSideEncryptionByDefault",
 }) as any as S.Schema<ServerSideEncryptionByDefault>;
-export type EncryptionType = "NONE" | "SSE-C";
-export const EncryptionType = S.Literal("NONE", "SSE-C");
+export type EncryptionType = "NONE" | "SSE-C" | (string & {});
+export const EncryptionType = S.String;
 export type EncryptionTypeList = EncryptionType[];
 export const EncryptionTypeList = S.Array(
   EncryptionType.pipe(T.XmlName("EncryptionType")),
@@ -7579,15 +7457,9 @@ export type TransitionStorageClass =
   | "ONEZONE_IA"
   | "INTELLIGENT_TIERING"
   | "DEEP_ARCHIVE"
-  | "GLACIER_IR";
-export const TransitionStorageClass = S.Literal(
-  "GLACIER",
-  "STANDARD_IA",
-  "ONEZONE_IA",
-  "INTELLIGENT_TIERING",
-  "DEEP_ARCHIVE",
-  "GLACIER_IR",
-);
+  | "GLACIER_IR"
+  | (string & {});
+export const TransitionStorageClass = S.String;
 export interface Transition {
   Date?: Date;
   Days?: number;
@@ -7697,8 +7569,12 @@ export const GetBucketLocationOutput = S.suspend(() =>
 ).annotations({
   identifier: "GetBucketLocationOutput",
 }) as any as S.Schema<GetBucketLocationOutput>;
-export type BucketLogsPermission = "FULL_CONTROL" | "READ" | "WRITE";
-export const BucketLogsPermission = S.Literal("FULL_CONTROL", "READ", "WRITE");
+export type BucketLogsPermission =
+  | "FULL_CONTROL"
+  | "READ"
+  | "WRITE"
+  | (string & {});
+export const BucketLogsPermission = S.String;
 export interface TargetGrant {
   Grantee?: Grantee;
   Permission?: BucketLogsPermission;
@@ -7719,8 +7595,8 @@ export interface SimplePrefix {}
 export const SimplePrefix = S.suspend(() =>
   S.Struct({}).pipe(T.XmlName("SimplePrefix")),
 ).annotations({ identifier: "SimplePrefix" }) as any as S.Schema<SimplePrefix>;
-export type PartitionDateSource = "EventTime" | "DeliveryTime";
-export const PartitionDateSource = S.Literal("EventTime", "DeliveryTime");
+export type PartitionDateSource = "EventTime" | "DeliveryTime" | (string & {});
+export const PartitionDateSource = S.String;
 export interface PartitionedPrefix {
   PartitionDateSource?: PartitionDateSource;
 }
@@ -7851,8 +7727,11 @@ export const ReplicationRuleFilter = S.suspend(() =>
 ).annotations({
   identifier: "ReplicationRuleFilter",
 }) as any as S.Schema<ReplicationRuleFilter>;
-export type SseKmsEncryptedObjectsStatus = "Enabled" | "Disabled";
-export const SseKmsEncryptedObjectsStatus = S.Literal("Enabled", "Disabled");
+export type SseKmsEncryptedObjectsStatus =
+  | "Enabled"
+  | "Disabled"
+  | (string & {});
+export const SseKmsEncryptedObjectsStatus = S.String;
 export interface SseKmsEncryptedObjects {
   Status: SseKmsEncryptedObjectsStatus;
 }
@@ -7861,8 +7740,8 @@ export const SseKmsEncryptedObjects = S.suspend(() =>
 ).annotations({
   identifier: "SseKmsEncryptedObjects",
 }) as any as S.Schema<SseKmsEncryptedObjects>;
-export type ReplicaModificationsStatus = "Enabled" | "Disabled";
-export const ReplicaModificationsStatus = S.Literal("Enabled", "Disabled");
+export type ReplicaModificationsStatus = "Enabled" | "Disabled" | (string & {});
+export const ReplicaModificationsStatus = S.String;
 export interface ReplicaModifications {
   Status: ReplicaModificationsStatus;
 }
@@ -7883,8 +7762,11 @@ export const SourceSelectionCriteria = S.suspend(() =>
 ).annotations({
   identifier: "SourceSelectionCriteria",
 }) as any as S.Schema<SourceSelectionCriteria>;
-export type ExistingObjectReplicationStatus = "Enabled" | "Disabled";
-export const ExistingObjectReplicationStatus = S.Literal("Enabled", "Disabled");
+export type ExistingObjectReplicationStatus =
+  | "Enabled"
+  | "Disabled"
+  | (string & {});
+export const ExistingObjectReplicationStatus = S.String;
 export interface ExistingObjectReplication {
   Status: ExistingObjectReplicationStatus;
 }
@@ -7893,8 +7775,8 @@ export const ExistingObjectReplication = S.suspend(() =>
 ).annotations({
   identifier: "ExistingObjectReplication",
 }) as any as S.Schema<ExistingObjectReplication>;
-export type OwnerOverride = "Destination";
-export const OwnerOverride = S.Literal("Destination");
+export type OwnerOverride = "Destination" | (string & {});
+export const OwnerOverride = S.String;
 export interface AccessControlTranslation {
   Owner: OwnerOverride;
 }
@@ -7911,8 +7793,8 @@ export const EncryptionConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "EncryptionConfiguration",
 }) as any as S.Schema<EncryptionConfiguration>;
-export type ReplicationTimeStatus = "Enabled" | "Disabled";
-export const ReplicationTimeStatus = S.Literal("Enabled", "Disabled");
+export type ReplicationTimeStatus = "Enabled" | "Disabled" | (string & {});
+export const ReplicationTimeStatus = S.String;
 export interface ReplicationTimeValue {
   Minutes?: number;
 }
@@ -7930,8 +7812,8 @@ export const ReplicationTime = S.suspend(() =>
 ).annotations({
   identifier: "ReplicationTime",
 }) as any as S.Schema<ReplicationTime>;
-export type MetricsStatus = "Enabled" | "Disabled";
-export const MetricsStatus = S.Literal("Enabled", "Disabled");
+export type MetricsStatus = "Enabled" | "Disabled" | (string & {});
+export const MetricsStatus = S.String;
 export interface Metrics {
   Status: MetricsStatus;
   EventThreshold?: ReplicationTimeValue;
@@ -7962,8 +7844,11 @@ export const Destination = S.suspend(() =>
     Metrics: S.optional(Metrics),
   }),
 ).annotations({ identifier: "Destination" }) as any as S.Schema<Destination>;
-export type DeleteMarkerReplicationStatus = "Enabled" | "Disabled";
-export const DeleteMarkerReplicationStatus = S.Literal("Enabled", "Disabled");
+export type DeleteMarkerReplicationStatus =
+  | "Enabled"
+  | "Disabled"
+  | (string & {});
+export const DeleteMarkerReplicationStatus = S.String;
 export interface DeleteMarkerReplication {
   Status?: DeleteMarkerReplicationStatus;
 }
@@ -8666,22 +8551,9 @@ export type ObjectStorageClass =
   | "SNOW"
   | "EXPRESS_ONEZONE"
   | "FSX_OPENZFS"
-  | "FSX_ONTAP";
-export const ObjectStorageClass = S.Literal(
-  "STANDARD",
-  "REDUCED_REDUNDANCY",
-  "GLACIER",
-  "STANDARD_IA",
-  "ONEZONE_IA",
-  "INTELLIGENT_TIERING",
-  "DEEP_ARCHIVE",
-  "OUTPOSTS",
-  "GLACIER_IR",
-  "SNOW",
-  "EXPRESS_ONEZONE",
-  "FSX_OPENZFS",
-  "FSX_ONTAP",
-);
+  | "FSX_ONTAP"
+  | (string & {});
+export const ObjectStorageClass = S.String;
 export interface RestoreStatus {
   IsRestoreInProgress?: boolean;
   RestoreExpiryDate?: Date;
@@ -9391,10 +9263,10 @@ export const ObjectIdentifier = S.suspend(() =>
 }) as any as S.Schema<ObjectIdentifier>;
 export type ObjectIdentifierList = ObjectIdentifier[];
 export const ObjectIdentifierList = S.Array(ObjectIdentifier);
-export type ObjectVersionStorageClass = "STANDARD";
-export const ObjectVersionStorageClass = S.Literal("STANDARD");
-export type FilterRuleName = "prefix" | "suffix";
-export const FilterRuleName = S.Literal("prefix", "suffix");
+export type ObjectVersionStorageClass = "STANDARD" | (string & {});
+export const ObjectVersionStorageClass = S.String;
+export type FilterRuleName = "prefix" | "suffix" | (string & {});
+export const FilterRuleName = S.String;
 export interface FilterRule {
   Name?: FilterRuleName;
   Value?: string;
@@ -10610,8 +10482,8 @@ export const ObjectPart = S.suspend(() =>
 ).annotations({ identifier: "ObjectPart" }) as any as S.Schema<ObjectPart>;
 export type PartsList = ObjectPart[];
 export const PartsList = S.Array(ObjectPart);
-export type S3TablesBucketType = "aws" | "customer";
-export const S3TablesBucketType = S.Literal("aws", "customer");
+export type S3TablesBucketType = "aws" | "customer" | (string & {});
+export const S3TablesBucketType = S.String;
 export interface Encryption {
   EncryptionType: ServerSideEncryption;
   KMSKeyId?: string | redacted.Redacted<string>;

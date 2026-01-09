@@ -286,48 +286,42 @@ export type EvaluationFrequency =
   | "TEN_MIN"
   | "FIFTEEN_MIN"
   | "THIRTY_MIN"
-  | "ONE_HOUR";
-export const EvaluationFrequency = S.Literal(
-  "ONE_MIN",
-  "FIVE_MIN",
-  "TEN_MIN",
-  "FIFTEEN_MIN",
-  "THIRTY_MIN",
-  "ONE_HOUR",
-);
-export type LogGroupClass = "STANDARD" | "INFREQUENT_ACCESS" | "DELIVERY";
-export const LogGroupClass = S.Literal(
-  "STANDARD",
-  "INFREQUENT_ACCESS",
-  "DELIVERY",
-);
-export type QueryLanguage = "CWLI" | "SQL" | "PPL";
-export const QueryLanguage = S.Literal("CWLI", "SQL", "PPL");
+  | "ONE_HOUR"
+  | (string & {});
+export const EvaluationFrequency = S.String;
+export type LogGroupClass =
+  | "STANDARD"
+  | "INFREQUENT_ACCESS"
+  | "DELIVERY"
+  | (string & {});
+export const LogGroupClass = S.String;
+export type QueryLanguage = "CWLI" | "SQL" | "PPL" | (string & {});
+export const QueryLanguage = S.String;
 export type ScheduledQueryLogGroupIdentifiers = string[];
 export const ScheduledQueryLogGroupIdentifiers = S.Array(S.String);
-export type ScheduledQueryState = "ENABLED" | "DISABLED";
-export const ScheduledQueryState = S.Literal("ENABLED", "DISABLED");
+export type ScheduledQueryState = "ENABLED" | "DISABLED" | (string & {});
+export const ScheduledQueryState = S.String;
 export type PolicyType =
   | "DATA_PROTECTION_POLICY"
   | "SUBSCRIPTION_FILTER_POLICY"
   | "FIELD_INDEX_POLICY"
   | "TRANSFORMER_POLICY"
-  | "METRIC_EXTRACTION_POLICY";
-export const PolicyType = S.Literal(
-  "DATA_PROTECTION_POLICY",
-  "SUBSCRIPTION_FILTER_POLICY",
-  "FIELD_INDEX_POLICY",
-  "TRANSFORMER_POLICY",
-  "METRIC_EXTRACTION_POLICY",
-);
+  | "METRIC_EXTRACTION_POLICY"
+  | (string & {});
+export const PolicyType = S.String;
 export type AccountIds = string[];
 export const AccountIds = S.Array(S.String);
 export type LogTypes = string[];
 export const LogTypes = S.Array(S.String);
 export type ResourceTypes = string[];
 export const ResourceTypes = S.Array(S.String);
-export type DeliveryDestinationType = "S3" | "CWL" | "FH" | "XRAY";
-export const DeliveryDestinationType = S.Literal("S3", "CWL", "FH", "XRAY");
+export type DeliveryDestinationType =
+  | "S3"
+  | "CWL"
+  | "FH"
+  | "XRAY"
+  | (string & {});
+export const DeliveryDestinationType = S.String;
 export type DeliveryDestinationTypes = DeliveryDestinationType[];
 export const DeliveryDestinationTypes = S.Array(DeliveryDestinationType);
 export type ExportTaskStatusCode =
@@ -336,32 +330,26 @@ export type ExportTaskStatusCode =
   | "FAILED"
   | "PENDING"
   | "PENDING_CANCEL"
-  | "RUNNING";
-export const ExportTaskStatusCode = S.Literal(
-  "CANCELLED",
-  "COMPLETED",
-  "FAILED",
-  "PENDING",
-  "PENDING_CANCEL",
-  "RUNNING",
-);
+  | "RUNNING"
+  | (string & {});
+export const ExportTaskStatusCode = S.String;
 export type DescribeFieldIndexesLogGroupIdentifiers = string[];
 export const DescribeFieldIndexesLogGroupIdentifiers = S.Array(S.String);
-export type ImportStatus = "IN_PROGRESS" | "CANCELLED" | "COMPLETED" | "FAILED";
-export const ImportStatus = S.Literal(
-  "IN_PROGRESS",
-  "CANCELLED",
-  "COMPLETED",
-  "FAILED",
-);
+export type ImportStatus =
+  | "IN_PROGRESS"
+  | "CANCELLED"
+  | "COMPLETED"
+  | "FAILED"
+  | (string & {});
+export const ImportStatus = S.String;
 export type ImportStatusList = ImportStatus[];
 export const ImportStatusList = S.Array(ImportStatus);
 export type DescribeIndexPoliciesLogGroupIdentifiers = string[];
 export const DescribeIndexPoliciesLogGroupIdentifiers = S.Array(S.String);
 export type DescribeLogGroupsLogGroupIdentifiers = string[];
 export const DescribeLogGroupsLogGroupIdentifiers = S.Array(S.String);
-export type OrderBy = "LogStreamName" | "LastEventTime";
-export const OrderBy = S.Literal("LogStreamName", "LastEventTime");
+export type OrderBy = "LogStreamName" | "LastEventTime" | (string & {});
+export const OrderBy = S.String;
 export type QueryStatus =
   | "Scheduled"
   | "Running"
@@ -369,18 +357,11 @@ export type QueryStatus =
   | "Failed"
   | "Cancelled"
   | "Timeout"
-  | "Unknown";
-export const QueryStatus = S.Literal(
-  "Scheduled",
-  "Running",
-  "Complete",
-  "Failed",
-  "Cancelled",
-  "Timeout",
-  "Unknown",
-);
-export type PolicyScope = "ACCOUNT" | "RESOURCE";
-export const PolicyScope = S.Literal("ACCOUNT", "RESOURCE");
+  | "Unknown"
+  | (string & {});
+export const QueryStatus = S.String;
+export type PolicyScope = "ACCOUNT" | "RESOURCE" | (string & {});
+export const PolicyScope = S.String;
 export type InputLogStreamNames = string[];
 export const InputLogStreamNames = S.Array(S.String);
 export type ExecutionStatus =
@@ -388,41 +369,44 @@ export type ExecutionStatus =
   | "InvalidQuery"
   | "Complete"
   | "Failed"
-  | "Timeout";
-export const ExecutionStatus = S.Literal(
-  "Running",
-  "InvalidQuery",
-  "Complete",
-  "Failed",
-  "Timeout",
-);
+  | "Timeout"
+  | (string & {});
+export const ExecutionStatus = S.String;
 export type ExecutionStatusList = ExecutionStatus[];
 export const ExecutionStatusList = S.Array(ExecutionStatus);
 export type ListAggregateLogGroupSummariesGroupBy =
   | "DATA_SOURCE_NAME_TYPE_AND_FORMAT"
-  | "DATA_SOURCE_NAME_AND_TYPE";
-export const ListAggregateLogGroupSummariesGroupBy = S.Literal(
-  "DATA_SOURCE_NAME_TYPE_AND_FORMAT",
-  "DATA_SOURCE_NAME_AND_TYPE",
-);
-export type SuppressionState = "SUPPRESSED" | "UNSUPPRESSED";
-export const SuppressionState = S.Literal("SUPPRESSED", "UNSUPPRESSED");
-export type IntegrationType = "OPENSEARCH";
-export const IntegrationType = S.Literal("OPENSEARCH");
-export type IntegrationStatus = "PROVISIONING" | "ACTIVE" | "FAILED";
-export const IntegrationStatus = S.Literal("PROVISIONING", "ACTIVE", "FAILED");
+  | "DATA_SOURCE_NAME_AND_TYPE"
+  | (string & {});
+export const ListAggregateLogGroupSummariesGroupBy = S.String;
+export type SuppressionState = "SUPPRESSED" | "UNSUPPRESSED" | (string & {});
+export const SuppressionState = S.String;
+export type IntegrationType = "OPENSEARCH" | (string & {});
+export const IntegrationType = S.String;
+export type IntegrationStatus =
+  | "PROVISIONING"
+  | "ACTIVE"
+  | "FAILED"
+  | (string & {});
+export const IntegrationStatus = S.String;
 export type FieldIndexNames = string[];
 export const FieldIndexNames = S.Array(S.String);
-export type Scope = "ALL";
-export const Scope = S.Literal("ALL");
-export type OutputFormat = "json" | "plain" | "w3c" | "raw" | "parquet";
-export const OutputFormat = S.Literal("json", "plain", "w3c", "raw", "parquet");
+export type Scope = "ALL" | (string & {});
+export const Scope = S.String;
+export type OutputFormat =
+  | "json"
+  | "plain"
+  | "w3c"
+  | "raw"
+  | "parquet"
+  | (string & {});
+export const OutputFormat = S.String;
 export type EmitSystemFields = string[];
 export const EmitSystemFields = S.Array(S.String);
 export type LogGroupNames = string[];
 export const LogGroupNames = S.Array(S.String);
-export type Distribution = "Random" | "ByLogStream";
-export const Distribution = S.Literal("Random", "ByLogStream");
+export type Distribution = "Random" | "ByLogStream" | (string & {});
+export const Distribution = S.String;
 export type StartLiveTailLogGroupIdentifiers = string[];
 export const StartLiveTailLogGroupIdentifiers = S.Array(S.String);
 export type LogGroupIdentifiers = string[];
@@ -433,8 +417,8 @@ export type TagList = string[];
 export const TagList = S.Array(S.String);
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
-export type SuppressionType = "LIMITED" | "INFINITE";
-export const SuppressionType = S.Literal("LIMITED", "INFINITE");
+export type SuppressionType = "LIMITED" | "INFINITE" | (string & {});
+export const SuppressionType = S.String;
 export interface AssociateKmsKeyRequest {
   logGroupName?: string;
   kmsKeyId: string;
@@ -2773,8 +2757,8 @@ export interface Grok {
 export const Grok = S.suspend(() =>
   S.Struct({ source: S.optional(S.String), match: S.String }),
 ).annotations({ identifier: "Grok" }) as any as S.Schema<Grok>;
-export type FlattenedElement = "first" | "last";
-export const FlattenedElement = S.Literal("first", "last");
+export type FlattenedElement = "first" | "last" | (string & {});
+export const FlattenedElement = S.String;
 export interface ListToMap {
   source: string;
   key: string;
@@ -2871,16 +2855,11 @@ export type EventSource =
   | "Route53Resolver"
   | "VPCFlow"
   | "EKSAudit"
-  | "AWSWAF";
-export const EventSource = S.Literal(
-  "CloudTrail",
-  "Route53Resolver",
-  "VPCFlow",
-  "EKSAudit",
-  "AWSWAF",
-);
-export type OCSFVersion = "V1.1" | "V1.5";
-export const OCSFVersion = S.Literal("V1.1", "V1.5");
+  | "AWSWAF"
+  | (string & {});
+export const EventSource = S.String;
+export type OCSFVersion = "V1.1" | "V1.5" | (string & {});
+export const OCSFVersion = S.String;
 export interface ParseToOCSF {
   source?: string;
   eventSource: EventSource;
@@ -2982,8 +2961,8 @@ export interface TrimString {
 export const TrimString = S.suspend(() =>
   S.Struct({ withKeys: TrimStringWithKeys }),
 ).annotations({ identifier: "TrimString" }) as any as S.Schema<TrimString>;
-export type Type = "boolean" | "integer" | "double" | "string";
-export const Type = S.Literal("boolean", "integer", "double", "string");
+export type Type = "boolean" | "integer" | "double" | "string" | (string & {});
+export const Type = S.String;
 export interface TypeConverterEntry {
   key: string;
   type: Type;
@@ -3305,38 +3284,11 @@ export type StandardUnit =
   | "Gigabits/Second"
   | "Terabits/Second"
   | "Count/Second"
-  | "None";
-export const StandardUnit = S.Literal(
-  "Seconds",
-  "Microseconds",
-  "Milliseconds",
-  "Bytes",
-  "Kilobytes",
-  "Megabytes",
-  "Gigabytes",
-  "Terabytes",
-  "Bits",
-  "Kilobits",
-  "Megabits",
-  "Gigabits",
-  "Terabits",
-  "Percent",
-  "Count",
-  "Bytes/Second",
-  "Kilobytes/Second",
-  "Megabytes/Second",
-  "Gigabytes/Second",
-  "Terabytes/Second",
-  "Bits/Second",
-  "Kilobits/Second",
-  "Megabits/Second",
-  "Gigabits/Second",
-  "Terabits/Second",
-  "Count/Second",
-  "None",
-);
-export type SuppressionUnit = "SECONDS" | "MINUTES" | "HOURS";
-export const SuppressionUnit = S.Literal("SECONDS", "MINUTES", "HOURS");
+  | "None"
+  | (string & {});
+export const StandardUnit = S.String;
+export type SuppressionUnit = "SECONDS" | "MINUTES" | "HOURS" | (string & {});
+export const SuppressionUnit = S.String;
 export interface DataSource {
   name: string;
   type?: string;
@@ -3360,15 +3312,9 @@ export type AnomalyDetectorStatus =
   | "ANALYZING"
   | "FAILED"
   | "DELETED"
-  | "PAUSED";
-export const AnomalyDetectorStatus = S.Literal(
-  "INITIALIZING",
-  "TRAINING",
-  "ANALYZING",
-  "FAILED",
-  "DELETED",
-  "PAUSED",
-);
+  | "PAUSED"
+  | (string & {});
+export const AnomalyDetectorStatus = S.String;
 export interface DeliveryDestinationConfiguration {
   destinationResourceArn: string;
 }
@@ -3883,8 +3829,8 @@ export const PutDestinationResponse = S.suspend(() =>
 ).annotations({
   identifier: "PutDestinationResponse",
 }) as any as S.Schema<PutDestinationResponse>;
-export type IndexSource = "ACCOUNT" | "LOG_GROUP";
-export const IndexSource = S.Literal("ACCOUNT", "LOG_GROUP");
+export type IndexSource = "ACCOUNT" | "LOG_GROUP" | (string & {});
+export const IndexSource = S.String;
 export interface IndexPolicy {
   logGroupIdentifier?: string;
   lastUpdateTime?: number;
@@ -4049,36 +3995,28 @@ export type OutputFormats = OutputFormat[];
 export const OutputFormats = S.Array(OutputFormat);
 export type AllowedFieldDelimiters = string[];
 export const AllowedFieldDelimiters = S.Array(S.String);
-export type IndexType = "FACET" | "FIELD_INDEX";
-export const IndexType = S.Literal("FACET", "FIELD_INDEX");
+export type IndexType = "FACET" | "FIELD_INDEX" | (string & {});
+export const IndexType = S.String;
 export type DataProtectionStatus =
   | "ACTIVATED"
   | "DELETED"
   | "ARCHIVED"
-  | "DISABLED";
-export const DataProtectionStatus = S.Literal(
-  "ACTIVATED",
-  "DELETED",
-  "ARCHIVED",
-  "DISABLED",
-);
-export type InheritedProperty = "ACCOUNT_DATA_PROTECTION";
-export const InheritedProperty = S.Literal("ACCOUNT_DATA_PROTECTION");
+  | "DISABLED"
+  | (string & {});
+export const DataProtectionStatus = S.String;
+export type InheritedProperty = "ACCOUNT_DATA_PROTECTION" | (string & {});
+export const InheritedProperty = S.String;
 export type InheritedProperties = InheritedProperty[];
 export const InheritedProperties = S.Array(InheritedProperty);
-export type State = "Active" | "Suppressed" | "Baseline";
-export const State = S.Literal("Active", "Suppressed", "Baseline");
+export type State = "Active" | "Suppressed" | "Baseline" | (string & {});
+export const State = S.String;
 export type S3TableIntegrationSourceStatus =
   | "ACTIVE"
   | "UNHEALTHY"
   | "FAILED"
-  | "DATA_SOURCE_DELETE_IN_PROGRESS";
-export const S3TableIntegrationSourceStatus = S.Literal(
-  "ACTIVE",
-  "UNHEALTHY",
-  "FAILED",
-  "DATA_SOURCE_DELETE_IN_PROGRESS",
-);
+  | "DATA_SOURCE_DELETE_IN_PROGRESS"
+  | (string & {});
+export const S3TableIntegrationSourceStatus = S.String;
 export interface OpenSearchResourceConfig {
   kmsKeyArn?: string;
   dataSourceRoleArn: string;
@@ -4609,19 +4547,15 @@ export const TransformedLogRecord = S.suspend(() =>
 }) as any as S.Schema<TransformedLogRecord>;
 export type TransformedLogs = TransformedLogRecord[];
 export const TransformedLogs = S.Array(TransformedLogRecord);
-export type ScheduledQueryDestinationType = "S3";
-export const ScheduledQueryDestinationType = S.Literal("S3");
+export type ScheduledQueryDestinationType = "S3" | (string & {});
+export const ScheduledQueryDestinationType = S.String;
 export type ActionStatus =
   | "IN_PROGRESS"
   | "CLIENT_ERROR"
   | "FAILED"
-  | "COMPLETE";
-export const ActionStatus = S.Literal(
-  "IN_PROGRESS",
-  "CLIENT_ERROR",
-  "FAILED",
-  "COMPLETE",
-);
+  | "COMPLETE"
+  | (string & {});
+export const ActionStatus = S.String;
 export interface AssociateSourceToS3TableIntegrationResponse {
   identifier?: string;
 }
@@ -5425,12 +5359,12 @@ export const MetricFilterMatchRecord = S.suspend(() =>
 }) as any as S.Schema<MetricFilterMatchRecord>;
 export type MetricFilterMatches = MetricFilterMatchRecord[];
 export const MetricFilterMatches = S.Array(MetricFilterMatchRecord);
-export type OpenSearchResourceStatusType = "ACTIVE" | "NOT_FOUND" | "ERROR";
-export const OpenSearchResourceStatusType = S.Literal(
-  "ACTIVE",
-  "NOT_FOUND",
-  "ERROR",
-);
+export type OpenSearchResourceStatusType =
+  | "ACTIVE"
+  | "NOT_FOUND"
+  | "ERROR"
+  | (string & {});
+export const OpenSearchResourceStatusType = S.String;
 export interface OpenSearchResourceStatus {
   status?: OpenSearchResourceStatusType;
   statusMessage?: string;
@@ -5718,16 +5652,9 @@ export type EntityRejectionErrorType =
   | "InvalidAttributes"
   | "EntitySizeTooLarge"
   | "UnsupportedLogGroupType"
-  | "MissingRequiredFields";
-export const EntityRejectionErrorType = S.Literal(
-  "InvalidEntity",
-  "InvalidTypeValue",
-  "InvalidKeyAttributes",
-  "InvalidAttributes",
-  "EntitySizeTooLarge",
-  "UnsupportedLogGroupType",
-  "MissingRequiredFields",
-);
+  | "MissingRequiredFields"
+  | (string & {});
+export const EntityRejectionErrorType = S.String;
 export interface LiveTailSessionUpdate {
   sessionMetadata?: LiveTailSessionMetadata;
   sessionResults?: LiveTailSessionLogEvent[];

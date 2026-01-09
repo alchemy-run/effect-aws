@@ -126,10 +126,10 @@ export type SnapshotArnsList = string[];
 export const SnapshotArnsList = S.Array(
   S.String.pipe(T.XmlName("SnapshotArn")),
 );
-export type NetworkType = "ipv4" | "ipv6" | "dual_stack";
-export const NetworkType = S.Literal("ipv4", "ipv6", "dual_stack");
-export type IpDiscovery = "ipv4" | "ipv6";
-export const IpDiscovery = S.Literal("ipv4", "ipv6");
+export type NetworkType = "ipv4" | "ipv6" | "dual_stack" | (string & {});
+export const NetworkType = S.String;
+export type IpDiscovery = "ipv4" | "ipv6" | (string & {});
+export const IpDiscovery = S.String;
 export type SubnetIdentifierList = string[];
 export const SubnetIdentifierList = S.Array(
   S.String.pipe(T.XmlName("SubnetIdentifier")),
@@ -140,34 +140,24 @@ export type SourceType =
   | "subnet-group"
   | "cluster"
   | "user"
-  | "acl";
-export const SourceType = S.Literal(
-  "node",
-  "parameter-group",
-  "subnet-group",
-  "cluster",
-  "user",
-  "acl",
-);
+  | "acl"
+  | (string & {});
+export const SourceType = S.String;
 export type ServiceUpdateStatus =
   | "available"
   | "in-progress"
   | "complete"
-  | "scheduled";
-export const ServiceUpdateStatus = S.Literal(
-  "available",
-  "in-progress",
-  "complete",
-  "scheduled",
-);
+  | "scheduled"
+  | (string & {});
+export const ServiceUpdateStatus = S.String;
 export type ServiceUpdateStatusList = ServiceUpdateStatus[];
 export const ServiceUpdateStatusList = S.Array(ServiceUpdateStatus);
 export type ParameterNameList = string[];
 export const ParameterNameList = S.Array(S.String);
 export type KeyList = string[];
 export const KeyList = S.Array(S.String);
-export type UpdateStrategy = "coordinated" | "uncoordinated";
-export const UpdateStrategy = S.Literal("coordinated", "uncoordinated");
+export type UpdateStrategy = "coordinated" | "uncoordinated" | (string & {});
+export const UpdateStrategy = S.String;
 export interface Tag {
   Key?: string;
   Value?: string;
@@ -1148,8 +1138,8 @@ export const UpdateSubnetGroupRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateSubnetGroupRequest",
 }) as any as S.Schema<UpdateSubnetGroupRequest>;
-export type InputAuthenticationType = "password" | "iam";
-export const InputAuthenticationType = S.Literal("password", "iam");
+export type InputAuthenticationType = "password" | "iam" | (string & {});
+export const InputAuthenticationType = S.String;
 export type PasswordListInput = string[];
 export const PasswordListInput = S.Array(S.String);
 export interface AuthenticationMode {
@@ -1339,8 +1329,8 @@ export type ShardList = Shard[];
 export const ShardList = S.Array(
   Shard.pipe(T.XmlName("Shard")).annotations({ identifier: "Shard" }),
 );
-export type AZStatus = "singleaz" | "multiaz";
-export const AZStatus = S.Literal("singleaz", "multiaz");
+export type AZStatus = "singleaz" | "multiaz" | (string & {});
+export const AZStatus = S.String;
 export interface SecurityGroupMembership {
   SecurityGroupId?: string;
   Status?: string;
@@ -1355,8 +1345,8 @@ export const SecurityGroupMembership = S.suspend(() =>
 }) as any as S.Schema<SecurityGroupMembership>;
 export type SecurityGroupMembershipList = SecurityGroupMembership[];
 export const SecurityGroupMembershipList = S.Array(SecurityGroupMembership);
-export type DataTieringStatus = "true" | "false";
-export const DataTieringStatus = S.Literal("true", "false");
+export type DataTieringStatus = "true" | "false" | (string & {});
+export const DataTieringStatus = S.String;
 export interface Cluster {
   Name?: string;
   Description?: string;
@@ -2114,8 +2104,12 @@ export const UpdateSubnetGroupResponse = S.suspend(() =>
 }) as any as S.Schema<UpdateSubnetGroupResponse>;
 export type ACLNameList = string[];
 export const ACLNameList = S.Array(S.String);
-export type AuthenticationType = "password" | "no-password" | "iam";
-export const AuthenticationType = S.Literal("password", "no-password", "iam");
+export type AuthenticationType =
+  | "password"
+  | "no-password"
+  | "iam"
+  | (string & {});
+export const AuthenticationType = S.String;
 export interface Authentication {
   Type?: AuthenticationType;
   PasswordCount?: number;
@@ -2156,8 +2150,8 @@ export const UpdateUserResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateUserResponse",
 }) as any as S.Schema<UpdateUserResponse>;
-export type ServiceUpdateType = "security-update";
-export const ServiceUpdateType = S.Literal("security-update");
+export type ServiceUpdateType = "security-update" | (string & {});
+export const ServiceUpdateType = S.String;
 export interface EngineVersionInfo {
   Engine?: string;
   EngineVersion?: string;

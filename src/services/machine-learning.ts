@@ -144,15 +144,15 @@ export type TaggableResourceType =
   | "BatchPrediction"
   | "DataSource"
   | "Evaluation"
-  | "MLModel";
-export const TaggableResourceType = S.Literal(
-  "BatchPrediction",
-  "DataSource",
-  "Evaluation",
-  "MLModel",
-);
-export type MLModelType = "REGRESSION" | "BINARY" | "MULTICLASS";
-export const MLModelType = S.Literal("REGRESSION", "BINARY", "MULTICLASS");
+  | "MLModel"
+  | (string & {});
+export const TaggableResourceType = S.String;
+export type MLModelType =
+  | "REGRESSION"
+  | "BINARY"
+  | "MULTICLASS"
+  | (string & {});
+export const MLModelType = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export type BatchPredictionFilterVariable =
@@ -163,34 +163,20 @@ export type BatchPredictionFilterVariable =
   | "IAMUser"
   | "MLModelId"
   | "DataSourceId"
-  | "DataURI";
-export const BatchPredictionFilterVariable = S.Literal(
-  "CreatedAt",
-  "LastUpdatedAt",
-  "Status",
-  "Name",
-  "IAMUser",
-  "MLModelId",
-  "DataSourceId",
-  "DataURI",
-);
-export type SortOrder = "asc" | "dsc";
-export const SortOrder = S.Literal("asc", "dsc");
+  | "DataURI"
+  | (string & {});
+export const BatchPredictionFilterVariable = S.String;
+export type SortOrder = "asc" | "dsc" | (string & {});
+export const SortOrder = S.String;
 export type DataSourceFilterVariable =
   | "CreatedAt"
   | "LastUpdatedAt"
   | "Status"
   | "Name"
   | "DataLocationS3"
-  | "IAMUser";
-export const DataSourceFilterVariable = S.Literal(
-  "CreatedAt",
-  "LastUpdatedAt",
-  "Status",
-  "Name",
-  "DataLocationS3",
-  "IAMUser",
-);
+  | "IAMUser"
+  | (string & {});
+export const DataSourceFilterVariable = S.String;
 export type EvaluationFilterVariable =
   | "CreatedAt"
   | "LastUpdatedAt"
@@ -199,17 +185,9 @@ export type EvaluationFilterVariable =
   | "IAMUser"
   | "MLModelId"
   | "DataSourceId"
-  | "DataURI";
-export const EvaluationFilterVariable = S.Literal(
-  "CreatedAt",
-  "LastUpdatedAt",
-  "Status",
-  "Name",
-  "IAMUser",
-  "MLModelId",
-  "DataSourceId",
-  "DataURI",
-);
+  | "DataURI"
+  | (string & {});
+export const EvaluationFilterVariable = S.String;
 export type MLModelFilterVariable =
   | "CreatedAt"
   | "LastUpdatedAt"
@@ -220,19 +198,9 @@ export type MLModelFilterVariable =
   | "RealtimeEndpointStatus"
   | "MLModelType"
   | "Algorithm"
-  | "TrainingDataURI";
-export const MLModelFilterVariable = S.Literal(
-  "CreatedAt",
-  "LastUpdatedAt",
-  "Status",
-  "Name",
-  "IAMUser",
-  "TrainingDataSourceId",
-  "RealtimeEndpointStatus",
-  "MLModelType",
-  "Algorithm",
-  "TrainingDataURI",
-);
+  | "TrainingDataURI"
+  | (string & {});
+export const MLModelFilterVariable = S.String;
 export interface CreateBatchPredictionInput {
   BatchPredictionId: string;
   BatchPredictionName?: string;
@@ -788,14 +756,9 @@ export type EntityStatus =
   | "INPROGRESS"
   | "FAILED"
   | "COMPLETED"
-  | "DELETED";
-export const EntityStatus = S.Literal(
-  "PENDING",
-  "INPROGRESS",
-  "FAILED",
-  "COMPLETED",
-  "DELETED",
-);
+  | "DELETED"
+  | (string & {});
+export const EntityStatus = S.String;
 export type Record = { [key: string]: string | undefined };
 export const Record = S.Record({
   key: S.String,
@@ -929,13 +892,13 @@ export const DeleteMLModelOutput = S.suspend(() =>
 ).annotations({
   identifier: "DeleteMLModelOutput",
 }) as any as S.Schema<DeleteMLModelOutput>;
-export type RealtimeEndpointStatus = "NONE" | "READY" | "UPDATING" | "FAILED";
-export const RealtimeEndpointStatus = S.Literal(
-  "NONE",
-  "READY",
-  "UPDATING",
-  "FAILED",
-);
+export type RealtimeEndpointStatus =
+  | "NONE"
+  | "READY"
+  | "UPDATING"
+  | "FAILED"
+  | (string & {});
+export const RealtimeEndpointStatus = S.String;
 export interface RealtimeEndpointInfo {
   PeakRequestsPerSecond?: number;
   CreatedAt?: Date;
@@ -1172,8 +1135,8 @@ export const RedshiftDatabaseCredentials = S.suspend(() =>
 ).annotations({
   identifier: "RedshiftDatabaseCredentials",
 }) as any as S.Schema<RedshiftDatabaseCredentials>;
-export type Algorithm = "sgd";
-export const Algorithm = S.Literal("sgd");
+export type Algorithm = "sgd" | (string & {});
+export const Algorithm = S.String;
 export interface RDSDataSpec {
   DatabaseInformation: RDSDatabase;
   SelectSqlQuery: string;
@@ -1633,8 +1596,11 @@ export const GetDataSourceOutput = S.suspend(() =>
 ).annotations({
   identifier: "GetDataSourceOutput",
 }) as any as S.Schema<GetDataSourceOutput>;
-export type DetailsAttributes = "PredictiveModelType" | "Algorithm";
-export const DetailsAttributes = S.Literal("PredictiveModelType", "Algorithm");
+export type DetailsAttributes =
+  | "PredictiveModelType"
+  | "Algorithm"
+  | (string & {});
+export const DetailsAttributes = S.String;
 export interface CreateDataSourceFromRDSOutput {
   DataSourceId?: string;
 }

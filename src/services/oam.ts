@@ -107,16 +107,9 @@ export type ResourceType =
   | "AWS::ApplicationInsights::Application"
   | "AWS::InternetMonitor::Monitor"
   | "AWS::ApplicationSignals::Service"
-  | "AWS::ApplicationSignals::ServiceLevelObjective";
-export const ResourceType = S.Literal(
-  "AWS::CloudWatch::Metric",
-  "AWS::Logs::LogGroup",
-  "AWS::XRay::Trace",
-  "AWS::ApplicationInsights::Application",
-  "AWS::InternetMonitor::Monitor",
-  "AWS::ApplicationSignals::Service",
-  "AWS::ApplicationSignals::ServiceLevelObjective",
-);
+  | "AWS::ApplicationSignals::ServiceLevelObjective"
+  | (string & {});
+export const ResourceType = S.String;
 export type ResourceTypesInput = ResourceType[];
 export const ResourceTypesInput = S.Array(ResourceType);
 export type TagKeys = string[];

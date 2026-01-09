@@ -81,8 +81,8 @@ export type SessionKey = string | redacted.Redacted<string>;
 export type SessionValue = string | redacted.Redacted<string>;
 
 //# Schemas
-export type PolicyType = "AWS_MANAGED" | "AWS_RAM";
-export const PolicyType = S.Literal("AWS_MANAGED", "AWS_RAM");
+export type PolicyType = "AWS_MANAGED" | "AWS_RAM" | (string & {});
+export const PolicyType = S.String;
 export type TagKeyList = string | redacted.Redacted<string>[];
 export const TagKeyList = S.Array(SensitiveString);
 export interface GetPolicyVersionRequest {
@@ -484,15 +484,9 @@ export type FilterField =
   | "VotingTime"
   | "Vote"
   | "SessionStatus"
-  | "InitiationTime";
-export const FilterField = S.Literal(
-  "ActionName",
-  "ApprovalTeamName",
-  "VotingTime",
-  "Vote",
-  "SessionStatus",
-  "InitiationTime",
-);
+  | "InitiationTime"
+  | (string & {});
+export const FilterField = S.String;
 export type Operator =
   | "EQ"
   | "NE"
@@ -502,18 +496,9 @@ export type Operator =
   | "LTE"
   | "CONTAINS"
   | "NOT_CONTAINS"
-  | "BETWEEN";
-export const Operator = S.Literal(
-  "EQ",
-  "NE",
-  "GT",
-  "LT",
-  "GTE",
-  "LTE",
-  "CONTAINS",
-  "NOT_CONTAINS",
-  "BETWEEN",
-);
+  | "BETWEEN"
+  | (string & {});
+export const Operator = S.String;
 export type Tags = {
   [key: string]: string | redacted.Redacted<string> | undefined;
 };
@@ -531,13 +516,13 @@ export const PolicyReference = S.suspend(() =>
 }) as any as S.Schema<PolicyReference>;
 export type PoliciesReferences = PolicyReference[];
 export const PoliciesReferences = S.Array(PolicyReference);
-export type ApprovalTeamStatus = "ACTIVE" | "INACTIVE" | "DELETING" | "PENDING";
-export const ApprovalTeamStatus = S.Literal(
-  "ACTIVE",
-  "INACTIVE",
-  "DELETING",
-  "PENDING",
-);
+export type ApprovalTeamStatus =
+  | "ACTIVE"
+  | "INACTIVE"
+  | "DELETING"
+  | "PENDING"
+  | (string & {});
+export const ApprovalTeamStatus = S.String;
 export type ApprovalTeamStatusCode =
   | "VALIDATING"
   | "PENDING_ACTIVATION"
@@ -550,73 +535,49 @@ export type ApprovalTeamStatusCode =
   | "UPDATE_FAILED_VALIDATION"
   | "DELETE_PENDING_APPROVAL"
   | "DELETE_FAILED_APPROVAL"
-  | "DELETE_FAILED_VALIDATION";
-export const ApprovalTeamStatusCode = S.Literal(
-  "VALIDATING",
-  "PENDING_ACTIVATION",
-  "FAILED_VALIDATION",
-  "FAILED_ACTIVATION",
-  "UPDATE_PENDING_APPROVAL",
-  "UPDATE_PENDING_ACTIVATION",
-  "UPDATE_FAILED_APPROVAL",
-  "UPDATE_FAILED_ACTIVATION",
-  "UPDATE_FAILED_VALIDATION",
-  "DELETE_PENDING_APPROVAL",
-  "DELETE_FAILED_APPROVAL",
-  "DELETE_FAILED_VALIDATION",
-);
-export type IdentitySourceType = "IAM_IDENTITY_CENTER";
-export const IdentitySourceType = S.Literal("IAM_IDENTITY_CENTER");
-export type IdentitySourceStatus = "CREATING" | "ACTIVE" | "DELETING" | "ERROR";
-export const IdentitySourceStatus = S.Literal(
-  "CREATING",
-  "ACTIVE",
-  "DELETING",
-  "ERROR",
-);
+  | "DELETE_FAILED_VALIDATION"
+  | (string & {});
+export const ApprovalTeamStatusCode = S.String;
+export type IdentitySourceType = "IAM_IDENTITY_CENTER" | (string & {});
+export const IdentitySourceType = S.String;
+export type IdentitySourceStatus =
+  | "CREATING"
+  | "ACTIVE"
+  | "DELETING"
+  | "ERROR"
+  | (string & {});
+export const IdentitySourceStatus = S.String;
 export type IdentitySourceStatusCode =
   | "ACCESS_DENIED"
   | "DELETION_FAILED"
   | "IDC_INSTANCE_NOT_FOUND"
-  | "IDC_INSTANCE_NOT_VALID";
-export const IdentitySourceStatusCode = S.Literal(
-  "ACCESS_DENIED",
-  "DELETION_FAILED",
-  "IDC_INSTANCE_NOT_FOUND",
-  "IDC_INSTANCE_NOT_VALID",
-);
+  | "IDC_INSTANCE_NOT_VALID"
+  | (string & {});
+export const IdentitySourceStatusCode = S.String;
 export type SessionStatus =
   | "PENDING"
   | "CANCELLED"
   | "APPROVED"
   | "FAILED"
-  | "CREATING";
-export const SessionStatus = S.Literal(
-  "PENDING",
-  "CANCELLED",
-  "APPROVED",
-  "FAILED",
-  "CREATING",
-);
+  | "CREATING"
+  | (string & {});
+export const SessionStatus = S.String;
 export type SessionStatusCode =
   | "REJECTED"
   | "EXPIRED"
-  | "CONFIGURATION_CHANGED";
-export const SessionStatusCode = S.Literal(
-  "REJECTED",
-  "EXPIRED",
-  "CONFIGURATION_CHANGED",
-);
-export type SessionExecutionStatus = "EXECUTED" | "FAILED" | "PENDING";
-export const SessionExecutionStatus = S.Literal(
-  "EXECUTED",
-  "FAILED",
-  "PENDING",
-);
-export type ActionCompletionStrategy = "AUTO_COMPLETION_UPON_APPROVAL";
-export const ActionCompletionStrategy = S.Literal(
-  "AUTO_COMPLETION_UPON_APPROVAL",
-);
+  | "CONFIGURATION_CHANGED"
+  | (string & {});
+export const SessionStatusCode = S.String;
+export type SessionExecutionStatus =
+  | "EXECUTED"
+  | "FAILED"
+  | "PENDING"
+  | (string & {});
+export const SessionExecutionStatus = S.String;
+export type ActionCompletionStrategy =
+  | "AUTO_COMPLETION_UPON_APPROVAL"
+  | (string & {});
+export const ActionCompletionStrategy = S.String;
 export interface Filter {
   FieldName?: FilterField;
   Operator?: Operator;
@@ -732,15 +693,15 @@ export const ListSessionsRequest = S.suspend(() =>
 ).annotations({
   identifier: "ListSessionsRequest",
 }) as any as S.Schema<ListSessionsRequest>;
-export type PolicyStatus = "ATTACHABLE" | "DEPRECATED";
-export const PolicyStatus = S.Literal("ATTACHABLE", "DEPRECATED");
-export type IdentityStatus = "PENDING" | "ACCEPTED" | "REJECTED" | "INVALID";
-export const IdentityStatus = S.Literal(
-  "PENDING",
-  "ACCEPTED",
-  "REJECTED",
-  "INVALID",
-);
+export type PolicyStatus = "ATTACHABLE" | "DEPRECATED" | (string & {});
+export const PolicyStatus = S.String;
+export type IdentityStatus =
+  | "PENDING"
+  | "ACCEPTED"
+  | "REJECTED"
+  | "INVALID"
+  | (string & {});
+export const IdentityStatus = S.String;
 export interface IamIdentityCenter {
   InstanceArn: string;
   Region: string;
@@ -750,8 +711,12 @@ export const IamIdentityCenter = S.suspend(() =>
 ).annotations({
   identifier: "IamIdentityCenter",
 }) as any as S.Schema<IamIdentityCenter>;
-export type SessionResponse = "APPROVED" | "REJECTED" | "NO_RESPONSE";
-export const SessionResponse = S.Literal("APPROVED", "REJECTED", "NO_RESPONSE");
+export type SessionResponse =
+  | "APPROVED"
+  | "REJECTED"
+  | "NO_RESPONSE"
+  | (string & {});
+export const SessionResponse = S.String;
 export interface PolicyVersion {
   Arn: string;
   PolicyArn: string;

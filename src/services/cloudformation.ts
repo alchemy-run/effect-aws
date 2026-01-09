@@ -341,74 +341,72 @@ export const DeactivateOrganizationsAccessOutput = S.suspend(() =>
 ).annotations({
   identifier: "DeactivateOrganizationsAccessOutput",
 }) as any as S.Schema<DeactivateOrganizationsAccessOutput>;
-export type ThirdPartyType = "RESOURCE" | "MODULE" | "HOOK";
-export const ThirdPartyType = S.Literal("RESOURCE", "MODULE", "HOOK");
-export type VersionBump = "MAJOR" | "MINOR";
-export const VersionBump = S.Literal("MAJOR", "MINOR");
+export type ThirdPartyType = "RESOURCE" | "MODULE" | "HOOK" | (string & {});
+export const ThirdPartyType = S.String;
+export type VersionBump = "MAJOR" | "MINOR" | (string & {});
+export const VersionBump = S.String;
 export type ResourcesToSkip = string[];
 export const ResourcesToSkip = S.Array(S.String);
 export type Capability =
   | "CAPABILITY_IAM"
   | "CAPABILITY_NAMED_IAM"
-  | "CAPABILITY_AUTO_EXPAND";
-export const Capability = S.Literal(
-  "CAPABILITY_IAM",
-  "CAPABILITY_NAMED_IAM",
-  "CAPABILITY_AUTO_EXPAND",
-);
+  | "CAPABILITY_AUTO_EXPAND"
+  | (string & {});
+export const Capability = S.String;
 export type Capabilities = Capability[];
 export const Capabilities = S.Array(Capability);
 export type ResourceTypes = string[];
 export const ResourceTypes = S.Array(S.String);
 export type NotificationARNs = string[];
 export const NotificationARNs = S.Array(S.String);
-export type ChangeSetType = "CREATE" | "UPDATE" | "IMPORT";
-export const ChangeSetType = S.Literal("CREATE", "UPDATE", "IMPORT");
-export type OnStackFailure = "DO_NOTHING" | "ROLLBACK" | "DELETE";
-export const OnStackFailure = S.Literal("DO_NOTHING", "ROLLBACK", "DELETE");
-export type DeploymentMode = "REVERT_DRIFT";
-export const DeploymentMode = S.Literal("REVERT_DRIFT");
-export type OnFailure = "DO_NOTHING" | "ROLLBACK" | "DELETE";
-export const OnFailure = S.Literal("DO_NOTHING", "ROLLBACK", "DELETE");
+export type ChangeSetType = "CREATE" | "UPDATE" | "IMPORT" | (string & {});
+export const ChangeSetType = S.String;
+export type OnStackFailure =
+  | "DO_NOTHING"
+  | "ROLLBACK"
+  | "DELETE"
+  | (string & {});
+export const OnStackFailure = S.String;
+export type DeploymentMode = "REVERT_DRIFT" | (string & {});
+export const DeploymentMode = S.String;
+export type OnFailure = "DO_NOTHING" | "ROLLBACK" | "DELETE" | (string & {});
+export const OnFailure = S.String;
 export type AccountList = string[];
 export const AccountList = S.Array(S.String);
 export type RegionList = string[];
 export const RegionList = S.Array(S.String);
-export type CallAs = "SELF" | "DELEGATED_ADMIN";
-export const CallAs = S.Literal("SELF", "DELEGATED_ADMIN");
-export type PermissionModels = "SERVICE_MANAGED" | "SELF_MANAGED";
-export const PermissionModels = S.Literal("SERVICE_MANAGED", "SELF_MANAGED");
+export type CallAs = "SELF" | "DELEGATED_ADMIN" | (string & {});
+export const CallAs = S.String;
+export type PermissionModels =
+  | "SERVICE_MANAGED"
+  | "SELF_MANAGED"
+  | (string & {});
+export const PermissionModels = S.String;
 export type RetainResources = string[];
 export const RetainResources = S.Array(S.String);
-export type DeletionMode = "STANDARD" | "FORCE_DELETE_STACK";
-export const DeletionMode = S.Literal("STANDARD", "FORCE_DELETE_STACK");
-export type RegistryType = "RESOURCE" | "MODULE" | "HOOK";
-export const RegistryType = S.Literal("RESOURCE", "MODULE", "HOOK");
+export type DeletionMode = "STANDARD" | "FORCE_DELETE_STACK" | (string & {});
+export const DeletionMode = S.String;
+export type RegistryType = "RESOURCE" | "MODULE" | "HOOK" | (string & {});
+export const RegistryType = S.String;
 export type StackResourceDriftStatus =
   | "IN_SYNC"
   | "MODIFIED"
   | "DELETED"
   | "NOT_CHECKED"
   | "UNKNOWN"
-  | "UNSUPPORTED";
-export const StackResourceDriftStatus = S.Literal(
-  "IN_SYNC",
-  "MODIFIED",
-  "DELETED",
-  "NOT_CHECKED",
-  "UNKNOWN",
-  "UNSUPPORTED",
-);
+  | "UNSUPPORTED"
+  | (string & {});
+export const StackResourceDriftStatus = S.String;
 export type StackResourceDriftStatusFilters = StackResourceDriftStatus[];
 export const StackResourceDriftStatusFilters = S.Array(
   StackResourceDriftStatus,
 );
 export type LogicalResourceIds = string[];
 export const LogicalResourceIds = S.Array(S.String);
-export type TemplateFormat = "JSON" | "YAML";
-export const TemplateFormat = S.Literal("JSON", "YAML");
-export type TemplateStage = "Original" | "Processed";
-export const TemplateStage = S.Literal("Original", "Processed");
+export type TemplateFormat = "JSON" | "YAML" | (string & {});
+export const TemplateFormat = S.String;
+export type TemplateStage = "Original" | "Processed" | (string & {});
+export const TemplateStage = S.String;
 export type StackIdList = string[];
 export const StackIdList = S.Array(S.String);
 export type OrganizationalUnitIdList = string[];
@@ -417,26 +415,18 @@ export type ListHookResultsTargetType =
   | "CHANGE_SET"
   | "STACK"
   | "RESOURCE"
-  | "CLOUD_CONTROL";
-export const ListHookResultsTargetType = S.Literal(
-  "CHANGE_SET",
-  "STACK",
-  "RESOURCE",
-  "CLOUD_CONTROL",
-);
+  | "CLOUD_CONTROL"
+  | (string & {});
+export const ListHookResultsTargetType = S.String;
 export type HookStatus =
   | "HOOK_IN_PROGRESS"
   | "HOOK_COMPLETE_SUCCEEDED"
   | "HOOK_COMPLETE_FAILED"
-  | "HOOK_FAILED";
-export const HookStatus = S.Literal(
-  "HOOK_IN_PROGRESS",
-  "HOOK_COMPLETE_SUCCEEDED",
-  "HOOK_COMPLETE_FAILED",
-  "HOOK_FAILED",
-);
-export type ScanType = "FULL" | "PARTIAL";
-export const ScanType = S.Literal("FULL", "PARTIAL");
+  | "HOOK_FAILED"
+  | (string & {});
+export const HookStatus = S.String;
+export type ScanType = "FULL" | "PARTIAL" | (string & {});
+export const ScanType = S.String;
 export type StackRefactorExecutionStatus =
   | "UNAVAILABLE"
   | "AVAILABLE"
@@ -446,18 +436,9 @@ export type StackRefactorExecutionStatus =
   | "EXECUTE_FAILED"
   | "ROLLBACK_IN_PROGRESS"
   | "ROLLBACK_COMPLETE"
-  | "ROLLBACK_FAILED";
-export const StackRefactorExecutionStatus = S.Literal(
-  "UNAVAILABLE",
-  "AVAILABLE",
-  "OBSOLETE",
-  "EXECUTE_IN_PROGRESS",
-  "EXECUTE_COMPLETE",
-  "EXECUTE_FAILED",
-  "ROLLBACK_IN_PROGRESS",
-  "ROLLBACK_COMPLETE",
-  "ROLLBACK_FAILED",
-);
+  | "ROLLBACK_FAILED"
+  | (string & {});
+export const StackRefactorExecutionStatus = S.String;
 export type StackRefactorExecutionStatusFilter = StackRefactorExecutionStatus[];
 export const StackRefactorExecutionStatusFilter = S.Array(
   StackRefactorExecutionStatus,
@@ -485,62 +466,36 @@ export type StackStatus =
   | "IMPORT_COMPLETE"
   | "IMPORT_ROLLBACK_IN_PROGRESS"
   | "IMPORT_ROLLBACK_FAILED"
-  | "IMPORT_ROLLBACK_COMPLETE";
-export const StackStatus = S.Literal(
-  "CREATE_IN_PROGRESS",
-  "CREATE_FAILED",
-  "CREATE_COMPLETE",
-  "ROLLBACK_IN_PROGRESS",
-  "ROLLBACK_FAILED",
-  "ROLLBACK_COMPLETE",
-  "DELETE_IN_PROGRESS",
-  "DELETE_FAILED",
-  "DELETE_COMPLETE",
-  "UPDATE_IN_PROGRESS",
-  "UPDATE_COMPLETE_CLEANUP_IN_PROGRESS",
-  "UPDATE_COMPLETE",
-  "UPDATE_FAILED",
-  "UPDATE_ROLLBACK_IN_PROGRESS",
-  "UPDATE_ROLLBACK_FAILED",
-  "UPDATE_ROLLBACK_COMPLETE_CLEANUP_IN_PROGRESS",
-  "UPDATE_ROLLBACK_COMPLETE",
-  "REVIEW_IN_PROGRESS",
-  "IMPORT_IN_PROGRESS",
-  "IMPORT_COMPLETE",
-  "IMPORT_ROLLBACK_IN_PROGRESS",
-  "IMPORT_ROLLBACK_FAILED",
-  "IMPORT_ROLLBACK_COMPLETE",
-);
+  | "IMPORT_ROLLBACK_COMPLETE"
+  | (string & {});
+export const StackStatus = S.String;
 export type StackStatusFilter = StackStatus[];
 export const StackStatusFilter = S.Array(StackStatus);
-export type StackSetStatus = "ACTIVE" | "DELETED";
-export const StackSetStatus = S.Literal("ACTIVE", "DELETED");
-export type RegistrationStatus = "COMPLETE" | "IN_PROGRESS" | "FAILED";
-export const RegistrationStatus = S.Literal(
-  "COMPLETE",
-  "IN_PROGRESS",
-  "FAILED",
-);
-export type Visibility = "PUBLIC" | "PRIVATE";
-export const Visibility = S.Literal("PUBLIC", "PRIVATE");
+export type StackSetStatus = "ACTIVE" | "DELETED" | (string & {});
+export const StackSetStatus = S.String;
+export type RegistrationStatus =
+  | "COMPLETE"
+  | "IN_PROGRESS"
+  | "FAILED"
+  | (string & {});
+export const RegistrationStatus = S.String;
+export type Visibility = "PUBLIC" | "PRIVATE" | (string & {});
+export const Visibility = S.String;
 export type ProvisioningType =
   | "NON_PROVISIONABLE"
   | "IMMUTABLE"
-  | "FULLY_MUTABLE";
-export const ProvisioningType = S.Literal(
-  "NON_PROVISIONABLE",
-  "IMMUTABLE",
-  "FULLY_MUTABLE",
-);
-export type DeprecatedStatus = "LIVE" | "DEPRECATED";
-export const DeprecatedStatus = S.Literal("LIVE", "DEPRECATED");
-export type OperationStatus = "PENDING" | "IN_PROGRESS" | "SUCCESS" | "FAILED";
-export const OperationStatus = S.Literal(
-  "PENDING",
-  "IN_PROGRESS",
-  "SUCCESS",
-  "FAILED",
-);
+  | "FULLY_MUTABLE"
+  | (string & {});
+export const ProvisioningType = S.String;
+export type DeprecatedStatus = "LIVE" | "DEPRECATED" | (string & {});
+export const DeprecatedStatus = S.String;
+export type OperationStatus =
+  | "PENDING"
+  | "IN_PROGRESS"
+  | "SUCCESS"
+  | "FAILED"
+  | (string & {});
+export const OperationStatus = S.String;
 export type HandlerErrorCode =
   | "NotUpdatable"
   | "InvalidRequest"
@@ -560,30 +515,11 @@ export type HandlerErrorCode =
   | "HandlerInternalFailure"
   | "NonCompliant"
   | "Unknown"
-  | "UnsupportedTarget";
-export const HandlerErrorCode = S.Literal(
-  "NotUpdatable",
-  "InvalidRequest",
-  "AccessDenied",
-  "InvalidCredentials",
-  "AlreadyExists",
-  "NotFound",
-  "ResourceConflict",
-  "Throttling",
-  "ServiceLimitExceeded",
-  "NotStabilized",
-  "GeneralServiceException",
-  "ServiceInternalError",
-  "NetworkFailure",
-  "InternalFailure",
-  "InvalidTypeConfiguration",
-  "HandlerInternalFailure",
-  "NonCompliant",
-  "Unknown",
-  "UnsupportedTarget",
-);
-export type ResourceSignalStatus = "SUCCESS" | "FAILURE";
-export const ResourceSignalStatus = S.Literal("SUCCESS", "FAILURE");
+  | "UnsupportedTarget"
+  | (string & {});
+export const HandlerErrorCode = S.String;
+export type ResourceSignalStatus = "SUCCESS" | "FAILURE" | (string & {});
+export const ResourceSignalStatus = S.String;
 export type JazzLogicalResourceIds = string[];
 export const JazzLogicalResourceIds = S.Array(S.String);
 export interface CancelUpdateStackInput {
@@ -868,13 +804,9 @@ export type AccountFilterType =
   | "NONE"
   | "INTERSECTION"
   | "DIFFERENCE"
-  | "UNION";
-export const AccountFilterType = S.Literal(
-  "NONE",
-  "INTERSECTION",
-  "DIFFERENCE",
-  "UNION",
-);
+  | "UNION"
+  | (string & {});
+export const AccountFilterType = S.String;
 export interface DeploymentTargets {
   Accounts?: string[];
   AccountsUrl?: string;
@@ -891,15 +823,13 @@ export const DeploymentTargets = S.suspend(() =>
 ).annotations({
   identifier: "DeploymentTargets",
 }) as any as S.Schema<DeploymentTargets>;
-export type RegionConcurrencyType = "SEQUENTIAL" | "PARALLEL";
-export const RegionConcurrencyType = S.Literal("SEQUENTIAL", "PARALLEL");
+export type RegionConcurrencyType = "SEQUENTIAL" | "PARALLEL" | (string & {});
+export const RegionConcurrencyType = S.String;
 export type ConcurrencyMode =
   | "STRICT_FAILURE_TOLERANCE"
-  | "SOFT_FAILURE_TOLERANCE";
-export const ConcurrencyMode = S.Literal(
-  "STRICT_FAILURE_TOLERANCE",
-  "SOFT_FAILURE_TOLERANCE",
-);
+  | "SOFT_FAILURE_TOLERANCE"
+  | (string & {});
+export const ConcurrencyMode = S.String;
 export interface StackSetOperationPreferences {
   RegionConcurrencyType?: RegionConcurrencyType;
   RegionOrder?: string[];
@@ -2491,13 +2421,16 @@ export const ResourceDefinition = S.suspend(() =>
 }) as any as S.Schema<ResourceDefinition>;
 export type ResourceDefinitions = ResourceDefinition[];
 export const ResourceDefinitions = S.Array(ResourceDefinition);
-export type GeneratedTemplateDeletionPolicy = "DELETE" | "RETAIN";
-export const GeneratedTemplateDeletionPolicy = S.Literal("DELETE", "RETAIN");
-export type GeneratedTemplateUpdateReplacePolicy = "DELETE" | "RETAIN";
-export const GeneratedTemplateUpdateReplacePolicy = S.Literal(
-  "DELETE",
-  "RETAIN",
-);
+export type GeneratedTemplateDeletionPolicy =
+  | "DELETE"
+  | "RETAIN"
+  | (string & {});
+export const GeneratedTemplateDeletionPolicy = S.String;
+export type GeneratedTemplateUpdateReplacePolicy =
+  | "DELETE"
+  | "RETAIN"
+  | (string & {});
+export const GeneratedTemplateUpdateReplacePolicy = S.String;
 export interface TemplateConfiguration {
   DeletionPolicy?: GeneratedTemplateDeletionPolicy;
   UpdateReplacePolicy?: GeneratedTemplateUpdateReplacePolicy;
@@ -2755,21 +2688,20 @@ export const ValidateTemplateInput = S.suspend(() =>
 export type StackInstanceFilterName =
   | "DETAILED_STATUS"
   | "LAST_OPERATION_ID"
-  | "DRIFT_STATUS";
-export const StackInstanceFilterName = S.Literal(
-  "DETAILED_STATUS",
-  "LAST_OPERATION_ID",
-  "DRIFT_STATUS",
-);
-export type OperationResultFilterName = "OPERATION_RESULT_STATUS";
-export const OperationResultFilterName = S.Literal("OPERATION_RESULT_STATUS");
-export type Category = "REGISTERED" | "ACTIVATED" | "THIRD_PARTY" | "AWS_TYPES";
-export const Category = S.Literal(
-  "REGISTERED",
-  "ACTIVATED",
-  "THIRD_PARTY",
-  "AWS_TYPES",
-);
+  | "DRIFT_STATUS"
+  | (string & {});
+export const StackInstanceFilterName = S.String;
+export type OperationResultFilterName =
+  | "OPERATION_RESULT_STATUS"
+  | (string & {});
+export const OperationResultFilterName = S.String;
+export type Category =
+  | "REGISTERED"
+  | "ACTIVATED"
+  | "THIRD_PARTY"
+  | "AWS_TYPES"
+  | (string & {});
+export const Category = S.String;
 export type ResourceTypeFilters = string[];
 export const ResourceTypeFilters = S.Array(S.String);
 export interface TypeConfigurationIdentifier {
@@ -2816,15 +2748,9 @@ export type ExecutionStatus =
   | "EXECUTE_IN_PROGRESS"
   | "EXECUTE_COMPLETE"
   | "EXECUTE_FAILED"
-  | "OBSOLETE";
-export const ExecutionStatus = S.Literal(
-  "UNAVAILABLE",
-  "AVAILABLE",
-  "EXECUTE_IN_PROGRESS",
-  "EXECUTE_COMPLETE",
-  "EXECUTE_FAILED",
-  "OBSOLETE",
-);
+  | "OBSOLETE"
+  | (string & {});
+export const ExecutionStatus = S.String;
 export type ChangeSetStatus =
   | "CREATE_PENDING"
   | "CREATE_IN_PROGRESS"
@@ -2833,34 +2759,22 @@ export type ChangeSetStatus =
   | "DELETE_IN_PROGRESS"
   | "DELETE_COMPLETE"
   | "DELETE_FAILED"
-  | "FAILED";
-export const ChangeSetStatus = S.Literal(
-  "CREATE_PENDING",
-  "CREATE_IN_PROGRESS",
-  "CREATE_COMPLETE",
-  "DELETE_PENDING",
-  "DELETE_IN_PROGRESS",
-  "DELETE_COMPLETE",
-  "DELETE_FAILED",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const ChangeSetStatus = S.String;
 export type StackDriftStatus =
   | "DRIFTED"
   | "IN_SYNC"
   | "UNKNOWN"
-  | "NOT_CHECKED";
-export const StackDriftStatus = S.Literal(
-  "DRIFTED",
-  "IN_SYNC",
-  "UNKNOWN",
-  "NOT_CHECKED",
-);
-export type ChangeSetHooksStatus = "PLANNING" | "PLANNED" | "UNAVAILABLE";
-export const ChangeSetHooksStatus = S.Literal(
-  "PLANNING",
-  "PLANNED",
-  "UNAVAILABLE",
-);
+  | "NOT_CHECKED"
+  | (string & {});
+export const StackDriftStatus = S.String;
+export type ChangeSetHooksStatus =
+  | "PLANNING"
+  | "PLANNED"
+  | "UNAVAILABLE"
+  | (string & {});
+export const ChangeSetHooksStatus = S.String;
 export interface EventFilter {
   FailedEvents?: boolean;
 }
@@ -2875,54 +2789,36 @@ export type GeneratedTemplateStatus =
   | "UPDATE_IN_PROGRESS"
   | "DELETE_IN_PROGRESS"
   | "FAILED"
-  | "COMPLETE";
-export const GeneratedTemplateStatus = S.Literal(
-  "CREATE_PENDING",
-  "UPDATE_PENDING",
-  "DELETE_PENDING",
-  "CREATE_IN_PROGRESS",
-  "UPDATE_IN_PROGRESS",
-  "DELETE_IN_PROGRESS",
-  "FAILED",
-  "COMPLETE",
-);
+  | "COMPLETE"
+  | (string & {});
+export const GeneratedTemplateStatus = S.String;
 export type OrganizationStatus =
   | "ENABLED"
   | "DISABLED"
-  | "DISABLED_PERMANENTLY";
-export const OrganizationStatus = S.Literal(
-  "ENABLED",
-  "DISABLED",
-  "DISABLED_PERMANENTLY",
-);
-export type PublisherStatus = "VERIFIED" | "UNVERIFIED";
-export const PublisherStatus = S.Literal("VERIFIED", "UNVERIFIED");
-export type IdentityProvider = "AWS_Marketplace" | "GitHub" | "Bitbucket";
-export const IdentityProvider = S.Literal(
-  "AWS_Marketplace",
-  "GitHub",
-  "Bitbucket",
-);
+  | "DISABLED_PERMANENTLY"
+  | (string & {});
+export const OrganizationStatus = S.String;
+export type PublisherStatus = "VERIFIED" | "UNVERIFIED" | (string & {});
+export const PublisherStatus = S.String;
+export type IdentityProvider =
+  | "AWS_Marketplace"
+  | "GitHub"
+  | "Bitbucket"
+  | (string & {});
+export const IdentityProvider = S.String;
 export type ResourceScanStatus =
   | "IN_PROGRESS"
   | "FAILED"
   | "COMPLETE"
-  | "EXPIRED";
-export const ResourceScanStatus = S.Literal(
-  "IN_PROGRESS",
-  "FAILED",
-  "COMPLETE",
-  "EXPIRED",
-);
+  | "EXPIRED"
+  | (string & {});
+export const ResourceScanStatus = S.String;
 export type StackDriftDetectionStatus =
   | "DETECTION_IN_PROGRESS"
   | "DETECTION_FAILED"
-  | "DETECTION_COMPLETE";
-export const StackDriftDetectionStatus = S.Literal(
-  "DETECTION_IN_PROGRESS",
-  "DETECTION_FAILED",
-  "DETECTION_COMPLETE",
-);
+  | "DETECTION_COMPLETE"
+  | (string & {});
+export const StackDriftDetectionStatus = S.String;
 export type StackIds = string[];
 export const StackIds = S.Array(S.String);
 export type StackRefactorStatus =
@@ -2931,30 +2827,20 @@ export type StackRefactorStatus =
   | "CREATE_FAILED"
   | "DELETE_IN_PROGRESS"
   | "DELETE_COMPLETE"
-  | "DELETE_FAILED";
-export const StackRefactorStatus = S.Literal(
-  "CREATE_IN_PROGRESS",
-  "CREATE_COMPLETE",
-  "CREATE_FAILED",
-  "DELETE_IN_PROGRESS",
-  "DELETE_COMPLETE",
-  "DELETE_FAILED",
-);
+  | "DELETE_FAILED"
+  | (string & {});
+export const StackRefactorStatus = S.String;
 export type TypeTestsStatus =
   | "PASSED"
   | "FAILED"
   | "IN_PROGRESS"
-  | "NOT_TESTED";
-export const TypeTestsStatus = S.Literal(
-  "PASSED",
-  "FAILED",
-  "IN_PROGRESS",
-  "NOT_TESTED",
-);
-export type HookInvocationPoint = "PRE_PROVISION";
-export const HookInvocationPoint = S.Literal("PRE_PROVISION");
-export type HookFailureMode = "FAIL" | "WARN";
-export const HookFailureMode = S.Literal("FAIL", "WARN");
+  | "NOT_TESTED"
+  | (string & {});
+export const TypeTestsStatus = S.String;
+export type HookInvocationPoint = "PRE_PROVISION" | (string & {});
+export const HookInvocationPoint = S.String;
+export type HookFailureMode = "FAIL" | "WARN" | (string & {});
+export const HookFailureMode = S.String;
 export type StageList = TemplateStage[];
 export const StageList = S.Array(TemplateStage);
 export interface TemplateSummaryConfig {
@@ -3366,8 +3252,8 @@ export type PhysicalResourceIdContext = PhysicalResourceIdContextKeyValuePair[];
 export const PhysicalResourceIdContext = S.Array(
   PhysicalResourceIdContextKeyValuePair,
 );
-export type DifferenceType = "ADD" | "REMOVE" | "NOT_EQUAL";
-export const DifferenceType = S.Literal("ADD", "REMOVE", "NOT_EQUAL");
+export type DifferenceType = "ADD" | "REMOVE" | "NOT_EQUAL" | (string & {});
+export const DifferenceType = S.String;
 export interface PropertyDifference {
   PropertyPath?: string;
   ExpectedValue?: string;
@@ -3786,19 +3672,15 @@ export const ResourceLocation = S.suspend(() =>
 ).annotations({
   identifier: "ResourceLocation",
 }) as any as S.Schema<ResourceLocation>;
-export type ChangeType = "Resource";
-export const ChangeType = S.Literal("Resource");
+export type ChangeType = "Resource" | (string & {});
+export const ChangeType = S.String;
 export type GeneratedTemplateResourceStatus =
   | "PENDING"
   | "IN_PROGRESS"
   | "FAILED"
-  | "COMPLETE";
-export const GeneratedTemplateResourceStatus = S.Literal(
-  "PENDING",
-  "IN_PROGRESS",
-  "FAILED",
-  "COMPLETE",
-);
+  | "COMPLETE"
+  | (string & {});
+export const GeneratedTemplateResourceStatus = S.String;
 export type ResourceStatus =
   | "CREATE_IN_PROGRESS"
   | "CREATE_FAILED"
@@ -3827,100 +3709,57 @@ export type ResourceStatus =
   | "UPDATE_ROLLBACK_FAILED"
   | "ROLLBACK_IN_PROGRESS"
   | "ROLLBACK_COMPLETE"
-  | "ROLLBACK_FAILED";
-export const ResourceStatus = S.Literal(
-  "CREATE_IN_PROGRESS",
-  "CREATE_FAILED",
-  "CREATE_COMPLETE",
-  "DELETE_IN_PROGRESS",
-  "DELETE_FAILED",
-  "DELETE_COMPLETE",
-  "DELETE_SKIPPED",
-  "UPDATE_IN_PROGRESS",
-  "UPDATE_FAILED",
-  "UPDATE_COMPLETE",
-  "IMPORT_FAILED",
-  "IMPORT_COMPLETE",
-  "IMPORT_IN_PROGRESS",
-  "IMPORT_ROLLBACK_IN_PROGRESS",
-  "IMPORT_ROLLBACK_FAILED",
-  "IMPORT_ROLLBACK_COMPLETE",
-  "EXPORT_FAILED",
-  "EXPORT_COMPLETE",
-  "EXPORT_IN_PROGRESS",
-  "EXPORT_ROLLBACK_IN_PROGRESS",
-  "EXPORT_ROLLBACK_FAILED",
-  "EXPORT_ROLLBACK_COMPLETE",
-  "UPDATE_ROLLBACK_IN_PROGRESS",
-  "UPDATE_ROLLBACK_COMPLETE",
-  "UPDATE_ROLLBACK_FAILED",
-  "ROLLBACK_IN_PROGRESS",
-  "ROLLBACK_COMPLETE",
-  "ROLLBACK_FAILED",
-);
-export type DetailedStatus = "CONFIGURATION_COMPLETE" | "VALIDATION_FAILED";
-export const DetailedStatus = S.Literal(
-  "CONFIGURATION_COMPLETE",
-  "VALIDATION_FAILED",
-);
-export type StackInstanceStatus = "CURRENT" | "OUTDATED" | "INOPERABLE";
-export const StackInstanceStatus = S.Literal(
-  "CURRENT",
-  "OUTDATED",
-  "INOPERABLE",
-);
+  | "ROLLBACK_FAILED"
+  | (string & {});
+export const ResourceStatus = S.String;
+export type DetailedStatus =
+  | "CONFIGURATION_COMPLETE"
+  | "VALIDATION_FAILED"
+  | (string & {});
+export const DetailedStatus = S.String;
+export type StackInstanceStatus =
+  | "CURRENT"
+  | "OUTDATED"
+  | "INOPERABLE"
+  | (string & {});
+export const StackInstanceStatus = S.String;
 export type StackSetOperationAction =
   | "CREATE"
   | "UPDATE"
   | "DELETE"
-  | "DETECT_DRIFT";
-export const StackSetOperationAction = S.Literal(
-  "CREATE",
-  "UPDATE",
-  "DELETE",
-  "DETECT_DRIFT",
-);
+  | "DETECT_DRIFT"
+  | (string & {});
+export const StackSetOperationAction = S.String;
 export type StackSetOperationStatus =
   | "RUNNING"
   | "SUCCEEDED"
   | "FAILED"
   | "STOPPING"
   | "STOPPED"
-  | "QUEUED";
-export const StackSetOperationStatus = S.Literal(
-  "RUNNING",
-  "SUCCEEDED",
-  "FAILED",
-  "STOPPING",
-  "STOPPED",
-  "QUEUED",
-);
+  | "QUEUED"
+  | (string & {});
+export const StackSetOperationStatus = S.String;
 export type SupportedMajorVersions = number[];
 export const SupportedMajorVersions = S.Array(S.Number);
-export type HookTargetType = "RESOURCE";
-export const HookTargetType = S.Literal("RESOURCE");
-export type HookTargetAction = "CREATE" | "UPDATE" | "DELETE" | "IMPORT";
-export const HookTargetAction = S.Literal(
-  "CREATE",
-  "UPDATE",
-  "DELETE",
-  "IMPORT",
-);
-export type AnnotationStatus = "PASSED" | "FAILED" | "SKIPPED";
-export const AnnotationStatus = S.Literal("PASSED", "FAILED", "SKIPPED");
+export type HookTargetType = "RESOURCE" | (string & {});
+export const HookTargetType = S.String;
+export type HookTargetAction =
+  | "CREATE"
+  | "UPDATE"
+  | "DELETE"
+  | "IMPORT"
+  | (string & {});
+export const HookTargetAction = S.String;
+export type AnnotationStatus = "PASSED" | "FAILED" | "SKIPPED" | (string & {});
+export const AnnotationStatus = S.String;
 export type AnnotationSeverityLevel =
   | "INFORMATIONAL"
   | "LOW"
   | "MEDIUM"
   | "HIGH"
-  | "CRITICAL";
-export const AnnotationSeverityLevel = S.Literal(
-  "INFORMATIONAL",
-  "LOW",
-  "MEDIUM",
-  "HIGH",
-  "CRITICAL",
-);
+  | "CRITICAL"
+  | (string & {});
+export const AnnotationSeverityLevel = S.String;
 export type JazzResourceIdentifierProperties = {
   [key: string]: string | undefined;
 };
@@ -3928,12 +3767,12 @@ export const JazzResourceIdentifierProperties = S.Record({
   key: S.String,
   value: S.UndefinedOr(S.String),
 });
-export type StackRefactorActionType = "MOVE" | "CREATE";
-export const StackRefactorActionType = S.Literal("MOVE", "CREATE");
-export type StackRefactorActionEntity = "RESOURCE" | "STACK";
-export const StackRefactorActionEntity = S.Literal("RESOURCE", "STACK");
-export type StackRefactorDetection = "AUTO" | "MANUAL";
-export const StackRefactorDetection = S.Literal("AUTO", "MANUAL");
+export type StackRefactorActionType = "MOVE" | "CREATE" | (string & {});
+export const StackRefactorActionType = S.String;
+export type StackRefactorActionEntity = "RESOURCE" | "STACK" | (string & {});
+export const StackRefactorActionEntity = S.String;
+export type StackRefactorDetection = "AUTO" | "MANUAL" | (string & {});
+export const StackRefactorDetection = S.String;
 export type StackRefactorTagResources = Tag[];
 export const StackRefactorTagResources = S.Array(Tag);
 export type StackRefactorUntagResources = string[];
@@ -4515,32 +4354,20 @@ export type PolicyAction =
   | "Snapshot"
   | "ReplaceAndDelete"
   | "ReplaceAndRetain"
-  | "ReplaceAndSnapshot";
-export const PolicyAction = S.Literal(
-  "Delete",
-  "Retain",
-  "Snapshot",
-  "ReplaceAndDelete",
-  "ReplaceAndRetain",
-  "ReplaceAndSnapshot",
-);
+  | "ReplaceAndSnapshot"
+  | (string & {});
+export const PolicyAction = S.String;
 export type ChangeAction =
   | "Add"
   | "Modify"
   | "Remove"
   | "Import"
   | "Dynamic"
-  | "SyncWithActual";
-export const ChangeAction = S.Literal(
-  "Add",
-  "Modify",
-  "Remove",
-  "Import",
-  "Dynamic",
-  "SyncWithActual",
-);
-export type Replacement = "True" | "False" | "Conditional";
-export const Replacement = S.Literal("True", "False", "Conditional");
+  | "SyncWithActual"
+  | (string & {});
+export const ChangeAction = S.String;
+export type Replacement = "True" | "False" | "Conditional" | (string & {});
+export const Replacement = S.String;
 export type ResourceAttribute =
   | "Properties"
   | "Metadata"
@@ -4548,16 +4375,9 @@ export type ResourceAttribute =
   | "UpdatePolicy"
   | "DeletionPolicy"
   | "UpdateReplacePolicy"
-  | "Tags";
-export const ResourceAttribute = S.Literal(
-  "Properties",
-  "Metadata",
-  "CreationPolicy",
-  "UpdatePolicy",
-  "DeletionPolicy",
-  "UpdateReplacePolicy",
-  "Tags",
-);
+  | "Tags"
+  | (string & {});
+export const ResourceAttribute = S.String;
 export type Scope = ResourceAttribute[];
 export const Scope = S.Array(ResourceAttribute);
 export type WarningType =
@@ -4565,14 +4385,9 @@ export type WarningType =
   | "UNSUPPORTED_PROPERTIES"
   | "MUTUALLY_EXCLUSIVE_TYPES"
   | "EXCLUDED_PROPERTIES"
-  | "EXCLUDED_RESOURCES";
-export const WarningType = S.Literal(
-  "MUTUALLY_EXCLUSIVE_PROPERTIES",
-  "UNSUPPORTED_PROPERTIES",
-  "MUTUALLY_EXCLUSIVE_TYPES",
-  "EXCLUDED_PROPERTIES",
-  "EXCLUDED_RESOURCES",
-);
+  | "EXCLUDED_RESOURCES"
+  | (string & {});
+export const WarningType = S.String;
 export type StackInstanceDetailedStatus =
   | "PENDING"
   | "RUNNING"
@@ -4581,51 +4396,32 @@ export type StackInstanceDetailedStatus =
   | "CANCELLED"
   | "INOPERABLE"
   | "SKIPPED_SUSPENDED_ACCOUNT"
-  | "FAILED_IMPORT";
-export const StackInstanceDetailedStatus = S.Literal(
-  "PENDING",
-  "RUNNING",
-  "SUCCEEDED",
-  "FAILED",
-  "CANCELLED",
-  "INOPERABLE",
-  "SKIPPED_SUSPENDED_ACCOUNT",
-  "FAILED_IMPORT",
-);
+  | "FAILED_IMPORT"
+  | (string & {});
+export const StackInstanceDetailedStatus = S.String;
 export type OperationType =
   | "CREATE_STACK"
   | "UPDATE_STACK"
   | "DELETE_STACK"
   | "CONTINUE_ROLLBACK"
   | "ROLLBACK"
-  | "CREATE_CHANGESET";
-export const OperationType = S.Literal(
-  "CREATE_STACK",
-  "UPDATE_STACK",
-  "DELETE_STACK",
-  "CONTINUE_ROLLBACK",
-  "ROLLBACK",
-  "CREATE_CHANGESET",
-);
-export type StackSetDriftStatus = "DRIFTED" | "IN_SYNC" | "NOT_CHECKED";
-export const StackSetDriftStatus = S.Literal(
-  "DRIFTED",
-  "IN_SYNC",
-  "NOT_CHECKED",
-);
+  | "CREATE_CHANGESET"
+  | (string & {});
+export const OperationType = S.String;
+export type StackSetDriftStatus =
+  | "DRIFTED"
+  | "IN_SYNC"
+  | "NOT_CHECKED"
+  | (string & {});
+export const StackSetDriftStatus = S.String;
 export type StackSetDriftDetectionStatus =
   | "COMPLETED"
   | "FAILED"
   | "PARTIAL_SUCCESS"
   | "IN_PROGRESS"
-  | "STOPPED";
-export const StackSetDriftDetectionStatus = S.Literal(
-  "COMPLETED",
-  "FAILED",
-  "PARTIAL_SUCCESS",
-  "IN_PROGRESS",
-  "STOPPED",
-);
+  | "STOPPED"
+  | (string & {});
+export const StackSetDriftDetectionStatus = S.String;
 export interface ActivateTypeOutput {
   Arn?: string;
 }
@@ -5131,27 +4927,22 @@ export const ValidateTemplateOutput = S.suspend(() =>
 ).annotations({
   identifier: "ValidateTemplateOutput",
 }) as any as S.Schema<ValidateTemplateOutput>;
-export type BeaconStackOperationStatus = "IN_PROGRESS" | "SUCCEEDED" | "FAILED";
-export const BeaconStackOperationStatus = S.Literal(
-  "IN_PROGRESS",
-  "SUCCEEDED",
-  "FAILED",
-);
+export type BeaconStackOperationStatus =
+  | "IN_PROGRESS"
+  | "SUCCEEDED"
+  | "FAILED"
+  | (string & {});
+export const BeaconStackOperationStatus = S.String;
 export type EventType =
   | "STACK_EVENT"
   | "PROGRESS_EVENT"
   | "VALIDATION_ERROR"
   | "PROVISIONING_ERROR"
-  | "HOOK_INVOCATION_ERROR";
-export const EventType = S.Literal(
-  "STACK_EVENT",
-  "PROGRESS_EVENT",
-  "VALIDATION_ERROR",
-  "PROVISIONING_ERROR",
-  "HOOK_INVOCATION_ERROR",
-);
-export type ValidationStatus = "FAILED" | "SKIPPED";
-export const ValidationStatus = S.Literal("FAILED", "SKIPPED");
+  | "HOOK_INVOCATION_ERROR"
+  | (string & {});
+export const EventType = S.String;
+export type ValidationStatus = "FAILED" | "SKIPPED" | (string & {});
+export const ValidationStatus = S.String;
 export interface StackInstanceComprehensiveStatus {
   DetailedStatus?: StackInstanceDetailedStatus;
 }
@@ -5259,36 +5050,25 @@ export type StackSetOperationResultStatus =
   | "RUNNING"
   | "SUCCEEDED"
   | "FAILED"
-  | "CANCELLED";
-export const StackSetOperationResultStatus = S.Literal(
-  "PENDING",
-  "RUNNING",
-  "SUCCEEDED",
-  "FAILED",
-  "CANCELLED",
-);
-export type DriftIgnoredReason = "MANAGED_BY_AWS" | "WRITE_ONLY_PROPERTY";
-export const DriftIgnoredReason = S.Literal(
-  "MANAGED_BY_AWS",
-  "WRITE_ONLY_PROPERTY",
-);
-export type EvaluationType = "Static" | "Dynamic";
-export const EvaluationType = S.Literal("Static", "Dynamic");
+  | "CANCELLED"
+  | (string & {});
+export const StackSetOperationResultStatus = S.String;
+export type DriftIgnoredReason =
+  | "MANAGED_BY_AWS"
+  | "WRITE_ONLY_PROPERTY"
+  | (string & {});
+export const DriftIgnoredReason = S.String;
+export type EvaluationType = "Static" | "Dynamic" | (string & {});
+export const EvaluationType = S.String;
 export type ChangeSource =
   | "ResourceReference"
   | "ParameterReference"
   | "ResourceAttribute"
   | "DirectModification"
   | "Automatic"
-  | "NoModification";
-export const ChangeSource = S.Literal(
-  "ResourceReference",
-  "ParameterReference",
-  "ResourceAttribute",
-  "DirectModification",
-  "Automatic",
-  "NoModification",
-);
+  | "NoModification"
+  | (string & {});
+export const ChangeSource = S.String;
 export interface BatchDescribeTypeConfigurationsError {
   ErrorCode?: string;
   ErrorMessage?: string;
@@ -5802,8 +5582,12 @@ export type WarningProperties = WarningProperty[];
 export const WarningProperties = S.Array(WarningProperty);
 export type AllowedValues = string[];
 export const AllowedValues = S.Array(S.String);
-export type AccountGateStatus = "SUCCEEDED" | "FAILED" | "SKIPPED";
-export const AccountGateStatus = S.Literal("SUCCEEDED", "FAILED", "SKIPPED");
+export type AccountGateStatus =
+  | "SUCCEEDED"
+  | "FAILED"
+  | "SKIPPED"
+  | (string & {});
+export const AccountGateStatus = S.String;
 export interface BatchDescribeTypeConfigurationsOutput {
   Errors?: BatchDescribeTypeConfigurationsError[];
   UnprocessedTypeConfigurations?: TypeConfigurationIdentifier[];
@@ -5837,26 +5621,26 @@ export const CreateStackRefactorOutput = S.suspend(() =>
 ).annotations({
   identifier: "CreateStackRefactorOutput",
 }) as any as S.Schema<CreateStackRefactorOutput>;
-export type RequiresRecreation = "Never" | "Conditionally" | "Always";
-export const RequiresRecreation = S.Literal("Never", "Conditionally", "Always");
-export type BeforeValueFrom = "PREVIOUS_DEPLOYMENT_STATE" | "ACTUAL_STATE";
-export const BeforeValueFrom = S.Literal(
-  "PREVIOUS_DEPLOYMENT_STATE",
-  "ACTUAL_STATE",
-);
-export type AfterValueFrom = "TEMPLATE";
-export const AfterValueFrom = S.Literal("TEMPLATE");
+export type RequiresRecreation =
+  | "Never"
+  | "Conditionally"
+  | "Always"
+  | (string & {});
+export const RequiresRecreation = S.String;
+export type BeforeValueFrom =
+  | "PREVIOUS_DEPLOYMENT_STATE"
+  | "ACTUAL_STATE"
+  | (string & {});
+export const BeforeValueFrom = S.String;
+export type AfterValueFrom = "TEMPLATE" | (string & {});
+export const AfterValueFrom = S.String;
 export type AttributeChangeType =
   | "Add"
   | "Remove"
   | "Modify"
-  | "SyncWithActual";
-export const AttributeChangeType = S.Literal(
-  "Add",
-  "Remove",
-  "Modify",
-  "SyncWithActual",
-);
+  | "SyncWithActual"
+  | (string & {});
+export const AttributeChangeType = S.String;
 export interface DescribeEventsOutput {
   OperationEvents?: OperationEvent[];
   NextToken?: string;

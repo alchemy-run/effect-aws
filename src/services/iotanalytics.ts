@@ -571,8 +571,8 @@ export const ListTagsForResourceRequest = S.suspend(() =>
 ).annotations({
   identifier: "ListTagsForResourceRequest",
 }) as any as S.Schema<ListTagsForResourceRequest>;
-export type LoggingLevel = "ERROR";
-export const LoggingLevel = S.Literal("ERROR");
+export type LoggingLevel = "ERROR" | (string & {});
+export const LoggingLevel = S.String;
 export interface LoggingOptions {
   roleArn: string;
   level: LoggingLevel;
@@ -986,8 +986,8 @@ export const SqlQueryDatasetAction = S.suspend(() =>
 ).annotations({
   identifier: "SqlQueryDatasetAction",
 }) as any as S.Schema<SqlQueryDatasetAction>;
-export type ComputeType = "ACU_1" | "ACU_2";
-export const ComputeType = S.Literal("ACU_1", "ACU_2");
+export type ComputeType = "ACU_1" | "ACU_2" | (string & {});
+export const ComputeType = S.String;
 export interface ResourceConfiguration {
   computeType: ComputeType;
   volumeSizeInGB: number;
@@ -1499,16 +1499,24 @@ export const StartPipelineReprocessingRequest = S.suspend(() =>
 ).annotations({
   identifier: "StartPipelineReprocessingRequest",
 }) as any as S.Schema<StartPipelineReprocessingRequest>;
-export type ChannelStatus = "CREATING" | "ACTIVE" | "DELETING";
-export const ChannelStatus = S.Literal("CREATING", "ACTIVE", "DELETING");
-export type DatasetStatus = "CREATING" | "ACTIVE" | "DELETING";
-export const DatasetStatus = S.Literal("CREATING", "ACTIVE", "DELETING");
-export type DatastoreStatus = "CREATING" | "ACTIVE" | "DELETING";
-export const DatastoreStatus = S.Literal("CREATING", "ACTIVE", "DELETING");
-export type DatasetContentState = "CREATING" | "SUCCEEDED" | "FAILED";
-export const DatasetContentState = S.Literal("CREATING", "SUCCEEDED", "FAILED");
-export type FileFormatType = "JSON" | "PARQUET";
-export const FileFormatType = S.Literal("JSON", "PARQUET");
+export type ChannelStatus = "CREATING" | "ACTIVE" | "DELETING" | (string & {});
+export const ChannelStatus = S.String;
+export type DatasetStatus = "CREATING" | "ACTIVE" | "DELETING" | (string & {});
+export const DatasetStatus = S.String;
+export type DatastoreStatus =
+  | "CREATING"
+  | "ACTIVE"
+  | "DELETING"
+  | (string & {});
+export const DatastoreStatus = S.String;
+export type DatasetContentState =
+  | "CREATING"
+  | "SUCCEEDED"
+  | "FAILED"
+  | (string & {});
+export const DatasetContentState = S.String;
+export type FileFormatType = "JSON" | "PARQUET" | (string & {});
+export const FileFormatType = S.String;
 export interface Channel {
   name?: string;
   storage?: ChannelStorage;
@@ -1691,13 +1699,9 @@ export type ReprocessingStatus =
   | "RUNNING"
   | "SUCCEEDED"
   | "CANCELLED"
-  | "FAILED";
-export const ReprocessingStatus = S.Literal(
-  "RUNNING",
-  "SUCCEEDED",
-  "CANCELLED",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const ReprocessingStatus = S.String;
 export interface ReprocessingSummary {
   id?: string;
   status?: ReprocessingStatus;
@@ -1738,8 +1742,8 @@ export const ServiceManagedChannelS3StorageSummary = S.suspend(() =>
 ).annotations({
   identifier: "ServiceManagedChannelS3StorageSummary",
 }) as any as S.Schema<ServiceManagedChannelS3StorageSummary>;
-export type DatasetActionType = "QUERY" | "CONTAINER";
-export const DatasetActionType = S.Literal("QUERY", "CONTAINER");
+export type DatasetActionType = "QUERY" | "CONTAINER" | (string & {});
+export const DatasetActionType = S.String;
 export interface ServiceManagedDatastoreS3StorageSummary {}
 export const ServiceManagedDatastoreS3StorageSummary = S.suspend(() =>
   S.Struct({}),

@@ -105,29 +105,26 @@ export type MarkdownString = string | redacted.Redacted<string>;
 export type DescriptiveString = string;
 
 //# Schemas
-export type ServiceType = "RDS" | "DOCDB";
-export const ServiceType = S.Literal("RDS", "DOCDB");
+export type ServiceType = "RDS" | "DOCDB" | (string & {});
+export const ServiceType = S.String;
 export type AdditionalMetricsList = string[];
 export const AdditionalMetricsList = S.Array(S.String);
 export type RequestedDimensionList = string[];
 export const RequestedDimensionList = S.Array(S.String);
-export type TextFormat = "PLAIN_TEXT" | "MARKDOWN";
-export const TextFormat = S.Literal("PLAIN_TEXT", "MARKDOWN");
-export type AcceptLanguage = "EN_US";
-export const AcceptLanguage = S.Literal("EN_US");
-export type PeriodAlignment = "END_TIME" | "START_TIME";
-export const PeriodAlignment = S.Literal("END_TIME", "START_TIME");
+export type TextFormat = "PLAIN_TEXT" | "MARKDOWN" | (string & {});
+export const TextFormat = S.String;
+export type AcceptLanguage = "EN_US" | (string & {});
+export const AcceptLanguage = S.String;
+export type PeriodAlignment = "END_TIME" | "START_TIME" | (string & {});
+export const PeriodAlignment = S.String;
 export type DimensionsMetricList = string[];
 export const DimensionsMetricList = S.Array(S.String);
 export type FineGrainedAction =
   | "DescribeDimensionKeys"
   | "GetDimensionKeyDetails"
-  | "GetResourceMetrics";
-export const FineGrainedAction = S.Literal(
-  "DescribeDimensionKeys",
-  "GetDimensionKeyDetails",
-  "GetResourceMetrics",
-);
+  | "GetResourceMetrics"
+  | (string & {});
+export const FineGrainedAction = S.String;
 export type AuthorizedActionsList = FineGrainedAction[];
 export const AuthorizedActionsList = S.Array(FineGrainedAction);
 export type MetricTypeList = string[];
@@ -562,10 +559,14 @@ export const ListTagsForResourceResponse = S.suspend(() =>
 ).annotations({
   identifier: "ListTagsForResourceResponse",
 }) as any as S.Schema<ListTagsForResourceResponse>;
-export type DetailStatus = "AVAILABLE" | "PROCESSING" | "UNAVAILABLE";
-export const DetailStatus = S.Literal("AVAILABLE", "PROCESSING", "UNAVAILABLE");
-export type AnalysisStatus = "RUNNING" | "SUCCEEDED" | "FAILED";
-export const AnalysisStatus = S.Literal("RUNNING", "SUCCEEDED", "FAILED");
+export type DetailStatus =
+  | "AVAILABLE"
+  | "PROCESSING"
+  | "UNAVAILABLE"
+  | (string & {});
+export const DetailStatus = S.String;
+export type AnalysisStatus = "RUNNING" | "SUCCEEDED" | "FAILED" | (string & {});
+export const AnalysisStatus = S.String;
 export interface DimensionKeyDetail {
   Value?: string;
   Dimension?: string;
@@ -620,25 +621,19 @@ export const AnalysisReportSummary = S.suspend(() =>
 }) as any as S.Schema<AnalysisReportSummary>;
 export type AnalysisReportSummaryList = AnalysisReportSummary[];
 export const AnalysisReportSummaryList = S.Array(AnalysisReportSummary);
-export type ContextType = "CAUSAL" | "CONTEXTUAL";
-export const ContextType = S.Literal("CAUSAL", "CONTEXTUAL");
-export type Severity = "LOW" | "MEDIUM" | "HIGH";
-export const Severity = S.Literal("LOW", "MEDIUM", "HIGH");
+export type ContextType = "CAUSAL" | "CONTEXTUAL" | (string & {});
+export const ContextType = S.String;
+export type Severity = "LOW" | "MEDIUM" | "HIGH" | (string & {});
+export const Severity = S.String;
 export type FeatureStatus =
   | "ENABLED"
   | "DISABLED"
   | "UNSUPPORTED"
   | "ENABLED_PENDING_REBOOT"
   | "DISABLED_PENDING_REBOOT"
-  | "UNKNOWN";
-export const FeatureStatus = S.Literal(
-  "ENABLED",
-  "DISABLED",
-  "UNSUPPORTED",
-  "ENABLED_PENDING_REBOOT",
-  "DISABLED_PENDING_REBOOT",
-  "UNKNOWN",
-);
+  | "UNKNOWN"
+  | (string & {});
+export const FeatureStatus = S.String;
 export interface CreatePerformanceAnalysisReportResponse {
   AnalysisReportId?: string;
 }

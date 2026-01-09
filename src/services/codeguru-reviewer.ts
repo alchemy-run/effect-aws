@@ -133,24 +133,24 @@ export type ProviderType =
   | "GitHub"
   | "Bitbucket"
   | "GitHubEnterpriseServer"
-  | "S3Bucket";
-export const ProviderType = S.Literal(
-  "CodeCommit",
-  "GitHub",
-  "Bitbucket",
-  "GitHubEnterpriseServer",
-  "S3Bucket",
-);
+  | "S3Bucket"
+  | (string & {});
+export const ProviderType = S.String;
 export type ProviderTypes = ProviderType[];
 export const ProviderTypes = S.Array(ProviderType);
-export type JobState = "Completed" | "Pending" | "Failed" | "Deleting";
-export const JobState = S.Literal("Completed", "Pending", "Failed", "Deleting");
+export type JobState =
+  | "Completed"
+  | "Pending"
+  | "Failed"
+  | "Deleting"
+  | (string & {});
+export const JobState = S.String;
 export type JobStates = JobState[];
 export const JobStates = S.Array(JobState);
 export type RepositoryNames = string[];
 export const RepositoryNames = S.Array(S.String);
-export type Type = "PullRequest" | "RepositoryAnalysis";
-export const Type = S.Literal("PullRequest", "RepositoryAnalysis");
+export type Type = "PullRequest" | "RepositoryAnalysis" | (string & {});
+export const Type = S.String;
 export type UserIds = string[];
 export const UserIds = S.Array(S.String);
 export type RecommendationIds = string[];
@@ -160,22 +160,17 @@ export type RepositoryAssociationState =
   | "Associating"
   | "Failed"
   | "Disassociating"
-  | "Disassociated";
-export const RepositoryAssociationState = S.Literal(
-  "Associated",
-  "Associating",
-  "Failed",
-  "Disassociating",
-  "Disassociated",
-);
+  | "Disassociated"
+  | (string & {});
+export const RepositoryAssociationState = S.String;
 export type RepositoryAssociationStates = RepositoryAssociationState[];
 export const RepositoryAssociationStates = S.Array(RepositoryAssociationState);
 export type Names = string[];
 export const Names = S.Array(S.String);
 export type Owners = string[];
 export const Owners = S.Array(S.String);
-export type Reaction = "ThumbsUp" | "ThumbsDown";
-export const Reaction = S.Literal("ThumbsUp", "ThumbsDown");
+export type Reaction = "ThumbsUp" | "ThumbsDown" | (string & {});
+export const Reaction = S.String;
 export type Reactions = Reaction[];
 export const Reactions = S.Array(Reaction);
 export type TagKeyList = string[];
@@ -477,13 +472,13 @@ export interface UntagResourceResponse {}
 export const UntagResourceResponse = S.suspend(() => S.Struct({})).annotations({
   identifier: "UntagResourceResponse",
 }) as any as S.Schema<UntagResourceResponse>;
-export type EncryptionOption = "AWS_OWNED_CMK" | "CUSTOMER_MANAGED_CMK";
-export const EncryptionOption = S.Literal(
-  "AWS_OWNED_CMK",
-  "CUSTOMER_MANAGED_CMK",
-);
-export type AnalysisType = "Security" | "CodeQuality";
-export const AnalysisType = S.Literal("Security", "CodeQuality");
+export type EncryptionOption =
+  | "AWS_OWNED_CMK"
+  | "CUSTOMER_MANAGED_CMK"
+  | (string & {});
+export const EncryptionOption = S.String;
+export type AnalysisType = "Security" | "CodeQuality" | (string & {});
+export const AnalysisType = S.String;
 export type AnalysisTypes = AnalysisType[];
 export const AnalysisTypes = S.Array(AnalysisType);
 export interface KMSKeyDetails {
@@ -603,12 +598,12 @@ export interface S3Repository {
 export const S3Repository = S.suspend(() =>
   S.Struct({ Name: S.String, BucketName: S.String }),
 ).annotations({ identifier: "S3Repository" }) as any as S.Schema<S3Repository>;
-export type ConfigFileState = "Present" | "Absent" | "PresentWithErrors";
-export const ConfigFileState = S.Literal(
-  "Present",
-  "Absent",
-  "PresentWithErrors",
-);
+export type ConfigFileState =
+  | "Present"
+  | "Absent"
+  | "PresentWithErrors"
+  | (string & {});
+export const ConfigFileState = S.String;
 export type RecommendationCategory =
   | "AWSBestPractices"
   | "AWSCloudFormationIssues"
@@ -620,22 +615,17 @@ export type RecommendationCategory =
   | "JavaBestPractices"
   | "ResourceLeaks"
   | "SecurityIssues"
-  | "CodeInconsistencies";
-export const RecommendationCategory = S.Literal(
-  "AWSBestPractices",
-  "AWSCloudFormationIssues",
-  "DuplicateCode",
-  "CodeMaintenanceIssues",
-  "ConcurrencyIssues",
-  "InputValidations",
-  "PythonBestPractices",
-  "JavaBestPractices",
-  "ResourceLeaks",
-  "SecurityIssues",
-  "CodeInconsistencies",
-);
-export type Severity = "Info" | "Low" | "Medium" | "High" | "Critical";
-export const Severity = S.Literal("Info", "Low", "Medium", "High", "Critical");
+  | "CodeInconsistencies"
+  | (string & {});
+export const RecommendationCategory = S.String;
+export type Severity =
+  | "Info"
+  | "Low"
+  | "Medium"
+  | "High"
+  | "Critical"
+  | (string & {});
+export const Severity = S.String;
 export interface Repository {
   CodeCommit?: CodeCommitRepository;
   Bitbucket?: ThirdPartySourceRepository;
@@ -757,8 +747,8 @@ export const AssociateRepositoryRequest = S.suspend(() =>
 ).annotations({
   identifier: "AssociateRepositoryRequest",
 }) as any as S.Schema<AssociateRepositoryRequest>;
-export type VendorName = "GitHub" | "GitLab" | "NativeS3";
-export const VendorName = S.Literal("GitHub", "GitLab", "NativeS3");
+export type VendorName = "GitHub" | "GitLab" | "NativeS3" | (string & {});
+export const VendorName = S.String;
 export interface DescribeRecommendationFeedbackResponse {
   RecommendationFeedback?: RecommendationFeedback;
 }

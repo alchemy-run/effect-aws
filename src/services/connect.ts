@@ -511,55 +511,17 @@ export type VocabularyLanguageCode =
   | "no-NO"
   | "pl-PL"
   | "sv-SE"
-  | "tl-PH";
-export const VocabularyLanguageCode = S.Literal(
-  "ar-AE",
-  "de-CH",
-  "de-DE",
-  "en-AB",
-  "en-AU",
-  "en-GB",
-  "en-IE",
-  "en-IN",
-  "en-US",
-  "en-WL",
-  "es-ES",
-  "es-US",
-  "fr-CA",
-  "fr-FR",
-  "hi-IN",
-  "it-IT",
-  "ja-JP",
-  "ko-KR",
-  "pt-BR",
-  "pt-PT",
-  "zh-CN",
-  "en-NZ",
-  "en-ZA",
-  "ca-ES",
-  "da-DK",
-  "fi-FI",
-  "id-ID",
-  "ms-MY",
-  "nl-NL",
-  "no-NO",
-  "pl-PL",
-  "sv-SE",
-  "tl-PH",
-);
+  | "tl-PH"
+  | (string & {});
+export const VocabularyLanguageCode = S.String;
 export type FlowAssociationResourceType =
   | "SMS_PHONE_NUMBER"
   | "INBOUND_EMAIL"
   | "OUTBOUND_EMAIL"
   | "ANALYTICS_CONNECTOR"
-  | "WHATSAPP_MESSAGING_PHONE_NUMBER";
-export const FlowAssociationResourceType = S.Literal(
-  "SMS_PHONE_NUMBER",
-  "INBOUND_EMAIL",
-  "OUTBOUND_EMAIL",
-  "ANALYTICS_CONNECTOR",
-  "WHATSAPP_MESSAGING_PHONE_NUMBER",
-);
+  | "WHATSAPP_MESSAGING_PHONE_NUMBER"
+  | (string & {});
+export const FlowAssociationResourceType = S.String;
 export type InstanceStorageResourceType =
   | "CHAT_TRANSCRIPTS"
   | "CALL_RECORDINGS"
@@ -573,26 +535,13 @@ export type InstanceStorageResourceType =
   | "SCREEN_RECORDINGS"
   | "REAL_TIME_CONTACT_ANALYSIS_CHAT_SEGMENTS"
   | "REAL_TIME_CONTACT_ANALYSIS_VOICE_SEGMENTS"
-  | "EMAIL_MESSAGES";
-export const InstanceStorageResourceType = S.Literal(
-  "CHAT_TRANSCRIPTS",
-  "CALL_RECORDINGS",
-  "SCHEDULED_REPORTS",
-  "MEDIA_STREAMS",
-  "CONTACT_TRACE_RECORDS",
-  "AGENT_EVENTS",
-  "REAL_TIME_CONTACT_ANALYSIS_SEGMENTS",
-  "ATTACHMENTS",
-  "CONTACT_EVALUATIONS",
-  "SCREEN_RECORDINGS",
-  "REAL_TIME_CONTACT_ANALYSIS_CHAT_SEGMENTS",
-  "REAL_TIME_CONTACT_ANALYSIS_VOICE_SEGMENTS",
-  "EMAIL_MESSAGES",
-);
+  | "EMAIL_MESSAGES"
+  | (string & {});
+export const InstanceStorageResourceType = S.String;
 export type QuickConnectsList = string[];
 export const QuickConnectsList = S.Array(S.String);
-export type EntityType = "USER" | "AI_AGENT";
-export const EntityType = S.Literal("USER", "AI_AGENT");
+export type EntityType = "USER" | "AI_AGENT" | (string & {});
+export const EntityType = S.String;
 export type WorkspaceResourceArnList = string[];
 export const WorkspaceResourceArnList = S.Array(S.String);
 export type DataSetIds = string[];
@@ -606,18 +555,13 @@ export type ListFlowAssociationResourceType =
   | "VOICE_PHONE_NUMBER"
   | "INBOUND_EMAIL"
   | "OUTBOUND_EMAIL"
-  | "ANALYTICS_CONNECTOR";
-export const ListFlowAssociationResourceType = S.Literal(
-  "WHATSAPP_MESSAGING_PHONE_NUMBER",
-  "VOICE_PHONE_NUMBER",
-  "INBOUND_EMAIL",
-  "OUTBOUND_EMAIL",
-  "ANALYTICS_CONNECTOR",
-);
-export type AgentStatusState = "ENABLED" | "DISABLED";
-export const AgentStatusState = S.Literal("ENABLED", "DISABLED");
-export type Channel = "VOICE" | "CHAT" | "TASK" | "EMAIL";
-export const Channel = S.Literal("VOICE", "CHAT", "TASK", "EMAIL");
+  | "ANALYTICS_CONNECTOR"
+  | (string & {});
+export const ListFlowAssociationResourceType = S.String;
+export type AgentStatusState = "ENABLED" | "DISABLED" | (string & {});
+export const AgentStatusState = S.String;
+export type Channel = "VOICE" | "CHAT" | "TASK" | "EMAIL" | (string & {});
+export const Channel = S.String;
 export type ContactInitiationMethod =
   | "INBOUND"
   | "OUTBOUND"
@@ -630,23 +574,11 @@ export type ContactInitiationMethod =
   | "EXTERNAL_OUTBOUND"
   | "WEBRTC_API"
   | "AGENT_REPLY"
-  | "FLOW";
-export const ContactInitiationMethod = S.Literal(
-  "INBOUND",
-  "OUTBOUND",
-  "TRANSFER",
-  "QUEUE_TRANSFER",
-  "CALLBACK",
-  "API",
-  "DISCONNECT",
-  "MONITOR",
-  "EXTERNAL_OUTBOUND",
-  "WEBRTC_API",
-  "AGENT_REPLY",
-  "FLOW",
-);
-export type InitiateAs = "CONNECTED_TO_USER" | "COMPLETED";
-export const InitiateAs = S.Literal("CONNECTED_TO_USER", "COMPLETED");
+  | "FLOW"
+  | (string & {});
+export const ContactInitiationMethod = S.String;
+export type InitiateAs = "CONNECTED_TO_USER" | "COMPLETED" | (string & {});
+export const InitiateAs = S.String;
 export type ContactFlowType =
   | "CONTACT_FLOW"
   | "CUSTOMER_QUEUE"
@@ -657,55 +589,35 @@ export type ContactFlowType =
   | "OUTBOUND_WHISPER"
   | "AGENT_TRANSFER"
   | "QUEUE_TRANSFER"
-  | "CAMPAIGN";
-export const ContactFlowType = S.Literal(
-  "CONTACT_FLOW",
-  "CUSTOMER_QUEUE",
-  "CUSTOMER_HOLD",
-  "CUSTOMER_WHISPER",
-  "AGENT_HOLD",
-  "AGENT_WHISPER",
-  "OUTBOUND_WHISPER",
-  "AGENT_TRANSFER",
-  "QUEUE_TRANSFER",
-  "CAMPAIGN",
-);
-export type ContactFlowStatus = "PUBLISHED" | "SAVED";
-export const ContactFlowStatus = S.Literal("PUBLISHED", "SAVED");
+  | "CAMPAIGN"
+  | (string & {});
+export const ContactFlowType = S.String;
+export type ContactFlowStatus = "PUBLISHED" | "SAVED" | (string & {});
+export const ContactFlowStatus = S.String;
 export type DataTableLockLevel =
   | "NONE"
   | "DATA_TABLE"
   | "PRIMARY_VALUE"
   | "ATTRIBUTE"
-  | "VALUE";
-export const DataTableLockLevel = S.Literal(
-  "NONE",
-  "DATA_TABLE",
-  "PRIMARY_VALUE",
-  "ATTRIBUTE",
-  "VALUE",
-);
-export type DataTableStatus = "PUBLISHED";
-export const DataTableStatus = S.Literal("PUBLISHED");
+  | "VALUE"
+  | (string & {});
+export const DataTableLockLevel = S.String;
+export type DataTableStatus = "PUBLISHED" | (string & {});
+export const DataTableStatus = S.String;
 export type DataTableAttributeValueType =
   | "TEXT"
   | "NUMBER"
   | "BOOLEAN"
   | "TEXT_LIST"
-  | "NUMBER_LIST";
-export const DataTableAttributeValueType = S.Literal(
-  "TEXT",
-  "NUMBER",
-  "BOOLEAN",
-  "TEXT_LIST",
-  "NUMBER_LIST",
-);
-export type DirectoryType = "SAML" | "CONNECT_MANAGED" | "EXISTING_DIRECTORY";
-export const DirectoryType = S.Literal(
-  "SAML",
-  "CONNECT_MANAGED",
-  "EXISTING_DIRECTORY",
-);
+  | "NUMBER_LIST"
+  | (string & {});
+export const DataTableAttributeValueType = S.String;
+export type DirectoryType =
+  | "SAML"
+  | "CONNECT_MANAGED"
+  | "EXISTING_DIRECTORY"
+  | (string & {});
+export const DirectoryType = S.String;
 export type IntegrationType =
   | "EVENT"
   | "VOICE_ID"
@@ -721,66 +633,51 @@ export type IntegrationType =
   | "ANALYTICS_CONNECTOR"
   | "CALL_TRANSFER_CONNECTOR"
   | "COGNITO_USER_POOL"
-  | "MESSAGE_PROCESSOR";
-export const IntegrationType = S.Literal(
-  "EVENT",
-  "VOICE_ID",
-  "PINPOINT_APP",
-  "WISDOM_ASSISTANT",
-  "WISDOM_KNOWLEDGE_BASE",
-  "WISDOM_QUICK_RESPONSES",
-  "Q_MESSAGE_TEMPLATES",
-  "CASES_DOMAIN",
-  "APPLICATION",
-  "FILE_SCANNER",
-  "SES_IDENTITY",
-  "ANALYTICS_CONNECTOR",
-  "CALL_TRANSFER_CONNECTOR",
-  "COGNITO_USER_POOL",
-  "MESSAGE_PROCESSOR",
-);
-export type SourceType = "SALESFORCE" | "ZENDESK" | "CASES";
-export const SourceType = S.Literal("SALESFORCE", "ZENDESK", "CASES");
-export type RehydrationType = "ENTIRE_PAST_SESSION" | "FROM_SEGMENT";
-export const RehydrationType = S.Literal("ENTIRE_PAST_SESSION", "FROM_SEGMENT");
+  | "MESSAGE_PROCESSOR"
+  | (string & {});
+export const IntegrationType = S.String;
+export type SourceType = "SALESFORCE" | "ZENDESK" | "CASES" | (string & {});
+export const SourceType = S.String;
+export type RehydrationType =
+  | "ENTIRE_PAST_SESSION"
+  | "FROM_SEGMENT"
+  | (string & {});
+export const RehydrationType = S.String;
 export type PredefinedAttributePurposeNameList = string[];
 export const PredefinedAttributePurposeNameList = S.Array(S.String);
-export type DeviceType = "GCM" | "APNS" | "APNS_SANDBOX";
-export const DeviceType = S.Literal("GCM", "APNS", "APNS_SANDBOX");
+export type DeviceType = "GCM" | "APNS" | "APNS_SANDBOX" | (string & {});
+export const DeviceType = S.String;
 export type AgentAvailabilityTimer =
   | "TIME_SINCE_LAST_ACTIVITY"
-  | "TIME_SINCE_LAST_INBOUND";
-export const AgentAvailabilityTimer = S.Literal(
-  "TIME_SINCE_LAST_ACTIVITY",
-  "TIME_SINCE_LAST_INBOUND",
-);
-export type RulePublishStatus = "DRAFT" | "PUBLISHED";
-export const RulePublishStatus = S.Literal("DRAFT", "PUBLISHED");
+  | "TIME_SINCE_LAST_INBOUND"
+  | (string & {});
+export const AgentAvailabilityTimer = S.String;
+export type RulePublishStatus = "DRAFT" | "PUBLISHED" | (string & {});
+export const RulePublishStatus = S.String;
 export type PermissionsList = string[];
 export const PermissionsList = S.Array(S.String);
 export type TagRestrictedResourceList = string[];
 export const TagRestrictedResourceList = S.Array(S.String);
 export type HierarchyRestrictedResourceList = string[];
 export const HierarchyRestrictedResourceList = S.Array(S.String);
-export type TaskTemplateStatus = "ACTIVE" | "INACTIVE";
-export const TaskTemplateStatus = S.Literal("ACTIVE", "INACTIVE");
-export type UseCaseType = "RULES_EVALUATION" | "CONNECT_CAMPAIGNS";
-export const UseCaseType = S.Literal("RULES_EVALUATION", "CONNECT_CAMPAIGNS");
+export type TaskTemplateStatus = "ACTIVE" | "INACTIVE" | (string & {});
+export const TaskTemplateStatus = S.String;
+export type UseCaseType =
+  | "RULES_EVALUATION"
+  | "CONNECT_CAMPAIGNS"
+  | (string & {});
+export const UseCaseType = S.String;
 export type SecurityProfileIds = string[];
 export const SecurityProfileIds = S.Array(S.String);
-export type ViewStatus = "PUBLISHED" | "SAVED";
-export const ViewStatus = S.Literal("PUBLISHED", "SAVED");
+export type ViewStatus = "PUBLISHED" | "SAVED" | (string & {});
+export const ViewStatus = S.String;
 export type MediaType =
   | "IMAGE_LOGO_LIGHT_FAVICON"
   | "IMAGE_LOGO_DARK_FAVICON"
   | "IMAGE_LOGO_LIGHT_HORIZONTAL"
-  | "IMAGE_LOGO_DARK_HORIZONTAL";
-export const MediaType = S.Literal(
-  "IMAGE_LOGO_LIGHT_FAVICON",
-  "IMAGE_LOGO_DARK_FAVICON",
-  "IMAGE_LOGO_LIGHT_HORIZONTAL",
-  "IMAGE_LOGO_DARK_HORIZONTAL",
-);
+  | "IMAGE_LOGO_DARK_HORIZONTAL"
+  | (string & {});
+export const MediaType = S.String;
 export type InstanceAttributeType =
   | "INBOUND_CALLS"
   | "OUTBOUND_CALLS"
@@ -794,22 +691,9 @@ export type InstanceAttributeType =
   | "ENHANCED_CONTACT_MONITORING"
   | "ENHANCED_CHAT_MONITORING"
   | "MULTI_PARTY_CHAT_CONFERENCE"
-  | "MESSAGE_STREAMING";
-export const InstanceAttributeType = S.Literal(
-  "INBOUND_CALLS",
-  "OUTBOUND_CALLS",
-  "CONTACTFLOW_LOGS",
-  "CONTACT_LENS",
-  "AUTO_RESOLVE_BEST_VOICES",
-  "USE_CUSTOM_TTS_VOICES",
-  "EARLY_MEDIA",
-  "MULTI_PARTY_CONFERENCE",
-  "HIGH_VOLUME_OUTBOUND",
-  "ENHANCED_CONTACT_MONITORING",
-  "ENHANCED_CHAT_MONITORING",
-  "MULTI_PARTY_CHAT_CONFERENCE",
-  "MESSAGE_STREAMING",
-);
+  | "MESSAGE_STREAMING"
+  | (string & {});
+export const InstanceAttributeType = S.String;
 export type Grouping =
   | "QUEUE"
   | "CHANNEL"
@@ -817,28 +701,21 @@ export type Grouping =
   | "ROUTING_STEP_EXPRESSION"
   | "AGENT_STATUS"
   | "SUBTYPE"
-  | "VALIDATION_TEST_TYPE";
-export const Grouping = S.Literal(
-  "QUEUE",
-  "CHANNEL",
-  "ROUTING_PROFILE",
-  "ROUTING_STEP_EXPRESSION",
-  "AGENT_STATUS",
-  "SUBTYPE",
-  "VALIDATION_TEST_TYPE",
-);
+  | "VALIDATION_TEST_TYPE"
+  | (string & {});
+export const Grouping = S.String;
 export type Groupings = Grouping[];
 export const Groupings = S.Array(Grouping);
 export type GroupingsV2 = string[];
 export const GroupingsV2 = S.Array(S.String);
-export type AgentStatusType = "ROUTABLE" | "CUSTOM" | "OFFLINE";
-export const AgentStatusType = S.Literal("ROUTABLE", "CUSTOM", "OFFLINE");
+export type AgentStatusType = "ROUTABLE" | "CUSTOM" | "OFFLINE" | (string & {});
+export const AgentStatusType = S.String;
 export type AgentStatusTypes = AgentStatusType[];
 export const AgentStatusTypes = S.Array(AgentStatusType);
-export type LexVersion = "V1" | "V2";
-export const LexVersion = S.Literal("V1", "V2");
-export type ContactFlowModuleState = "ACTIVE" | "ARCHIVED";
-export const ContactFlowModuleState = S.Literal("ACTIVE", "ARCHIVED");
+export type LexVersion = "V1" | "V2" | (string & {});
+export const LexVersion = S.String;
+export type ContactFlowModuleState = "ACTIVE" | "ARCHIVED" | (string & {});
+export const ContactFlowModuleState = S.String;
 export type ContactFlowTypes = ContactFlowType[];
 export const ContactFlowTypes = S.Array(ContactFlowType);
 export type ReferenceType =
@@ -850,18 +727,9 @@ export type ReferenceType =
   | "DATE"
   | "EMAIL"
   | "EMAIL_MESSAGE"
-  | "EMAIL_MESSAGE_PLAIN_TEXT";
-export const ReferenceType = S.Literal(
-  "URL",
-  "ATTACHMENT",
-  "CONTACT_ANALYSIS",
-  "NUMBER",
-  "STRING",
-  "DATE",
-  "EMAIL",
-  "EMAIL_MESSAGE",
-  "EMAIL_MESSAGE_PLAIN_TEXT",
-);
+  | "EMAIL_MESSAGE_PLAIN_TEXT"
+  | (string & {});
+export const ReferenceType = S.String;
 export type ReferenceTypes = ReferenceType[];
 export const ReferenceTypes = S.Array(ReferenceType);
 export type AttributeIds = string[];
@@ -875,16 +743,9 @@ export type PhoneNumberType =
   | "SHARED"
   | "THIRD_PARTY_TF"
   | "THIRD_PARTY_DID"
-  | "SHORT_CODE";
-export const PhoneNumberType = S.Literal(
-  "TOLL_FREE",
-  "DID",
-  "UIFN",
-  "SHARED",
-  "THIRD_PARTY_TF",
-  "THIRD_PARTY_DID",
-  "SHORT_CODE",
-);
+  | "SHORT_CODE"
+  | (string & {});
+export const PhoneNumberType = S.String;
 export type PhoneNumberTypes = PhoneNumberType[];
 export const PhoneNumberTypes = S.Array(PhoneNumberType);
 export type PhoneNumberCountryCode =
@@ -1124,278 +985,38 @@ export type PhoneNumberCountryCode =
   | "EH"
   | "YE"
   | "ZM"
-  | "ZW";
-export const PhoneNumberCountryCode = S.Literal(
-  "AF",
-  "AL",
-  "DZ",
-  "AS",
-  "AD",
-  "AO",
-  "AI",
-  "AQ",
-  "AG",
-  "AR",
-  "AM",
-  "AW",
-  "AU",
-  "AT",
-  "AZ",
-  "BS",
-  "BH",
-  "BD",
-  "BB",
-  "BY",
-  "BE",
-  "BZ",
-  "BJ",
-  "BM",
-  "BT",
-  "BO",
-  "BA",
-  "BW",
-  "BR",
-  "IO",
-  "VG",
-  "BN",
-  "BG",
-  "BF",
-  "BI",
-  "KH",
-  "CM",
-  "CA",
-  "CV",
-  "KY",
-  "CF",
-  "TD",
-  "CL",
-  "CN",
-  "CX",
-  "CC",
-  "CO",
-  "KM",
-  "CK",
-  "CR",
-  "HR",
-  "CU",
-  "CW",
-  "CY",
-  "CZ",
-  "CD",
-  "DK",
-  "DJ",
-  "DM",
-  "DO",
-  "TL",
-  "EC",
-  "EG",
-  "SV",
-  "GQ",
-  "ER",
-  "EE",
-  "ET",
-  "FK",
-  "FO",
-  "FJ",
-  "FI",
-  "FR",
-  "PF",
-  "GA",
-  "GM",
-  "GE",
-  "DE",
-  "GH",
-  "GI",
-  "GR",
-  "GL",
-  "GD",
-  "GU",
-  "GT",
-  "GG",
-  "GN",
-  "GW",
-  "GY",
-  "HT",
-  "HN",
-  "HK",
-  "HU",
-  "IS",
-  "IN",
-  "ID",
-  "IR",
-  "IQ",
-  "IE",
-  "IM",
-  "IL",
-  "IT",
-  "CI",
-  "JM",
-  "JP",
-  "JE",
-  "JO",
-  "KZ",
-  "KE",
-  "KI",
-  "KW",
-  "KG",
-  "LA",
-  "LV",
-  "LB",
-  "LS",
-  "LR",
-  "LY",
-  "LI",
-  "LT",
-  "LU",
-  "MO",
-  "MK",
-  "MG",
-  "MW",
-  "MY",
-  "MV",
-  "ML",
-  "MT",
-  "MH",
-  "MR",
-  "MU",
-  "YT",
-  "MX",
-  "FM",
-  "MD",
-  "MC",
-  "MN",
-  "ME",
-  "MS",
-  "MA",
-  "MZ",
-  "MM",
-  "NA",
-  "NR",
-  "NP",
-  "NL",
-  "AN",
-  "NC",
-  "NZ",
-  "NI",
-  "NE",
-  "NG",
-  "NU",
-  "KP",
-  "MP",
-  "NO",
-  "OM",
-  "PK",
-  "PW",
-  "PA",
-  "PG",
-  "PY",
-  "PE",
-  "PH",
-  "PN",
-  "PL",
-  "PT",
-  "PR",
-  "QA",
-  "CG",
-  "RE",
-  "RO",
-  "RU",
-  "RW",
-  "BL",
-  "SH",
-  "KN",
-  "LC",
-  "MF",
-  "PM",
-  "VC",
-  "WS",
-  "SM",
-  "ST",
-  "SA",
-  "SN",
-  "RS",
-  "SC",
-  "SL",
-  "SG",
-  "SX",
-  "SK",
-  "SI",
-  "SB",
-  "SO",
-  "ZA",
-  "KR",
-  "ES",
-  "LK",
-  "SD",
-  "SR",
-  "SJ",
-  "SZ",
-  "SE",
-  "CH",
-  "SY",
-  "TW",
-  "TJ",
-  "TZ",
-  "TH",
-  "TG",
-  "TK",
-  "TO",
-  "TT",
-  "TN",
-  "TR",
-  "TM",
-  "TC",
-  "TV",
-  "VI",
-  "UG",
-  "UA",
-  "AE",
-  "GB",
-  "US",
-  "UY",
-  "UZ",
-  "VU",
-  "VA",
-  "VE",
-  "VN",
-  "WF",
-  "EH",
-  "YE",
-  "ZM",
-  "ZW",
-);
+  | "ZW"
+  | (string & {});
+export const PhoneNumberCountryCode = S.String;
 export type PhoneNumberCountryCodes = PhoneNumberCountryCode[];
 export const PhoneNumberCountryCodes = S.Array(PhoneNumberCountryCode);
-export type QueueType = "STANDARD" | "AGENT";
-export const QueueType = S.Literal("STANDARD", "AGENT");
+export type QueueType = "STANDARD" | "AGENT" | (string & {});
+export const QueueType = S.String;
 export type QueueTypes = QueueType[];
 export const QueueTypes = S.Array(QueueType);
-export type QuickConnectType = "USER" | "QUEUE" | "PHONE_NUMBER" | "FLOW";
-export const QuickConnectType = S.Literal(
-  "USER",
-  "QUEUE",
-  "PHONE_NUMBER",
-  "FLOW",
-);
+export type QuickConnectType =
+  | "USER"
+  | "QUEUE"
+  | "PHONE_NUMBER"
+  | "FLOW"
+  | (string & {});
+export const QuickConnectType = S.String;
 export type QuickConnectTypes = QuickConnectType[];
 export const QuickConnectTypes = S.Array(QuickConnectType);
-export type RealTimeContactAnalysisOutputType = "Raw" | "Redacted";
-export const RealTimeContactAnalysisOutputType = S.Literal("Raw", "Redacted");
+export type RealTimeContactAnalysisOutputType =
+  | "Raw"
+  | "Redacted"
+  | (string & {});
+export const RealTimeContactAnalysisOutputType = S.String;
 export type RealTimeContactAnalysisSegmentType =
   | "Transcript"
   | "Categories"
   | "Issues"
   | "Event"
   | "Attachments"
-  | "PostContactSummary";
-export const RealTimeContactAnalysisSegmentType = S.Literal(
-  "Transcript",
-  "Categories",
-  "Issues",
-  "Event",
-  "Attachments",
-  "PostContactSummary",
-);
+  | "PostContactSummary"
+  | (string & {});
+export const RealTimeContactAnalysisSegmentType = S.String;
 export type RealTimeContactAnalysisSegmentTypes =
   RealTimeContactAnalysisSegmentType[];
 export const RealTimeContactAnalysisSegmentTypes = S.Array(
@@ -1413,50 +1034,34 @@ export type EventSourceName =
   | "OnMetricDataUpdate"
   | "OnCaseCreate"
   | "OnCaseUpdate"
-  | "OnSlaBreach";
-export const EventSourceName = S.Literal(
-  "OnPostCallAnalysisAvailable",
-  "OnRealTimeCallAnalysisAvailable",
-  "OnRealTimeChatAnalysisAvailable",
-  "OnPostChatAnalysisAvailable",
-  "OnZendeskTicketCreate",
-  "OnZendeskTicketStatusUpdate",
-  "OnSalesforceCaseCreate",
-  "OnContactEvaluationSubmit",
-  "OnMetricDataUpdate",
-  "OnCaseCreate",
-  "OnCaseUpdate",
-  "OnSlaBreach",
-);
-export type ViewType = "CUSTOMER_MANAGED" | "AWS_MANAGED";
-export const ViewType = S.Literal("CUSTOMER_MANAGED", "AWS_MANAGED");
-export type MonitorCapability = "SILENT_MONITOR" | "BARGE";
-export const MonitorCapability = S.Literal("SILENT_MONITOR", "BARGE");
+  | "OnSlaBreach"
+  | (string & {});
+export const EventSourceName = S.String;
+export type ViewType = "CUSTOMER_MANAGED" | "AWS_MANAGED" | (string & {});
+export const ViewType = S.String;
+export type MonitorCapability = "SILENT_MONITOR" | "BARGE" | (string & {});
+export const MonitorCapability = S.String;
 export type AllowedMonitorCapabilities = MonitorCapability[];
 export const AllowedMonitorCapabilities = S.Array(MonitorCapability);
-export type ContactRecordingType = "AGENT" | "IVR" | "SCREEN";
-export const ContactRecordingType = S.Literal("AGENT", "IVR", "SCREEN");
+export type ContactRecordingType = "AGENT" | "IVR" | "SCREEN" | (string & {});
+export const ContactRecordingType = S.String;
 export type ResourceTypeList = string[];
 export const ResourceTypeList = S.Array(S.String);
 export type VocabularyState =
   | "CREATION_IN_PROGRESS"
   | "ACTIVE"
   | "CREATION_FAILED"
-  | "DELETE_IN_PROGRESS";
-export const VocabularyState = S.Literal(
-  "CREATION_IN_PROGRESS",
-  "ACTIVE",
-  "CREATION_FAILED",
-  "DELETE_IN_PROGRESS",
-);
-export type TrafficType = "GENERAL" | "CAMPAIGN";
-export const TrafficType = S.Literal("GENERAL", "CAMPAIGN");
-export type FileUseCaseType = "EMAIL_MESSAGE" | "ATTACHMENT";
-export const FileUseCaseType = S.Literal("EMAIL_MESSAGE", "ATTACHMENT");
+  | "DELETE_IN_PROGRESS"
+  | (string & {});
+export const VocabularyState = S.String;
+export type TrafficType = "GENERAL" | "CAMPAIGN" | (string & {});
+export const TrafficType = S.String;
+export type FileUseCaseType = "EMAIL_MESSAGE" | "ATTACHMENT" | (string & {});
+export const FileUseCaseType = S.String;
 export type SupportedMessagingContentTypes = string[];
 export const SupportedMessagingContentTypes = S.Array(S.String);
-export type DisconnectOnCustomerExitParticipantType = "AGENT";
-export const DisconnectOnCustomerExitParticipantType = S.Literal("AGENT");
+export type DisconnectOnCustomerExitParticipantType = "AGENT" | (string & {});
+export const DisconnectOnCustomerExitParticipantType = S.String;
 export type DisconnectOnCustomerExit =
   DisconnectOnCustomerExitParticipantType[];
 export const DisconnectOnCustomerExit = S.Array(
@@ -1464,23 +1069,21 @@ export const DisconnectOnCustomerExit = S.Array(
 );
 export type ContactMediaProcessingFailureMode =
   | "DELIVER_UNPROCESSED_MESSAGE"
-  | "DO_NOT_DELIVER_UNPROCESSED_MESSAGE";
-export const ContactMediaProcessingFailureMode = S.Literal(
-  "DELIVER_UNPROCESSED_MESSAGE",
-  "DO_NOT_DELIVER_UNPROCESSED_MESSAGE",
-);
+  | "DO_NOT_DELIVER_UNPROCESSED_MESSAGE"
+  | (string & {});
+export const ContactMediaProcessingFailureMode = S.String;
 export type ContactTagKeys = string[];
 export const ContactTagKeys = S.Array(S.String);
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export type IpCidrList = string[];
 export const IpCidrList = S.Array(S.String);
-export type ContactFlowState = "ACTIVE" | "ARCHIVED";
-export const ContactFlowState = S.Literal("ACTIVE", "ARCHIVED");
-export type QueueStatus = "ENABLED" | "DISABLED";
-export const QueueStatus = S.Literal("ENABLED", "DISABLED");
-export type Visibility = "ALL" | "ASSIGNED" | "NONE";
-export const Visibility = S.Literal("ALL", "ASSIGNED", "NONE");
+export type ContactFlowState = "ACTIVE" | "ARCHIVED" | (string & {});
+export const ContactFlowState = S.String;
+export type QueueStatus = "ENABLED" | "DISABLED" | (string & {});
+export const QueueStatus = S.String;
+export type Visibility = "ALL" | "ASSIGNED" | "NONE" | (string & {});
+export const Visibility = S.String;
 export interface ActivateEvaluationFormRequest {
   InstanceId: string;
   EvaluationFormId: string;
@@ -6998,8 +6601,8 @@ export const OutboundAdditionalRecipients = S.suspend(() =>
 ).annotations({
   identifier: "OutboundAdditionalRecipients",
 }) as any as S.Schema<OutboundAdditionalRecipients>;
-export type OutboundMessageSourceType = "TEMPLATE" | "RAW";
-export const OutboundMessageSourceType = S.Literal("TEMPLATE", "RAW");
+export type OutboundMessageSourceType = "TEMPLATE" | "RAW" | (string & {});
+export const OutboundMessageSourceType = S.String;
 export type Attributes = { [key: string]: string | undefined };
 export const Attributes = S.Record({
   key: S.String,
@@ -7125,15 +6728,9 @@ export type ReferenceStatus =
   | "APPROVED"
   | "REJECTED"
   | "PROCESSING"
-  | "FAILED";
-export const ReferenceStatus = S.Literal(
-  "AVAILABLE",
-  "DELETED",
-  "APPROVED",
-  "REJECTED",
-  "PROCESSING",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const ReferenceStatus = S.String;
 export interface Reference {
   Value?: string;
   Type: ReferenceType;
@@ -8069,13 +7666,16 @@ export const EvaluationFormItemsList = S.Array(
     identifier: "EvaluationFormItem",
   }),
 ) as any as S.Schema<EvaluationFormItemsList>;
-export type EvaluationFormScoringMode = "QUESTION_ONLY" | "SECTION_ONLY";
-export const EvaluationFormScoringMode = S.Literal(
-  "QUESTION_ONLY",
-  "SECTION_ONLY",
-);
-export type EvaluationFormScoringStatus = "ENABLED" | "DISABLED";
-export const EvaluationFormScoringStatus = S.Literal("ENABLED", "DISABLED");
+export type EvaluationFormScoringMode =
+  | "QUESTION_ONLY"
+  | "SECTION_ONLY"
+  | (string & {});
+export const EvaluationFormScoringMode = S.String;
+export type EvaluationFormScoringStatus =
+  | "ENABLED"
+  | "DISABLED"
+  | (string & {});
+export const EvaluationFormScoringStatus = S.String;
 export interface EvaluationFormScoringStrategy {
   Mode: EvaluationFormScoringMode;
   Status: EvaluationFormScoringStatus;
@@ -8096,8 +7696,8 @@ export const EvaluationFormAutoEvaluationConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "EvaluationFormAutoEvaluationConfiguration",
 }) as any as S.Schema<EvaluationFormAutoEvaluationConfiguration>;
-export type ContactInteractionType = "AGENT" | "AUTOMATED";
-export const ContactInteractionType = S.Literal("AGENT", "AUTOMATED");
+export type ContactInteractionType = "AGENT" | "AUTOMATED" | (string & {});
+export const ContactInteractionType = S.String;
 export interface EvaluationFormTargetConfiguration {
   ContactInteractionType: ContactInteractionType;
 }
@@ -8112,15 +7712,9 @@ export type EvaluationFormLanguageCode =
   | "es-ES"
   | "fr-FR"
   | "it-IT"
-  | "pt-BR";
-export const EvaluationFormLanguageCode = S.Literal(
-  "de-DE",
-  "en-US",
-  "es-ES",
-  "fr-FR",
-  "it-IT",
-  "pt-BR",
-);
+  | "pt-BR"
+  | (string & {});
+export const EvaluationFormLanguageCode = S.String;
 export interface EvaluationFormLanguageConfiguration {
   FormLanguage?: EvaluationFormLanguageCode;
 }
@@ -8184,16 +7778,9 @@ export type HoursOfOperationDays =
   | "WEDNESDAY"
   | "THURSDAY"
   | "FRIDAY"
-  | "SATURDAY";
-export const HoursOfOperationDays = S.Literal(
-  "SUNDAY",
-  "MONDAY",
-  "TUESDAY",
-  "WEDNESDAY",
-  "THURSDAY",
-  "FRIDAY",
-  "SATURDAY",
-);
+  | "SATURDAY"
+  | (string & {});
+export const HoursOfOperationDays = S.String;
 export interface HoursOfOperationTimeSlice {
   Hours: number;
   Minutes: number;
@@ -8264,16 +7851,9 @@ export type OverrideDays =
   | "WEDNESDAY"
   | "THURSDAY"
   | "FRIDAY"
-  | "SATURDAY";
-export const OverrideDays = S.Literal(
-  "SUNDAY",
-  "MONDAY",
-  "TUESDAY",
-  "WEDNESDAY",
-  "THURSDAY",
-  "FRIDAY",
-  "SATURDAY",
-);
+  | "SATURDAY"
+  | (string & {});
+export const OverrideDays = S.String;
 export interface OverrideTimeSlice {
   Hours: number;
   Minutes: number;
@@ -8384,15 +7964,11 @@ export type StorageType =
   | "S3"
   | "KINESIS_VIDEO_STREAM"
   | "KINESIS_STREAM"
-  | "KINESIS_FIREHOSE";
-export const StorageType = S.Literal(
-  "S3",
-  "KINESIS_VIDEO_STREAM",
-  "KINESIS_STREAM",
-  "KINESIS_FIREHOSE",
-);
-export type EncryptionType = "KMS";
-export const EncryptionType = S.Literal("KMS");
+  | "KINESIS_FIREHOSE"
+  | (string & {});
+export const StorageType = S.String;
+export type EncryptionType = "KMS" | (string & {});
+export const EncryptionType = S.String;
 export interface EncryptionConfig {
   EncryptionType: EncryptionType;
   KeyId: string;
@@ -9027,11 +8603,11 @@ export const UpdateRoutingProfileAgentAvailabilityTimerResponse = S.suspend(
 ).annotations({
   identifier: "UpdateRoutingProfileAgentAvailabilityTimerResponse",
 }) as any as S.Schema<UpdateRoutingProfileAgentAvailabilityTimerResponse>;
-export type BehaviorType = "ROUTE_CURRENT_CHANNEL_ONLY" | "ROUTE_ANY_CHANNEL";
-export const BehaviorType = S.Literal(
-  "ROUTE_CURRENT_CHANNEL_ONLY",
-  "ROUTE_ANY_CHANNEL",
-);
+export type BehaviorType =
+  | "ROUTE_CURRENT_CHANNEL_ONLY"
+  | "ROUTE_ANY_CHANNEL"
+  | (string & {});
+export const BehaviorType = S.String;
 export interface CrossChannelBehavior {
   BehaviorType: BehaviorType;
 }
@@ -9220,18 +8796,9 @@ export type ActionType =
   | "UPDATE_CASE"
   | "ASSIGN_SLA"
   | "END_ASSOCIATED_TASKS"
-  | "SUBMIT_AUTO_EVALUATION";
-export const ActionType = S.Literal(
-  "CREATE_TASK",
-  "ASSIGN_CONTACT_CATEGORY",
-  "GENERATE_EVENTBRIDGE_EVENT",
-  "SEND_NOTIFICATION",
-  "CREATE_CASE",
-  "UPDATE_CASE",
-  "ASSIGN_SLA",
-  "END_ASSOCIATED_TASKS",
-  "SUBMIT_AUTO_EVALUATION",
-);
+  | "SUBMIT_AUTO_EVALUATION"
+  | (string & {});
+export const ActionType = S.String;
 export interface TaskActionDefinition {
   Name: string;
   Description?: string;
@@ -9262,10 +8829,10 @@ export const AssignContactCategoryActionDefinition = S.suspend(() =>
 ).annotations({
   identifier: "AssignContactCategoryActionDefinition",
 }) as any as S.Schema<AssignContactCategoryActionDefinition>;
-export type NotificationDeliveryType = "EMAIL";
-export const NotificationDeliveryType = S.Literal("EMAIL");
-export type NotificationContentType = "PLAIN_TEXT";
-export const NotificationContentType = S.Literal("PLAIN_TEXT");
+export type NotificationDeliveryType = "EMAIL" | (string & {});
+export const NotificationDeliveryType = S.String;
+export type NotificationContentType = "PLAIN_TEXT" | (string & {});
+export const NotificationContentType = S.String;
 export type UserTagMap = { [key: string]: string | undefined };
 export const UserTagMap = S.Record({
   key: S.String,
@@ -9351,10 +8918,10 @@ export const UpdateCaseActionDefinition = S.suspend(() =>
 ).annotations({
   identifier: "UpdateCaseActionDefinition",
 }) as any as S.Schema<UpdateCaseActionDefinition>;
-export type SlaAssignmentType = "CASES";
-export const SlaAssignmentType = S.Literal("CASES");
-export type SlaType = "CaseField";
-export const SlaType = S.Literal("CaseField");
+export type SlaAssignmentType = "CASES" | (string & {});
+export const SlaAssignmentType = S.String;
+export type SlaType = "CaseField" | (string & {});
+export const SlaType = S.String;
 export type SlaFieldValueUnionList = FieldValueUnion[];
 export const SlaFieldValueUnionList = S.Array(FieldValueUnion);
 export interface CaseSlaConfiguration {
@@ -9473,8 +9040,8 @@ export const AllowedAccessControlTags = S.Record({
 });
 export type ApplicationPermissions = string[];
 export const ApplicationPermissions = S.Array(S.String);
-export type ApplicationType = "MCP" | "THIRD_PARTY_APPLICATION";
-export const ApplicationType = S.Literal("MCP", "THIRD_PARTY_APPLICATION");
+export type ApplicationType = "MCP" | "THIRD_PARTY_APPLICATION" | (string & {});
+export const ApplicationType = S.String;
 export interface Application {
   Namespace?: string;
   ApplicationPermissions?: string[];
@@ -9489,8 +9056,8 @@ export const Application = S.suspend(() =>
 ).annotations({ identifier: "Application" }) as any as S.Schema<Application>;
 export type Applications = Application[];
 export const Applications = S.Array(Application);
-export type FlowModuleType = "MCP";
-export const FlowModuleType = S.Literal("MCP");
+export type FlowModuleType = "MCP" | (string & {});
+export const FlowModuleType = S.String;
 export interface FlowModule {
   Type?: FlowModuleType;
   FlowModuleId?: string;
@@ -9503,8 +9070,8 @@ export const FlowModule = S.suspend(() =>
 ).annotations({ identifier: "FlowModule" }) as any as S.Schema<FlowModule>;
 export type AllowedFlowModules = FlowModule[];
 export const AllowedFlowModules = S.Array(FlowModule);
-export type AccessType = "ALLOW";
-export const AccessType = S.Literal("ALLOW");
+export type AccessType = "ALLOW" | (string & {});
+export const AccessType = S.String;
 export type PrimaryValueList = string[];
 export const PrimaryValueList = S.Array(S.String);
 export interface PrimaryAttributeValue {
@@ -9697,23 +9264,9 @@ export type TaskTemplateFieldType =
   | "SINGLE_SELECT"
   | "EMAIL"
   | "SELF_ASSIGN"
-  | "EXPIRY_DURATION";
-export const TaskTemplateFieldType = S.Literal(
-  "NAME",
-  "DESCRIPTION",
-  "SCHEDULED_TIME",
-  "QUICK_CONNECT",
-  "URL",
-  "NUMBER",
-  "TEXT",
-  "TEXT_AREA",
-  "DATE_TIME",
-  "BOOLEAN",
-  "SINGLE_SELECT",
-  "EMAIL",
-  "SELF_ASSIGN",
-  "EXPIRY_DURATION",
-);
+  | "EXPIRY_DURATION"
+  | (string & {});
+export const TaskTemplateFieldType = S.String;
 export type SingleSelectOptions = string[];
 export const SingleSelectOptions = S.Array(S.String);
 export interface TaskTemplateField {
@@ -9885,8 +9438,8 @@ export const UpdateUserIdentityInfoResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateUserIdentityInfoResponse",
 }) as any as S.Schema<UpdateUserIdentityInfoResponse>;
-export type PhoneType = "SOFT_PHONE" | "DESK_PHONE";
-export const PhoneType = S.Literal("SOFT_PHONE", "DESK_PHONE");
+export type PhoneType = "SOFT_PHONE" | "DESK_PHONE" | (string & {});
+export const PhoneType = S.String;
 export interface UserPhoneConfig {
   PhoneType: PhoneType;
   AutoAccept?: boolean;
@@ -10298,15 +9851,9 @@ export type WorkspaceFontFamily =
   | "Georgia"
   | "Times New Roman"
   | "Trebuchet"
-  | "Verdana";
-export const WorkspaceFontFamily = S.Literal(
-  "Arial",
-  "Courier New",
-  "Georgia",
-  "Times New Roman",
-  "Trebuchet",
-  "Verdana",
-);
+  | "Verdana"
+  | (string & {});
+export const WorkspaceFontFamily = S.String;
 export interface FontFamily {
   Default?: WorkspaceFontFamily;
 }
@@ -10416,18 +9963,13 @@ export type ParticipantRole =
   | "CUSTOMER"
   | "SYSTEM"
   | "CUSTOM_BOT"
-  | "SUPERVISOR";
-export const ParticipantRole = S.Literal(
-  "AGENT",
-  "CUSTOMER",
-  "SYSTEM",
-  "CUSTOM_BOT",
-  "SUPERVISOR",
-);
+  | "SUPERVISOR"
+  | (string & {});
+export const ParticipantRole = S.String;
 export type AttributeNameList = string[];
 export const AttributeNameList = S.Array(S.String);
-export type ContactMetricName = "POSITION_IN_QUEUE";
-export const ContactMetricName = S.Literal("POSITION_IN_QUEUE");
+export type ContactMetricName = "POSITION_IN_QUEUE" | (string & {});
+export const ContactMetricName = S.String;
 export type Queues = string[];
 export const Queues = S.Array(S.String);
 export type Channels = Channel[];
@@ -10455,26 +9997,13 @@ export type CurrentMetricName =
   | "CONTACTS_SCHEDULED"
   | "AGENTS_ON_CONTACT"
   | "SLOTS_ACTIVE"
-  | "SLOTS_AVAILABLE";
-export const CurrentMetricName = S.Literal(
-  "AGENTS_ONLINE",
-  "AGENTS_AVAILABLE",
-  "AGENTS_ON_CALL",
-  "AGENTS_NON_PRODUCTIVE",
-  "AGENTS_AFTER_CONTACT_WORK",
-  "AGENTS_ERROR",
-  "AGENTS_STAFFED",
-  "CONTACTS_IN_QUEUE",
-  "OLDEST_CONTACT_AGE",
-  "CONTACTS_SCHEDULED",
-  "AGENTS_ON_CONTACT",
-  "SLOTS_ACTIVE",
-  "SLOTS_AVAILABLE",
-);
-export type Unit = "SECONDS" | "COUNT" | "PERCENT";
-export const Unit = S.Literal("SECONDS", "COUNT", "PERCENT");
-export type SortOrder = "ASCENDING" | "DESCENDING";
-export const SortOrder = S.Literal("ASCENDING", "DESCENDING");
+  | "SLOTS_AVAILABLE"
+  | (string & {});
+export const CurrentMetricName = S.String;
+export type Unit = "SECONDS" | "COUNT" | "PERCENT" | (string & {});
+export const Unit = S.String;
+export type SortOrder = "ASCENDING" | "DESCENDING" | (string & {});
+export const SortOrder = S.String;
 export type AgentsMinOneMaxHundred = string[];
 export const AgentsMinOneMaxHundred = S.Array(S.String);
 export type UserDataHierarchyGroups = string[];
@@ -10504,51 +10033,20 @@ export type HistoricalMetricName =
   | "HOLD_TIME"
   | "INTERACTION_TIME"
   | "INTERACTION_AND_HOLD_TIME"
-  | "SERVICE_LEVEL";
-export const HistoricalMetricName = S.Literal(
-  "CONTACTS_QUEUED",
-  "CONTACTS_HANDLED",
-  "CONTACTS_ABANDONED",
-  "CONTACTS_CONSULTED",
-  "CONTACTS_AGENT_HUNG_UP_FIRST",
-  "CONTACTS_HANDLED_INCOMING",
-  "CONTACTS_HANDLED_OUTBOUND",
-  "CONTACTS_HOLD_ABANDONS",
-  "CONTACTS_TRANSFERRED_IN",
-  "CONTACTS_TRANSFERRED_OUT",
-  "CONTACTS_TRANSFERRED_IN_FROM_QUEUE",
-  "CONTACTS_TRANSFERRED_OUT_FROM_QUEUE",
-  "CONTACTS_MISSED",
-  "CALLBACK_CONTACTS_HANDLED",
-  "API_CONTACTS_HANDLED",
-  "OCCUPANCY",
-  "HANDLE_TIME",
-  "AFTER_CONTACT_WORK_TIME",
-  "QUEUED_TIME",
-  "ABANDON_TIME",
-  "QUEUE_ANSWER_TIME",
-  "HOLD_TIME",
-  "INTERACTION_TIME",
-  "INTERACTION_AND_HOLD_TIME",
-  "SERVICE_LEVEL",
-);
-export type Statistic = "SUM" | "MAX" | "AVG";
-export const Statistic = S.Literal("SUM", "MAX", "AVG");
+  | "SERVICE_LEVEL"
+  | (string & {});
+export const HistoricalMetricName = S.String;
+export type Statistic = "SUM" | "MAX" | "AVG" | (string & {});
+export const Statistic = S.String;
 export type IntervalPeriod =
   | "FIFTEEN_MIN"
   | "THIRTY_MIN"
   | "HOUR"
   | "DAY"
   | "WEEK"
-  | "TOTAL";
-export const IntervalPeriod = S.Literal(
-  "FIFTEEN_MIN",
-  "THIRTY_MIN",
-  "HOUR",
-  "DAY",
-  "WEEK",
-  "TOTAL",
-);
+  | "TOTAL"
+  | (string & {});
+export const IntervalPeriod = S.String;
 export type FilterValueList = string[];
 export const FilterValueList = S.Array(S.String);
 export type AgentStatusSearchConditionList = AgentStatusSearchCriteria[];
@@ -10571,8 +10069,8 @@ export const ContactFlowModuleSearchConditionList = S.Array(
       ContactFlowModuleSearchCriteria,
   ).annotations({ identifier: "ContactFlowModuleSearchCriteria" }),
 ) as any as S.Schema<ContactFlowModuleSearchConditionList>;
-export type ContactFlowModuleStatus = "PUBLISHED" | "SAVED";
-export const ContactFlowModuleStatus = S.Literal("PUBLISHED", "SAVED");
+export type ContactFlowModuleStatus = "PUBLISHED" | "SAVED" | (string & {});
+export const ContactFlowModuleStatus = S.String;
 export type ContactFlowSearchConditionList = ContactFlowSearchCriteria[];
 export const ContactFlowSearchConditionList = S.Array(
   S.suspend(
@@ -10584,14 +10082,9 @@ export type SearchContactsTimeRangeType =
   | "SCHEDULED_TIMESTAMP"
   | "CONNECTED_TO_AGENT_TIMESTAMP"
   | "DISCONNECT_TIMESTAMP"
-  | "ENQUEUE_TIMESTAMP";
-export const SearchContactsTimeRangeType = S.Literal(
-  "INITIATION_TIMESTAMP",
-  "SCHEDULED_TIMESTAMP",
-  "CONNECTED_TO_AGENT_TIMESTAMP",
-  "DISCONNECT_TIMESTAMP",
-  "ENQUEUE_TIMESTAMP",
-);
+  | "ENQUEUE_TIMESTAMP"
+  | (string & {});
+export const SearchContactsTimeRangeType = S.String;
 export type AgentResourceIdList = string[];
 export const AgentResourceIdList = S.Array(S.String);
 export type ChannelList = Channel[];
@@ -10609,16 +10102,9 @@ export type SortableFieldName =
   | "DISCONNECT_TIMESTAMP"
   | "INITIATION_METHOD"
   | "CHANNEL"
-  | "EXPIRY_TIMESTAMP";
-export const SortableFieldName = S.Literal(
-  "INITIATION_TIMESTAMP",
-  "SCHEDULED_TIMESTAMP",
-  "CONNECTED_TO_AGENT_TIMESTAMP",
-  "DISCONNECT_TIMESTAMP",
-  "INITIATION_METHOD",
-  "CHANNEL",
-  "EXPIRY_TIMESTAMP",
-);
+  | "EXPIRY_TIMESTAMP"
+  | (string & {});
+export const SortableFieldName = S.String;
 export type DataTableSearchConditionList = DataTableSearchCriteria[];
 export const DataTableSearchConditionList = S.Array(
   S.suspend(
@@ -10674,8 +10160,8 @@ export const QueueSearchConditionList = S.Array(
     (): S.Schema<QueueSearchCriteria, any> => QueueSearchCriteria,
   ).annotations({ identifier: "QueueSearchCriteria" }),
 ) as any as S.Schema<QueueSearchConditionList>;
-export type SearchableQueueType = "STANDARD";
-export const SearchableQueueType = S.Literal("STANDARD");
+export type SearchableQueueType = "STANDARD" | (string & {});
+export const SearchableQueueType = S.String;
 export type QuickConnectSearchConditionList = QuickConnectSearchCriteria[];
 export const QuickConnectSearchConditionList = S.Array(
   S.suspend(
@@ -10731,31 +10217,30 @@ export const WorkspaceSearchConditionList = S.Array(
     (): S.Schema<WorkspaceSearchCriteria, any> => WorkspaceSearchCriteria,
   ).annotations({ identifier: "WorkspaceSearchCriteria" }),
 ) as any as S.Schema<WorkspaceSearchConditionList>;
-export type ChatEventType = "DISCONNECT" | "MESSAGE" | "EVENT";
-export const ChatEventType = S.Literal("DISCONNECT", "MESSAGE", "EVENT");
-export type ResponseMode = "INCREMENTAL" | "COMPLETE";
-export const ResponseMode = S.Literal("INCREMENTAL", "COMPLETE");
-export type VoiceRecordingTrack = "FROM_AGENT" | "TO_AGENT" | "ALL";
-export const VoiceRecordingTrack = S.Literal("FROM_AGENT", "TO_AGENT", "ALL");
-export type IvrRecordingTrack = "ALL";
-export const IvrRecordingTrack = S.Literal("ALL");
-export type InboundMessageSourceType = "RAW";
-export const InboundMessageSourceType = S.Literal("RAW");
+export type ChatEventType = "DISCONNECT" | "MESSAGE" | "EVENT" | (string & {});
+export const ChatEventType = S.String;
+export type ResponseMode = "INCREMENTAL" | "COMPLETE" | (string & {});
+export const ResponseMode = S.String;
+export type VoiceRecordingTrack =
+  | "FROM_AGENT"
+  | "TO_AGENT"
+  | "ALL"
+  | (string & {});
+export const VoiceRecordingTrack = S.String;
+export type IvrRecordingTrack = "ALL" | (string & {});
+export const IvrRecordingTrack = S.String;
+export type InboundMessageSourceType = "RAW" | (string & {});
+export const InboundMessageSourceType = S.String;
 export type EndpointType =
   | "TELEPHONE_NUMBER"
   | "VOIP"
   | "CONTACT_FLOW"
   | "CONNECT_PHONENUMBER_ARN"
-  | "EMAIL_ADDRESS";
-export const EndpointType = S.Literal(
-  "TELEPHONE_NUMBER",
-  "VOIP",
-  "CONTACT_FLOW",
-  "CONNECT_PHONENUMBER_ARN",
-  "EMAIL_ADDRESS",
-);
-export type OutboundStrategyType = "AGENT_FIRST";
-export const OutboundStrategyType = S.Literal("AGENT_FIRST");
+  | "EMAIL_ADDRESS"
+  | (string & {});
+export const EndpointType = S.String;
+export type OutboundStrategyType = "AGENT_FIRST" | (string & {});
+export const OutboundStrategyType = S.String;
 export interface RoutingProfileManualAssignmentQueueConfig {
   QueueReference: RoutingProfileQueueReference;
 }
@@ -10877,13 +10362,13 @@ export type DataTableValueEvaluationSetList = DataTableValueEvaluationSet[];
 export const DataTableValueEvaluationSetList = S.Array(
   DataTableValueEvaluationSet,
 );
-export type FileStatusType = "APPROVED" | "REJECTED" | "PROCESSING" | "FAILED";
-export const FileStatusType = S.Literal(
-  "APPROVED",
-  "REJECTED",
-  "PROCESSING",
-  "FAILED",
-);
+export type FileStatusType =
+  | "APPROVED"
+  | "REJECTED"
+  | "PROCESSING"
+  | "FAILED"
+  | (string & {});
+export const FileStatusType = S.String;
 export interface ContactMetricInfo {
   Name: ContactMetricName;
 }
@@ -11042,20 +10527,17 @@ export type FunctionArnsList = string[];
 export const FunctionArnsList = S.Array(S.String);
 export type LexBotsList = LexBot[];
 export const LexBotsList = S.Array(LexBot);
-export type RealTimeContactAnalysisSupportedChannel = "VOICE" | "CHAT";
-export const RealTimeContactAnalysisSupportedChannel = S.Literal(
-  "VOICE",
-  "CHAT",
-);
+export type RealTimeContactAnalysisSupportedChannel =
+  | "VOICE"
+  | "CHAT"
+  | (string & {});
+export const RealTimeContactAnalysisSupportedChannel = S.String;
 export type RealTimeContactAnalysisStatus =
   | "IN_PROGRESS"
   | "FAILED"
-  | "COMPLETED";
-export const RealTimeContactAnalysisStatus = S.Literal(
-  "IN_PROGRESS",
-  "FAILED",
-  "COMPLETED",
-);
+  | "COMPLETED"
+  | (string & {});
+export const RealTimeContactAnalysisStatus = S.String;
 export interface TagCondition {
   TagKey?: string;
   TagValue?: string;
@@ -11099,12 +10581,12 @@ export const EvaluationSearchFilter = S.suspend(() =>
 ).annotations({
   identifier: "EvaluationSearchFilter",
 }) as any as S.Schema<EvaluationSearchFilter>;
-export type StringComparisonType = "STARTS_WITH" | "CONTAINS" | "EXACT";
-export const StringComparisonType = S.Literal(
-  "STARTS_WITH",
-  "CONTAINS",
-  "EXACT",
-);
+export type StringComparisonType =
+  | "STARTS_WITH"
+  | "CONTAINS"
+  | "EXACT"
+  | (string & {});
+export const StringComparisonType = S.String;
 export interface StringCondition {
   FieldName?: string;
   Value?: string;
@@ -11277,16 +10759,9 @@ export type NumberComparisonType =
   | "LESSER"
   | "EQUAL"
   | "NOT_EQUAL"
-  | "RANGE";
-export const NumberComparisonType = S.Literal(
-  "GREATER_OR_EQUAL",
-  "GREATER",
-  "LESSER_OR_EQUAL",
-  "LESSER",
-  "EQUAL",
-  "NOT_EQUAL",
-  "RANGE",
-);
+  | "RANGE"
+  | (string & {});
+export const NumberComparisonType = S.String;
 export interface NumberCondition {
   FieldName?: string;
   MinValue?: number;
@@ -11303,8 +10778,8 @@ export const NumberCondition = S.suspend(() =>
 ).annotations({
   identifier: "NumberCondition",
 }) as any as S.Schema<NumberCondition>;
-export type BooleanComparisonType = "IS_TRUE" | "IS_FALSE";
-export const BooleanComparisonType = S.Literal("IS_TRUE", "IS_FALSE");
+export type BooleanComparisonType = "IS_TRUE" | "IS_FALSE" | (string & {});
+export const BooleanComparisonType = S.String;
 export interface BooleanCondition {
   FieldName?: string;
   ComparisonType?: BooleanComparisonType;
@@ -11323,15 +10798,9 @@ export type DateTimeComparisonType =
   | "GREATER_THAN_OR_EQUAL_TO"
   | "LESS_THAN_OR_EQUAL_TO"
   | "EQUAL_TO"
-  | "RANGE";
-export const DateTimeComparisonType = S.Literal(
-  "GREATER_THAN",
-  "LESS_THAN",
-  "GREATER_THAN_OR_EQUAL_TO",
-  "LESS_THAN_OR_EQUAL_TO",
-  "EQUAL_TO",
-  "RANGE",
-);
+  | "RANGE"
+  | (string & {});
+export const DateTimeComparisonType = S.String;
 export interface DateTimeCondition {
   FieldName?: string;
   MinValue?: string;
@@ -11864,10 +11333,10 @@ export const AnswerMachineDetectionConfig = S.suspend(() =>
 ).annotations({
   identifier: "AnswerMachineDetectionConfig",
 }) as any as S.Schema<AnswerMachineDetectionConfig>;
-export type VideoCapability = "SEND";
-export const VideoCapability = S.Literal("SEND");
-export type ScreenShareCapability = "SEND";
-export const ScreenShareCapability = S.Literal("SEND");
+export type VideoCapability = "SEND" | (string & {});
+export const VideoCapability = S.String;
+export type ScreenShareCapability = "SEND" | (string & {});
+export const ScreenShareCapability = S.String;
 export interface ParticipantCapabilities {
   Video?: VideoCapability;
   ScreenShare?: ScreenShareCapability;
@@ -11939,14 +11408,9 @@ export type EvaluationFormQuestionType =
   | "SINGLESELECT"
   | "NUMERIC"
   | "MULTISELECT"
-  | "DATETIME";
-export const EvaluationFormQuestionType = S.Literal(
-  "TEXT",
-  "SINGLESELECT",
-  "NUMERIC",
-  "MULTISELECT",
-  "DATETIME",
-);
+  | "DATETIME"
+  | (string & {});
+export const EvaluationFormQuestionType = S.String;
 export type ContactState =
   | "INCOMING"
   | "PENDING"
@@ -11956,25 +11420,17 @@ export type ContactState =
   | "MISSED"
   | "ERROR"
   | "ENDED"
-  | "REJECTED";
-export const ContactState = S.Literal(
-  "INCOMING",
-  "PENDING",
-  "CONNECTING",
-  "CONNECTED",
-  "CONNECTED_ONHOLD",
-  "MISSED",
-  "ERROR",
-  "ENDED",
-  "REJECTED",
-);
+  | "REJECTED"
+  | (string & {});
+export const ContactState = S.String;
 export type ContactStates = ContactState[];
 export const ContactStates = S.Array(ContactState);
-export type Comparison = "LT";
-export const Comparison = S.Literal("LT");
-export type FilterV2StringConditionComparisonOperator = "NOT_EXISTS";
-export const FilterV2StringConditionComparisonOperator =
-  S.Literal("NOT_EXISTS");
+export type Comparison = "LT" | (string & {});
+export const Comparison = S.String;
+export type FilterV2StringConditionComparisonOperator =
+  | "NOT_EXISTS"
+  | (string & {});
+export const FilterV2StringConditionComparisonOperator = S.String;
 export type MetricFilterValueList = string[];
 export const MetricFilterValueList = S.Array(S.String);
 export type DecimalComparisonType =
@@ -11984,29 +11440,18 @@ export type DecimalComparisonType =
   | "LESSER"
   | "EQUAL"
   | "NOT_EQUAL"
-  | "RANGE";
-export const DecimalComparisonType = S.Literal(
-  "GREATER_OR_EQUAL",
-  "GREATER",
-  "LESSER_OR_EQUAL",
-  "LESSER",
-  "EQUAL",
-  "NOT_EQUAL",
-  "RANGE",
-);
+  | "RANGE"
+  | (string & {});
+export const DecimalComparisonType = S.String;
 export type SearchTextList = string | redacted.Redacted<string>[];
 export const SearchTextList = S.Array(SensitiveString);
 export type SearchContactsMatchType =
   | "MATCH_ALL"
   | "MATCH_ANY"
   | "MATCH_EXACT"
-  | "MATCH_NONE";
-export const SearchContactsMatchType = S.Literal(
-  "MATCH_ALL",
-  "MATCH_ANY",
-  "MATCH_EXACT",
-  "MATCH_NONE",
-);
+  | "MATCH_NONE"
+  | (string & {});
+export const SearchContactsMatchType = S.String;
 export type HierarchyGroupIdList = string[];
 export const HierarchyGroupIdList = S.Array(S.String);
 export type DateComparisonType =
@@ -12014,18 +11459,16 @@ export type DateComparisonType =
   | "LESS_THAN"
   | "GREATER_THAN_OR_EQUAL_TO"
   | "LESS_THAN_OR_EQUAL_TO"
-  | "EQUAL_TO";
-export const DateComparisonType = S.Literal(
-  "GREATER_THAN",
-  "LESS_THAN",
-  "GREATER_THAN_OR_EQUAL_TO",
-  "LESS_THAN_OR_EQUAL_TO",
-  "EQUAL_TO",
-);
-export type TargetListType = "PROFICIENCIES";
-export const TargetListType = S.Literal("PROFICIENCIES");
-export type HierarchyGroupMatchType = "EXACT" | "WITH_CHILD_GROUPS";
-export const HierarchyGroupMatchType = S.Literal("EXACT", "WITH_CHILD_GROUPS");
+  | "EQUAL_TO"
+  | (string & {});
+export const DateComparisonType = S.String;
+export type TargetListType = "PROFICIENCIES" | (string & {});
+export const TargetListType = S.String;
+export type HierarchyGroupMatchType =
+  | "EXACT"
+  | "WITH_CHILD_GROUPS"
+  | (string & {});
+export const HierarchyGroupMatchType = S.String;
 export interface ActivateEvaluationFormResponse {
   EvaluationFormId: string;
   EvaluationFormArn: string;
@@ -14427,38 +13870,21 @@ export type AnsweringMachineDetectionStatus =
   | "AMD_UNRESOLVED"
   | "AMD_UNANSWERED"
   | "AMD_ERROR"
-  | "AMD_NOT_APPLICABLE";
-export const AnsweringMachineDetectionStatus = S.Literal(
-  "ANSWERED",
-  "UNDETECTED",
-  "ERROR",
-  "HUMAN_ANSWERED",
-  "SIT_TONE_DETECTED",
-  "SIT_TONE_BUSY",
-  "SIT_TONE_INVALID_NUMBER",
-  "FAX_MACHINE_DETECTED",
-  "VOICEMAIL_BEEP",
-  "VOICEMAIL_NO_BEEP",
-  "AMD_UNRESOLVED",
-  "AMD_UNANSWERED",
-  "AMD_ERROR",
-  "AMD_NOT_APPLICABLE",
-);
-export type EvaluationStatus = "DRAFT" | "SUBMITTED";
-export const EvaluationStatus = S.Literal("DRAFT", "SUBMITTED");
-export type EvaluationType = "STANDARD" | "CALIBRATION";
-export const EvaluationType = S.Literal("STANDARD", "CALIBRATION");
-export type EvaluationFormVersionStatus = "DRAFT" | "ACTIVE";
-export const EvaluationFormVersionStatus = S.Literal("DRAFT", "ACTIVE");
+  | "AMD_NOT_APPLICABLE"
+  | (string & {});
+export const AnsweringMachineDetectionStatus = S.String;
+export type EvaluationStatus = "DRAFT" | "SUBMITTED" | (string & {});
+export const EvaluationStatus = S.String;
+export type EvaluationType = "STANDARD" | "CALIBRATION" | (string & {});
+export const EvaluationType = S.String;
+export type EvaluationFormVersionStatus = "DRAFT" | "ACTIVE" | (string & {});
+export const EvaluationFormVersionStatus = S.String;
 export type InstanceStatus =
   | "CREATION_IN_PROGRESS"
   | "ACTIVE"
-  | "CREATION_FAILED";
-export const InstanceStatus = S.Literal(
-  "CREATION_IN_PROGRESS",
-  "ACTIVE",
-  "CREATION_FAILED",
-);
+  | "CREATION_FAILED"
+  | (string & {});
+export const InstanceStatus = S.String;
 export type AssociatedQueueIdList = string[];
 export const AssociatedQueueIdList = S.Array(S.String);
 export type TrafficDistributionGroupStatus =
@@ -14467,15 +13893,9 @@ export type TrafficDistributionGroupStatus =
   | "CREATION_FAILED"
   | "PENDING_DELETION"
   | "DELETION_FAILED"
-  | "UPDATE_IN_PROGRESS";
-export const TrafficDistributionGroupStatus = S.Literal(
-  "CREATION_IN_PROGRESS",
-  "ACTIVE",
-  "CREATION_FAILED",
-  "PENDING_DELETION",
-  "DELETION_FAILED",
-  "UPDATE_IN_PROGRESS",
-);
+  | "UPDATE_IN_PROGRESS"
+  | (string & {});
+export const TrafficDistributionGroupStatus = S.String;
 export interface ContactFilter {
   ContactStates?: ContactState[];
 }
@@ -14532,12 +13952,12 @@ export const MetricFilterV2 = S.suspend(() =>
 }) as any as S.Schema<MetricFilterV2>;
 export type MetricFiltersV2List = MetricFilterV2[];
 export const MetricFiltersV2List = S.Array(MetricFilterV2);
-export type AutoEvaluationStatus = "IN_PROGRESS" | "FAILED" | "SUCCEEDED";
-export const AutoEvaluationStatus = S.Literal(
-  "IN_PROGRESS",
-  "FAILED",
-  "SUCCEEDED",
-);
+export type AutoEvaluationStatus =
+  | "IN_PROGRESS"
+  | "FAILED"
+  | "SUCCEEDED"
+  | (string & {});
+export const AutoEvaluationStatus = S.String;
 export interface DecimalCondition {
   FieldName?: string;
   MinValue?: number;
@@ -14629,11 +14049,11 @@ export const HierarchyLevelUpdate = S.suspend(() =>
 ).annotations({
   identifier: "HierarchyLevelUpdate",
 }) as any as S.Schema<HierarchyLevelUpdate>;
-export type EvaluationFormItemEnablementAction = "DISABLE" | "ENABLE";
-export const EvaluationFormItemEnablementAction = S.Literal(
-  "DISABLE",
-  "ENABLE",
-);
+export type EvaluationFormItemEnablementAction =
+  | "DISABLE"
+  | "ENABLE"
+  | (string & {});
+export const EvaluationFormItemEnablementAction = S.String;
 export type SearchableContactAttributeValueList =
   | string
   | redacted.Redacted<string>[];
@@ -14647,24 +14067,25 @@ export type EmailHeaderType =
   | "MESSAGE_ID"
   | "IN_REPLY_TO"
   | "X_SES_SPAM_VERDICT"
-  | "X_SES_VIRUS_VERDICT";
-export const EmailHeaderType = S.Literal(
-  "REFERENCES",
-  "MESSAGE_ID",
-  "IN_REPLY_TO",
-  "X_SES_SPAM_VERDICT",
-  "X_SES_VIRUS_VERDICT",
-);
+  | "X_SES_VIRUS_VERDICT"
+  | (string & {});
+export const EmailHeaderType = S.String;
 export type Expressions = Expression[];
 export const Expressions = S.Array(
   S.suspend((): S.Schema<Expression, any> => Expression).annotations({
     identifier: "Expression",
   }),
 ) as any as S.Schema<Expressions>;
-export type TimerEligibleParticipantRoles = "CUSTOMER" | "AGENT";
-export const TimerEligibleParticipantRoles = S.Literal("CUSTOMER", "AGENT");
-export type ParticipantTimerType = "IDLE" | "DISCONNECT_NONCUSTOMER";
-export const ParticipantTimerType = S.Literal("IDLE", "DISCONNECT_NONCUSTOMER");
+export type TimerEligibleParticipantRoles =
+  | "CUSTOMER"
+  | "AGENT"
+  | (string & {});
+export const TimerEligibleParticipantRoles = S.String;
+export type ParticipantTimerType =
+  | "IDLE"
+  | "DISCONNECT_NONCUSTOMER"
+  | (string & {});
+export const ParticipantTimerType = S.String;
 export interface AttachedFile {
   CreationTime: string;
   FileArn: string;
@@ -14717,8 +14138,8 @@ export const PostAcceptTimeoutConfig = S.suspend(() =>
 ).annotations({
   identifier: "PostAcceptTimeoutConfig",
 }) as any as S.Schema<PostAcceptTimeoutConfig>;
-export type AllowedUserAction = "CALL" | "DISCARD";
-export const AllowedUserAction = S.Literal("CALL", "DISCARD");
+export type AllowedUserAction = "CALL" | "DISCARD" | (string & {});
+export const AllowedUserAction = S.String;
 export type AllowedUserActions = AllowedUserAction[];
 export const AllowedUserActions = S.Array(AllowedUserAction);
 export interface Preview {
@@ -16597,81 +16018,60 @@ export const SegmentAttributeValueMap = S.Record({
     ).annotations({ identifier: "SegmentAttributeValue" }),
   ),
 }) as any as S.Schema<SegmentAttributeValueMap>;
-export type MediaStreamType = "AUDIO" | "VIDEO";
-export const MediaStreamType = S.Literal("AUDIO", "VIDEO");
+export type MediaStreamType = "AUDIO" | "VIDEO" | (string & {});
+export const MediaStreamType = S.String;
 export type ParticipantType =
   | "ALL"
   | "MANAGER"
   | "AGENT"
   | "CUSTOMER"
-  | "THIRDPARTY";
-export const ParticipantType = S.Literal(
-  "ALL",
-  "MANAGER",
-  "AGENT",
-  "CUSTOMER",
-  "THIRDPARTY",
-);
-export type RecordingStatus = "AVAILABLE" | "DELETED";
-export const RecordingStatus = S.Literal("AVAILABLE", "DELETED");
-export type NextContactType = "QUICK_CONNECT";
-export const NextContactType = S.Literal("QUICK_CONNECT");
+  | "THIRDPARTY"
+  | (string & {});
+export const ParticipantType = S.String;
+export type RecordingStatus = "AVAILABLE" | "DELETED" | (string & {});
+export const RecordingStatus = S.String;
+export type NextContactType = "QUICK_CONNECT" | (string & {});
+export const NextContactType = S.String;
 export type InstanceReplicationStatus =
   | "INSTANCE_REPLICATION_COMPLETE"
   | "INSTANCE_REPLICATION_IN_PROGRESS"
   | "INSTANCE_REPLICATION_FAILED"
   | "INSTANCE_REPLICA_DELETING"
   | "INSTANCE_REPLICATION_DELETION_FAILED"
-  | "RESOURCE_REPLICATION_NOT_STARTED";
-export const InstanceReplicationStatus = S.Literal(
-  "INSTANCE_REPLICATION_COMPLETE",
-  "INSTANCE_REPLICATION_IN_PROGRESS",
-  "INSTANCE_REPLICATION_FAILED",
-  "INSTANCE_REPLICA_DELETING",
-  "INSTANCE_REPLICATION_DELETION_FAILED",
-  "RESOURCE_REPLICATION_NOT_STARTED",
-);
-export type PhoneNumberWorkflowStatus = "CLAIMED" | "IN_PROGRESS" | "FAILED";
-export const PhoneNumberWorkflowStatus = S.Literal(
-  "CLAIMED",
-  "IN_PROGRESS",
-  "FAILED",
-);
-export type ContactParticipantRole = "AGENT" | "SYSTEM" | "CUSTOM_BOT";
-export const ContactParticipantRole = S.Literal(
-  "AGENT",
-  "SYSTEM",
-  "CUSTOM_BOT",
-);
+  | "RESOURCE_REPLICATION_NOT_STARTED"
+  | (string & {});
+export const InstanceReplicationStatus = S.String;
+export type PhoneNumberWorkflowStatus =
+  | "CLAIMED"
+  | "IN_PROGRESS"
+  | "FAILED"
+  | (string & {});
+export const PhoneNumberWorkflowStatus = S.String;
+export type ContactParticipantRole =
+  | "AGENT"
+  | "SYSTEM"
+  | "CUSTOM_BOT"
+  | (string & {});
+export const ContactParticipantRole = S.String;
 export type RealTimeContactAnalysisSentimentLabel =
   | "POSITIVE"
   | "NEGATIVE"
-  | "NEUTRAL";
-export const RealTimeContactAnalysisSentimentLabel = S.Literal(
-  "POSITIVE",
-  "NEGATIVE",
-  "NEUTRAL",
-);
+  | "NEUTRAL"
+  | (string & {});
+export const RealTimeContactAnalysisSentimentLabel = S.String;
 export type RealTimeContactAnalysisPostContactSummaryStatus =
   | "FAILED"
-  | "COMPLETED";
-export const RealTimeContactAnalysisPostContactSummaryStatus = S.Literal(
-  "FAILED",
-  "COMPLETED",
-);
+  | "COMPLETED"
+  | (string & {});
+export const RealTimeContactAnalysisPostContactSummaryStatus = S.String;
 export type RealTimeContactAnalysisPostContactSummaryFailureCode =
   | "QUOTA_EXCEEDED"
   | "INSUFFICIENT_CONVERSATION_CONTENT"
   | "FAILED_SAFETY_GUIDELINES"
   | "INVALID_ANALYSIS_CONFIGURATION"
-  | "INTERNAL_ERROR";
-export const RealTimeContactAnalysisPostContactSummaryFailureCode = S.Literal(
-  "QUOTA_EXCEEDED",
-  "INSUFFICIENT_CONVERSATION_CONTENT",
-  "FAILED_SAFETY_GUIDELINES",
-  "INVALID_ANALYSIS_CONFIGURATION",
-  "INTERNAL_ERROR",
-);
+  | "INTERNAL_ERROR"
+  | (string & {});
+export const RealTimeContactAnalysisPostContactSummaryFailureCode = S.String;
 export interface ContactFlowTypeCondition {
   ContactFlowType?: ContactFlowType;
 }
@@ -16907,20 +16307,16 @@ export const CreateDataTableAttributeRequest = S.suspend(() =>
 }) as any as S.Schema<CreateDataTableAttributeRequest>;
 export type EvaluationFormSingleSelectQuestionDisplayMode =
   | "DROPDOWN"
-  | "RADIO";
-export const EvaluationFormSingleSelectQuestionDisplayMode = S.Literal(
-  "DROPDOWN",
-  "RADIO",
-);
+  | "RADIO"
+  | (string & {});
+export const EvaluationFormSingleSelectQuestionDisplayMode = S.String;
 export type EvaluationFormMultiSelectQuestionDisplayMode =
   | "DROPDOWN"
-  | "CHECKBOX";
-export const EvaluationFormMultiSelectQuestionDisplayMode = S.Literal(
-  "DROPDOWN",
-  "CHECKBOX",
-);
-export type EvaluationFormItemEnablementOperator = "OR" | "AND";
-export const EvaluationFormItemEnablementOperator = S.Literal("OR", "AND");
+  | "CHECKBOX"
+  | (string & {});
+export const EvaluationFormMultiSelectQuestionDisplayMode = S.String;
+export type EvaluationFormItemEnablementOperator = "OR" | "AND" | (string & {});
+export const EvaluationFormItemEnablementOperator = S.String;
 export interface CreateHoursOfOperationRequest {
   InstanceId: string;
   Name: string;
@@ -18015,8 +17411,8 @@ export const SearchContactFlowModulesRequest = S.suspend(() =>
 ).annotations({
   identifier: "SearchContactFlowModulesRequest",
 }) as any as S.Schema<SearchContactFlowModulesRequest>;
-export type SearchContactsTimeRangeConditionType = "NOT_EXISTS";
-export const SearchContactsTimeRangeConditionType = S.Literal("NOT_EXISTS");
+export type SearchContactsTimeRangeConditionType = "NOT_EXISTS" | (string & {});
+export const SearchContactsTimeRangeConditionType = S.String;
 export interface SearchDataTablesResponse {
   DataTables?: DataTable[];
   NextToken?: string;
@@ -18344,8 +17740,8 @@ export const UpdateDataTablePrimaryValuesResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateDataTablePrimaryValuesResponse",
 }) as any as S.Schema<UpdateDataTablePrimaryValuesResponse>;
-export type ParticipantTimerAction = "Unset";
-export const ParticipantTimerAction = S.Literal("Unset");
+export type ParticipantTimerAction = "Unset" | (string & {});
+export const ParticipantTimerAction = S.String;
 export interface UpdateTrafficDistributionRequest {
   Id: string;
   TelephonyConfig?: TelephonyConfig;
@@ -18407,12 +17803,9 @@ export const UpdateUserHierarchyStructureResponse = S.suspend(() =>
 export type AttachedFileInvalidRequestExceptionReason =
   | "INVALID_FILE_SIZE"
   | "INVALID_FILE_TYPE"
-  | "INVALID_FILE_NAME";
-export const AttachedFileInvalidRequestExceptionReason = S.Literal(
-  "INVALID_FILE_SIZE",
-  "INVALID_FILE_TYPE",
-  "INVALID_FILE_NAME",
-);
+  | "INVALID_FILE_NAME"
+  | (string & {});
+export const AttachedFileInvalidRequestExceptionReason = S.String;
 export interface QueueInfo {
   Id?: string;
   EnqueueTimestamp?: Date;
@@ -18890,30 +18283,26 @@ export type ParticipantState =
   | "INITIAL"
   | "CONNECTED"
   | "DISCONNECTED"
-  | "MISSED";
-export const ParticipantState = S.Literal(
-  "INITIAL",
-  "CONNECTED",
-  "DISCONNECTED",
-  "MISSED",
-);
-export type AiUseCase = "AgentAssistance" | "SelfService";
-export const AiUseCase = S.Literal("AgentAssistance", "SelfService");
+  | "MISSED"
+  | (string & {});
+export const ParticipantState = S.String;
+export type AiUseCase = "AgentAssistance" | "SelfService" | (string & {});
+export const AiUseCase = S.String;
 export type RoutingCriteriaStepStatus =
   | "ACTIVE"
   | "INACTIVE"
   | "JOINED"
-  | "EXPIRED";
-export const RoutingCriteriaStepStatus = S.Literal(
-  "ACTIVE",
-  "INACTIVE",
-  "JOINED",
-  "EXPIRED",
-);
-export type Status = "COMPLETE" | "IN_PROGRESS" | "DELETED";
-export const Status = S.Literal("COMPLETE", "IN_PROGRESS", "DELETED");
-export type ArtifactStatus = "APPROVED" | "REJECTED" | "IN_PROGRESS";
-export const ArtifactStatus = S.Literal("APPROVED", "REJECTED", "IN_PROGRESS");
+  | "EXPIRED"
+  | (string & {});
+export const RoutingCriteriaStepStatus = S.String;
+export type Status = "COMPLETE" | "IN_PROGRESS" | "DELETED" | (string & {});
+export const Status = S.String;
+export type ArtifactStatus =
+  | "APPROVED"
+  | "REJECTED"
+  | "IN_PROGRESS"
+  | (string & {});
+export const ArtifactStatus = S.String;
 export interface TranscriptCriteria {
   ParticipantRole: ParticipantRole;
   SearchText: string | redacted.Redacted<string>[];
@@ -19680,17 +19069,9 @@ export type ResourceType =
   | "HIERARCHY_LEVEL"
   | "HIERARCHY_GROUP"
   | "USER"
-  | "PHONE_NUMBER";
-export const ResourceType = S.Literal(
-  "CONTACT",
-  "CONTACT_FLOW",
-  "INSTANCE",
-  "PARTICIPANT",
-  "HIERARCHY_LEVEL",
-  "HIERARCHY_GROUP",
-  "USER",
-  "PHONE_NUMBER",
-);
+  | "PHONE_NUMBER"
+  | (string & {});
+export const ResourceType = S.String;
 export interface StateTransition {
   State?: ParticipantState;
   StateStartTimestamp?: Date;
@@ -20096,11 +19477,9 @@ export const EvaluationFormSingleSelectQuestionOptionList = S.Array(
 );
 export type EvaluationFormQuestionAutomationAnswerSourceType =
   | "CONTACT_LENS_DATA"
-  | "GEN_AI";
-export const EvaluationFormQuestionAutomationAnswerSourceType = S.Literal(
-  "CONTACT_LENS_DATA",
-  "GEN_AI",
-);
+  | "GEN_AI"
+  | (string & {});
+export const EvaluationFormQuestionAutomationAnswerSourceType = S.String;
 export interface EvaluationFormQuestionAutomationAnswerSource {
   SourceType: EvaluationFormQuestionAutomationAnswerSourceType;
 }
@@ -20197,19 +19576,14 @@ export const CreateViewVersionResponse = S.suspend(() =>
 export type EvaluationSuggestedAnswerStatus =
   | "IN_PROGRESS"
   | "FAILED"
-  | "SUCCEEDED";
-export const EvaluationSuggestedAnswerStatus = S.Literal(
-  "IN_PROGRESS",
-  "FAILED",
-  "SUCCEEDED",
-);
+  | "SUCCEEDED"
+  | (string & {});
+export const EvaluationSuggestedAnswerStatus = S.String;
 export type EvaluationQuestionAnswerAnalysisType =
   | "CONTACT_LENS_DATA"
-  | "GEN_AI";
-export const EvaluationQuestionAnswerAnalysisType = S.Literal(
-  "CONTACT_LENS_DATA",
-  "GEN_AI",
-);
+  | "GEN_AI"
+  | (string & {});
+export const EvaluationQuestionAnswerAnalysisType = S.String;
 export interface DescribeInstanceResponse {
   Instance?: Instance;
   ReplicationConfiguration?: ReplicationConfiguration;
@@ -20625,20 +19999,9 @@ export type FailureReasonCode =
   | "MISSING_QUEUE_ID_AND_SYSTEM_ENDPOINT"
   | "REQUEST_THROTTLED"
   | "IDEMPOTENCY_EXCEPTION"
-  | "INTERNAL_ERROR";
-export const FailureReasonCode = S.Literal(
-  "INVALID_ATTRIBUTE_KEY",
-  "INVALID_CUSTOMER_ENDPOINT",
-  "INVALID_SYSTEM_ENDPOINT",
-  "INVALID_QUEUE",
-  "INVALID_OUTBOUND_STRATEGY",
-  "MISSING_CAMPAIGN",
-  "MISSING_CUSTOMER_ENDPOINT",
-  "MISSING_QUEUE_ID_AND_SYSTEM_ENDPOINT",
-  "REQUEST_THROTTLED",
-  "IDEMPOTENCY_EXCEPTION",
-  "INTERNAL_ERROR",
-);
+  | "INTERNAL_ERROR"
+  | (string & {});
+export const FailureReasonCode = S.String;
 export type NumericQuestionPropertyAutomationLabel =
   | "OVERALL_CUSTOMER_SENTIMENT_SCORE"
   | "OVERALL_AGENT_SENTIMENT_SCORE"
@@ -20652,33 +20015,16 @@ export type NumericQuestionPropertyAutomationLabel =
   | "CUSTOMER_HOLD_TIME"
   | "LONGEST_HOLD_DURATION"
   | "NUMBER_OF_HOLDS"
-  | "AGENT_INTERACTION_AND_HOLD_DURATION";
-export const NumericQuestionPropertyAutomationLabel = S.Literal(
-  "OVERALL_CUSTOMER_SENTIMENT_SCORE",
-  "OVERALL_AGENT_SENTIMENT_SCORE",
-  "CUSTOMER_SENTIMENT_SCORE_WITHOUT_AGENT",
-  "CUSTOMER_SENTIMENT_SCORE_WITH_AGENT",
-  "NON_TALK_TIME",
-  "NON_TALK_TIME_PERCENTAGE",
-  "NUMBER_OF_INTERRUPTIONS",
-  "CONTACT_DURATION",
-  "AGENT_INTERACTION_DURATION",
-  "CUSTOMER_HOLD_TIME",
-  "LONGEST_HOLD_DURATION",
-  "NUMBER_OF_HOLDS",
-  "AGENT_INTERACTION_AND_HOLD_DURATION",
-);
+  | "AGENT_INTERACTION_AND_HOLD_DURATION"
+  | (string & {});
+export const NumericQuestionPropertyAutomationLabel = S.String;
 export type EvaluationFormItemSourceValuesComparator =
   | "IN"
   | "NOT_IN"
   | "ALL_IN"
-  | "EXACT";
-export const EvaluationFormItemSourceValuesComparator = S.Literal(
-  "IN",
-  "NOT_IN",
-  "ALL_IN",
-  "EXACT",
-);
+  | "EXACT"
+  | (string & {});
+export const EvaluationFormItemSourceValuesComparator = S.String;
 export interface WisdomInfo {
   SessionArn?: string;
   AiAgents?: AiAgentInfo[];
@@ -20838,15 +20184,9 @@ export type PropertyValidationExceptionReason =
   | "REFERENCED_RESOURCE_NOT_FOUND"
   | "RESOURCE_NAME_ALREADY_EXISTS"
   | "REQUIRED_PROPERTY_MISSING"
-  | "NOT_SUPPORTED";
-export const PropertyValidationExceptionReason = S.Literal(
-  "INVALID_FORMAT",
-  "UNIQUE_CONSTRAINT_VIOLATED",
-  "REFERENCED_RESOURCE_NOT_FOUND",
-  "RESOURCE_NAME_ALREADY_EXISTS",
-  "REQUIRED_PROPERTY_MISSING",
-  "NOT_SUPPORTED",
-);
+  | "NOT_SUPPORTED"
+  | (string & {});
+export const PropertyValidationExceptionReason = S.String;
 export interface EvaluationFormTextQuestionProperties {
   Automation?: EvaluationFormTextQuestionAutomation;
 }
@@ -20978,8 +20318,8 @@ export const ParticipantTokenCredentials = S.suspend(() =>
 ).annotations({
   identifier: "ParticipantTokenCredentials",
 }) as any as S.Schema<ParticipantTokenCredentials>;
-export type EvaluationTranscriptType = "RAW" | "REDACTED";
-export const EvaluationTranscriptType = S.Literal("RAW", "REDACTED");
+export type EvaluationTranscriptType = "RAW" | "REDACTED" | (string & {});
+export const EvaluationTranscriptType = S.String;
 export interface ContactMetricResult {
   Name: ContactMetricName;
   Value: ContactMetricValue;
@@ -21085,24 +20425,22 @@ export const PropertyValidationExceptionPropertyList = S.Array(
 );
 export type SingleSelectQuestionRuleCategoryAutomationCondition =
   | "PRESENT"
-  | "NOT_PRESENT";
-export const SingleSelectQuestionRuleCategoryAutomationCondition = S.Literal(
-  "PRESENT",
-  "NOT_PRESENT",
-);
+  | "NOT_PRESENT"
+  | (string & {});
+export const SingleSelectQuestionRuleCategoryAutomationCondition = S.String;
 export type MultiSelectQuestionRuleCategoryAutomationCondition =
   | "PRESENT"
-  | "NOT_PRESENT";
-export const MultiSelectQuestionRuleCategoryAutomationCondition = S.Literal(
-  "PRESENT",
-  "NOT_PRESENT",
-);
-export type EvaluationFormItemEnablementSourceType = "QUESTION_REF_ID";
-export const EvaluationFormItemEnablementSourceType =
-  S.Literal("QUESTION_REF_ID");
-export type EvaluationFormItemEnablementSourceValueType = "OPTION_REF_ID";
-export const EvaluationFormItemEnablementSourceValueType =
-  S.Literal("OPTION_REF_ID");
+  | "NOT_PRESENT"
+  | (string & {});
+export const MultiSelectQuestionRuleCategoryAutomationCondition = S.String;
+export type EvaluationFormItemEnablementSourceType =
+  | "QUESTION_REF_ID"
+  | (string & {});
+export const EvaluationFormItemEnablementSourceType = S.String;
+export type EvaluationFormItemEnablementSourceValueType =
+  | "OPTION_REF_ID"
+  | (string & {});
+export const EvaluationFormItemEnablementSourceValueType = S.String;
 export interface HierarchyGroups {
   Level1?: AgentHierarchyGroup;
   Level2?: AgentHierarchyGroup;
@@ -21564,8 +20902,8 @@ export const StartEmailContactResponse = S.suspend(() =>
 ).annotations({
   identifier: "StartEmailContactResponse",
 }) as any as S.Schema<StartEmailContactResponse>;
-export type MeetingFeatureStatus = "AVAILABLE" | "UNAVAILABLE";
-export const MeetingFeatureStatus = S.Literal("AVAILABLE", "UNAVAILABLE");
+export type MeetingFeatureStatus = "AVAILABLE" | "UNAVAILABLE" | (string & {});
+export const MeetingFeatureStatus = S.String;
 export interface SubmitContactEvaluationResponse {
   EvaluationId: string;
   EvaluationArn: string;
@@ -21609,11 +20947,9 @@ export const UpdateParticipantRoleConfigResponse = S.suspend(() =>
 }) as any as S.Schema<UpdateParticipantRoleConfigResponse>;
 export type AttachedFileServiceQuotaExceededExceptionReason =
   | "TOTAL_FILE_SIZE_EXCEEDED"
-  | "TOTAL_FILE_COUNT_EXCEEDED";
-export const AttachedFileServiceQuotaExceededExceptionReason = S.Literal(
-  "TOTAL_FILE_SIZE_EXCEEDED",
-  "TOTAL_FILE_COUNT_EXCEEDED",
-);
+  | "TOTAL_FILE_COUNT_EXCEEDED"
+  | (string & {});
+export const AttachedFileServiceQuotaExceededExceptionReason = S.String;
 export interface SingleSelectQuestionRuleCategoryAutomation {
   Category: string;
   Condition: SingleSelectQuestionRuleCategoryAutomationCondition;
@@ -22232,11 +21568,11 @@ export const EvaluationSearchSummary = S.suspend(() =>
 }) as any as S.Schema<EvaluationSearchSummary>;
 export type EvaluationSearchSummaryList = EvaluationSearchSummary[];
 export const EvaluationSearchSummaryList = S.Array(EvaluationSearchSummary);
-export type QuestionRuleCategoryAutomationCondition = "PRESENT" | "NOT_PRESENT";
-export const QuestionRuleCategoryAutomationCondition = S.Literal(
-  "PRESENT",
-  "NOT_PRESENT",
-);
+export type QuestionRuleCategoryAutomationCondition =
+  | "PRESENT"
+  | "NOT_PRESENT"
+  | (string & {});
+export const QuestionRuleCategoryAutomationCondition = S.String;
 export interface HierarchyGroupSummaryReference {
   Id?: string;
   Arn?: string;

@@ -132,8 +132,8 @@ export type Audience = string;
 //# Schemas
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
-export type DeletionProtection = "ENABLED" | "DISABLED";
-export const DeletionProtection = S.Literal("ENABLED", "DISABLED");
+export type DeletionProtection = "ENABLED" | "DISABLED" | (string & {});
+export const DeletionProtection = S.String;
 export interface ListTagsForResourceInput {
   resourceArn: string;
 }
@@ -170,8 +170,8 @@ export const GetPolicyStoreInput = S.suspend(() =>
 ).annotations({
   identifier: "GetPolicyStoreInput",
 }) as any as S.Schema<GetPolicyStoreInput>;
-export type ValidationMode = "OFF" | "STRICT";
-export const ValidationMode = S.Literal("OFF", "STRICT");
+export type ValidationMode = "OFF" | "STRICT" | (string & {});
+export const ValidationMode = S.String;
 export interface ValidationSettings {
   mode: ValidationMode;
 }
@@ -756,15 +756,15 @@ export const ListPolicyTemplatesInput = S.suspend(() =>
 ).annotations({
   identifier: "ListPolicyTemplatesInput",
 }) as any as S.Schema<ListPolicyTemplatesInput>;
-export type PolicyType = "STATIC" | "TEMPLATE_LINKED";
-export const PolicyType = S.Literal("STATIC", "TEMPLATE_LINKED");
+export type PolicyType = "STATIC" | "TEMPLATE_LINKED" | (string & {});
+export const PolicyType = S.String;
 export type TagMap = { [key: string]: string | undefined };
 export const TagMap = S.Record({
   key: S.String,
   value: S.UndefinedOr(S.String),
 });
-export type CedarVersion = "CEDAR_2" | "CEDAR_4";
-export const CedarVersion = S.Literal("CEDAR_2", "CEDAR_4");
+export type CedarVersion = "CEDAR_2" | "CEDAR_4" | (string & {});
+export const CedarVersion = S.String;
 export interface BatchIsAuthorizedInputItem {
   principal?: EntityIdentifier;
   action?: ActionIdentifier;
@@ -804,8 +804,8 @@ export const BatchIsAuthorizedWithTokenInputList = S.Array(
 );
 export type NamespaceList = string | redacted.Redacted<string>[];
 export const NamespaceList = S.Array(SensitiveString);
-export type Decision = "ALLOW" | "DENY";
-export const Decision = S.Literal("ALLOW", "DENY");
+export type Decision = "ALLOW" | "DENY" | (string & {});
+export const Decision = S.String;
 export type SchemaDefinition = {
   cedarJson: string | redacted.Redacted<string>;
 };
@@ -835,8 +835,8 @@ export type IdentitySourceFilters = IdentitySourceFilter[];
 export const IdentitySourceFilters = S.Array(IdentitySourceFilter);
 export type ActionIdentifierList = ActionIdentifier[];
 export const ActionIdentifierList = S.Array(ActionIdentifier);
-export type PolicyEffect = "Permit" | "Forbid";
-export const PolicyEffect = S.Literal("Permit", "Forbid");
+export type PolicyEffect = "Permit" | "Forbid" | (string & {});
+export const PolicyEffect = S.String;
 export type ClientIds = string | redacted.Redacted<string>[];
 export const ClientIds = S.Array(SensitiveString);
 export interface ListTagsForResourceOutput {
@@ -1053,21 +1053,16 @@ export const UpdatePolicyTemplateOutput = S.suspend(() =>
 ).annotations({
   identifier: "UpdatePolicyTemplateOutput",
 }) as any as S.Schema<UpdatePolicyTemplateOutput>;
-export type OpenIdIssuer = "COGNITO";
-export const OpenIdIssuer = S.Literal("COGNITO");
+export type OpenIdIssuer = "COGNITO" | (string & {});
+export const OpenIdIssuer = S.String;
 export type ResourceType =
   | "IDENTITY_SOURCE"
   | "POLICY_STORE"
   | "POLICY"
   | "POLICY_TEMPLATE"
-  | "SCHEMA";
-export const ResourceType = S.Literal(
-  "IDENTITY_SOURCE",
-  "POLICY_STORE",
-  "POLICY",
-  "POLICY_TEMPLATE",
-  "SCHEMA",
-);
+  | "SCHEMA"
+  | (string & {});
+export const ResourceType = S.String;
 export interface StaticPolicyDefinition {
   description?: string | redacted.Redacted<string>;
   statement: string | redacted.Redacted<string>;
@@ -1390,11 +1385,9 @@ export const ListPolicyTemplatesOutput = S.suspend(() =>
 }) as any as S.Schema<ListPolicyTemplatesOutput>;
 export type BatchGetPolicyErrorCode =
   | "POLICY_STORE_NOT_FOUND"
-  | "POLICY_NOT_FOUND";
-export const BatchGetPolicyErrorCode = S.Literal(
-  "POLICY_STORE_NOT_FOUND",
-  "POLICY_NOT_FOUND",
-);
+  | "POLICY_NOT_FOUND"
+  | (string & {});
+export const BatchGetPolicyErrorCode = S.String;
 export interface CognitoUserPoolConfiguration {
   userPoolArn: string;
   clientIds?: string | redacted.Redacted<string>[];

@@ -517,18 +517,22 @@ export const UntagResourceOutput = S.suspend(() =>
 }) as any as S.Schema<UntagResourceOutput>;
 export type AllowedOrigins = string[];
 export const AllowedOrigins = S.Array(S.String);
-export type MethodName = "PUT" | "GET" | "DELETE" | "HEAD";
-export const MethodName = S.Literal("PUT", "GET", "DELETE", "HEAD");
+export type MethodName = "PUT" | "GET" | "DELETE" | "HEAD" | (string & {});
+export const MethodName = S.String;
 export type AllowedMethods = MethodName[];
 export const AllowedMethods = S.Array(MethodName);
 export type AllowedHeaders = string[];
 export const AllowedHeaders = S.Array(S.String);
 export type ExposeHeaders = string[];
 export const ExposeHeaders = S.Array(S.String);
-export type ContainerLevelMetrics = "ENABLED" | "DISABLED";
-export const ContainerLevelMetrics = S.Literal("ENABLED", "DISABLED");
-export type ContainerStatus = "ACTIVE" | "CREATING" | "DELETING";
-export const ContainerStatus = S.Literal("ACTIVE", "CREATING", "DELETING");
+export type ContainerLevelMetrics = "ENABLED" | "DISABLED" | (string & {});
+export const ContainerLevelMetrics = S.String;
+export type ContainerStatus =
+  | "ACTIVE"
+  | "CREATING"
+  | "DELETING"
+  | (string & {});
+export const ContainerStatus = S.String;
 export interface Container {
   Endpoint?: string;
   CreationTime?: Date;

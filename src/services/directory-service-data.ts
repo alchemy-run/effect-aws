@@ -112,23 +112,19 @@ export type NumberAttributeValue = number;
 export type BooleanAttributeValue = boolean;
 
 //# Schemas
-export type GroupType = "Distribution" | "Security";
-export const GroupType = S.Literal("Distribution", "Security");
+export type GroupType = "Distribution" | "Security" | (string & {});
+export const GroupType = S.String;
 export type GroupScope =
   | "DomainLocal"
   | "Global"
   | "Universal"
-  | "BuiltinLocal";
-export const GroupScope = S.Literal(
-  "DomainLocal",
-  "Global",
-  "Universal",
-  "BuiltinLocal",
-);
+  | "BuiltinLocal"
+  | (string & {});
+export const GroupScope = S.String;
 export type LdapDisplayNameList = string[];
 export const LdapDisplayNameList = S.Array(S.String);
-export type UpdateType = "ADD" | "REPLACE" | "REMOVE";
-export const UpdateType = S.Literal("ADD", "REPLACE", "REMOVE");
+export type UpdateType = "ADD" | "REPLACE" | "REMOVE" | (string & {});
+export const UpdateType = S.String;
 export interface AddGroupMemberRequest {
   DirectoryId: string;
   GroupName: string;
@@ -652,12 +648,9 @@ export const UpdateUserResult = S.suspend(() =>
 export type AccessDeniedReason =
   | "IAM_AUTH"
   | "DIRECTORY_AUTH"
-  | "DATA_DISABLED";
-export const AccessDeniedReason = S.Literal(
-  "IAM_AUTH",
-  "DIRECTORY_AUTH",
-  "DATA_DISABLED",
-);
+  | "DATA_DISABLED"
+  | (string & {});
+export const AccessDeniedReason = S.String;
 export interface CreateUserResult {
   DirectoryId?: string;
   SID?: string;
@@ -760,21 +753,16 @@ export const ListGroupsForMemberResult = S.suspend(() =>
 ).annotations({
   identifier: "ListGroupsForMemberResult",
 }) as any as S.Schema<ListGroupsForMemberResult>;
-export type MemberType = "USER" | "GROUP" | "COMPUTER";
-export const MemberType = S.Literal("USER", "GROUP", "COMPUTER");
+export type MemberType = "USER" | "GROUP" | "COMPUTER" | (string & {});
+export const MemberType = S.String;
 export type DirectoryUnavailableReason =
   | "INVALID_DIRECTORY_STATE"
   | "DIRECTORY_TIMEOUT"
   | "DIRECTORY_RESOURCES_EXCEEDED"
   | "NO_DISK_SPACE"
-  | "TRUST_AUTH_FAILURE";
-export const DirectoryUnavailableReason = S.Literal(
-  "INVALID_DIRECTORY_STATE",
-  "DIRECTORY_TIMEOUT",
-  "DIRECTORY_RESOURCES_EXCEEDED",
-  "NO_DISK_SPACE",
-  "TRUST_AUTH_FAILURE",
-);
+  | "TRUST_AUTH_FAILURE"
+  | (string & {});
+export const DirectoryUnavailableReason = S.String;
 export interface Member {
   SID: string;
   SAMAccountName: string;
@@ -990,24 +978,9 @@ export type ValidationExceptionReason =
   | "MISSING_ATTRIBUTE"
   | "ATTRIBUTE_EXISTS"
   | "LDAP_SIZE_LIMIT_EXCEEDED"
-  | "LDAP_UNSUPPORTED_OPERATION";
-export const ValidationExceptionReason = S.Literal(
-  "INVALID_REALM",
-  "INVALID_DIRECTORY_TYPE",
-  "INVALID_SECONDARY_REGION",
-  "INVALID_NEXT_TOKEN",
-  "INVALID_ATTRIBUTE_VALUE",
-  "INVALID_ATTRIBUTE_NAME",
-  "INVALID_ATTRIBUTE_FOR_USER",
-  "INVALID_ATTRIBUTE_FOR_GROUP",
-  "INVALID_ATTRIBUTE_FOR_SEARCH",
-  "INVALID_ATTRIBUTE_FOR_MODIFY",
-  "DUPLICATE_ATTRIBUTE",
-  "MISSING_ATTRIBUTE",
-  "ATTRIBUTE_EXISTS",
-  "LDAP_SIZE_LIMIT_EXCEEDED",
-  "LDAP_UNSUPPORTED_OPERATION",
-);
+  | "LDAP_UNSUPPORTED_OPERATION"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 
 //# Errors
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(

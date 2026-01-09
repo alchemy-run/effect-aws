@@ -98,8 +98,8 @@ export type Ttl = number;
 export type ErrorMessage = string;
 
 //# Schemas
-export type Service = "TURN";
-export const Service = S.Literal("TURN");
+export type Service = "TURN" | (string & {});
+export const Service = S.String;
 export interface GetIceServerConfigRequest {
   ChannelARN?: string;
   ClientId?: string;

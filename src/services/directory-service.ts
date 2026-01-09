@@ -223,34 +223,35 @@ export const GetDirectoryLimitsRequest = S.suspend(() =>
 ).annotations({
   identifier: "GetDirectoryLimitsRequest",
 }) as any as S.Schema<GetDirectoryLimitsRequest>;
-export type DirectorySize = "Small" | "Large";
-export const DirectorySize = S.Literal("Small", "Large");
-export type NetworkType = "Dual-stack" | "IPv4" | "IPv6";
-export const NetworkType = S.Literal("Dual-stack", "IPv4", "IPv6");
+export type DirectorySize = "Small" | "Large" | (string & {});
+export const DirectorySize = S.String;
+export type NetworkType = "Dual-stack" | "IPv4" | "IPv6" | (string & {});
+export const NetworkType = S.String;
 export type DnsIpAddrs = string[];
 export const DnsIpAddrs = S.Array(S.String);
 export type DnsIpv6Addrs = string[];
 export const DnsIpv6Addrs = S.Array(S.String);
-export type DirectoryEdition = "Enterprise" | "Standard" | "Hybrid";
-export const DirectoryEdition = S.Literal("Enterprise", "Standard", "Hybrid");
+export type DirectoryEdition =
+  | "Enterprise"
+  | "Standard"
+  | "Hybrid"
+  | (string & {});
+export const DirectoryEdition = S.String;
 export type TrustDirection =
   | "One-Way: Outgoing"
   | "One-Way: Incoming"
-  | "Two-Way";
-export const TrustDirection = S.Literal(
-  "One-Way: Outgoing",
-  "One-Way: Incoming",
-  "Two-Way",
-);
-export type TrustType = "Forest" | "External";
-export const TrustType = S.Literal("Forest", "External");
-export type SelectiveAuth = "Enabled" | "Disabled";
-export const SelectiveAuth = S.Literal("Enabled", "Disabled");
-export type ClientAuthenticationType = "SmartCard" | "SmartCardOrPassword";
-export const ClientAuthenticationType = S.Literal(
-  "SmartCard",
-  "SmartCardOrPassword",
-);
+  | "Two-Way"
+  | (string & {});
+export const TrustDirection = S.String;
+export type TrustType = "Forest" | "External" | (string & {});
+export const TrustType = S.String;
+export type SelectiveAuth = "Enabled" | "Disabled" | (string & {});
+export const SelectiveAuth = S.String;
+export type ClientAuthenticationType =
+  | "SmartCard"
+  | "SmartCardOrPassword"
+  | (string & {});
+export const ClientAuthenticationType = S.String;
 export type RemoteDomainNames = string[];
 export const RemoteDomainNames = S.Array(S.String);
 export type DirectoryIds = string[];
@@ -261,42 +262,35 @@ export type TopicNames = string[];
 export const TopicNames = S.Array(S.String);
 export type HybridUpdateType =
   | "SelfManagedInstances"
-  | "HybridAdministratorAccount";
-export const HybridUpdateType = S.Literal(
-  "SelfManagedInstances",
-  "HybridAdministratorAccount",
-);
-export type LDAPSType = "Client";
-export const LDAPSType = S.Literal("Client");
+  | "HybridAdministratorAccount"
+  | (string & {});
+export const HybridUpdateType = S.String;
+export type LDAPSType = "Client" | (string & {});
+export const LDAPSType = S.String;
 export type DirectoryConfigurationStatus =
   | "Requested"
   | "Updating"
   | "Updated"
   | "Failed"
-  | "Default";
-export const DirectoryConfigurationStatus = S.Literal(
-  "Requested",
-  "Updating",
-  "Updated",
-  "Failed",
-  "Default",
-);
+  | "Default"
+  | (string & {});
+export const DirectoryConfigurationStatus = S.String;
 export type SnapshotIds = string[];
 export const SnapshotIds = S.Array(S.String);
 export type TrustIds = string[];
 export const TrustIds = S.Array(S.String);
-export type UpdateType = "OS" | "NETWORK" | "SIZE";
-export const UpdateType = S.Literal("OS", "NETWORK", "SIZE");
-export type CertificateType = "ClientCertAuth" | "ClientLDAPS";
-export const CertificateType = S.Literal("ClientCertAuth", "ClientLDAPS");
+export type UpdateType = "OS" | "NETWORK" | "SIZE" | (string & {});
+export const UpdateType = S.String;
+export type CertificateType = "ClientCertAuth" | "ClientLDAPS" | (string & {});
+export const CertificateType = S.String;
 export type CidrIps = string[];
 export const CidrIps = S.Array(S.String);
 export type CidrIpv6s = string[];
 export const CidrIpv6s = S.Array(S.String);
 export type TagKeys = string[];
 export const TagKeys = S.Array(S.String);
-export type ShareMethod = "ORGANIZATIONS" | "HANDSHAKE";
-export const ShareMethod = S.Literal("ORGANIZATIONS", "HANDSHAKE");
+export type ShareMethod = "ORGANIZATIONS" | "HANDSHAKE" | (string & {});
+export const ShareMethod = S.String;
 export interface AcceptSharedDirectoryRequest {
   SharedDirectoryId: string;
 }
@@ -1859,13 +1853,9 @@ export type RadiusAuthenticationProtocol =
   | "PAP"
   | "CHAP"
   | "MS-CHAPv1"
-  | "MS-CHAPv2";
-export const RadiusAuthenticationProtocol = S.Literal(
-  "PAP",
-  "CHAP",
-  "MS-CHAPv1",
-  "MS-CHAPv2",
-);
+  | "MS-CHAPv2"
+  | (string & {});
+export const RadiusAuthenticationProtocol = S.String;
 export interface RadiusSettings {
   RadiusServers?: string[];
   RadiusServersIpv6?: string[];
@@ -1957,16 +1947,16 @@ export const VerifyTrustRequest = S.suspend(() =>
 ).annotations({
   identifier: "VerifyTrustRequest",
 }) as any as S.Schema<VerifyTrustRequest>;
-export type TargetType = "ACCOUNT";
-export const TargetType = S.Literal("ACCOUNT");
+export type TargetType = "ACCOUNT" | (string & {});
+export const TargetType = S.String;
 export type CustomerDnsIps = string[];
 export const CustomerDnsIps = S.Array(S.String);
 export type AssessmentInstanceIds = string[];
 export const AssessmentInstanceIds = S.Array(S.String);
 export type SecurityGroupIds = string[];
 export const SecurityGroupIds = S.Array(S.String);
-export type OSVersion = "SERVER_2012" | "SERVER_2019";
-export const OSVersion = S.Literal("SERVER_2012", "SERVER_2019");
+export type OSVersion = "SERVER_2012" | "SERVER_2019" | (string & {});
+export const OSVersion = S.String;
 export interface IpRoute {
   CidrIp?: string;
   CidrIpv6?: string;
@@ -2014,28 +2004,17 @@ export type CaEnrollmentPolicyStatus =
   | "Failed"
   | "Disabling"
   | "Disabled"
-  | "Impaired";
-export const CaEnrollmentPolicyStatus = S.Literal(
-  "InProgress",
-  "Success",
-  "Failed",
-  "Disabling",
-  "Disabled",
-  "Impaired",
-);
+  | "Impaired"
+  | (string & {});
+export const CaEnrollmentPolicyStatus = S.String;
 export type DataAccessStatus =
   | "Disabled"
   | "Disabling"
   | "Enabled"
   | "Enabling"
-  | "Failed";
-export const DataAccessStatus = S.Literal(
-  "Disabled",
-  "Disabling",
-  "Enabled",
-  "Enabling",
-  "Failed",
-);
+  | "Failed"
+  | (string & {});
+export const DataAccessStatus = S.String;
 export type ShareStatus =
   | "Shared"
   | "PendingAcceptance"
@@ -2045,18 +2024,9 @@ export type ShareStatus =
   | "Sharing"
   | "ShareFailed"
   | "Deleted"
-  | "Deleting";
-export const ShareStatus = S.Literal(
-  "Shared",
-  "PendingAcceptance",
-  "Rejected",
-  "Rejecting",
-  "RejectFailed",
-  "Sharing",
-  "ShareFailed",
-  "Deleted",
-  "Deleting",
-);
+  | "Deleting"
+  | (string & {});
+export const ShareStatus = S.String;
 export interface SharedDirectory {
   OwnerAccountId?: string;
   OwnerDirectoryId?: string;
@@ -2745,19 +2715,13 @@ export type CertificateState =
   | "RegisterFailed"
   | "Deregistering"
   | "Deregistered"
-  | "DeregisterFailed";
-export const CertificateState = S.Literal(
-  "Registering",
-  "Registered",
-  "RegisterFailed",
-  "Deregistering",
-  "Deregistered",
-  "DeregisterFailed",
-);
-export type ClientAuthenticationStatus = "Enabled" | "Disabled";
-export const ClientAuthenticationStatus = S.Literal("Enabled", "Disabled");
-export type ReplicationScope = "Domain";
-export const ReplicationScope = S.Literal("Domain");
+  | "DeregisterFailed"
+  | (string & {});
+export const CertificateState = S.String;
+export type ClientAuthenticationStatus = "Enabled" | "Disabled" | (string & {});
+export const ClientAuthenticationStatus = S.String;
+export type ReplicationScope = "Domain" | (string & {});
+export const ReplicationScope = S.String;
 export type DirectoryStage =
   | "Requested"
   | "Creating"
@@ -2770,34 +2734,18 @@ export type DirectoryStage =
   | "Deleting"
   | "Deleted"
   | "Failed"
-  | "Updating";
-export const DirectoryStage = S.Literal(
-  "Requested",
-  "Creating",
-  "Created",
-  "Active",
-  "Inoperable",
-  "Impaired",
-  "Restoring",
-  "RestoreFailed",
-  "Deleting",
-  "Deleted",
-  "Failed",
-  "Updating",
-);
+  | "Updating"
+  | (string & {});
+export const DirectoryStage = S.String;
 export type DirectoryType =
   | "SimpleAD"
   | "ADConnector"
   | "MicrosoftAD"
-  | "SharedMicrosoftAD";
-export const DirectoryType = S.Literal(
-  "SimpleAD",
-  "ADConnector",
-  "MicrosoftAD",
-  "SharedMicrosoftAD",
-);
-export type RadiusStatus = "Creating" | "Completed" | "Failed";
-export const RadiusStatus = S.Literal("Creating", "Completed", "Failed");
+  | "SharedMicrosoftAD"
+  | (string & {});
+export const DirectoryType = S.String;
+export type RadiusStatus = "Creating" | "Completed" | "Failed" | (string & {});
+export const RadiusStatus = S.String;
 export type DomainControllerStatus =
   | "Creating"
   | "Active"
@@ -2806,41 +2754,33 @@ export type DomainControllerStatus =
   | "Deleting"
   | "Deleted"
   | "Failed"
-  | "Updating";
-export const DomainControllerStatus = S.Literal(
-  "Creating",
-  "Active",
-  "Impaired",
-  "Restoring",
-  "Deleting",
-  "Deleted",
-  "Failed",
-  "Updating",
-);
+  | "Updating"
+  | (string & {});
+export const DomainControllerStatus = S.String;
 export type TopicStatus =
   | "Registered"
   | "Topic not found"
   | "Failed"
-  | "Deleted";
-export const TopicStatus = S.Literal(
-  "Registered",
-  "Topic not found",
-  "Failed",
-  "Deleted",
-);
-export type LDAPSStatus = "Enabling" | "Enabled" | "EnableFailed" | "Disabled";
-export const LDAPSStatus = S.Literal(
-  "Enabling",
-  "Enabled",
-  "EnableFailed",
-  "Disabled",
-);
-export type RegionType = "Primary" | "Additional";
-export const RegionType = S.Literal("Primary", "Additional");
-export type SnapshotType = "Auto" | "Manual";
-export const SnapshotType = S.Literal("Auto", "Manual");
-export type SnapshotStatus = "Creating" | "Completed" | "Failed";
-export const SnapshotStatus = S.Literal("Creating", "Completed", "Failed");
+  | "Deleted"
+  | (string & {});
+export const TopicStatus = S.String;
+export type LDAPSStatus =
+  | "Enabling"
+  | "Enabled"
+  | "EnableFailed"
+  | "Disabled"
+  | (string & {});
+export const LDAPSStatus = S.String;
+export type RegionType = "Primary" | "Additional" | (string & {});
+export const RegionType = S.String;
+export type SnapshotType = "Auto" | "Manual" | (string & {});
+export const SnapshotType = S.String;
+export type SnapshotStatus =
+  | "Creating"
+  | "Completed"
+  | "Failed"
+  | (string & {});
+export const SnapshotStatus = S.String;
 export type TrustState =
   | "Creating"
   | "Created"
@@ -2852,37 +2792,24 @@ export type TrustState =
   | "Updated"
   | "Deleting"
   | "Deleted"
-  | "Failed";
-export const TrustState = S.Literal(
-  "Creating",
-  "Created",
-  "Verifying",
-  "VerifyFailed",
-  "Verified",
-  "Updating",
-  "UpdateFailed",
-  "Updated",
-  "Deleting",
-  "Deleted",
-  "Failed",
-);
-export type UpdateStatus = "Updated" | "Updating" | "UpdateFailed";
-export const UpdateStatus = S.Literal("Updated", "Updating", "UpdateFailed");
+  | "Failed"
+  | (string & {});
+export const TrustState = S.String;
+export type UpdateStatus =
+  | "Updated"
+  | "Updating"
+  | "UpdateFailed"
+  | (string & {});
+export const UpdateStatus = S.String;
 export type IpRouteStatusMsg =
   | "Adding"
   | "Added"
   | "Removing"
   | "Removed"
   | "AddFailed"
-  | "RemoveFailed";
-export const IpRouteStatusMsg = S.Literal(
-  "Adding",
-  "Added",
-  "Removing",
-  "Removed",
-  "AddFailed",
-  "RemoveFailed",
-);
+  | "RemoveFailed"
+  | (string & {});
+export const IpRouteStatusMsg = S.String;
 export type SchemaExtensionStatus =
   | "Initializing"
   | "CreatingSnapshot"
@@ -2892,18 +2819,9 @@ export type SchemaExtensionStatus =
   | "RollbackInProgress"
   | "Cancelled"
   | "Failed"
-  | "Completed";
-export const SchemaExtensionStatus = S.Literal(
-  "Initializing",
-  "CreatingSnapshot",
-  "UpdatingSchema",
-  "Replicating",
-  "CancelInProgress",
-  "RollbackInProgress",
-  "Cancelled",
-  "Failed",
-  "Completed",
-);
+  | "Completed"
+  | (string & {});
+export const SchemaExtensionStatus = S.String;
 export interface Assessment {
   AssessmentId?: string;
   DirectoryId?: string;

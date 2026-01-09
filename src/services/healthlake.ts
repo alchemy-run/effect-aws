@@ -108,8 +108,8 @@ export type Message = string;
 export type ErrorMessage = string;
 
 //# Schemas
-export type FHIRVersion = "R4";
-export const FHIRVersion = S.Literal("R4");
+export type FHIRVersion = "R4" | (string & {});
+export const FHIRVersion = S.String;
 export type JobStatus =
   | "SUBMITTED"
   | "QUEUED"
@@ -120,21 +120,15 @@ export type JobStatus =
   | "CANCEL_SUBMITTED"
   | "CANCEL_IN_PROGRESS"
   | "CANCEL_COMPLETED"
-  | "CANCEL_FAILED";
-export const JobStatus = S.Literal(
-  "SUBMITTED",
-  "QUEUED",
-  "IN_PROGRESS",
-  "COMPLETED_WITH_ERRORS",
-  "COMPLETED",
-  "FAILED",
-  "CANCEL_SUBMITTED",
-  "CANCEL_IN_PROGRESS",
-  "CANCEL_COMPLETED",
-  "CANCEL_FAILED",
-);
-export type ValidationLevel = "strict" | "structure-only" | "minimal";
-export const ValidationLevel = S.Literal("strict", "structure-only", "minimal");
+  | "CANCEL_FAILED"
+  | (string & {});
+export const JobStatus = S.String;
+export type ValidationLevel =
+  | "strict"
+  | "structure-only"
+  | "minimal"
+  | (string & {});
+export const ValidationLevel = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export interface DeleteFHIRDatastoreRequest {
@@ -280,30 +274,22 @@ export interface UntagResourceResponse {}
 export const UntagResourceResponse = S.suspend(() => S.Struct({})).annotations({
   identifier: "UntagResourceResponse",
 }) as any as S.Schema<UntagResourceResponse>;
-export type PreloadDataType = "SYNTHEA";
-export const PreloadDataType = S.Literal("SYNTHEA");
+export type PreloadDataType = "SYNTHEA" | (string & {});
+export const PreloadDataType = S.String;
 export type AuthorizationStrategy =
   | "SMART_ON_FHIR_V1"
   | "SMART_ON_FHIR"
-  | "AWS_AUTH";
-export const AuthorizationStrategy = S.Literal(
-  "SMART_ON_FHIR_V1",
-  "SMART_ON_FHIR",
-  "AWS_AUTH",
-);
+  | "AWS_AUTH"
+  | (string & {});
+export const AuthorizationStrategy = S.String;
 export type DatastoreStatus =
   | "CREATING"
   | "ACTIVE"
   | "DELETING"
   | "DELETED"
-  | "CREATE_FAILED";
-export const DatastoreStatus = S.Literal(
-  "CREATING",
-  "ACTIVE",
-  "DELETING",
-  "DELETED",
-  "CREATE_FAILED",
-);
+  | "CREATE_FAILED"
+  | (string & {});
+export const DatastoreStatus = S.String;
 export interface PreloadDataConfig {
   PreloadDataType: PreloadDataType;
 }
@@ -445,11 +431,11 @@ export const ImportJobProperties = S.suspend(() =>
 }) as any as S.Schema<ImportJobProperties>;
 export type ImportJobPropertiesList = ImportJobProperties[];
 export const ImportJobPropertiesList = S.Array(ImportJobProperties);
-export type CmkType = "CUSTOMER_MANAGED_KMS_KEY" | "AWS_OWNED_KMS_KEY";
-export const CmkType = S.Literal(
-  "CUSTOMER_MANAGED_KMS_KEY",
-  "AWS_OWNED_KMS_KEY",
-);
+export type CmkType =
+  | "CUSTOMER_MANAGED_KMS_KEY"
+  | "AWS_OWNED_KMS_KEY"
+  | (string & {});
+export const CmkType = S.String;
 export interface DeleteFHIRDatastoreResponse {
   DatastoreId: string;
   DatastoreArn: string;
@@ -555,11 +541,11 @@ export const SseConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "SseConfiguration",
 }) as any as S.Schema<SseConfiguration>;
-export type ErrorCategory = "RETRYABLE_ERROR" | "NON_RETRYABLE_ERROR";
-export const ErrorCategory = S.Literal(
-  "RETRYABLE_ERROR",
-  "NON_RETRYABLE_ERROR",
-);
+export type ErrorCategory =
+  | "RETRYABLE_ERROR"
+  | "NON_RETRYABLE_ERROR"
+  | (string & {});
+export const ErrorCategory = S.String;
 export interface ErrorCause {
   ErrorMessage?: string;
   ErrorCategory?: ErrorCategory;

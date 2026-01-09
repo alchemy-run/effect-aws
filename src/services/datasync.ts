@@ -162,22 +162,22 @@ export type PLSubnetArnList = string[];
 export const PLSubnetArnList = S.Array(S.String);
 export type PLSecurityGroupArnList = string[];
 export const PLSecurityGroupArnList = S.Array(S.String);
-export type AzureBlobAuthenticationType = "SAS" | "NONE";
-export const AzureBlobAuthenticationType = S.Literal("SAS", "NONE");
-export type AzureBlobType = "BLOCK";
-export const AzureBlobType = S.Literal("BLOCK");
-export type AzureAccessTier = "HOT" | "COOL" | "ARCHIVE";
-export const AzureAccessTier = S.Literal("HOT", "COOL", "ARCHIVE");
+export type AzureBlobAuthenticationType = "SAS" | "NONE" | (string & {});
+export const AzureBlobAuthenticationType = S.String;
+export type AzureBlobType = "BLOCK" | (string & {});
+export const AzureBlobType = S.String;
+export type AzureAccessTier = "HOT" | "COOL" | "ARCHIVE" | (string & {});
+export const AzureAccessTier = S.String;
 export type AgentArnList = string[];
 export const AgentArnList = S.Array(S.String);
-export type EfsInTransitEncryption = "NONE" | "TLS1_2";
-export const EfsInTransitEncryption = S.Literal("NONE", "TLS1_2");
+export type EfsInTransitEncryption = "NONE" | "TLS1_2" | (string & {});
+export const EfsInTransitEncryption = S.String;
 export type Ec2SecurityGroupArnList = string[];
 export const Ec2SecurityGroupArnList = S.Array(S.String);
-export type HdfsAuthenticationType = "SIMPLE" | "KERBEROS";
-export const HdfsAuthenticationType = S.Literal("SIMPLE", "KERBEROS");
-export type ObjectStorageServerProtocol = "HTTPS" | "HTTP";
-export const ObjectStorageServerProtocol = S.Literal("HTTPS", "HTTP");
+export type HdfsAuthenticationType = "SIMPLE" | "KERBEROS" | (string & {});
+export const HdfsAuthenticationType = S.String;
+export type ObjectStorageServerProtocol = "HTTPS" | "HTTP" | (string & {});
+export const ObjectStorageServerProtocol = S.String;
 export type S3StorageClass =
   | "STANDARD"
   | "STANDARD_IA"
@@ -186,23 +186,15 @@ export type S3StorageClass =
   | "GLACIER"
   | "DEEP_ARCHIVE"
   | "OUTPOSTS"
-  | "GLACIER_INSTANT_RETRIEVAL";
-export const S3StorageClass = S.Literal(
-  "STANDARD",
-  "STANDARD_IA",
-  "ONEZONE_IA",
-  "INTELLIGENT_TIERING",
-  "GLACIER",
-  "DEEP_ARCHIVE",
-  "OUTPOSTS",
-  "GLACIER_INSTANT_RETRIEVAL",
-);
-export type SmbAuthenticationType = "NTLM" | "KERBEROS";
-export const SmbAuthenticationType = S.Literal("NTLM", "KERBEROS");
+  | "GLACIER_INSTANT_RETRIEVAL"
+  | (string & {});
+export const S3StorageClass = S.String;
+export type SmbAuthenticationType = "NTLM" | "KERBEROS" | (string & {});
+export const SmbAuthenticationType = S.String;
 export type DnsIpList = string[];
 export const DnsIpList = S.Array(S.String);
-export type TaskMode = "BASIC" | "ENHANCED";
-export const TaskMode = S.Literal("BASIC", "ENHANCED");
+export type TaskMode = "BASIC" | "ENHANCED" | (string & {});
+export const TaskMode = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export interface CancelTaskExecutionRequest {
@@ -248,8 +240,13 @@ export const CreateLocationFsxLustreRequest = S.suspend(() =>
 ).annotations({
   identifier: "CreateLocationFsxLustreRequest",
 }) as any as S.Schema<CreateLocationFsxLustreRequest>;
-export type NfsVersion = "AUTOMATIC" | "NFS3" | "NFS4_0" | "NFS4_1";
-export const NfsVersion = S.Literal("AUTOMATIC", "NFS3", "NFS4_0", "NFS4_1");
+export type NfsVersion =
+  | "AUTOMATIC"
+  | "NFS3"
+  | "NFS4_0"
+  | "NFS4_1"
+  | (string & {});
+export const NfsVersion = S.String;
 export interface NfsMountOptions {
   Version?: NfsVersion;
 }
@@ -266,14 +263,14 @@ export const FsxProtocolNfs = S.suspend(() =>
 ).annotations({
   identifier: "FsxProtocolNfs",
 }) as any as S.Schema<FsxProtocolNfs>;
-export type SmbVersion = "AUTOMATIC" | "SMB2" | "SMB3" | "SMB1" | "SMB2_0";
-export const SmbVersion = S.Literal(
-  "AUTOMATIC",
-  "SMB2",
-  "SMB3",
-  "SMB1",
-  "SMB2_0",
-);
+export type SmbVersion =
+  | "AUTOMATIC"
+  | "SMB2"
+  | "SMB3"
+  | "SMB1"
+  | "SMB2_0"
+  | (string & {});
+export const SmbVersion = S.String;
 export interface SmbMountOptions {
   Version?: SmbVersion;
 }
@@ -641,45 +638,39 @@ export const ListTaskExecutionsRequest = S.suspend(() =>
 export type VerifyMode =
   | "POINT_IN_TIME_CONSISTENT"
   | "ONLY_FILES_TRANSFERRED"
-  | "NONE";
-export const VerifyMode = S.Literal(
-  "POINT_IN_TIME_CONSISTENT",
-  "ONLY_FILES_TRANSFERRED",
-  "NONE",
-);
-export type OverwriteMode = "ALWAYS" | "NEVER";
-export const OverwriteMode = S.Literal("ALWAYS", "NEVER");
-export type Atime = "NONE" | "BEST_EFFORT";
-export const Atime = S.Literal("NONE", "BEST_EFFORT");
-export type Mtime = "NONE" | "PRESERVE";
-export const Mtime = S.Literal("NONE", "PRESERVE");
-export type Uid = "NONE" | "INT_VALUE" | "NAME" | "BOTH";
-export const Uid = S.Literal("NONE", "INT_VALUE", "NAME", "BOTH");
-export type Gid = "NONE" | "INT_VALUE" | "NAME" | "BOTH";
-export const Gid = S.Literal("NONE", "INT_VALUE", "NAME", "BOTH");
-export type PreserveDeletedFiles = "PRESERVE" | "REMOVE";
-export const PreserveDeletedFiles = S.Literal("PRESERVE", "REMOVE");
-export type PreserveDevices = "NONE" | "PRESERVE";
-export const PreserveDevices = S.Literal("NONE", "PRESERVE");
-export type PosixPermissions = "NONE" | "PRESERVE";
-export const PosixPermissions = S.Literal("NONE", "PRESERVE");
-export type TaskQueueing = "ENABLED" | "DISABLED";
-export const TaskQueueing = S.Literal("ENABLED", "DISABLED");
-export type LogLevel = "OFF" | "BASIC" | "TRANSFER";
-export const LogLevel = S.Literal("OFF", "BASIC", "TRANSFER");
-export type TransferMode = "CHANGED" | "ALL";
-export const TransferMode = S.Literal("CHANGED", "ALL");
+  | "NONE"
+  | (string & {});
+export const VerifyMode = S.String;
+export type OverwriteMode = "ALWAYS" | "NEVER" | (string & {});
+export const OverwriteMode = S.String;
+export type Atime = "NONE" | "BEST_EFFORT" | (string & {});
+export const Atime = S.String;
+export type Mtime = "NONE" | "PRESERVE" | (string & {});
+export const Mtime = S.String;
+export type Uid = "NONE" | "INT_VALUE" | "NAME" | "BOTH" | (string & {});
+export const Uid = S.String;
+export type Gid = "NONE" | "INT_VALUE" | "NAME" | "BOTH" | (string & {});
+export const Gid = S.String;
+export type PreserveDeletedFiles = "PRESERVE" | "REMOVE" | (string & {});
+export const PreserveDeletedFiles = S.String;
+export type PreserveDevices = "NONE" | "PRESERVE" | (string & {});
+export const PreserveDevices = S.String;
+export type PosixPermissions = "NONE" | "PRESERVE" | (string & {});
+export const PosixPermissions = S.String;
+export type TaskQueueing = "ENABLED" | "DISABLED" | (string & {});
+export const TaskQueueing = S.String;
+export type LogLevel = "OFF" | "BASIC" | "TRANSFER" | (string & {});
+export const LogLevel = S.String;
+export type TransferMode = "CHANGED" | "ALL" | (string & {});
+export const TransferMode = S.String;
 export type SmbSecurityDescriptorCopyFlags =
   | "NONE"
   | "OWNER_DACL"
-  | "OWNER_DACL_SACL";
-export const SmbSecurityDescriptorCopyFlags = S.Literal(
-  "NONE",
-  "OWNER_DACL",
-  "OWNER_DACL_SACL",
-);
-export type ObjectTags = "PRESERVE" | "NONE";
-export const ObjectTags = S.Literal("PRESERVE", "NONE");
+  | "OWNER_DACL_SACL"
+  | (string & {});
+export const SmbSecurityDescriptorCopyFlags = S.String;
+export type ObjectTags = "PRESERVE" | "NONE" | (string & {});
+export const ObjectTags = S.String;
 export interface Options {
   VerifyMode?: VerifyMode;
   OverwriteMode?: OverwriteMode;
@@ -716,8 +707,8 @@ export const Options = S.suspend(() =>
     ObjectTags: S.optional(ObjectTags),
   }),
 ).annotations({ identifier: "Options" }) as any as S.Schema<Options>;
-export type FilterType = "SIMPLE_PATTERN";
-export const FilterType = S.Literal("SIMPLE_PATTERN");
+export type FilterType = "SIMPLE_PATTERN" | (string & {});
+export const FilterType = S.String;
 export interface FilterRule {
   FilterType?: FilterType;
   Value?: string;
@@ -727,10 +718,10 @@ export const FilterRule = S.suspend(() =>
 ).annotations({ identifier: "FilterRule" }) as any as S.Schema<FilterRule>;
 export type FilterList = FilterRule[];
 export const FilterList = S.Array(FilterRule);
-export type ManifestAction = "TRANSFER";
-export const ManifestAction = S.Literal("TRANSFER");
-export type ManifestFormat = "CSV";
-export const ManifestFormat = S.Literal("CSV");
+export type ManifestAction = "TRANSFER" | (string & {});
+export const ManifestAction = S.String;
+export type ManifestFormat = "CSV" | (string & {});
+export const ManifestFormat = S.String;
 export interface S3ManifestConfig {
   ManifestObjectPath: string;
   BucketAccessRoleArn: string;
@@ -791,12 +782,15 @@ export const ReportDestination = S.suspend(() =>
 ).annotations({
   identifier: "ReportDestination",
 }) as any as S.Schema<ReportDestination>;
-export type ReportOutputType = "SUMMARY_ONLY" | "STANDARD";
-export const ReportOutputType = S.Literal("SUMMARY_ONLY", "STANDARD");
-export type ReportLevel = "ERRORS_ONLY" | "SUCCESSES_AND_ERRORS";
-export const ReportLevel = S.Literal("ERRORS_ONLY", "SUCCESSES_AND_ERRORS");
-export type ObjectVersionIds = "INCLUDE" | "NONE";
-export const ObjectVersionIds = S.Literal("INCLUDE", "NONE");
+export type ReportOutputType = "SUMMARY_ONLY" | "STANDARD" | (string & {});
+export const ReportOutputType = S.String;
+export type ReportLevel =
+  | "ERRORS_ONLY"
+  | "SUCCESSES_AND_ERRORS"
+  | (string & {});
+export const ReportLevel = S.String;
+export type ObjectVersionIds = "INCLUDE" | "NONE" | (string & {});
+export const ObjectVersionIds = S.String;
 export interface ReportOverride {
   ReportLevel?: ReportLevel;
 }
@@ -1054,24 +1048,16 @@ export type HdfsRpcProtection =
   | "DISABLED"
   | "AUTHENTICATION"
   | "INTEGRITY"
-  | "PRIVACY";
-export const HdfsRpcProtection = S.Literal(
-  "DISABLED",
-  "AUTHENTICATION",
-  "INTEGRITY",
-  "PRIVACY",
-);
+  | "PRIVACY"
+  | (string & {});
+export const HdfsRpcProtection = S.String;
 export type HdfsDataTransferProtection =
   | "DISABLED"
   | "AUTHENTICATION"
   | "INTEGRITY"
-  | "PRIVACY";
-export const HdfsDataTransferProtection = S.Literal(
-  "DISABLED",
-  "AUTHENTICATION",
-  "INTEGRITY",
-  "PRIVACY",
-);
+  | "PRIVACY"
+  | (string & {});
+export const HdfsDataTransferProtection = S.String;
 export interface QopConfiguration {
   RpcProtection?: HdfsRpcProtection;
   DataTransferProtection?: HdfsDataTransferProtection;
@@ -1272,8 +1258,8 @@ export const UpdateLocationSmbResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateLocationSmbResponse",
 }) as any as S.Schema<UpdateLocationSmbResponse>;
-export type ScheduleStatus = "ENABLED" | "DISABLED";
-export const ScheduleStatus = S.Literal("ENABLED", "DISABLED");
+export type ScheduleStatus = "ENABLED" | "DISABLED" | (string & {});
+export const ScheduleStatus = S.String;
 export interface TaskSchedule {
   ScheduleExpression: string;
   Status?: ScheduleStatus;
@@ -1336,12 +1322,9 @@ export const UpdateTaskExecutionResponse = S.suspend(() =>
 export type LocationFilterName =
   | "LocationUri"
   | "LocationType"
-  | "CreationTime";
-export const LocationFilterName = S.Literal(
-  "LocationUri",
-  "LocationType",
-  "CreationTime",
-);
+  | "CreationTime"
+  | (string & {});
+export const LocationFilterName = S.String;
 export type FilterValues = string[];
 export const FilterValues = S.Array(S.String);
 export type Operator =
@@ -1354,21 +1337,11 @@ export type Operator =
   | "GreaterThan"
   | "Contains"
   | "NotContains"
-  | "BeginsWith";
-export const Operator = S.Literal(
-  "Equals",
-  "NotEquals",
-  "In",
-  "LessThanOrEqual",
-  "LessThan",
-  "GreaterThanOrEqual",
-  "GreaterThan",
-  "Contains",
-  "NotContains",
-  "BeginsWith",
-);
-export type TaskFilterName = "LocationId" | "CreationTime";
-export const TaskFilterName = S.Literal("LocationId", "CreationTime");
+  | "BeginsWith"
+  | (string & {});
+export const Operator = S.String;
+export type TaskFilterName = "LocationId" | "CreationTime" | (string & {});
+export const TaskFilterName = S.String;
 export interface Ec2Config {
   SubnetArn: string;
   SecurityGroupArns: string[];
@@ -1376,32 +1349,23 @@ export interface Ec2Config {
 export const Ec2Config = S.suspend(() =>
   S.Struct({ SubnetArn: S.String, SecurityGroupArns: Ec2SecurityGroupArnList }),
 ).annotations({ identifier: "Ec2Config" }) as any as S.Schema<Ec2Config>;
-export type AgentStatus = "ONLINE" | "OFFLINE";
-export const AgentStatus = S.Literal("ONLINE", "OFFLINE");
+export type AgentStatus = "ONLINE" | "OFFLINE" | (string & {});
+export const AgentStatus = S.String;
 export type EndpointType =
   | "PUBLIC"
   | "PRIVATE_LINK"
   | "FIPS"
-  | "FIPS_PRIVATE_LINK";
-export const EndpointType = S.Literal(
-  "PUBLIC",
-  "PRIVATE_LINK",
-  "FIPS",
-  "FIPS_PRIVATE_LINK",
-);
+  | "FIPS_PRIVATE_LINK"
+  | (string & {});
+export const EndpointType = S.String;
 export type TaskStatus =
   | "AVAILABLE"
   | "CREATING"
   | "QUEUED"
   | "RUNNING"
-  | "UNAVAILABLE";
-export const TaskStatus = S.Literal(
-  "AVAILABLE",
-  "CREATING",
-  "QUEUED",
-  "RUNNING",
-  "UNAVAILABLE",
-);
+  | "UNAVAILABLE"
+  | (string & {});
+export const TaskStatus = S.String;
 export type SourceNetworkInterfaceArns = string[];
 export const SourceNetworkInterfaceArns = S.Array(S.String);
 export type DestinationNetworkInterfaceArns = string[];
@@ -1414,17 +1378,9 @@ export type TaskExecutionStatus =
   | "TRANSFERRING"
   | "VERIFYING"
   | "SUCCESS"
-  | "ERROR";
-export const TaskExecutionStatus = S.Literal(
-  "QUEUED",
-  "CANCELLING",
-  "LAUNCHING",
-  "PREPARING",
-  "TRANSFERRING",
-  "VERIFYING",
-  "SUCCESS",
-  "ERROR",
-);
+  | "ERROR"
+  | (string & {});
+export const TaskExecutionStatus = S.String;
 export interface LocationFilter {
   Name: LocationFilterName;
   Values: string[];
@@ -1971,10 +1927,10 @@ export const StartTaskExecutionResponse = S.suspend(() =>
 ).annotations({
   identifier: "StartTaskExecutionResponse",
 }) as any as S.Schema<StartTaskExecutionResponse>;
-export type ScheduleDisabledBy = "USER" | "SERVICE";
-export const ScheduleDisabledBy = S.Literal("USER", "SERVICE");
-export type PhaseStatus = "PENDING" | "SUCCESS" | "ERROR";
-export const PhaseStatus = S.Literal("PENDING", "SUCCESS", "ERROR");
+export type ScheduleDisabledBy = "USER" | "SERVICE" | (string & {});
+export const ScheduleDisabledBy = S.String;
+export type PhaseStatus = "PENDING" | "SUCCESS" | "ERROR" | (string & {});
+export const PhaseStatus = S.String;
 export interface FsxUpdateProtocolSmb {
   Domain?: string;
   MountOptions?: SmbMountOptions;

@@ -151,35 +151,40 @@ export type ExportFilterOutputDataType = string;
 export type ExportFilterSourcePropertyName = string;
 
 //# Schemas
-export type QueryLanguage = "OPEN_CYPHER";
-export const QueryLanguage = S.Literal("OPEN_CYPHER");
-export type PlanCacheType = "ENABLED" | "DISABLED" | "AUTO";
-export const PlanCacheType = S.Literal("ENABLED", "DISABLED", "AUTO");
-export type ExplainMode = "STATIC" | "DETAILS";
-export const ExplainMode = S.Literal("STATIC", "DETAILS");
-export type GraphSummaryMode = "BASIC" | "DETAILED";
-export const GraphSummaryMode = S.Literal("BASIC", "DETAILED");
-export type QueryStateInput = "ALL" | "RUNNING" | "WAITING" | "CANCELLING";
-export const QueryStateInput = S.Literal(
-  "ALL",
-  "RUNNING",
-  "WAITING",
-  "CANCELLING",
-);
+export type QueryLanguage = "OPEN_CYPHER" | (string & {});
+export const QueryLanguage = S.String;
+export type PlanCacheType = "ENABLED" | "DISABLED" | "AUTO" | (string & {});
+export const PlanCacheType = S.String;
+export type ExplainMode = "STATIC" | "DETAILS" | (string & {});
+export const ExplainMode = S.String;
+export type GraphSummaryMode = "BASIC" | "DETAILED" | (string & {});
+export const GraphSummaryMode = S.String;
+export type QueryStateInput =
+  | "ALL"
+  | "RUNNING"
+  | "WAITING"
+  | "CANCELLING"
+  | (string & {});
+export const QueryStateInput = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export type SubnetIds = string[];
 export const SubnetIds = S.Array(S.String);
 export type SecurityGroupIds = string[];
 export const SecurityGroupIds = S.Array(S.String);
-export type Format = "CSV" | "OPEN_CYPHER" | "PARQUET" | "NTRIPLES";
-export const Format = S.Literal("CSV", "OPEN_CYPHER", "PARQUET", "NTRIPLES");
-export type ParquetType = "COLUMNAR";
-export const ParquetType = S.Literal("COLUMNAR");
-export type BlankNodeHandling = "convertToIri";
-export const BlankNodeHandling = S.Literal("convertToIri");
-export type ExportFormat = "PARQUET" | "CSV";
-export const ExportFormat = S.Literal("PARQUET", "CSV");
+export type Format =
+  | "CSV"
+  | "OPEN_CYPHER"
+  | "PARQUET"
+  | "NTRIPLES"
+  | (string & {});
+export const Format = S.String;
+export type ParquetType = "COLUMNAR" | (string & {});
+export const ParquetType = S.String;
+export type BlankNodeHandling = "convertToIri" | (string & {});
+export const BlankNodeHandling = S.String;
+export type ExportFormat = "PARQUET" | "CSV" | (string & {});
+export const ExportFormat = S.String;
 export interface CancelQueryInput {
   graphIdentifier: string;
   queryId: string;
@@ -895,8 +900,8 @@ export const DocumentValuedMap = S.Record({
   key: S.String,
   value: S.UndefinedOr(S.Any),
 });
-export type QueryState = "RUNNING" | "WAITING" | "CANCELLING";
-export const QueryState = S.Literal("RUNNING", "WAITING", "CANCELLING");
+export type QueryState = "RUNNING" | "WAITING" | "CANCELLING" | (string & {});
+export const QueryState = S.String;
 export interface VectorSearchConfiguration {
   dimension: number;
 }
@@ -916,38 +921,23 @@ export type GraphStatus =
   | "IMPORTING"
   | "STARTING"
   | "STOPPING"
-  | "STOPPED";
-export const GraphStatus = S.Literal(
-  "CREATING",
-  "AVAILABLE",
-  "DELETING",
-  "RESETTING",
-  "UPDATING",
-  "SNAPSHOTTING",
-  "FAILED",
-  "IMPORTING",
-  "STARTING",
-  "STOPPING",
-  "STOPPED",
-);
+  | "STOPPED"
+  | (string & {});
+export const GraphStatus = S.String;
 export type PrivateGraphEndpointStatus =
   | "CREATING"
   | "AVAILABLE"
   | "DELETING"
-  | "FAILED";
-export const PrivateGraphEndpointStatus = S.Literal(
-  "CREATING",
-  "AVAILABLE",
-  "DELETING",
-  "FAILED",
-);
-export type SnapshotStatus = "CREATING" | "AVAILABLE" | "DELETING" | "FAILED";
-export const SnapshotStatus = S.Literal(
-  "CREATING",
-  "AVAILABLE",
-  "DELETING",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const PrivateGraphEndpointStatus = S.String;
+export type SnapshotStatus =
+  | "CREATING"
+  | "AVAILABLE"
+  | "DELETING"
+  | "FAILED"
+  | (string & {});
+export const SnapshotStatus = S.String;
 export type ExportTaskStatus =
   | "INITIALIZING"
   | "EXPORTING"
@@ -955,16 +945,9 @@ export type ExportTaskStatus =
   | "FAILED"
   | "CANCELLING"
   | "CANCELLED"
-  | "DELETED";
-export const ExportTaskStatus = S.Literal(
-  "INITIALIZING",
-  "EXPORTING",
-  "SUCCEEDED",
-  "FAILED",
-  "CANCELLING",
-  "CANCELLED",
-  "DELETED",
-);
+  | "DELETED"
+  | (string & {});
+export const ExportTaskStatus = S.String;
 export type ImportTaskStatus =
   | "INITIALIZING"
   | "EXPORTING"
@@ -976,20 +959,9 @@ export type ImportTaskStatus =
   | "FAILED"
   | "CANCELLING"
   | "CANCELLED"
-  | "DELETED";
-export const ImportTaskStatus = S.Literal(
-  "INITIALIZING",
-  "EXPORTING",
-  "ANALYZING_DATA",
-  "IMPORTING",
-  "REPROVISIONING",
-  "ROLLING_BACK",
-  "SUCCEEDED",
-  "FAILED",
-  "CANCELLING",
-  "CANCELLED",
-  "DELETED",
-);
+  | "DELETED"
+  | (string & {});
+export const ImportTaskStatus = S.String;
 export interface ExecuteQueryInput {
   graphIdentifier: string;
   queryString: string;
@@ -1591,8 +1563,8 @@ export const QuerySummary = S.suspend(() =>
 ).annotations({ identifier: "QuerySummary" }) as any as S.Schema<QuerySummary>;
 export type QuerySummaryList = QuerySummary[];
 export const QuerySummaryList = S.Array(QuerySummary);
-export type ConflictExceptionReason = "CONCURRENT_MODIFICATION";
-export const ConflictExceptionReason = S.Literal("CONCURRENT_MODIFICATION");
+export type ConflictExceptionReason = "CONCURRENT_MODIFICATION" | (string & {});
+export const ConflictExceptionReason = S.String;
 export interface GraphSummary {
   id: string;
   name: string;
@@ -1904,8 +1876,8 @@ export const CreateGraphUsingImportTaskInput = S.suspend(() =>
 ).annotations({
   identifier: "CreateGraphUsingImportTaskInput",
 }) as any as S.Schema<CreateGraphUsingImportTaskInput>;
-export type MultiValueHandlingType = "TO_LIST" | "PICK_FIRST";
-export const MultiValueHandlingType = S.Literal("TO_LIST", "PICK_FIRST");
+export type MultiValueHandlingType = "TO_LIST" | "PICK_FIRST" | (string & {});
+export const MultiValueHandlingType = S.String;
 export interface ExportFilterPropertyAttributes {
   outputType?: string;
   sourcePropertyName?: string;
@@ -2150,29 +2122,17 @@ export type ValidationExceptionReason =
   | "QUERY_CANCELLED"
   | "QUERY_TOO_LARGE"
   | "UNSUPPORTED_OPERATION"
-  | "BAD_REQUEST";
-export const ValidationExceptionReason = S.Literal(
-  "CONSTRAINT_VIOLATION",
-  "ILLEGAL_ARGUMENT",
-  "MALFORMED_QUERY",
-  "QUERY_CANCELLED",
-  "QUERY_TOO_LARGE",
-  "UNSUPPORTED_OPERATION",
-  "BAD_REQUEST",
-);
+  | "BAD_REQUEST"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 export type UnprocessableExceptionReason =
   | "QUERY_TIMEOUT"
   | "INTERNAL_LIMIT_EXCEEDED"
   | "MEMORY_LIMIT_EXCEEDED"
   | "STORAGE_LIMIT_EXCEEDED"
-  | "PARTITION_FULL";
-export const UnprocessableExceptionReason = S.Literal(
-  "QUERY_TIMEOUT",
-  "INTERNAL_LIMIT_EXCEEDED",
-  "MEMORY_LIMIT_EXCEEDED",
-  "STORAGE_LIMIT_EXCEEDED",
-  "PARTITION_FULL",
-);
+  | "PARTITION_FULL"
+  | (string & {});
+export const UnprocessableExceptionReason = S.String;
 export interface StartExportTaskInput {
   graphIdentifier: string;
   roleArn: string;

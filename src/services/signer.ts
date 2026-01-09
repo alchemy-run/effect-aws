@@ -118,10 +118,18 @@ export type Prefix = string;
 //# Schemas
 export type CertificateHashes = string[];
 export const CertificateHashes = S.Array(S.String);
-export type SigningStatus = "InProgress" | "Failed" | "Succeeded";
-export const SigningStatus = S.Literal("InProgress", "Failed", "Succeeded");
-export type SigningProfileStatus = "Active" | "Canceled" | "Revoked";
-export const SigningProfileStatus = S.Literal("Active", "Canceled", "Revoked");
+export type SigningStatus =
+  | "InProgress"
+  | "Failed"
+  | "Succeeded"
+  | (string & {});
+export const SigningStatus = S.String;
+export type SigningProfileStatus =
+  | "Active"
+  | "Canceled"
+  | "Revoked"
+  | (string & {});
+export const SigningProfileStatus = S.String;
 export type Statuses = SigningProfileStatus[];
 export const Statuses = S.Array(SigningProfileStatus);
 export type TagKeyList = string[];
@@ -565,14 +573,18 @@ export interface UntagResourceResponse {}
 export const UntagResourceResponse = S.suspend(() => S.Struct({})).annotations({
   identifier: "UntagResourceResponse",
 }) as any as S.Schema<UntagResourceResponse>;
-export type ValidityType = "DAYS" | "MONTHS" | "YEARS";
-export const ValidityType = S.Literal("DAYS", "MONTHS", "YEARS");
-export type ImageFormat = "JSON" | "JSONEmbedded" | "JSONDetached";
-export const ImageFormat = S.Literal("JSON", "JSONEmbedded", "JSONDetached");
+export type ValidityType = "DAYS" | "MONTHS" | "YEARS" | (string & {});
+export const ValidityType = S.String;
+export type ImageFormat =
+  | "JSON"
+  | "JSONEmbedded"
+  | "JSONDetached"
+  | (string & {});
+export const ImageFormat = S.String;
 export type RevokedEntities = string[];
 export const RevokedEntities = S.Array(S.String);
-export type Category = "AWSIoT";
-export const Category = S.Literal("AWSIoT");
+export type Category = "AWSIoT" | (string & {});
+export const Category = S.String;
 export interface SigningMaterial {
   certificateArn: string;
 }
@@ -595,10 +607,10 @@ export const SigningParameters = S.Record({
   key: S.String,
   value: S.UndefinedOr(S.String),
 });
-export type EncryptionAlgorithm = "RSA" | "ECDSA";
-export const EncryptionAlgorithm = S.Literal("RSA", "ECDSA");
-export type HashAlgorithm = "SHA1" | "SHA256";
-export const HashAlgorithm = S.Literal("SHA1", "SHA256");
+export type EncryptionAlgorithm = "RSA" | "ECDSA" | (string & {});
+export const EncryptionAlgorithm = S.String;
+export type HashAlgorithm = "SHA1" | "SHA256" | (string & {});
+export const HashAlgorithm = S.String;
 export interface AddProfilePermissionResponse {
   revisionId?: string;
 }

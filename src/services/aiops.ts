@@ -166,11 +166,9 @@ export const GetInvestigationGroupRequest = S.suspend(() =>
 }) as any as S.Schema<GetInvestigationGroupRequest>;
 export type EncryptionConfigurationType =
   | "AWS_OWNED_KEY"
-  | "CUSTOMER_MANAGED_KMS_KEY";
-export const EncryptionConfigurationType = S.Literal(
-  "AWS_OWNED_KEY",
-  "CUSTOMER_MANAGED_KMS_KEY",
-);
+  | "CUSTOMER_MANAGED_KMS_KEY"
+  | (string & {});
+export const EncryptionConfigurationType = S.String;
 export interface EncryptionConfiguration {
   type?: EncryptionConfigurationType;
   kmsKeyId?: string;

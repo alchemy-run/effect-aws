@@ -149,14 +149,14 @@ export const GetAccountSettingsRequest = S.suspend(() =>
 }) as any as S.Schema<GetAccountSettingsRequest>;
 export type PackageIds = string[];
 export const PackageIds = S.Array(S.String);
-export type NetworkProfileType = "CURATED" | "PRIVATE";
-export const NetworkProfileType = S.Literal("CURATED", "PRIVATE");
-export type InteractionMode = "INTERACTIVE" | "NO_VIDEO" | "VIDEO_ONLY";
-export const InteractionMode = S.Literal(
-  "INTERACTIVE",
-  "NO_VIDEO",
-  "VIDEO_ONLY",
-);
+export type NetworkProfileType = "CURATED" | "PRIVATE" | (string & {});
+export const NetworkProfileType = S.String;
+export type InteractionMode =
+  | "INTERACTIVE"
+  | "NO_VIDEO"
+  | "VIDEO_ONLY"
+  | (string & {});
+export const InteractionMode = S.String;
 export type UploadType =
   | "ANDROID_APP"
   | "IOS_APP"
@@ -189,41 +189,9 @@ export type UploadType =
   | "APPIUM_WEB_NODE_TEST_SPEC"
   | "APPIUM_WEB_RUBY_TEST_SPEC"
   | "INSTRUMENTATION_TEST_SPEC"
-  | "XCTEST_UI_TEST_SPEC";
-export const UploadType = S.Literal(
-  "ANDROID_APP",
-  "IOS_APP",
-  "WEB_APP",
-  "EXTERNAL_DATA",
-  "APPIUM_JAVA_JUNIT_TEST_PACKAGE",
-  "APPIUM_JAVA_TESTNG_TEST_PACKAGE",
-  "APPIUM_PYTHON_TEST_PACKAGE",
-  "APPIUM_NODE_TEST_PACKAGE",
-  "APPIUM_RUBY_TEST_PACKAGE",
-  "APPIUM_WEB_JAVA_JUNIT_TEST_PACKAGE",
-  "APPIUM_WEB_JAVA_TESTNG_TEST_PACKAGE",
-  "APPIUM_WEB_PYTHON_TEST_PACKAGE",
-  "APPIUM_WEB_NODE_TEST_PACKAGE",
-  "APPIUM_WEB_RUBY_TEST_PACKAGE",
-  "CALABASH_TEST_PACKAGE",
-  "INSTRUMENTATION_TEST_PACKAGE",
-  "UIAUTOMATION_TEST_PACKAGE",
-  "UIAUTOMATOR_TEST_PACKAGE",
-  "XCTEST_TEST_PACKAGE",
-  "XCTEST_UI_TEST_PACKAGE",
-  "APPIUM_JAVA_JUNIT_TEST_SPEC",
-  "APPIUM_JAVA_TESTNG_TEST_SPEC",
-  "APPIUM_PYTHON_TEST_SPEC",
-  "APPIUM_NODE_TEST_SPEC",
-  "APPIUM_RUBY_TEST_SPEC",
-  "APPIUM_WEB_JAVA_JUNIT_TEST_SPEC",
-  "APPIUM_WEB_JAVA_TESTNG_TEST_SPEC",
-  "APPIUM_WEB_PYTHON_TEST_SPEC",
-  "APPIUM_WEB_NODE_TEST_SPEC",
-  "APPIUM_WEB_RUBY_TEST_SPEC",
-  "INSTRUMENTATION_TEST_SPEC",
-  "XCTEST_UI_TEST_SPEC",
-);
+  | "XCTEST_UI_TEST_SPEC"
+  | (string & {});
+export const UploadType = S.String;
 export type TestType =
   | "BUILTIN_FUZZ"
   | "APPIUM_JAVA_JUNIT"
@@ -238,31 +206,21 @@ export type TestType =
   | "APPIUM_WEB_RUBY"
   | "INSTRUMENTATION"
   | "XCTEST"
-  | "XCTEST_UI";
-export const TestType = S.Literal(
-  "BUILTIN_FUZZ",
-  "APPIUM_JAVA_JUNIT",
-  "APPIUM_JAVA_TESTNG",
-  "APPIUM_PYTHON",
-  "APPIUM_NODE",
-  "APPIUM_RUBY",
-  "APPIUM_WEB_JAVA_JUNIT",
-  "APPIUM_WEB_JAVA_TESTNG",
-  "APPIUM_WEB_PYTHON",
-  "APPIUM_WEB_NODE",
-  "APPIUM_WEB_RUBY",
-  "INSTRUMENTATION",
-  "XCTEST",
-  "XCTEST_UI",
-);
-export type ArtifactCategory = "SCREENSHOT" | "FILE" | "LOG";
-export const ArtifactCategory = S.Literal("SCREENSHOT", "FILE", "LOG");
-export type DevicePoolType = "CURATED" | "PRIVATE";
-export const DevicePoolType = S.Literal("CURATED", "PRIVATE");
-export type TestGridSessionArtifactCategory = "VIDEO" | "LOG";
-export const TestGridSessionArtifactCategory = S.Literal("VIDEO", "LOG");
-export type TestGridSessionStatus = "ACTIVE" | "CLOSED" | "ERRORED";
-export const TestGridSessionStatus = S.Literal("ACTIVE", "CLOSED", "ERRORED");
+  | "XCTEST_UI"
+  | (string & {});
+export const TestType = S.String;
+export type ArtifactCategory = "SCREENSHOT" | "FILE" | "LOG" | (string & {});
+export const ArtifactCategory = S.String;
+export type DevicePoolType = "CURATED" | "PRIVATE" | (string & {});
+export const DevicePoolType = S.String;
+export type TestGridSessionArtifactCategory = "VIDEO" | "LOG" | (string & {});
+export const TestGridSessionArtifactCategory = S.String;
+export type TestGridSessionStatus =
+  | "ACTIVE"
+  | "CLOSED"
+  | "ERRORED"
+  | (string & {});
+export const TestGridSessionStatus = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export type InstanceLabels = string[];
@@ -1592,22 +1550,9 @@ export type DeviceAttribute =
   | "FLEET_TYPE"
   | "OS_VERSION"
   | "MODEL"
-  | "AVAILABILITY";
-export const DeviceAttribute = S.Literal(
-  "ARN",
-  "PLATFORM",
-  "FORM_FACTOR",
-  "MANUFACTURER",
-  "REMOTE_ACCESS_ENABLED",
-  "REMOTE_DEBUG_ENABLED",
-  "APPIUM_VERSION",
-  "INSTANCE_ARN",
-  "INSTANCE_LABELS",
-  "FLEET_TYPE",
-  "OS_VERSION",
-  "MODEL",
-  "AVAILABILITY",
-);
+  | "AVAILABILITY"
+  | (string & {});
+export const DeviceAttribute = S.String;
 export type RuleOperator =
   | "EQUALS"
   | "LESS_THAN"
@@ -1616,17 +1561,9 @@ export type RuleOperator =
   | "GREATER_THAN_OR_EQUALS"
   | "IN"
   | "NOT_IN"
-  | "CONTAINS";
-export const RuleOperator = S.Literal(
-  "EQUALS",
-  "LESS_THAN",
-  "LESS_THAN_OR_EQUALS",
-  "GREATER_THAN",
-  "GREATER_THAN_OR_EQUALS",
-  "IN",
-  "NOT_IN",
-  "CONTAINS",
-);
+  | "CONTAINS"
+  | (string & {});
+export const RuleOperator = S.String;
 export interface Rule {
   attribute?: DeviceAttribute;
   operator?: RuleOperator;
@@ -1900,8 +1837,8 @@ export const UpdateVPCEConfigurationRequest = S.suspend(() =>
 }) as any as S.Schema<UpdateVPCEConfigurationRequest>;
 export type AuxiliaryAppArnList = string[];
 export const AuxiliaryAppArnList = S.Array(S.String);
-export type BillingMethod = "METERED" | "UNMETERED";
-export const BillingMethod = S.Literal("METERED", "UNMETERED");
+export type BillingMethod = "METERED" | "UNMETERED" | (string & {});
+export const BillingMethod = S.String;
 export type AmazonResourceNames = string[];
 export const AmazonResourceNames = S.Array(S.String);
 export type DeviceFilterAttribute =
@@ -1916,34 +1853,18 @@ export type DeviceFilterAttribute =
   | "REMOTE_DEBUG_ENABLED"
   | "INSTANCE_ARN"
   | "INSTANCE_LABELS"
-  | "FLEET_TYPE";
-export const DeviceFilterAttribute = S.Literal(
-  "ARN",
-  "PLATFORM",
-  "OS_VERSION",
-  "MODEL",
-  "AVAILABILITY",
-  "FORM_FACTOR",
-  "MANUFACTURER",
-  "REMOTE_ACCESS_ENABLED",
-  "REMOTE_DEBUG_ENABLED",
-  "INSTANCE_ARN",
-  "INSTANCE_LABELS",
-  "FLEET_TYPE",
-);
+  | "FLEET_TYPE"
+  | (string & {});
+export const DeviceFilterAttribute = S.String;
 export type DeviceFilterValues = string[];
 export const DeviceFilterValues = S.Array(S.String);
 export type InstanceStatus =
   | "IN_USE"
   | "PREPARING"
   | "AVAILABLE"
-  | "NOT_AVAILABLE";
-export const InstanceStatus = S.Literal(
-  "IN_USE",
-  "PREPARING",
-  "AVAILABLE",
-  "NOT_AVAILABLE",
-);
+  | "NOT_AVAILABLE"
+  | (string & {});
+export const InstanceStatus = S.String;
 export interface InstanceProfile {
   arn?: string;
   packageCleanup?: boolean;
@@ -2031,18 +1952,9 @@ export type ExecutionStatus =
   | "PREPARING"
   | "RUNNING"
   | "COMPLETED"
-  | "STOPPING";
-export const ExecutionStatus = S.Literal(
-  "PENDING",
-  "PENDING_CONCURRENCY",
-  "PENDING_DEVICE",
-  "PROCESSING",
-  "SCHEDULING",
-  "PREPARING",
-  "RUNNING",
-  "COMPLETED",
-  "STOPPING",
-);
+  | "STOPPING"
+  | (string & {});
+export const ExecutionStatus = S.String;
 export type ExecutionResult =
   | "PENDING"
   | "PASSED"
@@ -2050,16 +1962,9 @@ export type ExecutionResult =
   | "FAILED"
   | "SKIPPED"
   | "ERRORED"
-  | "STOPPED";
-export const ExecutionResult = S.Literal(
-  "PENDING",
-  "PASSED",
-  "WARNED",
-  "FAILED",
-  "SKIPPED",
-  "ERRORED",
-  "STOPPED",
-);
+  | "STOPPED"
+  | (string & {});
+export const ExecutionResult = S.String;
 export interface Counters {
   total?: number;
   passed?: number;
@@ -2080,10 +1985,10 @@ export const Counters = S.suspend(() =>
     skipped: S.optional(S.Number),
   }),
 ).annotations({ identifier: "Counters" }) as any as S.Schema<Counters>;
-export type DeviceFormFactor = "PHONE" | "TABLET";
-export const DeviceFormFactor = S.Literal("PHONE", "TABLET");
-export type DevicePlatform = "ANDROID" | "IOS";
-export const DevicePlatform = S.Literal("ANDROID", "IOS");
+export type DeviceFormFactor = "PHONE" | "TABLET" | (string & {});
+export const DeviceFormFactor = S.String;
+export type DevicePlatform = "ANDROID" | "IOS" | (string & {});
+export const DevicePlatform = S.String;
 export interface CPU {
   frequency?: string;
   architecture?: string;
@@ -2107,13 +2012,9 @@ export type DeviceAvailability =
   | "TEMPORARY_NOT_AVAILABLE"
   | "BUSY"
   | "AVAILABLE"
-  | "HIGHLY_AVAILABLE";
-export const DeviceAvailability = S.Literal(
-  "TEMPORARY_NOT_AVAILABLE",
-  "BUSY",
-  "AVAILABLE",
-  "HIGHLY_AVAILABLE",
-);
+  | "HIGHLY_AVAILABLE"
+  | (string & {});
+export const DeviceAvailability = S.String;
 export interface Device {
   arn?: string;
   name?: string;
@@ -2341,11 +2242,9 @@ export type RemoteAccessSessions = RemoteAccessSession[];
 export const RemoteAccessSessions = S.Array(RemoteAccessSession);
 export type ExecutionResultCode =
   | "PARSING_FAILED"
-  | "VPC_ENDPOINT_SETUP_FAILED";
-export const ExecutionResultCode = S.Literal(
-  "PARSING_FAILED",
-  "VPC_ENDPOINT_SETUP_FAILED",
-);
+  | "VPC_ENDPOINT_SETUP_FAILED"
+  | (string & {});
+export const ExecutionResultCode = S.String;
 export interface Radios {
   wifi?: boolean;
   bluetooth?: boolean;
@@ -2585,15 +2484,11 @@ export type UploadStatus =
   | "INITIALIZED"
   | "PROCESSING"
   | "SUCCEEDED"
-  | "FAILED";
-export const UploadStatus = S.Literal(
-  "INITIALIZED",
-  "PROCESSING",
-  "SUCCEEDED",
-  "FAILED",
-);
-export type UploadCategory = "CURATED" | "PRIVATE";
-export const UploadCategory = S.Literal("CURATED", "PRIVATE");
+  | "FAILED"
+  | (string & {});
+export const UploadStatus = S.String;
+export type UploadCategory = "CURATED" | "PRIVATE" | (string & {});
+export const UploadCategory = S.String;
 export interface Upload {
   arn?: string;
   name?: string;
@@ -3007,12 +2902,16 @@ export const ListVPCEConfigurationsResult = S.suspend(() =>
 ).annotations({
   identifier: "ListVPCEConfigurationsResult",
 }) as any as S.Schema<ListVPCEConfigurationsResult>;
-export type OfferingTransactionType = "PURCHASE" | "RENEW" | "SYSTEM";
-export const OfferingTransactionType = S.Literal("PURCHASE", "RENEW", "SYSTEM");
-export type OfferingType = "RECURRING";
-export const OfferingType = S.Literal("RECURRING");
-export type CurrencyCode = "USD";
-export const CurrencyCode = S.Literal("USD");
+export type OfferingTransactionType =
+  | "PURCHASE"
+  | "RENEW"
+  | "SYSTEM"
+  | (string & {});
+export const OfferingTransactionType = S.String;
+export type OfferingType = "RECURRING" | (string & {});
+export const OfferingType = S.String;
+export type CurrencyCode = "USD" | (string & {});
+export const CurrencyCode = S.String;
 export interface MonetaryAmount {
   amount?: number;
   currencyCode?: CurrencyCode;
@@ -3025,8 +2924,8 @@ export const MonetaryAmount = S.suspend(() =>
 ).annotations({
   identifier: "MonetaryAmount",
 }) as any as S.Schema<MonetaryAmount>;
-export type RecurringChargeFrequency = "MONTHLY";
-export const RecurringChargeFrequency = S.Literal("MONTHLY");
+export type RecurringChargeFrequency = "MONTHLY" | (string & {});
+export const RecurringChargeFrequency = S.String;
 export interface RecurringCharge {
   cost?: MonetaryAmount;
   frequency?: RecurringChargeFrequency;
@@ -3353,37 +3252,9 @@ export type ArtifactType =
   | "VIDEO"
   | "CUSTOMER_ARTIFACT"
   | "CUSTOMER_ARTIFACT_LOG"
-  | "TESTSPEC_OUTPUT";
-export const ArtifactType = S.Literal(
-  "UNKNOWN",
-  "SCREENSHOT",
-  "DEVICE_LOG",
-  "MESSAGE_LOG",
-  "VIDEO_LOG",
-  "RESULT_LOG",
-  "SERVICE_LOG",
-  "WEBKIT_LOG",
-  "INSTRUMENTATION_OUTPUT",
-  "EXERCISER_MONKEY_OUTPUT",
-  "CALABASH_JSON_OUTPUT",
-  "CALABASH_PRETTY_OUTPUT",
-  "CALABASH_STANDARD_OUTPUT",
-  "CALABASH_JAVA_XML_OUTPUT",
-  "AUTOMATION_OUTPUT",
-  "APPIUM_SERVER_OUTPUT",
-  "APPIUM_JAVA_OUTPUT",
-  "APPIUM_JAVA_XML_OUTPUT",
-  "APPIUM_PYTHON_OUTPUT",
-  "APPIUM_PYTHON_XML_OUTPUT",
-  "EXPLORER_EVENT_LOG",
-  "EXPLORER_SUMMARY_LOG",
-  "APPLICATION_CRASH_REPORT",
-  "XCTEST_LOG",
-  "VIDEO",
-  "CUSTOMER_ARTIFACT",
-  "CUSTOMER_ARTIFACT_LOG",
-  "TESTSPEC_OUTPUT",
-);
+  | "TESTSPEC_OUTPUT"
+  | (string & {});
+export const ArtifactType = S.String;
 export type SampleType =
   | "CPU"
   | "MEMORY"
@@ -3401,32 +3272,15 @@ export type SampleType =
   | "OPENGL_FPS"
   | "OPENGL_MIN_DRAWTIME"
   | "OPENGL_AVG_DRAWTIME"
-  | "OPENGL_MAX_DRAWTIME";
-export const SampleType = S.Literal(
-  "CPU",
-  "MEMORY",
-  "THREADS",
-  "RX_RATE",
-  "TX_RATE",
-  "RX",
-  "TX",
-  "NATIVE_FRAMES",
-  "NATIVE_FPS",
-  "NATIVE_MIN_DRAWTIME",
-  "NATIVE_AVG_DRAWTIME",
-  "NATIVE_MAX_DRAWTIME",
-  "OPENGL_FRAMES",
-  "OPENGL_FPS",
-  "OPENGL_MIN_DRAWTIME",
-  "OPENGL_AVG_DRAWTIME",
-  "OPENGL_MAX_DRAWTIME",
-);
-export type TestGridSessionArtifactType = "UNKNOWN" | "VIDEO" | "SELENIUM_LOG";
-export const TestGridSessionArtifactType = S.Literal(
-  "UNKNOWN",
-  "VIDEO",
-  "SELENIUM_LOG",
-);
+  | "OPENGL_MAX_DRAWTIME"
+  | (string & {});
+export const SampleType = S.String;
+export type TestGridSessionArtifactType =
+  | "UNKNOWN"
+  | "VIDEO"
+  | "SELENIUM_LOG"
+  | (string & {});
+export const TestGridSessionArtifactType = S.String;
 export interface CreateRemoteAccessSessionConfiguration {
   auxiliaryApps?: string[];
   billingMethod?: BillingMethod;

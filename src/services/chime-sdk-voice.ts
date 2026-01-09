@@ -161,26 +161,27 @@ export type NonEmptyStringList = string[];
 export const NonEmptyStringList = S.Array(S.String);
 export type PhoneNumberProductType =
   | "VoiceConnector"
-  | "SipMediaApplicationDialIn";
-export const PhoneNumberProductType = S.Literal(
-  "VoiceConnector",
-  "SipMediaApplicationDialIn",
-);
+  | "SipMediaApplicationDialIn"
+  | (string & {});
+export const PhoneNumberProductType = S.String;
 export type ParticipantPhoneNumberList = string | redacted.Redacted<string>[];
 export const ParticipantPhoneNumberList = S.Array(SensitiveString);
-export type Capability = "Voice" | "SMS";
-export const Capability = S.Literal("Voice", "SMS");
+export type Capability = "Voice" | "SMS" | (string & {});
+export const Capability = S.String;
 export type CapabilityList = Capability[];
 export const CapabilityList = S.Array(Capability);
-export type NumberSelectionBehavior = "PreferSticky" | "AvoidSticky";
-export const NumberSelectionBehavior = S.Literal("PreferSticky", "AvoidSticky");
-export type GeoMatchLevel = "Country" | "AreaCode";
-export const GeoMatchLevel = S.Literal("Country", "AreaCode");
-export type SipRuleTriggerType = "ToPhoneNumber" | "RequestUriHostname";
-export const SipRuleTriggerType = S.Literal(
-  "ToPhoneNumber",
-  "RequestUriHostname",
-);
+export type NumberSelectionBehavior =
+  | "PreferSticky"
+  | "AvoidSticky"
+  | (string & {});
+export const NumberSelectionBehavior = S.String;
+export type GeoMatchLevel = "Country" | "AreaCode" | (string & {});
+export const GeoMatchLevel = S.String;
+export type SipRuleTriggerType =
+  | "ToPhoneNumber"
+  | "RequestUriHostname"
+  | (string & {});
+export const SipRuleTriggerType = S.String;
 export type VoiceConnectorAwsRegion =
   | "us-east-1"
   | "us-west-2"
@@ -191,28 +192,16 @@ export type VoiceConnectorAwsRegion =
   | "ap-northeast-2"
   | "ap-northeast-1"
   | "ap-southeast-1"
-  | "ap-southeast-2";
-export const VoiceConnectorAwsRegion = S.Literal(
-  "us-east-1",
-  "us-west-2",
-  "ca-central-1",
-  "eu-central-1",
-  "eu-west-1",
-  "eu-west-2",
-  "ap-northeast-2",
-  "ap-northeast-1",
-  "ap-southeast-1",
-  "ap-southeast-2",
-);
+  | "ap-southeast-2"
+  | (string & {});
+export const VoiceConnectorAwsRegion = S.String;
 export type VoiceConnectorIntegrationType =
   | "CONNECT_CALL_TRANSFER_CONNECTOR"
-  | "CONNECT_ANALYTICS_CONNECTOR";
-export const VoiceConnectorIntegrationType = S.Literal(
-  "CONNECT_CALL_TRANSFER_CONNECTOR",
-  "CONNECT_ANALYTICS_CONNECTOR",
-);
-export type NetworkType = "IPV4_ONLY" | "DUAL_STACK";
-export const NetworkType = S.Literal("IPV4_ONLY", "DUAL_STACK");
+  | "CONNECT_ANALYTICS_CONNECTOR"
+  | (string & {});
+export const VoiceConnectorIntegrationType = S.String;
+export type NetworkType = "IPV4_ONLY" | "DUAL_STACK" | (string & {});
+export const NetworkType = S.String;
 export type SensitiveStringList = string | redacted.Redacted<string>[];
 export const SensitiveStringList = S.Array(SensitiveString);
 export type VoiceConnectorAwsRegionList = VoiceConnectorAwsRegion[];
@@ -220,27 +209,23 @@ export const VoiceConnectorAwsRegionList = S.Array(VoiceConnectorAwsRegion);
 export type PhoneNumberAssociationName =
   | "VoiceConnectorId"
   | "VoiceConnectorGroupId"
-  | "SipRuleId";
-export const PhoneNumberAssociationName = S.Literal(
-  "VoiceConnectorId",
-  "VoiceConnectorGroupId",
-  "SipRuleId",
-);
-export type ProxySessionStatus = "Open" | "InProgress" | "Closed";
-export const ProxySessionStatus = S.Literal("Open", "InProgress", "Closed");
+  | "SipRuleId"
+  | (string & {});
+export const PhoneNumberAssociationName = S.String;
+export type ProxySessionStatus =
+  | "Open"
+  | "InProgress"
+  | "Closed"
+  | (string & {});
+export const ProxySessionStatus = S.String;
 export type SessionBorderControllerType =
   | "RIBBON_SBC"
   | "ORACLE_ACME_PACKET_SBC"
   | "AVAYA_SBCE"
   | "CISCO_UNIFIED_BORDER_ELEMENT"
-  | "AUDIOCODES_MEDIANT_SBC";
-export const SessionBorderControllerType = S.Literal(
-  "RIBBON_SBC",
-  "ORACLE_ACME_PACKET_SBC",
-  "AVAYA_SBCE",
-  "CISCO_UNIFIED_BORDER_ELEMENT",
-  "AUDIOCODES_MEDIANT_SBC",
-);
+  | "AUDIOCODES_MEDIANT_SBC"
+  | (string & {});
+export const SessionBorderControllerType = S.String;
 export type SessionBorderControllerTypeList = SessionBorderControllerType[];
 export const SessionBorderControllerTypeList = S.Array(
   SessionBorderControllerType,
@@ -249,23 +234,19 @@ export type ContactCenterSystemType =
   | "GENESYS_ENGAGE_ON_PREMISES"
   | "AVAYA_AURA_CALL_CENTER_ELITE"
   | "AVAYA_AURA_CONTACT_CENTER"
-  | "CISCO_UNIFIED_CONTACT_CENTER_ENTERPRISE";
-export const ContactCenterSystemType = S.Literal(
-  "GENESYS_ENGAGE_ON_PREMISES",
-  "AVAYA_AURA_CALL_CENTER_ELITE",
-  "AVAYA_AURA_CONTACT_CENTER",
-  "CISCO_UNIFIED_CONTACT_CENTER_ENTERPRISE",
-);
+  | "CISCO_UNIFIED_CONTACT_CENTER_ENTERPRISE"
+  | (string & {});
+export const ContactCenterSystemType = S.String;
 export type ContactCenterSystemTypeList = ContactCenterSystemType[];
 export const ContactCenterSystemTypeList = S.Array(ContactCenterSystemType);
 export type CountryList = string[];
 export const CountryList = S.Array(S.String);
-export type PhoneNumberType = "Local" | "TollFree";
-export const PhoneNumberType = S.Literal("Local", "TollFree");
-export type CallLegType = "Caller" | "Callee";
-export const CallLegType = S.Literal("Caller", "Callee");
-export type LanguageCode = "en-US";
-export const LanguageCode = S.Literal("en-US");
+export type PhoneNumberType = "Local" | "TollFree" | (string & {});
+export const PhoneNumberType = S.String;
+export type CallLegType = "Caller" | "Callee" | (string & {});
+export const CallLegType = S.String;
+export type LanguageCode = "en-US" | (string & {});
+export const LanguageCode = S.String;
 export type TagKeyList = string | redacted.Redacted<string>[];
 export const TagKeyList = S.Array(SensitiveString);
 export interface AssociatePhoneNumbersWithVoiceConnectorRequest {
@@ -2236,8 +2217,8 @@ export const ValidateE911AddressRequest = S.suspend(() =>
 ).annotations({
   identifier: "ValidateE911AddressRequest",
 }) as any as S.Schema<ValidateE911AddressRequest>;
-export type AlexaSkillStatus = "ACTIVE" | "INACTIVE";
-export const AlexaSkillStatus = S.Literal("ACTIVE", "INACTIVE");
+export type AlexaSkillStatus = "ACTIVE" | "INACTIVE" | (string & {});
+export const AlexaSkillStatus = S.String;
 export type AlexaSkillIdList = string | redacted.Redacted<string>[];
 export const AlexaSkillIdList = S.Array(SensitiveString);
 export type CallingRegionList = string[];
@@ -2311,25 +2292,9 @@ export type ErrorCode =
   | "Unprocessable"
   | "VoiceConnectorGroupAssociationsExist"
   | "PhoneNumberAssociationsExist"
-  | "Gone";
-export const ErrorCode = S.Literal(
-  "BadRequest",
-  "Conflict",
-  "Forbidden",
-  "NotFound",
-  "PreconditionFailed",
-  "ResourceLimitExceeded",
-  "ServiceFailure",
-  "AccessDenied",
-  "ServiceUnavailable",
-  "Throttled",
-  "Throttling",
-  "Unauthorized",
-  "Unprocessable",
-  "VoiceConnectorGroupAssociationsExist",
-  "PhoneNumberAssociationsExist",
-  "Gone",
-);
+  | "Gone"
+  | (string & {});
+export const ErrorCode = S.String;
 export type PhoneNumberOrderStatus =
   | "Processing"
   | "Successful"
@@ -2341,28 +2306,17 @@ export type PhoneNumberOrderStatus =
   | "ChangeRequested"
   | "Exception"
   | "CancelRequested"
-  | "Cancelled";
-export const PhoneNumberOrderStatus = S.Literal(
-  "Processing",
-  "Successful",
-  "Failed",
-  "Partial",
-  "PendingDocuments",
-  "Submitted",
-  "FOC",
-  "ChangeRequested",
-  "Exception",
-  "CancelRequested",
-  "Cancelled",
-);
-export type PhoneNumberOrderType = "New" | "Porting";
-export const PhoneNumberOrderType = S.Literal("New", "Porting");
-export type OrderedPhoneNumberStatus = "Processing" | "Acquired" | "Failed";
-export const OrderedPhoneNumberStatus = S.Literal(
-  "Processing",
-  "Acquired",
-  "Failed",
-);
+  | "Cancelled"
+  | (string & {});
+export const PhoneNumberOrderStatus = S.String;
+export type PhoneNumberOrderType = "New" | "Porting" | (string & {});
+export const PhoneNumberOrderType = S.String;
+export type OrderedPhoneNumberStatus =
+  | "Processing"
+  | "Acquired"
+  | "Failed"
+  | (string & {});
+export const OrderedPhoneNumberStatus = S.String;
 export interface OrderedPhoneNumber {
   E164PhoneNumber?: string | redacted.Redacted<string>;
   Status?: OrderedPhoneNumberStatus;
@@ -2414,20 +2368,9 @@ export type PhoneNumberStatus =
   | "ReleaseInProgress"
   | "DeleteInProgress"
   | "ReleaseFailed"
-  | "DeleteFailed";
-export const PhoneNumberStatus = S.Literal(
-  "Cancelled",
-  "PortinCancelRequested",
-  "PortinInProgress",
-  "AcquireInProgress",
-  "AcquireFailed",
-  "Unassigned",
-  "Assigned",
-  "ReleaseInProgress",
-  "DeleteInProgress",
-  "ReleaseFailed",
-  "DeleteFailed",
-);
+  | "DeleteFailed"
+  | (string & {});
+export const PhoneNumberStatus = S.String;
 export interface PhoneNumberCapabilities {
   InboundCall?: boolean;
   OutboundCall?: boolean;
@@ -2470,13 +2413,9 @@ export type CallingNameStatus =
   | "Unassigned"
   | "UpdateInProgress"
   | "UpdateSucceeded"
-  | "UpdateFailed";
-export const CallingNameStatus = S.Literal(
-  "Unassigned",
-  "UpdateInProgress",
-  "UpdateSucceeded",
-  "UpdateFailed",
-);
+  | "UpdateFailed"
+  | (string & {});
+export const CallingNameStatus = S.String;
 export interface PhoneNumber {
   PhoneNumberId?: string | redacted.Redacted<string>;
   E164PhoneNumber?: string | redacted.Redacted<string>;
@@ -2728,10 +2667,10 @@ export const SMAUpdateCallArgumentsMap = S.Record({
   key: S.String,
   value: S.UndefinedOr(SensitiveString),
 });
-export type OriginationRouteProtocol = "TCP" | "UDP";
-export const OriginationRouteProtocol = S.Literal("TCP", "UDP");
-export type NotificationTarget = "EventBridge" | "SNS" | "SQS";
-export const NotificationTarget = S.Literal("EventBridge", "SNS", "SQS");
+export type OriginationRouteProtocol = "TCP" | "UDP" | (string & {});
+export const OriginationRouteProtocol = S.String;
+export type NotificationTarget = "EventBridge" | "SNS" | "SQS" | (string & {});
+export const NotificationTarget = S.String;
 export interface PhoneNumberError {
   PhoneNumberId?: string | redacted.Redacted<string>;
   ErrorCode?: ErrorCode;

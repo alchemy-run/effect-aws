@@ -179,14 +179,9 @@ export type FilterType =
   | "EQUALS"
   | "CONTAINS"
   | "ANY_OF"
-  | "NONE_OF";
-export const FilterType = S.Literal(
-  "TERM_MATCH",
-  "EQUALS",
-  "CONTAINS",
-  "ANY_OF",
-  "NONE_OF",
-);
+  | "NONE_OF"
+  | (string & {});
+export const FilterType = S.String;
 export interface Filter {
   Type: FilterType;
   Field: string;

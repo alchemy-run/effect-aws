@@ -495,18 +495,9 @@ export type ResourceTypeForTagging =
   | "OpsItem"
   | "OpsMetadata"
   | "Automation"
-  | "Association";
-export const ResourceTypeForTagging = S.Literal(
-  "Document",
-  "ManagedInstance",
-  "MaintenanceWindow",
-  "Parameter",
-  "PatchBaseline",
-  "OpsItem",
-  "OpsMetadata",
-  "Automation",
-  "Association",
-);
+  | "Association"
+  | (string & {});
+export const ResourceTypeForTagging = S.String;
 export type InstanceIdList = string[];
 export const InstanceIdList = S.Array(S.String);
 export type AssociationComplianceSeverity =
@@ -514,16 +505,11 @@ export type AssociationComplianceSeverity =
   | "HIGH"
   | "MEDIUM"
   | "LOW"
-  | "UNSPECIFIED";
-export const AssociationComplianceSeverity = S.Literal(
-  "CRITICAL",
-  "HIGH",
-  "MEDIUM",
-  "LOW",
-  "UNSPECIFIED",
-);
-export type AssociationSyncCompliance = "AUTO" | "MANUAL";
-export const AssociationSyncCompliance = S.Literal("AUTO", "MANUAL");
+  | "UNSPECIFIED"
+  | (string & {});
+export const AssociationComplianceSeverity = S.String;
+export type AssociationSyncCompliance = "AUTO" | "MANUAL" | (string & {});
+export const AssociationSyncCompliance = S.String;
 export type CalendarNameOrARNList = string[];
 export const CalendarNameOrARNList = S.Array(S.String);
 export type DocumentType =
@@ -543,28 +529,11 @@ export type DocumentType =
   | "ConformancePackTemplate"
   | "QuickSetup"
   | "ManualApprovalPolicy"
-  | "AutoApprovalPolicy";
-export const DocumentType = S.Literal(
-  "Command",
-  "Policy",
-  "Automation",
-  "Session",
-  "Package",
-  "ApplicationConfiguration",
-  "ApplicationConfigurationSchema",
-  "DeploymentStrategy",
-  "ChangeCalendar",
-  "Automation.ChangeTemplate",
-  "ProblemAnalysis",
-  "ProblemAnalysisTemplate",
-  "CloudFormation",
-  "ConformancePackTemplate",
-  "QuickSetup",
-  "ManualApprovalPolicy",
-  "AutoApprovalPolicy",
-);
-export type DocumentFormat = "YAML" | "JSON" | "TEXT";
-export const DocumentFormat = S.Literal("YAML", "JSON", "TEXT");
+  | "AutoApprovalPolicy"
+  | (string & {});
+export const DocumentType = S.String;
+export type DocumentFormat = "YAML" | "JSON" | "TEXT" | (string & {});
+export const DocumentFormat = S.String;
 export type OperatingSystem =
   | "WINDOWS"
   | "AMAZON_LINUX"
@@ -580,24 +549,9 @@ export type OperatingSystem =
   | "RASPBIAN"
   | "ROCKY_LINUX"
   | "ALMA_LINUX"
-  | "AMAZON_LINUX_2023";
-export const OperatingSystem = S.Literal(
-  "WINDOWS",
-  "AMAZON_LINUX",
-  "AMAZON_LINUX_2",
-  "AMAZON_LINUX_2022",
-  "UBUNTU",
-  "REDHAT_ENTERPRISE_LINUX",
-  "SUSE",
-  "CENTOS",
-  "ORACLE_LINUX",
-  "DEBIAN",
-  "MACOS",
-  "RASPBIAN",
-  "ROCKY_LINUX",
-  "ALMA_LINUX",
-  "AMAZON_LINUX_2023",
-);
+  | "AMAZON_LINUX_2023"
+  | (string & {});
+export const OperatingSystem = S.String;
 export type PatchIdList = string[];
 export const PatchIdList = S.Array(S.String);
 export type PatchComplianceLevel =
@@ -606,90 +560,79 @@ export type PatchComplianceLevel =
   | "MEDIUM"
   | "LOW"
   | "INFORMATIONAL"
-  | "UNSPECIFIED";
-export const PatchComplianceLevel = S.Literal(
-  "CRITICAL",
-  "HIGH",
-  "MEDIUM",
-  "LOW",
-  "INFORMATIONAL",
-  "UNSPECIFIED",
-);
-export type PatchAction = "ALLOW_AS_DEPENDENCY" | "BLOCK";
-export const PatchAction = S.Literal("ALLOW_AS_DEPENDENCY", "BLOCK");
-export type PatchComplianceStatus = "COMPLIANT" | "NON_COMPLIANT";
-export const PatchComplianceStatus = S.Literal("COMPLIANT", "NON_COMPLIANT");
-export type InventorySchemaDeleteOption = "DisableSchema" | "DeleteSchema";
-export const InventorySchemaDeleteOption = S.Literal(
-  "DisableSchema",
-  "DeleteSchema",
-);
+  | "UNSPECIFIED"
+  | (string & {});
+export const PatchComplianceLevel = S.String;
+export type PatchAction = "ALLOW_AS_DEPENDENCY" | "BLOCK" | (string & {});
+export const PatchAction = S.String;
+export type PatchComplianceStatus =
+  | "COMPLIANT"
+  | "NON_COMPLIANT"
+  | (string & {});
+export const PatchComplianceStatus = S.String;
+export type InventorySchemaDeleteOption =
+  | "DisableSchema"
+  | "DeleteSchema"
+  | (string & {});
+export const InventorySchemaDeleteOption = S.String;
 export type ParameterNameList = string[];
 export const ParameterNameList = S.Array(S.String);
-export type DocumentPermissionType = "Share";
-export const DocumentPermissionType = S.Literal("Share");
-export type MaintenanceWindowResourceType = "INSTANCE" | "RESOURCE_GROUP";
-export const MaintenanceWindowResourceType = S.Literal(
-  "INSTANCE",
-  "RESOURCE_GROUP",
-);
+export type DocumentPermissionType = "Share" | (string & {});
+export const DocumentPermissionType = S.String;
+export type MaintenanceWindowResourceType =
+  | "INSTANCE"
+  | "RESOURCE_GROUP"
+  | (string & {});
+export const MaintenanceWindowResourceType = S.String;
 export type PatchProperty =
   | "PRODUCT"
   | "PRODUCT_FAMILY"
   | "CLASSIFICATION"
   | "MSRC_SEVERITY"
   | "PRIORITY"
-  | "SEVERITY";
-export const PatchProperty = S.Literal(
-  "PRODUCT",
-  "PRODUCT_FAMILY",
-  "CLASSIFICATION",
-  "MSRC_SEVERITY",
-  "PRIORITY",
-  "SEVERITY",
-);
-export type PatchSet = "OS" | "APPLICATION";
-export const PatchSet = S.Literal("OS", "APPLICATION");
-export type SessionState = "Active" | "History";
-export const SessionState = S.Literal("Active", "History");
+  | "SEVERITY"
+  | (string & {});
+export const PatchProperty = S.String;
+export type PatchSet = "OS" | "APPLICATION" | (string & {});
+export const PatchSet = S.String;
+export type SessionState = "Active" | "History" | (string & {});
+export const SessionState = S.String;
 export type ParameterLabelList = string[];
 export const ParameterLabelList = S.Array(S.String);
 export type ComplianceResourceIdList = string[];
 export const ComplianceResourceIdList = S.Array(S.String);
 export type ComplianceResourceTypeList = string[];
 export const ComplianceResourceTypeList = S.Array(S.String);
-export type DocumentMetadataEnum = "DocumentReviews";
-export const DocumentMetadataEnum = S.Literal("DocumentReviews");
+export type DocumentMetadataEnum = "DocumentReviews" | (string & {});
+export const DocumentMetadataEnum = S.String;
 export type AccountIdList = string[];
 export const AccountIdList = S.Array(S.String.pipe(T.XmlName("AccountId")));
-export type ComplianceUploadType = "COMPLETE" | "PARTIAL";
-export const ComplianceUploadType = S.Literal("COMPLETE", "PARTIAL");
-export type ParameterType = "String" | "StringList" | "SecureString";
-export const ParameterType = S.Literal("String", "StringList", "SecureString");
-export type ParameterTier = "Standard" | "Advanced" | "Intelligent-Tiering";
-export const ParameterTier = S.Literal(
-  "Standard",
-  "Advanced",
-  "Intelligent-Tiering",
-);
+export type ComplianceUploadType = "COMPLETE" | "PARTIAL" | (string & {});
+export const ComplianceUploadType = S.String;
+export type ParameterType =
+  | "String"
+  | "StringList"
+  | "SecureString"
+  | (string & {});
+export const ParameterType = S.String;
+export type ParameterTier =
+  | "Standard"
+  | "Advanced"
+  | "Intelligent-Tiering"
+  | (string & {});
+export const ParameterTier = S.String;
 export type MaintenanceWindowTaskType =
   | "RUN_COMMAND"
   | "AUTOMATION"
   | "STEP_FUNCTIONS"
-  | "LAMBDA";
-export const MaintenanceWindowTaskType = S.Literal(
-  "RUN_COMMAND",
-  "AUTOMATION",
-  "STEP_FUNCTIONS",
-  "LAMBDA",
-);
+  | "LAMBDA"
+  | (string & {});
+export const MaintenanceWindowTaskType = S.String;
 export type MaintenanceWindowTaskCutoffBehavior =
   | "CONTINUE_TASK"
-  | "CANCEL_TASK";
-export const MaintenanceWindowTaskCutoffBehavior = S.Literal(
-  "CONTINUE_TASK",
-  "CANCEL_TASK",
-);
+  | "CANCEL_TASK"
+  | (string & {});
+export const MaintenanceWindowTaskCutoffBehavior = S.String;
 export type KeyList = string[];
 export const KeyList = S.Array(S.String);
 export type SignalType =
@@ -698,23 +641,17 @@ export type SignalType =
   | "StartStep"
   | "StopStep"
   | "Resume"
-  | "Revoke";
-export const SignalType = S.Literal(
-  "Approve",
-  "Reject",
-  "StartStep",
-  "StopStep",
-  "Resume",
-  "Revoke",
-);
-export type DocumentHashType = "Sha256" | "Sha1";
-export const DocumentHashType = S.Literal("Sha256", "Sha1");
+  | "Revoke"
+  | (string & {});
+export const SignalType = S.String;
+export type DocumentHashType = "Sha256" | "Sha1" | (string & {});
+export const DocumentHashType = S.String;
 export type AssociationIdList = string[];
 export const AssociationIdList = S.Array(S.String);
-export type ExecutionMode = "Auto" | "Interactive";
-export const ExecutionMode = S.Literal("Auto", "Interactive");
-export type StopType = "Complete" | "Cancel";
-export const StopType = S.Literal("Complete", "Cancel");
+export type ExecutionMode = "Auto" | "Interactive" | (string & {});
+export const ExecutionMode = S.String;
+export type StopType = "Complete" | "Cancel" | (string & {});
+export const StopType = S.String;
 export type OpsItemOpsDataKeysList = string[];
 export const OpsItemOpsDataKeysList = S.Array(S.String);
 export type OpsItemStatus =
@@ -737,29 +674,9 @@ export type OpsItemStatus =
   | "Approved"
   | "Revoked"
   | "Rejected"
-  | "Closed";
-export const OpsItemStatus = S.Literal(
-  "Open",
-  "InProgress",
-  "Resolved",
-  "Pending",
-  "TimedOut",
-  "Cancelling",
-  "Cancelled",
-  "Failed",
-  "CompletedWithSuccess",
-  "CompletedWithFailure",
-  "Scheduled",
-  "RunbookInProgress",
-  "PendingChangeCalendarOverride",
-  "ChangeCalendarOverrideApproved",
-  "ChangeCalendarOverrideRejected",
-  "PendingApproval",
-  "Approved",
-  "Revoked",
-  "Rejected",
-  "Closed",
-);
+  | "Closed"
+  | (string & {});
+export const OpsItemStatus = S.String;
 export type MetadataKeysToDeleteList = string[];
 export const MetadataKeysToDeleteList = S.Array(S.String);
 export interface AssociateOpsItemRelatedItemRequest {
@@ -2417,14 +2334,9 @@ export type CommandFilterKey =
   | "InvokedBefore"
   | "Status"
   | "ExecutionStage"
-  | "DocumentName";
-export const CommandFilterKey = S.Literal(
-  "InvokedAfter",
-  "InvokedBefore",
-  "Status",
-  "ExecutionStage",
-  "DocumentName",
-);
+  | "DocumentName"
+  | (string & {});
+export const CommandFilterKey = S.String;
 export interface CommandFilter {
   key: CommandFilterKey;
   value: string;
@@ -2473,14 +2385,9 @@ export type ComplianceQueryOperatorType =
   | "NOT_EQUAL"
   | "BEGIN_WITH"
   | "LESS_THAN"
-  | "GREATER_THAN";
-export const ComplianceQueryOperatorType = S.Literal(
-  "EQUAL",
-  "NOT_EQUAL",
-  "BEGIN_WITH",
-  "LESS_THAN",
-  "GREATER_THAN",
-);
+  | "GREATER_THAN"
+  | (string & {});
+export const ComplianceQueryOperatorType = S.String;
 export interface ComplianceStringFilter {
   Key?: string;
   Values?: string[];
@@ -2587,15 +2494,9 @@ export type InventoryQueryOperatorType =
   | "BeginWith"
   | "LessThan"
   | "GreaterThan"
-  | "Exists";
-export const InventoryQueryOperatorType = S.Literal(
-  "Equal",
-  "NotEqual",
-  "BeginWith",
-  "LessThan",
-  "GreaterThan",
-  "Exists",
-);
+  | "Exists"
+  | (string & {});
+export const InventoryQueryOperatorType = S.String;
 export interface InventoryFilter {
   Key: string;
   Values: string[];
@@ -3276,12 +3177,9 @@ export const UpdateAssociationRequest = S.suspend(() =>
 export type AttachmentsSourceKey =
   | "SourceUrl"
   | "S3FileUrl"
-  | "AttachmentReference";
-export const AttachmentsSourceKey = S.Literal(
-  "SourceUrl",
-  "S3FileUrl",
-  "AttachmentReference",
-);
+  | "AttachmentReference"
+  | (string & {});
+export const AttachmentsSourceKey = S.String;
 export type AttachmentsSourceValues = string[];
 export const AttachmentsSourceValues = S.Array(S.String);
 export interface AttachmentsSource {
@@ -3466,19 +3364,13 @@ export type NotificationEvent =
   | "Success"
   | "TimedOut"
   | "Cancelled"
-  | "Failed";
-export const NotificationEvent = S.Literal(
-  "All",
-  "InProgress",
-  "Success",
-  "TimedOut",
-  "Cancelled",
-  "Failed",
-);
+  | "Failed"
+  | (string & {});
+export const NotificationEvent = S.String;
 export type NotificationEventList = NotificationEvent[];
 export const NotificationEventList = S.Array(NotificationEvent);
-export type NotificationType = "Command" | "Invocation";
-export const NotificationType = S.Literal("Command", "Invocation");
+export type NotificationType = "Command" | "Invocation" | (string & {});
+export const NotificationType = S.String;
 export interface NotificationConfig {
   NotificationArn?: string;
   NotificationEvents?: NotificationEvent[];
@@ -3665,8 +3557,8 @@ export const UpdateManagedInstanceRoleResult = S.suspend(() =>
 ).annotations({
   identifier: "UpdateManagedInstanceRoleResult",
 }) as any as S.Schema<UpdateManagedInstanceRoleResult>;
-export type OpsItemDataType = "SearchableString" | "String";
-export const OpsItemDataType = S.Literal("SearchableString", "String");
+export type OpsItemDataType = "SearchableString" | "String" | (string & {});
+export const OpsItemDataType = S.String;
 export interface OpsItemDataValue {
   Value?: string;
   Type?: OpsItemDataType;
@@ -3819,28 +3711,9 @@ export type PatchFilterKey =
   | "RELEASE"
   | "SEVERITY"
   | "SECURITY"
-  | "VERSION";
-export const PatchFilterKey = S.Literal(
-  "ARCH",
-  "ADVISORY_ID",
-  "BUGZILLA_ID",
-  "PATCH_SET",
-  "PRODUCT",
-  "PRODUCT_FAMILY",
-  "CLASSIFICATION",
-  "CVE_ID",
-  "EPOCH",
-  "MSRC_SEVERITY",
-  "NAME",
-  "PATCH_ID",
-  "SECTION",
-  "PRIORITY",
-  "REPOSITORY",
-  "RELEASE",
-  "SEVERITY",
-  "SECURITY",
-  "VERSION",
-);
+  | "VERSION"
+  | (string & {});
+export const PatchFilterKey = S.String;
 export type PatchFilterValueList = string[];
 export const PatchFilterValueList = S.Array(S.String);
 export interface PatchFilter {
@@ -4046,46 +3919,34 @@ export const UpdateServiceSettingResult = S.suspend(() =>
 ).annotations({
   identifier: "UpdateServiceSettingResult",
 }) as any as S.Schema<UpdateServiceSettingResult>;
-export type ResourceDataSyncS3Format = "JsonSerDe";
-export const ResourceDataSyncS3Format = S.Literal("JsonSerDe");
+export type ResourceDataSyncS3Format = "JsonSerDe" | (string & {});
+export const ResourceDataSyncS3Format = S.String;
 export type DescribeActivationsFilterKeys =
   | "ActivationIds"
   | "DefaultInstanceName"
-  | "IamRole";
-export const DescribeActivationsFilterKeys = S.Literal(
-  "ActivationIds",
-  "DefaultInstanceName",
-  "IamRole",
-);
+  | "IamRole"
+  | (string & {});
+export const DescribeActivationsFilterKeys = S.String;
 export type StringList = string[];
 export const StringList = S.Array(S.String);
 export type AssociationExecutionFilterKey =
   | "ExecutionId"
   | "Status"
-  | "CreatedTime";
-export const AssociationExecutionFilterKey = S.Literal(
-  "ExecutionId",
-  "Status",
-  "CreatedTime",
-);
+  | "CreatedTime"
+  | (string & {});
+export const AssociationExecutionFilterKey = S.String;
 export type AssociationFilterOperatorType =
   | "EQUAL"
   | "LESS_THAN"
-  | "GREATER_THAN";
-export const AssociationFilterOperatorType = S.Literal(
-  "EQUAL",
-  "LESS_THAN",
-  "GREATER_THAN",
-);
+  | "GREATER_THAN"
+  | (string & {});
+export const AssociationFilterOperatorType = S.String;
 export type AssociationExecutionTargetsFilterKey =
   | "Status"
   | "ResourceId"
-  | "ResourceType";
-export const AssociationExecutionTargetsFilterKey = S.Literal(
-  "Status",
-  "ResourceId",
-  "ResourceType",
-);
+  | "ResourceType"
+  | (string & {});
+export const AssociationExecutionTargetsFilterKey = S.String;
 export type AutomationExecutionFilterKey =
   | "DocumentNamePrefix"
   | "ExecutionStatus"
@@ -4098,21 +3959,9 @@ export type AutomationExecutionFilterKey =
   | "TagKey"
   | "TargetResourceGroup"
   | "AutomationSubtype"
-  | "OpsItemId";
-export const AutomationExecutionFilterKey = S.Literal(
-  "DocumentNamePrefix",
-  "ExecutionStatus",
-  "ExecutionId",
-  "ParentExecutionId",
-  "CurrentAction",
-  "StartTimeBefore",
-  "StartTimeAfter",
-  "AutomationType",
-  "TagKey",
-  "TargetResourceGroup",
-  "AutomationSubtype",
-  "OpsItemId",
-);
+  | "OpsItemId"
+  | (string & {});
+export const AutomationExecutionFilterKey = S.String;
 export type AutomationExecutionFilterValueList = string[];
 export const AutomationExecutionFilterValueList = S.Array(S.String);
 export type StepExecutionFilterKey =
@@ -4124,18 +3973,9 @@ export type StepExecutionFilterKey =
   | "Action"
   | "ParentStepExecutionId"
   | "ParentStepIteration"
-  | "ParentStepIteratorValue";
-export const StepExecutionFilterKey = S.Literal(
-  "StartTimeBefore",
-  "StartTimeAfter",
-  "StepExecutionStatus",
-  "StepExecutionId",
-  "StepName",
-  "Action",
-  "ParentStepExecutionId",
-  "ParentStepIteration",
-  "ParentStepIteratorValue",
-);
+  | "ParentStepIteratorValue"
+  | (string & {});
+export const StepExecutionFilterKey = S.String;
 export type StepExecutionFilterValueList = string[];
 export const StepExecutionFilterValueList = S.Array(S.String);
 export type InstanceInformationFilterKey =
@@ -4146,17 +3986,9 @@ export type InstanceInformationFilterKey =
   | "ActivationIds"
   | "IamRole"
   | "ResourceType"
-  | "AssociationStatus";
-export const InstanceInformationFilterKey = S.Literal(
-  "InstanceIds",
-  "AgentVersion",
-  "PingStatus",
-  "PlatformTypes",
-  "ActivationIds",
-  "IamRole",
-  "ResourceType",
-  "AssociationStatus",
-);
+  | "AssociationStatus"
+  | (string & {});
+export const InstanceInformationFilterKey = S.String;
 export type InstanceInformationFilterValueSet = string[];
 export const InstanceInformationFilterValueSet = S.Array(
   S.String.pipe(T.XmlName("InstanceInformationFilterValue")),
@@ -4167,13 +3999,9 @@ export type InstancePatchStateOperatorType =
   | "Equal"
   | "NotEqual"
   | "LessThan"
-  | "GreaterThan";
-export const InstancePatchStateOperatorType = S.Literal(
-  "Equal",
-  "NotEqual",
-  "LessThan",
-  "GreaterThan",
-);
+  | "GreaterThan"
+  | (string & {});
+export const InstancePatchStateOperatorType = S.String;
 export type InstancePropertyFilterKey =
   | "InstanceIds"
   | "AgentVersion"
@@ -4183,18 +4011,9 @@ export type InstancePropertyFilterKey =
   | "ActivationIds"
   | "IamRole"
   | "ResourceType"
-  | "AssociationStatus";
-export const InstancePropertyFilterKey = S.Literal(
-  "InstanceIds",
-  "AgentVersion",
-  "PingStatus",
-  "PlatformTypes",
-  "DocumentName",
-  "ActivationIds",
-  "IamRole",
-  "ResourceType",
-  "AssociationStatus",
-);
+  | "AssociationStatus"
+  | (string & {});
+export const InstancePropertyFilterKey = S.String;
 export type InstancePropertyFilterValueSet = string[];
 export const InstancePropertyFilterValueSet = S.Array(
   S.String.pipe(T.XmlName("InstancePropertyFilterValue")),
@@ -4204,14 +4023,9 @@ export type InstancePropertyFilterOperator =
   | "NotEqual"
   | "BeginWith"
   | "LessThan"
-  | "GreaterThan";
-export const InstancePropertyFilterOperator = S.Literal(
-  "Equal",
-  "NotEqual",
-  "BeginWith",
-  "LessThan",
-  "GreaterThan",
-);
+  | "GreaterThan"
+  | (string & {});
+export const InstancePropertyFilterOperator = S.String;
 export type OpsItemFilterKey =
   | "Status"
   | "CreatedBy"
@@ -4249,61 +4063,20 @@ export type OpsItemFilterKey =
   | "ChangeRequestByTemplate"
   | "ChangeRequestByTargetsResourceGroup"
   | "InsightByType"
-  | "AccountId";
-export const OpsItemFilterKey = S.Literal(
-  "Status",
-  "CreatedBy",
-  "Source",
-  "Priority",
-  "Title",
-  "OpsItemId",
-  "CreatedTime",
-  "LastModifiedTime",
-  "ActualStartTime",
-  "ActualEndTime",
-  "PlannedStartTime",
-  "PlannedEndTime",
-  "OperationalData",
-  "OperationalDataKey",
-  "OperationalDataValue",
-  "ResourceId",
-  "AutomationId",
-  "Category",
-  "Severity",
-  "OpsItemType",
-  "AccessRequestByRequesterArn",
-  "AccessRequestByRequesterId",
-  "AccessRequestByApproverArn",
-  "AccessRequestByApproverId",
-  "AccessRequestBySourceAccountId",
-  "AccessRequestBySourceOpsItemId",
-  "AccessRequestBySourceRegion",
-  "AccessRequestByIsReplica",
-  "AccessRequestByTargetResourceId",
-  "ChangeRequestByRequesterArn",
-  "ChangeRequestByRequesterName",
-  "ChangeRequestByApproverArn",
-  "ChangeRequestByApproverName",
-  "ChangeRequestByTemplate",
-  "ChangeRequestByTargetsResourceGroup",
-  "InsightByType",
-  "AccountId",
-);
+  | "AccountId"
+  | (string & {});
+export const OpsItemFilterKey = S.String;
 export type OpsItemFilterValues = string[];
 export const OpsItemFilterValues = S.Array(S.String);
 export type OpsItemFilterOperator =
   | "Equal"
   | "Contains"
   | "GreaterThan"
-  | "LessThan";
-export const OpsItemFilterOperator = S.Literal(
-  "Equal",
-  "Contains",
-  "GreaterThan",
-  "LessThan",
-);
-export type ParametersFilterKey = "Name" | "Type" | "KeyId";
-export const ParametersFilterKey = S.Literal("Name", "Type", "KeyId");
+  | "LessThan"
+  | (string & {});
+export const OpsItemFilterOperator = S.String;
+export type ParametersFilterKey = "Name" | "Type" | "KeyId" | (string & {});
+export const ParametersFilterKey = S.String;
 export type ParametersFilterValueList = string[];
 export const ParametersFilterValueList = S.Array(S.String);
 export type SessionFilterKey =
@@ -4313,16 +4086,9 @@ export type SessionFilterKey =
   | "Owner"
   | "Status"
   | "SessionId"
-  | "AccessType";
-export const SessionFilterKey = S.Literal(
-  "InvokedAfter",
-  "InvokedBefore",
-  "Target",
-  "Owner",
-  "Status",
-  "SessionId",
-  "AccessType",
-);
+  | "AccessType"
+  | (string & {});
+export const SessionFilterKey = S.String;
 export type OpsFilterValueList = string[];
 export const OpsFilterValueList = S.Array(
   S.String.pipe(T.XmlName("FilterValue")),
@@ -4333,15 +4099,9 @@ export type OpsFilterOperatorType =
   | "BeginWith"
   | "LessThan"
   | "GreaterThan"
-  | "Exists";
-export const OpsFilterOperatorType = S.Literal(
-  "Equal",
-  "NotEqual",
-  "BeginWith",
-  "LessThan",
-  "GreaterThan",
-  "Exists",
-);
+  | "Exists"
+  | (string & {});
+export const OpsFilterOperatorType = S.String;
 export type AssociationFilterKey =
   | "InstanceId"
   | "Name"
@@ -4350,28 +4110,16 @@ export type AssociationFilterKey =
   | "LastExecutedBefore"
   | "LastExecutedAfter"
   | "AssociationName"
-  | "ResourceGroupName";
-export const AssociationFilterKey = S.Literal(
-  "InstanceId",
-  "Name",
-  "AssociationId",
-  "AssociationStatusName",
-  "LastExecutedBefore",
-  "LastExecutedAfter",
-  "AssociationName",
-  "ResourceGroupName",
-);
+  | "ResourceGroupName"
+  | (string & {});
+export const AssociationFilterKey = S.String;
 export type DocumentFilterKey =
   | "Name"
   | "Owner"
   | "PlatformTypes"
-  | "DocumentType";
-export const DocumentFilterKey = S.Literal(
-  "Name",
-  "Owner",
-  "PlatformTypes",
-  "DocumentType",
-);
+  | "DocumentType"
+  | (string & {});
+export const DocumentFilterKey = S.String;
 export type DocumentKeyValuesFilterValues = string[];
 export const DocumentKeyValuesFilterValues = S.Array(S.String);
 export type NodeFilterKey =
@@ -4389,72 +4137,48 @@ export type NodeFilterKey =
   | "OrganizationalUnitId"
   | "OrganizationalUnitPath"
   | "Region"
-  | "AccountId";
-export const NodeFilterKey = S.Literal(
-  "AgentType",
-  "AgentVersion",
-  "ComputerName",
-  "InstanceId",
-  "InstanceStatus",
-  "IpAddress",
-  "ManagedStatus",
-  "PlatformName",
-  "PlatformType",
-  "PlatformVersion",
-  "ResourceType",
-  "OrganizationalUnitId",
-  "OrganizationalUnitPath",
-  "Region",
-  "AccountId",
-);
+  | "AccountId"
+  | (string & {});
+export const NodeFilterKey = S.String;
 export type NodeFilterValueList = string[];
 export const NodeFilterValueList = S.Array(
   S.String.pipe(T.XmlName("FilterValue")),
 );
-export type NodeFilterOperatorType = "Equal" | "NotEqual" | "BeginWith";
-export const NodeFilterOperatorType = S.Literal(
-  "Equal",
-  "NotEqual",
-  "BeginWith",
-);
-export type NodeAggregatorType = "Count";
-export const NodeAggregatorType = S.Literal("Count");
-export type NodeTypeName = "Instance";
-export const NodeTypeName = S.Literal("Instance");
+export type NodeFilterOperatorType =
+  | "Equal"
+  | "NotEqual"
+  | "BeginWith"
+  | (string & {});
+export const NodeFilterOperatorType = S.String;
+export type NodeAggregatorType = "Count" | (string & {});
+export const NodeAggregatorType = S.String;
+export type NodeTypeName = "Instance" | (string & {});
+export const NodeTypeName = S.String;
 export type NodeAttributeName =
   | "AgentVersion"
   | "PlatformName"
   | "PlatformType"
   | "PlatformVersion"
   | "Region"
-  | "ResourceType";
-export const NodeAttributeName = S.Literal(
-  "AgentVersion",
-  "PlatformName",
-  "PlatformType",
-  "PlatformVersion",
-  "Region",
-  "ResourceType",
-);
-export type OpsItemEventFilterKey = "OpsItemId";
-export const OpsItemEventFilterKey = S.Literal("OpsItemId");
+  | "ResourceType"
+  | (string & {});
+export const NodeAttributeName = S.String;
+export type OpsItemEventFilterKey = "OpsItemId" | (string & {});
+export const OpsItemEventFilterKey = S.String;
 export type OpsItemEventFilterValues = string[];
 export const OpsItemEventFilterValues = S.Array(S.String);
-export type OpsItemEventFilterOperator = "Equal";
-export const OpsItemEventFilterOperator = S.Literal("Equal");
+export type OpsItemEventFilterOperator = "Equal" | (string & {});
+export const OpsItemEventFilterOperator = S.String;
 export type OpsItemRelatedItemsFilterKey =
   | "ResourceType"
   | "AssociationId"
-  | "ResourceUri";
-export const OpsItemRelatedItemsFilterKey = S.Literal(
-  "ResourceType",
-  "AssociationId",
-  "ResourceUri",
-);
+  | "ResourceUri"
+  | (string & {});
+export const OpsItemRelatedItemsFilterKey = S.String;
 export type OpsItemRelatedItemsFilterValues = string[];
 export const OpsItemRelatedItemsFilterValues = S.Array(S.String);
-export type OpsItemRelatedItemsFilterOperator = "Equal";
-export const OpsItemRelatedItemsFilterOperator = S.Literal("Equal");
+export type OpsItemRelatedItemsFilterOperator = "Equal" | (string & {});
+export const OpsItemRelatedItemsFilterOperator = S.String;
 export type OpsMetadataFilterValueList = string[];
 export const OpsMetadataFilterValueList = S.Array(S.String);
 export type ComplianceSeverity =
@@ -4463,32 +4187,26 @@ export type ComplianceSeverity =
   | "MEDIUM"
   | "LOW"
   | "INFORMATIONAL"
-  | "UNSPECIFIED";
-export const ComplianceSeverity = S.Literal(
-  "CRITICAL",
-  "HIGH",
-  "MEDIUM",
-  "LOW",
-  "INFORMATIONAL",
-  "UNSPECIFIED",
-);
-export type ComplianceStatus = "COMPLIANT" | "NON_COMPLIANT";
-export const ComplianceStatus = S.Literal("COMPLIANT", "NON_COMPLIANT");
+  | "UNSPECIFIED"
+  | (string & {});
+export const ComplianceSeverity = S.String;
+export type ComplianceStatus = "COMPLIANT" | "NON_COMPLIANT" | (string & {});
+export const ComplianceStatus = S.String;
 export type SessionManagerParameterValueList = string[];
 export const SessionManagerParameterValueList = S.Array(S.String);
-export type AssociationStatusName = "Pending" | "Success" | "Failed";
-export const AssociationStatusName = S.Literal("Pending", "Success", "Failed");
+export type AssociationStatusName =
+  | "Pending"
+  | "Success"
+  | "Failed"
+  | (string & {});
+export const AssociationStatusName = S.String;
 export type DocumentReviewAction =
   | "SendForReview"
   | "UpdateReview"
   | "Approve"
-  | "Reject";
-export const DocumentReviewAction = S.Literal(
-  "SendForReview",
-  "UpdateReview",
-  "Approve",
-  "Reject",
-);
+  | "Reject"
+  | (string & {});
+export const DocumentReviewAction = S.String;
 export interface RegistrationMetadataItem {
   Key: string;
   Value: string;
@@ -4782,16 +4500,11 @@ export type AccessRequestStatus =
   | "Rejected"
   | "Revoked"
   | "Expired"
-  | "Pending";
-export const AccessRequestStatus = S.Literal(
-  "Approved",
-  "Rejected",
-  "Revoked",
-  "Expired",
-  "Pending",
-);
-export type CalendarState = "OPEN" | "CLOSED";
-export const CalendarState = S.Literal("OPEN", "CLOSED");
+  | "Pending"
+  | (string & {});
+export const AccessRequestStatus = S.String;
+export type CalendarState = "OPEN" | "CLOSED" | (string & {});
+export const CalendarState = S.String;
 export type CommandInvocationStatus =
   | "Pending"
   | "InProgress"
@@ -4800,19 +4513,11 @@ export type CommandInvocationStatus =
   | "Cancelled"
   | "TimedOut"
   | "Failed"
-  | "Cancelling";
-export const CommandInvocationStatus = S.Literal(
-  "Pending",
-  "InProgress",
-  "Delayed",
-  "Success",
-  "Cancelled",
-  "TimedOut",
-  "Failed",
-  "Cancelling",
-);
-export type ConnectionStatus = "connected" | "notconnected";
-export const ConnectionStatus = S.Literal("connected", "notconnected");
+  | "Cancelling"
+  | (string & {});
+export const CommandInvocationStatus = S.String;
+export type ConnectionStatus = "connected" | "notconnected" | (string & {});
+export const ConnectionStatus = S.String;
 export interface BaselineOverride {
   OperatingSystem?: OperatingSystem;
   GlobalFilters?: PatchFilterGroup;
@@ -4846,32 +4551,23 @@ export type DocumentStatus =
   | "Active"
   | "Updating"
   | "Deleting"
-  | "Failed";
-export const DocumentStatus = S.Literal(
-  "Creating",
-  "Active",
-  "Updating",
-  "Deleting",
-  "Failed",
-);
-export type ReviewStatus = "APPROVED" | "NOT_REVIEWED" | "PENDING" | "REJECTED";
-export const ReviewStatus = S.Literal(
-  "APPROVED",
-  "NOT_REVIEWED",
-  "PENDING",
-  "REJECTED",
-);
+  | "Failed"
+  | (string & {});
+export const DocumentStatus = S.String;
+export type ReviewStatus =
+  | "APPROVED"
+  | "NOT_REVIEWED"
+  | "PENDING"
+  | "REJECTED"
+  | (string & {});
+export const ReviewStatus = S.String;
 export type ExecutionPreviewStatus =
   | "Pending"
   | "InProgress"
   | "Success"
-  | "Failed";
-export const ExecutionPreviewStatus = S.Literal(
-  "Pending",
-  "InProgress",
-  "Success",
-  "Failed",
-);
+  | "Failed"
+  | (string & {});
+export const ExecutionPreviewStatus = S.String;
 export interface ResultAttribute {
   TypeName: string;
 }
@@ -4896,17 +4592,9 @@ export type MaintenanceWindowExecutionStatus =
   | "TIMED_OUT"
   | "CANCELLING"
   | "CANCELLED"
-  | "SKIPPED_OVERLAPPING";
-export const MaintenanceWindowExecutionStatus = S.Literal(
-  "PENDING",
-  "IN_PROGRESS",
-  "SUCCESS",
-  "FAILED",
-  "TIMED_OUT",
-  "CANCELLING",
-  "CANCELLED",
-  "SKIPPED_OVERLAPPING",
-);
+  | "SKIPPED_OVERLAPPING"
+  | (string & {});
+export const MaintenanceWindowExecutionStatus = S.String;
 export type MaintenanceWindowTaskParametersList = {
   [key: string]: MaintenanceWindowTaskParameterValueExpression | undefined;
 }[];
@@ -5168,8 +4856,8 @@ export const AssociationStatus = S.suspend(() =>
 ).annotations({
   identifier: "AssociationStatus",
 }) as any as S.Schema<AssociationStatus>;
-export type DocumentReviewCommentType = "Comment";
-export const DocumentReviewCommentType = S.Literal("Comment");
+export type DocumentReviewCommentType = "Comment" | (string & {});
+export const DocumentReviewCommentType = S.String;
 export interface AddTagsToResourceRequest {
   ResourceType: ResourceTypeForTagging;
   ResourceId: string;
@@ -6668,8 +6356,8 @@ export const AssociationOverview = S.suspend(() =>
 ).annotations({
   identifier: "AssociationOverview",
 }) as any as S.Schema<AssociationOverview>;
-export type ExternalAlarmState = "UNKNOWN" | "ALARM";
-export const ExternalAlarmState = S.Literal("UNKNOWN", "ALARM");
+export type ExternalAlarmState = "UNKNOWN" | "ALARM" | (string & {});
+export const ExternalAlarmState = S.String;
 export interface AlarmStateInformation {
   Name: string;
   State: ExternalAlarmState;
@@ -6787,8 +6475,8 @@ export const UpdateAssociationStatusRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateAssociationStatusRequest",
 }) as any as S.Schema<UpdateAssociationStatusRequest>;
-export type DocumentParameterType = "String" | "StringList";
-export const DocumentParameterType = S.Literal("String", "StringList");
+export type DocumentParameterType = "String" | "StringList" | (string & {});
+export const DocumentParameterType = S.String;
 export interface DocumentParameter {
   Name?: string;
   Type?: DocumentParameterType;
@@ -6811,8 +6499,8 @@ export const DocumentParameterList = S.Array(
     identifier: "DocumentParameter",
   }),
 );
-export type PlatformType = "Windows" | "Linux" | "MacOS";
-export const PlatformType = S.Literal("Windows", "Linux", "MacOS");
+export type PlatformType = "Windows" | "Linux" | "MacOS" | (string & {});
+export const PlatformType = S.String;
 export type PlatformTypeList = PlatformType[];
 export const PlatformTypeList = S.Array(
   PlatformType.pipe(T.XmlName("PlatformType")),
@@ -7087,23 +6775,15 @@ export type PatchComplianceDataState =
   | "MISSING"
   | "NOT_APPLICABLE"
   | "FAILED"
-  | "AVAILABLE_SECURITY_UPDATE";
-export const PatchComplianceDataState = S.Literal(
-  "INSTALLED",
-  "INSTALLED_OTHER",
-  "INSTALLED_PENDING_REBOOT",
-  "INSTALLED_REJECTED",
-  "MISSING",
-  "NOT_APPLICABLE",
-  "FAILED",
-  "AVAILABLE_SECURITY_UPDATE",
-);
-export type PatchOperationType = "Scan" | "Install";
-export const PatchOperationType = S.Literal("Scan", "Install");
-export type RebootOption = "RebootIfNeeded" | "NoReboot";
-export const RebootOption = S.Literal("RebootIfNeeded", "NoReboot");
-export type InventoryDeletionStatus = "InProgress" | "Complete";
-export const InventoryDeletionStatus = S.Literal("InProgress", "Complete");
+  | "AVAILABLE_SECURITY_UPDATE"
+  | (string & {});
+export const PatchComplianceDataState = S.String;
+export type PatchOperationType = "Scan" | "Install" | (string & {});
+export const PatchOperationType = S.String;
+export type RebootOption = "RebootIfNeeded" | "NoReboot" | (string & {});
+export const RebootOption = S.String;
+export type InventoryDeletionStatus = "InProgress" | "Complete" | (string & {});
+export const InventoryDeletionStatus = S.String;
 export type AutomationExecutionStatus =
   | "Pending"
   | "InProgress"
@@ -7123,32 +6803,16 @@ export type AutomationExecutionStatus =
   | "ChangeCalendarOverrideRejected"
   | "CompletedWithSuccess"
   | "CompletedWithFailure"
-  | "Exited";
-export const AutomationExecutionStatus = S.Literal(
-  "Pending",
-  "InProgress",
-  "Waiting",
-  "Success",
-  "TimedOut",
-  "Cancelling",
-  "Cancelled",
-  "Failed",
-  "PendingApproval",
-  "Approved",
-  "Rejected",
-  "Scheduled",
-  "RunbookInProgress",
-  "PendingChangeCalendarOverride",
-  "ChangeCalendarOverrideApproved",
-  "ChangeCalendarOverrideRejected",
-  "CompletedWithSuccess",
-  "CompletedWithFailure",
-  "Exited",
-);
-export type AutomationSubtype = "ChangeRequest" | "AccessRequest";
-export const AutomationSubtype = S.Literal("ChangeRequest", "AccessRequest");
-export type AttachmentHashType = "Sha256";
-export const AttachmentHashType = S.Literal("Sha256");
+  | "Exited"
+  | (string & {});
+export const AutomationExecutionStatus = S.String;
+export type AutomationSubtype =
+  | "ChangeRequest"
+  | "AccessRequest"
+  | (string & {});
+export const AutomationSubtype = S.String;
+export type AttachmentHashType = "Sha256" | (string & {});
+export const AttachmentHashType = S.String;
 export interface InventoryGroup {
   Name: string;
   Filters: InventoryFilter[];
@@ -7176,22 +6840,15 @@ export type CommandStatus =
   | "Cancelled"
   | "Failed"
   | "TimedOut"
-  | "Cancelling";
-export const CommandStatus = S.Literal(
-  "Pending",
-  "InProgress",
-  "Success",
-  "Cancelled",
-  "Failed",
-  "TimedOut",
-  "Cancelling",
-);
-export type LastResourceDataSyncStatus = "Successful" | "Failed" | "InProgress";
-export const LastResourceDataSyncStatus = S.Literal(
-  "Successful",
-  "Failed",
-  "InProgress",
-);
+  | "Cancelling"
+  | (string & {});
+export const CommandStatus = S.String;
+export type LastResourceDataSyncStatus =
+  | "Successful"
+  | "Failed"
+  | "InProgress"
+  | (string & {});
+export const LastResourceDataSyncStatus = S.String;
 export type ComplianceItemDetails = { [key: string]: string | undefined };
 export const ComplianceItemDetails = S.Record({
   key: S.String,
@@ -8213,21 +7870,17 @@ export type PatchDeploymentStatus =
   | "APPROVED"
   | "PENDING_APPROVAL"
   | "EXPLICIT_APPROVED"
-  | "EXPLICIT_REJECTED";
-export const PatchDeploymentStatus = S.Literal(
-  "APPROVED",
-  "PENDING_APPROVAL",
-  "EXPLICIT_APPROVED",
-  "EXPLICIT_REJECTED",
-);
+  | "EXPLICIT_REJECTED"
+  | (string & {});
+export const PatchDeploymentStatus = S.String;
 export type ValidNextStepList = string[];
 export const ValidNextStepList = S.Array(S.String);
 export type TargetParameterList = string[];
 export const TargetParameterList = S.Array(S.String);
 export type RegionList = string[];
 export const RegionList = S.Array(S.String);
-export type InventoryAttributeDataType = "string" | "number";
-export const InventoryAttributeDataType = S.Literal("string", "number");
+export type InventoryAttributeDataType = "string" | "number" | (string & {});
+export const InventoryAttributeDataType = S.String;
 export interface CreateActivationResult {
   ActivationId?: string;
   ActivationCode?: string;
@@ -9215,10 +8868,10 @@ export const UpdateDocumentMetadataResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateDocumentMetadataResponse",
 }) as any as S.Schema<UpdateDocumentMetadataResponse>;
-export type Fault = "Client" | "Server" | "Unknown";
-export const Fault = S.Literal("Client", "Server", "Unknown");
-export type AutomationType = "CrossAccount" | "Local";
-export const AutomationType = S.Literal("CrossAccount", "Local");
+export type Fault = "Client" | "Server" | "Unknown" | (string & {});
+export const Fault = S.String;
+export type AutomationType = "CrossAccount" | "Local" | (string & {});
+export const AutomationType = S.String;
 export interface PatchStatus {
   DeploymentStatus?: PatchDeploymentStatus;
   ComplianceLevel?: PatchComplianceLevel;
@@ -9231,36 +8884,31 @@ export const PatchStatus = S.suspend(() =>
     ApprovalDate: S.optional(S.Date.pipe(T.TimestampFormat("epoch-seconds"))),
   }),
 ).annotations({ identifier: "PatchStatus" }) as any as S.Schema<PatchStatus>;
-export type PingStatus = "Online" | "ConnectionLost" | "Inactive";
-export const PingStatus = S.Literal("Online", "ConnectionLost", "Inactive");
-export type ResourceType = "ManagedInstance" | "EC2Instance";
-export const ResourceType = S.Literal("ManagedInstance", "EC2Instance");
+export type PingStatus =
+  | "Online"
+  | "ConnectionLost"
+  | "Inactive"
+  | (string & {});
+export const PingStatus = S.String;
+export type ResourceType = "ManagedInstance" | "EC2Instance" | (string & {});
+export const ResourceType = S.String;
 export type SourceType =
   | "AWS::EC2::Instance"
   | "AWS::IoT::Thing"
-  | "AWS::SSM::ManagedInstance";
-export const SourceType = S.Literal(
-  "AWS::EC2::Instance",
-  "AWS::IoT::Thing",
-  "AWS::SSM::ManagedInstance",
-);
+  | "AWS::SSM::ManagedInstance"
+  | (string & {});
+export const SourceType = S.String;
 export type SessionStatus =
   | "Connected"
   | "Connecting"
   | "Disconnected"
   | "Terminated"
   | "Terminating"
-  | "Failed";
-export const SessionStatus = S.Literal(
-  "Connected",
-  "Connecting",
-  "Disconnected",
-  "Terminated",
-  "Terminating",
-  "Failed",
-);
-export type AccessType = "Standard" | "JustInTime";
-export const AccessType = S.Literal("Standard", "JustInTime");
+  | "Failed"
+  | (string & {});
+export const SessionStatus = S.String;
+export type AccessType = "Standard" | "JustInTime" | (string & {});
+export const AccessType = S.String;
 export interface ResolvedTargets {
   ParameterValues?: string[];
   Truncated?: boolean;
@@ -9364,8 +9012,12 @@ export const ResourceDataSyncSourceWithState = S.suspend(() =>
 ).annotations({
   identifier: "ResourceDataSyncSourceWithState",
 }) as any as S.Schema<ResourceDataSyncSourceWithState>;
-export type ImpactType = "Mutating" | "NonMutating" | "Undetermined";
-export const ImpactType = S.Literal("Mutating", "NonMutating", "Undetermined");
+export type ImpactType =
+  | "Mutating"
+  | "NonMutating"
+  | "Undetermined"
+  | (string & {});
+export const ImpactType = S.String;
 export interface FailedCreateAssociation {
   Entry?: CreateAssociationBatchRequestEntry;
   Message?: string;
@@ -10054,15 +9706,9 @@ export type CommandPluginStatus =
   | "Success"
   | "TimedOut"
   | "Cancelled"
-  | "Failed";
-export const CommandPluginStatus = S.Literal(
-  "Pending",
-  "InProgress",
-  "Success",
-  "TimedOut",
-  "Cancelled",
-  "Failed",
-);
+  | "Failed"
+  | (string & {});
+export const CommandPluginStatus = S.String;
 export interface CreateAssociationResult {
   AssociationDescription?: AssociationDescription;
 }
@@ -10513,8 +10159,8 @@ export const NodeOwnerInfo = S.suspend(() =>
 ).annotations({
   identifier: "NodeOwnerInfo",
 }) as any as S.Schema<NodeOwnerInfo>;
-export type ManagedStatus = "All" | "Managed" | "Unmanaged";
-export const ManagedStatus = S.Literal("All", "Managed", "Unmanaged");
+export type ManagedStatus = "All" | "Managed" | "Unmanaged" | (string & {});
+export const ManagedStatus = S.String;
 export interface AssociationExecutionTarget {
   AssociationId?: string;
   AssociationVersion?: string;

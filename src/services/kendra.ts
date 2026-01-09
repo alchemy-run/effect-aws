@@ -243,47 +243,28 @@ export type DataSourceType =
   | "JIRA"
   | "GITHUB"
   | "ALFRESCO"
-  | "TEMPLATE";
-export const DataSourceType = S.Literal(
-  "S3",
-  "SHAREPOINT",
-  "DATABASE",
-  "SALESFORCE",
-  "ONEDRIVE",
-  "SERVICENOW",
-  "CUSTOM",
-  "CONFLUENCE",
-  "GOOGLEDRIVE",
-  "WEBCRAWLER",
-  "WORKDOCS",
-  "FSX",
-  "SLACK",
-  "BOX",
-  "QUIP",
-  "JIRA",
-  "GITHUB",
-  "ALFRESCO",
-  "TEMPLATE",
-);
-export type FaqFileFormat = "CSV" | "CSV_WITH_HEADER" | "JSON";
-export const FaqFileFormat = S.Literal("CSV", "CSV_WITH_HEADER", "JSON");
-export type FeaturedResultsSetStatus = "ACTIVE" | "INACTIVE";
-export const FeaturedResultsSetStatus = S.Literal("ACTIVE", "INACTIVE");
+  | "TEMPLATE"
+  | (string & {});
+export const DataSourceType = S.String;
+export type FaqFileFormat = "CSV" | "CSV_WITH_HEADER" | "JSON" | (string & {});
+export const FaqFileFormat = S.String;
+export type FeaturedResultsSetStatus = "ACTIVE" | "INACTIVE" | (string & {});
+export const FeaturedResultsSetStatus = S.String;
 export type QueryTextList = string[];
 export const QueryTextList = S.Array(S.String);
 export type IndexEdition =
   | "DEVELOPER_EDITION"
   | "ENTERPRISE_EDITION"
-  | "GEN_AI_ENTERPRISE_EDITION";
-export const IndexEdition = S.Literal(
-  "DEVELOPER_EDITION",
-  "ENTERPRISE_EDITION",
-  "GEN_AI_ENTERPRISE_EDITION",
-);
-export type UserContextPolicy = "ATTRIBUTE_FILTER" | "USER_TOKEN";
-export const UserContextPolicy = S.Literal("ATTRIBUTE_FILTER", "USER_TOKEN");
-export type EntityType = "USER" | "GROUP";
-export const EntityType = S.Literal("USER", "GROUP");
+  | "GEN_AI_ENTERPRISE_EDITION"
+  | (string & {});
+export const IndexEdition = S.String;
+export type UserContextPolicy =
+  | "ATTRIBUTE_FILTER"
+  | "USER_TOKEN"
+  | (string & {});
+export const UserContextPolicy = S.String;
+export type EntityType = "USER" | "GROUP" | (string & {});
+export const EntityType = S.String;
 export interface EntityConfiguration {
   EntityId: string;
   EntityType: EntityType;
@@ -297,8 +278,8 @@ export type DisassociateEntityList = EntityConfiguration[];
 export const DisassociateEntityList = S.Array(EntityConfiguration);
 export type EntityIdsList = string[];
 export const EntityIdsList = S.Array(S.String);
-export type SuggestionType = "QUERY" | "DOCUMENT_ATTRIBUTES";
-export const SuggestionType = S.Literal("QUERY", "DOCUMENT_ATTRIBUTES");
+export type SuggestionType = "QUERY" | "DOCUMENT_ATTRIBUTES" | (string & {});
+export const SuggestionType = S.String;
 export type SuggestionTypes = SuggestionType[];
 export const SuggestionTypes = S.Array(SuggestionType);
 export type Interval =
@@ -307,30 +288,18 @@ export type Interval =
   | "ONE_WEEK_AGO"
   | "TWO_WEEKS_AGO"
   | "ONE_MONTH_AGO"
-  | "TWO_MONTHS_AGO";
-export const Interval = S.Literal(
-  "THIS_MONTH",
-  "THIS_WEEK",
-  "ONE_WEEK_AGO",
-  "TWO_WEEKS_AGO",
-  "ONE_MONTH_AGO",
-  "TWO_MONTHS_AGO",
-);
+  | "TWO_MONTHS_AGO"
+  | (string & {});
+export const Interval = S.String;
 export type MetricType =
   | "QUERIES_BY_COUNT"
   | "QUERIES_BY_ZERO_CLICK_RATE"
   | "QUERIES_BY_ZERO_RESULT_RATE"
   | "DOCS_BY_CLICK_COUNT"
   | "AGG_QUERY_DOC_METRICS"
-  | "TREND_QUERY_DOC_METRICS";
-export const MetricType = S.Literal(
-  "QUERIES_BY_COUNT",
-  "QUERIES_BY_ZERO_CLICK_RATE",
-  "QUERIES_BY_ZERO_RESULT_RATE",
-  "DOCS_BY_CLICK_COUNT",
-  "AGG_QUERY_DOC_METRICS",
-  "TREND_QUERY_DOC_METRICS",
-);
+  | "TREND_QUERY_DOC_METRICS"
+  | (string & {});
+export const MetricType = S.String;
 export type DataSourceSyncJobStatus =
   | "FAILED"
   | "SUCCEEDED"
@@ -338,26 +307,19 @@ export type DataSourceSyncJobStatus =
   | "INCOMPLETE"
   | "STOPPING"
   | "ABORTED"
-  | "SYNCING_INDEXING";
-export const DataSourceSyncJobStatus = S.Literal(
-  "FAILED",
-  "SUCCEEDED",
-  "SYNCING",
-  "INCOMPLETE",
-  "STOPPING",
-  "ABORTED",
-  "SYNCING_INDEXING",
-);
+  | "SYNCING_INDEXING"
+  | (string & {});
+export const DataSourceSyncJobStatus = S.String;
 export type DocumentAttributeKeyList = string[];
 export const DocumentAttributeKeyList = S.Array(S.String);
-export type QueryResultType = "DOCUMENT" | "QUESTION_ANSWER" | "ANSWER";
-export const QueryResultType = S.Literal(
-  "DOCUMENT",
-  "QUESTION_ANSWER",
-  "ANSWER",
-);
-export type SortOrder = "DESC" | "ASC";
-export const SortOrder = S.Literal("DESC", "ASC");
+export type QueryResultType =
+  | "DOCUMENT"
+  | "QUESTION_ANSWER"
+  | "ANSWER"
+  | (string & {});
+export const QueryResultType = S.String;
+export type SortOrder = "DESC" | "ASC" | (string & {});
+export const SortOrder = S.String;
 export interface SortingConfiguration {
   DocumentAttributeKey: string;
   SortOrder: SortOrder;
@@ -371,8 +333,8 @@ export type SortingConfigurationList = SortingConfiguration[];
 export const SortingConfigurationList = S.Array(SortingConfiguration);
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
-export type Mode = "ENABLED" | "LEARN_ONLY";
-export const Mode = S.Literal("ENABLED", "LEARN_ONLY");
+export type Mode = "ENABLED" | "LEARN_ONLY" | (string & {});
+export const Mode = S.String;
 export interface BatchDeleteFeaturedResultsSetRequest {
   IndexId: string;
   FeaturedResultsSetIds: string[];
@@ -1023,8 +985,8 @@ export const AttributeFilter = S.suspend(() =>
 ).annotations({
   identifier: "AttributeFilter",
 }) as any as S.Schema<AttributeFilter>;
-export type Order = "ASCENDING" | "DESCENDING";
-export const Order = S.Literal("ASCENDING", "DESCENDING");
+export type Order = "ASCENDING" | "DESCENDING" | (string & {});
+export const Order = S.String;
 export type ValueImportanceMap = { [key: string]: number | undefined };
 export const ValueImportanceMap = S.Record({
   key: S.String,
@@ -1173,10 +1135,10 @@ export interface UntagResourceResponse {}
 export const UntagResourceResponse = S.suspend(() => S.Struct({})).annotations({
   identifier: "UntagResourceResponse",
 }) as any as S.Schema<UntagResourceResponse>;
-export type PrincipalType = "USER" | "GROUP";
-export const PrincipalType = S.Literal("USER", "GROUP");
-export type ReadAccessType = "ALLOW" | "DENY";
-export const ReadAccessType = S.Literal("ALLOW", "DENY");
+export type PrincipalType = "USER" | "GROUP" | (string & {});
+export const PrincipalType = S.String;
+export type ReadAccessType = "ALLOW" | "DENY" | (string & {});
+export const ReadAccessType = S.String;
 export interface Principal {
   Name: string;
   Type: PrincipalType;
@@ -1273,13 +1235,9 @@ export type SharePointVersion =
   | "SHAREPOINT_2013"
   | "SHAREPOINT_2016"
   | "SHAREPOINT_ONLINE"
-  | "SHAREPOINT_2019";
-export const SharePointVersion = S.Literal(
-  "SHAREPOINT_2013",
-  "SHAREPOINT_2016",
-  "SHAREPOINT_ONLINE",
-  "SHAREPOINT_2019",
-);
+  | "SHAREPOINT_2019"
+  | (string & {});
+export const SharePointVersion = S.String;
 export type SharePointUrlList = string[];
 export const SharePointUrlList = S.Array(S.String);
 export type SubnetIdList = string[];
@@ -1313,11 +1271,11 @@ export type DataSourceToIndexFieldMappingList = DataSourceToIndexFieldMapping[];
 export const DataSourceToIndexFieldMappingList = S.Array(
   DataSourceToIndexFieldMapping,
 );
-export type SharePointOnlineAuthenticationType = "HTTP_BASIC" | "OAUTH2";
-export const SharePointOnlineAuthenticationType = S.Literal(
-  "HTTP_BASIC",
-  "OAUTH2",
-);
+export type SharePointOnlineAuthenticationType =
+  | "HTTP_BASIC"
+  | "OAUTH2"
+  | (string & {});
+export const SharePointOnlineAuthenticationType = S.String;
 export interface ProxyConfiguration {
   Host: string;
   Port: number;
@@ -1372,13 +1330,9 @@ export type DatabaseEngineType =
   | "RDS_AURORA_MYSQL"
   | "RDS_AURORA_POSTGRESQL"
   | "RDS_MYSQL"
-  | "RDS_POSTGRESQL";
-export const DatabaseEngineType = S.Literal(
-  "RDS_AURORA_MYSQL",
-  "RDS_AURORA_POSTGRESQL",
-  "RDS_MYSQL",
-  "RDS_POSTGRESQL",
-);
+  | "RDS_POSTGRESQL"
+  | (string & {});
+export const DatabaseEngineType = S.String;
 export interface ConnectionConfiguration {
   DatabaseHost: string;
   DatabasePort: number;
@@ -1425,11 +1379,11 @@ export const AclConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "AclConfiguration",
 }) as any as S.Schema<AclConfiguration>;
-export type QueryIdentifiersEnclosingOption = "DOUBLE_QUOTES" | "NONE";
-export const QueryIdentifiersEnclosingOption = S.Literal(
-  "DOUBLE_QUOTES",
-  "NONE",
-);
+export type QueryIdentifiersEnclosingOption =
+  | "DOUBLE_QUOTES"
+  | "NONE"
+  | (string & {});
+export const QueryIdentifiersEnclosingOption = S.String;
 export interface SqlConfiguration {
   QueryIdentifiersEnclosingOption?: QueryIdentifiersEnclosingOption;
 }
@@ -1479,26 +1433,9 @@ export type SalesforceStandardObjectName =
   | "PROFILE"
   | "SOLUTION"
   | "TASK"
-  | "USER";
-export const SalesforceStandardObjectName = S.Literal(
-  "ACCOUNT",
-  "CAMPAIGN",
-  "CASE",
-  "CONTACT",
-  "CONTRACT",
-  "DOCUMENT",
-  "GROUP",
-  "IDEA",
-  "LEAD",
-  "OPPORTUNITY",
-  "PARTNER",
-  "PRICEBOOK",
-  "PRODUCT",
-  "PROFILE",
-  "SOLUTION",
-  "TASK",
-  "USER",
-);
+  | "USER"
+  | (string & {});
+export const SalesforceStandardObjectName = S.String;
 export interface SalesforceStandardObjectConfiguration {
   Name: SalesforceStandardObjectName;
   DocumentDataFieldName: string;
@@ -1523,12 +1460,9 @@ export const SalesforceStandardObjectConfigurationList = S.Array(
 export type SalesforceKnowledgeArticleState =
   | "DRAFT"
   | "PUBLISHED"
-  | "ARCHIVED";
-export const SalesforceKnowledgeArticleState = S.Literal(
-  "DRAFT",
-  "PUBLISHED",
-  "ARCHIVED",
-);
+  | "ARCHIVED"
+  | (string & {});
+export const SalesforceKnowledgeArticleState = S.String;
 export type SalesforceKnowledgeArticleStateList =
   SalesforceKnowledgeArticleState[];
 export const SalesforceKnowledgeArticleStateList = S.Array(
@@ -1590,11 +1524,9 @@ export const SalesforceKnowledgeArticleConfiguration = S.suspend(() =>
 }) as any as S.Schema<SalesforceKnowledgeArticleConfiguration>;
 export type SalesforceChatterFeedIncludeFilterType =
   | "ACTIVE_USER"
-  | "STANDARD_USER";
-export const SalesforceChatterFeedIncludeFilterType = S.Literal(
-  "ACTIVE_USER",
-  "STANDARD_USER",
-);
+  | "STANDARD_USER"
+  | (string & {});
+export const SalesforceChatterFeedIncludeFilterType = S.String;
 export type SalesforceChatterFeedIncludeFilterTypes =
   SalesforceChatterFeedIncludeFilterType[];
 export const SalesforceChatterFeedIncludeFilterTypes = S.Array(
@@ -1700,8 +1632,8 @@ export const OneDriveConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "OneDriveConfiguration",
 }) as any as S.Schema<OneDriveConfiguration>;
-export type ServiceNowBuildVersionType = "LONDON" | "OTHERS";
-export const ServiceNowBuildVersionType = S.Literal("LONDON", "OTHERS");
+export type ServiceNowBuildVersionType = "LONDON" | "OTHERS" | (string & {});
+export const ServiceNowBuildVersionType = S.String;
 export interface ServiceNowKnowledgeArticleConfiguration {
   CrawlAttachments?: boolean;
   IncludeAttachmentFilePatterns?: string[];
@@ -1752,8 +1684,11 @@ export const ServiceNowServiceCatalogConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "ServiceNowServiceCatalogConfiguration",
 }) as any as S.Schema<ServiceNowServiceCatalogConfiguration>;
-export type ServiceNowAuthenticationType = "HTTP_BASIC" | "OAUTH2";
-export const ServiceNowAuthenticationType = S.Literal("HTTP_BASIC", "OAUTH2");
+export type ServiceNowAuthenticationType =
+  | "HTTP_BASIC"
+  | "OAUTH2"
+  | (string & {});
+export const ServiceNowAuthenticationType = S.String;
 export interface ServiceNowConfiguration {
   HostUrl: string;
   SecretArn: string;
@@ -1778,21 +1713,17 @@ export const ServiceNowConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "ServiceNowConfiguration",
 }) as any as S.Schema<ServiceNowConfiguration>;
-export type ConfluenceVersion = "CLOUD" | "SERVER";
-export const ConfluenceVersion = S.Literal("CLOUD", "SERVER");
+export type ConfluenceVersion = "CLOUD" | "SERVER" | (string & {});
+export const ConfluenceVersion = S.String;
 export type ConfluenceSpaceList = string[];
 export const ConfluenceSpaceList = S.Array(S.String);
 export type ConfluenceSpaceFieldName =
   | "DISPLAY_URL"
   | "ITEM_TYPE"
   | "SPACE_KEY"
-  | "URL";
-export const ConfluenceSpaceFieldName = S.Literal(
-  "DISPLAY_URL",
-  "ITEM_TYPE",
-  "SPACE_KEY",
-  "URL",
-);
+  | "URL"
+  | (string & {});
+export const ConfluenceSpaceFieldName = S.String;
 export interface ConfluenceSpaceToIndexFieldMapping {
   DataSourceFieldName?: ConfluenceSpaceFieldName;
   DateFieldFormat?: string;
@@ -1842,21 +1773,9 @@ export type ConfluencePageFieldName =
   | "SPACE_KEY"
   | "SPACE_NAME"
   | "URL"
-  | "VERSION";
-export const ConfluencePageFieldName = S.Literal(
-  "AUTHOR",
-  "CONTENT_STATUS",
-  "CREATED_DATE",
-  "DISPLAY_URL",
-  "ITEM_TYPE",
-  "LABELS",
-  "MODIFIED_DATE",
-  "PARENT_ID",
-  "SPACE_KEY",
-  "SPACE_NAME",
-  "URL",
-  "VERSION",
-);
+  | "VERSION"
+  | (string & {});
+export const ConfluencePageFieldName = S.String;
 export interface ConfluencePageToIndexFieldMapping {
   DataSourceFieldName?: ConfluencePageFieldName;
   DateFieldFormat?: string;
@@ -1893,18 +1812,9 @@ export type ConfluenceBlogFieldName =
   | "SPACE_KEY"
   | "SPACE_NAME"
   | "URL"
-  | "VERSION";
-export const ConfluenceBlogFieldName = S.Literal(
-  "AUTHOR",
-  "DISPLAY_URL",
-  "ITEM_TYPE",
-  "LABELS",
-  "PUBLISH_DATE",
-  "SPACE_KEY",
-  "SPACE_NAME",
-  "URL",
-  "VERSION",
-);
+  | "VERSION"
+  | (string & {});
+export const ConfluenceBlogFieldName = S.String;
 export interface ConfluenceBlogToIndexFieldMapping {
   DataSourceFieldName?: ConfluenceBlogFieldName;
   DateFieldFormat?: string;
@@ -1943,20 +1853,9 @@ export type ConfluenceAttachmentFieldName =
   | "SPACE_KEY"
   | "SPACE_NAME"
   | "URL"
-  | "VERSION";
-export const ConfluenceAttachmentFieldName = S.Literal(
-  "AUTHOR",
-  "CONTENT_TYPE",
-  "CREATED_DATE",
-  "DISPLAY_URL",
-  "FILE_SIZE",
-  "ITEM_TYPE",
-  "PARENT_ID",
-  "SPACE_KEY",
-  "SPACE_NAME",
-  "URL",
-  "VERSION",
-);
+  | "VERSION"
+  | (string & {});
+export const ConfluenceAttachmentFieldName = S.String;
 export interface ConfluenceAttachmentToIndexFieldMapping {
   DataSourceFieldName?: ConfluenceAttachmentFieldName;
   DateFieldFormat?: string;
@@ -1988,8 +1887,8 @@ export const ConfluenceAttachmentConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "ConfluenceAttachmentConfiguration",
 }) as any as S.Schema<ConfluenceAttachmentConfiguration>;
-export type ConfluenceAuthenticationType = "HTTP_BASIC" | "PAT";
-export const ConfluenceAuthenticationType = S.Literal("HTTP_BASIC", "PAT");
+export type ConfluenceAuthenticationType = "HTTP_BASIC" | "PAT" | (string & {});
+export const ConfluenceAuthenticationType = S.String;
 export interface ConfluenceConfiguration {
   ServerUrl: string;
   SecretArn: string;
@@ -2052,12 +1951,12 @@ export const GoogleDriveConfiguration = S.suspend(() =>
 }) as any as S.Schema<GoogleDriveConfiguration>;
 export type SeedUrlList = string[];
 export const SeedUrlList = S.Array(S.String);
-export type WebCrawlerMode = "HOST_ONLY" | "SUBDOMAINS" | "EVERYTHING";
-export const WebCrawlerMode = S.Literal(
-  "HOST_ONLY",
-  "SUBDOMAINS",
-  "EVERYTHING",
-);
+export type WebCrawlerMode =
+  | "HOST_ONLY"
+  | "SUBDOMAINS"
+  | "EVERYTHING"
+  | (string & {});
+export const WebCrawlerMode = S.String;
 export interface SeedUrlConfiguration {
   SeedUrls: string[];
   WebCrawlerMode?: WebCrawlerMode;
@@ -2161,8 +2060,8 @@ export const WorkDocsConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "WorkDocsConfiguration",
 }) as any as S.Schema<WorkDocsConfiguration>;
-export type FsxFileSystemType = "WINDOWS";
-export const FsxFileSystemType = S.Literal("WINDOWS");
+export type FsxFileSystemType = "WINDOWS" | (string & {});
+export const FsxFileSystemType = S.String;
 export interface FsxConfiguration {
   FileSystemId: string;
   FileSystemType: FsxFileSystemType;
@@ -2189,13 +2088,9 @@ export type SlackEntity =
   | "PUBLIC_CHANNEL"
   | "PRIVATE_CHANNEL"
   | "GROUP_MESSAGE"
-  | "DIRECT_MESSAGE";
-export const SlackEntity = S.Literal(
-  "PUBLIC_CHANNEL",
-  "PRIVATE_CHANNEL",
-  "GROUP_MESSAGE",
-  "DIRECT_MESSAGE",
-);
+  | "DIRECT_MESSAGE"
+  | (string & {});
+export const SlackEntity = S.String;
 export type SlackEntityList = SlackEntity[];
 export const SlackEntityList = S.Array(SlackEntity);
 export type PrivateChannelFilter = string[];
@@ -2312,8 +2207,12 @@ export type IssueType = string[];
 export const IssueType = S.Array(S.String);
 export type JiraStatus = string[];
 export const JiraStatus = S.Array(S.String);
-export type IssueSubEntity = "COMMENTS" | "ATTACHMENTS" | "WORKLOGS";
-export const IssueSubEntity = S.Literal("COMMENTS", "ATTACHMENTS", "WORKLOGS");
+export type IssueSubEntity =
+  | "COMMENTS"
+  | "ATTACHMENTS"
+  | "WORKLOGS"
+  | (string & {});
+export const IssueSubEntity = S.String;
 export type IssueSubEntityFilter = IssueSubEntity[];
 export const IssueSubEntityFilter = S.Array(IssueSubEntity);
 export interface JiraConfiguration {
@@ -2377,8 +2276,8 @@ export const OnPremiseConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "OnPremiseConfiguration",
 }) as any as S.Schema<OnPremiseConfiguration>;
-export type Type = "SAAS" | "ON_PREMISE";
-export const Type = S.Literal("SAAS", "ON_PREMISE");
+export type Type = "SAAS" | "ON_PREMISE" | (string & {});
+export const Type = S.String;
 export interface GitHubDocumentCrawlProperties {
   CrawlRepositoryDocuments?: boolean;
   CrawlIssue?: boolean;
@@ -2473,8 +2372,12 @@ export const GitHubConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "GitHubConfiguration",
 }) as any as S.Schema<GitHubConfiguration>;
-export type AlfrescoEntity = "wiki" | "blog" | "documentLibrary";
-export const AlfrescoEntity = S.Literal("wiki", "blog", "documentLibrary");
+export type AlfrescoEntity =
+  | "wiki"
+  | "blog"
+  | "documentLibrary"
+  | (string & {});
+export const AlfrescoEntity = S.String;
 export type EntityFilter = AlfrescoEntity[];
 export const EntityFilter = S.Array(AlfrescoEntity);
 export interface AlfrescoConfiguration {
@@ -2574,20 +2477,9 @@ export type ConditionOperator =
   | "NotContains"
   | "Exists"
   | "NotExists"
-  | "BeginsWith";
-export const ConditionOperator = S.Literal(
-  "GreaterThan",
-  "GreaterThanOrEquals",
-  "LessThan",
-  "LessThanOrEquals",
-  "Equals",
-  "NotEquals",
-  "Contains",
-  "NotContains",
-  "Exists",
-  "NotExists",
-  "BeginsWith",
-);
+  | "BeginsWith"
+  | (string & {});
+export const ConditionOperator = S.String;
 export interface DocumentAttributeCondition {
   ConditionDocumentAttributeKey: string;
   Operator: ConditionOperator;
@@ -2861,8 +2753,8 @@ export const UpdateThesaurusResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateThesaurusResponse",
 }) as any as S.Schema<UpdateThesaurusResponse>;
-export type Persona = "OWNER" | "VIEWER";
-export const Persona = S.Literal("OWNER", "VIEWER");
+export type Persona = "OWNER" | "VIEWER" | (string & {});
+export const Persona = S.String;
 export type ContentType =
   | "PDF"
   | "HTML"
@@ -2875,50 +2767,34 @@ export type ContentType =
   | "MS_EXCEL"
   | "CSV"
   | "JSON"
-  | "MD";
-export const ContentType = S.Literal(
-  "PDF",
-  "HTML",
-  "MS_WORD",
-  "PLAIN_TEXT",
-  "PPT",
-  "RTF",
-  "XML",
-  "XSLT",
-  "MS_EXCEL",
-  "CSV",
-  "JSON",
-  "MD",
-);
-export type UserGroupResolutionMode = "AWS_SSO" | "NONE";
-export const UserGroupResolutionMode = S.Literal("AWS_SSO", "NONE");
+  | "MD"
+  | (string & {});
+export const ContentType = S.String;
+export type UserGroupResolutionMode = "AWS_SSO" | "NONE" | (string & {});
+export const UserGroupResolutionMode = S.String;
 export type AttributeFilterList = AttributeFilter[];
 export const AttributeFilterList = S.Array(
   S.suspend((): S.Schema<AttributeFilter, any> => AttributeFilter).annotations({
     identifier: "AttributeFilter",
   }),
 ) as any as S.Schema<AttributeFilterList>;
-export type MissingAttributeKeyStrategy = "IGNORE" | "COLLAPSE" | "EXPAND";
-export const MissingAttributeKeyStrategy = S.Literal(
-  "IGNORE",
-  "COLLAPSE",
-  "EXPAND",
-);
-export type RelevanceType = "RELEVANT" | "NOT_RELEVANT";
-export const RelevanceType = S.Literal("RELEVANT", "NOT_RELEVANT");
+export type MissingAttributeKeyStrategy =
+  | "IGNORE"
+  | "COLLAPSE"
+  | "EXPAND"
+  | (string & {});
+export const MissingAttributeKeyStrategy = S.String;
+export type RelevanceType = "RELEVANT" | "NOT_RELEVANT" | (string & {});
+export const RelevanceType = S.String;
 export type DocumentAttributeValueType =
   | "STRING_VALUE"
   | "STRING_LIST_VALUE"
   | "LONG_VALUE"
-  | "DATE_VALUE";
-export const DocumentAttributeValueType = S.Literal(
-  "STRING_VALUE",
-  "STRING_LIST_VALUE",
-  "LONG_VALUE",
-  "DATE_VALUE",
-);
-export type AttributeSuggestionsMode = "ACTIVE" | "INACTIVE";
-export const AttributeSuggestionsMode = S.Literal("ACTIVE", "INACTIVE");
+  | "DATE_VALUE"
+  | (string & {});
+export const DocumentAttributeValueType = S.String;
+export type AttributeSuggestionsMode = "ACTIVE" | "INACTIVE" | (string & {});
+export const AttributeSuggestionsMode = S.String;
 export type AssociateEntityList = EntityConfiguration[];
 export const AssociateEntityList = S.Array(EntityConfiguration);
 export interface EntityPersonaConfiguration {
@@ -2995,81 +2871,53 @@ export type DataSourceStatus =
   | "DELETING"
   | "FAILED"
   | "UPDATING"
-  | "ACTIVE";
-export const DataSourceStatus = S.Literal(
-  "CREATING",
-  "DELETING",
-  "FAILED",
-  "UPDATING",
-  "ACTIVE",
-);
-export type ExperienceStatus = "CREATING" | "ACTIVE" | "DELETING" | "FAILED";
-export const ExperienceStatus = S.Literal(
-  "CREATING",
-  "ACTIVE",
-  "DELETING",
-  "FAILED",
-);
+  | "ACTIVE"
+  | (string & {});
+export const DataSourceStatus = S.String;
+export type ExperienceStatus =
+  | "CREATING"
+  | "ACTIVE"
+  | "DELETING"
+  | "FAILED"
+  | (string & {});
+export const ExperienceStatus = S.String;
 export type FaqStatus =
   | "CREATING"
   | "UPDATING"
   | "ACTIVE"
   | "DELETING"
-  | "FAILED";
-export const FaqStatus = S.Literal(
-  "CREATING",
-  "UPDATING",
-  "ACTIVE",
-  "DELETING",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const FaqStatus = S.String;
 export type IndexStatus =
   | "CREATING"
   | "ACTIVE"
   | "DELETING"
   | "FAILED"
   | "UPDATING"
-  | "SYSTEM_UPDATING";
-export const IndexStatus = S.Literal(
-  "CREATING",
-  "ACTIVE",
-  "DELETING",
-  "FAILED",
-  "UPDATING",
-  "SYSTEM_UPDATING",
-);
+  | "SYSTEM_UPDATING"
+  | (string & {});
+export const IndexStatus = S.String;
 export type QuerySuggestionsBlockListStatus =
   | "ACTIVE"
   | "CREATING"
   | "DELETING"
   | "UPDATING"
   | "ACTIVE_BUT_UPDATE_FAILED"
-  | "FAILED";
-export const QuerySuggestionsBlockListStatus = S.Literal(
-  "ACTIVE",
-  "CREATING",
-  "DELETING",
-  "UPDATING",
-  "ACTIVE_BUT_UPDATE_FAILED",
-  "FAILED",
-);
-export type QuerySuggestionsStatus = "ACTIVE" | "UPDATING";
-export const QuerySuggestionsStatus = S.Literal("ACTIVE", "UPDATING");
+  | "FAILED"
+  | (string & {});
+export const QuerySuggestionsBlockListStatus = S.String;
+export type QuerySuggestionsStatus = "ACTIVE" | "UPDATING" | (string & {});
+export const QuerySuggestionsStatus = S.String;
 export type ThesaurusStatus =
   | "CREATING"
   | "ACTIVE"
   | "DELETING"
   | "UPDATING"
   | "ACTIVE_BUT_UPDATE_FAILED"
-  | "FAILED";
-export const ThesaurusStatus = S.Literal(
-  "CREATING",
-  "ACTIVE",
-  "DELETING",
-  "UPDATING",
-  "ACTIVE_BUT_UPDATE_FAILED",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const ThesaurusStatus = S.String;
 export interface AttributeSuggestionsGetConfig {
   SuggestionAttributes?: string[];
   AdditionalResponseAttributes?: string[];
@@ -3164,8 +3012,8 @@ export const CapacityUnitsConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "CapacityUnitsConfiguration",
 }) as any as S.Schema<CapacityUnitsConfiguration>;
-export type KeyLocation = "URL" | "SECRET_MANAGER";
-export const KeyLocation = S.Literal("URL", "SECRET_MANAGER");
+export type KeyLocation = "URL" | "SECRET_MANAGER" | (string & {});
+export const KeyLocation = S.String;
 export interface AssociateEntitiesToExperienceRequest {
   Id: string;
   IndexId: string;
@@ -3578,8 +3426,8 @@ export interface SubmitFeedbackResponse {}
 export const SubmitFeedbackResponse = S.suspend(() => S.Struct({})).annotations(
   { identifier: "SubmitFeedbackResponse" },
 ) as any as S.Schema<SubmitFeedbackResponse>;
-export type ErrorCode = "InternalError" | "InvalidRequest";
-export const ErrorCode = S.Literal("InternalError", "InvalidRequest");
+export type ErrorCode = "InternalError" | "InvalidRequest" | (string & {});
+export const ErrorCode = S.String;
 export interface JwtTokenTypeConfiguration {
   KeyLocation: KeyLocation;
   URL?: string;
@@ -3611,21 +3459,16 @@ export const JsonTokenTypeConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "JsonTokenTypeConfiguration",
 }) as any as S.Schema<JsonTokenTypeConfiguration>;
-export type EndpointType = "HOME";
-export const EndpointType = S.Literal("HOME");
+export type EndpointType = "HOME" | (string & {});
+export const EndpointType = S.String;
 export type PrincipalMappingStatus =
   | "FAILED"
   | "SUCCEEDED"
   | "PROCESSING"
   | "DELETING"
-  | "DELETED";
-export const PrincipalMappingStatus = S.Literal(
-  "FAILED",
-  "SUCCEEDED",
-  "PROCESSING",
-  "DELETING",
-  "DELETED",
-);
+  | "DELETED"
+  | (string & {});
+export const PrincipalMappingStatus = S.String;
 export interface MemberGroup {
   GroupId: string;
   DataSourceId?: string;
@@ -4075,14 +3918,9 @@ export type ScoreConfidence =
   | "HIGH"
   | "MEDIUM"
   | "LOW"
-  | "NOT_AVAILABLE";
-export const ScoreConfidence = S.Literal(
-  "VERY_HIGH",
-  "HIGH",
-  "MEDIUM",
-  "LOW",
-  "NOT_AVAILABLE",
-);
+  | "NOT_AVAILABLE"
+  | (string & {});
+export const ScoreConfidence = S.String;
 export interface AssociateEntitiesToExperienceResponse {
   FailedEntityList?: FailedEntity[];
 }
@@ -4946,19 +4784,13 @@ export type DocumentStatus =
   | "INDEXED"
   | "UPDATED"
   | "FAILED"
-  | "UPDATE_FAILED";
-export const DocumentStatus = S.Literal(
-  "NOT_FOUND",
-  "PROCESSING",
-  "INDEXED",
-  "UPDATED",
-  "FAILED",
-  "UPDATE_FAILED",
-);
-export type QueryResultFormat = "TABLE" | "TEXT";
-export const QueryResultFormat = S.Literal("TABLE", "TEXT");
-export type WarningCode = "QUERY_LANGUAGE_INVALID_SYNTAX";
-export const WarningCode = S.Literal("QUERY_LANGUAGE_INVALID_SYNTAX");
+  | "UPDATE_FAILED"
+  | (string & {});
+export const DocumentStatus = S.String;
+export type QueryResultFormat = "TABLE" | "TEXT" | (string & {});
+export const QueryResultFormat = S.String;
+export type WarningCode = "QUERY_LANGUAGE_INVALID_SYNTAX" | (string & {});
+export const WarningCode = S.String;
 export interface SuggestionHighlight {
   BeginOffset?: number;
   EndOffset?: number;
@@ -5040,12 +4872,12 @@ export const Warning = S.suspend(() =>
 ).annotations({ identifier: "Warning" }) as any as S.Schema<Warning>;
 export type WarningList = Warning[];
 export const WarningList = S.Array(Warning);
-export type AdditionalResultAttributeValueType = "TEXT_WITH_HIGHLIGHTS_VALUE";
-export const AdditionalResultAttributeValueType = S.Literal(
-  "TEXT_WITH_HIGHLIGHTS_VALUE",
-);
-export type HighlightType = "STANDARD" | "THESAURUS_SYNONYM";
-export const HighlightType = S.Literal("STANDARD", "THESAURUS_SYNONYM");
+export type AdditionalResultAttributeValueType =
+  | "TEXT_WITH_HIGHLIGHTS_VALUE"
+  | (string & {});
+export const AdditionalResultAttributeValueType = S.String;
+export type HighlightType = "STANDARD" | "THESAURUS_SYNONYM" | (string & {});
+export const HighlightType = S.String;
 export interface Highlight {
   BeginOffset: number;
   EndOffset: number;

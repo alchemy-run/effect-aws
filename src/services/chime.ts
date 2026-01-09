@@ -147,18 +147,15 @@ export const UserIdList = S.Array(S.String);
 export type PhoneNumberProductType =
   | "BusinessCalling"
   | "VoiceConnector"
-  | "SipMediaApplicationDialIn";
-export const PhoneNumberProductType = S.Literal(
-  "BusinessCalling",
-  "VoiceConnector",
-  "SipMediaApplicationDialIn",
-);
+  | "SipMediaApplicationDialIn"
+  | (string & {});
+export const PhoneNumberProductType = S.String;
 export type E164PhoneNumberList = string | redacted.Redacted<string>[];
 export const E164PhoneNumberList = S.Array(SensitiveString);
-export type RoomMembershipRole = "Administrator" | "Member";
-export const RoomMembershipRole = S.Literal("Administrator", "Member");
-export type UserType = "PrivateUser" | "SharedDevice";
-export const UserType = S.Literal("PrivateUser", "SharedDevice");
+export type RoomMembershipRole = "Administrator" | "Member" | (string & {});
+export const RoomMembershipRole = S.String;
+export type UserType = "PrivateUser" | "SharedDevice" | (string & {});
+export const UserType = S.String;
 export type UserEmailList = string | redacted.Redacted<string>[];
 export const UserEmailList = S.Array(SensitiveString);
 export type PhoneNumberStatus =
@@ -169,34 +166,21 @@ export type PhoneNumberStatus =
   | "ReleaseInProgress"
   | "DeleteInProgress"
   | "ReleaseFailed"
-  | "DeleteFailed";
-export const PhoneNumberStatus = S.Literal(
-  "AcquireInProgress",
-  "AcquireFailed",
-  "Unassigned",
-  "Assigned",
-  "ReleaseInProgress",
-  "DeleteInProgress",
-  "ReleaseFailed",
-  "DeleteFailed",
-);
+  | "DeleteFailed"
+  | (string & {});
+export const PhoneNumberStatus = S.String;
 export type PhoneNumberAssociationName =
   | "AccountId"
   | "UserId"
   | "VoiceConnectorId"
   | "VoiceConnectorGroupId"
-  | "SipRuleId";
-export const PhoneNumberAssociationName = S.Literal(
-  "AccountId",
-  "UserId",
-  "VoiceConnectorId",
-  "VoiceConnectorGroupId",
-  "SipRuleId",
-);
-export type PhoneNumberType = "Local" | "TollFree";
-export const PhoneNumberType = S.Literal("Local", "TollFree");
-export type License = "Basic" | "Plus" | "Pro" | "ProTrial";
-export const License = S.Literal("Basic", "Plus", "Pro", "ProTrial");
+  | "SipRuleId"
+  | (string & {});
+export const PhoneNumberAssociationName = S.String;
+export type PhoneNumberType = "Local" | "TollFree" | (string & {});
+export const PhoneNumberType = S.String;
+export type License = "Basic" | "Plus" | "Pro" | "ProTrial" | (string & {});
+export const License = S.String;
 export interface AssociatePhoneNumberWithUserRequest {
   AccountId: string;
   UserId: string;
@@ -1520,24 +1504,9 @@ export type ErrorCode =
   | "Unauthorized"
   | "Unprocessable"
   | "VoiceConnectorGroupAssociationsExist"
-  | "PhoneNumberAssociationsExist";
-export const ErrorCode = S.Literal(
-  "BadRequest",
-  "Conflict",
-  "Forbidden",
-  "NotFound",
-  "PreconditionFailed",
-  "ResourceLimitExceeded",
-  "ServiceFailure",
-  "AccessDenied",
-  "ServiceUnavailable",
-  "Throttled",
-  "Throttling",
-  "Unauthorized",
-  "Unprocessable",
-  "VoiceConnectorGroupAssociationsExist",
-  "PhoneNumberAssociationsExist",
-);
+  | "PhoneNumberAssociationsExist"
+  | (string & {});
+export const ErrorCode = S.String;
 export interface SigninDelegateGroup {
   GroupName?: string;
 }
@@ -1614,17 +1583,13 @@ export type AccountType =
   | "Team"
   | "EnterpriseDirectory"
   | "EnterpriseLWA"
-  | "EnterpriseOIDC";
-export const AccountType = S.Literal(
-  "Team",
-  "EnterpriseDirectory",
-  "EnterpriseLWA",
-  "EnterpriseOIDC",
-);
+  | "EnterpriseOIDC"
+  | (string & {});
+export const AccountType = S.String;
 export type LicenseList = License[];
 export const LicenseList = S.Array(License);
-export type AccountStatus = "Suspended" | "Active";
-export const AccountStatus = S.Literal("Suspended", "Active");
+export type AccountStatus = "Suspended" | "Active" | (string & {});
+export const AccountStatus = S.String;
 export interface Account {
   AwsAccountId: string;
   AccountId: string;
@@ -1651,8 +1616,8 @@ export const Account = S.suspend(() =>
 ).annotations({ identifier: "Account" }) as any as S.Schema<Account>;
 export type AccountList = Account[];
 export const AccountList = S.Array(Account);
-export type BotType = "ChatBot";
-export const BotType = S.Literal("ChatBot");
+export type BotType = "ChatBot" | (string & {});
+export const BotType = S.String;
 export interface Bot {
   BotId?: string;
   UserId?: string;
@@ -1683,19 +1648,15 @@ export type PhoneNumberOrderStatus =
   | "Processing"
   | "Successful"
   | "Failed"
-  | "Partial";
-export const PhoneNumberOrderStatus = S.Literal(
-  "Processing",
-  "Successful",
-  "Failed",
-  "Partial",
-);
-export type OrderedPhoneNumberStatus = "Processing" | "Acquired" | "Failed";
-export const OrderedPhoneNumberStatus = S.Literal(
-  "Processing",
-  "Acquired",
-  "Failed",
-);
+  | "Partial"
+  | (string & {});
+export const PhoneNumberOrderStatus = S.String;
+export type OrderedPhoneNumberStatus =
+  | "Processing"
+  | "Acquired"
+  | "Failed"
+  | (string & {});
+export const OrderedPhoneNumberStatus = S.String;
 export interface OrderedPhoneNumber {
   E164PhoneNumber?: string | redacted.Redacted<string>;
   Status?: OrderedPhoneNumberStatus;
@@ -1774,13 +1735,9 @@ export type CallingNameStatus =
   | "Unassigned"
   | "UpdateInProgress"
   | "UpdateSucceeded"
-  | "UpdateFailed";
-export const CallingNameStatus = S.Literal(
-  "Unassigned",
-  "UpdateInProgress",
-  "UpdateSucceeded",
-  "UpdateFailed",
-);
+  | "UpdateFailed"
+  | (string & {});
+export const CallingNameStatus = S.String;
 export interface PhoneNumber {
   PhoneNumberId?: string;
   E164PhoneNumber?: string | redacted.Redacted<string>;
@@ -1815,8 +1772,8 @@ export const PhoneNumber = S.suspend(() =>
 ).annotations({ identifier: "PhoneNumber" }) as any as S.Schema<PhoneNumber>;
 export type PhoneNumberList = PhoneNumber[];
 export const PhoneNumberList = S.Array(PhoneNumber);
-export type MemberType = "User" | "Bot" | "Webhook";
-export const MemberType = S.Literal("User", "Bot", "Webhook");
+export type MemberType = "User" | "Bot" | "Webhook" | (string & {});
+export const MemberType = S.String;
 export interface Member {
   MemberId?: string;
   MemberType?: MemberType;
@@ -1873,14 +1830,14 @@ export const Room = S.suspend(() =>
 ).annotations({ identifier: "Room" }) as any as S.Schema<Room>;
 export type RoomList = Room[];
 export const RoomList = S.Array(Room);
-export type RegistrationStatus = "Unregistered" | "Registered" | "Suspended";
-export const RegistrationStatus = S.Literal(
-  "Unregistered",
-  "Registered",
-  "Suspended",
-);
-export type InviteStatus = "Pending" | "Accepted" | "Failed";
-export const InviteStatus = S.Literal("Pending", "Accepted", "Failed");
+export type RegistrationStatus =
+  | "Unregistered"
+  | "Registered"
+  | "Suspended"
+  | (string & {});
+export const RegistrationStatus = S.String;
+export type InviteStatus = "Pending" | "Accepted" | "Failed" | (string & {});
+export const InviteStatus = S.String;
 export interface User {
   UserId: string;
   AccountId?: string;
@@ -2410,8 +2367,8 @@ export const UpdateUserRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateUserRequest",
 }) as any as S.Schema<UpdateUserRequest>;
-export type EmailStatus = "NotSent" | "Sent" | "Failed";
-export const EmailStatus = S.Literal("NotSent", "Sent", "Failed");
+export type EmailStatus = "NotSent" | "Sent" | "Failed" | (string & {});
+export const EmailStatus = S.String;
 export type PhoneNumberTypeList = PhoneNumberType[];
 export const PhoneNumberTypeList = S.Array(PhoneNumberType);
 export interface PhoneNumberError {

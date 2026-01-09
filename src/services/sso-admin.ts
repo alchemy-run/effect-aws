@@ -145,48 +145,42 @@ export type ServiceQuotaExceededMessage = string;
 export type ValidationExceptionMessage = string;
 
 //# Schemas
-export type TargetType = "AWS_ACCOUNT";
-export const TargetType = S.Literal("AWS_ACCOUNT");
-export type PrincipalType = "USER" | "GROUP";
-export const PrincipalType = S.Literal("USER", "GROUP");
-export type ApplicationStatus = "ENABLED" | "DISABLED";
-export const ApplicationStatus = S.Literal("ENABLED", "DISABLED");
-export type TrustedTokenIssuerType = "OIDC_JWT";
-export const TrustedTokenIssuerType = S.Literal("OIDC_JWT");
+export type TargetType = "AWS_ACCOUNT" | (string & {});
+export const TargetType = S.String;
+export type PrincipalType = "USER" | "GROUP" | (string & {});
+export const PrincipalType = S.String;
+export type ApplicationStatus = "ENABLED" | "DISABLED" | (string & {});
+export const ApplicationStatus = S.String;
+export type TrustedTokenIssuerType = "OIDC_JWT" | (string & {});
+export const TrustedTokenIssuerType = S.String;
 export type ProvisioningStatus =
   | "LATEST_PERMISSION_SET_PROVISIONED"
-  | "LATEST_PERMISSION_SET_NOT_PROVISIONED";
-export const ProvisioningStatus = S.Literal(
-  "LATEST_PERMISSION_SET_PROVISIONED",
-  "LATEST_PERMISSION_SET_NOT_PROVISIONED",
-);
-export type ProvisionTargetType = "AWS_ACCOUNT" | "ALL_PROVISIONED_ACCOUNTS";
-export const ProvisionTargetType = S.Literal(
-  "AWS_ACCOUNT",
-  "ALL_PROVISIONED_ACCOUNTS",
-);
-export type UserBackgroundSessionApplicationStatus = "ENABLED" | "DISABLED";
-export const UserBackgroundSessionApplicationStatus = S.Literal(
-  "ENABLED",
-  "DISABLED",
-);
+  | "LATEST_PERMISSION_SET_NOT_PROVISIONED"
+  | (string & {});
+export const ProvisioningStatus = S.String;
+export type ProvisionTargetType =
+  | "AWS_ACCOUNT"
+  | "ALL_PROVISIONED_ACCOUNTS"
+  | (string & {});
+export const ProvisionTargetType = S.String;
+export type UserBackgroundSessionApplicationStatus =
+  | "ENABLED"
+  | "DISABLED"
+  | (string & {});
+export const UserBackgroundSessionApplicationStatus = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export type ScopeTargets = string[];
 export const ScopeTargets = S.Array(S.String);
-export type AuthenticationMethodType = "IAM";
-export const AuthenticationMethodType = S.Literal("IAM");
+export type AuthenticationMethodType = "IAM" | (string & {});
+export const AuthenticationMethodType = S.String;
 export type GrantType =
   | "authorization_code"
   | "refresh_token"
   | "urn:ietf:params:oauth:grant-type:jwt-bearer"
-  | "urn:ietf:params:oauth:grant-type:token-exchange";
-export const GrantType = S.Literal(
-  "authorization_code",
-  "refresh_token",
-  "urn:ietf:params:oauth:grant-type:jwt-bearer",
-  "urn:ietf:params:oauth:grant-type:token-exchange",
-);
+  | "urn:ietf:params:oauth:grant-type:token-exchange"
+  | (string & {});
+export const GrantType = S.String;
 export interface AttachManagedPolicyToPermissionSetRequest {
   InstanceArn: string;
   PermissionSetArn: string;
@@ -672,8 +666,12 @@ export const GetPermissionsBoundaryForPermissionSetRequest = S.suspend(() =>
 ).annotations({
   identifier: "GetPermissionsBoundaryForPermissionSetRequest",
 }) as any as S.Schema<GetPermissionsBoundaryForPermissionSetRequest>;
-export type StatusValues = "IN_PROGRESS" | "FAILED" | "SUCCEEDED";
-export const StatusValues = S.Literal("IN_PROGRESS", "FAILED", "SUCCEEDED");
+export type StatusValues =
+  | "IN_PROGRESS"
+  | "FAILED"
+  | "SUCCEEDED"
+  | (string & {});
+export const StatusValues = S.String;
 export interface OperationStatusFilter {
   Status?: StatusValues;
 }
@@ -1252,13 +1250,13 @@ export const ListApplicationGrantsRequest = S.suspend(() =>
 ).annotations({
   identifier: "ListApplicationGrantsRequest",
 }) as any as S.Schema<ListApplicationGrantsRequest>;
-export type ApplicationVisibility = "ENABLED" | "DISABLED";
-export const ApplicationVisibility = S.Literal("ENABLED", "DISABLED");
-export type KmsKeyType = "AWS_OWNED_KMS_KEY" | "CUSTOMER_MANAGED_KEY";
-export const KmsKeyType = S.Literal(
-  "AWS_OWNED_KMS_KEY",
-  "CUSTOMER_MANAGED_KEY",
-);
+export type ApplicationVisibility = "ENABLED" | "DISABLED" | (string & {});
+export const ApplicationVisibility = S.String;
+export type KmsKeyType =
+  | "AWS_OWNED_KMS_KEY"
+  | "CUSTOMER_MANAGED_KEY"
+  | (string & {});
+export const KmsKeyType = S.String;
 export interface RefreshTokenGrant {}
 export const RefreshTokenGrant = S.suspend(() => S.Struct({})).annotations({
   identifier: "RefreshTokenGrant",
@@ -1267,32 +1265,25 @@ export interface TokenExchangeGrant {}
 export const TokenExchangeGrant = S.suspend(() => S.Struct({})).annotations({
   identifier: "TokenExchangeGrant",
 }) as any as S.Schema<TokenExchangeGrant>;
-export type AccessDeniedExceptionReason = "KMS_AccessDeniedException";
-export const AccessDeniedExceptionReason = S.Literal(
-  "KMS_AccessDeniedException",
-);
-export type FederationProtocol = "SAML" | "OAUTH";
-export const FederationProtocol = S.Literal("SAML", "OAUTH");
+export type AccessDeniedExceptionReason =
+  | "KMS_AccessDeniedException"
+  | (string & {});
+export const AccessDeniedExceptionReason = S.String;
+export type FederationProtocol = "SAML" | "OAUTH" | (string & {});
+export const FederationProtocol = S.String;
 export type InstanceStatus =
   | "CREATE_IN_PROGRESS"
   | "CREATE_FAILED"
   | "DELETE_IN_PROGRESS"
-  | "ACTIVE";
-export const InstanceStatus = S.Literal(
-  "CREATE_IN_PROGRESS",
-  "CREATE_FAILED",
-  "DELETE_IN_PROGRESS",
-  "ACTIVE",
-);
+  | "ACTIVE"
+  | (string & {});
+export const InstanceStatus = S.String;
 export type InstanceAccessControlAttributeConfigurationStatus =
   | "ENABLED"
   | "CREATION_IN_PROGRESS"
-  | "CREATION_FAILED";
-export const InstanceAccessControlAttributeConfigurationStatus = S.Literal(
-  "ENABLED",
-  "CREATION_IN_PROGRESS",
-  "CREATION_FAILED",
-);
+  | "CREATION_FAILED"
+  | (string & {});
+export const InstanceAccessControlAttributeConfigurationStatus = S.String;
 export interface ListAccountAssignmentsFilter {
   AccountId?: string;
 }
@@ -1342,8 +1333,8 @@ export const PermissionsBoundary = S.suspend(() =>
 ).annotations({
   identifier: "PermissionsBoundary",
 }) as any as S.Schema<PermissionsBoundary>;
-export type SignInOrigin = "IDENTITY_CENTER" | "APPLICATION";
-export const SignInOrigin = S.Literal("IDENTITY_CENTER", "APPLICATION");
+export type SignInOrigin = "IDENTITY_CENTER" | "APPLICATION" | (string & {});
+export const SignInOrigin = S.String;
 export interface SignInOptions {
   Origin: SignInOrigin;
   ApplicationUrl?: string;
@@ -1370,8 +1361,8 @@ export const EncryptionConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "EncryptionConfiguration",
 }) as any as S.Schema<EncryptionConfiguration>;
-export type JwksRetrievalOption = "OPEN_ID_DISCOVERY";
-export const JwksRetrievalOption = S.Literal("OPEN_ID_DISCOVERY");
+export type JwksRetrievalOption = "OPEN_ID_DISCOVERY" | (string & {});
+export const JwksRetrievalOption = S.String;
 export type RedirectUris = string[];
 export const RedirectUris = S.Array(S.String);
 export interface AttachCustomerManagedPolicyReferenceToPermissionSetRequest {
@@ -1979,8 +1970,12 @@ export const GetApplicationGrantResponse = S.suspend(() =>
 ).annotations({
   identifier: "GetApplicationGrantResponse",
 }) as any as S.Schema<GetApplicationGrantResponse>;
-export type KmsKeyStatus = "UPDATING" | "ENABLED" | "UPDATE_FAILED";
-export const KmsKeyStatus = S.Literal("UPDATING", "ENABLED", "UPDATE_FAILED");
+export type KmsKeyStatus =
+  | "UPDATING"
+  | "ENABLED"
+  | "UPDATE_FAILED"
+  | (string & {});
+export const KmsKeyStatus = S.String;
 export interface OidcJwtUpdateConfiguration {
   ClaimAttributePath?: string;
   IdentityStoreAttributePath?: string;
@@ -2523,12 +2518,14 @@ export const ListApplicationGrantsResponse = S.suspend(() =>
 ).annotations({
   identifier: "ListApplicationGrantsResponse",
 }) as any as S.Schema<ListApplicationGrantsResponse>;
-export type ResourceNotFoundExceptionReason = "KMS_NotFoundException";
-export const ResourceNotFoundExceptionReason = S.Literal(
-  "KMS_NotFoundException",
-);
-export type ThrottlingExceptionReason = "KMS_ThrottlingException";
-export const ThrottlingExceptionReason = S.Literal("KMS_ThrottlingException");
+export type ResourceNotFoundExceptionReason =
+  | "KMS_NotFoundException"
+  | (string & {});
+export const ResourceNotFoundExceptionReason = S.String;
+export type ThrottlingExceptionReason =
+  | "KMS_ThrottlingException"
+  | (string & {});
+export const ThrottlingExceptionReason = S.String;
 export interface AccountAssignmentForPrincipal {
   AccountId?: string;
   PermissionSetArn?: string;
@@ -2692,12 +2689,9 @@ export const PutApplicationGrantResponse = S.suspend(() =>
 export type ValidationExceptionReason =
   | "KMS_InvalidKeyUsageException"
   | "KMS_InvalidStateException"
-  | "KMS_DisabledException";
-export const ValidationExceptionReason = S.Literal(
-  "KMS_InvalidKeyUsageException",
-  "KMS_InvalidStateException",
-  "KMS_DisabledException",
-);
+  | "KMS_DisabledException"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 export interface DescribeApplicationProviderResponse {
   ApplicationProviderArn: string;
   FederationProtocol?: FederationProtocol;

@@ -68,13 +68,9 @@ export type ShardIteratorType =
   | "TRIM_HORIZON"
   | "LATEST"
   | "AT_SEQUENCE_NUMBER"
-  | "AFTER_SEQUENCE_NUMBER";
-export const ShardIteratorType = S.Literal(
-  "TRIM_HORIZON",
-  "LATEST",
-  "AT_SEQUENCE_NUMBER",
-  "AFTER_SEQUENCE_NUMBER",
-);
+  | "AFTER_SEQUENCE_NUMBER"
+  | (string & {});
+export const ShardIteratorType = S.String;
 export interface GetRecordsInput {
   shardIterator: string;
   maxResults?: number;
@@ -122,8 +118,8 @@ export const ListStreamsInput = S.suspend(() =>
 ).annotations({
   identifier: "ListStreamsInput",
 }) as any as S.Schema<ListStreamsInput>;
-export type ShardFilterType = "CHILD_SHARDS";
-export const ShardFilterType = S.Literal("CHILD_SHARDS");
+export type ShardFilterType = "CHILD_SHARDS" | (string & {});
+export const ShardFilterType = S.String;
 export interface ShardFilter {
   type?: ShardFilterType;
   shardId?: string;
@@ -160,26 +156,22 @@ export const GetStreamInput = S.suspend(() =>
 ).annotations({
   identifier: "GetStreamInput",
 }) as any as S.Schema<GetStreamInput>;
-export type OriginType = "USER" | "REPLICATION" | "TTL";
-export const OriginType = S.Literal("USER", "REPLICATION", "TTL");
-export type StreamStatus = "ENABLING" | "ENABLED" | "DISABLING" | "DISABLED";
-export const StreamStatus = S.Literal(
-  "ENABLING",
-  "ENABLED",
-  "DISABLING",
-  "DISABLED",
-);
+export type OriginType = "USER" | "REPLICATION" | "TTL" | (string & {});
+export const OriginType = S.String;
+export type StreamStatus =
+  | "ENABLING"
+  | "ENABLED"
+  | "DISABLING"
+  | "DISABLED"
+  | (string & {});
+export const StreamStatus = S.String;
 export type StreamViewType =
   | "NEW_IMAGE"
   | "OLD_IMAGE"
   | "NEW_AND_OLD_IMAGES"
-  | "KEYS_ONLY";
-export const StreamViewType = S.Literal(
-  "NEW_IMAGE",
-  "OLD_IMAGE",
-  "NEW_AND_OLD_IMAGES",
-  "KEYS_ONLY",
-);
+  | "KEYS_ONLY"
+  | (string & {});
+export const StreamViewType = S.String;
 export interface Stream {
   streamArn: string;
   keyspaceName: string;
@@ -1128,13 +1120,9 @@ export type ValidationExceptionType =
   | "InvalidFormat"
   | "TrimmedDataAccess"
   | "ExpiredIterator"
-  | "ExpiredNextToken";
-export const ValidationExceptionType = S.Literal(
-  "InvalidFormat",
-  "TrimmedDataAccess",
-  "ExpiredIterator",
-  "ExpiredNextToken",
-);
+  | "ExpiredNextToken"
+  | (string & {});
+export const ValidationExceptionType = S.String;
 
 //# Errors
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(

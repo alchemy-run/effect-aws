@@ -161,10 +161,10 @@ export type PersonalAccessTokenName = string;
 export type PersonalAccessTokenScope = string;
 
 //# Schemas
-export type ImpersonationRoleType = "FULL_ACCESS" | "READ_ONLY";
-export const ImpersonationRoleType = S.Literal("FULL_ACCESS", "READ_ONLY");
-export type MobileDeviceAccessRuleEffect = "ALLOW" | "DENY";
-export const MobileDeviceAccessRuleEffect = S.Literal("ALLOW", "DENY");
+export type ImpersonationRoleType = "FULL_ACCESS" | "READ_ONLY" | (string & {});
+export const ImpersonationRoleType = S.String;
+export type MobileDeviceAccessRuleEffect = "ALLOW" | "DENY" | (string & {});
+export const MobileDeviceAccessRuleEffect = S.String;
 export type DeviceTypeList = string[];
 export const DeviceTypeList = S.Array(S.String);
 export type DeviceModelList = string[];
@@ -173,17 +173,17 @@ export type DeviceOperatingSystemList = string[];
 export const DeviceOperatingSystemList = S.Array(S.String);
 export type DeviceUserAgentList = string[];
 export const DeviceUserAgentList = S.Array(S.String);
-export type ResourceType = "ROOM" | "EQUIPMENT";
-export const ResourceType = S.Literal("ROOM", "EQUIPMENT");
-export type UserRole = "USER" | "RESOURCE" | "SYSTEM_USER" | "REMOTE_USER";
-export const UserRole = S.Literal(
-  "USER",
-  "RESOURCE",
-  "SYSTEM_USER",
-  "REMOTE_USER",
-);
-export type AccessControlRuleEffect = "ALLOW" | "DENY";
-export const AccessControlRuleEffect = S.Literal("ALLOW", "DENY");
+export type ResourceType = "ROOM" | "EQUIPMENT" | (string & {});
+export const ResourceType = S.String;
+export type UserRole =
+  | "USER"
+  | "RESOURCE"
+  | "SYSTEM_USER"
+  | "REMOTE_USER"
+  | (string & {});
+export const UserRole = S.String;
+export type AccessControlRuleEffect = "ALLOW" | "DENY" | (string & {});
+export const AccessControlRuleEffect = S.String;
 export type IpRangeList = string[];
 export const IpRangeList = S.Array(S.String);
 export type ActionsList = string[];
@@ -194,17 +194,15 @@ export type ImpersonationRoleIdList = string[];
 export const ImpersonationRoleIdList = S.Array(S.String);
 export type IdentityProviderAuthenticationMode =
   | "IDENTITY_PROVIDER_ONLY"
-  | "IDENTITY_PROVIDER_AND_DIRECTORY";
-export const IdentityProviderAuthenticationMode = S.Literal(
-  "IDENTITY_PROVIDER_ONLY",
-  "IDENTITY_PROVIDER_AND_DIRECTORY",
-);
-export type PermissionType = "FULL_ACCESS" | "SEND_AS" | "SEND_ON_BEHALF";
-export const PermissionType = S.Literal(
-  "FULL_ACCESS",
-  "SEND_AS",
-  "SEND_ON_BEHALF",
-);
+  | "IDENTITY_PROVIDER_AND_DIRECTORY"
+  | (string & {});
+export const IdentityProviderAuthenticationMode = S.String;
+export type PermissionType =
+  | "FULL_ACCESS"
+  | "SEND_AS"
+  | "SEND_ON_BEHALF"
+  | (string & {});
+export const PermissionType = S.String;
 export type PermissionValues = PermissionType[];
 export const PermissionValues = S.Array(PermissionType);
 export type TagKeyList = string[];
@@ -1556,8 +1554,8 @@ export interface UpdateGroupResponse {}
 export const UpdateGroupResponse = S.suspend(() => S.Struct({})).annotations({
   identifier: "UpdateGroupResponse",
 }) as any as S.Schema<UpdateGroupResponse>;
-export type AccessEffect = "ALLOW" | "DENY";
-export const AccessEffect = S.Literal("ALLOW", "DENY");
+export type AccessEffect = "ALLOW" | "DENY" | (string & {});
+export const AccessEffect = S.String;
 export type TargetUsers = string[];
 export const TargetUsers = S.Array(S.String);
 export interface ImpersonationRule {
@@ -1746,32 +1744,27 @@ export interface UpdateUserResponse {}
 export const UpdateUserResponse = S.suspend(() => S.Struct({})).annotations({
   identifier: "UpdateUserResponse",
 }) as any as S.Schema<UpdateUserResponse>;
-export type EntityState = "ENABLED" | "DISABLED" | "DELETED";
-export const EntityState = S.Literal("ENABLED", "DISABLED", "DELETED");
-export type PersonalAccessTokenConfigurationStatus = "ACTIVE" | "INACTIVE";
-export const PersonalAccessTokenConfigurationStatus = S.Literal(
-  "ACTIVE",
-  "INACTIVE",
-);
+export type EntityState = "ENABLED" | "DISABLED" | "DELETED" | (string & {});
+export const EntityState = S.String;
+export type PersonalAccessTokenConfigurationStatus =
+  | "ACTIVE"
+  | "INACTIVE"
+  | (string & {});
+export const PersonalAccessTokenConfigurationStatus = S.String;
 export type FolderName =
   | "INBOX"
   | "DELETED_ITEMS"
   | "SENT_ITEMS"
   | "DRAFTS"
-  | "JUNK_EMAIL";
-export const FolderName = S.Literal(
-  "INBOX",
-  "DELETED_ITEMS",
-  "SENT_ITEMS",
-  "DRAFTS",
-  "JUNK_EMAIL",
-);
-export type RetentionAction = "NONE" | "DELETE" | "PERMANENTLY_DELETE";
-export const RetentionAction = S.Literal(
-  "NONE",
-  "DELETE",
-  "PERMANENTLY_DELETE",
-);
+  | "JUNK_EMAIL"
+  | (string & {});
+export const FolderName = S.String;
+export type RetentionAction =
+  | "NONE"
+  | "DELETE"
+  | "PERMANENTLY_DELETE"
+  | (string & {});
+export const RetentionAction = S.String;
 export interface Domain {
   DomainName: string;
   HostedZoneId?: string;
@@ -1781,27 +1774,23 @@ export const Domain = S.suspend(() =>
 ).annotations({ identifier: "Domain" }) as any as S.Schema<Domain>;
 export type Domains = Domain[];
 export const Domains = S.Array(Domain);
-export type EntityType = "GROUP" | "USER" | "RESOURCE";
-export const EntityType = S.Literal("GROUP", "USER", "RESOURCE");
+export type EntityType = "GROUP" | "USER" | "RESOURCE" | (string & {});
+export const EntityType = S.String;
 export type MailboxExportJobState =
   | "RUNNING"
   | "COMPLETED"
   | "FAILED"
-  | "CANCELLED";
-export const MailboxExportJobState = S.Literal(
-  "RUNNING",
-  "COMPLETED",
-  "FAILED",
-  "CANCELLED",
-);
+  | "CANCELLED"
+  | (string & {});
+export const MailboxExportJobState = S.String;
 export type AccessControlRuleNameList = string[];
 export const AccessControlRuleNameList = S.Array(S.String);
-export type DnsRecordVerificationStatus = "PENDING" | "VERIFIED" | "FAILED";
-export const DnsRecordVerificationStatus = S.Literal(
-  "PENDING",
-  "VERIFIED",
-  "FAILED",
-);
+export type DnsRecordVerificationStatus =
+  | "PENDING"
+  | "VERIFIED"
+  | "FAILED"
+  | (string & {});
+export const DnsRecordVerificationStatus = S.String;
 export type PersonalAccessTokenScopeList = string[];
 export const PersonalAccessTokenScopeList = S.Array(S.String);
 export type Aliases = string[];
@@ -2583,10 +2572,10 @@ export interface UpdateResourceResponse {}
 export const UpdateResourceResponse = S.suspend(() => S.Struct({})).annotations(
   { identifier: "UpdateResourceResponse" },
 ) as any as S.Schema<UpdateResourceResponse>;
-export type AvailabilityProviderType = "EWS" | "LAMBDA";
-export const AvailabilityProviderType = S.Literal("EWS", "LAMBDA");
-export type MemberType = "GROUP" | "USER";
-export const MemberType = S.Literal("GROUP", "USER");
+export type AvailabilityProviderType = "EWS" | "LAMBDA" | (string & {});
+export const AvailabilityProviderType = S.String;
+export type MemberType = "GROUP" | "USER" | (string & {});
+export const MemberType = S.String;
 export interface ImpersonationMatchedRule {
   ImpersonationRuleId?: string;
   Name?: string;

@@ -101,12 +101,12 @@ export type ErrorMessage = string;
 export type UnlockDelayValue = number;
 
 //# Schemas
-export type ResourceType = "EBS_SNAPSHOT" | "EC2_IMAGE" | "EBS_VOLUME";
-export const ResourceType = S.Literal(
-  "EBS_SNAPSHOT",
-  "EC2_IMAGE",
-  "EBS_VOLUME",
-);
+export type ResourceType =
+  | "EBS_SNAPSHOT"
+  | "EC2_IMAGE"
+  | "EBS_VOLUME"
+  | (string & {});
+export const ResourceType = S.String;
 export interface ResourceTag {
   ResourceTagKey: string;
   ResourceTagValue?: string;
@@ -119,8 +119,12 @@ export const ResourceTag = S.suspend(() =>
 ).annotations({ identifier: "ResourceTag" }) as any as S.Schema<ResourceTag>;
 export type ExcludeResourceTags = ResourceTag[];
 export const ExcludeResourceTags = S.Array(ResourceTag);
-export type LockState = "locked" | "pending_unlock" | "unlocked";
-export const LockState = S.Literal("locked", "pending_unlock", "unlocked");
+export type LockState =
+  | "locked"
+  | "pending_unlock"
+  | "unlocked"
+  | (string & {});
+export const LockState = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export interface DeleteRuleRequest {
@@ -209,8 +213,8 @@ export const ListTagsForResourceRequest = S.suspend(() =>
 ).annotations({
   identifier: "ListTagsForResourceRequest",
 }) as any as S.Schema<ListTagsForResourceRequest>;
-export type UnlockDelayUnit = "DAYS";
-export const UnlockDelayUnit = S.Literal("DAYS");
+export type UnlockDelayUnit = "DAYS" | (string & {});
+export const UnlockDelayUnit = S.String;
 export interface UnlockDelay {
   UnlockDelayValue: number;
   UnlockDelayUnit: UnlockDelayUnit;
@@ -323,8 +327,8 @@ export interface UntagResourceResponse {}
 export const UntagResourceResponse = S.suspend(() => S.Struct({})).annotations({
   identifier: "UntagResourceResponse",
 }) as any as S.Schema<UntagResourceResponse>;
-export type RetentionPeriodUnit = "DAYS";
-export const RetentionPeriodUnit = S.Literal("DAYS");
+export type RetentionPeriodUnit = "DAYS" | (string & {});
+export const RetentionPeriodUnit = S.String;
 export interface RetentionPeriod {
   RetentionPeriodValue: number;
   RetentionPeriodUnit: RetentionPeriodUnit;
@@ -366,10 +370,10 @@ export const UpdateRuleRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateRuleRequest",
 }) as any as S.Schema<UpdateRuleRequest>;
-export type ConflictExceptionReason = "INVALID_RULE_STATE";
-export const ConflictExceptionReason = S.Literal("INVALID_RULE_STATE");
-export type RuleStatus = "pending" | "available";
-export const RuleStatus = S.Literal("pending", "available");
+export type ConflictExceptionReason = "INVALID_RULE_STATE" | (string & {});
+export const ConflictExceptionReason = S.String;
+export type RuleStatus = "pending" | "available" | (string & {});
+export const RuleStatus = S.String;
 export interface GetRuleResponse {
   Identifier?: string;
   Description?: string;
@@ -512,8 +516,8 @@ export const RuleSummary = S.suspend(() =>
 ).annotations({ identifier: "RuleSummary" }) as any as S.Schema<RuleSummary>;
 export type RuleSummaryList = RuleSummary[];
 export const RuleSummaryList = S.Array(RuleSummary);
-export type ResourceNotFoundExceptionReason = "RULE_NOT_FOUND";
-export const ResourceNotFoundExceptionReason = S.Literal("RULE_NOT_FOUND");
+export type ResourceNotFoundExceptionReason = "RULE_NOT_FOUND" | (string & {});
+export const ResourceNotFoundExceptionReason = S.String;
 export interface CreateRuleRequest {
   RetentionPeriod: RetentionPeriod;
   Description?: string;
@@ -559,15 +563,13 @@ export const ListRulesResponse = S.suspend(() =>
 }) as any as S.Schema<ListRulesResponse>;
 export type ValidationExceptionReason =
   | "INVALID_PAGE_TOKEN"
-  | "INVALID_PARAMETER_VALUE";
-export const ValidationExceptionReason = S.Literal(
-  "INVALID_PAGE_TOKEN",
-  "INVALID_PARAMETER_VALUE",
-);
-export type ServiceQuotaExceededExceptionReason = "SERVICE_QUOTA_EXCEEDED";
-export const ServiceQuotaExceededExceptionReason = S.Literal(
-  "SERVICE_QUOTA_EXCEEDED",
-);
+  | "INVALID_PARAMETER_VALUE"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
+export type ServiceQuotaExceededExceptionReason =
+  | "SERVICE_QUOTA_EXCEEDED"
+  | (string & {});
+export const ServiceQuotaExceededExceptionReason = S.String;
 export interface CreateRuleResponse {
   Identifier?: string;
   RetentionPeriod?: RetentionPeriod;

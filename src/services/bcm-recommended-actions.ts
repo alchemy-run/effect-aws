@@ -73,10 +73,10 @@ export type AccountId = string;
 export type NextStep = string;
 
 //# Schemas
-export type FilterName = "FEATURE" | "SEVERITY" | "TYPE";
-export const FilterName = S.Literal("FEATURE", "SEVERITY", "TYPE");
-export type MatchOption = "EQUALS" | "NOT_EQUALS";
-export const MatchOption = S.Literal("EQUALS", "NOT_EQUALS");
+export type FilterName = "FEATURE" | "SEVERITY" | "TYPE" | (string & {});
+export const FilterName = S.String;
+export type MatchOption = "EQUALS" | "NOT_EQUALS" | (string & {});
+export const MatchOption = S.String;
 export type FilterValues = string[];
 export const FilterValues = S.Array(S.String);
 export interface ActionFilter {
@@ -133,31 +133,11 @@ export type ActionType =
   | "UPDATE_EXPIRED_PAYMENT_METHOD"
   | "UPDATE_INVALID_PAYMENT_METHOD"
   | "UPDATE_TAX_EXEMPTION_CERTIFICATE"
-  | "UPDATE_TAX_REGISTRATION_NUMBER";
-export const ActionType = S.Literal(
-  "ADD_ALTERNATE_BILLING_CONTACT",
-  "CREATE_ANOMALY_MONITOR",
-  "CREATE_BUDGET",
-  "ENABLE_COST_OPTIMIZATION_HUB",
-  "MIGRATE_TO_GRANULAR_PERMISSIONS",
-  "PAYMENTS_DUE",
-  "PAYMENTS_PAST_DUE",
-  "REVIEW_ANOMALIES",
-  "REVIEW_BUDGET_ALERTS",
-  "REVIEW_BUDGETS_EXCEEDED",
-  "REVIEW_EXPIRING_RI",
-  "REVIEW_EXPIRING_SP",
-  "REVIEW_FREETIER_USAGE_ALERTS",
-  "REVIEW_FREETIER_CREDITS_REMAINING",
-  "REVIEW_FREETIER_DAYS_REMAINING",
-  "REVIEW_SAVINGS_OPPORTUNITY_RECOMMENDATIONS",
-  "UPDATE_EXPIRED_PAYMENT_METHOD",
-  "UPDATE_INVALID_PAYMENT_METHOD",
-  "UPDATE_TAX_EXEMPTION_CERTIFICATE",
-  "UPDATE_TAX_REGISTRATION_NUMBER",
-);
-export type Severity = "INFO" | "WARNING" | "CRITICAL";
-export const Severity = S.Literal("INFO", "WARNING", "CRITICAL");
+  | "UPDATE_TAX_REGISTRATION_NUMBER"
+  | (string & {});
+export const ActionType = S.String;
+export type Severity = "INFO" | "WARNING" | "CRITICAL" | (string & {});
+export const Severity = S.String;
 export type Feature =
   | "ACCOUNT"
   | "BUDGETS"
@@ -168,19 +148,9 @@ export type Feature =
   | "PAYMENTS"
   | "RESERVATIONS"
   | "SAVINGS_PLANS"
-  | "TAX_SETTINGS";
-export const Feature = S.Literal(
-  "ACCOUNT",
-  "BUDGETS",
-  "COST_ANOMALY_DETECTION",
-  "COST_OPTIMIZATION_HUB",
-  "FREE_TIER",
-  "IAM",
-  "PAYMENTS",
-  "RESERVATIONS",
-  "SAVINGS_PLANS",
-  "TAX_SETTINGS",
-);
+  | "TAX_SETTINGS"
+  | (string & {});
+export const Feature = S.String;
 export type NextSteps = string[];
 export const NextSteps = S.Array(S.String);
 export type Context = { [key: string]: string | undefined };
@@ -230,13 +200,9 @@ export type ValidationExceptionReason =
   | "unknownOperation"
   | "cannotParse"
   | "fieldValidationFailed"
-  | "other";
-export const ValidationExceptionReason = S.Literal(
-  "unknownOperation",
-  "cannotParse",
-  "fieldValidationFailed",
-  "other",
-);
+  | "other"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 export interface ValidationExceptionField {
   name: string;
   message: string;

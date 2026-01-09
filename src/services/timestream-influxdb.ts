@@ -121,41 +121,32 @@ export type DbInstanceType =
   | "db.influx.8xlarge"
   | "db.influx.12xlarge"
   | "db.influx.16xlarge"
-  | "db.influx.24xlarge";
-export const DbInstanceType = S.Literal(
-  "db.influx.medium",
-  "db.influx.large",
-  "db.influx.xlarge",
-  "db.influx.2xlarge",
-  "db.influx.4xlarge",
-  "db.influx.8xlarge",
-  "db.influx.12xlarge",
-  "db.influx.16xlarge",
-  "db.influx.24xlarge",
-);
+  | "db.influx.24xlarge"
+  | (string & {});
+export const DbInstanceType = S.String;
 export type DbStorageType =
   | "InfluxIOIncludedT1"
   | "InfluxIOIncludedT2"
-  | "InfluxIOIncludedT3";
-export const DbStorageType = S.Literal(
-  "InfluxIOIncludedT1",
-  "InfluxIOIncludedT2",
-  "InfluxIOIncludedT3",
-);
-export type NetworkType = "IPV4" | "DUAL";
-export const NetworkType = S.Literal("IPV4", "DUAL");
+  | "InfluxIOIncludedT3"
+  | (string & {});
+export const DbStorageType = S.String;
+export type NetworkType = "IPV4" | "DUAL" | (string & {});
+export const NetworkType = S.String;
 export type VpcSubnetIdList = string[];
 export const VpcSubnetIdList = S.Array(S.String);
 export type VpcSecurityGroupIdList = string[];
 export const VpcSecurityGroupIdList = S.Array(S.String);
-export type ClusterDeploymentType = "MULTI_NODE_READ_REPLICAS";
-export const ClusterDeploymentType = S.Literal("MULTI_NODE_READ_REPLICAS");
-export type FailoverMode = "AUTOMATIC" | "NO_FAILOVER";
-export const FailoverMode = S.Literal("AUTOMATIC", "NO_FAILOVER");
+export type ClusterDeploymentType = "MULTI_NODE_READ_REPLICAS" | (string & {});
+export const ClusterDeploymentType = S.String;
+export type FailoverMode = "AUTOMATIC" | "NO_FAILOVER" | (string & {});
+export const FailoverMode = S.String;
 export type DbInstanceIdList = string[];
 export const DbInstanceIdList = S.Array(S.String);
-export type DeploymentType = "SINGLE_AZ" | "WITH_MULTIAZ_STANDBY";
-export const DeploymentType = S.Literal("SINGLE_AZ", "WITH_MULTIAZ_STANDBY");
+export type DeploymentType =
+  | "SINGLE_AZ"
+  | "WITH_MULTIAZ_STANDBY"
+  | (string & {});
+export const DeploymentType = S.String;
 export interface ListTagsForResourceRequest {
   resourceArn: string;
 }
@@ -441,29 +432,15 @@ export type ClusterStatus =
   | "UPDATING_INSTANCE_TYPE"
   | "REBOOTING"
   | "REBOOT_FAILED"
-  | "PARTIALLY_AVAILABLE";
-export const ClusterStatus = S.Literal(
-  "CREATING",
-  "UPDATING",
-  "DELETING",
-  "AVAILABLE",
-  "FAILED",
-  "DELETED",
-  "MAINTENANCE",
-  "UPDATING_INSTANCE_TYPE",
-  "REBOOTING",
-  "REBOOT_FAILED",
-  "PARTIALLY_AVAILABLE",
-);
+  | "PARTIALLY_AVAILABLE"
+  | (string & {});
+export const ClusterStatus = S.String;
 export type EngineType =
   | "INFLUXDB_V2"
   | "INFLUXDB_V3_CORE"
-  | "INFLUXDB_V3_ENTERPRISE";
-export const EngineType = S.Literal(
-  "INFLUXDB_V2",
-  "INFLUXDB_V3_CORE",
-  "INFLUXDB_V3_ENTERPRISE",
-);
+  | "INFLUXDB_V3_ENTERPRISE"
+  | (string & {});
+export const EngineType = S.String;
 export type Status =
   | "CREATING"
   | "AVAILABLE"
@@ -476,21 +453,9 @@ export type Status =
   | "UPDATING_INSTANCE_TYPE"
   | "MAINTENANCE"
   | "REBOOTING"
-  | "REBOOT_FAILED";
-export const Status = S.Literal(
-  "CREATING",
-  "AVAILABLE",
-  "DELETING",
-  "MODIFYING",
-  "UPDATING",
-  "DELETED",
-  "FAILED",
-  "UPDATING_DEPLOYMENT_TYPE",
-  "UPDATING_INSTANCE_TYPE",
-  "MAINTENANCE",
-  "REBOOTING",
-  "REBOOT_FAILED",
-);
+  | "REBOOT_FAILED"
+  | (string & {});
+export const Status = S.String;
 export type InstanceMode =
   | "PRIMARY"
   | "STANDBY"
@@ -498,29 +463,22 @@ export type InstanceMode =
   | "INGEST"
   | "QUERY"
   | "COMPACT"
-  | "PROCESS";
-export const InstanceMode = S.Literal(
-  "PRIMARY",
-  "STANDBY",
-  "REPLICA",
-  "INGEST",
-  "QUERY",
-  "COMPACT",
-  "PROCESS",
-);
+  | "PROCESS"
+  | (string & {});
+export const InstanceMode = S.String;
 export type InstanceModeList = InstanceMode[];
 export const InstanceModeList = S.Array(InstanceMode);
-export type LogLevel = "debug" | "info" | "error";
-export const LogLevel = S.Literal("debug", "info", "error");
-export type TracingType = "log" | "jaeger" | "disabled";
-export const TracingType = S.Literal("log", "jaeger", "disabled");
-export type LogFormats = "full";
-export const LogFormats = S.Literal("full");
-export type DataFusionRuntimeType = "multi-thread" | "multi-thread-alt";
-export const DataFusionRuntimeType = S.Literal(
-  "multi-thread",
-  "multi-thread-alt",
-);
+export type LogLevel = "debug" | "info" | "error" | (string & {});
+export const LogLevel = S.String;
+export type TracingType = "log" | "jaeger" | "disabled" | (string & {});
+export const TracingType = S.String;
+export type LogFormats = "full" | (string & {});
+export const LogFormats = S.String;
+export type DataFusionRuntimeType =
+  | "multi-thread"
+  | "multi-thread-alt"
+  | (string & {});
+export const DataFusionRuntimeType = S.String;
 export interface TagResourceRequest {
   resourceArn: string;
   tags: { [key: string]: string | undefined };
@@ -873,14 +831,9 @@ export type DurationType =
   | "minutes"
   | "seconds"
   | "milliseconds"
-  | "days";
-export const DurationType = S.Literal(
-  "hours",
-  "minutes",
-  "seconds",
-  "milliseconds",
-  "days",
-);
+  | "days"
+  | (string & {});
+export const DurationType = S.String;
 export interface Duration {
   durationType: DurationType;
   value: number;
@@ -1481,11 +1434,11 @@ export const CreateDbParameterGroupOutput = S.suspend(() =>
 ).annotations({
   identifier: "CreateDbParameterGroupOutput",
 }) as any as S.Schema<CreateDbParameterGroupOutput>;
-export type ValidationExceptionReason = "FIELD_VALIDATION_FAILED" | "OTHER";
-export const ValidationExceptionReason = S.Literal(
-  "FIELD_VALIDATION_FAILED",
-  "OTHER",
-);
+export type ValidationExceptionReason =
+  | "FIELD_VALIDATION_FAILED"
+  | "OTHER"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 
 //# Errors
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(

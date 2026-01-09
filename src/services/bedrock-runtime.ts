@@ -143,29 +143,33 @@ export type GuardrailAutomatedReasoningStatementNaturalLanguageContent =
   | redacted.Redacted<string>;
 
 //# Schemas
-export type AsyncInvokeStatus = "InProgress" | "Completed" | "Failed";
-export const AsyncInvokeStatus = S.Literal("InProgress", "Completed", "Failed");
-export type SortAsyncInvocationBy = "SubmissionTime";
-export const SortAsyncInvocationBy = S.Literal("SubmissionTime");
-export type SortOrder = "Ascending" | "Descending";
-export const SortOrder = S.Literal("Ascending", "Descending");
-export type GuardrailContentSource = "INPUT" | "OUTPUT";
-export const GuardrailContentSource = S.Literal("INPUT", "OUTPUT");
-export type GuardrailOutputScope = "INTERVENTIONS" | "FULL";
-export const GuardrailOutputScope = S.Literal("INTERVENTIONS", "FULL");
+export type AsyncInvokeStatus =
+  | "InProgress"
+  | "Completed"
+  | "Failed"
+  | (string & {});
+export const AsyncInvokeStatus = S.String;
+export type SortAsyncInvocationBy = "SubmissionTime" | (string & {});
+export const SortAsyncInvocationBy = S.String;
+export type SortOrder = "Ascending" | "Descending" | (string & {});
+export const SortOrder = S.String;
+export type GuardrailContentSource = "INPUT" | "OUTPUT" | (string & {});
+export const GuardrailContentSource = S.String;
+export type GuardrailOutputScope = "INTERVENTIONS" | "FULL" | (string & {});
+export const GuardrailOutputScope = S.String;
 export type AdditionalModelResponseFieldPaths = string[];
 export const AdditionalModelResponseFieldPaths = S.Array(S.String);
-export type Trace = "ENABLED" | "DISABLED" | "ENABLED_FULL";
-export const Trace = S.Literal("ENABLED", "DISABLED", "ENABLED_FULL");
-export type PerformanceConfigLatency = "standard" | "optimized";
-export const PerformanceConfigLatency = S.Literal("standard", "optimized");
-export type ServiceTierType = "priority" | "default" | "flex" | "reserved";
-export const ServiceTierType = S.Literal(
-  "priority",
-  "default",
-  "flex",
-  "reserved",
-);
+export type Trace = "ENABLED" | "DISABLED" | "ENABLED_FULL" | (string & {});
+export const Trace = S.String;
+export type PerformanceConfigLatency = "standard" | "optimized" | (string & {});
+export const PerformanceConfigLatency = S.String;
+export type ServiceTierType =
+  | "priority"
+  | "default"
+  | "flex"
+  | "reserved"
+  | (string & {});
+export const ServiceTierType = S.String;
 export interface GetAsyncInvokeRequest {
   invocationArn: string;
 }
@@ -309,14 +313,18 @@ export const InvokeModelWithResponseStreamRequest = S.suspend(() =>
 ).annotations({
   identifier: "InvokeModelWithResponseStreamRequest",
 }) as any as S.Schema<InvokeModelWithResponseStreamRequest>;
-export type ConversationRole = "user" | "assistant";
-export const ConversationRole = S.Literal("user", "assistant");
+export type ConversationRole = "user" | "assistant" | (string & {});
+export const ConversationRole = S.String;
 export type NonEmptyStringList = string[];
 export const NonEmptyStringList = S.Array(S.String);
-export type GuardrailTrace = "enabled" | "disabled" | "enabled_full";
-export const GuardrailTrace = S.Literal("enabled", "disabled", "enabled_full");
-export type GuardrailStreamProcessingMode = "sync" | "async";
-export const GuardrailStreamProcessingMode = S.Literal("sync", "async");
+export type GuardrailTrace =
+  | "enabled"
+  | "disabled"
+  | "enabled_full"
+  | (string & {});
+export const GuardrailTrace = S.String;
+export type GuardrailStreamProcessingMode = "sync" | "async" | (string & {});
+export const GuardrailStreamProcessingMode = S.String;
 export interface Tag {
   key: string;
   value: string;
@@ -394,18 +402,15 @@ export const GuardrailStreamConfiguration = S.suspend(() =>
 export type GuardrailContentQualifier =
   | "grounding_source"
   | "query"
-  | "guard_content";
-export const GuardrailContentQualifier = S.Literal(
-  "grounding_source",
-  "query",
-  "guard_content",
-);
+  | "guard_content"
+  | (string & {});
+export const GuardrailContentQualifier = S.String;
 export type GuardrailContentQualifierList = GuardrailContentQualifier[];
 export const GuardrailContentQualifierList = S.Array(GuardrailContentQualifier);
-export type GuardrailImageFormat = "png" | "jpeg";
-export const GuardrailImageFormat = S.Literal("png", "jpeg");
-export type CachePointType = "default";
-export const CachePointType = S.Literal("default");
+export type GuardrailImageFormat = "png" | "jpeg" | (string & {});
+export const GuardrailImageFormat = S.String;
+export type CachePointType = "default" | (string & {});
+export const CachePointType = S.String;
 export interface AutoToolChoice {}
 export const AutoToolChoice = S.suspend(() => S.Struct({})).annotations({
   identifier: "AutoToolChoice",
@@ -460,8 +465,8 @@ export const GetAsyncInvokeResponse = S.suspend(() =>
 ).annotations({
   identifier: "GetAsyncInvokeResponse",
 }) as any as S.Schema<GetAsyncInvokeResponse>;
-export type ImageFormat = "png" | "jpeg" | "gif" | "webp";
-export const ImageFormat = S.Literal("png", "jpeg", "gif", "webp");
+export type ImageFormat = "png" | "jpeg" | "gif" | "webp" | (string & {});
+export const ImageFormat = S.String;
 export interface S3Location {
   uri: string;
   bucketOwner?: string;
@@ -503,18 +508,9 @@ export type DocumentFormat =
   | "xlsx"
   | "html"
   | "txt"
-  | "md";
-export const DocumentFormat = S.Literal(
-  "pdf",
-  "csv",
-  "doc",
-  "docx",
-  "xls",
-  "xlsx",
-  "html",
-  "txt",
-  "md",
-);
+  | "md"
+  | (string & {});
+export const DocumentFormat = S.String;
 export type DocumentContentBlock = { text: string };
 export const DocumentContentBlock = S.Union(S.Struct({ text: S.String }));
 export type DocumentContentBlocks = DocumentContentBlock[];
@@ -570,18 +566,9 @@ export type VideoFormat =
   | "mpeg"
   | "mpg"
   | "wmv"
-  | "three_gp";
-export const VideoFormat = S.Literal(
-  "mkv",
-  "mov",
-  "mp4",
-  "webm",
-  "flv",
-  "mpeg",
-  "mpg",
-  "wmv",
-  "three_gp",
-);
+  | "three_gp"
+  | (string & {});
+export const VideoFormat = S.String;
 export type VideoSource =
   | { bytes: Uint8Array; s3Location?: never }
   | { bytes?: never; s3Location: S3Location };
@@ -611,24 +598,9 @@ export type AudioFormat =
   | "mpeg"
   | "mpga"
   | "pcm"
-  | "webm";
-export const AudioFormat = S.Literal(
-  "mp3",
-  "opus",
-  "wav",
-  "aac",
-  "flac",
-  "mp4",
-  "ogg",
-  "mkv",
-  "mka",
-  "x-aac",
-  "m4a",
-  "mpeg",
-  "mpga",
-  "pcm",
-  "webm",
-);
+  | "webm"
+  | (string & {});
+export const AudioFormat = S.String;
 export type AudioSource =
   | { bytes: Uint8Array; s3Location?: never }
   | { bytes?: never; s3Location: S3Location };
@@ -648,8 +620,8 @@ export const AudioBlock = S.suspend(() =>
     error: S.optional(ErrorBlock),
   }),
 ).annotations({ identifier: "AudioBlock" }) as any as S.Schema<AudioBlock>;
-export type ToolUseType = "server_tool_use";
-export const ToolUseType = S.Literal("server_tool_use");
+export type ToolUseType = "server_tool_use" | (string & {});
+export const ToolUseType = S.String;
 export interface ToolUseBlock {
   toolUseId: string;
   name: string;
@@ -749,8 +721,8 @@ export const ToolResultContentBlock = S.Union(
 );
 export type ToolResultContentBlocks = ToolResultContentBlock[];
 export const ToolResultContentBlocks = S.Array(ToolResultContentBlock);
-export type ToolResultStatus = "success" | "error";
-export const ToolResultStatus = S.Literal("success", "error");
+export type ToolResultStatus = "success" | "error" | (string & {});
+export const ToolResultStatus = S.String;
 export interface ToolResultBlock {
   toolUseId: string;
   content: ToolResultContentBlock[];
@@ -770,12 +742,9 @@ export const ToolResultBlock = S.suspend(() =>
 export type GuardrailConverseContentQualifier =
   | "grounding_source"
   | "query"
-  | "guard_content";
-export const GuardrailConverseContentQualifier = S.Literal(
-  "grounding_source",
-  "query",
-  "guard_content",
-);
+  | "guard_content"
+  | (string & {});
+export const GuardrailConverseContentQualifier = S.String;
 export type GuardrailConverseContentQualifierList =
   GuardrailConverseContentQualifier[];
 export const GuardrailConverseContentQualifierList = S.Array(
@@ -793,8 +762,8 @@ export const GuardrailConverseTextBlock = S.suspend(() =>
 ).annotations({
   identifier: "GuardrailConverseTextBlock",
 }) as any as S.Schema<GuardrailConverseTextBlock>;
-export type GuardrailConverseImageFormat = "png" | "jpeg";
-export const GuardrailConverseImageFormat = S.Literal("png", "jpeg");
+export type GuardrailConverseImageFormat = "png" | "jpeg" | (string & {});
+export const GuardrailConverseImageFormat = S.String;
 export type GuardrailConverseImageSource = { bytes: Uint8Array };
 export const GuardrailConverseImageSource = S.Union(
   S.Struct({ bytes: T.Blob }),
@@ -1629,18 +1598,9 @@ export type StopReason =
   | "content_filtered"
   | "malformed_model_output"
   | "malformed_tool_use"
-  | "model_context_window_exceeded";
-export const StopReason = S.Literal(
-  "end_turn",
-  "tool_use",
-  "max_tokens",
-  "stop_sequence",
-  "guardrail_intervened",
-  "content_filtered",
-  "malformed_model_output",
-  "malformed_tool_use",
-  "model_context_window_exceeded",
-);
+  | "model_context_window_exceeded"
+  | (string & {});
+export const StopReason = S.String;
 export interface StartAsyncInvokeResponse {
   invocationArn: string;
 }
@@ -1735,8 +1695,8 @@ export const MessageStopEvent = S.suspend(() =>
 ).annotations({
   identifier: "MessageStopEvent",
 }) as any as S.Schema<MessageStopEvent>;
-export type GuardrailAction = "NONE" | "GUARDRAIL_INTERVENED";
-export const GuardrailAction = S.Literal("NONE", "GUARDRAIL_INTERVENED");
+export type GuardrailAction = "NONE" | "GUARDRAIL_INTERVENED" | (string & {});
+export const GuardrailAction = S.String;
 export interface TokenUsage {
   inputTokens: number;
   outputTokens: number;
@@ -1990,16 +1950,13 @@ export const InvokeModelWithBidirectionalStreamOutput = T.EventStream(
 export type GuardrailOrigin =
   | "REQUEST"
   | "ACCOUNT_ENFORCED"
-  | "ORGANIZATION_ENFORCED";
-export const GuardrailOrigin = S.Literal(
-  "REQUEST",
-  "ACCOUNT_ENFORCED",
-  "ORGANIZATION_ENFORCED",
-);
+  | "ORGANIZATION_ENFORCED"
+  | (string & {});
+export const GuardrailOrigin = S.String;
 export type GuardrailOriginList = GuardrailOrigin[];
 export const GuardrailOriginList = S.Array(GuardrailOrigin);
-export type GuardrailOwnership = "SELF" | "CROSS_ACCOUNT";
-export const GuardrailOwnership = S.Literal("SELF", "CROSS_ACCOUNT");
+export type GuardrailOwnership = "SELF" | "CROSS_ACCOUNT" | (string & {});
+export const GuardrailOwnership = S.String;
 export type ContentBlockStart =
   | { toolUse: ToolUseBlockStart; toolResult?: never; image?: never }
   | { toolUse?: never; toolResult: ToolResultBlockStart; image?: never }
@@ -2021,10 +1978,10 @@ export type CitationSourceContentListDelta = CitationSourceContentDelta[];
 export const CitationSourceContentListDelta = S.Array(
   CitationSourceContentDelta,
 );
-export type GuardrailTopicType = "DENY";
-export const GuardrailTopicType = S.Literal("DENY");
-export type GuardrailTopicPolicyAction = "BLOCKED" | "NONE";
-export const GuardrailTopicPolicyAction = S.Literal("BLOCKED", "NONE");
+export type GuardrailTopicType = "DENY" | (string & {});
+export const GuardrailTopicType = S.String;
+export type GuardrailTopicPolicyAction = "BLOCKED" | "NONE" | (string & {});
+export const GuardrailTopicPolicyAction = S.String;
 export interface GuardrailTopic {
   name: string;
   type: GuardrailTopicType;
@@ -2057,35 +2014,25 @@ export type GuardrailContentFilterType =
   | "SEXUAL"
   | "VIOLENCE"
   | "MISCONDUCT"
-  | "PROMPT_ATTACK";
-export const GuardrailContentFilterType = S.Literal(
-  "INSULTS",
-  "HATE",
-  "SEXUAL",
-  "VIOLENCE",
-  "MISCONDUCT",
-  "PROMPT_ATTACK",
-);
+  | "PROMPT_ATTACK"
+  | (string & {});
+export const GuardrailContentFilterType = S.String;
 export type GuardrailContentFilterConfidence =
   | "NONE"
   | "LOW"
   | "MEDIUM"
-  | "HIGH";
-export const GuardrailContentFilterConfidence = S.Literal(
-  "NONE",
-  "LOW",
-  "MEDIUM",
-  "HIGH",
-);
-export type GuardrailContentFilterStrength = "NONE" | "LOW" | "MEDIUM" | "HIGH";
-export const GuardrailContentFilterStrength = S.Literal(
-  "NONE",
-  "LOW",
-  "MEDIUM",
-  "HIGH",
-);
-export type GuardrailContentPolicyAction = "BLOCKED" | "NONE";
-export const GuardrailContentPolicyAction = S.Literal("BLOCKED", "NONE");
+  | "HIGH"
+  | (string & {});
+export const GuardrailContentFilterConfidence = S.String;
+export type GuardrailContentFilterStrength =
+  | "NONE"
+  | "LOW"
+  | "MEDIUM"
+  | "HIGH"
+  | (string & {});
+export const GuardrailContentFilterStrength = S.String;
+export type GuardrailContentPolicyAction = "BLOCKED" | "NONE" | (string & {});
+export const GuardrailContentPolicyAction = S.String;
 export interface GuardrailContentFilter {
   type: GuardrailContentFilterType;
   confidence: GuardrailContentFilterConfidence;
@@ -2114,8 +2061,8 @@ export const GuardrailContentPolicyAssessment = S.suspend(() =>
 ).annotations({
   identifier: "GuardrailContentPolicyAssessment",
 }) as any as S.Schema<GuardrailContentPolicyAssessment>;
-export type GuardrailWordPolicyAction = "BLOCKED" | "NONE";
-export const GuardrailWordPolicyAction = S.Literal("BLOCKED", "NONE");
+export type GuardrailWordPolicyAction = "BLOCKED" | "NONE" | (string & {});
+export const GuardrailWordPolicyAction = S.String;
 export interface GuardrailCustomWord {
   match: string;
   action: GuardrailWordPolicyAction;
@@ -2132,8 +2079,8 @@ export const GuardrailCustomWord = S.suspend(() =>
 }) as any as S.Schema<GuardrailCustomWord>;
 export type GuardrailCustomWordList = GuardrailCustomWord[];
 export const GuardrailCustomWordList = S.Array(GuardrailCustomWord);
-export type GuardrailManagedWordType = "PROFANITY";
-export const GuardrailManagedWordType = S.Literal("PROFANITY");
+export type GuardrailManagedWordType = "PROFANITY" | (string & {});
+export const GuardrailManagedWordType = S.String;
 export interface GuardrailManagedWord {
   match: string;
   type: GuardrailManagedWordType;
@@ -2195,49 +2142,15 @@ export type GuardrailPiiEntityType =
   | "US_INDIVIDUAL_TAX_IDENTIFICATION_NUMBER"
   | "US_PASSPORT_NUMBER"
   | "US_SOCIAL_SECURITY_NUMBER"
-  | "VEHICLE_IDENTIFICATION_NUMBER";
-export const GuardrailPiiEntityType = S.Literal(
-  "ADDRESS",
-  "AGE",
-  "AWS_ACCESS_KEY",
-  "AWS_SECRET_KEY",
-  "CA_HEALTH_NUMBER",
-  "CA_SOCIAL_INSURANCE_NUMBER",
-  "CREDIT_DEBIT_CARD_CVV",
-  "CREDIT_DEBIT_CARD_EXPIRY",
-  "CREDIT_DEBIT_CARD_NUMBER",
-  "DRIVER_ID",
-  "EMAIL",
-  "INTERNATIONAL_BANK_ACCOUNT_NUMBER",
-  "IP_ADDRESS",
-  "LICENSE_PLATE",
-  "MAC_ADDRESS",
-  "NAME",
-  "PASSWORD",
-  "PHONE",
-  "PIN",
-  "SWIFT_CODE",
-  "UK_NATIONAL_HEALTH_SERVICE_NUMBER",
-  "UK_NATIONAL_INSURANCE_NUMBER",
-  "UK_UNIQUE_TAXPAYER_REFERENCE_NUMBER",
-  "URL",
-  "USERNAME",
-  "US_BANK_ACCOUNT_NUMBER",
-  "US_BANK_ROUTING_NUMBER",
-  "US_INDIVIDUAL_TAX_IDENTIFICATION_NUMBER",
-  "US_PASSPORT_NUMBER",
-  "US_SOCIAL_SECURITY_NUMBER",
-  "VEHICLE_IDENTIFICATION_NUMBER",
-);
+  | "VEHICLE_IDENTIFICATION_NUMBER"
+  | (string & {});
+export const GuardrailPiiEntityType = S.String;
 export type GuardrailSensitiveInformationPolicyAction =
   | "ANONYMIZED"
   | "BLOCKED"
-  | "NONE";
-export const GuardrailSensitiveInformationPolicyAction = S.Literal(
-  "ANONYMIZED",
-  "BLOCKED",
-  "NONE",
-);
+  | "NONE"
+  | (string & {});
+export const GuardrailSensitiveInformationPolicyAction = S.String;
 export interface GuardrailPiiEntityFilter {
   match: string;
   type: GuardrailPiiEntityType;
@@ -2288,16 +2201,16 @@ export const GuardrailSensitiveInformationPolicyAssessment = S.suspend(() =>
 ).annotations({
   identifier: "GuardrailSensitiveInformationPolicyAssessment",
 }) as any as S.Schema<GuardrailSensitiveInformationPolicyAssessment>;
-export type GuardrailContextualGroundingFilterType = "GROUNDING" | "RELEVANCE";
-export const GuardrailContextualGroundingFilterType = S.Literal(
-  "GROUNDING",
-  "RELEVANCE",
-);
-export type GuardrailContextualGroundingPolicyAction = "BLOCKED" | "NONE";
-export const GuardrailContextualGroundingPolicyAction = S.Literal(
-  "BLOCKED",
-  "NONE",
-);
+export type GuardrailContextualGroundingFilterType =
+  | "GROUNDING"
+  | "RELEVANCE"
+  | (string & {});
+export const GuardrailContextualGroundingFilterType = S.String;
+export type GuardrailContextualGroundingPolicyAction =
+  | "BLOCKED"
+  | "NONE"
+  | (string & {});
+export const GuardrailContextualGroundingPolicyAction = S.String;
 export interface GuardrailContextualGroundingFilter {
   type: GuardrailContextualGroundingFilterType;
   threshold: number;
@@ -2410,11 +2323,9 @@ export const GuardrailAutomatedReasoningRuleList = S.Array(
 );
 export type GuardrailAutomatedReasoningLogicWarningType =
   | "ALWAYS_FALSE"
-  | "ALWAYS_TRUE";
-export const GuardrailAutomatedReasoningLogicWarningType = S.Literal(
-  "ALWAYS_FALSE",
-  "ALWAYS_TRUE",
-);
+  | "ALWAYS_TRUE"
+  | (string & {});
+export const GuardrailAutomatedReasoningLogicWarningType = S.String;
 export interface GuardrailAutomatedReasoningLogicWarning {
   type?: GuardrailAutomatedReasoningLogicWarningType;
   premises?: GuardrailAutomatedReasoningStatement[];

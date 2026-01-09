@@ -96,8 +96,8 @@ export type FailureReason = string;
 export type HumanLoopArn = string;
 
 //# Schemas
-export type SortOrder = "Ascending" | "Descending";
-export const SortOrder = S.Literal("Ascending", "Descending");
+export type SortOrder = "Ascending" | "Descending" | (string & {});
+export const SortOrder = S.String;
 export interface DeleteHumanLoopRequest {
   HumanLoopName: string;
 }
@@ -196,11 +196,9 @@ export const StopHumanLoopResponse = S.suspend(() => S.Struct({})).annotations({
 }) as any as S.Schema<StopHumanLoopResponse>;
 export type ContentClassifier =
   | "FreeOfPersonallyIdentifiableInformation"
-  | "FreeOfAdultContent";
-export const ContentClassifier = S.Literal(
-  "FreeOfPersonallyIdentifiableInformation",
-  "FreeOfAdultContent",
-);
+  | "FreeOfAdultContent"
+  | (string & {});
+export const ContentClassifier = S.String;
 export type ContentClassifiers = ContentClassifier[];
 export const ContentClassifiers = S.Array(ContentClassifier);
 export type HumanLoopStatus =
@@ -208,14 +206,9 @@ export type HumanLoopStatus =
   | "Failed"
   | "Completed"
   | "Stopped"
-  | "Stopping";
-export const HumanLoopStatus = S.Literal(
-  "InProgress",
-  "Failed",
-  "Completed",
-  "Stopped",
-  "Stopping",
-);
+  | "Stopping"
+  | (string & {});
+export const HumanLoopStatus = S.String;
 export interface HumanLoopInput {
   InputContent?: string;
 }

@@ -138,8 +138,8 @@ export const GetNamespaceDeletionStatusRequest = S.suspend(() =>
 ).annotations({
   identifier: "GetNamespaceDeletionStatusRequest",
 }) as any as S.Schema<GetNamespaceDeletionStatusRequest>;
-export type DeploymentTarget = "GREENGRASS" | "CLOUD";
-export const DeploymentTarget = S.Literal("GREENGRASS", "CLOUD");
+export type DeploymentTarget = "GREENGRASS" | "CLOUD" | (string & {});
+export const DeploymentTarget = S.String;
 export type EntityType =
   | "DEVICE"
   | "SERVICE"
@@ -150,29 +150,21 @@ export type EntityType =
   | "EVENT"
   | "PROPERTY"
   | "MAPPING"
-  | "ENUM";
-export const EntityType = S.Literal(
-  "DEVICE",
-  "SERVICE",
-  "DEVICE_MODEL",
-  "CAPABILITY",
-  "STATE",
-  "ACTION",
-  "EVENT",
-  "PROPERTY",
-  "MAPPING",
-  "ENUM",
-);
+  | "ENUM"
+  | (string & {});
+export const EntityType = S.String;
 export type Urns = string[];
 export const Urns = S.Array(S.String);
-export type NamespaceDeletionStatus = "IN_PROGRESS" | "SUCCEEDED" | "FAILED";
-export const NamespaceDeletionStatus = S.Literal(
-  "IN_PROGRESS",
-  "SUCCEEDED",
-  "FAILED",
-);
-export type NamespaceDeletionStatusErrorCodes = "VALIDATION_FAILED";
-export const NamespaceDeletionStatusErrorCodes = S.Literal("VALIDATION_FAILED");
+export type NamespaceDeletionStatus =
+  | "IN_PROGRESS"
+  | "SUCCEEDED"
+  | "FAILED"
+  | (string & {});
+export const NamespaceDeletionStatus = S.String;
+export type NamespaceDeletionStatusErrorCodes =
+  | "VALIDATION_FAILED"
+  | (string & {});
+export const NamespaceDeletionStatusErrorCodes = S.String;
 export type EntityTypes = EntityType[];
 export const EntityTypes = S.Array(EntityType);
 export type TagKeyList = string[];
@@ -199,8 +191,8 @@ export const AssociateEntityToThingResponse = S.suspend(() =>
 ).annotations({
   identifier: "AssociateEntityToThingResponse",
 }) as any as S.Schema<AssociateEntityToThingResponse>;
-export type DefinitionLanguage = "GRAPHQL";
-export const DefinitionLanguage = S.Literal("GRAPHQL");
+export type DefinitionLanguage = "GRAPHQL" | (string & {});
+export const DefinitionLanguage = S.String;
 export interface DefinitionDocument {
   language: DefinitionLanguage;
   text: string;
@@ -629,32 +621,25 @@ export type EntityFilterName =
   | "NAME"
   | "NAMESPACE"
   | "SEMANTIC_TYPE_PATH"
-  | "REFERENCED_ENTITY_ID";
-export const EntityFilterName = S.Literal(
-  "NAME",
-  "NAMESPACE",
-  "SEMANTIC_TYPE_PATH",
-  "REFERENCED_ENTITY_ID",
-);
+  | "REFERENCED_ENTITY_ID"
+  | (string & {});
+export const EntityFilterName = S.String;
 export type EntityFilterValues = string[];
 export const EntityFilterValues = S.Array(S.String);
-export type FlowTemplateFilterName = "DEVICE_MODEL_ID";
-export const FlowTemplateFilterName = S.Literal("DEVICE_MODEL_ID");
+export type FlowTemplateFilterName = "DEVICE_MODEL_ID" | (string & {});
+export const FlowTemplateFilterName = S.String;
 export type FlowTemplateFilterValues = string[];
 export const FlowTemplateFilterValues = S.Array(S.String);
 export type SystemInstanceFilterName =
   | "SYSTEM_TEMPLATE_ID"
   | "STATUS"
-  | "GREENGRASS_GROUP_NAME";
-export const SystemInstanceFilterName = S.Literal(
-  "SYSTEM_TEMPLATE_ID",
-  "STATUS",
-  "GREENGRASS_GROUP_NAME",
-);
+  | "GREENGRASS_GROUP_NAME"
+  | (string & {});
+export const SystemInstanceFilterName = S.String;
 export type SystemInstanceFilterValues = string[];
 export const SystemInstanceFilterValues = S.Array(S.String);
-export type SystemTemplateFilterName = "FLOW_TEMPLATE_ID";
-export const SystemTemplateFilterName = S.Literal("FLOW_TEMPLATE_ID");
+export type SystemTemplateFilterName = "FLOW_TEMPLATE_ID" | (string & {});
+export const SystemTemplateFilterName = S.String;
 export type SystemTemplateFilterValues = string[];
 export const SystemTemplateFilterValues = S.Array(S.String);
 export interface MetricsConfiguration {
@@ -687,8 +672,12 @@ export const SystemTemplateSummary = S.suspend(() =>
 }) as any as S.Schema<SystemTemplateSummary>;
 export type SystemTemplateSummaries = SystemTemplateSummary[];
 export const SystemTemplateSummaries = S.Array(SystemTemplateSummary);
-export type UploadStatus = "IN_PROGRESS" | "SUCCEEDED" | "FAILED";
-export const UploadStatus = S.Literal("IN_PROGRESS", "SUCCEEDED", "FAILED");
+export type UploadStatus =
+  | "IN_PROGRESS"
+  | "SUCCEEDED"
+  | "FAILED"
+  | (string & {});
+export const UploadStatus = S.String;
 export type StringList = string[];
 export const StringList = S.Array(S.String);
 export interface EntityFilter {
@@ -917,17 +906,9 @@ export type SystemInstanceDeploymentStatus =
   | "UNDEPLOY_IN_PROGRESS"
   | "FAILED"
   | "PENDING_DELETE"
-  | "DELETED_IN_TARGET";
-export const SystemInstanceDeploymentStatus = S.Literal(
-  "NOT_DEPLOYED",
-  "BOOTSTRAP",
-  "DEPLOY_IN_PROGRESS",
-  "DEPLOYED_IN_TARGET",
-  "UNDEPLOY_IN_PROGRESS",
-  "FAILED",
-  "PENDING_DELETE",
-  "DELETED_IN_TARGET",
-);
+  | "DELETED_IN_TARGET"
+  | (string & {});
+export const SystemInstanceDeploymentStatus = S.String;
 export interface SystemInstanceSummary {
   id?: string;
   arn?: string;
@@ -1019,37 +1000,16 @@ export type FlowExecutionEventType =
   | "THING_ACTION_TASK"
   | "THING_ACTION_TASK_FAILED"
   | "THING_ACTION_TASK_SUCCEEDED"
-  | "ACKNOWLEDGE_TASK_MESSAGE";
-export const FlowExecutionEventType = S.Literal(
-  "EXECUTION_STARTED",
-  "EXECUTION_FAILED",
-  "EXECUTION_ABORTED",
-  "EXECUTION_SUCCEEDED",
-  "STEP_STARTED",
-  "STEP_FAILED",
-  "STEP_SUCCEEDED",
-  "ACTIVITY_SCHEDULED",
-  "ACTIVITY_STARTED",
-  "ACTIVITY_FAILED",
-  "ACTIVITY_SUCCEEDED",
-  "START_FLOW_EXECUTION_TASK",
-  "SCHEDULE_NEXT_READY_STEPS_TASK",
-  "THING_ACTION_TASK",
-  "THING_ACTION_TASK_FAILED",
-  "THING_ACTION_TASK_SUCCEEDED",
-  "ACKNOWLEDGE_TASK_MESSAGE",
-);
+  | "ACKNOWLEDGE_TASK_MESSAGE"
+  | (string & {});
+export const FlowExecutionEventType = S.String;
 export type FlowExecutionStatus =
   | "RUNNING"
   | "ABORTED"
   | "SUCCEEDED"
-  | "FAILED";
-export const FlowExecutionStatus = S.Literal(
-  "RUNNING",
-  "ABORTED",
-  "SUCCEEDED",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const FlowExecutionStatus = S.String;
 export interface EntityDescription {
   id?: string;
   arn?: string;

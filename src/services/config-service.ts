@@ -740,542 +740,9 @@ export type ResourceType =
   | "AWS::AppStream::AppBlockBuilder"
   | "AWS::Route53::DNSSEC"
   | "AWS::SageMaker::UserProfile"
-  | "AWS::ApiGateway::Method";
-export const ResourceType = S.Literal(
-  "AWS::EC2::CustomerGateway",
-  "AWS::EC2::EIP",
-  "AWS::EC2::Host",
-  "AWS::EC2::Instance",
-  "AWS::EC2::InternetGateway",
-  "AWS::EC2::NetworkAcl",
-  "AWS::EC2::NetworkInterface",
-  "AWS::EC2::RouteTable",
-  "AWS::EC2::SecurityGroup",
-  "AWS::EC2::Subnet",
-  "AWS::CloudTrail::Trail",
-  "AWS::EC2::Volume",
-  "AWS::EC2::VPC",
-  "AWS::EC2::VPNConnection",
-  "AWS::EC2::VPNGateway",
-  "AWS::EC2::RegisteredHAInstance",
-  "AWS::EC2::NatGateway",
-  "AWS::EC2::EgressOnlyInternetGateway",
-  "AWS::EC2::VPCEndpoint",
-  "AWS::EC2::VPCEndpointService",
-  "AWS::EC2::FlowLog",
-  "AWS::EC2::VPCPeeringConnection",
-  "AWS::Elasticsearch::Domain",
-  "AWS::IAM::Group",
-  "AWS::IAM::Policy",
-  "AWS::IAM::Role",
-  "AWS::IAM::User",
-  "AWS::ElasticLoadBalancingV2::LoadBalancer",
-  "AWS::ACM::Certificate",
-  "AWS::RDS::DBInstance",
-  "AWS::RDS::DBSubnetGroup",
-  "AWS::RDS::DBSecurityGroup",
-  "AWS::RDS::DBSnapshot",
-  "AWS::RDS::DBCluster",
-  "AWS::RDS::DBClusterSnapshot",
-  "AWS::RDS::EventSubscription",
-  "AWS::S3::Bucket",
-  "AWS::S3::AccountPublicAccessBlock",
-  "AWS::Redshift::Cluster",
-  "AWS::Redshift::ClusterSnapshot",
-  "AWS::Redshift::ClusterParameterGroup",
-  "AWS::Redshift::ClusterSecurityGroup",
-  "AWS::Redshift::ClusterSubnetGroup",
-  "AWS::Redshift::EventSubscription",
-  "AWS::SSM::ManagedInstanceInventory",
-  "AWS::CloudWatch::Alarm",
-  "AWS::CloudFormation::Stack",
-  "AWS::ElasticLoadBalancing::LoadBalancer",
-  "AWS::AutoScaling::AutoScalingGroup",
-  "AWS::AutoScaling::LaunchConfiguration",
-  "AWS::AutoScaling::ScalingPolicy",
-  "AWS::AutoScaling::ScheduledAction",
-  "AWS::DynamoDB::Table",
-  "AWS::CodeBuild::Project",
-  "AWS::WAF::RateBasedRule",
-  "AWS::WAF::Rule",
-  "AWS::WAF::RuleGroup",
-  "AWS::WAF::WebACL",
-  "AWS::WAFRegional::RateBasedRule",
-  "AWS::WAFRegional::Rule",
-  "AWS::WAFRegional::RuleGroup",
-  "AWS::WAFRegional::WebACL",
-  "AWS::CloudFront::Distribution",
-  "AWS::CloudFront::StreamingDistribution",
-  "AWS::Lambda::Function",
-  "AWS::NetworkFirewall::Firewall",
-  "AWS::NetworkFirewall::FirewallPolicy",
-  "AWS::NetworkFirewall::RuleGroup",
-  "AWS::ElasticBeanstalk::Application",
-  "AWS::ElasticBeanstalk::ApplicationVersion",
-  "AWS::ElasticBeanstalk::Environment",
-  "AWS::WAFv2::WebACL",
-  "AWS::WAFv2::RuleGroup",
-  "AWS::WAFv2::IPSet",
-  "AWS::WAFv2::RegexPatternSet",
-  "AWS::WAFv2::ManagedRuleSet",
-  "AWS::XRay::EncryptionConfig",
-  "AWS::SSM::AssociationCompliance",
-  "AWS::SSM::PatchCompliance",
-  "AWS::Shield::Protection",
-  "AWS::ShieldRegional::Protection",
-  "AWS::Config::ConformancePackCompliance",
-  "AWS::Config::ResourceCompliance",
-  "AWS::ApiGateway::Stage",
-  "AWS::ApiGateway::RestApi",
-  "AWS::ApiGatewayV2::Stage",
-  "AWS::ApiGatewayV2::Api",
-  "AWS::CodePipeline::Pipeline",
-  "AWS::ServiceCatalog::CloudFormationProvisionedProduct",
-  "AWS::ServiceCatalog::CloudFormationProduct",
-  "AWS::ServiceCatalog::Portfolio",
-  "AWS::SQS::Queue",
-  "AWS::KMS::Key",
-  "AWS::QLDB::Ledger",
-  "AWS::SecretsManager::Secret",
-  "AWS::SNS::Topic",
-  "AWS::SSM::FileData",
-  "AWS::Backup::BackupPlan",
-  "AWS::Backup::BackupSelection",
-  "AWS::Backup::BackupVault",
-  "AWS::Backup::RecoveryPoint",
-  "AWS::ECR::Repository",
-  "AWS::ECS::Cluster",
-  "AWS::ECS::Service",
-  "AWS::ECS::TaskDefinition",
-  "AWS::EFS::AccessPoint",
-  "AWS::EFS::FileSystem",
-  "AWS::EKS::Cluster",
-  "AWS::OpenSearch::Domain",
-  "AWS::EC2::TransitGateway",
-  "AWS::Kinesis::Stream",
-  "AWS::Kinesis::StreamConsumer",
-  "AWS::CodeDeploy::Application",
-  "AWS::CodeDeploy::DeploymentConfig",
-  "AWS::CodeDeploy::DeploymentGroup",
-  "AWS::EC2::LaunchTemplate",
-  "AWS::ECR::PublicRepository",
-  "AWS::GuardDuty::Detector",
-  "AWS::EMR::SecurityConfiguration",
-  "AWS::SageMaker::CodeRepository",
-  "AWS::Route53Resolver::ResolverEndpoint",
-  "AWS::Route53Resolver::ResolverRule",
-  "AWS::Route53Resolver::ResolverRuleAssociation",
-  "AWS::DMS::ReplicationSubnetGroup",
-  "AWS::DMS::EventSubscription",
-  "AWS::MSK::Cluster",
-  "AWS::StepFunctions::Activity",
-  "AWS::WorkSpaces::Workspace",
-  "AWS::WorkSpaces::ConnectionAlias",
-  "AWS::SageMaker::Model",
-  "AWS::ElasticLoadBalancingV2::Listener",
-  "AWS::StepFunctions::StateMachine",
-  "AWS::Batch::JobQueue",
-  "AWS::Batch::ComputeEnvironment",
-  "AWS::AccessAnalyzer::Analyzer",
-  "AWS::Athena::WorkGroup",
-  "AWS::Athena::DataCatalog",
-  "AWS::Detective::Graph",
-  "AWS::GlobalAccelerator::Accelerator",
-  "AWS::GlobalAccelerator::EndpointGroup",
-  "AWS::GlobalAccelerator::Listener",
-  "AWS::EC2::TransitGatewayAttachment",
-  "AWS::EC2::TransitGatewayRouteTable",
-  "AWS::DMS::Certificate",
-  "AWS::AppConfig::Application",
-  "AWS::AppSync::GraphQLApi",
-  "AWS::DataSync::LocationSMB",
-  "AWS::DataSync::LocationFSxLustre",
-  "AWS::DataSync::LocationS3",
-  "AWS::DataSync::LocationEFS",
-  "AWS::DataSync::Task",
-  "AWS::DataSync::LocationNFS",
-  "AWS::EC2::NetworkInsightsAccessScopeAnalysis",
-  "AWS::EKS::FargateProfile",
-  "AWS::Glue::Job",
-  "AWS::GuardDuty::ThreatIntelSet",
-  "AWS::GuardDuty::IPSet",
-  "AWS::SageMaker::Workteam",
-  "AWS::SageMaker::NotebookInstanceLifecycleConfig",
-  "AWS::ServiceDiscovery::Service",
-  "AWS::ServiceDiscovery::PublicDnsNamespace",
-  "AWS::SES::ContactList",
-  "AWS::SES::ConfigurationSet",
-  "AWS::Route53::HostedZone",
-  "AWS::IoTEvents::Input",
-  "AWS::IoTEvents::DetectorModel",
-  "AWS::IoTEvents::AlarmModel",
-  "AWS::ServiceDiscovery::HttpNamespace",
-  "AWS::Events::EventBus",
-  "AWS::ImageBuilder::ContainerRecipe",
-  "AWS::ImageBuilder::DistributionConfiguration",
-  "AWS::ImageBuilder::InfrastructureConfiguration",
-  "AWS::DataSync::LocationObjectStorage",
-  "AWS::DataSync::LocationHDFS",
-  "AWS::Glue::Classifier",
-  "AWS::Route53RecoveryReadiness::Cell",
-  "AWS::Route53RecoveryReadiness::ReadinessCheck",
-  "AWS::ECR::RegistryPolicy",
-  "AWS::Backup::ReportPlan",
-  "AWS::Lightsail::Certificate",
-  "AWS::RUM::AppMonitor",
-  "AWS::Events::Endpoint",
-  "AWS::SES::ReceiptRuleSet",
-  "AWS::Events::Archive",
-  "AWS::Events::ApiDestination",
-  "AWS::Lightsail::Disk",
-  "AWS::FIS::ExperimentTemplate",
-  "AWS::DataSync::LocationFSxWindows",
-  "AWS::SES::ReceiptFilter",
-  "AWS::GuardDuty::Filter",
-  "AWS::SES::Template",
-  "AWS::AmazonMQ::Broker",
-  "AWS::AppConfig::Environment",
-  "AWS::AppConfig::ConfigurationProfile",
-  "AWS::Cloud9::EnvironmentEC2",
-  "AWS::EventSchemas::Registry",
-  "AWS::EventSchemas::RegistryPolicy",
-  "AWS::EventSchemas::Discoverer",
-  "AWS::FraudDetector::Label",
-  "AWS::FraudDetector::EntityType",
-  "AWS::FraudDetector::Variable",
-  "AWS::FraudDetector::Outcome",
-  "AWS::IoT::Authorizer",
-  "AWS::IoT::SecurityProfile",
-  "AWS::IoT::RoleAlias",
-  "AWS::IoT::Dimension",
-  "AWS::IoTAnalytics::Datastore",
-  "AWS::Lightsail::Bucket",
-  "AWS::Lightsail::StaticIp",
-  "AWS::MediaPackage::PackagingGroup",
-  "AWS::Route53RecoveryReadiness::RecoveryGroup",
-  "AWS::ResilienceHub::ResiliencyPolicy",
-  "AWS::Transfer::Workflow",
-  "AWS::EKS::IdentityProviderConfig",
-  "AWS::EKS::Addon",
-  "AWS::Glue::MLTransform",
-  "AWS::IoT::Policy",
-  "AWS::IoT::MitigationAction",
-  "AWS::IoTTwinMaker::Workspace",
-  "AWS::IoTTwinMaker::Entity",
-  "AWS::IoTAnalytics::Dataset",
-  "AWS::IoTAnalytics::Pipeline",
-  "AWS::IoTAnalytics::Channel",
-  "AWS::IoTSiteWise::Dashboard",
-  "AWS::IoTSiteWise::Project",
-  "AWS::IoTSiteWise::Portal",
-  "AWS::IoTSiteWise::AssetModel",
-  "AWS::IVS::Channel",
-  "AWS::IVS::RecordingConfiguration",
-  "AWS::IVS::PlaybackKeyPair",
-  "AWS::KinesisAnalyticsV2::Application",
-  "AWS::RDS::GlobalCluster",
-  "AWS::S3::MultiRegionAccessPoint",
-  "AWS::DeviceFarm::TestGridProject",
-  "AWS::Budgets::BudgetsAction",
-  "AWS::Lex::Bot",
-  "AWS::CodeGuruReviewer::RepositoryAssociation",
-  "AWS::IoT::CustomMetric",
-  "AWS::Route53Resolver::FirewallDomainList",
-  "AWS::RoboMaker::RobotApplicationVersion",
-  "AWS::EC2::TrafficMirrorSession",
-  "AWS::IoTSiteWise::Gateway",
-  "AWS::Lex::BotAlias",
-  "AWS::LookoutMetrics::Alert",
-  "AWS::IoT::AccountAuditConfiguration",
-  "AWS::EC2::TrafficMirrorTarget",
-  "AWS::S3::StorageLens",
-  "AWS::IoT::ScheduledAudit",
-  "AWS::Events::Connection",
-  "AWS::EventSchemas::Schema",
-  "AWS::MediaPackage::PackagingConfiguration",
-  "AWS::KinesisVideo::SignalingChannel",
-  "AWS::AppStream::DirectoryConfig",
-  "AWS::LookoutVision::Project",
-  "AWS::Route53RecoveryControl::Cluster",
-  "AWS::Route53RecoveryControl::SafetyRule",
-  "AWS::Route53RecoveryControl::ControlPanel",
-  "AWS::Route53RecoveryControl::RoutingControl",
-  "AWS::Route53RecoveryReadiness::ResourceSet",
-  "AWS::RoboMaker::SimulationApplication",
-  "AWS::RoboMaker::RobotApplication",
-  "AWS::HealthLake::FHIRDatastore",
-  "AWS::Pinpoint::Segment",
-  "AWS::Pinpoint::ApplicationSettings",
-  "AWS::Events::Rule",
-  "AWS::EC2::DHCPOptions",
-  "AWS::EC2::NetworkInsightsPath",
-  "AWS::EC2::TrafficMirrorFilter",
-  "AWS::EC2::IPAM",
-  "AWS::IoTTwinMaker::Scene",
-  "AWS::NetworkManager::TransitGatewayRegistration",
-  "AWS::CustomerProfiles::Domain",
-  "AWS::AutoScaling::WarmPool",
-  "AWS::Connect::PhoneNumber",
-  "AWS::AppConfig::DeploymentStrategy",
-  "AWS::AppFlow::Flow",
-  "AWS::AuditManager::Assessment",
-  "AWS::CloudWatch::MetricStream",
-  "AWS::DeviceFarm::InstanceProfile",
-  "AWS::DeviceFarm::Project",
-  "AWS::EC2::EC2Fleet",
-  "AWS::EC2::SubnetRouteTableAssociation",
-  "AWS::ECR::PullThroughCacheRule",
-  "AWS::GroundStation::Config",
-  "AWS::ImageBuilder::ImagePipeline",
-  "AWS::IoT::FleetMetric",
-  "AWS::IoTWireless::ServiceProfile",
-  "AWS::NetworkManager::Device",
-  "AWS::NetworkManager::GlobalNetwork",
-  "AWS::NetworkManager::Link",
-  "AWS::NetworkManager::Site",
-  "AWS::Panorama::Package",
-  "AWS::Pinpoint::App",
-  "AWS::Redshift::ScheduledAction",
-  "AWS::Route53Resolver::FirewallRuleGroupAssociation",
-  "AWS::SageMaker::AppImageConfig",
-  "AWS::SageMaker::Image",
-  "AWS::ECS::TaskSet",
-  "AWS::Cassandra::Keyspace",
-  "AWS::Signer::SigningProfile",
-  "AWS::Amplify::App",
-  "AWS::AppMesh::VirtualNode",
-  "AWS::AppMesh::VirtualService",
-  "AWS::AppRunner::VpcConnector",
-  "AWS::AppStream::Application",
-  "AWS::CodeArtifact::Repository",
-  "AWS::EC2::PrefixList",
-  "AWS::EC2::SpotFleet",
-  "AWS::Evidently::Project",
-  "AWS::Forecast::Dataset",
-  "AWS::IAM::SAMLProvider",
-  "AWS::IAM::ServerCertificate",
-  "AWS::Pinpoint::Campaign",
-  "AWS::Pinpoint::InAppTemplate",
-  "AWS::SageMaker::Domain",
-  "AWS::Transfer::Agreement",
-  "AWS::Transfer::Connector",
-  "AWS::KinesisFirehose::DeliveryStream",
-  "AWS::Amplify::Branch",
-  "AWS::AppIntegrations::EventIntegration",
-  "AWS::AppMesh::Route",
-  "AWS::Athena::PreparedStatement",
-  "AWS::EC2::IPAMScope",
-  "AWS::Evidently::Launch",
-  "AWS::Forecast::DatasetGroup",
-  "AWS::GreengrassV2::ComponentVersion",
-  "AWS::GroundStation::MissionProfile",
-  "AWS::MediaConnect::FlowEntitlement",
-  "AWS::MediaConnect::FlowVpcInterface",
-  "AWS::MediaTailor::PlaybackConfiguration",
-  "AWS::MSK::Configuration",
-  "AWS::Personalize::Dataset",
-  "AWS::Personalize::Schema",
-  "AWS::Personalize::Solution",
-  "AWS::Pinpoint::EmailTemplate",
-  "AWS::Pinpoint::EventStream",
-  "AWS::ResilienceHub::App",
-  "AWS::ACMPCA::CertificateAuthority",
-  "AWS::AppConfig::HostedConfigurationVersion",
-  "AWS::AppMesh::VirtualGateway",
-  "AWS::AppMesh::VirtualRouter",
-  "AWS::AppRunner::Service",
-  "AWS::CustomerProfiles::ObjectType",
-  "AWS::DMS::Endpoint",
-  "AWS::EC2::CapacityReservation",
-  "AWS::EC2::ClientVpnEndpoint",
-  "AWS::Kendra::Index",
-  "AWS::KinesisVideo::Stream",
-  "AWS::Logs::Destination",
-  "AWS::Pinpoint::EmailChannel",
-  "AWS::S3::AccessPoint",
-  "AWS::NetworkManager::CustomerGatewayAssociation",
-  "AWS::NetworkManager::LinkAssociation",
-  "AWS::IoTWireless::MulticastGroup",
-  "AWS::Personalize::DatasetGroup",
-  "AWS::IoTTwinMaker::ComponentType",
-  "AWS::CodeBuild::ReportGroup",
-  "AWS::SageMaker::FeatureGroup",
-  "AWS::MSK::BatchScramSecret",
-  "AWS::AppStream::Stack",
-  "AWS::IoT::JobTemplate",
-  "AWS::IoTWireless::FuotaTask",
-  "AWS::IoT::ProvisioningTemplate",
-  "AWS::InspectorV2::Filter",
-  "AWS::Route53Resolver::ResolverQueryLoggingConfigAssociation",
-  "AWS::ServiceDiscovery::Instance",
-  "AWS::Transfer::Certificate",
-  "AWS::MediaConnect::FlowSource",
-  "AWS::APS::RuleGroupsNamespace",
-  "AWS::CodeGuruProfiler::ProfilingGroup",
-  "AWS::Route53Resolver::ResolverQueryLoggingConfig",
-  "AWS::Batch::SchedulingPolicy",
-  "AWS::ACMPCA::CertificateAuthorityActivation",
-  "AWS::AppMesh::GatewayRoute",
-  "AWS::AppMesh::Mesh",
-  "AWS::Connect::Instance",
-  "AWS::Connect::QuickConnect",
-  "AWS::EC2::CarrierGateway",
-  "AWS::EC2::IPAMPool",
-  "AWS::EC2::TransitGatewayConnect",
-  "AWS::EC2::TransitGatewayMulticastDomain",
-  "AWS::ECS::CapacityProvider",
-  "AWS::IAM::InstanceProfile",
-  "AWS::IoT::CACertificate",
-  "AWS::IoTTwinMaker::SyncJob",
-  "AWS::KafkaConnect::Connector",
-  "AWS::Lambda::CodeSigningConfig",
-  "AWS::NetworkManager::ConnectPeer",
-  "AWS::ResourceExplorer2::Index",
-  "AWS::AppStream::Fleet",
-  "AWS::Cognito::UserPool",
-  "AWS::Cognito::UserPoolClient",
-  "AWS::Cognito::UserPoolGroup",
-  "AWS::EC2::NetworkInsightsAccessScope",
-  "AWS::EC2::NetworkInsightsAnalysis",
-  "AWS::Grafana::Workspace",
-  "AWS::GroundStation::DataflowEndpointGroup",
-  "AWS::ImageBuilder::ImageRecipe",
-  "AWS::KMS::Alias",
-  "AWS::M2::Environment",
-  "AWS::QuickSight::DataSource",
-  "AWS::QuickSight::Template",
-  "AWS::QuickSight::Theme",
-  "AWS::RDS::OptionGroup",
-  "AWS::Redshift::EndpointAccess",
-  "AWS::Route53Resolver::FirewallRuleGroup",
-  "AWS::SSM::Document",
-  "AWS::AppConfig::ExtensionAssociation",
-  "AWS::AppIntegrations::Application",
-  "AWS::AppSync::ApiCache",
-  "AWS::Bedrock::Guardrail",
-  "AWS::Bedrock::KnowledgeBase",
-  "AWS::Cognito::IdentityPool",
-  "AWS::Connect::Rule",
-  "AWS::Connect::User",
-  "AWS::EC2::ClientVpnTargetNetworkAssociation",
-  "AWS::EC2::EIPAssociation",
-  "AWS::EC2::IPAMResourceDiscovery",
-  "AWS::EC2::IPAMResourceDiscoveryAssociation",
-  "AWS::EC2::InstanceConnectEndpoint",
-  "AWS::EC2::SnapshotBlockPublicAccess",
-  "AWS::EC2::VPCBlockPublicAccessExclusion",
-  "AWS::EC2::VPCBlockPublicAccessOptions",
-  "AWS::EC2::VPCEndpointConnectionNotification",
-  "AWS::EC2::VPNConnectionRoute",
-  "AWS::Evidently::Segment",
-  "AWS::IAM::OIDCProvider",
-  "AWS::InspectorV2::Activation",
-  "AWS::MSK::ClusterPolicy",
-  "AWS::MSK::VpcConnection",
-  "AWS::MediaConnect::Gateway",
-  "AWS::MemoryDB::SubnetGroup",
-  "AWS::OpenSearchServerless::Collection",
-  "AWS::OpenSearchServerless::VpcEndpoint",
-  "AWS::Redshift::EndpointAuthorization",
-  "AWS::Route53Profiles::Profile",
-  "AWS::S3::StorageLensGroup",
-  "AWS::S3Express::BucketPolicy",
-  "AWS::S3Express::DirectoryBucket",
-  "AWS::SageMaker::InferenceExperiment",
-  "AWS::SecurityHub::Standard",
-  "AWS::Transfer::Profile",
-  "AWS::CloudFormation::StackSet",
-  "AWS::MediaPackageV2::Channel",
-  "AWS::S3::AccessGrantsLocation",
-  "AWS::S3::AccessGrant",
-  "AWS::S3::AccessGrantsInstance",
-  "AWS::EMRServerless::Application",
-  "AWS::Config::AggregationAuthorization",
-  "AWS::Bedrock::ApplicationInferenceProfile",
-  "AWS::ApiGatewayV2::Integration",
-  "AWS::SageMaker::MlflowTrackingServer",
-  "AWS::SageMaker::ModelBiasJobDefinition",
-  "AWS::SecretsManager::RotationSchedule",
-  "AWS::Deadline::QueueFleetAssociation",
-  "AWS::ECR::RepositoryCreationTemplate",
-  "AWS::CloudFormation::LambdaHook",
-  "AWS::EC2::SubnetNetworkAclAssociation",
-  "AWS::ApiGateway::UsagePlan",
-  "AWS::AppConfig::Extension",
-  "AWS::Deadline::Fleet",
-  "AWS::EMR::Studio",
-  "AWS::S3Tables::TableBucket",
-  "AWS::CloudFront::RealtimeLogConfig",
-  "AWS::BackupGateway::Hypervisor",
-  "AWS::BCMDataExports::Export",
-  "AWS::CloudFormation::GuardHook",
-  "AWS::CloudFront::PublicKey",
-  "AWS::CloudTrail::EventDataStore",
-  "AWS::EntityResolution::IdMappingWorkflow",
-  "AWS::EntityResolution::SchemaMapping",
-  "AWS::IoT::DomainConfiguration",
-  "AWS::PCAConnectorAD::DirectoryRegistration",
-  "AWS::RDS::Integration",
-  "AWS::Config::ConformancePack",
-  "AWS::RolesAnywhere::Profile",
-  "AWS::CodeArtifact::Domain",
-  "AWS::Backup::RestoreTestingPlan",
-  "AWS::Config::StoredQuery",
-  "AWS::SageMaker::DataQualityJobDefinition",
-  "AWS::SageMaker::ModelExplainabilityJobDefinition",
-  "AWS::SageMaker::ModelQualityJobDefinition",
-  "AWS::SageMaker::StudioLifecycleConfig",
-  "AWS::SES::DedicatedIpPool",
-  "AWS::SES::MailManagerTrafficPolicy",
-  "AWS::SSM::ResourceDataSync",
-  "AWS::BedrockAgentCore::Runtime",
-  "AWS::BedrockAgentCore::BrowserCustom",
-  "AWS::ElasticLoadBalancingV2::TargetGroup",
-  "AWS::EMRContainers::VirtualCluster",
-  "AWS::EntityResolution::MatchingWorkflow",
-  "AWS::IoTCoreDeviceAdvisor::SuiteDefinition",
-  "AWS::EC2::SecurityGroupVpcAssociation",
-  "AWS::EC2::VerifiedAccessInstance",
-  "AWS::KafkaConnect::CustomPlugin",
-  "AWS::NetworkManager::TransitGatewayPeering",
-  "AWS::OpenSearchServerless::SecurityConfig",
-  "AWS::Redshift::Integration",
-  "AWS::RolesAnywhere::TrustAnchor",
-  "AWS::Route53Profiles::ProfileAssociation",
-  "AWS::SSMIncidents::ResponsePlan",
-  "AWS::Transfer::Server",
-  "AWS::Glue::Database",
-  "AWS::Organizations::OrganizationalUnit",
-  "AWS::EC2::IPAMPoolCidr",
-  "AWS::EC2::VPCGatewayAttachment",
-  "AWS::Bedrock::Prompt",
-  "AWS::Comprehend::Flywheel",
-  "AWS::DataSync::Agent",
-  "AWS::MediaTailor::LiveSource",
-  "AWS::MSK::ServerlessCluster",
-  "AWS::IoTSiteWise::Asset",
-  "AWS::B2BI::Capability",
-  "AWS::CloudFront::KeyValueStore",
-  "AWS::Deadline::Monitor",
-  "AWS::GuardDuty::MalwareProtectionPlan",
-  "AWS::Location::APIKey",
-  "AWS::MediaPackageV2::OriginEndpoint",
-  "AWS::PCAConnectorAD::Connector",
-  "AWS::S3Tables::TableBucketPolicy",
-  "AWS::SecretsManager::ResourcePolicy",
-  "AWS::SSMContacts::Contact",
-  "AWS::IoT::ThingGroup",
-  "AWS::ImageBuilder::LifecyclePolicy",
-  "AWS::GameLift::Build",
-  "AWS::ECR::ReplicationConfiguration",
-  "AWS::EC2::SubnetCidrBlock",
-  "AWS::Connect::SecurityProfile",
-  "AWS::CleanRoomsML::TrainingDataset",
-  "AWS::AppStream::AppBlockBuilder",
-  "AWS::Route53::DNSSEC",
-  "AWS::SageMaker::UserProfile",
-  "AWS::ApiGateway::Method",
-);
+  | "AWS::ApiGateway::Method"
+  | (string & {});
+export const ResourceType = S.String;
 export type ResourceTypeList = ResourceType[];
 export const ResourceTypeList = S.Array(ResourceType);
 export type ConfigRuleNames = string[];
@@ -1284,23 +751,19 @@ export type ComplianceType =
   | "COMPLIANT"
   | "NON_COMPLIANT"
   | "NOT_APPLICABLE"
-  | "INSUFFICIENT_DATA";
-export const ComplianceType = S.Literal(
-  "COMPLIANT",
-  "NON_COMPLIANT",
-  "NOT_APPLICABLE",
-  "INSUFFICIENT_DATA",
-);
+  | "INSUFFICIENT_DATA"
+  | (string & {});
+export const ComplianceType = S.String;
 export type ComplianceTypes = ComplianceType[];
 export const ComplianceTypes = S.Array(ComplianceType);
 export type ConfigurationAggregatorNameList = string[];
 export const ConfigurationAggregatorNameList = S.Array(S.String);
-export type AggregatedSourceStatusType = "FAILED" | "SUCCEEDED" | "OUTDATED";
-export const AggregatedSourceStatusType = S.Literal(
-  "FAILED",
-  "SUCCEEDED",
-  "OUTDATED",
-);
+export type AggregatedSourceStatusType =
+  | "FAILED"
+  | "SUCCEEDED"
+  | "OUTDATED"
+  | (string & {});
+export const AggregatedSourceStatusType = S.String;
 export type AggregatedSourceStatusTypeList = AggregatedSourceStatusType[];
 export const AggregatedSourceStatusTypeList = S.Array(
   AggregatedSourceStatusType,
@@ -1317,45 +780,40 @@ export type OrganizationConformancePackNames = string[];
 export const OrganizationConformancePackNames = S.Array(S.String);
 export type RetentionConfigurationNameList = string[];
 export const RetentionConfigurationNameList = S.Array(S.String);
-export type ConfigRuleComplianceSummaryGroupKey = "ACCOUNT_ID" | "AWS_REGION";
-export const ConfigRuleComplianceSummaryGroupKey = S.Literal(
-  "ACCOUNT_ID",
-  "AWS_REGION",
-);
+export type ConfigRuleComplianceSummaryGroupKey =
+  | "ACCOUNT_ID"
+  | "AWS_REGION"
+  | (string & {});
+export const ConfigRuleComplianceSummaryGroupKey = S.String;
 export type AggregateConformancePackComplianceSummaryGroupKey =
   | "ACCOUNT_ID"
-  | "AWS_REGION";
-export const AggregateConformancePackComplianceSummaryGroupKey = S.Literal(
-  "ACCOUNT_ID",
-  "AWS_REGION",
-);
+  | "AWS_REGION"
+  | (string & {});
+export const AggregateConformancePackComplianceSummaryGroupKey = S.String;
 export type ResourceCountGroupKey =
   | "RESOURCE_TYPE"
   | "ACCOUNT_ID"
-  | "AWS_REGION";
-export const ResourceCountGroupKey = S.Literal(
-  "RESOURCE_TYPE",
-  "ACCOUNT_ID",
-  "AWS_REGION",
-);
+  | "AWS_REGION"
+  | (string & {});
+export const ResourceCountGroupKey = S.String;
 export type ResourceTypes = string[];
 export const ResourceTypes = S.Array(S.String);
 export type ConformancePackNamesToSummarizeList = string[];
 export const ConformancePackNamesToSummarizeList = S.Array(S.String);
-export type ChronologicalOrder = "Reverse" | "Forward";
-export const ChronologicalOrder = S.Literal("Reverse", "Forward");
-export type SortOrder = "ASCENDING" | "DESCENDING";
-export const SortOrder = S.Literal("ASCENDING", "DESCENDING");
-export type SortBy = "SCORE";
-export const SortBy = S.Literal("SCORE");
+export type ChronologicalOrder = "Reverse" | "Forward" | (string & {});
+export const ChronologicalOrder = S.String;
+export type SortOrder = "ASCENDING" | "DESCENDING" | (string & {});
+export const SortOrder = S.String;
+export type SortBy = "SCORE" | (string & {});
+export const SortBy = S.String;
 export type ResourceIdList = string[];
 export const ResourceIdList = S.Array(S.String);
 export type ExcludedAccounts = string[];
 export const ExcludedAccounts = S.Array(S.String);
 export type ReevaluateConfigRuleNames = string[];
 export const ReevaluateConfigRuleNames = S.Array(S.String);
-export type EvaluationMode = "DETECTIVE" | "PROACTIVE";
-export const EvaluationMode = S.Literal("DETECTIVE", "PROACTIVE");
+export type EvaluationMode = "DETECTIVE" | "PROACTIVE" | (string & {});
+export const EvaluationMode = S.String;
 export interface Tag {
   Key?: string;
   Value?: string;
@@ -2993,12 +2451,9 @@ export const UntagResourceResponse = S.suspend(() =>
 export type ConformancePackComplianceType =
   | "COMPLIANT"
   | "NON_COMPLIANT"
-  | "INSUFFICIENT_DATA";
-export const ConformancePackComplianceType = S.Literal(
-  "COMPLIANT",
-  "NON_COMPLIANT",
-  "INSUFFICIENT_DATA",
-);
+  | "INSUFFICIENT_DATA"
+  | (string & {});
+export const ConformancePackComplianceType = S.String;
 export type ConformancePackConfigRuleNames = string[];
 export const ConformancePackConfigRuleNames = S.Array(S.String);
 export type ConformancePackComplianceResourceIds = string[];
@@ -3012,18 +2467,9 @@ export type MemberAccountRuleStatus =
   | "DELETE_IN_PROGRESS"
   | "UPDATE_SUCCESSFUL"
   | "UPDATE_IN_PROGRESS"
-  | "UPDATE_FAILED";
-export const MemberAccountRuleStatus = S.Literal(
-  "CREATE_SUCCESSFUL",
-  "CREATE_IN_PROGRESS",
-  "CREATE_FAILED",
-  "DELETE_SUCCESSFUL",
-  "DELETE_FAILED",
-  "DELETE_IN_PROGRESS",
-  "UPDATE_SUCCESSFUL",
-  "UPDATE_IN_PROGRESS",
-  "UPDATE_FAILED",
-);
+  | "UPDATE_FAILED"
+  | (string & {});
+export const MemberAccountRuleStatus = S.String;
 export type OrganizationResourceDetailedStatus =
   | "CREATE_SUCCESSFUL"
   | "CREATE_IN_PROGRESS"
@@ -3033,20 +2479,11 @@ export type OrganizationResourceDetailedStatus =
   | "DELETE_IN_PROGRESS"
   | "UPDATE_SUCCESSFUL"
   | "UPDATE_IN_PROGRESS"
-  | "UPDATE_FAILED";
-export const OrganizationResourceDetailedStatus = S.Literal(
-  "CREATE_SUCCESSFUL",
-  "CREATE_IN_PROGRESS",
-  "CREATE_FAILED",
-  "DELETE_SUCCESSFUL",
-  "DELETE_FAILED",
-  "DELETE_IN_PROGRESS",
-  "UPDATE_SUCCESSFUL",
-  "UPDATE_IN_PROGRESS",
-  "UPDATE_FAILED",
-);
-export type ConfigurationRecorderFilterName = "recordingScope";
-export const ConfigurationRecorderFilterName = S.Literal("recordingScope");
+  | "UPDATE_FAILED"
+  | (string & {});
+export const OrganizationResourceDetailedStatus = S.String;
+export type ConfigurationRecorderFilterName = "recordingScope" | (string & {});
+export const ConfigurationRecorderFilterName = S.String;
 export type ConfigurationRecorderFilterValues = string[];
 export const ConfigurationRecorderFilterValues = S.Array(S.String);
 export type ConformancePackNameFilter = string[];
@@ -3056,42 +2493,30 @@ export type MaximumExecutionFrequency =
   | "Three_Hours"
   | "Six_Hours"
   | "Twelve_Hours"
-  | "TwentyFour_Hours";
-export const MaximumExecutionFrequency = S.Literal(
-  "One_Hour",
-  "Three_Hours",
-  "Six_Hours",
-  "Twelve_Hours",
-  "TwentyFour_Hours",
-);
+  | "TwentyFour_Hours"
+  | (string & {});
+export const MaximumExecutionFrequency = S.String;
 export type ConfigRuleState =
   | "ACTIVE"
   | "DELETING"
   | "DELETING_RESULTS"
-  | "EVALUATING";
-export const ConfigRuleState = S.Literal(
-  "ACTIVE",
-  "DELETING",
-  "DELETING_RESULTS",
-  "EVALUATING",
-);
+  | "EVALUATING"
+  | (string & {});
+export const ConfigRuleState = S.String;
 export type AccountAggregationSourceAccountList = string[];
 export const AccountAggregationSourceAccountList = S.Array(S.String);
 export type AggregatorRegionList = string[];
 export const AggregatorRegionList = S.Array(S.String);
-export type RecordingScope = "INTERNAL" | "PAID";
-export const RecordingScope = S.Literal("INTERNAL", "PAID");
+export type RecordingScope = "INTERNAL" | "PAID" | (string & {});
+export const RecordingScope = S.String;
 export type ResourceTypesScope = string[];
 export const ResourceTypesScope = S.Array(S.String);
 export type OrganizationConfigRuleTriggerType =
   | "ConfigurationItemChangeNotification"
   | "OversizedConfigurationItemChangeNotification"
-  | "ScheduledNotification";
-export const OrganizationConfigRuleTriggerType = S.Literal(
-  "ConfigurationItemChangeNotification",
-  "OversizedConfigurationItemChangeNotification",
-  "ScheduledNotification",
-);
+  | "ScheduledNotification"
+  | (string & {});
+export const OrganizationConfigRuleTriggerType = S.String;
 export type OrganizationConfigRuleTriggerTypes =
   OrganizationConfigRuleTriggerType[];
 export const OrganizationConfigRuleTriggerTypes = S.Array(
@@ -3099,11 +2524,9 @@ export const OrganizationConfigRuleTriggerTypes = S.Array(
 );
 export type OrganizationConfigRuleTriggerTypeNoSN =
   | "ConfigurationItemChangeNotification"
-  | "OversizedConfigurationItemChangeNotification";
-export const OrganizationConfigRuleTriggerTypeNoSN = S.Literal(
-  "ConfigurationItemChangeNotification",
-  "OversizedConfigurationItemChangeNotification",
-);
+  | "OversizedConfigurationItemChangeNotification"
+  | (string & {});
+export const OrganizationConfigRuleTriggerTypeNoSN = S.String;
 export type OrganizationConfigRuleTriggerTypeNoSNs =
   OrganizationConfigRuleTriggerTypeNoSN[];
 export const OrganizationConfigRuleTriggerTypeNoSNs = S.Array(
@@ -3111,10 +2534,12 @@ export const OrganizationConfigRuleTriggerTypeNoSNs = S.Array(
 );
 export type DebugLogDeliveryAccounts = string[];
 export const DebugLogDeliveryAccounts = S.Array(S.String);
-export type RemediationTargetType = "SSM_DOCUMENT";
-export const RemediationTargetType = S.Literal("SSM_DOCUMENT");
-export type ResourceConfigurationSchemaType = "CFN_RESOURCE_SCHEMA";
-export const ResourceConfigurationSchemaType = S.Literal("CFN_RESOURCE_SCHEMA");
+export type RemediationTargetType = "SSM_DOCUMENT" | (string & {});
+export const RemediationTargetType = S.String;
+export type ResourceConfigurationSchemaType =
+  | "CFN_RESOURCE_SCHEMA"
+  | (string & {});
+export const ResourceConfigurationSchemaType = S.String;
 export type ResourceIdentifiersList = AggregateResourceIdentifier[];
 export const ResourceIdentifiersList = S.Array(AggregateResourceIdentifier);
 export interface ConfigRuleComplianceFilters {
@@ -3168,12 +2593,9 @@ export const ExclusionByResourceTypes = S.suspend(() =>
 export type RecordingStrategyType =
   | "ALL_SUPPORTED_RESOURCE_TYPES"
   | "INCLUSION_BY_RESOURCE_TYPES"
-  | "EXCLUSION_BY_RESOURCE_TYPES";
-export const RecordingStrategyType = S.Literal(
-  "ALL_SUPPORTED_RESOURCE_TYPES",
-  "INCLUSION_BY_RESOURCE_TYPES",
-  "EXCLUSION_BY_RESOURCE_TYPES",
-);
+  | "EXCLUSION_BY_RESOURCE_TYPES"
+  | (string & {});
+export const RecordingStrategyType = S.String;
 export interface RecordingStrategy {
   useOnly?: RecordingStrategyType;
 }
@@ -3200,8 +2622,8 @@ export const RecordingGroup = S.suspend(() =>
 ).annotations({
   identifier: "RecordingGroup",
 }) as any as S.Schema<RecordingGroup>;
-export type RecordingFrequency = "CONTINUOUS" | "DAILY";
-export const RecordingFrequency = S.Literal("CONTINUOUS", "DAILY");
+export type RecordingFrequency = "CONTINUOUS" | "DAILY" | (string & {});
+export const RecordingFrequency = S.String;
 export type RecordingModeResourceTypesList = ResourceType[];
 export const RecordingModeResourceTypesList = S.Array(ResourceType);
 export interface RecordingModeOverride {
@@ -3383,14 +2805,9 @@ export type ConfigurationItemStatus =
   | "ResourceDiscovered"
   | "ResourceNotRecorded"
   | "ResourceDeleted"
-  | "ResourceDeletedNotRecorded";
-export const ConfigurationItemStatus = S.Literal(
-  "OK",
-  "ResourceDiscovered",
-  "ResourceNotRecorded",
-  "ResourceDeleted",
-  "ResourceDeletedNotRecorded",
-);
+  | "ResourceDeletedNotRecorded"
+  | (string & {});
+export const ConfigurationItemStatus = S.String;
 export type Tags = { [key: string]: string | undefined };
 export const Tags = S.Record({ key: S.String, value: S.UndefinedOr(S.String) });
 export type RelatedEventList = string[];
@@ -3715,10 +3132,10 @@ export const EvaluationContext = S.suspend(() =>
 }) as any as S.Schema<EvaluationContext>;
 export type ComplianceResourceTypes = string[];
 export const ComplianceResourceTypes = S.Array(S.String);
-export type Owner = "CUSTOM_LAMBDA" | "AWS" | "CUSTOM_POLICY";
-export const Owner = S.Literal("CUSTOM_LAMBDA", "AWS", "CUSTOM_POLICY");
-export type AggregatorFilterType = "INCLUDE";
-export const AggregatorFilterType = S.Literal("INCLUDE");
+export type Owner = "CUSTOM_LAMBDA" | "AWS" | "CUSTOM_POLICY" | (string & {});
+export const Owner = S.String;
+export type AggregatorFilterType = "INCLUDE" | (string & {});
+export const AggregatorFilterType = S.String;
 export type ResourceTypeValueList = string[];
 export const ResourceTypeValueList = S.Array(S.String);
 export type ServicePrincipalValueList = string[];
@@ -3931,8 +3348,8 @@ export const DescribeDeliveryChannelsResponse = S.suspend(() =>
 ).annotations({
   identifier: "DescribeDeliveryChannelsResponse",
 }) as any as S.Schema<DescribeDeliveryChannelsResponse>;
-export type ResourceValueType = "RESOURCE_ID";
-export const ResourceValueType = S.Literal("RESOURCE_ID");
+export type ResourceValueType = "RESOURCE_ID" | (string & {});
+export const ResourceValueType = S.String;
 export interface ResourceValue {
   Value: ResourceValueType;
 }
@@ -4698,32 +4115,23 @@ export const StartResourceEvaluationRequest = S.suspend(() =>
 ).annotations({
   identifier: "StartResourceEvaluationRequest",
 }) as any as S.Schema<StartResourceEvaluationRequest>;
-export type AggregatedSourceType = "ACCOUNT" | "ORGANIZATION";
-export const AggregatedSourceType = S.Literal("ACCOUNT", "ORGANIZATION");
+export type AggregatedSourceType = "ACCOUNT" | "ORGANIZATION" | (string & {});
+export const AggregatedSourceType = S.String;
 export type RecorderStatus =
   | "Pending"
   | "Success"
   | "Failure"
-  | "NotApplicable";
-export const RecorderStatus = S.Literal(
-  "Pending",
-  "Success",
-  "Failure",
-  "NotApplicable",
-);
+  | "NotApplicable"
+  | (string & {});
+export const RecorderStatus = S.String;
 export type ConformancePackState =
   | "CREATE_IN_PROGRESS"
   | "CREATE_COMPLETE"
   | "CREATE_FAILED"
   | "DELETE_IN_PROGRESS"
-  | "DELETE_FAILED";
-export const ConformancePackState = S.Literal(
-  "CREATE_IN_PROGRESS",
-  "CREATE_COMPLETE",
-  "CREATE_FAILED",
-  "DELETE_IN_PROGRESS",
-  "DELETE_FAILED",
-);
+  | "DELETE_FAILED"
+  | (string & {});
+export const ConformancePackState = S.String;
 export type OrganizationRuleStatus =
   | "CREATE_SUCCESSFUL"
   | "CREATE_IN_PROGRESS"
@@ -4733,18 +4141,9 @@ export type OrganizationRuleStatus =
   | "DELETE_IN_PROGRESS"
   | "UPDATE_SUCCESSFUL"
   | "UPDATE_IN_PROGRESS"
-  | "UPDATE_FAILED";
-export const OrganizationRuleStatus = S.Literal(
-  "CREATE_SUCCESSFUL",
-  "CREATE_IN_PROGRESS",
-  "CREATE_FAILED",
-  "DELETE_SUCCESSFUL",
-  "DELETE_FAILED",
-  "DELETE_IN_PROGRESS",
-  "UPDATE_SUCCESSFUL",
-  "UPDATE_IN_PROGRESS",
-  "UPDATE_FAILED",
-);
+  | "UPDATE_FAILED"
+  | (string & {});
+export const OrganizationRuleStatus = S.String;
 export type OrganizationResourceStatus =
   | "CREATE_SUCCESSFUL"
   | "CREATE_IN_PROGRESS"
@@ -4754,31 +4153,17 @@ export type OrganizationResourceStatus =
   | "DELETE_IN_PROGRESS"
   | "UPDATE_SUCCESSFUL"
   | "UPDATE_IN_PROGRESS"
-  | "UPDATE_FAILED";
-export const OrganizationResourceStatus = S.Literal(
-  "CREATE_SUCCESSFUL",
-  "CREATE_IN_PROGRESS",
-  "CREATE_FAILED",
-  "DELETE_SUCCESSFUL",
-  "DELETE_FAILED",
-  "DELETE_IN_PROGRESS",
-  "UPDATE_SUCCESSFUL",
-  "UPDATE_IN_PROGRESS",
-  "UPDATE_FAILED",
-);
+  | "UPDATE_FAILED"
+  | (string & {});
+export const OrganizationResourceStatus = S.String;
 export type RemediationExecutionState =
   | "QUEUED"
   | "IN_PROGRESS"
   | "SUCCEEDED"
   | "FAILED"
-  | "UNKNOWN";
-export const RemediationExecutionState = S.Literal(
-  "QUEUED",
-  "IN_PROGRESS",
-  "SUCCEEDED",
-  "FAILED",
-  "UNKNOWN",
-);
+  | "UNKNOWN"
+  | (string & {});
+export const RemediationExecutionState = S.String;
 export interface ComplianceContributorCount {
   CappedCount?: number;
   CapExceeded?: boolean;
@@ -4791,12 +4176,12 @@ export const ComplianceContributorCount = S.suspend(() =>
 ).annotations({
   identifier: "ComplianceContributorCount",
 }) as any as S.Schema<ComplianceContributorCount>;
-export type ResourceEvaluationStatus = "IN_PROGRESS" | "FAILED" | "SUCCEEDED";
-export const ResourceEvaluationStatus = S.Literal(
-  "IN_PROGRESS",
-  "FAILED",
-  "SUCCEEDED",
-);
+export type ResourceEvaluationStatus =
+  | "IN_PROGRESS"
+  | "FAILED"
+  | "SUCCEEDED"
+  | (string & {});
+export const ResourceEvaluationStatus = S.String;
 export interface TimeWindow {
   StartTime?: Date;
   EndTime?: Date;
@@ -4855,19 +4240,15 @@ export const AggregatorFilterServicePrincipal = S.suspend(() =>
 ).annotations({
   identifier: "AggregatorFilterServicePrincipal",
 }) as any as S.Schema<AggregatorFilterServicePrincipal>;
-export type EventSource = "aws.config";
-export const EventSource = S.Literal("aws.config");
+export type EventSource = "aws.config" | (string & {});
+export const EventSource = S.String;
 export type MessageType =
   | "ConfigurationItemChangeNotification"
   | "ConfigurationSnapshotDeliveryCompleted"
   | "ScheduledNotification"
-  | "OversizedConfigurationItemChangeNotification";
-export const MessageType = S.Literal(
-  "ConfigurationItemChangeNotification",
-  "ConfigurationSnapshotDeliveryCompleted",
-  "ScheduledNotification",
-  "OversizedConfigurationItemChangeNotification",
-);
+  | "OversizedConfigurationItemChangeNotification"
+  | (string & {});
+export const MessageType = S.String;
 export type UnprocessedResourceIdentifierList = AggregateResourceIdentifier[];
 export const UnprocessedResourceIdentifierList = S.Array(
   AggregateResourceIdentifier,
@@ -5458,23 +4839,21 @@ export type FailedRemediationExceptionBatches =
 export const FailedRemediationExceptionBatches = S.Array(
   FailedRemediationExceptionBatch,
 );
-export type DeliveryStatus = "Success" | "Failure" | "Not_Applicable";
-export const DeliveryStatus = S.Literal("Success", "Failure", "Not_Applicable");
+export type DeliveryStatus =
+  | "Success"
+  | "Failure"
+  | "Not_Applicable"
+  | (string & {});
+export const DeliveryStatus = S.String;
 export type RemediationExecutionStepState =
   | "SUCCEEDED"
   | "PENDING"
   | "FAILED"
   | "IN_PROGRESS"
   | "EXITED"
-  | "UNKNOWN";
-export const RemediationExecutionStepState = S.Literal(
-  "SUCCEEDED",
-  "PENDING",
-  "FAILED",
-  "IN_PROGRESS",
-  "EXITED",
-  "UNKNOWN",
-);
+  | "UNKNOWN"
+  | (string & {});
+export const RemediationExecutionStepState = S.String;
 export interface BaseConfigurationItem {
   version?: string;
   accountId?: string;

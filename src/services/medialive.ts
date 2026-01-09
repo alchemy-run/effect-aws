@@ -230,40 +230,31 @@ export const ListVersionsRequest = S.suspend(() =>
 }) as any as S.Schema<ListVersionsRequest>;
 export type __listOf__string = string[];
 export const __listOf__string = S.Array(S.String);
-export type ChannelClass = "STANDARD" | "SINGLE_PIPELINE";
-export const ChannelClass = S.Literal("STANDARD", "SINGLE_PIPELINE");
-export type LogLevel = "ERROR" | "WARNING" | "INFO" | "DEBUG" | "DISABLED";
-export const LogLevel = S.Literal(
-  "ERROR",
-  "WARNING",
-  "INFO",
-  "DEBUG",
-  "DISABLED",
-);
+export type ChannelClass = "STANDARD" | "SINGLE_PIPELINE" | (string & {});
+export const ChannelClass = S.String;
+export type LogLevel =
+  | "ERROR"
+  | "WARNING"
+  | "INFO"
+  | "DEBUG"
+  | "DISABLED"
+  | (string & {});
+export const LogLevel = S.String;
 export type CloudWatchAlarmTemplateComparisonOperator =
   | "GreaterThanOrEqualToThreshold"
   | "GreaterThanThreshold"
   | "LessThanThreshold"
-  | "LessThanOrEqualToThreshold";
-export const CloudWatchAlarmTemplateComparisonOperator = S.Literal(
-  "GreaterThanOrEqualToThreshold",
-  "GreaterThanThreshold",
-  "LessThanThreshold",
-  "LessThanOrEqualToThreshold",
-);
+  | "LessThanOrEqualToThreshold"
+  | (string & {});
+export const CloudWatchAlarmTemplateComparisonOperator = S.String;
 export type CloudWatchAlarmTemplateStatistic =
   | "SampleCount"
   | "Average"
   | "Sum"
   | "Minimum"
-  | "Maximum";
-export const CloudWatchAlarmTemplateStatistic = S.Literal(
-  "SampleCount",
-  "Average",
-  "Sum",
-  "Minimum",
-  "Maximum",
-);
+  | "Maximum"
+  | (string & {});
+export const CloudWatchAlarmTemplateStatistic = S.String;
 export type CloudWatchAlarmTemplateTargetResourceType =
   | "CLOUDFRONT_DISTRIBUTION"
   | "MEDIALIVE_MULTIPLEX"
@@ -273,31 +264,18 @@ export type CloudWatchAlarmTemplateTargetResourceType =
   | "MEDIAPACKAGE_ORIGIN_ENDPOINT"
   | "MEDIACONNECT_FLOW"
   | "S3_BUCKET"
-  | "MEDIATAILOR_PLAYBACK_CONFIGURATION";
-export const CloudWatchAlarmTemplateTargetResourceType = S.Literal(
-  "CLOUDFRONT_DISTRIBUTION",
-  "MEDIALIVE_MULTIPLEX",
-  "MEDIALIVE_CHANNEL",
-  "MEDIALIVE_INPUT_DEVICE",
-  "MEDIAPACKAGE_CHANNEL",
-  "MEDIAPACKAGE_ORIGIN_ENDPOINT",
-  "MEDIACONNECT_FLOW",
-  "S3_BUCKET",
-  "MEDIATAILOR_PLAYBACK_CONFIGURATION",
-);
+  | "MEDIATAILOR_PLAYBACK_CONFIGURATION"
+  | (string & {});
+export const CloudWatchAlarmTemplateTargetResourceType = S.String;
 export type CloudWatchAlarmTemplateTreatMissingData =
   | "notBreaching"
   | "breaching"
   | "ignore"
-  | "missing";
-export const CloudWatchAlarmTemplateTreatMissingData = S.Literal(
-  "notBreaching",
-  "breaching",
-  "ignore",
-  "missing",
-);
-export type ClusterType = "ON_PREMISES";
-export const ClusterType = S.Literal("ON_PREMISES");
+  | "missing"
+  | (string & {});
+export const CloudWatchAlarmTemplateTreatMissingData = S.String;
+export type ClusterType = "ON_PREMISES" | (string & {});
+export const ClusterType = S.String;
 export type EventBridgeRuleTemplateEventType =
   | "MEDIALIVE_MULTIPLEX_ALERT"
   | "MEDIALIVE_MULTIPLEX_STATE_CHANGE"
@@ -311,22 +289,9 @@ export type EventBridgeRuleTemplateEventType =
   | "MEDIACONNECT_ALERT"
   | "MEDIACONNECT_SOURCE_HEALTH"
   | "MEDIACONNECT_OUTPUT_HEALTH"
-  | "MEDIACONNECT_FLOW_STATUS_CHANGE";
-export const EventBridgeRuleTemplateEventType = S.Literal(
-  "MEDIALIVE_MULTIPLEX_ALERT",
-  "MEDIALIVE_MULTIPLEX_STATE_CHANGE",
-  "MEDIALIVE_CHANNEL_ALERT",
-  "MEDIALIVE_CHANNEL_INPUT_CHANGE",
-  "MEDIALIVE_CHANNEL_STATE_CHANGE",
-  "MEDIAPACKAGE_INPUT_NOTIFICATION",
-  "MEDIAPACKAGE_KEY_PROVIDER_NOTIFICATION",
-  "MEDIAPACKAGE_HARVEST_JOB_NOTIFICATION",
-  "SIGNAL_MAP_ACTIVE_ALARM",
-  "MEDIACONNECT_ALERT",
-  "MEDIACONNECT_SOURCE_HEALTH",
-  "MEDIACONNECT_OUTPUT_HEALTH",
-  "MEDIACONNECT_FLOW_STATUS_CHANGE",
-);
+  | "MEDIACONNECT_FLOW_STATUS_CHANGE"
+  | (string & {});
+export const EventBridgeRuleTemplateEventType = S.String;
 export type InputType =
   | "UDP_PUSH"
   | "RTP_PUSH"
@@ -342,48 +307,36 @@ export type InputType =
   | "MULTICAST"
   | "SMPTE_2110_RECEIVER_GROUP"
   | "SDI"
-  | "MEDIACONNECT_ROUTER";
-export const InputType = S.Literal(
-  "UDP_PUSH",
-  "RTP_PUSH",
-  "RTMP_PUSH",
-  "RTMP_PULL",
-  "URL_PULL",
-  "MP4_FILE",
-  "MEDIACONNECT",
-  "INPUT_DEVICE",
-  "AWS_CDI",
-  "TS_FILE",
-  "SRT_CALLER",
-  "MULTICAST",
-  "SMPTE_2110_RECEIVER_GROUP",
-  "SDI",
-  "MEDIACONNECT_ROUTER",
-);
-export type InputNetworkLocation = "AWS" | "ON_PREMISES";
-export const InputNetworkLocation = S.Literal("AWS", "ON_PREMISES");
+  | "MEDIACONNECT_ROUTER"
+  | (string & {});
+export const InputType = S.String;
+export type InputNetworkLocation = "AWS" | "ON_PREMISES" | (string & {});
+export const InputNetworkLocation = S.String;
 export type InputSdiSources = string[];
 export const InputSdiSources = S.Array(S.String);
-export type NodeRole = "BACKUP" | "ACTIVE";
-export const NodeRole = S.Literal("BACKUP", "ACTIVE");
-export type SdiSourceMode = "QUADRANT" | "INTERLEAVE";
-export const SdiSourceMode = S.Literal("QUADRANT", "INTERLEAVE");
-export type SdiSourceType = "SINGLE" | "QUAD";
-export const SdiSourceType = S.Literal("SINGLE", "QUAD");
+export type NodeRole = "BACKUP" | "ACTIVE" | (string & {});
+export const NodeRole = S.String;
+export type SdiSourceMode = "QUADRANT" | "INTERLEAVE" | (string & {});
+export const SdiSourceMode = S.String;
+export type SdiSourceType = "SINGLE" | "QUAD" | (string & {});
+export const SdiSourceType = S.String;
 export type __listOf__stringPatternS = string[];
 export const __listOf__stringPatternS = S.Array(S.String);
-export type AcceptHeader = "image/jpeg";
-export const AcceptHeader = S.Literal("image/jpeg");
-export type RebootInputDeviceForce = "NO" | "YES";
-export const RebootInputDeviceForce = S.Literal("NO", "YES");
-export type ChannelPipelineIdToRestart = "PIPELINE_0" | "PIPELINE_1";
-export const ChannelPipelineIdToRestart = S.Literal("PIPELINE_0", "PIPELINE_1");
+export type AcceptHeader = "image/jpeg" | (string & {});
+export const AcceptHeader = S.String;
+export type RebootInputDeviceForce = "NO" | "YES" | (string & {});
+export const RebootInputDeviceForce = S.String;
+export type ChannelPipelineIdToRestart =
+  | "PIPELINE_0"
+  | "PIPELINE_1"
+  | (string & {});
+export const ChannelPipelineIdToRestart = S.String;
 export type __listOfChannelPipelineIdToRestart = ChannelPipelineIdToRestart[];
 export const __listOfChannelPipelineIdToRestart = S.Array(
   ChannelPipelineIdToRestart,
 );
-export type UpdateNodeStateShape = "ACTIVE" | "DRAINING";
-export const UpdateNodeStateShape = S.Literal("ACTIVE", "DRAINING");
+export type UpdateNodeStateShape = "ACTIVE" | "DRAINING" | (string & {});
+export const UpdateNodeStateShape = S.String;
 export interface AcceptInputDeviceTransferRequest {
   InputDeviceId: string;
 }
@@ -2867,12 +2820,9 @@ export const UpdateInputSecurityGroupRequest = S.suspend(() =>
 export type PreferredChannelPipeline =
   | "CURRENTLY_ACTIVE"
   | "PIPELINE_0"
-  | "PIPELINE_1";
-export const PreferredChannelPipeline = S.Literal(
-  "CURRENTLY_ACTIVE",
-  "PIPELINE_0",
-  "PIPELINE_1",
-);
+  | "PIPELINE_1"
+  | (string & {});
+export const PreferredChannelPipeline = S.String;
 export interface MultiplexProgramServiceDescriptor {
   ProviderName?: string;
   ServiceName?: string;
@@ -2992,12 +2942,9 @@ export const UpdateNodeStateRequest = S.suspend(() =>
 export type ReservationAutomaticRenewal =
   | "DISABLED"
   | "ENABLED"
-  | "UNAVAILABLE";
-export const ReservationAutomaticRenewal = S.Literal(
-  "DISABLED",
-  "ENABLED",
-  "UNAVAILABLE",
-);
+  | "UNAVAILABLE"
+  | (string & {});
+export const ReservationAutomaticRenewal = S.String;
 export interface RenewalSettings {
   AutomaticRenewal?: ReservationAutomaticRenewal;
   RenewalCount?: number;
@@ -3062,18 +3009,18 @@ export const UpdateSdiSourceRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateSdiSourceRequest",
 }) as any as S.Schema<UpdateSdiSourceRequest>;
-export type CdiInputResolution = "SD" | "HD" | "FHD" | "UHD";
-export const CdiInputResolution = S.Literal("SD", "HD", "FHD", "UHD");
-export type InputCodec = "MPEG2" | "AVC" | "HEVC";
-export const InputCodec = S.Literal("MPEG2", "AVC", "HEVC");
-export type InputMaximumBitrate = "MAX_10_MBPS" | "MAX_20_MBPS" | "MAX_50_MBPS";
-export const InputMaximumBitrate = S.Literal(
-  "MAX_10_MBPS",
-  "MAX_20_MBPS",
-  "MAX_50_MBPS",
-);
-export type InputResolution = "SD" | "HD" | "UHD";
-export const InputResolution = S.Literal("SD", "HD", "UHD");
+export type CdiInputResolution = "SD" | "HD" | "FHD" | "UHD" | (string & {});
+export const CdiInputResolution = S.String;
+export type InputCodec = "MPEG2" | "AVC" | "HEVC" | (string & {});
+export const InputCodec = S.String;
+export type InputMaximumBitrate =
+  | "MAX_10_MBPS"
+  | "MAX_20_MBPS"
+  | "MAX_50_MBPS"
+  | (string & {});
+export const InputMaximumBitrate = S.String;
+export type InputResolution = "SD" | "HD" | "UHD" | (string & {});
+export const InputResolution = S.String;
 export type MaintenanceDay =
   | "MONDAY"
   | "TUESDAY"
@@ -3081,24 +3028,24 @@ export type MaintenanceDay =
   | "THURSDAY"
   | "FRIDAY"
   | "SATURDAY"
-  | "SUNDAY";
-export const MaintenanceDay = S.Literal(
-  "MONDAY",
-  "TUESDAY",
-  "WEDNESDAY",
-  "THURSDAY",
-  "FRIDAY",
-  "SATURDAY",
-  "SUNDAY",
-);
-export type RouterEncryptionType = "AUTOMATIC" | "SECRETS_MANAGER";
-export const RouterEncryptionType = S.Literal("AUTOMATIC", "SECRETS_MANAGER");
-export type NetworkInterfaceMode = "NAT" | "BRIDGE";
-export const NetworkInterfaceMode = S.Literal("NAT", "BRIDGE");
-export type InputDeviceConfiguredInput = "AUTO" | "HDMI" | "SDI";
-export const InputDeviceConfiguredInput = S.Literal("AUTO", "HDMI", "SDI");
-export type InputDeviceCodec = "HEVC" | "AVC";
-export const InputDeviceCodec = S.Literal("HEVC", "AVC");
+  | "SUNDAY"
+  | (string & {});
+export const MaintenanceDay = S.String;
+export type RouterEncryptionType =
+  | "AUTOMATIC"
+  | "SECRETS_MANAGER"
+  | (string & {});
+export const RouterEncryptionType = S.String;
+export type NetworkInterfaceMode = "NAT" | "BRIDGE" | (string & {});
+export const NetworkInterfaceMode = S.String;
+export type InputDeviceConfiguredInput =
+  | "AUTO"
+  | "HDMI"
+  | "SDI"
+  | (string & {});
+export const InputDeviceConfiguredInput = S.String;
+export type InputDeviceCodec = "HEVC" | "AVC" | (string & {});
+export const InputDeviceCodec = S.String;
 export interface BatchScheduleActionDeleteRequest {
   ActionNames?: string[];
 }
@@ -3198,16 +3145,9 @@ export type ChannelPlacementGroupState =
   | "DELETING"
   | "DELETE_FAILED"
   | "DELETED"
-  | "UNASSIGNING";
-export const ChannelPlacementGroupState = S.Literal(
-  "UNASSIGNED",
-  "ASSIGNING",
-  "ASSIGNED",
-  "DELETING",
-  "DELETE_FAILED",
-  "DELETED",
-  "UNASSIGNING",
-);
+  | "UNASSIGNING"
+  | (string & {});
+export const ChannelPlacementGroupState = S.String;
 export interface InputDeviceSettings {
   Id?: string;
 }
@@ -3364,18 +3304,9 @@ export type SignalMapStatus =
   | "UPDATE_REVERTED"
   | "UPDATE_FAILED"
   | "READY"
-  | "NOT_READY";
-export const SignalMapStatus = S.Literal(
-  "CREATE_IN_PROGRESS",
-  "CREATE_COMPLETE",
-  "CREATE_FAILED",
-  "UPDATE_IN_PROGRESS",
-  "UPDATE_COMPLETE",
-  "UPDATE_REVERTED",
-  "UPDATE_FAILED",
-  "READY",
-  "NOT_READY",
-);
+  | "NOT_READY"
+  | (string & {});
+export const SignalMapStatus = S.String;
 export type ChannelState =
   | "CREATING"
   | "CREATE_FAILED"
@@ -3387,35 +3318,18 @@ export type ChannelState =
   | "DELETING"
   | "DELETED"
   | "UPDATING"
-  | "UPDATE_FAILED";
-export const ChannelState = S.Literal(
-  "CREATING",
-  "CREATE_FAILED",
-  "IDLE",
-  "STARTING",
-  "RUNNING",
-  "RECOVERING",
-  "STOPPING",
-  "DELETING",
-  "DELETED",
-  "UPDATING",
-  "UPDATE_FAILED",
-);
+  | "UPDATE_FAILED"
+  | (string & {});
+export const ChannelState = S.String;
 export type ClusterState =
   | "CREATING"
   | "CREATE_FAILED"
   | "ACTIVE"
   | "DELETING"
   | "DELETE_FAILED"
-  | "DELETED";
-export const ClusterState = S.Literal(
-  "CREATING",
-  "CREATE_FAILED",
-  "ACTIVE",
-  "DELETING",
-  "DELETE_FAILED",
-  "DELETED",
-);
+  | "DELETED"
+  | (string & {});
+export const ClusterState = S.String;
 export type MultiplexState =
   | "CREATING"
   | "CREATE_FAILED"
@@ -3425,18 +3339,9 @@ export type MultiplexState =
   | "RECOVERING"
   | "STOPPING"
   | "DELETING"
-  | "DELETED";
-export const MultiplexState = S.Literal(
-  "CREATING",
-  "CREATE_FAILED",
-  "IDLE",
-  "STARTING",
-  "RUNNING",
-  "RECOVERING",
-  "STOPPING",
-  "DELETING",
-  "DELETED",
-);
+  | "DELETED"
+  | (string & {});
+export const MultiplexState = S.String;
 export type NetworkState =
   | "CREATING"
   | "CREATE_FAILED"
@@ -3446,20 +3351,11 @@ export type NetworkState =
   | "IN_USE"
   | "UPDATING"
   | "DELETE_FAILED"
-  | "DELETED";
-export const NetworkState = S.Literal(
-  "CREATING",
-  "CREATE_FAILED",
-  "ACTIVE",
-  "DELETING",
-  "IDLE",
-  "IN_USE",
-  "UPDATING",
-  "DELETE_FAILED",
-  "DELETED",
-);
-export type NodeConnectionState = "CONNECTED" | "DISCONNECTED";
-export const NodeConnectionState = S.Literal("CONNECTED", "DISCONNECTED");
+  | "DELETED"
+  | (string & {});
+export const NetworkState = S.String;
+export type NodeConnectionState = "CONNECTED" | "DISCONNECTED" | (string & {});
+export const NodeConnectionState = S.String;
 export type NodeState =
   | "CREATED"
   | "REGISTERING"
@@ -3472,86 +3368,62 @@ export type NodeState =
   | "DEREGISTERING"
   | "DRAINING"
   | "DEREGISTRATION_FAILED"
-  | "DEREGISTERED";
-export const NodeState = S.Literal(
-  "CREATED",
-  "REGISTERING",
-  "READY_TO_ACTIVATE",
-  "REGISTRATION_FAILED",
-  "ACTIVATION_FAILED",
-  "ACTIVE",
-  "READY",
-  "IN_USE",
-  "DEREGISTERING",
-  "DRAINING",
-  "DEREGISTRATION_FAILED",
-  "DEREGISTERED",
-);
-export type OfferingDurationUnits = "MONTHS";
-export const OfferingDurationUnits = S.Literal("MONTHS");
-export type OfferingType = "NO_UPFRONT";
-export const OfferingType = S.Literal("NO_UPFRONT");
-export type ReservationState = "ACTIVE" | "EXPIRED" | "CANCELED" | "DELETED";
-export const ReservationState = S.Literal(
-  "ACTIVE",
-  "EXPIRED",
-  "CANCELED",
-  "DELETED",
-);
-export type InputClass = "STANDARD" | "SINGLE_PIPELINE";
-export const InputClass = S.Literal("STANDARD", "SINGLE_PIPELINE");
-export type InputSourceType = "STATIC" | "DYNAMIC";
-export const InputSourceType = S.Literal("STATIC", "DYNAMIC");
+  | "DEREGISTERED"
+  | (string & {});
+export const NodeState = S.String;
+export type OfferingDurationUnits = "MONTHS" | (string & {});
+export const OfferingDurationUnits = S.String;
+export type OfferingType = "NO_UPFRONT" | (string & {});
+export const OfferingType = S.String;
+export type ReservationState =
+  | "ACTIVE"
+  | "EXPIRED"
+  | "CANCELED"
+  | "DELETED"
+  | (string & {});
+export const ReservationState = S.String;
+export type InputClass = "STANDARD" | "SINGLE_PIPELINE" | (string & {});
+export const InputClass = S.String;
+export type InputSourceType = "STATIC" | "DYNAMIC" | (string & {});
+export const InputSourceType = S.String;
 export type InputState =
   | "CREATING"
   | "DETACHED"
   | "ATTACHED"
   | "DELETING"
-  | "DELETED";
-export const InputState = S.Literal(
-  "CREATING",
-  "DETACHED",
-  "ATTACHED",
-  "DELETING",
-  "DELETED",
-);
-export type InputDeviceConnectionState = "DISCONNECTED" | "CONNECTED";
-export const InputDeviceConnectionState = S.Literal(
-  "DISCONNECTED",
-  "CONNECTED",
-);
-export type DeviceSettingsSyncState = "SYNCED" | "SYNCING";
-export const DeviceSettingsSyncState = S.Literal("SYNCED", "SYNCING");
-export type DeviceUpdateStatus = "UP_TO_DATE" | "NOT_UP_TO_DATE" | "UPDATING";
-export const DeviceUpdateStatus = S.Literal(
-  "UP_TO_DATE",
-  "NOT_UP_TO_DATE",
-  "UPDATING",
-);
-export type InputDeviceType = "HD" | "UHD";
-export const InputDeviceType = S.Literal("HD", "UHD");
+  | "DELETED"
+  | (string & {});
+export const InputState = S.String;
+export type InputDeviceConnectionState =
+  | "DISCONNECTED"
+  | "CONNECTED"
+  | (string & {});
+export const InputDeviceConnectionState = S.String;
+export type DeviceSettingsSyncState = "SYNCED" | "SYNCING" | (string & {});
+export const DeviceSettingsSyncState = S.String;
+export type DeviceUpdateStatus =
+  | "UP_TO_DATE"
+  | "NOT_UP_TO_DATE"
+  | "UPDATING"
+  | (string & {});
+export const DeviceUpdateStatus = S.String;
+export type InputDeviceType = "HD" | "UHD" | (string & {});
+export const InputDeviceType = S.String;
 export type InputDeviceOutputType =
   | "NONE"
   | "MEDIALIVE_INPUT"
-  | "MEDIACONNECT_FLOW";
-export const InputDeviceOutputType = S.Literal(
-  "NONE",
-  "MEDIALIVE_INPUT",
-  "MEDIACONNECT_FLOW",
-);
-export type ContentType = "image/jpeg";
-export const ContentType = S.Literal("image/jpeg");
+  | "MEDIACONNECT_FLOW"
+  | (string & {});
+export const InputDeviceOutputType = S.String;
+export type ContentType = "image/jpeg" | (string & {});
+export const ContentType = S.String;
 export type InputSecurityGroupState =
   | "IDLE"
   | "IN_USE"
   | "UPDATING"
-  | "DELETED";
-export const InputSecurityGroupState = S.Literal(
-  "IDLE",
-  "IN_USE",
-  "UPDATING",
-  "DELETED",
-);
+  | "DELETED"
+  | (string & {});
+export const InputSecurityGroupState = S.String;
 export interface InputDestinationVpc {
   AvailabilityZone?: string;
   NetworkInterfaceId?: string;
@@ -3630,8 +3502,8 @@ export const InputSource = S.suspend(() =>
 ).annotations({ identifier: "InputSource" }) as any as S.Schema<InputSource>;
 export type __listOfInputSource = InputSource[];
 export const __listOfInputSource = S.Array(InputSource);
-export type Algorithm = "AES128" | "AES192" | "AES256";
-export const Algorithm = S.Literal("AES128", "AES192", "AES256");
+export type Algorithm = "AES128" | "AES192" | "AES256" | (string & {});
+export const Algorithm = S.String;
 export interface SrtCallerDecryption {
   Algorithm?: Algorithm;
   PassphraseSecretArn?: string;
@@ -3977,27 +3849,19 @@ export type AudioType =
   | "CLEAN_EFFECTS"
   | "HEARING_IMPAIRED"
   | "UNDEFINED"
-  | "VISUAL_IMPAIRED_COMMENTARY";
-export const AudioType = S.Literal(
-  "CLEAN_EFFECTS",
-  "HEARING_IMPAIRED",
-  "UNDEFINED",
-  "VISUAL_IMPAIRED_COMMENTARY",
-);
+  | "VISUAL_IMPAIRED_COMMENTARY"
+  | (string & {});
+export const AudioType = S.String;
 export type AudioDescriptionAudioTypeControl =
   | "FOLLOW_INPUT"
-  | "USE_CONFIGURED";
-export const AudioDescriptionAudioTypeControl = S.Literal(
-  "FOLLOW_INPUT",
-  "USE_CONFIGURED",
-);
+  | "USE_CONFIGURED"
+  | (string & {});
+export const AudioDescriptionAudioTypeControl = S.String;
 export type AudioDescriptionLanguageCodeControl =
   | "FOLLOW_INPUT"
-  | "USE_CONFIGURED";
-export const AudioDescriptionLanguageCodeControl = S.Literal(
-  "FOLLOW_INPUT",
-  "USE_CONFIGURED",
-);
+  | "USE_CONFIGURED"
+  | (string & {});
+export const AudioDescriptionLanguageCodeControl = S.String;
 export type DashRoleAudio =
   | "ALTERNATE"
   | "COMMENTARY"
@@ -4007,18 +3871,9 @@ export type DashRoleAudio =
   | "ENHANCED-AUDIO-INTELLIGIBILITY"
   | "KARAOKE"
   | "MAIN"
-  | "SUPPLEMENTARY";
-export const DashRoleAudio = S.Literal(
-  "ALTERNATE",
-  "COMMENTARY",
-  "DESCRIPTION",
-  "DUB",
-  "EMERGENCY",
-  "ENHANCED-AUDIO-INTELLIGIBILITY",
-  "KARAOKE",
-  "MAIN",
-  "SUPPLEMENTARY",
-);
+  | "SUPPLEMENTARY"
+  | (string & {});
+export const DashRoleAudio = S.String;
 export type __listOfDashRoleAudio = DashRoleAudio[];
 export const __listOfDashRoleAudio = S.Array(DashRoleAudio);
 export type DvbDashAccessibility =
@@ -4028,36 +3883,28 @@ export type DvbDashAccessibility =
   | "DVBDASH_4_DIRECTORS_COMMENTARY"
   | "DVBDASH_5_EDUCATIONAL_NOTES"
   | "DVBDASH_6_MAIN_PROGRAM"
-  | "DVBDASH_7_CLEAN_FEED";
-export const DvbDashAccessibility = S.Literal(
-  "DVBDASH_1_VISUALLY_IMPAIRED",
-  "DVBDASH_2_HARD_OF_HEARING",
-  "DVBDASH_3_SUPPLEMENTAL_COMMENTARY",
-  "DVBDASH_4_DIRECTORS_COMMENTARY",
-  "DVBDASH_5_EDUCATIONAL_NOTES",
-  "DVBDASH_6_MAIN_PROGRAM",
-  "DVBDASH_7_CLEAN_FEED",
-);
-export type AvailBlankingState = "DISABLED" | "ENABLED";
-export const AvailBlankingState = S.Literal("DISABLED", "ENABLED");
+  | "DVBDASH_7_CLEAN_FEED"
+  | (string & {});
+export const DvbDashAccessibility = S.String;
+export type AvailBlankingState = "DISABLED" | "ENABLED" | (string & {});
+export const AvailBlankingState = S.String;
 export type Scte35SegmentationScope =
   | "ALL_OUTPUT_GROUPS"
-  | "SCTE35_ENABLED_OUTPUT_GROUPS";
-export const Scte35SegmentationScope = S.Literal(
-  "ALL_OUTPUT_GROUPS",
-  "SCTE35_ENABLED_OUTPUT_GROUPS",
-);
-export type BlackoutSlateNetworkEndBlackout = "DISABLED" | "ENABLED";
-export const BlackoutSlateNetworkEndBlackout = S.Literal("DISABLED", "ENABLED");
-export type BlackoutSlateState = "DISABLED" | "ENABLED";
-export const BlackoutSlateState = S.Literal("DISABLED", "ENABLED");
+  | "SCTE35_ENABLED_OUTPUT_GROUPS"
+  | (string & {});
+export const Scte35SegmentationScope = S.String;
+export type BlackoutSlateNetworkEndBlackout =
+  | "DISABLED"
+  | "ENABLED"
+  | (string & {});
+export const BlackoutSlateNetworkEndBlackout = S.String;
+export type BlackoutSlateState = "DISABLED" | "ENABLED" | (string & {});
+export const BlackoutSlateState = S.String;
 export type AccessibilityType =
   | "DOES_NOT_IMPLEMENT_ACCESSIBILITY_FEATURES"
-  | "IMPLEMENTS_ACCESSIBILITY_FEATURES";
-export const AccessibilityType = S.Literal(
-  "DOES_NOT_IMPLEMENT_ACCESSIBILITY_FEATURES",
-  "IMPLEMENTS_ACCESSIBILITY_FEATURES",
-);
+  | "IMPLEMENTS_ACCESSIBILITY_FEATURES"
+  | (string & {});
+export const AccessibilityType = S.String;
 export type DashRoleCaption =
   | "ALTERNATE"
   | "CAPTION"
@@ -4071,109 +3918,89 @@ export type DashRoleCaption =
   | "MAIN"
   | "METADATA"
   | "SUBTITLE"
-  | "SUPPLEMENTARY";
-export const DashRoleCaption = S.Literal(
-  "ALTERNATE",
-  "CAPTION",
-  "COMMENTARY",
-  "DESCRIPTION",
-  "DUB",
-  "EASYREADER",
-  "EMERGENCY",
-  "FORCED-SUBTITLE",
-  "KARAOKE",
-  "MAIN",
-  "METADATA",
-  "SUBTITLE",
-  "SUPPLEMENTARY",
-);
+  | "SUPPLEMENTARY"
+  | (string & {});
+export const DashRoleCaption = S.String;
 export type __listOfDashRoleCaption = DashRoleCaption[];
 export const __listOfDashRoleCaption = S.Array(DashRoleCaption);
 export type FeatureActivationsInputPrepareScheduleActions =
   | "DISABLED"
-  | "ENABLED";
-export const FeatureActivationsInputPrepareScheduleActions = S.Literal(
-  "DISABLED",
-  "ENABLED",
-);
+  | "ENABLED"
+  | (string & {});
+export const FeatureActivationsInputPrepareScheduleActions = S.String;
 export type FeatureActivationsOutputStaticImageOverlayScheduleActions =
   | "DISABLED"
-  | "ENABLED";
+  | "ENABLED"
+  | (string & {});
 export const FeatureActivationsOutputStaticImageOverlayScheduleActions =
-  S.Literal("DISABLED", "ENABLED");
+  S.String;
 export type GlobalConfigurationInputEndAction =
   | "NONE"
-  | "SWITCH_AND_LOOP_INPUTS";
-export const GlobalConfigurationInputEndAction = S.Literal(
-  "NONE",
-  "SWITCH_AND_LOOP_INPUTS",
-);
+  | "SWITCH_AND_LOOP_INPUTS"
+  | (string & {});
+export const GlobalConfigurationInputEndAction = S.String;
 export type GlobalConfigurationOutputLockingMode =
   | "EPOCH_LOCKING"
   | "PIPELINE_LOCKING"
-  | "DISABLED";
-export const GlobalConfigurationOutputLockingMode = S.Literal(
-  "EPOCH_LOCKING",
-  "PIPELINE_LOCKING",
-  "DISABLED",
-);
+  | "DISABLED"
+  | (string & {});
+export const GlobalConfigurationOutputLockingMode = S.String;
 export type GlobalConfigurationOutputTimingSource =
   | "INPUT_CLOCK"
-  | "SYSTEM_CLOCK";
-export const GlobalConfigurationOutputTimingSource = S.Literal(
-  "INPUT_CLOCK",
-  "SYSTEM_CLOCK",
-);
-export type GlobalConfigurationLowFramerateInputs = "DISABLED" | "ENABLED";
-export const GlobalConfigurationLowFramerateInputs = S.Literal(
-  "DISABLED",
-  "ENABLED",
-);
-export type MotionGraphicsInsertion = "DISABLED" | "ENABLED";
-export const MotionGraphicsInsertion = S.Literal("DISABLED", "ENABLED");
-export type NielsenPcmToId3TaggingState = "DISABLED" | "ENABLED";
-export const NielsenPcmToId3TaggingState = S.Literal("DISABLED", "ENABLED");
-export type TimecodeConfigSource = "EMBEDDED" | "SYSTEMCLOCK" | "ZEROBASED";
-export const TimecodeConfigSource = S.Literal(
-  "EMBEDDED",
-  "SYSTEMCLOCK",
-  "ZEROBASED",
-);
-export type VideoDescriptionRespondToAfd = "NONE" | "PASSTHROUGH" | "RESPOND";
-export const VideoDescriptionRespondToAfd = S.Literal(
-  "NONE",
-  "PASSTHROUGH",
-  "RESPOND",
-);
-export type VideoDescriptionScalingBehavior = "DEFAULT" | "STRETCH_TO_OUTPUT";
-export const VideoDescriptionScalingBehavior = S.Literal(
-  "DEFAULT",
-  "STRETCH_TO_OUTPUT",
-);
-export type ThumbnailState = "AUTO" | "DISABLED";
-export const ThumbnailState = S.Literal("AUTO", "DISABLED");
+  | "SYSTEM_CLOCK"
+  | (string & {});
+export const GlobalConfigurationOutputTimingSource = S.String;
+export type GlobalConfigurationLowFramerateInputs =
+  | "DISABLED"
+  | "ENABLED"
+  | (string & {});
+export const GlobalConfigurationLowFramerateInputs = S.String;
+export type MotionGraphicsInsertion = "DISABLED" | "ENABLED" | (string & {});
+export const MotionGraphicsInsertion = S.String;
+export type NielsenPcmToId3TaggingState =
+  | "DISABLED"
+  | "ENABLED"
+  | (string & {});
+export const NielsenPcmToId3TaggingState = S.String;
+export type TimecodeConfigSource =
+  | "EMBEDDED"
+  | "SYSTEMCLOCK"
+  | "ZEROBASED"
+  | (string & {});
+export const TimecodeConfigSource = S.String;
+export type VideoDescriptionRespondToAfd =
+  | "NONE"
+  | "PASSTHROUGH"
+  | "RESPOND"
+  | (string & {});
+export const VideoDescriptionRespondToAfd = S.String;
+export type VideoDescriptionScalingBehavior =
+  | "DEFAULT"
+  | "STRETCH_TO_OUTPUT"
+  | (string & {});
+export const VideoDescriptionScalingBehavior = S.String;
+export type ThumbnailState = "AUTO" | "DISABLED" | (string & {});
+export const ThumbnailState = S.String;
 export type InputPreference =
   | "EQUAL_INPUT_PREFERENCE"
-  | "PRIMARY_INPUT_PREFERRED";
-export const InputPreference = S.Literal(
-  "EQUAL_INPUT_PREFERENCE",
-  "PRIMARY_INPUT_PREFERRED",
-);
-export type InputDeblockFilter = "DISABLED" | "ENABLED";
-export const InputDeblockFilter = S.Literal("DISABLED", "ENABLED");
-export type InputDenoiseFilter = "DISABLED" | "ENABLED";
-export const InputDenoiseFilter = S.Literal("DISABLED", "ENABLED");
-export type InputFilter = "AUTO" | "DISABLED" | "FORCED";
-export const InputFilter = S.Literal("AUTO", "DISABLED", "FORCED");
-export type Smpte2038DataPreference = "IGNORE" | "PREFER";
-export const Smpte2038DataPreference = S.Literal("IGNORE", "PREFER");
-export type InputSourceEndBehavior = "CONTINUE" | "LOOP";
-export const InputSourceEndBehavior = S.Literal("CONTINUE", "LOOP");
-export type LinkedChannelType = "FOLLOWING_CHANNEL" | "PRIMARY_CHANNEL";
-export const LinkedChannelType = S.Literal(
-  "FOLLOWING_CHANNEL",
-  "PRIMARY_CHANNEL",
-);
+  | "PRIMARY_INPUT_PREFERRED"
+  | (string & {});
+export const InputPreference = S.String;
+export type InputDeblockFilter = "DISABLED" | "ENABLED" | (string & {});
+export const InputDeblockFilter = S.String;
+export type InputDenoiseFilter = "DISABLED" | "ENABLED" | (string & {});
+export const InputDenoiseFilter = S.String;
+export type InputFilter = "AUTO" | "DISABLED" | "FORCED" | (string & {});
+export const InputFilter = S.String;
+export type Smpte2038DataPreference = "IGNORE" | "PREFER" | (string & {});
+export const Smpte2038DataPreference = S.String;
+export type InputSourceEndBehavior = "CONTINUE" | "LOOP" | (string & {});
+export const InputSourceEndBehavior = S.String;
+export type LinkedChannelType =
+  | "FOLLOWING_CHANNEL"
+  | "PRIMARY_CHANNEL"
+  | (string & {});
+export const LinkedChannelType = S.String;
 export type InputDeviceConfigurableAudioChannelPairProfile =
   | "DISABLED"
   | "VBR-AAC_HHE-16000"
@@ -4182,17 +4009,9 @@ export type InputDeviceConfigurableAudioChannelPairProfile =
   | "CBR-AAC_HQ-192000"
   | "CBR-AAC_HQ-256000"
   | "CBR-AAC_HQ-384000"
-  | "CBR-AAC_HQ-512000";
-export const InputDeviceConfigurableAudioChannelPairProfile = S.Literal(
-  "DISABLED",
-  "VBR-AAC_HHE-16000",
-  "VBR-AAC_HE-64000",
-  "VBR-AAC_LC-128000",
-  "CBR-AAC_HQ-192000",
-  "CBR-AAC_HQ-256000",
-  "CBR-AAC_HQ-384000",
-  "CBR-AAC_HQ-512000",
-);
+  | "CBR-AAC_HQ-512000"
+  | (string & {});
+export const InputDeviceConfigurableAudioChannelPairProfile = S.String;
 export type __listOf__integer = number[];
 export const __listOf__integer = S.Array(S.Number);
 export interface BatchFailedResultModel {
@@ -4617,8 +4436,8 @@ export const DeleteChannelPlacementGroupResponse = S.suspend(() =>
 ).annotations({
   identifier: "DeleteChannelPlacementGroupResponse",
 }) as any as S.Schema<DeleteChannelPlacementGroupResponse>;
-export type SdiSourceState = "IDLE" | "IN_USE" | "DELETED";
-export const SdiSourceState = S.Literal("IDLE", "IN_USE", "DELETED");
+export type SdiSourceState = "IDLE" | "IN_USE" | "DELETED" | (string & {});
+export const SdiSourceState = S.String;
 export interface SdiSource {
   Arn?: string;
   Id?: string;
@@ -4673,13 +4492,15 @@ export const ChannelEgressEndpoint = S.suspend(() =>
 }) as any as S.Schema<ChannelEgressEndpoint>;
 export type __listOfChannelEgressEndpoint = ChannelEgressEndpoint[];
 export const __listOfChannelEgressEndpoint = S.Array(ChannelEgressEndpoint);
-export type AudioNormalizationAlgorithm = "ITU_1770_1" | "ITU_1770_2";
-export const AudioNormalizationAlgorithm = S.Literal(
-  "ITU_1770_1",
-  "ITU_1770_2",
-);
-export type AudioNormalizationAlgorithmControl = "CORRECT_AUDIO";
-export const AudioNormalizationAlgorithmControl = S.Literal("CORRECT_AUDIO");
+export type AudioNormalizationAlgorithm =
+  | "ITU_1770_1"
+  | "ITU_1770_2"
+  | (string & {});
+export const AudioNormalizationAlgorithm = S.String;
+export type AudioNormalizationAlgorithmControl =
+  | "CORRECT_AUDIO"
+  | (string & {});
+export const AudioNormalizationAlgorithmControl = S.String;
 export interface AudioNormalizationSettings {
   Algorithm?: AudioNormalizationAlgorithm;
   AlgorithmControl?: AudioNormalizationAlgorithmControl;
@@ -4698,8 +4519,11 @@ export const AudioNormalizationSettings = S.suspend(() =>
 ).annotations({
   identifier: "AudioNormalizationSettings",
 }) as any as S.Schema<AudioNormalizationSettings>;
-export type NielsenWatermarksCbetStepaside = "DISABLED" | "ENABLED";
-export const NielsenWatermarksCbetStepaside = S.Literal("DISABLED", "ENABLED");
+export type NielsenWatermarksCbetStepaside =
+  | "DISABLED"
+  | "ENABLED"
+  | (string & {});
+export const NielsenWatermarksCbetStepaside = S.String;
 export interface NielsenCBET {
   CbetCheckDigitString?: string;
   CbetStepaside?: NielsenWatermarksCbetStepaside;
@@ -4718,11 +4542,9 @@ export const NielsenCBET = S.suspend(() =>
 ).annotations({ identifier: "NielsenCBET" }) as any as S.Schema<NielsenCBET>;
 export type NielsenWatermarksDistributionTypes =
   | "FINAL_DISTRIBUTOR"
-  | "PROGRAM_CONTENT";
-export const NielsenWatermarksDistributionTypes = S.Literal(
-  "FINAL_DISTRIBUTOR",
-  "PROGRAM_CONTENT",
-);
+  | "PROGRAM_CONTENT"
+  | (string & {});
+export const NielsenWatermarksDistributionTypes = S.String;
 export type NielsenWatermarkTimezones =
   | "AMERICA_PUERTO_RICO"
   | "US_ALASKA"
@@ -4733,19 +4555,9 @@ export type NielsenWatermarkTimezones =
   | "US_MOUNTAIN"
   | "US_PACIFIC"
   | "US_SAMOA"
-  | "UTC";
-export const NielsenWatermarkTimezones = S.Literal(
-  "AMERICA_PUERTO_RICO",
-  "US_ALASKA",
-  "US_ARIZONA",
-  "US_CENTRAL",
-  "US_EASTERN",
-  "US_HAWAII",
-  "US_MOUNTAIN",
-  "US_PACIFIC",
-  "US_SAMOA",
-  "UTC",
-);
+  | "UTC"
+  | (string & {});
+export const NielsenWatermarkTimezones = S.String;
 export interface NielsenNaesIiNw {
   CheckDigitString?: string;
   Sid?: number;
@@ -4799,31 +4611,26 @@ export type AacCodingMode =
   | "CODING_MODE_1_0"
   | "CODING_MODE_1_1"
   | "CODING_MODE_2_0"
-  | "CODING_MODE_5_1";
-export const AacCodingMode = S.Literal(
-  "AD_RECEIVER_MIX",
-  "CODING_MODE_1_0",
-  "CODING_MODE_1_1",
-  "CODING_MODE_2_0",
-  "CODING_MODE_5_1",
-);
-export type AacInputType = "BROADCASTER_MIXED_AD" | "NORMAL";
-export const AacInputType = S.Literal("BROADCASTER_MIXED_AD", "NORMAL");
-export type AacProfile = "HEV1" | "HEV2" | "LC";
-export const AacProfile = S.Literal("HEV1", "HEV2", "LC");
-export type AacRateControlMode = "CBR" | "VBR";
-export const AacRateControlMode = S.Literal("CBR", "VBR");
-export type AacRawFormat = "LATM_LOAS" | "NONE";
-export const AacRawFormat = S.Literal("LATM_LOAS", "NONE");
-export type AacSpec = "MPEG2" | "MPEG4";
-export const AacSpec = S.Literal("MPEG2", "MPEG4");
-export type AacVbrQuality = "HIGH" | "LOW" | "MEDIUM_HIGH" | "MEDIUM_LOW";
-export const AacVbrQuality = S.Literal(
-  "HIGH",
-  "LOW",
-  "MEDIUM_HIGH",
-  "MEDIUM_LOW",
-);
+  | "CODING_MODE_5_1"
+  | (string & {});
+export const AacCodingMode = S.String;
+export type AacInputType = "BROADCASTER_MIXED_AD" | "NORMAL" | (string & {});
+export const AacInputType = S.String;
+export type AacProfile = "HEV1" | "HEV2" | "LC" | (string & {});
+export const AacProfile = S.String;
+export type AacRateControlMode = "CBR" | "VBR" | (string & {});
+export const AacRateControlMode = S.String;
+export type AacRawFormat = "LATM_LOAS" | "NONE" | (string & {});
+export const AacRawFormat = S.String;
+export type AacSpec = "MPEG2" | "MPEG4" | (string & {});
+export const AacSpec = S.String;
+export type AacVbrQuality =
+  | "HIGH"
+  | "LOW"
+  | "MEDIUM_HIGH"
+  | "MEDIUM_LOW"
+  | (string & {});
+export const AacVbrQuality = S.String;
 export interface AacSettings {
   Bitrate?: number;
   CodingMode?: AacCodingMode;
@@ -4858,36 +4665,27 @@ export type Ac3BitstreamMode =
   | "HEARING_IMPAIRED"
   | "MUSIC_AND_EFFECTS"
   | "VISUALLY_IMPAIRED"
-  | "VOICE_OVER";
-export const Ac3BitstreamMode = S.Literal(
-  "COMMENTARY",
-  "COMPLETE_MAIN",
-  "DIALOGUE",
-  "EMERGENCY",
-  "HEARING_IMPAIRED",
-  "MUSIC_AND_EFFECTS",
-  "VISUALLY_IMPAIRED",
-  "VOICE_OVER",
-);
+  | "VOICE_OVER"
+  | (string & {});
+export const Ac3BitstreamMode = S.String;
 export type Ac3CodingMode =
   | "CODING_MODE_1_0"
   | "CODING_MODE_1_1"
   | "CODING_MODE_2_0"
-  | "CODING_MODE_3_2_LFE";
-export const Ac3CodingMode = S.Literal(
-  "CODING_MODE_1_0",
-  "CODING_MODE_1_1",
-  "CODING_MODE_2_0",
-  "CODING_MODE_3_2_LFE",
-);
-export type Ac3DrcProfile = "FILM_STANDARD" | "NONE";
-export const Ac3DrcProfile = S.Literal("FILM_STANDARD", "NONE");
-export type Ac3LfeFilter = "DISABLED" | "ENABLED";
-export const Ac3LfeFilter = S.Literal("DISABLED", "ENABLED");
-export type Ac3MetadataControl = "FOLLOW_INPUT" | "USE_CONFIGURED";
-export const Ac3MetadataControl = S.Literal("FOLLOW_INPUT", "USE_CONFIGURED");
-export type Ac3AttenuationControl = "ATTENUATE_3_DB" | "NONE";
-export const Ac3AttenuationControl = S.Literal("ATTENUATE_3_DB", "NONE");
+  | "CODING_MODE_3_2_LFE"
+  | (string & {});
+export const Ac3CodingMode = S.String;
+export type Ac3DrcProfile = "FILM_STANDARD" | "NONE" | (string & {});
+export const Ac3DrcProfile = S.String;
+export type Ac3LfeFilter = "DISABLED" | "ENABLED" | (string & {});
+export const Ac3LfeFilter = S.String;
+export type Ac3MetadataControl =
+  | "FOLLOW_INPUT"
+  | "USE_CONFIGURED"
+  | (string & {});
+export const Ac3MetadataControl = S.String;
+export type Ac3AttenuationControl = "ATTENUATE_3_DB" | "NONE" | (string & {});
+export const Ac3AttenuationControl = S.String;
 export interface Ac3Settings {
   Bitrate?: number;
   BitstreamMode?: Ac3BitstreamMode;
@@ -4919,42 +4717,27 @@ export const Ac3Settings = S.suspend(() =>
 export type Eac3AtmosCodingMode =
   | "CODING_MODE_5_1_4"
   | "CODING_MODE_7_1_4"
-  | "CODING_MODE_9_1_6";
-export const Eac3AtmosCodingMode = S.Literal(
-  "CODING_MODE_5_1_4",
-  "CODING_MODE_7_1_4",
-  "CODING_MODE_9_1_6",
-);
+  | "CODING_MODE_9_1_6"
+  | (string & {});
+export const Eac3AtmosCodingMode = S.String;
 export type Eac3AtmosDrcLine =
   | "FILM_LIGHT"
   | "FILM_STANDARD"
   | "MUSIC_LIGHT"
   | "MUSIC_STANDARD"
   | "NONE"
-  | "SPEECH";
-export const Eac3AtmosDrcLine = S.Literal(
-  "FILM_LIGHT",
-  "FILM_STANDARD",
-  "MUSIC_LIGHT",
-  "MUSIC_STANDARD",
-  "NONE",
-  "SPEECH",
-);
+  | "SPEECH"
+  | (string & {});
+export const Eac3AtmosDrcLine = S.String;
 export type Eac3AtmosDrcRf =
   | "FILM_LIGHT"
   | "FILM_STANDARD"
   | "MUSIC_LIGHT"
   | "MUSIC_STANDARD"
   | "NONE"
-  | "SPEECH";
-export const Eac3AtmosDrcRf = S.Literal(
-  "FILM_LIGHT",
-  "FILM_STANDARD",
-  "MUSIC_LIGHT",
-  "MUSIC_STANDARD",
-  "NONE",
-  "SPEECH",
-);
+  | "SPEECH"
+  | (string & {});
+export const Eac3AtmosDrcRf = S.String;
 export interface Eac3AtmosSettings {
   Bitrate?: number;
   CodingMode?: Eac3AtmosCodingMode;
@@ -4977,94 +4760,77 @@ export const Eac3AtmosSettings = S.suspend(() =>
 ).annotations({
   identifier: "Eac3AtmosSettings",
 }) as any as S.Schema<Eac3AtmosSettings>;
-export type Eac3AttenuationControl = "ATTENUATE_3_DB" | "NONE";
-export const Eac3AttenuationControl = S.Literal("ATTENUATE_3_DB", "NONE");
+export type Eac3AttenuationControl = "ATTENUATE_3_DB" | "NONE" | (string & {});
+export const Eac3AttenuationControl = S.String;
 export type Eac3BitstreamMode =
   | "COMMENTARY"
   | "COMPLETE_MAIN"
   | "EMERGENCY"
   | "HEARING_IMPAIRED"
-  | "VISUALLY_IMPAIRED";
-export const Eac3BitstreamMode = S.Literal(
-  "COMMENTARY",
-  "COMPLETE_MAIN",
-  "EMERGENCY",
-  "HEARING_IMPAIRED",
-  "VISUALLY_IMPAIRED",
-);
+  | "VISUALLY_IMPAIRED"
+  | (string & {});
+export const Eac3BitstreamMode = S.String;
 export type Eac3CodingMode =
   | "CODING_MODE_1_0"
   | "CODING_MODE_2_0"
-  | "CODING_MODE_3_2";
-export const Eac3CodingMode = S.Literal(
-  "CODING_MODE_1_0",
-  "CODING_MODE_2_0",
-  "CODING_MODE_3_2",
-);
-export type Eac3DcFilter = "DISABLED" | "ENABLED";
-export const Eac3DcFilter = S.Literal("DISABLED", "ENABLED");
+  | "CODING_MODE_3_2"
+  | (string & {});
+export const Eac3CodingMode = S.String;
+export type Eac3DcFilter = "DISABLED" | "ENABLED" | (string & {});
+export const Eac3DcFilter = S.String;
 export type Eac3DrcLine =
   | "FILM_LIGHT"
   | "FILM_STANDARD"
   | "MUSIC_LIGHT"
   | "MUSIC_STANDARD"
   | "NONE"
-  | "SPEECH";
-export const Eac3DrcLine = S.Literal(
-  "FILM_LIGHT",
-  "FILM_STANDARD",
-  "MUSIC_LIGHT",
-  "MUSIC_STANDARD",
-  "NONE",
-  "SPEECH",
-);
+  | "SPEECH"
+  | (string & {});
+export const Eac3DrcLine = S.String;
 export type Eac3DrcRf =
   | "FILM_LIGHT"
   | "FILM_STANDARD"
   | "MUSIC_LIGHT"
   | "MUSIC_STANDARD"
   | "NONE"
-  | "SPEECH";
-export const Eac3DrcRf = S.Literal(
-  "FILM_LIGHT",
-  "FILM_STANDARD",
-  "MUSIC_LIGHT",
-  "MUSIC_STANDARD",
-  "NONE",
-  "SPEECH",
-);
-export type Eac3LfeControl = "LFE" | "NO_LFE";
-export const Eac3LfeControl = S.Literal("LFE", "NO_LFE");
-export type Eac3LfeFilter = "DISABLED" | "ENABLED";
-export const Eac3LfeFilter = S.Literal("DISABLED", "ENABLED");
-export type Eac3MetadataControl = "FOLLOW_INPUT" | "USE_CONFIGURED";
-export const Eac3MetadataControl = S.Literal("FOLLOW_INPUT", "USE_CONFIGURED");
-export type Eac3PassthroughControl = "NO_PASSTHROUGH" | "WHEN_POSSIBLE";
-export const Eac3PassthroughControl = S.Literal(
-  "NO_PASSTHROUGH",
-  "WHEN_POSSIBLE",
-);
-export type Eac3PhaseControl = "NO_SHIFT" | "SHIFT_90_DEGREES";
-export const Eac3PhaseControl = S.Literal("NO_SHIFT", "SHIFT_90_DEGREES");
-export type Eac3StereoDownmix = "DPL2" | "LO_RO" | "LT_RT" | "NOT_INDICATED";
-export const Eac3StereoDownmix = S.Literal(
-  "DPL2",
-  "LO_RO",
-  "LT_RT",
-  "NOT_INDICATED",
-);
-export type Eac3SurroundExMode = "DISABLED" | "ENABLED" | "NOT_INDICATED";
-export const Eac3SurroundExMode = S.Literal(
-  "DISABLED",
-  "ENABLED",
-  "NOT_INDICATED",
-);
-export type Eac3SurroundMode = "DISABLED" | "ENABLED" | "NOT_INDICATED";
-export const Eac3SurroundMode = S.Literal(
-  "DISABLED",
-  "ENABLED",
-  "NOT_INDICATED",
-);
+  | "SPEECH"
+  | (string & {});
+export const Eac3DrcRf = S.String;
+export type Eac3LfeControl = "LFE" | "NO_LFE" | (string & {});
+export const Eac3LfeControl = S.String;
+export type Eac3LfeFilter = "DISABLED" | "ENABLED" | (string & {});
+export const Eac3LfeFilter = S.String;
+export type Eac3MetadataControl =
+  | "FOLLOW_INPUT"
+  | "USE_CONFIGURED"
+  | (string & {});
+export const Eac3MetadataControl = S.String;
+export type Eac3PassthroughControl =
+  | "NO_PASSTHROUGH"
+  | "WHEN_POSSIBLE"
+  | (string & {});
+export const Eac3PassthroughControl = S.String;
+export type Eac3PhaseControl = "NO_SHIFT" | "SHIFT_90_DEGREES" | (string & {});
+export const Eac3PhaseControl = S.String;
+export type Eac3StereoDownmix =
+  | "DPL2"
+  | "LO_RO"
+  | "LT_RT"
+  | "NOT_INDICATED"
+  | (string & {});
+export const Eac3StereoDownmix = S.String;
+export type Eac3SurroundExMode =
+  | "DISABLED"
+  | "ENABLED"
+  | "NOT_INDICATED"
+  | (string & {});
+export const Eac3SurroundExMode = S.String;
+export type Eac3SurroundMode =
+  | "DISABLED"
+  | "ENABLED"
+  | "NOT_INDICATED"
+  | (string & {});
+export const Eac3SurroundMode = S.String;
 export interface Eac3Settings {
   AttenuationControl?: Eac3AttenuationControl;
   Bitrate?: number;
@@ -5131,8 +4897,11 @@ export const Eac3Settings = S.suspend(() =>
     SurroundMode: S.optional(Eac3SurroundMode).pipe(T.JsonName("surroundMode")),
   }),
 ).annotations({ identifier: "Eac3Settings" }) as any as S.Schema<Eac3Settings>;
-export type Mp2CodingMode = "CODING_MODE_1_0" | "CODING_MODE_2_0";
-export const Mp2CodingMode = S.Literal("CODING_MODE_1_0", "CODING_MODE_2_0");
+export type Mp2CodingMode =
+  | "CODING_MODE_1_0"
+  | "CODING_MODE_2_0"
+  | (string & {});
+export const Mp2CodingMode = S.String;
 export interface Mp2Settings {
   Bitrate?: number;
   CodingMode?: Mp2CodingMode;
@@ -5153,13 +4922,9 @@ export type WavCodingMode =
   | "CODING_MODE_1_0"
   | "CODING_MODE_2_0"
   | "CODING_MODE_4_0"
-  | "CODING_MODE_8_0";
-export const WavCodingMode = S.Literal(
-  "CODING_MODE_1_0",
-  "CODING_MODE_2_0",
-  "CODING_MODE_4_0",
-  "CODING_MODE_8_0",
-);
+  | "CODING_MODE_8_0"
+  | (string & {});
+export const WavCodingMode = S.String;
 export interface WavSettings {
   BitDepth?: number;
   CodingMode?: WavCodingMode;
@@ -5356,16 +5121,16 @@ export const Esam = S.suspend(() =>
     ZoneIdentity: S.optional(S.String).pipe(T.JsonName("zoneIdentity")),
   }),
 ).annotations({ identifier: "Esam" }) as any as S.Schema<Esam>;
-export type Scte35SpliceInsertNoRegionalBlackoutBehavior = "FOLLOW" | "IGNORE";
-export const Scte35SpliceInsertNoRegionalBlackoutBehavior = S.Literal(
-  "FOLLOW",
-  "IGNORE",
-);
-export type Scte35SpliceInsertWebDeliveryAllowedBehavior = "FOLLOW" | "IGNORE";
-export const Scte35SpliceInsertWebDeliveryAllowedBehavior = S.Literal(
-  "FOLLOW",
-  "IGNORE",
-);
+export type Scte35SpliceInsertNoRegionalBlackoutBehavior =
+  | "FOLLOW"
+  | "IGNORE"
+  | (string & {});
+export const Scte35SpliceInsertNoRegionalBlackoutBehavior = S.String;
+export type Scte35SpliceInsertWebDeliveryAllowedBehavior =
+  | "FOLLOW"
+  | "IGNORE"
+  | (string & {});
+export const Scte35SpliceInsertWebDeliveryAllowedBehavior = S.String;
 export interface Scte35SpliceInsert {
   AdAvailOffset?: number;
   NoRegionalBlackoutFlag?: Scte35SpliceInsertNoRegionalBlackoutBehavior;
@@ -5384,16 +5149,16 @@ export const Scte35SpliceInsert = S.suspend(() =>
 ).annotations({
   identifier: "Scte35SpliceInsert",
 }) as any as S.Schema<Scte35SpliceInsert>;
-export type Scte35AposNoRegionalBlackoutBehavior = "FOLLOW" | "IGNORE";
-export const Scte35AposNoRegionalBlackoutBehavior = S.Literal(
-  "FOLLOW",
-  "IGNORE",
-);
-export type Scte35AposWebDeliveryAllowedBehavior = "FOLLOW" | "IGNORE";
-export const Scte35AposWebDeliveryAllowedBehavior = S.Literal(
-  "FOLLOW",
-  "IGNORE",
-);
+export type Scte35AposNoRegionalBlackoutBehavior =
+  | "FOLLOW"
+  | "IGNORE"
+  | (string & {});
+export const Scte35AposNoRegionalBlackoutBehavior = S.String;
+export type Scte35AposWebDeliveryAllowedBehavior =
+  | "FOLLOW"
+  | "IGNORE"
+  | (string & {});
+export const Scte35AposWebDeliveryAllowedBehavior = S.String;
 export interface Scte35TimeSignalApos {
   AdAvailOffset?: number;
   NoRegionalBlackoutFlag?: Scte35AposNoRegionalBlackoutBehavior;
@@ -5478,50 +5243,38 @@ export const AribDestinationSettings = S.suspend(() =>
 ).annotations({
   identifier: "AribDestinationSettings",
 }) as any as S.Schema<AribDestinationSettings>;
-export type BurnInAlignment = "CENTERED" | "LEFT" | "SMART";
-export const BurnInAlignment = S.Literal("CENTERED", "LEFT", "SMART");
-export type BurnInBackgroundColor = "BLACK" | "NONE" | "WHITE";
-export const BurnInBackgroundColor = S.Literal("BLACK", "NONE", "WHITE");
+export type BurnInAlignment = "CENTERED" | "LEFT" | "SMART" | (string & {});
+export const BurnInAlignment = S.String;
+export type BurnInBackgroundColor = "BLACK" | "NONE" | "WHITE" | (string & {});
+export const BurnInBackgroundColor = S.String;
 export type BurnInFontColor =
   | "BLACK"
   | "BLUE"
   | "GREEN"
   | "RED"
   | "WHITE"
-  | "YELLOW";
-export const BurnInFontColor = S.Literal(
-  "BLACK",
-  "BLUE",
-  "GREEN",
-  "RED",
-  "WHITE",
-  "YELLOW",
-);
+  | "YELLOW"
+  | (string & {});
+export const BurnInFontColor = S.String;
 export type BurnInOutlineColor =
   | "BLACK"
   | "BLUE"
   | "GREEN"
   | "RED"
   | "WHITE"
-  | "YELLOW";
-export const BurnInOutlineColor = S.Literal(
-  "BLACK",
-  "BLUE",
-  "GREEN",
-  "RED",
-  "WHITE",
-  "YELLOW",
-);
-export type BurnInShadowColor = "BLACK" | "NONE" | "WHITE";
-export const BurnInShadowColor = S.Literal("BLACK", "NONE", "WHITE");
-export type BurnInTeletextGridControl = "FIXED" | "SCALED";
-export const BurnInTeletextGridControl = S.Literal("FIXED", "SCALED");
-export type BurnInDestinationSubtitleRows = "ROWS_16" | "ROWS_20" | "ROWS_24";
-export const BurnInDestinationSubtitleRows = S.Literal(
-  "ROWS_16",
-  "ROWS_20",
-  "ROWS_24",
-);
+  | "YELLOW"
+  | (string & {});
+export const BurnInOutlineColor = S.String;
+export type BurnInShadowColor = "BLACK" | "NONE" | "WHITE" | (string & {});
+export const BurnInShadowColor = S.String;
+export type BurnInTeletextGridControl = "FIXED" | "SCALED" | (string & {});
+export const BurnInTeletextGridControl = S.String;
+export type BurnInDestinationSubtitleRows =
+  | "ROWS_16"
+  | "ROWS_20"
+  | "ROWS_24"
+  | (string & {});
+export const BurnInDestinationSubtitleRows = S.String;
 export interface BurnInDestinationSettings {
   Alignment?: BurnInAlignment;
   BackgroundColor?: BurnInBackgroundColor;
@@ -5578,61 +5331,53 @@ export const BurnInDestinationSettings = S.suspend(() =>
 ).annotations({
   identifier: "BurnInDestinationSettings",
 }) as any as S.Schema<BurnInDestinationSettings>;
-export type DvbSubDestinationAlignment = "CENTERED" | "LEFT" | "SMART";
-export const DvbSubDestinationAlignment = S.Literal(
-  "CENTERED",
-  "LEFT",
-  "SMART",
-);
-export type DvbSubDestinationBackgroundColor = "BLACK" | "NONE" | "WHITE";
-export const DvbSubDestinationBackgroundColor = S.Literal(
-  "BLACK",
-  "NONE",
-  "WHITE",
-);
+export type DvbSubDestinationAlignment =
+  | "CENTERED"
+  | "LEFT"
+  | "SMART"
+  | (string & {});
+export const DvbSubDestinationAlignment = S.String;
+export type DvbSubDestinationBackgroundColor =
+  | "BLACK"
+  | "NONE"
+  | "WHITE"
+  | (string & {});
+export const DvbSubDestinationBackgroundColor = S.String;
 export type DvbSubDestinationFontColor =
   | "BLACK"
   | "BLUE"
   | "GREEN"
   | "RED"
   | "WHITE"
-  | "YELLOW";
-export const DvbSubDestinationFontColor = S.Literal(
-  "BLACK",
-  "BLUE",
-  "GREEN",
-  "RED",
-  "WHITE",
-  "YELLOW",
-);
+  | "YELLOW"
+  | (string & {});
+export const DvbSubDestinationFontColor = S.String;
 export type DvbSubDestinationOutlineColor =
   | "BLACK"
   | "BLUE"
   | "GREEN"
   | "RED"
   | "WHITE"
-  | "YELLOW";
-export const DvbSubDestinationOutlineColor = S.Literal(
-  "BLACK",
-  "BLUE",
-  "GREEN",
-  "RED",
-  "WHITE",
-  "YELLOW",
-);
-export type DvbSubDestinationShadowColor = "BLACK" | "NONE" | "WHITE";
-export const DvbSubDestinationShadowColor = S.Literal("BLACK", "NONE", "WHITE");
-export type DvbSubDestinationTeletextGridControl = "FIXED" | "SCALED";
-export const DvbSubDestinationTeletextGridControl = S.Literal(
-  "FIXED",
-  "SCALED",
-);
-export type DvbSubDestinationSubtitleRows = "ROWS_16" | "ROWS_20" | "ROWS_24";
-export const DvbSubDestinationSubtitleRows = S.Literal(
-  "ROWS_16",
-  "ROWS_20",
-  "ROWS_24",
-);
+  | "YELLOW"
+  | (string & {});
+export const DvbSubDestinationOutlineColor = S.String;
+export type DvbSubDestinationShadowColor =
+  | "BLACK"
+  | "NONE"
+  | "WHITE"
+  | (string & {});
+export const DvbSubDestinationShadowColor = S.String;
+export type DvbSubDestinationTeletextGridControl =
+  | "FIXED"
+  | "SCALED"
+  | (string & {});
+export const DvbSubDestinationTeletextGridControl = S.String;
+export type DvbSubDestinationSubtitleRows =
+  | "ROWS_16"
+  | "ROWS_20"
+  | "ROWS_24"
+  | (string & {});
+export const DvbSubDestinationSubtitleRows = S.String;
 export interface DvbSubDestinationSettings {
   Alignment?: DvbSubDestinationAlignment;
   BackgroundColor?: DvbSubDestinationBackgroundColor;
@@ -5695,10 +5440,13 @@ export const DvbSubDestinationSettings = S.suspend(() =>
 ).annotations({
   identifier: "DvbSubDestinationSettings",
 }) as any as S.Schema<DvbSubDestinationSettings>;
-export type EbuTtDFillLineGapControl = "DISABLED" | "ENABLED";
-export const EbuTtDFillLineGapControl = S.Literal("DISABLED", "ENABLED");
-export type EbuTtDDestinationStyleControl = "EXCLUDE" | "INCLUDE";
-export const EbuTtDDestinationStyleControl = S.Literal("EXCLUDE", "INCLUDE");
+export type EbuTtDFillLineGapControl = "DISABLED" | "ENABLED" | (string & {});
+export const EbuTtDFillLineGapControl = S.String;
+export type EbuTtDDestinationStyleControl =
+  | "EXCLUDE"
+  | "INCLUDE"
+  | (string & {});
+export const EbuTtDDestinationStyleControl = S.String;
 export interface EbuTtDDestinationSettings {
   CopyrightHolder?: string;
   FillLineGap?: EbuTtDFillLineGapControl;
@@ -5767,11 +5515,11 @@ export const TeletextDestinationSettings = S.suspend(() =>
 ).annotations({
   identifier: "TeletextDestinationSettings",
 }) as any as S.Schema<TeletextDestinationSettings>;
-export type TtmlDestinationStyleControl = "PASSTHROUGH" | "USE_CONFIGURED";
-export const TtmlDestinationStyleControl = S.Literal(
-  "PASSTHROUGH",
-  "USE_CONFIGURED",
-);
+export type TtmlDestinationStyleControl =
+  | "PASSTHROUGH"
+  | "USE_CONFIGURED"
+  | (string & {});
+export const TtmlDestinationStyleControl = S.String;
 export interface TtmlDestinationSettings {
   StyleControl?: TtmlDestinationStyleControl;
 }
@@ -5784,11 +5532,11 @@ export const TtmlDestinationSettings = S.suspend(() =>
 ).annotations({
   identifier: "TtmlDestinationSettings",
 }) as any as S.Schema<TtmlDestinationSettings>;
-export type WebvttDestinationStyleControl = "NO_STYLE_DATA" | "PASSTHROUGH";
-export const WebvttDestinationStyleControl = S.Literal(
-  "NO_STYLE_DATA",
-  "PASSTHROUGH",
-);
+export type WebvttDestinationStyleControl =
+  | "NO_STYLE_DATA"
+  | "PASSTHROUGH"
+  | (string & {});
+export const WebvttDestinationStyleControl = S.String;
 export interface WebvttDestinationSettings {
   StyleControl?: WebvttDestinationStyleControl;
 }
@@ -5921,8 +5669,8 @@ export const FeatureActivations = S.suspend(() =>
 ).annotations({
   identifier: "FeatureActivations",
 }) as any as S.Schema<FeatureActivations>;
-export type InputLossImageType = "COLOR" | "SLATE";
-export const InputLossImageType = S.Literal("COLOR", "SLATE");
+export type InputLossImageType = "COLOR" | "SLATE" | (string & {});
+export const InputLossImageType = S.String;
 export interface InputLossBehavior {
   BlackFrameMsec?: number;
   InputLossImageColor?: string;
@@ -5959,11 +5707,11 @@ export const EpochLockingSettings = S.suspend(() =>
 ).annotations({
   identifier: "EpochLockingSettings",
 }) as any as S.Schema<EpochLockingSettings>;
-export type PipelineLockingMethod = "SOURCE_TIMECODE" | "VIDEO_ALIGNMENT";
-export const PipelineLockingMethod = S.Literal(
-  "SOURCE_TIMECODE",
-  "VIDEO_ALIGNMENT",
-);
+export type PipelineLockingMethod =
+  | "SOURCE_TIMECODE"
+  | "VIDEO_ALIGNMENT"
+  | (string & {});
+export const PipelineLockingMethod = S.String;
 export interface PipelineLockingSettings {
   PipelineLockingMethod?: PipelineLockingMethod;
 }
@@ -6078,13 +5826,9 @@ export type S3CannedAcl =
   | "AUTHENTICATED_READ"
   | "BUCKET_OWNER_FULL_CONTROL"
   | "BUCKET_OWNER_READ"
-  | "PUBLIC_READ";
-export const S3CannedAcl = S.Literal(
-  "AUTHENTICATED_READ",
-  "BUCKET_OWNER_FULL_CONTROL",
-  "BUCKET_OWNER_READ",
-  "PUBLIC_READ",
-);
+  | "PUBLIC_READ"
+  | (string & {});
+export const S3CannedAcl = S.String;
 export interface ArchiveS3Settings {
   CannedAcl?: S3CannedAcl;
 }
@@ -6173,8 +5917,12 @@ export const FrameCaptureGroupSettings = S.suspend(() =>
 ).annotations({
   identifier: "FrameCaptureGroupSettings",
 }) as any as S.Schema<FrameCaptureGroupSettings>;
-export type HlsAdMarkers = "ADOBE" | "ELEMENTAL" | "ELEMENTAL_SCTE35";
-export const HlsAdMarkers = S.Literal("ADOBE", "ELEMENTAL", "ELEMENTAL_SCTE35");
+export type HlsAdMarkers =
+  | "ADOBE"
+  | "ELEMENTAL"
+  | "ELEMENTAL_SCTE35"
+  | (string & {});
+export const HlsAdMarkers = S.String;
 export type __listOfHlsAdMarkers = HlsAdMarkers[];
 export const __listOfHlsAdMarkers = S.Array(HlsAdMarkers);
 export interface CaptionLanguageMapping {
@@ -6195,25 +5943,30 @@ export const CaptionLanguageMapping = S.suspend(() =>
 }) as any as S.Schema<CaptionLanguageMapping>;
 export type __listOfCaptionLanguageMapping = CaptionLanguageMapping[];
 export const __listOfCaptionLanguageMapping = S.Array(CaptionLanguageMapping);
-export type HlsCaptionLanguageSetting = "INSERT" | "NONE" | "OMIT";
-export const HlsCaptionLanguageSetting = S.Literal("INSERT", "NONE", "OMIT");
-export type HlsClientCache = "DISABLED" | "ENABLED";
-export const HlsClientCache = S.Literal("DISABLED", "ENABLED");
-export type HlsCodecSpecification = "RFC_4281" | "RFC_6381";
-export const HlsCodecSpecification = S.Literal("RFC_4281", "RFC_6381");
+export type HlsCaptionLanguageSetting =
+  | "INSERT"
+  | "NONE"
+  | "OMIT"
+  | (string & {});
+export const HlsCaptionLanguageSetting = S.String;
+export type HlsClientCache = "DISABLED" | "ENABLED" | (string & {});
+export const HlsClientCache = S.String;
+export type HlsCodecSpecification = "RFC_4281" | "RFC_6381" | (string & {});
+export const HlsCodecSpecification = S.String;
 export type HlsDirectoryStructure =
   | "SINGLE_DIRECTORY"
-  | "SUBDIRECTORY_PER_STREAM";
-export const HlsDirectoryStructure = S.Literal(
-  "SINGLE_DIRECTORY",
-  "SUBDIRECTORY_PER_STREAM",
-);
-export type HlsDiscontinuityTags = "INSERT" | "NEVER_INSERT";
-export const HlsDiscontinuityTags = S.Literal("INSERT", "NEVER_INSERT");
-export type HlsEncryptionType = "AES128" | "SAMPLE_AES";
-export const HlsEncryptionType = S.Literal("AES128", "SAMPLE_AES");
-export type HlsAkamaiHttpTransferMode = "CHUNKED" | "NON_CHUNKED";
-export const HlsAkamaiHttpTransferMode = S.Literal("CHUNKED", "NON_CHUNKED");
+  | "SUBDIRECTORY_PER_STREAM"
+  | (string & {});
+export const HlsDirectoryStructure = S.String;
+export type HlsDiscontinuityTags = "INSERT" | "NEVER_INSERT" | (string & {});
+export const HlsDiscontinuityTags = S.String;
+export type HlsEncryptionType = "AES128" | "SAMPLE_AES" | (string & {});
+export const HlsEncryptionType = S.String;
+export type HlsAkamaiHttpTransferMode =
+  | "CHUNKED"
+  | "NON_CHUNKED"
+  | (string & {});
+export const HlsAkamaiHttpTransferMode = S.String;
 export interface HlsAkamaiSettings {
   ConnectionRetryInterval?: number;
   FilecacheDuration?: number;
@@ -6262,8 +6015,8 @@ export const HlsBasicPutSettings = S.suspend(() =>
 ).annotations({
   identifier: "HlsBasicPutSettings",
 }) as any as S.Schema<HlsBasicPutSettings>;
-export type HlsMediaStoreStorageClass = "TEMPORAL";
-export const HlsMediaStoreStorageClass = S.Literal("TEMPORAL");
+export type HlsMediaStoreStorageClass = "TEMPORAL" | (string & {});
+export const HlsMediaStoreStorageClass = S.String;
 export interface HlsMediaStoreSettings {
   ConnectionRetryInterval?: number;
   FilecacheDuration?: number;
@@ -6298,8 +6051,11 @@ export const HlsS3Settings = S.suspend(() =>
 ).annotations({
   identifier: "HlsS3Settings",
 }) as any as S.Schema<HlsS3Settings>;
-export type HlsWebdavHttpTransferMode = "CHUNKED" | "NON_CHUNKED";
-export const HlsWebdavHttpTransferMode = S.Literal("CHUNKED", "NON_CHUNKED");
+export type HlsWebdavHttpTransferMode =
+  | "CHUNKED"
+  | "NON_CHUNKED"
+  | (string & {});
+export const HlsWebdavHttpTransferMode = S.String;
 export interface HlsWebdavSettings {
   ConnectionRetryInterval?: number;
   FilecacheDuration?: number;
@@ -6352,21 +6108,21 @@ export const HlsCdnSettings = S.suspend(() =>
 ).annotations({
   identifier: "HlsCdnSettings",
 }) as any as S.Schema<HlsCdnSettings>;
-export type HlsId3SegmentTaggingState = "DISABLED" | "ENABLED";
-export const HlsId3SegmentTaggingState = S.Literal("DISABLED", "ENABLED");
-export type IFrameOnlyPlaylistType = "DISABLED" | "STANDARD";
-export const IFrameOnlyPlaylistType = S.Literal("DISABLED", "STANDARD");
-export type HlsIncompleteSegmentBehavior = "AUTO" | "SUPPRESS";
-export const HlsIncompleteSegmentBehavior = S.Literal("AUTO", "SUPPRESS");
-export type InputLossActionForHlsOut = "EMIT_OUTPUT" | "PAUSE_OUTPUT";
-export const InputLossActionForHlsOut = S.Literal(
-  "EMIT_OUTPUT",
-  "PAUSE_OUTPUT",
-);
-export type HlsIvInManifest = "EXCLUDE" | "INCLUDE";
-export const HlsIvInManifest = S.Literal("EXCLUDE", "INCLUDE");
-export type HlsIvSource = "EXPLICIT" | "FOLLOWS_SEGMENT_NUMBER";
-export const HlsIvSource = S.Literal("EXPLICIT", "FOLLOWS_SEGMENT_NUMBER");
+export type HlsId3SegmentTaggingState = "DISABLED" | "ENABLED" | (string & {});
+export const HlsId3SegmentTaggingState = S.String;
+export type IFrameOnlyPlaylistType = "DISABLED" | "STANDARD" | (string & {});
+export const IFrameOnlyPlaylistType = S.String;
+export type HlsIncompleteSegmentBehavior = "AUTO" | "SUPPRESS" | (string & {});
+export const HlsIncompleteSegmentBehavior = S.String;
+export type InputLossActionForHlsOut =
+  | "EMIT_OUTPUT"
+  | "PAUSE_OUTPUT"
+  | (string & {});
+export const InputLossActionForHlsOut = S.String;
+export type HlsIvInManifest = "EXCLUDE" | "INCLUDE" | (string & {});
+export const HlsIvInManifest = S.String;
+export type HlsIvSource = "EXPLICIT" | "FOLLOWS_SEGMENT_NUMBER" | (string & {});
+export const HlsIvSource = S.String;
 export interface StaticKeySettings {
   KeyProviderServer?: InputLocation;
   StaticKeyValue?: string;
@@ -6393,45 +6149,41 @@ export const KeyProviderSettings = S.suspend(() =>
 ).annotations({
   identifier: "KeyProviderSettings",
 }) as any as S.Schema<KeyProviderSettings>;
-export type HlsManifestCompression = "GZIP" | "NONE";
-export const HlsManifestCompression = S.Literal("GZIP", "NONE");
-export type HlsManifestDurationFormat = "FLOATING_POINT" | "INTEGER";
-export const HlsManifestDurationFormat = S.Literal("FLOATING_POINT", "INTEGER");
-export type HlsMode = "LIVE" | "VOD";
-export const HlsMode = S.Literal("LIVE", "VOD");
+export type HlsManifestCompression = "GZIP" | "NONE" | (string & {});
+export const HlsManifestCompression = S.String;
+export type HlsManifestDurationFormat =
+  | "FLOATING_POINT"
+  | "INTEGER"
+  | (string & {});
+export const HlsManifestDurationFormat = S.String;
+export type HlsMode = "LIVE" | "VOD" | (string & {});
+export const HlsMode = S.String;
 export type HlsOutputSelection =
   | "MANIFESTS_AND_SEGMENTS"
   | "SEGMENTS_ONLY"
-  | "VARIANT_MANIFESTS_AND_SEGMENTS";
-export const HlsOutputSelection = S.Literal(
-  "MANIFESTS_AND_SEGMENTS",
-  "SEGMENTS_ONLY",
-  "VARIANT_MANIFESTS_AND_SEGMENTS",
-);
-export type HlsProgramDateTime = "EXCLUDE" | "INCLUDE";
-export const HlsProgramDateTime = S.Literal("EXCLUDE", "INCLUDE");
+  | "VARIANT_MANIFESTS_AND_SEGMENTS"
+  | (string & {});
+export const HlsOutputSelection = S.String;
+export type HlsProgramDateTime = "EXCLUDE" | "INCLUDE" | (string & {});
+export const HlsProgramDateTime = S.String;
 export type HlsProgramDateTimeClock =
   | "INITIALIZE_FROM_OUTPUT_TIMECODE"
-  | "SYSTEM_CLOCK";
-export const HlsProgramDateTimeClock = S.Literal(
-  "INITIALIZE_FROM_OUTPUT_TIMECODE",
-  "SYSTEM_CLOCK",
-);
-export type HlsRedundantManifest = "DISABLED" | "ENABLED";
-export const HlsRedundantManifest = S.Literal("DISABLED", "ENABLED");
+  | "SYSTEM_CLOCK"
+  | (string & {});
+export const HlsProgramDateTimeClock = S.String;
+export type HlsRedundantManifest = "DISABLED" | "ENABLED" | (string & {});
+export const HlsRedundantManifest = S.String;
 export type HlsSegmentationMode =
   | "USE_INPUT_SEGMENTATION"
-  | "USE_SEGMENT_DURATION";
-export const HlsSegmentationMode = S.Literal(
-  "USE_INPUT_SEGMENTATION",
-  "USE_SEGMENT_DURATION",
-);
-export type HlsStreamInfResolution = "EXCLUDE" | "INCLUDE";
-export const HlsStreamInfResolution = S.Literal("EXCLUDE", "INCLUDE");
-export type HlsTimedMetadataId3Frame = "NONE" | "PRIV" | "TDRL";
-export const HlsTimedMetadataId3Frame = S.Literal("NONE", "PRIV", "TDRL");
-export type HlsTsFileMode = "SEGMENTED_FILES" | "SINGLE_FILE";
-export const HlsTsFileMode = S.Literal("SEGMENTED_FILES", "SINGLE_FILE");
+  | "USE_SEGMENT_DURATION"
+  | (string & {});
+export const HlsSegmentationMode = S.String;
+export type HlsStreamInfResolution = "EXCLUDE" | "INCLUDE" | (string & {});
+export const HlsStreamInfResolution = S.String;
+export type HlsTimedMetadataId3Frame = "NONE" | "PRIV" | "TDRL" | (string & {});
+export const HlsTimedMetadataId3Frame = S.String;
+export type HlsTsFileMode = "SEGMENTED_FILES" | "SINGLE_FILE" | (string & {});
+export const HlsTsFileMode = S.String;
 export interface HlsGroupSettings {
   AdMarkers?: HlsAdMarkers[];
   BaseUrlContent?: string;
@@ -6580,26 +6332,36 @@ export const HlsGroupSettings = S.suspend(() =>
 ).annotations({
   identifier: "HlsGroupSettings",
 }) as any as S.Schema<HlsGroupSettings>;
-export type CmafId3Behavior = "DISABLED" | "ENABLED";
-export const CmafId3Behavior = S.Literal("DISABLED", "ENABLED");
-export type CmafKLVBehavior = "NO_PASSTHROUGH" | "PASSTHROUGH";
-export const CmafKLVBehavior = S.Literal("NO_PASSTHROUGH", "PASSTHROUGH");
-export type CmafNielsenId3Behavior = "NO_PASSTHROUGH" | "PASSTHROUGH";
-export const CmafNielsenId3Behavior = S.Literal(
-  "NO_PASSTHROUGH",
-  "PASSTHROUGH",
-);
-export type Scte35Type = "NONE" | "SCTE_35_WITHOUT_SEGMENTATION";
-export const Scte35Type = S.Literal("NONE", "SCTE_35_WITHOUT_SEGMENTATION");
-export type CmafIngestSegmentLengthUnits = "MILLISECONDS" | "SECONDS";
-export const CmafIngestSegmentLengthUnits = S.Literal(
-  "MILLISECONDS",
-  "SECONDS",
-);
-export type CmafTimedMetadataId3Frame = "NONE" | "PRIV" | "TDRL";
-export const CmafTimedMetadataId3Frame = S.Literal("NONE", "PRIV", "TDRL");
-export type CmafTimedMetadataPassthrough = "DISABLED" | "ENABLED";
-export const CmafTimedMetadataPassthrough = S.Literal("DISABLED", "ENABLED");
+export type CmafId3Behavior = "DISABLED" | "ENABLED" | (string & {});
+export const CmafId3Behavior = S.String;
+export type CmafKLVBehavior = "NO_PASSTHROUGH" | "PASSTHROUGH" | (string & {});
+export const CmafKLVBehavior = S.String;
+export type CmafNielsenId3Behavior =
+  | "NO_PASSTHROUGH"
+  | "PASSTHROUGH"
+  | (string & {});
+export const CmafNielsenId3Behavior = S.String;
+export type Scte35Type =
+  | "NONE"
+  | "SCTE_35_WITHOUT_SEGMENTATION"
+  | (string & {});
+export const Scte35Type = S.String;
+export type CmafIngestSegmentLengthUnits =
+  | "MILLISECONDS"
+  | "SECONDS"
+  | (string & {});
+export const CmafIngestSegmentLengthUnits = S.String;
+export type CmafTimedMetadataId3Frame =
+  | "NONE"
+  | "PRIV"
+  | "TDRL"
+  | (string & {});
+export const CmafTimedMetadataId3Frame = S.String;
+export type CmafTimedMetadataPassthrough =
+  | "DISABLED"
+  | "ENABLED"
+  | (string & {});
+export const CmafTimedMetadataPassthrough = S.String;
 export interface MediaPackageV2GroupSettings {
   CaptionLanguageMappings?: CaptionLanguageMapping[];
   Id3Behavior?: CmafId3Behavior;
@@ -6658,60 +6420,48 @@ export const MediaPackageGroupSettings = S.suspend(() =>
 }) as any as S.Schema<MediaPackageGroupSettings>;
 export type SmoothGroupAudioOnlyTimecodeControl =
   | "PASSTHROUGH"
-  | "USE_CONFIGURED_CLOCK";
-export const SmoothGroupAudioOnlyTimecodeControl = S.Literal(
-  "PASSTHROUGH",
-  "USE_CONFIGURED_CLOCK",
-);
-export type SmoothGroupCertificateMode = "SELF_SIGNED" | "VERIFY_AUTHENTICITY";
-export const SmoothGroupCertificateMode = S.Literal(
-  "SELF_SIGNED",
-  "VERIFY_AUTHENTICITY",
-);
+  | "USE_CONFIGURED_CLOCK"
+  | (string & {});
+export const SmoothGroupAudioOnlyTimecodeControl = S.String;
+export type SmoothGroupCertificateMode =
+  | "SELF_SIGNED"
+  | "VERIFY_AUTHENTICITY"
+  | (string & {});
+export const SmoothGroupCertificateMode = S.String;
 export type SmoothGroupEventIdMode =
   | "NO_EVENT_ID"
   | "USE_CONFIGURED"
-  | "USE_TIMESTAMP";
-export const SmoothGroupEventIdMode = S.Literal(
-  "NO_EVENT_ID",
-  "USE_CONFIGURED",
-  "USE_TIMESTAMP",
-);
-export type SmoothGroupEventStopBehavior = "NONE" | "SEND_EOS";
-export const SmoothGroupEventStopBehavior = S.Literal("NONE", "SEND_EOS");
-export type InputLossActionForMsSmoothOut = "EMIT_OUTPUT" | "PAUSE_OUTPUT";
-export const InputLossActionForMsSmoothOut = S.Literal(
-  "EMIT_OUTPUT",
-  "PAUSE_OUTPUT",
-);
+  | "USE_TIMESTAMP"
+  | (string & {});
+export const SmoothGroupEventIdMode = S.String;
+export type SmoothGroupEventStopBehavior = "NONE" | "SEND_EOS" | (string & {});
+export const SmoothGroupEventStopBehavior = S.String;
+export type InputLossActionForMsSmoothOut =
+  | "EMIT_OUTPUT"
+  | "PAUSE_OUTPUT"
+  | (string & {});
+export const InputLossActionForMsSmoothOut = S.String;
 export type SmoothGroupSegmentationMode =
   | "USE_INPUT_SEGMENTATION"
-  | "USE_SEGMENT_DURATION";
-export const SmoothGroupSegmentationMode = S.Literal(
-  "USE_INPUT_SEGMENTATION",
-  "USE_SEGMENT_DURATION",
-);
+  | "USE_SEGMENT_DURATION"
+  | (string & {});
+export const SmoothGroupSegmentationMode = S.String;
 export type SmoothGroupSparseTrackType =
   | "NONE"
   | "SCTE_35"
-  | "SCTE_35_WITHOUT_SEGMENTATION";
-export const SmoothGroupSparseTrackType = S.Literal(
-  "NONE",
-  "SCTE_35",
-  "SCTE_35_WITHOUT_SEGMENTATION",
-);
-export type SmoothGroupStreamManifestBehavior = "DO_NOT_SEND" | "SEND";
-export const SmoothGroupStreamManifestBehavior = S.Literal(
-  "DO_NOT_SEND",
-  "SEND",
-);
+  | "SCTE_35_WITHOUT_SEGMENTATION"
+  | (string & {});
+export const SmoothGroupSparseTrackType = S.String;
+export type SmoothGroupStreamManifestBehavior =
+  | "DO_NOT_SEND"
+  | "SEND"
+  | (string & {});
+export const SmoothGroupStreamManifestBehavior = S.String;
 export type SmoothGroupTimestampOffsetMode =
   | "USE_CONFIGURED_OFFSET"
-  | "USE_EVENT_START_DATE";
-export const SmoothGroupTimestampOffsetMode = S.Literal(
-  "USE_CONFIGURED_OFFSET",
-  "USE_EVENT_START_DATE",
-);
+  | "USE_EVENT_START_DATE"
+  | (string & {});
+export const SmoothGroupTimestampOffsetMode = S.String;
 export interface MsSmoothGroupSettings {
   AcquisitionPointId?: string;
   AudioOnlyTimecodeControl?: SmoothGroupAudioOnlyTimecodeControl;
@@ -6788,32 +6538,30 @@ export interface MultiplexGroupSettings {}
 export const MultiplexGroupSettings = S.suspend(() => S.Struct({})).annotations(
   { identifier: "MultiplexGroupSettings" },
 ) as any as S.Schema<MultiplexGroupSettings>;
-export type RtmpAdMarkers = "ON_CUE_POINT_SCTE35";
-export const RtmpAdMarkers = S.Literal("ON_CUE_POINT_SCTE35");
+export type RtmpAdMarkers = "ON_CUE_POINT_SCTE35" | (string & {});
+export const RtmpAdMarkers = S.String;
 export type __listOfRtmpAdMarkers = RtmpAdMarkers[];
 export const __listOfRtmpAdMarkers = S.Array(RtmpAdMarkers);
-export type AuthenticationScheme = "AKAMAI" | "COMMON";
-export const AuthenticationScheme = S.Literal("AKAMAI", "COMMON");
+export type AuthenticationScheme = "AKAMAI" | "COMMON" | (string & {});
+export const AuthenticationScheme = S.String;
 export type RtmpCacheFullBehavior =
   | "DISCONNECT_IMMEDIATELY"
-  | "WAIT_FOR_SERVER";
-export const RtmpCacheFullBehavior = S.Literal(
-  "DISCONNECT_IMMEDIATELY",
-  "WAIT_FOR_SERVER",
-);
-export type RtmpCaptionData = "ALL" | "FIELD1_608" | "FIELD1_AND_FIELD2_608";
-export const RtmpCaptionData = S.Literal(
-  "ALL",
-  "FIELD1_608",
-  "FIELD1_AND_FIELD2_608",
-);
-export type InputLossActionForRtmpOut = "EMIT_OUTPUT" | "PAUSE_OUTPUT";
-export const InputLossActionForRtmpOut = S.Literal(
-  "EMIT_OUTPUT",
-  "PAUSE_OUTPUT",
-);
-export type IncludeFillerNalUnits = "AUTO" | "DROP" | "INCLUDE";
-export const IncludeFillerNalUnits = S.Literal("AUTO", "DROP", "INCLUDE");
+  | "WAIT_FOR_SERVER"
+  | (string & {});
+export const RtmpCacheFullBehavior = S.String;
+export type RtmpCaptionData =
+  | "ALL"
+  | "FIELD1_608"
+  | "FIELD1_AND_FIELD2_608"
+  | (string & {});
+export const RtmpCaptionData = S.String;
+export type InputLossActionForRtmpOut =
+  | "EMIT_OUTPUT"
+  | "PAUSE_OUTPUT"
+  | (string & {});
+export const InputLossActionForRtmpOut = S.String;
+export type IncludeFillerNalUnits = "AUTO" | "DROP" | "INCLUDE" | (string & {});
+export const IncludeFillerNalUnits = S.String;
 export interface RtmpGroupSettings {
   AdMarkers?: RtmpAdMarkers[];
   AuthenticationScheme?: AuthenticationScheme;
@@ -6849,14 +6597,11 @@ export const RtmpGroupSettings = S.suspend(() =>
 export type InputLossActionForUdpOut =
   | "DROP_PROGRAM"
   | "DROP_TS"
-  | "EMIT_PROGRAM";
-export const InputLossActionForUdpOut = S.Literal(
-  "DROP_PROGRAM",
-  "DROP_TS",
-  "EMIT_PROGRAM",
-);
-export type UdpTimedMetadataId3Frame = "NONE" | "PRIV" | "TDRL";
-export const UdpTimedMetadataId3Frame = S.Literal("NONE", "PRIV", "TDRL");
+  | "EMIT_PROGRAM"
+  | (string & {});
+export const InputLossActionForUdpOut = S.String;
+export type UdpTimedMetadataId3Frame = "NONE" | "PRIV" | "TDRL" | (string & {});
+export const UdpTimedMetadataId3Frame = S.String;
 export interface UdpGroupSettings {
   InputLossAction?: InputLossActionForUdpOut;
   TimedMetadataId3Frame?: UdpTimedMetadataId3Frame;
@@ -7030,20 +6775,26 @@ export const OutputGroupSettings = S.suspend(() =>
 ).annotations({
   identifier: "OutputGroupSettings",
 }) as any as S.Schema<OutputGroupSettings>;
-export type M2tsAbsentInputAudioBehavior = "DROP" | "ENCODE_SILENCE";
-export const M2tsAbsentInputAudioBehavior = S.Literal("DROP", "ENCODE_SILENCE");
-export type M2tsArib = "DISABLED" | "ENABLED";
-export const M2tsArib = S.Literal("DISABLED", "ENABLED");
-export type M2tsAribCaptionsPidControl = "AUTO" | "USE_CONFIGURED";
-export const M2tsAribCaptionsPidControl = S.Literal("AUTO", "USE_CONFIGURED");
-export type M2tsAudioBufferModel = "ATSC" | "DVB";
-export const M2tsAudioBufferModel = S.Literal("ATSC", "DVB");
-export type M2tsAudioStreamType = "ATSC" | "DVB";
-export const M2tsAudioStreamType = S.Literal("ATSC", "DVB");
-export type M2tsBufferModel = "MULTIPLEX" | "NONE";
-export const M2tsBufferModel = S.Literal("MULTIPLEX", "NONE");
-export type M2tsCcDescriptor = "DISABLED" | "ENABLED";
-export const M2tsCcDescriptor = S.Literal("DISABLED", "ENABLED");
+export type M2tsAbsentInputAudioBehavior =
+  | "DROP"
+  | "ENCODE_SILENCE"
+  | (string & {});
+export const M2tsAbsentInputAudioBehavior = S.String;
+export type M2tsArib = "DISABLED" | "ENABLED" | (string & {});
+export const M2tsArib = S.String;
+export type M2tsAribCaptionsPidControl =
+  | "AUTO"
+  | "USE_CONFIGURED"
+  | (string & {});
+export const M2tsAribCaptionsPidControl = S.String;
+export type M2tsAudioBufferModel = "ATSC" | "DVB" | (string & {});
+export const M2tsAudioBufferModel = S.String;
+export type M2tsAudioStreamType = "ATSC" | "DVB" | (string & {});
+export const M2tsAudioStreamType = S.String;
+export type M2tsBufferModel = "MULTIPLEX" | "NONE" | (string & {});
+export const M2tsBufferModel = S.String;
+export type M2tsCcDescriptor = "DISABLED" | "ENABLED" | (string & {});
+export const M2tsCcDescriptor = S.String;
 export interface DvbNitSettings {
   NetworkId?: number;
   NetworkName?: string;
@@ -7062,13 +6813,9 @@ export type DvbSdtOutputSdt =
   | "SDT_FOLLOW"
   | "SDT_FOLLOW_IF_PRESENT"
   | "SDT_MANUAL"
-  | "SDT_NONE";
-export const DvbSdtOutputSdt = S.Literal(
-  "SDT_FOLLOW",
-  "SDT_FOLLOW_IF_PRESENT",
-  "SDT_MANUAL",
-  "SDT_NONE",
-);
+  | "SDT_NONE"
+  | (string & {});
+export const DvbSdtOutputSdt = S.String;
 export interface DvbSdtSettings {
   OutputSdt?: DvbSdtOutputSdt;
   RepInterval?: number;
@@ -7097,58 +6844,55 @@ export const DvbTdtSettings = S.suspend(() =>
 ).annotations({
   identifier: "DvbTdtSettings",
 }) as any as S.Schema<DvbTdtSettings>;
-export type M2tsEbifControl = "NONE" | "PASSTHROUGH";
-export const M2tsEbifControl = S.Literal("NONE", "PASSTHROUGH");
-export type M2tsAudioInterval = "VIDEO_AND_FIXED_INTERVALS" | "VIDEO_INTERVAL";
-export const M2tsAudioInterval = S.Literal(
-  "VIDEO_AND_FIXED_INTERVALS",
-  "VIDEO_INTERVAL",
-);
-export type M2tsEbpPlacement = "VIDEO_AND_AUDIO_PIDS" | "VIDEO_PID";
-export const M2tsEbpPlacement = S.Literal("VIDEO_AND_AUDIO_PIDS", "VIDEO_PID");
-export type M2tsEsRateInPes = "EXCLUDE" | "INCLUDE";
-export const M2tsEsRateInPes = S.Literal("EXCLUDE", "INCLUDE");
-export type M2tsKlv = "NONE" | "PASSTHROUGH";
-export const M2tsKlv = S.Literal("NONE", "PASSTHROUGH");
-export type M2tsNielsenId3Behavior = "NO_PASSTHROUGH" | "PASSTHROUGH";
-export const M2tsNielsenId3Behavior = S.Literal(
-  "NO_PASSTHROUGH",
-  "PASSTHROUGH",
-);
-export type M2tsPcrControl = "CONFIGURED_PCR_PERIOD" | "PCR_EVERY_PES_PACKET";
-export const M2tsPcrControl = S.Literal(
-  "CONFIGURED_PCR_PERIOD",
-  "PCR_EVERY_PES_PACKET",
-);
-export type M2tsRateMode = "CBR" | "VBR";
-export const M2tsRateMode = S.Literal("CBR", "VBR");
-export type M2tsScte35Control = "NONE" | "PASSTHROUGH";
-export const M2tsScte35Control = S.Literal("NONE", "PASSTHROUGH");
+export type M2tsEbifControl = "NONE" | "PASSTHROUGH" | (string & {});
+export const M2tsEbifControl = S.String;
+export type M2tsAudioInterval =
+  | "VIDEO_AND_FIXED_INTERVALS"
+  | "VIDEO_INTERVAL"
+  | (string & {});
+export const M2tsAudioInterval = S.String;
+export type M2tsEbpPlacement =
+  | "VIDEO_AND_AUDIO_PIDS"
+  | "VIDEO_PID"
+  | (string & {});
+export const M2tsEbpPlacement = S.String;
+export type M2tsEsRateInPes = "EXCLUDE" | "INCLUDE" | (string & {});
+export const M2tsEsRateInPes = S.String;
+export type M2tsKlv = "NONE" | "PASSTHROUGH" | (string & {});
+export const M2tsKlv = S.String;
+export type M2tsNielsenId3Behavior =
+  | "NO_PASSTHROUGH"
+  | "PASSTHROUGH"
+  | (string & {});
+export const M2tsNielsenId3Behavior = S.String;
+export type M2tsPcrControl =
+  | "CONFIGURED_PCR_PERIOD"
+  | "PCR_EVERY_PES_PACKET"
+  | (string & {});
+export const M2tsPcrControl = S.String;
+export type M2tsRateMode = "CBR" | "VBR" | (string & {});
+export const M2tsRateMode = S.String;
+export type M2tsScte35Control = "NONE" | "PASSTHROUGH" | (string & {});
+export const M2tsScte35Control = S.String;
 export type M2tsSegmentationMarkers =
   | "EBP"
   | "EBP_LEGACY"
   | "NONE"
   | "PSI_SEGSTART"
   | "RAI_ADAPT"
-  | "RAI_SEGSTART";
-export const M2tsSegmentationMarkers = S.Literal(
-  "EBP",
-  "EBP_LEGACY",
-  "NONE",
-  "PSI_SEGSTART",
-  "RAI_ADAPT",
-  "RAI_SEGSTART",
-);
-export type M2tsSegmentationStyle = "MAINTAIN_CADENCE" | "RESET_CADENCE";
-export const M2tsSegmentationStyle = S.Literal(
-  "MAINTAIN_CADENCE",
-  "RESET_CADENCE",
-);
-export type M2tsTimedMetadataBehavior = "NO_PASSTHROUGH" | "PASSTHROUGH";
-export const M2tsTimedMetadataBehavior = S.Literal(
-  "NO_PASSTHROUGH",
-  "PASSTHROUGH",
-);
+  | "RAI_SEGSTART"
+  | (string & {});
+export const M2tsSegmentationMarkers = S.String;
+export type M2tsSegmentationStyle =
+  | "MAINTAIN_CADENCE"
+  | "RESET_CADENCE"
+  | (string & {});
+export const M2tsSegmentationStyle = S.String;
+export type M2tsTimedMetadataBehavior =
+  | "NO_PASSTHROUGH"
+  | "PASSTHROUGH"
+  | (string & {});
+export const M2tsTimedMetadataBehavior = S.String;
 export interface M2tsSettings {
   AbsentInputAudioBehavior?: M2tsAbsentInputAudioBehavior;
   Arib?: M2tsArib;
@@ -7331,21 +7075,17 @@ export const FrameCaptureOutputSettings = S.suspend(() =>
 ).annotations({
   identifier: "FrameCaptureOutputSettings",
 }) as any as S.Schema<FrameCaptureOutputSettings>;
-export type HlsH265PackagingType = "HEV1" | "HVC1";
-export const HlsH265PackagingType = S.Literal("HEV1", "HVC1");
+export type HlsH265PackagingType = "HEV1" | "HVC1" | (string & {});
+export const HlsH265PackagingType = S.String;
 export type AudioOnlyHlsTrackType =
   | "ALTERNATE_AUDIO_AUTO_SELECT"
   | "ALTERNATE_AUDIO_AUTO_SELECT_DEFAULT"
   | "ALTERNATE_AUDIO_NOT_AUTO_SELECT"
-  | "AUDIO_ONLY_VARIANT_STREAM";
-export const AudioOnlyHlsTrackType = S.Literal(
-  "ALTERNATE_AUDIO_AUTO_SELECT",
-  "ALTERNATE_AUDIO_AUTO_SELECT_DEFAULT",
-  "ALTERNATE_AUDIO_NOT_AUTO_SELECT",
-  "AUDIO_ONLY_VARIANT_STREAM",
-);
-export type AudioOnlyHlsSegmentType = "AAC" | "FMP4";
-export const AudioOnlyHlsSegmentType = S.Literal("AAC", "FMP4");
+  | "AUDIO_ONLY_VARIANT_STREAM"
+  | (string & {});
+export const AudioOnlyHlsTrackType = S.String;
+export type AudioOnlyHlsSegmentType = "AAC" | "FMP4" | (string & {});
+export const AudioOnlyHlsSegmentType = S.String;
 export interface AudioOnlyHlsSettings {
   AudioGroupId?: string;
   AudioOnlyImage?: InputLocation;
@@ -7368,16 +7108,16 @@ export const AudioOnlyHlsSettings = S.suspend(() =>
 ).annotations({
   identifier: "AudioOnlyHlsSettings",
 }) as any as S.Schema<AudioOnlyHlsSettings>;
-export type Fmp4NielsenId3Behavior = "NO_PASSTHROUGH" | "PASSTHROUGH";
-export const Fmp4NielsenId3Behavior = S.Literal(
-  "NO_PASSTHROUGH",
-  "PASSTHROUGH",
-);
-export type Fmp4TimedMetadataBehavior = "NO_PASSTHROUGH" | "PASSTHROUGH";
-export const Fmp4TimedMetadataBehavior = S.Literal(
-  "NO_PASSTHROUGH",
-  "PASSTHROUGH",
-);
+export type Fmp4NielsenId3Behavior =
+  | "NO_PASSTHROUGH"
+  | "PASSTHROUGH"
+  | (string & {});
+export const Fmp4NielsenId3Behavior = S.String;
+export type Fmp4TimedMetadataBehavior =
+  | "NO_PASSTHROUGH"
+  | "PASSTHROUGH"
+  | (string & {});
+export const Fmp4TimedMetadataBehavior = S.String;
 export interface Fmp4HlsSettings {
   AudioRenditionSets?: string;
   NielsenId3Behavior?: Fmp4NielsenId3Behavior;
@@ -7404,25 +7144,28 @@ export const FrameCaptureHlsSettings = S.suspend(() =>
 ).annotations({
   identifier: "FrameCaptureHlsSettings",
 }) as any as S.Schema<FrameCaptureHlsSettings>;
-export type M3u8NielsenId3Behavior = "NO_PASSTHROUGH" | "PASSTHROUGH";
-export const M3u8NielsenId3Behavior = S.Literal(
-  "NO_PASSTHROUGH",
-  "PASSTHROUGH",
-);
-export type M3u8PcrControl = "CONFIGURED_PCR_PERIOD" | "PCR_EVERY_PES_PACKET";
-export const M3u8PcrControl = S.Literal(
-  "CONFIGURED_PCR_PERIOD",
-  "PCR_EVERY_PES_PACKET",
-);
-export type M3u8Scte35Behavior = "NO_PASSTHROUGH" | "PASSTHROUGH";
-export const M3u8Scte35Behavior = S.Literal("NO_PASSTHROUGH", "PASSTHROUGH");
-export type M3u8TimedMetadataBehavior = "NO_PASSTHROUGH" | "PASSTHROUGH";
-export const M3u8TimedMetadataBehavior = S.Literal(
-  "NO_PASSTHROUGH",
-  "PASSTHROUGH",
-);
-export type M3u8KlvBehavior = "NO_PASSTHROUGH" | "PASSTHROUGH";
-export const M3u8KlvBehavior = S.Literal("NO_PASSTHROUGH", "PASSTHROUGH");
+export type M3u8NielsenId3Behavior =
+  | "NO_PASSTHROUGH"
+  | "PASSTHROUGH"
+  | (string & {});
+export const M3u8NielsenId3Behavior = S.String;
+export type M3u8PcrControl =
+  | "CONFIGURED_PCR_PERIOD"
+  | "PCR_EVERY_PES_PACKET"
+  | (string & {});
+export const M3u8PcrControl = S.String;
+export type M3u8Scte35Behavior =
+  | "NO_PASSTHROUGH"
+  | "PASSTHROUGH"
+  | (string & {});
+export const M3u8Scte35Behavior = S.String;
+export type M3u8TimedMetadataBehavior =
+  | "NO_PASSTHROUGH"
+  | "PASSTHROUGH"
+  | (string & {});
+export const M3u8TimedMetadataBehavior = S.String;
+export type M3u8KlvBehavior = "NO_PASSTHROUGH" | "PASSTHROUGH" | (string & {});
+export const M3u8KlvBehavior = S.String;
 export interface M3u8Settings {
   AudioFramesPerPes?: number;
   AudioPids?: string;
@@ -7535,10 +7278,10 @@ export const HlsOutputSettings = S.suspend(() =>
 ).annotations({
   identifier: "HlsOutputSettings",
 }) as any as S.Schema<HlsOutputSettings>;
-export type HlsAutoSelect = "NO" | "OMIT" | "YES";
-export const HlsAutoSelect = S.Literal("NO", "OMIT", "YES");
-export type HlsDefault = "NO" | "OMIT" | "YES";
-export const HlsDefault = S.Literal("NO", "OMIT", "YES");
+export type HlsAutoSelect = "NO" | "OMIT" | "YES" | (string & {});
+export const HlsAutoSelect = S.String;
+export type HlsDefault = "NO" | "OMIT" | "YES" | (string & {});
+export const HlsDefault = S.String;
 export interface MediaPackageV2DestinationSettings {
   AudioGroupId?: string;
   AudioRenditionSets?: string;
@@ -7571,8 +7314,8 @@ export const MediaPackageOutputSettings = S.suspend(() =>
 ).annotations({
   identifier: "MediaPackageOutputSettings",
 }) as any as S.Schema<MediaPackageOutputSettings>;
-export type MsSmoothH265PackagingType = "HEV1" | "HVC1";
-export const MsSmoothH265PackagingType = S.Literal("HEV1", "HVC1");
+export type MsSmoothH265PackagingType = "HEV1" | "HVC1" | (string & {});
+export const MsSmoothH265PackagingType = S.String;
 export interface MsSmoothOutputSettings {
   H265PackagingType?: MsSmoothH265PackagingType;
   NameModifier?: string;
@@ -7665,11 +7408,11 @@ export const MultiplexOutputSettings = S.suspend(() =>
 ).annotations({
   identifier: "MultiplexOutputSettings",
 }) as any as S.Schema<MultiplexOutputSettings>;
-export type RtmpOutputCertificateMode = "SELF_SIGNED" | "VERIFY_AUTHENTICITY";
-export const RtmpOutputCertificateMode = S.Literal(
-  "SELF_SIGNED",
-  "VERIFY_AUTHENTICITY",
-);
+export type RtmpOutputCertificateMode =
+  | "SELF_SIGNED"
+  | "VERIFY_AUTHENTICITY"
+  | (string & {});
+export const RtmpOutputCertificateMode = S.String;
 export interface RtmpOutputSettings {
   CertificateMode?: RtmpOutputCertificateMode;
   ConnectionRetryInterval?: number;
@@ -7704,8 +7447,8 @@ export const UdpContainerSettings = S.suspend(() =>
 ).annotations({
   identifier: "UdpContainerSettings",
 }) as any as S.Schema<UdpContainerSettings>;
-export type FecOutputIncludeFec = "COLUMN" | "COLUMN_AND_ROW";
-export const FecOutputIncludeFec = S.Literal("COLUMN", "COLUMN_AND_ROW");
+export type FecOutputIncludeFec = "COLUMN" | "COLUMN_AND_ROW" | (string & {});
+export const FecOutputIncludeFec = S.String;
 export interface FecOutputSettings {
   ColumnDepth?: number;
   IncludeFec?: FecOutputIncludeFec;
@@ -7752,8 +7495,8 @@ export const CmafIngestOutputSettings = S.suspend(() =>
 ).annotations({
   identifier: "CmafIngestOutputSettings",
 }) as any as S.Schema<CmafIngestOutputSettings>;
-export type SrtEncryptionType = "AES128" | "AES192" | "AES256";
-export const SrtEncryptionType = S.Literal("AES128", "AES192", "AES256");
+export type SrtEncryptionType = "AES128" | "AES192" | "AES256" | (string & {});
+export const SrtEncryptionType = S.String;
 export interface SrtOutputSettings {
   BufferMsec?: number;
   ContainerSettings?: UdpContainerSettings;
@@ -7880,19 +7623,18 @@ export const TimecodeConfig = S.suspend(() =>
 ).annotations({
   identifier: "TimecodeConfig",
 }) as any as S.Schema<TimecodeConfig>;
-export type FrameCaptureIntervalUnit = "MILLISECONDS" | "SECONDS";
-export const FrameCaptureIntervalUnit = S.Literal("MILLISECONDS", "SECONDS");
+export type FrameCaptureIntervalUnit =
+  | "MILLISECONDS"
+  | "SECONDS"
+  | (string & {});
+export const FrameCaptureIntervalUnit = S.String;
 export type TimecodeBurninFontSize =
   | "EXTRA_SMALL_10"
   | "LARGE_48"
   | "MEDIUM_32"
-  | "SMALL_16";
-export const TimecodeBurninFontSize = S.Literal(
-  "EXTRA_SMALL_10",
-  "LARGE_48",
-  "MEDIUM_32",
-  "SMALL_16",
-);
+  | "SMALL_16"
+  | (string & {});
+export const TimecodeBurninFontSize = S.String;
 export type TimecodeBurninPosition =
   | "BOTTOM_CENTER"
   | "BOTTOM_LEFT"
@@ -7902,18 +7644,9 @@ export type TimecodeBurninPosition =
   | "MIDDLE_RIGHT"
   | "TOP_CENTER"
   | "TOP_LEFT"
-  | "TOP_RIGHT";
-export const TimecodeBurninPosition = S.Literal(
-  "BOTTOM_CENTER",
-  "BOTTOM_LEFT",
-  "BOTTOM_RIGHT",
-  "MIDDLE_CENTER",
-  "MIDDLE_LEFT",
-  "MIDDLE_RIGHT",
-  "TOP_CENTER",
-  "TOP_LEFT",
-  "TOP_RIGHT",
-);
+  | "TOP_RIGHT"
+  | (string & {});
+export const TimecodeBurninPosition = S.String;
 export interface TimecodeBurninSettings {
   FontSize?: TimecodeBurninFontSize;
   Position?: TimecodeBurninPosition;
@@ -7953,20 +7686,13 @@ export type H264AdaptiveQuantization =
   | "LOW"
   | "MAX"
   | "MEDIUM"
-  | "OFF";
-export const H264AdaptiveQuantization = S.Literal(
-  "AUTO",
-  "HIGH",
-  "HIGHER",
-  "LOW",
-  "MAX",
-  "MEDIUM",
-  "OFF",
-);
-export type AfdSignaling = "AUTO" | "FIXED" | "NONE";
-export const AfdSignaling = S.Literal("AUTO", "FIXED", "NONE");
-export type H264ColorMetadata = "IGNORE" | "INSERT";
-export const H264ColorMetadata = S.Literal("IGNORE", "INSERT");
+  | "OFF"
+  | (string & {});
+export const H264AdaptiveQuantization = S.String;
+export type AfdSignaling = "AUTO" | "FIXED" | "NONE" | (string & {});
+export const AfdSignaling = S.String;
+export type H264ColorMetadata = "IGNORE" | "INSERT" | (string & {});
+export const H264ColorMetadata = S.String;
 export interface ColorSpacePassthroughSettings {}
 export const ColorSpacePassthroughSettings = S.suspend(() =>
   S.Struct({}),
@@ -8001,17 +7727,14 @@ export const H264ColorSpaceSettings = S.suspend(() =>
 ).annotations({
   identifier: "H264ColorSpaceSettings",
 }) as any as S.Schema<H264ColorSpaceSettings>;
-export type H264EntropyEncoding = "CABAC" | "CAVLC";
-export const H264EntropyEncoding = S.Literal("CABAC", "CAVLC");
+export type H264EntropyEncoding = "CABAC" | "CAVLC" | (string & {});
+export const H264EntropyEncoding = S.String;
 export type TemporalFilterPostFilterSharpening =
   | "AUTO"
   | "DISABLED"
-  | "ENABLED";
-export const TemporalFilterPostFilterSharpening = S.Literal(
-  "AUTO",
-  "DISABLED",
-  "ENABLED",
-);
+  | "ENABLED"
+  | (string & {});
+export const TemporalFilterPostFilterSharpening = S.String;
 export type TemporalFilterStrength =
   | "AUTO"
   | "STRENGTH_1"
@@ -8029,26 +7752,9 @@ export type TemporalFilterStrength =
   | "STRENGTH_13"
   | "STRENGTH_14"
   | "STRENGTH_15"
-  | "STRENGTH_16";
-export const TemporalFilterStrength = S.Literal(
-  "AUTO",
-  "STRENGTH_1",
-  "STRENGTH_2",
-  "STRENGTH_3",
-  "STRENGTH_4",
-  "STRENGTH_5",
-  "STRENGTH_6",
-  "STRENGTH_7",
-  "STRENGTH_8",
-  "STRENGTH_9",
-  "STRENGTH_10",
-  "STRENGTH_11",
-  "STRENGTH_12",
-  "STRENGTH_13",
-  "STRENGTH_14",
-  "STRENGTH_15",
-  "STRENGTH_16",
-);
+  | "STRENGTH_16"
+  | (string & {});
+export const TemporalFilterStrength = S.String;
 export interface TemporalFilterSettings {
   PostFilterSharpening?: TemporalFilterPostFilterSharpening;
   Strength?: TemporalFilterStrength;
@@ -8067,26 +7773,17 @@ export type BandwidthReductionPostFilterSharpening =
   | "DISABLED"
   | "SHARPENING_1"
   | "SHARPENING_2"
-  | "SHARPENING_3";
-export const BandwidthReductionPostFilterSharpening = S.Literal(
-  "DISABLED",
-  "SHARPENING_1",
-  "SHARPENING_2",
-  "SHARPENING_3",
-);
+  | "SHARPENING_3"
+  | (string & {});
+export const BandwidthReductionPostFilterSharpening = S.String;
 export type BandwidthReductionFilterStrength =
   | "AUTO"
   | "STRENGTH_1"
   | "STRENGTH_2"
   | "STRENGTH_3"
-  | "STRENGTH_4";
-export const BandwidthReductionFilterStrength = S.Literal(
-  "AUTO",
-  "STRENGTH_1",
-  "STRENGTH_2",
-  "STRENGTH_3",
-  "STRENGTH_4",
-);
+  | "STRENGTH_4"
+  | (string & {});
+export const BandwidthReductionFilterStrength = S.String;
 export interface BandwidthReductionFilterSettings {
   PostFilterSharpening?: BandwidthReductionPostFilterSharpening;
   Strength?: BandwidthReductionFilterStrength;
@@ -8132,33 +7829,22 @@ export type FixedAfd =
   | "AFD_1011"
   | "AFD_1101"
   | "AFD_1110"
-  | "AFD_1111";
-export const FixedAfd = S.Literal(
-  "AFD_0000",
-  "AFD_0010",
-  "AFD_0011",
-  "AFD_0100",
-  "AFD_1000",
-  "AFD_1001",
-  "AFD_1010",
-  "AFD_1011",
-  "AFD_1101",
-  "AFD_1110",
-  "AFD_1111",
-);
-export type H264FlickerAq = "DISABLED" | "ENABLED";
-export const H264FlickerAq = S.Literal("DISABLED", "ENABLED");
-export type H264ForceFieldPictures = "DISABLED" | "ENABLED";
-export const H264ForceFieldPictures = S.Literal("DISABLED", "ENABLED");
-export type H264FramerateControl = "INITIALIZE_FROM_SOURCE" | "SPECIFIED";
-export const H264FramerateControl = S.Literal(
-  "INITIALIZE_FROM_SOURCE",
-  "SPECIFIED",
-);
-export type H264GopBReference = "DISABLED" | "ENABLED";
-export const H264GopBReference = S.Literal("DISABLED", "ENABLED");
-export type H264GopSizeUnits = "FRAMES" | "SECONDS";
-export const H264GopSizeUnits = S.Literal("FRAMES", "SECONDS");
+  | "AFD_1111"
+  | (string & {});
+export const FixedAfd = S.String;
+export type H264FlickerAq = "DISABLED" | "ENABLED" | (string & {});
+export const H264FlickerAq = S.String;
+export type H264ForceFieldPictures = "DISABLED" | "ENABLED" | (string & {});
+export const H264ForceFieldPictures = S.String;
+export type H264FramerateControl =
+  | "INITIALIZE_FROM_SOURCE"
+  | "SPECIFIED"
+  | (string & {});
+export const H264FramerateControl = S.String;
+export type H264GopBReference = "DISABLED" | "ENABLED" | (string & {});
+export const H264GopBReference = S.String;
+export type H264GopSizeUnits = "FRAMES" | "SECONDS" | (string & {});
+export const H264GopSizeUnits = S.String;
 export type H264Level =
   | "H264_LEVEL_1"
   | "H264_LEVEL_1_1"
@@ -8176,69 +7862,58 @@ export type H264Level =
   | "H264_LEVEL_5"
   | "H264_LEVEL_5_1"
   | "H264_LEVEL_5_2"
-  | "H264_LEVEL_AUTO";
-export const H264Level = S.Literal(
-  "H264_LEVEL_1",
-  "H264_LEVEL_1_1",
-  "H264_LEVEL_1_2",
-  "H264_LEVEL_1_3",
-  "H264_LEVEL_2",
-  "H264_LEVEL_2_1",
-  "H264_LEVEL_2_2",
-  "H264_LEVEL_3",
-  "H264_LEVEL_3_1",
-  "H264_LEVEL_3_2",
-  "H264_LEVEL_4",
-  "H264_LEVEL_4_1",
-  "H264_LEVEL_4_2",
-  "H264_LEVEL_5",
-  "H264_LEVEL_5_1",
-  "H264_LEVEL_5_2",
-  "H264_LEVEL_AUTO",
-);
-export type H264LookAheadRateControl = "HIGH" | "LOW" | "MEDIUM";
-export const H264LookAheadRateControl = S.Literal("HIGH", "LOW", "MEDIUM");
-export type H264ParControl = "INITIALIZE_FROM_SOURCE" | "SPECIFIED";
-export const H264ParControl = S.Literal("INITIALIZE_FROM_SOURCE", "SPECIFIED");
+  | "H264_LEVEL_AUTO"
+  | (string & {});
+export const H264Level = S.String;
+export type H264LookAheadRateControl =
+  | "HIGH"
+  | "LOW"
+  | "MEDIUM"
+  | (string & {});
+export const H264LookAheadRateControl = S.String;
+export type H264ParControl =
+  | "INITIALIZE_FROM_SOURCE"
+  | "SPECIFIED"
+  | (string & {});
+export const H264ParControl = S.String;
 export type H264Profile =
   | "BASELINE"
   | "HIGH"
   | "HIGH_10BIT"
   | "HIGH_422"
   | "HIGH_422_10BIT"
-  | "MAIN";
-export const H264Profile = S.Literal(
-  "BASELINE",
-  "HIGH",
-  "HIGH_10BIT",
-  "HIGH_422",
-  "HIGH_422_10BIT",
-  "MAIN",
-);
-export type H264QualityLevel = "ENHANCED_QUALITY" | "STANDARD_QUALITY";
-export const H264QualityLevel = S.Literal(
-  "ENHANCED_QUALITY",
-  "STANDARD_QUALITY",
-);
-export type H264RateControlMode = "CBR" | "MULTIPLEX" | "QVBR" | "VBR";
-export const H264RateControlMode = S.Literal("CBR", "MULTIPLEX", "QVBR", "VBR");
-export type H264ScanType = "INTERLACED" | "PROGRESSIVE";
-export const H264ScanType = S.Literal("INTERLACED", "PROGRESSIVE");
-export type H264SceneChangeDetect = "DISABLED" | "ENABLED";
-export const H264SceneChangeDetect = S.Literal("DISABLED", "ENABLED");
-export type H264SpatialAq = "DISABLED" | "ENABLED";
-export const H264SpatialAq = S.Literal("DISABLED", "ENABLED");
-export type H264SubGopLength = "DYNAMIC" | "FIXED";
-export const H264SubGopLength = S.Literal("DYNAMIC", "FIXED");
-export type H264Syntax = "DEFAULT" | "RP2027";
-export const H264Syntax = S.Literal("DEFAULT", "RP2027");
-export type H264TemporalAq = "DISABLED" | "ENABLED";
-export const H264TemporalAq = S.Literal("DISABLED", "ENABLED");
-export type H264TimecodeInsertionBehavior = "DISABLED" | "PIC_TIMING_SEI";
-export const H264TimecodeInsertionBehavior = S.Literal(
-  "DISABLED",
-  "PIC_TIMING_SEI",
-);
+  | "MAIN"
+  | (string & {});
+export const H264Profile = S.String;
+export type H264QualityLevel =
+  | "ENHANCED_QUALITY"
+  | "STANDARD_QUALITY"
+  | (string & {});
+export const H264QualityLevel = S.String;
+export type H264RateControlMode =
+  | "CBR"
+  | "MULTIPLEX"
+  | "QVBR"
+  | "VBR"
+  | (string & {});
+export const H264RateControlMode = S.String;
+export type H264ScanType = "INTERLACED" | "PROGRESSIVE" | (string & {});
+export const H264ScanType = S.String;
+export type H264SceneChangeDetect = "DISABLED" | "ENABLED" | (string & {});
+export const H264SceneChangeDetect = S.String;
+export type H264SpatialAq = "DISABLED" | "ENABLED" | (string & {});
+export const H264SpatialAq = S.String;
+export type H264SubGopLength = "DYNAMIC" | "FIXED" | (string & {});
+export const H264SubGopLength = S.String;
+export type H264Syntax = "DEFAULT" | "RP2027" | (string & {});
+export const H264Syntax = S.String;
+export type H264TemporalAq = "DISABLED" | "ENABLED" | (string & {});
+export const H264TemporalAq = S.String;
+export type H264TimecodeInsertionBehavior =
+  | "DISABLED"
+  | "PIC_TIMING_SEI"
+  | (string & {});
+export const H264TimecodeInsertionBehavior = S.String;
 export interface H264Settings {
   AdaptiveQuantization?: H264AdaptiveQuantization;
   AfdSignaling?: AfdSignaling;
@@ -8370,20 +8045,13 @@ export type H265AdaptiveQuantization =
   | "LOW"
   | "MAX"
   | "MEDIUM"
-  | "OFF";
-export const H265AdaptiveQuantization = S.Literal(
-  "AUTO",
-  "HIGH",
-  "HIGHER",
-  "LOW",
-  "MAX",
-  "MEDIUM",
-  "OFF",
-);
-export type H265AlternativeTransferFunction = "INSERT" | "OMIT";
-export const H265AlternativeTransferFunction = S.Literal("INSERT", "OMIT");
-export type H265ColorMetadata = "IGNORE" | "INSERT";
-export const H265ColorMetadata = S.Literal("IGNORE", "INSERT");
+  | "OFF"
+  | (string & {});
+export const H265AdaptiveQuantization = S.String;
+export type H265AlternativeTransferFunction = "INSERT" | "OMIT" | (string & {});
+export const H265AlternativeTransferFunction = S.String;
+export type H265ColorMetadata = "IGNORE" | "INSERT" | (string & {});
+export const H265ColorMetadata = S.String;
 export interface DolbyVision81Settings {}
 export const DolbyVision81Settings = S.suspend(() => S.Struct({})).annotations({
   identifier: "DolbyVision81Settings",
@@ -8454,10 +8122,10 @@ export const H265FilterSettings = S.suspend(() =>
 ).annotations({
   identifier: "H265FilterSettings",
 }) as any as S.Schema<H265FilterSettings>;
-export type H265FlickerAq = "DISABLED" | "ENABLED";
-export const H265FlickerAq = S.Literal("DISABLED", "ENABLED");
-export type H265GopSizeUnits = "FRAMES" | "SECONDS";
-export const H265GopSizeUnits = S.Literal("FRAMES", "SECONDS");
+export type H265FlickerAq = "DISABLED" | "ENABLED" | (string & {});
+export const H265FlickerAq = S.String;
+export type H265GopSizeUnits = "FRAMES" | "SECONDS" | (string & {});
+export const H265GopSizeUnits = S.String;
 export type H265Level =
   | "H265_LEVEL_1"
   | "H265_LEVEL_2"
@@ -8472,54 +8140,47 @@ export type H265Level =
   | "H265_LEVEL_6"
   | "H265_LEVEL_6_1"
   | "H265_LEVEL_6_2"
-  | "H265_LEVEL_AUTO";
-export const H265Level = S.Literal(
-  "H265_LEVEL_1",
-  "H265_LEVEL_2",
-  "H265_LEVEL_2_1",
-  "H265_LEVEL_3",
-  "H265_LEVEL_3_1",
-  "H265_LEVEL_4",
-  "H265_LEVEL_4_1",
-  "H265_LEVEL_5",
-  "H265_LEVEL_5_1",
-  "H265_LEVEL_5_2",
-  "H265_LEVEL_6",
-  "H265_LEVEL_6_1",
-  "H265_LEVEL_6_2",
-  "H265_LEVEL_AUTO",
-);
-export type H265LookAheadRateControl = "HIGH" | "LOW" | "MEDIUM";
-export const H265LookAheadRateControl = S.Literal("HIGH", "LOW", "MEDIUM");
-export type H265Profile = "MAIN" | "MAIN_10BIT";
-export const H265Profile = S.Literal("MAIN", "MAIN_10BIT");
-export type H265RateControlMode = "CBR" | "MULTIPLEX" | "QVBR";
-export const H265RateControlMode = S.Literal("CBR", "MULTIPLEX", "QVBR");
-export type H265ScanType = "INTERLACED" | "PROGRESSIVE";
-export const H265ScanType = S.Literal("INTERLACED", "PROGRESSIVE");
-export type H265SceneChangeDetect = "DISABLED" | "ENABLED";
-export const H265SceneChangeDetect = S.Literal("DISABLED", "ENABLED");
-export type H265Tier = "HIGH" | "MAIN";
-export const H265Tier = S.Literal("HIGH", "MAIN");
-export type H265TimecodeInsertionBehavior = "DISABLED" | "PIC_TIMING_SEI";
-export const H265TimecodeInsertionBehavior = S.Literal(
-  "DISABLED",
-  "PIC_TIMING_SEI",
-);
-export type H265MvOverPictureBoundaries = "DISABLED" | "ENABLED";
-export const H265MvOverPictureBoundaries = S.Literal("DISABLED", "ENABLED");
-export type H265MvTemporalPredictor = "DISABLED" | "ENABLED";
-export const H265MvTemporalPredictor = S.Literal("DISABLED", "ENABLED");
-export type H265TilePadding = "NONE" | "PADDED";
-export const H265TilePadding = S.Literal("NONE", "PADDED");
-export type H265TreeblockSize = "AUTO" | "TREE_SIZE_32X32";
-export const H265TreeblockSize = S.Literal("AUTO", "TREE_SIZE_32X32");
-export type H265Deblocking = "DISABLED" | "ENABLED";
-export const H265Deblocking = S.Literal("DISABLED", "ENABLED");
-export type H265GopBReference = "DISABLED" | "ENABLED";
-export const H265GopBReference = S.Literal("DISABLED", "ENABLED");
-export type H265SubGopLength = "DYNAMIC" | "FIXED";
-export const H265SubGopLength = S.Literal("DYNAMIC", "FIXED");
+  | "H265_LEVEL_AUTO"
+  | (string & {});
+export const H265Level = S.String;
+export type H265LookAheadRateControl =
+  | "HIGH"
+  | "LOW"
+  | "MEDIUM"
+  | (string & {});
+export const H265LookAheadRateControl = S.String;
+export type H265Profile = "MAIN" | "MAIN_10BIT" | (string & {});
+export const H265Profile = S.String;
+export type H265RateControlMode = "CBR" | "MULTIPLEX" | "QVBR" | (string & {});
+export const H265RateControlMode = S.String;
+export type H265ScanType = "INTERLACED" | "PROGRESSIVE" | (string & {});
+export const H265ScanType = S.String;
+export type H265SceneChangeDetect = "DISABLED" | "ENABLED" | (string & {});
+export const H265SceneChangeDetect = S.String;
+export type H265Tier = "HIGH" | "MAIN" | (string & {});
+export const H265Tier = S.String;
+export type H265TimecodeInsertionBehavior =
+  | "DISABLED"
+  | "PIC_TIMING_SEI"
+  | (string & {});
+export const H265TimecodeInsertionBehavior = S.String;
+export type H265MvOverPictureBoundaries =
+  | "DISABLED"
+  | "ENABLED"
+  | (string & {});
+export const H265MvOverPictureBoundaries = S.String;
+export type H265MvTemporalPredictor = "DISABLED" | "ENABLED" | (string & {});
+export const H265MvTemporalPredictor = S.String;
+export type H265TilePadding = "NONE" | "PADDED" | (string & {});
+export const H265TilePadding = S.String;
+export type H265TreeblockSize = "AUTO" | "TREE_SIZE_32X32" | (string & {});
+export const H265TreeblockSize = S.String;
+export type H265Deblocking = "DISABLED" | "ENABLED" | (string & {});
+export const H265Deblocking = S.String;
+export type H265GopBReference = "DISABLED" | "ENABLED" | (string & {});
+export const H265GopBReference = S.String;
+export type H265SubGopLength = "DYNAMIC" | "FIXED" | (string & {});
+export const H265SubGopLength = S.String;
 export interface H265Settings {
   AdaptiveQuantization?: H265AdaptiveQuantization;
   AfdSignaling?: AfdSignaling;
@@ -8647,23 +8308,18 @@ export type Mpeg2AdaptiveQuantization =
   | "HIGH"
   | "LOW"
   | "MEDIUM"
-  | "OFF";
-export const Mpeg2AdaptiveQuantization = S.Literal(
-  "AUTO",
-  "HIGH",
-  "LOW",
-  "MEDIUM",
-  "OFF",
-);
-export type Mpeg2ColorMetadata = "IGNORE" | "INSERT";
-export const Mpeg2ColorMetadata = S.Literal("IGNORE", "INSERT");
-export type Mpeg2ColorSpace = "AUTO" | "PASSTHROUGH";
-export const Mpeg2ColorSpace = S.Literal("AUTO", "PASSTHROUGH");
-export type Mpeg2DisplayRatio = "DISPLAYRATIO16X9" | "DISPLAYRATIO4X3";
-export const Mpeg2DisplayRatio = S.Literal(
-  "DISPLAYRATIO16X9",
-  "DISPLAYRATIO4X3",
-);
+  | "OFF"
+  | (string & {});
+export const Mpeg2AdaptiveQuantization = S.String;
+export type Mpeg2ColorMetadata = "IGNORE" | "INSERT" | (string & {});
+export const Mpeg2ColorMetadata = S.String;
+export type Mpeg2ColorSpace = "AUTO" | "PASSTHROUGH" | (string & {});
+export const Mpeg2ColorSpace = S.String;
+export type Mpeg2DisplayRatio =
+  | "DISPLAYRATIO16X9"
+  | "DISPLAYRATIO4X3"
+  | (string & {});
+export const Mpeg2DisplayRatio = S.String;
 export interface Mpeg2FilterSettings {
   TemporalFilterSettings?: TemporalFilterSettings;
 }
@@ -8676,17 +8332,17 @@ export const Mpeg2FilterSettings = S.suspend(() =>
 ).annotations({
   identifier: "Mpeg2FilterSettings",
 }) as any as S.Schema<Mpeg2FilterSettings>;
-export type Mpeg2GopSizeUnits = "FRAMES" | "SECONDS";
-export const Mpeg2GopSizeUnits = S.Literal("FRAMES", "SECONDS");
-export type Mpeg2ScanType = "INTERLACED" | "PROGRESSIVE";
-export const Mpeg2ScanType = S.Literal("INTERLACED", "PROGRESSIVE");
-export type Mpeg2SubGopLength = "DYNAMIC" | "FIXED";
-export const Mpeg2SubGopLength = S.Literal("DYNAMIC", "FIXED");
-export type Mpeg2TimecodeInsertionBehavior = "DISABLED" | "GOP_TIMECODE";
-export const Mpeg2TimecodeInsertionBehavior = S.Literal(
-  "DISABLED",
-  "GOP_TIMECODE",
-);
+export type Mpeg2GopSizeUnits = "FRAMES" | "SECONDS" | (string & {});
+export const Mpeg2GopSizeUnits = S.String;
+export type Mpeg2ScanType = "INTERLACED" | "PROGRESSIVE" | (string & {});
+export const Mpeg2ScanType = S.String;
+export type Mpeg2SubGopLength = "DYNAMIC" | "FIXED" | (string & {});
+export const Mpeg2SubGopLength = S.String;
+export type Mpeg2TimecodeInsertionBehavior =
+  | "DISABLED"
+  | "GOP_TIMECODE"
+  | (string & {});
+export const Mpeg2TimecodeInsertionBehavior = S.String;
 export interface Mpeg2Settings {
   AdaptiveQuantization?: Mpeg2AdaptiveQuantization;
   AfdSignaling?: AfdSignaling;
@@ -8773,8 +8429,8 @@ export const Av1ColorSpaceSettings = S.suspend(() =>
 ).annotations({
   identifier: "Av1ColorSpaceSettings",
 }) as any as S.Schema<Av1ColorSpaceSettings>;
-export type Av1GopSizeUnits = "FRAMES" | "SECONDS";
-export const Av1GopSizeUnits = S.Literal("FRAMES", "SECONDS");
+export type Av1GopSizeUnits = "FRAMES" | "SECONDS" | (string & {});
+export const Av1GopSizeUnits = S.String;
 export type Av1Level =
   | "AV1_LEVEL_2"
   | "AV1_LEVEL_2_1"
@@ -8790,34 +8446,19 @@ export type Av1Level =
   | "AV1_LEVEL_6_1"
   | "AV1_LEVEL_6_2"
   | "AV1_LEVEL_6_3"
-  | "AV1_LEVEL_AUTO";
-export const Av1Level = S.Literal(
-  "AV1_LEVEL_2",
-  "AV1_LEVEL_2_1",
-  "AV1_LEVEL_3",
-  "AV1_LEVEL_3_1",
-  "AV1_LEVEL_4",
-  "AV1_LEVEL_4_1",
-  "AV1_LEVEL_5",
-  "AV1_LEVEL_5_1",
-  "AV1_LEVEL_5_2",
-  "AV1_LEVEL_5_3",
-  "AV1_LEVEL_6",
-  "AV1_LEVEL_6_1",
-  "AV1_LEVEL_6_2",
-  "AV1_LEVEL_6_3",
-  "AV1_LEVEL_AUTO",
-);
-export type Av1LookAheadRateControl = "HIGH" | "LOW" | "MEDIUM";
-export const Av1LookAheadRateControl = S.Literal("HIGH", "LOW", "MEDIUM");
-export type Av1SceneChangeDetect = "DISABLED" | "ENABLED";
-export const Av1SceneChangeDetect = S.Literal("DISABLED", "ENABLED");
-export type Av1RateControlMode = "CBR" | "QVBR";
-export const Av1RateControlMode = S.Literal("CBR", "QVBR");
-export type Av1SpatialAq = "DISABLED" | "ENABLED";
-export const Av1SpatialAq = S.Literal("DISABLED", "ENABLED");
-export type Av1TemporalAq = "DISABLED" | "ENABLED";
-export const Av1TemporalAq = S.Literal("DISABLED", "ENABLED");
+  | "AV1_LEVEL_AUTO"
+  | (string & {});
+export const Av1Level = S.String;
+export type Av1LookAheadRateControl = "HIGH" | "LOW" | "MEDIUM" | (string & {});
+export const Av1LookAheadRateControl = S.String;
+export type Av1SceneChangeDetect = "DISABLED" | "ENABLED" | (string & {});
+export const Av1SceneChangeDetect = S.String;
+export type Av1RateControlMode = "CBR" | "QVBR" | (string & {});
+export const Av1RateControlMode = S.String;
+export type Av1SpatialAq = "DISABLED" | "ENABLED" | (string & {});
+export const Av1SpatialAq = S.String;
+export type Av1TemporalAq = "DISABLED" | "ENABLED" | (string & {});
+export const Av1TemporalAq = S.String;
 export interface Av1Settings {
   AfdSignaling?: AfdSignaling;
   BufSize?: number;
@@ -8948,8 +8589,13 @@ export const ThumbnailConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "ThumbnailConfiguration",
 }) as any as S.Schema<ThumbnailConfiguration>;
-export type ColorSpace = "HDR10" | "HLG_2020" | "REC_601" | "REC_709";
-export const ColorSpace = S.Literal("HDR10", "HLG_2020", "REC_601", "REC_709");
+export type ColorSpace =
+  | "HDR10"
+  | "HLG_2020"
+  | "REC_601"
+  | "REC_709"
+  | (string & {});
+export const ColorSpace = S.String;
 export interface ColorCorrection {
   InputColorSpace?: ColorSpace;
   OutputColorSpace?: ColorSpace;
@@ -9156,8 +8802,8 @@ export const AudioHlsRenditionSelection = S.suspend(() =>
 ).annotations({
   identifier: "AudioHlsRenditionSelection",
 }) as any as S.Schema<AudioHlsRenditionSelection>;
-export type AudioLanguageSelectionPolicy = "LOOSE" | "STRICT";
-export const AudioLanguageSelectionPolicy = S.Literal("LOOSE", "STRICT");
+export type AudioLanguageSelectionPolicy = "LOOSE" | "STRICT" | (string & {});
+export const AudioLanguageSelectionPolicy = S.String;
 export interface AudioLanguageSelection {
   LanguageCode?: string;
   LanguageSelectionPolicy?: AudioLanguageSelectionPolicy;
@@ -9197,18 +8843,9 @@ export type DolbyEProgramSelection =
   | "PROGRAM_5"
   | "PROGRAM_6"
   | "PROGRAM_7"
-  | "PROGRAM_8";
-export const DolbyEProgramSelection = S.Literal(
-  "ALL_CHANNELS",
-  "PROGRAM_1",
-  "PROGRAM_2",
-  "PROGRAM_3",
-  "PROGRAM_4",
-  "PROGRAM_5",
-  "PROGRAM_6",
-  "PROGRAM_7",
-  "PROGRAM_8",
-);
+  | "PROGRAM_8"
+  | (string & {});
+export const DolbyEProgramSelection = S.String;
 export interface AudioDolbyEDecode {
   ProgramSelection?: DolbyEProgramSelection;
 }
@@ -9291,15 +8928,15 @@ export interface AribSourceSettings {}
 export const AribSourceSettings = S.suspend(() => S.Struct({})).annotations({
   identifier: "AribSourceSettings",
 }) as any as S.Schema<AribSourceSettings>;
-export type DvbSubOcrLanguage = "DEU" | "ENG" | "FRA" | "NLD" | "POR" | "SPA";
-export const DvbSubOcrLanguage = S.Literal(
-  "DEU",
-  "ENG",
-  "FRA",
-  "NLD",
-  "POR",
-  "SPA",
-);
+export type DvbSubOcrLanguage =
+  | "DEU"
+  | "ENG"
+  | "FRA"
+  | "NLD"
+  | "POR"
+  | "SPA"
+  | (string & {});
+export const DvbSubOcrLanguage = S.String;
 export interface DvbSubSourceSettings {
   OcrLanguage?: DvbSubOcrLanguage;
   Pid?: number;
@@ -9312,10 +8949,10 @@ export const DvbSubSourceSettings = S.suspend(() =>
 ).annotations({
   identifier: "DvbSubSourceSettings",
 }) as any as S.Schema<DvbSubSourceSettings>;
-export type EmbeddedConvert608To708 = "DISABLED" | "UPCONVERT";
-export const EmbeddedConvert608To708 = S.Literal("DISABLED", "UPCONVERT");
-export type EmbeddedScte20Detection = "AUTO" | "OFF";
-export const EmbeddedScte20Detection = S.Literal("AUTO", "OFF");
+export type EmbeddedConvert608To708 = "DISABLED" | "UPCONVERT" | (string & {});
+export const EmbeddedConvert608To708 = S.String;
+export type EmbeddedScte20Detection = "AUTO" | "OFF" | (string & {});
+export const EmbeddedScte20Detection = S.String;
 export interface EmbeddedSourceSettings {
   Convert608To708?: EmbeddedConvert608To708;
   Scte20Detection?: EmbeddedScte20Detection;
@@ -9340,8 +8977,8 @@ export const EmbeddedSourceSettings = S.suspend(() =>
 ).annotations({
   identifier: "EmbeddedSourceSettings",
 }) as any as S.Schema<EmbeddedSourceSettings>;
-export type Scte20Convert608To708 = "DISABLED" | "UPCONVERT";
-export const Scte20Convert608To708 = S.Literal("DISABLED", "UPCONVERT");
+export type Scte20Convert608To708 = "DISABLED" | "UPCONVERT" | (string & {});
+export const Scte20Convert608To708 = S.String;
 export interface Scte20SourceSettings {
   Convert608To708?: Scte20Convert608To708;
   Source608ChannelNumber?: number;
@@ -9358,15 +8995,15 @@ export const Scte20SourceSettings = S.suspend(() =>
 ).annotations({
   identifier: "Scte20SourceSettings",
 }) as any as S.Schema<Scte20SourceSettings>;
-export type Scte27OcrLanguage = "DEU" | "ENG" | "FRA" | "NLD" | "POR" | "SPA";
-export const Scte27OcrLanguage = S.Literal(
-  "DEU",
-  "ENG",
-  "FRA",
-  "NLD",
-  "POR",
-  "SPA",
-);
+export type Scte27OcrLanguage =
+  | "DEU"
+  | "ENG"
+  | "FRA"
+  | "NLD"
+  | "POR"
+  | "SPA"
+  | (string & {});
+export const Scte27OcrLanguage = S.String;
 export interface Scte27SourceSettings {
   OcrLanguage?: Scte27OcrLanguage;
   Pid?: number;
@@ -9463,8 +9100,8 @@ export const CaptionSelector = S.suspend(() =>
 }) as any as S.Schema<CaptionSelector>;
 export type __listOfCaptionSelector = CaptionSelector[];
 export const __listOfCaptionSelector = S.Array(CaptionSelector);
-export type HlsScte35SourceType = "MANIFEST" | "SEGMENTS";
-export const HlsScte35SourceType = S.Literal("MANIFEST", "SEGMENTS");
+export type HlsScte35SourceType = "MANIFEST" | "SEGMENTS" | (string & {});
+export const HlsScte35SourceType = S.String;
 export interface HlsInputSettings {
   Bandwidth?: number;
   BufferSegments?: number;
@@ -9487,11 +9124,9 @@ export const HlsInputSettings = S.suspend(() =>
 }) as any as S.Schema<HlsInputSettings>;
 export type NetworkInputServerValidation =
   | "CHECK_CRYPTOGRAPHY_AND_VALIDATE_NAME"
-  | "CHECK_CRYPTOGRAPHY_ONLY";
-export const NetworkInputServerValidation = S.Literal(
-  "CHECK_CRYPTOGRAPHY_AND_VALIDATE_NAME",
-  "CHECK_CRYPTOGRAPHY_ONLY",
-);
+  | "CHECK_CRYPTOGRAPHY_ONLY"
+  | (string & {});
+export const NetworkInputServerValidation = S.String;
 export interface MulticastInputSettings {
   SourceIpAddress?: string;
 }
@@ -9527,14 +9162,9 @@ export type VideoSelectorColorSpace =
   | "HDR10"
   | "HLG_2020"
   | "REC_601"
-  | "REC_709";
-export const VideoSelectorColorSpace = S.Literal(
-  "FOLLOW",
-  "HDR10",
-  "HLG_2020",
-  "REC_601",
-  "REC_709",
-);
+  | "REC_709"
+  | (string & {});
+export const VideoSelectorColorSpace = S.String;
 export interface VideoSelectorColorSpaceSettings {
   Hdr10Settings?: Hdr10Settings;
 }
@@ -9547,8 +9177,8 @@ export const VideoSelectorColorSpaceSettings = S.suspend(() =>
 ).annotations({
   identifier: "VideoSelectorColorSpaceSettings",
 }) as any as S.Schema<VideoSelectorColorSpaceSettings>;
-export type VideoSelectorColorSpaceUsage = "FALLBACK" | "FORCE";
-export const VideoSelectorColorSpaceUsage = S.Literal("FALLBACK", "FORCE");
+export type VideoSelectorColorSpaceUsage = "FALLBACK" | "FORCE" | (string & {});
+export const VideoSelectorColorSpaceUsage = S.String;
 export interface VideoSelectorPid {
   Pid?: number;
 }
@@ -10520,59 +10150,42 @@ export type ReservationCodec =
   | "HEVC"
   | "AUDIO"
   | "LINK"
-  | "AV1";
-export const ReservationCodec = S.Literal(
-  "MPEG2",
-  "AVC",
-  "HEVC",
-  "AUDIO",
-  "LINK",
-  "AV1",
-);
+  | "AV1"
+  | (string & {});
+export const ReservationCodec = S.String;
 export type ReservationMaximumBitrate =
   | "MAX_10_MBPS"
   | "MAX_20_MBPS"
-  | "MAX_50_MBPS";
-export const ReservationMaximumBitrate = S.Literal(
-  "MAX_10_MBPS",
-  "MAX_20_MBPS",
-  "MAX_50_MBPS",
-);
-export type ReservationMaximumFramerate = "MAX_30_FPS" | "MAX_60_FPS";
-export const ReservationMaximumFramerate = S.Literal(
-  "MAX_30_FPS",
-  "MAX_60_FPS",
-);
-export type ReservationResolution = "SD" | "HD" | "FHD" | "UHD";
-export const ReservationResolution = S.Literal("SD", "HD", "FHD", "UHD");
+  | "MAX_50_MBPS"
+  | (string & {});
+export const ReservationMaximumBitrate = S.String;
+export type ReservationMaximumFramerate =
+  | "MAX_30_FPS"
+  | "MAX_60_FPS"
+  | (string & {});
+export const ReservationMaximumFramerate = S.String;
+export type ReservationResolution = "SD" | "HD" | "FHD" | "UHD" | (string & {});
+export const ReservationResolution = S.String;
 export type ReservationResourceType =
   | "INPUT"
   | "OUTPUT"
   | "MULTIPLEX"
-  | "CHANNEL";
-export const ReservationResourceType = S.Literal(
-  "INPUT",
-  "OUTPUT",
-  "MULTIPLEX",
-  "CHANNEL",
-);
+  | "CHANNEL"
+  | (string & {});
+export const ReservationResourceType = S.String;
 export type ReservationSpecialFeature =
   | "ADVANCED_AUDIO"
   | "AUDIO_NORMALIZATION"
   | "MGHD"
-  | "MGUHD";
-export const ReservationSpecialFeature = S.Literal(
-  "ADVANCED_AUDIO",
-  "AUDIO_NORMALIZATION",
-  "MGHD",
-  "MGUHD",
-);
-export type ReservationVideoQuality = "STANDARD" | "ENHANCED" | "PREMIUM";
-export const ReservationVideoQuality = S.Literal(
-  "STANDARD",
-  "ENHANCED",
-  "PREMIUM",
-);
+  | "MGUHD"
+  | (string & {});
+export const ReservationSpecialFeature = S.String;
+export type ReservationVideoQuality =
+  | "STANDARD"
+  | "ENHANCED"
+  | "PREMIUM"
+  | (string & {});
+export const ReservationVideoQuality = S.String;
 export interface ReservationResourceSpecification {
   ChannelClass?: ChannelClass;
   Codec?: ReservationCodec;
@@ -10719,8 +10332,8 @@ export const HlsTimedMetadataScheduleActionSettings = S.suspend(() =>
 ).annotations({
   identifier: "HlsTimedMetadataScheduleActionSettings",
 }) as any as S.Schema<HlsTimedMetadataScheduleActionSettings>;
-export type InputTimecodeSource = "ZEROBASED" | "EMBEDDED";
-export const InputTimecodeSource = S.Literal("ZEROBASED", "EMBEDDED");
+export type InputTimecodeSource = "ZEROBASED" | "EMBEDDED" | (string & {});
+export const InputTimecodeSource = S.String;
 export interface StartTimecode {
   Timecode?: string;
 }
@@ -10731,11 +10344,9 @@ export const StartTimecode = S.suspend(() =>
 }) as any as S.Schema<StartTimecode>;
 export type LastFrameClippingBehavior =
   | "EXCLUDE_LAST_FRAME"
-  | "INCLUDE_LAST_FRAME";
-export const LastFrameClippingBehavior = S.Literal(
-  "EXCLUDE_LAST_FRAME",
-  "INCLUDE_LAST_FRAME",
-);
+  | "INCLUDE_LAST_FRAME"
+  | (string & {});
+export const LastFrameClippingBehavior = S.String;
 export interface StopTimecode {
   LastFrameClippingBehavior?: LastFrameClippingBehavior;
   Timecode?: string;
@@ -10826,8 +10437,8 @@ export const MotionGraphicsDeactivateScheduleActionSettings = S.suspend(() =>
 ).annotations({
   identifier: "MotionGraphicsDeactivateScheduleActionSettings",
 }) as any as S.Schema<MotionGraphicsDeactivateScheduleActionSettings>;
-export type PipelineId = "PIPELINE_0" | "PIPELINE_1";
-export const PipelineId = S.Literal("PIPELINE_0", "PIPELINE_1");
+export type PipelineId = "PIPELINE_0" | "PIPELINE_1" | (string & {});
+export const PipelineId = S.String;
 export interface PipelinePauseStateSettings {
   PipelineId?: PipelineId;
 }
@@ -10854,8 +10465,8 @@ export const PauseStateScheduleActionSettings = S.suspend(() =>
 ).annotations({
   identifier: "PauseStateScheduleActionSettings",
 }) as any as S.Schema<PauseStateScheduleActionSettings>;
-export type Scte35InputMode = "FIXED" | "FOLLOW_ACTIVE";
-export const Scte35InputMode = S.Literal("FIXED", "FOLLOW_ACTIVE");
+export type Scte35InputMode = "FIXED" | "FOLLOW_ACTIVE" | (string & {});
+export const Scte35InputMode = S.String;
 export interface Scte35InputScheduleActionSettings {
   InputAttachmentNameReference?: string;
   Mode?: Scte35InputMode;
@@ -10894,36 +10505,26 @@ export const Scte35SpliceInsertScheduleActionSettings = S.suspend(() =>
 }) as any as S.Schema<Scte35SpliceInsertScheduleActionSettings>;
 export type Scte35ArchiveAllowedFlag =
   | "ARCHIVE_NOT_ALLOWED"
-  | "ARCHIVE_ALLOWED";
-export const Scte35ArchiveAllowedFlag = S.Literal(
-  "ARCHIVE_NOT_ALLOWED",
-  "ARCHIVE_ALLOWED",
-);
+  | "ARCHIVE_ALLOWED"
+  | (string & {});
+export const Scte35ArchiveAllowedFlag = S.String;
 export type Scte35DeviceRestrictions =
   | "NONE"
   | "RESTRICT_GROUP0"
   | "RESTRICT_GROUP1"
-  | "RESTRICT_GROUP2";
-export const Scte35DeviceRestrictions = S.Literal(
-  "NONE",
-  "RESTRICT_GROUP0",
-  "RESTRICT_GROUP1",
-  "RESTRICT_GROUP2",
-);
+  | "RESTRICT_GROUP2"
+  | (string & {});
+export const Scte35DeviceRestrictions = S.String;
 export type Scte35NoRegionalBlackoutFlag =
   | "REGIONAL_BLACKOUT"
-  | "NO_REGIONAL_BLACKOUT";
-export const Scte35NoRegionalBlackoutFlag = S.Literal(
-  "REGIONAL_BLACKOUT",
-  "NO_REGIONAL_BLACKOUT",
-);
+  | "NO_REGIONAL_BLACKOUT"
+  | (string & {});
+export const Scte35NoRegionalBlackoutFlag = S.String;
 export type Scte35WebDeliveryAllowedFlag =
   | "WEB_DELIVERY_NOT_ALLOWED"
-  | "WEB_DELIVERY_ALLOWED";
-export const Scte35WebDeliveryAllowedFlag = S.Literal(
-  "WEB_DELIVERY_NOT_ALLOWED",
-  "WEB_DELIVERY_ALLOWED",
-);
+  | "WEB_DELIVERY_ALLOWED"
+  | (string & {});
+export const Scte35WebDeliveryAllowedFlag = S.String;
 export interface Scte35DeliveryRestrictions {
   ArchiveAllowedFlag?: Scte35ArchiveAllowedFlag;
   DeviceRestrictions?: Scte35DeviceRestrictions;
@@ -10950,11 +10551,9 @@ export const Scte35DeliveryRestrictions = S.suspend(() =>
 }) as any as S.Schema<Scte35DeliveryRestrictions>;
 export type Scte35SegmentationCancelIndicator =
   | "SEGMENTATION_EVENT_NOT_CANCELED"
-  | "SEGMENTATION_EVENT_CANCELED";
-export const Scte35SegmentationCancelIndicator = S.Literal(
-  "SEGMENTATION_EVENT_NOT_CANCELED",
-  "SEGMENTATION_EVENT_CANCELED",
-);
+  | "SEGMENTATION_EVENT_CANCELED"
+  | (string & {});
+export const Scte35SegmentationCancelIndicator = S.String;
 export interface Scte35SegmentationDescriptor {
   DeliveryRestrictions?: Scte35DeliveryRestrictions;
   SegmentNum?: number;
@@ -11265,8 +10864,8 @@ export const FixedModeScheduleActionStartSettings = S.suspend(() =>
 ).annotations({
   identifier: "FixedModeScheduleActionStartSettings",
 }) as any as S.Schema<FixedModeScheduleActionStartSettings>;
-export type FollowPoint = "END" | "START";
-export const FollowPoint = S.Literal("END", "START");
+export type FollowPoint = "END" | "START" | (string & {});
+export const FollowPoint = S.String;
 export interface FollowModeScheduleActionStartSettings {
   FollowPoint?: FollowPoint;
   ReferenceActionName?: string;
@@ -11624,19 +11223,9 @@ export type SignalMapMonitorDeploymentStatus =
   | "DEPLOYMENT_IN_PROGRESS"
   | "DELETE_COMPLETE"
   | "DELETE_FAILED"
-  | "DELETE_IN_PROGRESS";
-export const SignalMapMonitorDeploymentStatus = S.Literal(
-  "NOT_DEPLOYED",
-  "DRY_RUN_DEPLOYMENT_COMPLETE",
-  "DRY_RUN_DEPLOYMENT_FAILED",
-  "DRY_RUN_DEPLOYMENT_IN_PROGRESS",
-  "DEPLOYMENT_COMPLETE",
-  "DEPLOYMENT_FAILED",
-  "DEPLOYMENT_IN_PROGRESS",
-  "DELETE_COMPLETE",
-  "DELETE_FAILED",
-  "DELETE_IN_PROGRESS",
-);
+  | "DELETE_IN_PROGRESS"
+  | (string & {});
+export const SignalMapMonitorDeploymentStatus = S.String;
 export interface SuccessfulMonitorDeployment {
   DetailsUri?: string;
   Status?: SignalMapMonitorDeploymentStatus;
@@ -13769,22 +13358,22 @@ export type __listOfRouterDestinationSettings = RouterDestinationSettings[];
 export const __listOfRouterDestinationSettings = S.Array(
   RouterDestinationSettings,
 );
-export type InputDeviceActiveInput = "HDMI" | "SDI";
-export const InputDeviceActiveInput = S.Literal("HDMI", "SDI");
-export type InputDeviceState = "IDLE" | "STREAMING";
-export const InputDeviceState = S.Literal("IDLE", "STREAMING");
-export type InputDeviceScanType = "INTERLACED" | "PROGRESSIVE";
-export const InputDeviceScanType = S.Literal("INTERLACED", "PROGRESSIVE");
-export type InputDeviceIpScheme = "STATIC" | "DHCP";
-export const InputDeviceIpScheme = S.Literal("STATIC", "DHCP");
-export type ChannelAlertState = "SET" | "CLEARED";
-export const ChannelAlertState = S.Literal("SET", "CLEARED");
-export type ClusterAlertState = "SET" | "CLEARED";
-export const ClusterAlertState = S.Literal("SET", "CLEARED");
-export type InputDeviceTransferType = "OUTGOING" | "INCOMING";
-export const InputDeviceTransferType = S.Literal("OUTGOING", "INCOMING");
-export type MultiplexAlertState = "SET" | "CLEARED";
-export const MultiplexAlertState = S.Literal("SET", "CLEARED");
+export type InputDeviceActiveInput = "HDMI" | "SDI" | (string & {});
+export const InputDeviceActiveInput = S.String;
+export type InputDeviceState = "IDLE" | "STREAMING" | (string & {});
+export const InputDeviceState = S.String;
+export type InputDeviceScanType = "INTERLACED" | "PROGRESSIVE" | (string & {});
+export const InputDeviceScanType = S.String;
+export type InputDeviceIpScheme = "STATIC" | "DHCP" | (string & {});
+export const InputDeviceIpScheme = S.String;
+export type ChannelAlertState = "SET" | "CLEARED" | (string & {});
+export const ChannelAlertState = S.String;
+export type ClusterAlertState = "SET" | "CLEARED" | (string & {});
+export const ClusterAlertState = S.String;
+export type InputDeviceTransferType = "OUTGOING" | "INCOMING" | (string & {});
+export const InputDeviceTransferType = S.String;
+export type MultiplexAlertState = "SET" | "CLEARED" | (string & {});
+export const MultiplexAlertState = S.String;
 export interface InterfaceMappingUpdateRequest {
   LogicalInterfaceName?: string;
   NetworkId?: string;
@@ -14343,17 +13932,9 @@ export type InputDeviceUhdAudioChannelPairProfile =
   | "CBR-AAC_HQ-192000"
   | "CBR-AAC_HQ-256000"
   | "CBR-AAC_HQ-384000"
-  | "CBR-AAC_HQ-512000";
-export const InputDeviceUhdAudioChannelPairProfile = S.Literal(
-  "DISABLED",
-  "VBR-AAC_HHE-16000",
-  "VBR-AAC_HE-64000",
-  "VBR-AAC_LC-128000",
-  "CBR-AAC_HQ-192000",
-  "CBR-AAC_HQ-256000",
-  "CBR-AAC_HQ-384000",
-  "CBR-AAC_HQ-512000",
-);
+  | "CBR-AAC_HQ-512000"
+  | (string & {});
+export const InputDeviceUhdAudioChannelPairProfile = S.String;
 export interface InputDeviceUhdAudioChannelPairConfig {
   Id?: number;
   Profile?: InputDeviceUhdAudioChannelPairProfile;
@@ -14883,8 +14464,8 @@ export const SrtCallerDecryptionRequest = S.suspend(() =>
 ).annotations({
   identifier: "SrtCallerDecryptionRequest",
 }) as any as S.Schema<SrtCallerDecryptionRequest>;
-export type ThumbnailType = "UNSPECIFIED" | "CURRENT_ACTIVE";
-export const ThumbnailType = S.Literal("UNSPECIFIED", "CURRENT_ACTIVE");
+export type ThumbnailType = "UNSPECIFIED" | "CURRENT_ACTIVE" | (string & {});
+export const ThumbnailType = S.String;
 export interface BatchDeleteResponse {
   Failed?: BatchFailedResultModel[];
   Successful?: BatchSuccessfulResultModel[];

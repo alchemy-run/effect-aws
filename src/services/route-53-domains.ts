@@ -141,14 +141,9 @@ export type OperationStatus =
   | "IN_PROGRESS"
   | "ERROR"
   | "SUCCESSFUL"
-  | "FAILED";
-export const OperationStatus = S.Literal(
-  "SUBMITTED",
-  "IN_PROGRESS",
-  "ERROR",
-  "SUCCESSFUL",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const OperationStatus = S.String;
 export type OperationStatusList = OperationStatus[];
 export const OperationStatusList = S.Array(OperationStatus);
 export type OperationType =
@@ -172,36 +167,15 @@ export type OperationType =
   | "INTERNAL_TRANSFER_IN_DOMAIN"
   | "RELEASE_TO_GANDI"
   | "TRANSFER_ON_RENEW"
-  | "RESTORE_DOMAIN";
-export const OperationType = S.Literal(
-  "REGISTER_DOMAIN",
-  "DELETE_DOMAIN",
-  "TRANSFER_IN_DOMAIN",
-  "UPDATE_DOMAIN_CONTACT",
-  "UPDATE_NAMESERVER",
-  "CHANGE_PRIVACY_PROTECTION",
-  "DOMAIN_LOCK",
-  "ENABLE_AUTORENEW",
-  "DISABLE_AUTORENEW",
-  "ADD_DNSSEC",
-  "REMOVE_DNSSEC",
-  "EXPIRE_DOMAIN",
-  "TRANSFER_OUT_DOMAIN",
-  "CHANGE_DOMAIN_OWNER",
-  "RENEW_DOMAIN",
-  "PUSH_DOMAIN",
-  "INTERNAL_TRANSFER_OUT_DOMAIN",
-  "INTERNAL_TRANSFER_IN_DOMAIN",
-  "RELEASE_TO_GANDI",
-  "TRANSFER_ON_RENEW",
-  "RESTORE_DOMAIN",
-);
+  | "RESTORE_DOMAIN"
+  | (string & {});
+export const OperationType = S.String;
 export type OperationTypeList = OperationType[];
 export const OperationTypeList = S.Array(OperationType);
-export type ListOperationsSortAttributeName = "SubmittedDate";
-export const ListOperationsSortAttributeName = S.Literal("SubmittedDate");
-export type SortOrder = "ASC" | "DESC";
-export const SortOrder = S.Literal("ASC", "DESC");
+export type ListOperationsSortAttributeName = "SubmittedDate" | (string & {});
+export const ListOperationsSortAttributeName = S.String;
+export type SortOrder = "ASC" | "DESC" | (string & {});
+export const SortOrder = S.String;
 export interface AcceptDomainTransferFromAnotherAwsAccountRequest {
   DomainName: string;
   Password: string | redacted.Redacted<string>;
@@ -813,10 +787,10 @@ export const ViewBillingRequest = S.suspend(() =>
 ).annotations({
   identifier: "ViewBillingRequest",
 }) as any as S.Schema<ViewBillingRequest>;
-export type ListDomainsAttributeName = "DomainName" | "Expiry";
-export const ListDomainsAttributeName = S.Literal("DomainName", "Expiry");
-export type Operator = "LE" | "GE" | "BEGINS_WITH";
-export const Operator = S.Literal("LE", "GE", "BEGINS_WITH");
+export type ListDomainsAttributeName = "DomainName" | "Expiry" | (string & {});
+export const ListDomainsAttributeName = S.String;
+export type Operator = "LE" | "GE" | "BEGINS_WITH" | (string & {});
+export const Operator = S.String;
 export type Values = string[];
 export const Values = S.Array(S.String);
 export type ContactType =
@@ -824,14 +798,9 @@ export type ContactType =
   | "COMPANY"
   | "ASSOCIATION"
   | "PUBLIC_BODY"
-  | "RESELLER";
-export const ContactType = S.Literal(
-  "PERSON",
-  "COMPANY",
-  "ASSOCIATION",
-  "PUBLIC_BODY",
-  "RESELLER",
-);
+  | "RESELLER"
+  | (string & {});
+export const ContactType = S.String;
 export type CountryCode =
   | "AC"
   | "AD"
@@ -1083,260 +1052,9 @@ export type CountryCode =
   | "YT"
   | "ZA"
   | "ZM"
-  | "ZW";
-export const CountryCode = S.Literal(
-  "AC",
-  "AD",
-  "AE",
-  "AF",
-  "AG",
-  "AI",
-  "AL",
-  "AM",
-  "AN",
-  "AO",
-  "AQ",
-  "AR",
-  "AS",
-  "AT",
-  "AU",
-  "AW",
-  "AX",
-  "AZ",
-  "BA",
-  "BB",
-  "BD",
-  "BE",
-  "BF",
-  "BG",
-  "BH",
-  "BI",
-  "BJ",
-  "BL",
-  "BM",
-  "BN",
-  "BO",
-  "BQ",
-  "BR",
-  "BS",
-  "BT",
-  "BV",
-  "BW",
-  "BY",
-  "BZ",
-  "CA",
-  "CC",
-  "CD",
-  "CF",
-  "CG",
-  "CH",
-  "CI",
-  "CK",
-  "CL",
-  "CM",
-  "CN",
-  "CO",
-  "CR",
-  "CU",
-  "CV",
-  "CW",
-  "CX",
-  "CY",
-  "CZ",
-  "DE",
-  "DJ",
-  "DK",
-  "DM",
-  "DO",
-  "DZ",
-  "EC",
-  "EE",
-  "EG",
-  "EH",
-  "ER",
-  "ES",
-  "ET",
-  "FI",
-  "FJ",
-  "FK",
-  "FM",
-  "FO",
-  "FR",
-  "GA",
-  "GB",
-  "GD",
-  "GE",
-  "GF",
-  "GG",
-  "GH",
-  "GI",
-  "GL",
-  "GM",
-  "GN",
-  "GP",
-  "GQ",
-  "GR",
-  "GS",
-  "GT",
-  "GU",
-  "GW",
-  "GY",
-  "HK",
-  "HM",
-  "HN",
-  "HR",
-  "HT",
-  "HU",
-  "ID",
-  "IE",
-  "IL",
-  "IM",
-  "IN",
-  "IO",
-  "IQ",
-  "IR",
-  "IS",
-  "IT",
-  "JE",
-  "JM",
-  "JO",
-  "JP",
-  "KE",
-  "KG",
-  "KH",
-  "KI",
-  "KM",
-  "KN",
-  "KP",
-  "KR",
-  "KW",
-  "KY",
-  "KZ",
-  "LA",
-  "LB",
-  "LC",
-  "LI",
-  "LK",
-  "LR",
-  "LS",
-  "LT",
-  "LU",
-  "LV",
-  "LY",
-  "MA",
-  "MC",
-  "MD",
-  "ME",
-  "MF",
-  "MG",
-  "MH",
-  "MK",
-  "ML",
-  "MM",
-  "MN",
-  "MO",
-  "MP",
-  "MQ",
-  "MR",
-  "MS",
-  "MT",
-  "MU",
-  "MV",
-  "MW",
-  "MX",
-  "MY",
-  "MZ",
-  "NA",
-  "NC",
-  "NE",
-  "NF",
-  "NG",
-  "NI",
-  "NL",
-  "NO",
-  "NP",
-  "NR",
-  "NU",
-  "NZ",
-  "OM",
-  "PA",
-  "PE",
-  "PF",
-  "PG",
-  "PH",
-  "PK",
-  "PL",
-  "PM",
-  "PN",
-  "PR",
-  "PS",
-  "PT",
-  "PW",
-  "PY",
-  "QA",
-  "RE",
-  "RO",
-  "RS",
-  "RU",
-  "RW",
-  "SA",
-  "SB",
-  "SC",
-  "SD",
-  "SE",
-  "SG",
-  "SH",
-  "SI",
-  "SJ",
-  "SK",
-  "SL",
-  "SM",
-  "SN",
-  "SO",
-  "SR",
-  "SS",
-  "ST",
-  "SV",
-  "SX",
-  "SY",
-  "SZ",
-  "TC",
-  "TD",
-  "TF",
-  "TG",
-  "TH",
-  "TJ",
-  "TK",
-  "TL",
-  "TM",
-  "TN",
-  "TO",
-  "TP",
-  "TR",
-  "TT",
-  "TV",
-  "TW",
-  "TZ",
-  "UA",
-  "UG",
-  "US",
-  "UY",
-  "UZ",
-  "VA",
-  "VC",
-  "VE",
-  "VG",
-  "VI",
-  "VN",
-  "VU",
-  "WF",
-  "WS",
-  "YE",
-  "YT",
-  "ZA",
-  "ZM",
-  "ZW",
-);
+  | "ZW"
+  | (string & {});
+export const CountryCode = S.String;
 export interface DnssecSigningAttributes {
   Algorithm?: number;
   Flags?: number;
@@ -1361,21 +1079,11 @@ export type DomainAvailability =
   | "RESERVED"
   | "DONT_KNOW"
   | "INVALID_NAME_FOR_TLD"
-  | "PENDING";
-export const DomainAvailability = S.Literal(
-  "AVAILABLE",
-  "AVAILABLE_RESERVED",
-  "AVAILABLE_PREORDER",
-  "UNAVAILABLE",
-  "UNAVAILABLE_PREMIUM",
-  "UNAVAILABLE_RESTRICTED",
-  "RESERVED",
-  "DONT_KNOW",
-  "INVALID_NAME_FOR_TLD",
-  "PENDING",
-);
-export type ReachabilityStatus = "PENDING" | "DONE" | "EXPIRED";
-export const ReachabilityStatus = S.Literal("PENDING", "DONE", "EXPIRED");
+  | "PENDING"
+  | (string & {});
+export const DomainAvailability = S.String;
+export type ReachabilityStatus = "PENDING" | "DONE" | "EXPIRED" | (string & {});
+export const ReachabilityStatus = S.String;
 export type DomainStatusList = string[];
 export const DomainStatusList = S.Array(S.String);
 export type StatusFlag =
@@ -1383,14 +1091,9 @@ export type StatusFlag =
   | "PENDING_CUSTOMER_ACTION"
   | "PENDING_AUTHORIZATION"
   | "PENDING_PAYMENT_VERIFICATION"
-  | "PENDING_SUPPORT_CASE";
-export const StatusFlag = S.Literal(
-  "PENDING_ACCEPTANCE",
-  "PENDING_CUSTOMER_ACTION",
-  "PENDING_AUTHORIZATION",
-  "PENDING_PAYMENT_VERIFICATION",
-  "PENDING_SUPPORT_CASE",
-);
+  | "PENDING_SUPPORT_CASE"
+  | (string & {});
+export const StatusFlag = S.String;
 export interface FilterCondition {
   Name: ListDomainsAttributeName;
   Operator: Operator;
@@ -1466,43 +1169,9 @@ export type ExtraParamName =
   | "AU_PRIORITY_TOKEN"
   | "AU_ELIGIBILITY_TYPE"
   | "AU_POLICY_REASON"
-  | "AU_REGISTRANT_NAME";
-export const ExtraParamName = S.Literal(
-  "DUNS_NUMBER",
-  "BRAND_NUMBER",
-  "BIRTH_DEPARTMENT",
-  "BIRTH_DATE_IN_YYYY_MM_DD",
-  "BIRTH_COUNTRY",
-  "BIRTH_CITY",
-  "DOCUMENT_NUMBER",
-  "AU_ID_NUMBER",
-  "AU_ID_TYPE",
-  "CA_LEGAL_TYPE",
-  "CA_BUSINESS_ENTITY_TYPE",
-  "CA_LEGAL_REPRESENTATIVE",
-  "CA_LEGAL_REPRESENTATIVE_CAPACITY",
-  "ES_IDENTIFICATION",
-  "ES_IDENTIFICATION_TYPE",
-  "ES_LEGAL_FORM",
-  "FI_BUSINESS_NUMBER",
-  "FI_ID_NUMBER",
-  "FI_NATIONALITY",
-  "FI_ORGANIZATION_TYPE",
-  "IT_NATIONALITY",
-  "IT_PIN",
-  "IT_REGISTRANT_ENTITY_TYPE",
-  "RU_PASSPORT_DATA",
-  "SE_ID_NUMBER",
-  "SG_ID_NUMBER",
-  "VAT_NUMBER",
-  "UK_CONTACT_TYPE",
-  "UK_COMPANY_NUMBER",
-  "EU_COUNTRY_OF_CITIZENSHIP",
-  "AU_PRIORITY_TOKEN",
-  "AU_ELIGIBILITY_TYPE",
-  "AU_POLICY_REASON",
-  "AU_REGISTRANT_NAME",
-);
+  | "AU_REGISTRANT_NAME"
+  | (string & {});
+export const ExtraParamName = S.String;
 export interface AcceptDomainTransferFromAnotherAwsAccountResponse {
   OperationId?: string;
 }
@@ -1871,15 +1540,9 @@ export type Transferable =
   | "DONT_KNOW"
   | "DOMAIN_IN_OWN_ACCOUNT"
   | "DOMAIN_IN_ANOTHER_ACCOUNT"
-  | "PREMIUM_DOMAIN";
-export const Transferable = S.Literal(
-  "TRANSFERABLE",
-  "UNTRANSFERABLE",
-  "DONT_KNOW",
-  "DOMAIN_IN_OWN_ACCOUNT",
-  "DOMAIN_IN_ANOTHER_ACCOUNT",
-  "PREMIUM_DOMAIN",
-);
+  | "PREMIUM_DOMAIN"
+  | (string & {});
+export const Transferable = S.String;
 export interface DomainTransferability {
   Transferable?: Transferable;
 }

@@ -191,42 +191,22 @@ export type Permission =
   | "GRANT_WITH_LF_TAG_EXPRESSION"
   | "CREATE_LF_TAG_EXPRESSION"
   | "CREATE_CATALOG"
-  | "SUPER_USER";
-export const Permission = S.Literal(
-  "ALL",
-  "SELECT",
-  "ALTER",
-  "DROP",
-  "DELETE",
-  "INSERT",
-  "DESCRIBE",
-  "CREATE_DATABASE",
-  "CREATE_TABLE",
-  "DATA_LOCATION_ACCESS",
-  "CREATE_LF_TAG",
-  "ASSOCIATE",
-  "GRANT_WITH_LF_TAG_EXPRESSION",
-  "CREATE_LF_TAG_EXPRESSION",
-  "CREATE_CATALOG",
-  "SUPER_USER",
-);
+  | "SUPER_USER"
+  | (string & {});
+export const Permission = S.String;
 export type PermissionList = Permission[];
 export const PermissionList = S.Array(Permission);
 export type PermissionType =
   | "COLUMN_PERMISSION"
   | "CELL_FILTER_PERMISSION"
   | "NESTED_PERMISSION"
-  | "NESTED_CELL_PERMISSION";
-export const PermissionType = S.Literal(
-  "COLUMN_PERMISSION",
-  "CELL_FILTER_PERMISSION",
-  "NESTED_PERMISSION",
-  "NESTED_CELL_PERMISSION",
-);
+  | "NESTED_CELL_PERMISSION"
+  | (string & {});
+export const PermissionType = S.String;
 export type PermissionTypeList = PermissionType[];
 export const PermissionTypeList = S.Array(PermissionType);
-export type ResourceShareType = "FOREIGN" | "ALL";
-export const ResourceShareType = S.Literal("FOREIGN", "ALL");
+export type ResourceShareType = "FOREIGN" | "ALL" | (string & {});
+export const ResourceShareType = S.String;
 export type DataLakeResourceType =
   | "CATALOG"
   | "DATABASE"
@@ -236,41 +216,27 @@ export type DataLakeResourceType =
   | "LF_TAG_POLICY"
   | "LF_TAG_POLICY_DATABASE"
   | "LF_TAG_POLICY_TABLE"
-  | "LF_NAMED_TAG_EXPRESSION";
-export const DataLakeResourceType = S.Literal(
-  "CATALOG",
-  "DATABASE",
-  "TABLE",
-  "DATA_LOCATION",
-  "LF_TAG",
-  "LF_TAG_POLICY",
-  "LF_TAG_POLICY_DATABASE",
-  "LF_TAG_POLICY_TABLE",
-  "LF_NAMED_TAG_EXPRESSION",
-);
-export type OptimizerType = "COMPACTION" | "GARBAGE_COLLECTION" | "ALL";
-export const OptimizerType = S.Literal(
-  "COMPACTION",
-  "GARBAGE_COLLECTION",
-  "ALL",
-);
+  | "LF_NAMED_TAG_EXPRESSION"
+  | (string & {});
+export const DataLakeResourceType = S.String;
+export type OptimizerType =
+  | "COMPACTION"
+  | "GARBAGE_COLLECTION"
+  | "ALL"
+  | (string & {});
+export const OptimizerType = S.String;
 export type TransactionStatusFilter =
   | "ALL"
   | "COMPLETED"
   | "ACTIVE"
   | "COMMITTED"
-  | "ABORTED";
-export const TransactionStatusFilter = S.Literal(
-  "ALL",
-  "COMPLETED",
-  "ACTIVE",
-  "COMMITTED",
-  "ABORTED",
-);
-export type TransactionType = "READ_AND_WRITE" | "READ_ONLY";
-export const TransactionType = S.Literal("READ_AND_WRITE", "READ_ONLY");
-export type ApplicationStatus = "ENABLED" | "DISABLED";
-export const ApplicationStatus = S.Literal("ENABLED", "DISABLED");
+  | "ABORTED"
+  | (string & {});
+export const TransactionStatusFilter = S.String;
+export type TransactionType = "READ_AND_WRITE" | "READ_ONLY" | (string & {});
+export const TransactionType = S.String;
+export type ApplicationStatus = "ENABLED" | "DISABLED" | (string & {});
+export const ApplicationStatus = S.String;
 export interface AssumeDecoratedRoleWithSAMLRequest {
   SAMLAssertion: string;
   RoleArn: string;
@@ -408,8 +374,8 @@ export const LFTagKeyResource = S.suspend(() =>
 ).annotations({
   identifier: "LFTagKeyResource",
 }) as any as S.Schema<LFTagKeyResource>;
-export type ResourceType = "DATABASE" | "TABLE";
-export const ResourceType = S.Literal("DATABASE", "TABLE");
+export type ResourceType = "DATABASE" | "TABLE" | (string & {});
+export const ResourceType = S.String;
 export interface LFTag {
   TagKey: string;
   TagValues: string[];
@@ -1497,8 +1463,8 @@ export const UpdateDataCellsFilterResponse = S.suspend(() =>
 }) as any as S.Schema<UpdateDataCellsFilterResponse>;
 export type DataLakePrincipalList = DataLakePrincipal[];
 export const DataLakePrincipalList = S.Array(DataLakePrincipal);
-export type ServiceAuthorization = "ENABLED" | "DISABLED";
-export const ServiceAuthorization = S.Literal("ENABLED", "DISABLED");
+export type ServiceAuthorization = "ENABLED" | "DISABLED" | (string & {});
+export const ServiceAuthorization = S.String;
 export interface RedshiftConnect {
   Authorization: ServiceAuthorization;
 }
@@ -1519,8 +1485,8 @@ export const ServiceIntegrationUnion = S.Union(
 );
 export type ServiceIntegrationList = ServiceIntegrationUnion[];
 export const ServiceIntegrationList = S.Array(ServiceIntegrationUnion);
-export type EnableStatus = "ENABLED" | "DISABLED";
-export const EnableStatus = S.Literal("ENABLED", "DISABLED");
+export type EnableStatus = "ENABLED" | "DISABLED" | (string & {});
+export const EnableStatus = S.String;
 export type ScopeTargets = string[];
 export const ScopeTargets = S.Array(S.String);
 export interface ExternalFilteringConfiguration {
@@ -1660,12 +1626,12 @@ export const UpdateResourceResponse = S.suspend(() => S.Struct({})).annotations(
 ) as any as S.Schema<UpdateResourceResponse>;
 export type ValueStringList = string[];
 export const ValueStringList = S.Array(S.String);
-export type FieldNameString = "RESOURCE_ARN" | "ROLE_ARN" | "LAST_MODIFIED";
-export const FieldNameString = S.Literal(
-  "RESOURCE_ARN",
-  "ROLE_ARN",
-  "LAST_MODIFIED",
-);
+export type FieldNameString =
+  | "RESOURCE_ARN"
+  | "ROLE_ARN"
+  | "LAST_MODIFIED"
+  | (string & {});
+export const FieldNameString = S.String;
 export type ComparisonOperator =
   | "EQ"
   | "NE"
@@ -1677,20 +1643,9 @@ export type ComparisonOperator =
   | "NOT_CONTAINS"
   | "BEGINS_WITH"
   | "IN"
-  | "BETWEEN";
-export const ComparisonOperator = S.Literal(
-  "EQ",
-  "NE",
-  "LE",
-  "LT",
-  "GE",
-  "GT",
-  "CONTAINS",
-  "NOT_CONTAINS",
-  "BEGINS_WITH",
-  "IN",
-  "BETWEEN",
-);
+  | "BETWEEN"
+  | (string & {});
+export const ComparisonOperator = S.String;
 export type StringValueList = string[];
 export const StringValueList = S.Array(S.String);
 export type TrustedResourceOwners = string[];
@@ -1701,13 +1656,9 @@ export type TransactionStatus =
   | "ACTIVE"
   | "COMMITTED"
   | "ABORTED"
-  | "COMMIT_IN_PROGRESS";
-export const TransactionStatus = S.Literal(
-  "ACTIVE",
-  "COMMITTED",
-  "ABORTED",
-  "COMMIT_IN_PROGRESS",
-);
+  | "COMMIT_IN_PROGRESS"
+  | (string & {});
+export const TransactionStatus = S.String;
 export interface VirtualObject {
   Uri: string;
   ETag?: string;
@@ -1724,14 +1675,9 @@ export type QueryStateString =
   | "WORKUNITS_AVAILABLE"
   | "ERROR"
   | "FINISHED"
-  | "EXPIRED";
-export const QueryStateString = S.Literal(
-  "PENDING",
-  "WORKUNITS_AVAILABLE",
-  "ERROR",
-  "FINISHED",
-  "EXPIRED",
-);
+  | "EXPIRED"
+  | (string & {});
+export const QueryStateString = S.String;
 export interface PartitionValueList {
   Values: string[];
 }

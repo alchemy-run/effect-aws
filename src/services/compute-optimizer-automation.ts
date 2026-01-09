@@ -119,28 +119,26 @@ export const GetEnrollmentConfigurationRequest = S.suspend(() =>
 }) as any as S.Schema<GetEnrollmentConfigurationRequest>;
 export type AccountIdList = string[];
 export const AccountIdList = S.Array(S.String);
-export type RuleType = "OrganizationRule" | "AccountRule";
-export const RuleType = S.Literal("OrganizationRule", "AccountRule");
+export type RuleType = "OrganizationRule" | "AccountRule" | (string & {});
+export const RuleType = S.String;
 export type RecommendedActionType =
   | "SnapshotAndDeleteUnattachedEbsVolume"
-  | "UpgradeEbsVolumeType";
-export const RecommendedActionType = S.Literal(
-  "SnapshotAndDeleteUnattachedEbsVolume",
-  "UpgradeEbsVolumeType",
-);
+  | "UpgradeEbsVolumeType"
+  | (string & {});
+export const RecommendedActionType = S.String;
 export type RecommendedActionTypeList = RecommendedActionType[];
 export const RecommendedActionTypeList = S.Array(RecommendedActionType);
-export type RuleStatus = "Active" | "Inactive";
-export const RuleStatus = S.Literal("Active", "Inactive");
-export type EnrollmentStatus = "Active" | "Inactive" | "Pending" | "Failed";
-export const EnrollmentStatus = S.Literal(
-  "Active",
-  "Inactive",
-  "Pending",
-  "Failed",
-);
-export type OrganizationRuleMode = "AnyAllowed" | "NoneAllowed";
-export const OrganizationRuleMode = S.Literal("AnyAllowed", "NoneAllowed");
+export type RuleStatus = "Active" | "Inactive" | (string & {});
+export const RuleStatus = S.String;
+export type EnrollmentStatus =
+  | "Active"
+  | "Inactive"
+  | "Pending"
+  | "Failed"
+  | (string & {});
+export const EnrollmentStatus = S.String;
+export type OrganizationRuleMode = "AnyAllowed" | "NoneAllowed" | (string & {});
+export const OrganizationRuleMode = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export interface AssociateAccountsRequest {
@@ -316,21 +314,9 @@ export type ComparisonOperator =
   | "NumericLessThan"
   | "NumericLessThanEquals"
   | "NumericGreaterThan"
-  | "NumericGreaterThanEquals";
-export const ComparisonOperator = S.Literal(
-  "StringEquals",
-  "StringNotEquals",
-  "StringEqualsIgnoreCase",
-  "StringNotEqualsIgnoreCase",
-  "StringLike",
-  "StringNotLike",
-  "NumericEquals",
-  "NumericNotEquals",
-  "NumericLessThan",
-  "NumericLessThanEquals",
-  "NumericGreaterThan",
-  "NumericGreaterThanEquals",
-);
+  | "NumericGreaterThanEquals"
+  | (string & {});
+export const ComparisonOperator = S.String;
 export type StringCriteriaValues = string[];
 export const StringCriteriaValues = S.Array(S.String);
 export interface StringCriteriaCondition {
@@ -559,11 +545,11 @@ export interface UntagResourceResponse {}
 export const UntagResourceResponse = S.suspend(() => S.Struct({})).annotations({
   identifier: "UntagResourceResponse",
 }) as any as S.Schema<UntagResourceResponse>;
-export type RuleApplyOrder = "BeforeAccountRules" | "AfterAccountRules";
-export const RuleApplyOrder = S.Literal(
-  "BeforeAccountRules",
-  "AfterAccountRules",
-);
+export type RuleApplyOrder =
+  | "BeforeAccountRules"
+  | "AfterAccountRules"
+  | (string & {});
+export const RuleApplyOrder = S.String;
 export interface OrganizationConfiguration {
   ruleApplyOrder?: RuleApplyOrder;
   accountIds?: string[];
@@ -640,11 +626,9 @@ export type StringList = string[];
 export const StringList = S.Array(S.String);
 export type EventType =
   | "SnapshotAndDeleteUnattachedEbsVolume"
-  | "UpgradeEbsVolumeType";
-export const EventType = S.Literal(
-  "SnapshotAndDeleteUnattachedEbsVolume",
-  "UpgradeEbsVolumeType",
-);
+  | "UpgradeEbsVolumeType"
+  | (string & {});
+export const EventType = S.String;
 export type EventStatus =
   | "Ready"
   | "InProgress"
@@ -654,20 +638,11 @@ export type EventStatus =
   | "RollbackReady"
   | "RollbackInProgress"
   | "RollbackComplete"
-  | "RollbackFailed";
-export const EventStatus = S.Literal(
-  "Ready",
-  "InProgress",
-  "Complete",
-  "Failed",
-  "Cancelled",
-  "RollbackReady",
-  "RollbackInProgress",
-  "RollbackComplete",
-  "RollbackFailed",
-);
-export type ResourceType = "EbsVolume";
-export const ResourceType = S.Literal("EbsVolume");
+  | "RollbackFailed"
+  | (string & {});
+export const EventStatus = S.String;
+export type ResourceType = "EbsVolume" | (string & {});
+export const ResourceType = S.String;
 export interface Filter {
   name: string;
   values: string[];
@@ -909,29 +884,25 @@ export const UpdateEnrollmentConfigurationResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateEnrollmentConfigurationResponse",
 }) as any as S.Schema<UpdateEnrollmentConfigurationResponse>;
-export type SavingsEstimationMode = "BeforeDiscount" | "AfterDiscount";
-export const SavingsEstimationMode = S.Literal(
-  "BeforeDiscount",
-  "AfterDiscount",
-);
+export type SavingsEstimationMode =
+  | "BeforeDiscount"
+  | "AfterDiscount"
+  | (string & {});
+export const SavingsEstimationMode = S.String;
 export type StepType =
   | "CreateEbsSnapshot"
   | "DeleteEbsVolume"
   | "ModifyEbsVolume"
-  | "CreateEbsVolume";
-export const StepType = S.Literal(
-  "CreateEbsSnapshot",
-  "DeleteEbsVolume",
-  "ModifyEbsVolume",
-  "CreateEbsVolume",
-);
-export type StepStatus = "Ready" | "InProgress" | "Complete" | "Failed";
-export const StepStatus = S.Literal(
-  "Ready",
-  "InProgress",
-  "Complete",
-  "Failed",
-);
+  | "CreateEbsVolume"
+  | (string & {});
+export const StepType = S.String;
+export type StepStatus =
+  | "Ready"
+  | "InProgress"
+  | "Complete"
+  | "Failed"
+  | (string & {});
+export const StepStatus = S.String;
 export interface EstimatedMonthlySavings {
   currency: string;
   beforeDiscountSavings: number;

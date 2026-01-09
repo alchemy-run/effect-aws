@@ -162,13 +162,13 @@ export type TagExceptionMessage = string;
 export type FieldName = string;
 
 //# Schemas
-export type SessionSortBy = "StartTimeAscending" | "StartTimeDescending";
-export const SessionSortBy = S.Literal(
-  "StartTimeAscending",
-  "StartTimeDescending",
-);
-export type SessionStatus = "Active" | "Terminated";
-export const SessionStatus = S.Literal("Active", "Terminated");
+export type SessionSortBy =
+  | "StartTimeAscending"
+  | "StartTimeDescending"
+  | (string & {});
+export const SessionSortBy = S.String;
+export type SessionStatus = "Active" | "Terminated" | (string & {});
+export const SessionStatus = S.String;
 export type TagKeyList = string | redacted.Redacted<string>[];
 export const TagKeyList = S.Array(SensitiveString);
 export type SubnetIdList = string[];
@@ -350,36 +350,9 @@ export type Category =
   | "ProfessionalNetwork"
   | "SocialNetworking"
   | "WebBasedEmail"
-  | "ParkedDomains";
-export const Category = S.Literal(
-  "Cults",
-  "Gambling",
-  "Nudity",
-  "Pornography",
-  "SexEducation",
-  "Tasteless",
-  "Violence",
-  "DownloadSites",
-  "ImageSharing",
-  "PeerToPeer",
-  "StreamingMediaAndDownloads",
-  "GenerativeAI",
-  "CriminalActivity",
-  "Hacking",
-  "HateAndIntolerance",
-  "IllegalDrug",
-  "IllegalSoftware",
-  "SchoolCheating",
-  "SelfHarm",
-  "Weapons",
-  "Chat",
-  "Games",
-  "InstantMessaging",
-  "ProfessionalNetwork",
-  "SocialNetworking",
-  "WebBasedEmail",
-  "ParkedDomains",
-);
+  | "ParkedDomains"
+  | (string & {});
+export const Category = S.String;
 export type BlockedCategories = Category[];
 export const BlockedCategories = S.Array(Category);
 export type UrlPatternList = string | redacted.Redacted<string>[];
@@ -1561,26 +1534,9 @@ export type Event =
   | "SessionStart"
   | "SessionDisconnect"
   | "SessionEnd"
-  | "UrlBlockByContentFilter";
-export const Event = S.Literal(
-  "WebsiteInteract",
-  "FileDownloadFromSecureBrowserToRemoteDisk",
-  "FileTransferFromRemoteToLocalDisk",
-  "FileTransferFromLocalToRemoteDisk",
-  "FileUploadFromRemoteDiskToSecureBrowser",
-  "ContentPasteToWebsite",
-  "ContentTransferFromLocalToRemoteClipboard",
-  "ContentCopyFromWebsite",
-  "UrlLoad",
-  "TabOpen",
-  "TabClose",
-  "PrintJobSubmit",
-  "SessionConnect",
-  "SessionStart",
-  "SessionDisconnect",
-  "SessionEnd",
-  "UrlBlockByContentFilter",
-);
+  | "UrlBlockByContentFilter"
+  | (string & {});
+export const Event = S.String;
 export type Events = Event[];
 export const Events = S.Array(Event);
 export type EventFilter =
@@ -1590,10 +1546,10 @@ export const EventFilter = S.Union(
   S.Struct({ all: S.Struct({}) }),
   S.Struct({ include: Events }),
 );
-export type LogFileFormat = "JSONLines" | "Json";
-export const LogFileFormat = S.Literal("JSONLines", "Json");
-export type FolderStructure = "Flat" | "NestedByDate";
-export const FolderStructure = S.Literal("Flat", "NestedByDate");
+export type LogFileFormat = "JSONLines" | "Json" | (string & {});
+export const LogFileFormat = S.String;
+export type FolderStructure = "Flat" | "NestedByDate" | (string & {});
+export const FolderStructure = S.String;
 export interface S3LogConfiguration {
   bucket: string | redacted.Redacted<string>;
   keyPrefix?: string | redacted.Redacted<string>;
@@ -2043,8 +1999,8 @@ export const ListUserSettingsRequest = S.suspend(() =>
 }) as any as S.Schema<ListUserSettingsRequest>;
 export type HiddenToolbarItemList = string[];
 export const HiddenToolbarItemList = S.Array(S.String);
-export type ColorTheme = "Light" | "Dark";
-export const ColorTheme = S.Literal("Light", "Dark");
+export type ColorTheme = "Light" | "Dark" | (string & {});
+export const ColorTheme = S.String;
 export interface ToolbarConfiguration {
   toolbarType?: string;
   visualMode?: string;
@@ -2086,20 +2042,9 @@ export type Locale =
   | "ko-KR"
   | "pt-BR"
   | "zh-CN"
-  | "zh-TW";
-export const Locale = S.Literal(
-  "de-DE",
-  "en-US",
-  "es-ES",
-  "fr-FR",
-  "id-ID",
-  "it-IT",
-  "ja-JP",
-  "ko-KR",
-  "pt-BR",
-  "zh-CN",
-  "zh-TW",
-);
+  | "zh-TW"
+  | (string & {});
+export const Locale = S.String;
 export interface LocalizedBrandingStrings {
   browserTabTitle: string;
   welcomeText: string;
@@ -2985,8 +2930,12 @@ export type UserAccessLoggingSettingsList = UserAccessLoggingSettingsSummary[];
 export const UserAccessLoggingSettingsList = S.Array(
   UserAccessLoggingSettingsSummary,
 );
-export type MimeType = "image/png" | "image/jpeg" | "image/x-icon";
-export const MimeType = S.Literal("image/png", "image/jpeg", "image/x-icon");
+export type MimeType =
+  | "image/png"
+  | "image/jpeg"
+  | "image/x-icon"
+  | (string & {});
+export const MimeType = S.String;
 export interface ImageMetadata {
   mimeType: MimeType;
   fileExtension: string;

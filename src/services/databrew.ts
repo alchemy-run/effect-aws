@@ -176,12 +176,18 @@ export type LocaleCode = string;
 //# Schemas
 export type RecipeVersionList = string[];
 export const RecipeVersionList = S.Array(S.String);
-export type InputFormat = "CSV" | "JSON" | "PARQUET" | "EXCEL" | "ORC";
-export const InputFormat = S.Literal("CSV", "JSON", "PARQUET", "EXCEL", "ORC");
-export type EncryptionMode = "SSE-KMS" | "SSE-S3";
-export const EncryptionMode = S.Literal("SSE-KMS", "SSE-S3");
-export type LogSubscription = "ENABLE" | "DISABLE";
-export const LogSubscription = S.Literal("ENABLE", "DISABLE");
+export type InputFormat =
+  | "CSV"
+  | "JSON"
+  | "PARQUET"
+  | "EXCEL"
+  | "ORC"
+  | (string & {});
+export const InputFormat = S.String;
+export type EncryptionMode = "SSE-KMS" | "SSE-S3" | (string & {});
+export const EncryptionMode = S.String;
+export type LogSubscription = "ENABLE" | "DISABLE" | (string & {});
+export const LogSubscription = S.String;
 export type JobNameList = string[];
 export const JobNameList = S.Array(S.String);
 export type TagKeyList = string[];
@@ -929,10 +935,10 @@ export const FilterExpression = S.suspend(() =>
 ).annotations({
   identifier: "FilterExpression",
 }) as any as S.Schema<FilterExpression>;
-export type OrderedBy = "LAST_MODIFIED_DATE";
-export const OrderedBy = S.Literal("LAST_MODIFIED_DATE");
-export type Order = "DESCENDING" | "ASCENDING";
-export const Order = S.Literal("DESCENDING", "ASCENDING");
+export type OrderedBy = "LAST_MODIFIED_DATE" | (string & {});
+export const OrderedBy = S.String;
+export type Order = "DESCENDING" | "ASCENDING" | (string & {});
+export const Order = S.String;
 export interface FilesLimit {
   MaxFiles: number;
   OrderedBy?: OrderedBy;
@@ -945,8 +951,8 @@ export const FilesLimit = S.suspend(() =>
     Order: S.optional(Order),
   }),
 ).annotations({ identifier: "FilesLimit" }) as any as S.Schema<FilesLimit>;
-export type ParameterType = "Datetime" | "Number" | "String";
-export const ParameterType = S.Literal("Datetime", "Number", "String");
+export type ParameterType = "Datetime" | "Number" | "String" | (string & {});
+export const ParameterType = S.String;
 export interface DatetimeOptions {
   Format: string;
   TimezoneOffset?: string;
@@ -1122,8 +1128,8 @@ export const ProfileConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "ProfileConfiguration",
 }) as any as S.Schema<ProfileConfiguration>;
-export type ValidationMode = "CHECK_ALL";
-export const ValidationMode = S.Literal("CHECK_ALL");
+export type ValidationMode = "CHECK_ALL" | (string & {});
+export const ValidationMode = S.String;
 export interface ValidationConfiguration {
   RulesetArn: string;
   ValidationMode?: ValidationMode;
@@ -1138,8 +1144,8 @@ export const ValidationConfiguration = S.suspend(() =>
 }) as any as S.Schema<ValidationConfiguration>;
 export type ValidationConfigurationList = ValidationConfiguration[];
 export const ValidationConfigurationList = S.Array(ValidationConfiguration);
-export type SampleMode = "FULL_DATASET" | "CUSTOM_ROWS";
-export const SampleMode = S.Literal("FULL_DATASET", "CUSTOM_ROWS");
+export type SampleMode = "FULL_DATASET" | "CUSTOM_ROWS" | (string & {});
+export const SampleMode = S.String;
 export interface JobSample {
   Mode?: SampleMode;
   Size?: number;
@@ -1188,8 +1194,8 @@ export const UpdateProfileJobRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateProfileJobRequest",
 }) as any as S.Schema<UpdateProfileJobRequest>;
-export type SampleType = "FIRST_N" | "LAST_N" | "RANDOM";
-export const SampleType = S.Literal("FIRST_N", "LAST_N", "RANDOM");
+export type SampleType = "FIRST_N" | "LAST_N" | "RANDOM" | (string & {});
+export const SampleType = S.String;
 export interface Sample {
   Size?: number;
   Type: SampleType;
@@ -1287,18 +1293,9 @@ export type CompressionFormat =
   | "LZO"
   | "BROTLI"
   | "ZSTD"
-  | "ZLIB";
-export const CompressionFormat = S.Literal(
-  "GZIP",
-  "LZ4",
-  "SNAPPY",
-  "BZIP2",
-  "DEFLATE",
-  "LZO",
-  "BROTLI",
-  "ZSTD",
-  "ZLIB",
-);
+  | "ZLIB"
+  | (string & {});
+export const CompressionFormat = S.String;
 export type OutputFormat =
   | "CSV"
   | "JSON"
@@ -1307,17 +1304,9 @@ export type OutputFormat =
   | "AVRO"
   | "ORC"
   | "XML"
-  | "TABLEAUHYPER";
-export const OutputFormat = S.Literal(
-  "CSV",
-  "JSON",
-  "PARQUET",
-  "GLUEPARQUET",
-  "AVRO",
-  "ORC",
-  "XML",
-  "TABLEAUHYPER",
-);
+  | "TABLEAUHYPER"
+  | (string & {});
+export const OutputFormat = S.String;
 export type ColumnNameList = string[];
 export const ColumnNameList = S.Array(S.String);
 export interface CsvOutputOptions {
@@ -1397,8 +1386,8 @@ export const DataCatalogOutput = S.suspend(() =>
 }) as any as S.Schema<DataCatalogOutput>;
 export type DataCatalogOutputList = DataCatalogOutput[];
 export const DataCatalogOutputList = S.Array(DataCatalogOutput);
-export type DatabaseOutputMode = "NEW_TABLE";
-export const DatabaseOutputMode = S.Literal("NEW_TABLE");
+export type DatabaseOutputMode = "NEW_TABLE" | (string & {});
+export const DatabaseOutputMode = S.String;
 export interface DatabaseOutput {
   GlueConnectionName: string;
   DatabaseOptions: DatabaseTableOutputOptions;
@@ -1458,15 +1447,11 @@ export type ThresholdType =
   | "GREATER_THAN_OR_EQUAL"
   | "LESS_THAN_OR_EQUAL"
   | "GREATER_THAN"
-  | "LESS_THAN";
-export const ThresholdType = S.Literal(
-  "GREATER_THAN_OR_EQUAL",
-  "LESS_THAN_OR_EQUAL",
-  "GREATER_THAN",
-  "LESS_THAN",
-);
-export type ThresholdUnit = "COUNT" | "PERCENTAGE";
-export const ThresholdUnit = S.Literal("COUNT", "PERCENTAGE");
+  | "LESS_THAN"
+  | (string & {});
+export const ThresholdType = S.String;
+export type ThresholdUnit = "COUNT" | "PERCENTAGE" | (string & {});
+export const ThresholdUnit = S.String;
 export interface Threshold {
   Value: number;
   Type?: ThresholdType;
@@ -1547,8 +1532,8 @@ export const UpdateScheduleRequest = S.suspend(() =>
 }) as any as S.Schema<UpdateScheduleRequest>;
 export type HiddenColumnList = string[];
 export const HiddenColumnList = S.Array(S.String);
-export type AnalyticsMode = "ENABLE" | "DISABLE";
-export const AnalyticsMode = S.Literal("ENABLE", "DISABLE");
+export type AnalyticsMode = "ENABLE" | "DISABLE" | (string & {});
+export const AnalyticsMode = S.String;
 export interface RecipeReference {
   Name: string;
   RecipeVersion?: string;
@@ -1558,10 +1543,10 @@ export const RecipeReference = S.suspend(() =>
 ).annotations({
   identifier: "RecipeReference",
 }) as any as S.Schema<RecipeReference>;
-export type Source = "S3" | "DATA-CATALOG" | "DATABASE";
-export const Source = S.Literal("S3", "DATA-CATALOG", "DATABASE");
-export type JobType = "PROFILE" | "RECIPE";
-export const JobType = S.Literal("PROFILE", "RECIPE");
+export type Source = "S3" | "DATA-CATALOG" | "DATABASE" | (string & {});
+export const Source = S.String;
+export type JobType = "PROFILE" | "RECIPE" | (string & {});
+export const JobType = S.String;
 export type JobRunState =
   | "STARTING"
   | "RUNNING"
@@ -1569,16 +1554,9 @@ export type JobRunState =
   | "STOPPED"
   | "SUCCEEDED"
   | "FAILED"
-  | "TIMEOUT";
-export const JobRunState = S.Literal(
-  "STARTING",
-  "RUNNING",
-  "STOPPING",
-  "STOPPED",
-  "SUCCEEDED",
-  "FAILED",
-  "TIMEOUT",
-);
+  | "TIMEOUT"
+  | (string & {});
+export const JobRunState = S.String;
 export type SessionStatus =
   | "ASSIGNED"
   | "FAILED"
@@ -1589,19 +1567,9 @@ export type SessionStatus =
   | "ROTATING"
   | "TERMINATED"
   | "TERMINATING"
-  | "UPDATING";
-export const SessionStatus = S.Literal(
-  "ASSIGNED",
-  "FAILED",
-  "INITIALIZING",
-  "PROVISIONING",
-  "READY",
-  "RECYCLING",
-  "ROTATING",
-  "TERMINATED",
-  "TERMINATING",
-  "UPDATING",
-);
+  | "UPDATING"
+  | (string & {});
+export const SessionStatus = S.String;
 export interface ViewFrame {
   StartColumnIndex: number;
   ColumnRange?: number;

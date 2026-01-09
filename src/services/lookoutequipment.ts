@@ -139,98 +139,74 @@ export type ComponentName = string;
 export type SensorName = string;
 
 //# Schemas
-export type DataUploadFrequency = "PT5M" | "PT10M" | "PT15M" | "PT30M" | "PT1H";
-export const DataUploadFrequency = S.Literal(
-  "PT5M",
-  "PT10M",
-  "PT15M",
-  "PT30M",
-  "PT1H",
-);
-export type LabelRating = "ANOMALY" | "NO_ANOMALY" | "NEUTRAL";
-export const LabelRating = S.Literal("ANOMALY", "NO_ANOMALY", "NEUTRAL");
+export type DataUploadFrequency =
+  | "PT5M"
+  | "PT10M"
+  | "PT15M"
+  | "PT30M"
+  | "PT1H"
+  | (string & {});
+export const DataUploadFrequency = S.String;
+export type LabelRating = "ANOMALY" | "NO_ANOMALY" | "NEUTRAL" | (string & {});
+export const LabelRating = S.String;
 export type FaultCodes = string[];
 export const FaultCodes = S.Array(S.String);
-export type ModelPromoteMode = "MANAGED" | "MANUAL";
-export const ModelPromoteMode = S.Literal("MANAGED", "MANUAL");
+export type ModelPromoteMode = "MANAGED" | "MANUAL" | (string & {});
+export const ModelPromoteMode = S.String;
 export type InferenceDataImportStrategy =
   | "NO_IMPORT"
   | "ADD_WHEN_EMPTY"
-  | "OVERWRITE";
-export const InferenceDataImportStrategy = S.Literal(
-  "NO_IMPORT",
-  "ADD_WHEN_EMPTY",
-  "OVERWRITE",
-);
+  | "OVERWRITE"
+  | (string & {});
+export const InferenceDataImportStrategy = S.String;
 export type IngestionJobStatus =
   | "IN_PROGRESS"
   | "SUCCESS"
   | "FAILED"
-  | "IMPORT_IN_PROGRESS";
-export const IngestionJobStatus = S.Literal(
-  "IN_PROGRESS",
-  "SUCCESS",
-  "FAILED",
-  "IMPORT_IN_PROGRESS",
-);
-export type InferenceExecutionStatus = "IN_PROGRESS" | "SUCCESS" | "FAILED";
-export const InferenceExecutionStatus = S.Literal(
-  "IN_PROGRESS",
-  "SUCCESS",
-  "FAILED",
-);
+  | "IMPORT_IN_PROGRESS"
+  | (string & {});
+export const IngestionJobStatus = S.String;
+export type InferenceExecutionStatus =
+  | "IN_PROGRESS"
+  | "SUCCESS"
+  | "FAILED"
+  | (string & {});
+export const InferenceExecutionStatus = S.String;
 export type InferenceSchedulerStatus =
   | "PENDING"
   | "RUNNING"
   | "STOPPING"
-  | "STOPPED";
-export const InferenceSchedulerStatus = S.Literal(
-  "PENDING",
-  "RUNNING",
-  "STOPPING",
-  "STOPPED",
-);
+  | "STOPPED"
+  | (string & {});
+export const InferenceSchedulerStatus = S.String;
 export type ModelStatus =
   | "IN_PROGRESS"
   | "SUCCESS"
   | "FAILED"
-  | "IMPORT_IN_PROGRESS";
-export const ModelStatus = S.Literal(
-  "IN_PROGRESS",
-  "SUCCESS",
-  "FAILED",
-  "IMPORT_IN_PROGRESS",
-);
+  | "IMPORT_IN_PROGRESS"
+  | (string & {});
+export const ModelStatus = S.String;
 export type ModelVersionStatus =
   | "IN_PROGRESS"
   | "SUCCESS"
   | "FAILED"
   | "IMPORT_IN_PROGRESS"
-  | "CANCELED";
-export const ModelVersionStatus = S.Literal(
-  "IN_PROGRESS",
-  "SUCCESS",
-  "FAILED",
-  "IMPORT_IN_PROGRESS",
-  "CANCELED",
-);
-export type ModelVersionSourceType = "TRAINING" | "RETRAINING" | "IMPORT";
-export const ModelVersionSourceType = S.Literal(
-  "TRAINING",
-  "RETRAINING",
-  "IMPORT",
-);
+  | "CANCELED"
+  | (string & {});
+export const ModelVersionStatus = S.String;
+export type ModelVersionSourceType =
+  | "TRAINING"
+  | "RETRAINING"
+  | "IMPORT"
+  | (string & {});
+export const ModelVersionSourceType = S.String;
 export type RetrainingSchedulerStatus =
   | "PENDING"
   | "RUNNING"
   | "STOPPING"
-  | "STOPPED";
-export const RetrainingSchedulerStatus = S.Literal(
-  "PENDING",
-  "RUNNING",
-  "STOPPING",
-  "STOPPED",
-);
+  | "STOPPED"
+  | (string & {});
+export const RetrainingSchedulerStatus = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export interface CreateLabelRequest {
@@ -1109,20 +1085,9 @@ export type TargetSamplingRate =
   | "PT10M"
   | "PT15M"
   | "PT30M"
-  | "PT1H";
-export const TargetSamplingRate = S.Literal(
-  "PT1S",
-  "PT5S",
-  "PT10S",
-  "PT15S",
-  "PT30S",
-  "PT1M",
-  "PT5M",
-  "PT10M",
-  "PT15M",
-  "PT30M",
-  "PT1H",
-);
+  | "PT1H"
+  | (string & {});
+export const TargetSamplingRate = S.String;
 export interface DatasetSchema {
   InlineDataSchema?: string;
 }
@@ -1143,37 +1108,25 @@ export type DatasetStatus =
   | "CREATED"
   | "INGESTION_IN_PROGRESS"
   | "ACTIVE"
-  | "IMPORT_IN_PROGRESS";
-export const DatasetStatus = S.Literal(
-  "CREATED",
-  "INGESTION_IN_PROGRESS",
-  "ACTIVE",
-  "IMPORT_IN_PROGRESS",
-);
-export type LatestInferenceResult = "ANOMALOUS" | "NORMAL";
-export const LatestInferenceResult = S.Literal("ANOMALOUS", "NORMAL");
+  | "IMPORT_IN_PROGRESS"
+  | (string & {});
+export const DatasetStatus = S.String;
+export type LatestInferenceResult = "ANOMALOUS" | "NORMAL" | (string & {});
+export const LatestInferenceResult = S.String;
 export type ModelQuality =
   | "QUALITY_THRESHOLD_MET"
   | "CANNOT_DETERMINE_QUALITY"
-  | "POOR_QUALITY_DETECTED";
-export const ModelQuality = S.Literal(
-  "QUALITY_THRESHOLD_MET",
-  "CANNOT_DETERMINE_QUALITY",
-  "POOR_QUALITY_DETECTED",
-);
+  | "POOR_QUALITY_DETECTED"
+  | (string & {});
+export const ModelQuality = S.String;
 export type AutoPromotionResult =
   | "MODEL_PROMOTED"
   | "MODEL_NOT_PROMOTED"
   | "RETRAINING_INTERNAL_ERROR"
   | "RETRAINING_CUSTOMER_ERROR"
-  | "RETRAINING_CANCELLED";
-export const AutoPromotionResult = S.Literal(
-  "MODEL_PROMOTED",
-  "MODEL_NOT_PROMOTED",
-  "RETRAINING_INTERNAL_ERROR",
-  "RETRAINING_CUSTOMER_ERROR",
-  "RETRAINING_CANCELLED",
-);
+  | "RETRAINING_CANCELLED"
+  | (string & {});
+export const AutoPromotionResult = S.String;
 export interface CreateDatasetRequest {
   DatasetName: string;
   DatasetSchema?: DatasetSchema;
@@ -2051,13 +2004,15 @@ export type RetrainingSchedulerSummaries = RetrainingSchedulerSummary[];
 export const RetrainingSchedulerSummaries = S.Array(RetrainingSchedulerSummary);
 export type StatisticalIssueStatus =
   | "POTENTIAL_ISSUE_DETECTED"
-  | "NO_ISSUE_DETECTED";
-export const StatisticalIssueStatus = S.Literal(
-  "POTENTIAL_ISSUE_DETECTED",
-  "NO_ISSUE_DETECTED",
-);
-export type Monotonicity = "DECREASING" | "INCREASING" | "STATIC";
-export const Monotonicity = S.Literal("DECREASING", "INCREASING", "STATIC");
+  | "NO_ISSUE_DETECTED"
+  | (string & {});
+export const StatisticalIssueStatus = S.String;
+export type Monotonicity =
+  | "DECREASING"
+  | "INCREASING"
+  | "STATIC"
+  | (string & {});
+export const Monotonicity = S.String;
 export interface CreateDatasetResponse {
   DatasetName?: string;
   DatasetArn?: string;

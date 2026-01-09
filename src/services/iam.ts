@@ -639,77 +639,77 @@ export type ClientIDListType = string[];
 export const ClientIDListType = S.Array(S.String);
 export type ThumbprintListType = string[];
 export const ThumbprintListType = S.Array(S.String);
-export type AssertionEncryptionModeType = "Required" | "Allowed";
-export const AssertionEncryptionModeType = S.Literal("Required", "Allowed");
-export type FeatureType = "RootCredentialsManagement" | "RootSessions";
-export const FeatureType = S.Literal(
-  "RootCredentialsManagement",
-  "RootSessions",
-);
+export type AssertionEncryptionModeType =
+  | "Required"
+  | "Allowed"
+  | (string & {});
+export const AssertionEncryptionModeType = S.String;
+export type FeatureType =
+  | "RootCredentialsManagement"
+  | "RootSessions"
+  | (string & {});
+export const FeatureType = S.String;
 export type FeaturesListType = FeatureType[];
 export const FeaturesListType = S.Array(FeatureType);
-export type ReportStateType = "STARTED" | "INPROGRESS" | "COMPLETE";
-export const ReportStateType = S.Literal("STARTED", "INPROGRESS", "COMPLETE");
+export type ReportStateType =
+  | "STARTED"
+  | "INPROGRESS"
+  | "COMPLETE"
+  | (string & {});
+export const ReportStateType = S.String;
 export type AccessAdvisorUsageGranularityType =
   | "SERVICE_LEVEL"
-  | "ACTION_LEVEL";
-export const AccessAdvisorUsageGranularityType = S.Literal(
-  "SERVICE_LEVEL",
-  "ACTION_LEVEL",
-);
+  | "ACTION_LEVEL"
+  | (string & {});
+export const AccessAdvisorUsageGranularityType = S.String;
 export type EntityType =
   | "User"
   | "Role"
   | "Group"
   | "LocalManagedPolicy"
-  | "AWSManagedPolicy";
-export const EntityType = S.Literal(
-  "User",
-  "Role",
-  "Group",
-  "LocalManagedPolicy",
-  "AWSManagedPolicy",
-);
+  | "AWSManagedPolicy"
+  | (string & {});
+export const EntityType = S.String;
 export type EntityListType = EntityType[];
 export const EntityListType = S.Array(EntityType);
 export type SimulationPolicyListType = string[];
 export const SimulationPolicyListType = S.Array(S.String);
-export type ReportFormatType = "text/csv";
-export const ReportFormatType = S.Literal("text/csv");
+export type ReportFormatType = "text/csv" | (string & {});
+export const ReportFormatType = S.String;
 export type SortKeyType =
   | "SERVICE_NAMESPACE_ASCENDING"
   | "SERVICE_NAMESPACE_DESCENDING"
   | "LAST_AUTHENTICATED_TIME_ASCENDING"
-  | "LAST_AUTHENTICATED_TIME_DESCENDING";
-export const SortKeyType = S.Literal(
-  "SERVICE_NAMESPACE_ASCENDING",
-  "SERVICE_NAMESPACE_DESCENDING",
-  "LAST_AUTHENTICATED_TIME_ASCENDING",
-  "LAST_AUTHENTICATED_TIME_DESCENDING",
-);
-export type EncodingType = "SSH" | "PEM";
-export const EncodingType = S.Literal("SSH", "PEM");
-export type PolicyUsageType = "PermissionsPolicy" | "PermissionsBoundary";
-export const PolicyUsageType = S.Literal(
-  "PermissionsPolicy",
-  "PermissionsBoundary",
-);
-export type PolicyScopeType = "All" | "AWS" | "Local";
-export const PolicyScopeType = S.Literal("All", "AWS", "Local");
+  | "LAST_AUTHENTICATED_TIME_DESCENDING"
+  | (string & {});
+export const SortKeyType = S.String;
+export type EncodingType = "SSH" | "PEM" | (string & {});
+export const EncodingType = S.String;
+export type PolicyUsageType =
+  | "PermissionsPolicy"
+  | "PermissionsBoundary"
+  | (string & {});
+export const PolicyUsageType = S.String;
+export type PolicyScopeType = "All" | "AWS" | "Local" | (string & {});
+export const PolicyScopeType = S.String;
 export type ServiceNamespaceListType = string[];
 export const ServiceNamespaceListType = S.Array(S.String);
-export type AssignmentStatusType = "Assigned" | "Unassigned" | "Any";
-export const AssignmentStatusType = S.Literal("Assigned", "Unassigned", "Any");
-export type GlobalEndpointTokenVersion = "v1Token" | "v2Token";
-export const GlobalEndpointTokenVersion = S.Literal("v1Token", "v2Token");
+export type AssignmentStatusType =
+  | "Assigned"
+  | "Unassigned"
+  | "Any"
+  | (string & {});
+export const AssignmentStatusType = S.String;
+export type GlobalEndpointTokenVersion = "v1Token" | "v2Token" | (string & {});
+export const GlobalEndpointTokenVersion = S.String;
 export type ActionNameListType = string[];
 export const ActionNameListType = S.Array(S.String);
 export type ResourceNameListType = string[];
 export const ResourceNameListType = S.Array(S.String);
 export type TagKeyListType = string[];
 export const TagKeyListType = S.Array(S.String);
-export type StatusType = "Active" | "Inactive" | "Expired";
-export const StatusType = S.Literal("Active", "Inactive", "Expired");
+export type StatusType = "Active" | "Inactive" | "Expired" | (string & {});
+export const StatusType = S.String;
 export interface AcceptDelegationRequestRequest {
   DelegationRequestId: string;
 }
@@ -3777,21 +3777,9 @@ export type ContextKeyTypeEnum =
   | "binary"
   | "binaryList"
   | "date"
-  | "dateList";
-export const ContextKeyTypeEnum = S.Literal(
-  "string",
-  "stringList",
-  "numeric",
-  "numericList",
-  "boolean",
-  "booleanList",
-  "ip",
-  "ipList",
-  "binary",
-  "binaryList",
-  "date",
-  "dateList",
-);
+  | "dateList"
+  | (string & {});
+export const ContextKeyTypeEnum = S.String;
 export interface ContextEntry {
   ContextKeyName?: string;
   ContextKeyValues?: string[];
@@ -4790,43 +4778,9 @@ export type SummaryKeyType =
   | "Providers"
   | "RolePolicySizeQuota"
   | "Roles"
-  | "RolesQuota";
-export const SummaryKeyType = S.Literal(
-  "Users",
-  "UsersQuota",
-  "Groups",
-  "GroupsQuota",
-  "ServerCertificates",
-  "ServerCertificatesQuota",
-  "UserPolicySizeQuota",
-  "GroupPolicySizeQuota",
-  "GroupsPerUserQuota",
-  "SigningCertificatesPerUserQuota",
-  "AccessKeysPerUserQuota",
-  "MFADevices",
-  "MFADevicesInUse",
-  "AccountMFAEnabled",
-  "AccountAccessKeysPresent",
-  "AccountPasswordPresent",
-  "AccountSigningCertificatesPresent",
-  "AttachedPoliciesPerGroupQuota",
-  "AttachedPoliciesPerRoleQuota",
-  "AttachedPoliciesPerUserQuota",
-  "Policies",
-  "PoliciesQuota",
-  "PolicySizeQuota",
-  "PolicyVersionsInUse",
-  "PolicyVersionsInUseQuota",
-  "VersionsPerPolicyQuota",
-  "GlobalEndpointTokenVersion",
-  "AssumeRolePolicySizeQuota",
-  "InstanceProfiles",
-  "InstanceProfilesQuota",
-  "Providers",
-  "RolePolicySizeQuota",
-  "Roles",
-  "RolesQuota",
-);
+  | "RolesQuota"
+  | (string & {});
+export const SummaryKeyType = S.String;
 export interface PasswordPolicy {
   MinimumPasswordLength?: number;
   RequireSymbols?: boolean;
@@ -4861,22 +4815,22 @@ export const SummaryMapType = S.partial(
 );
 export type ContextKeyNamesResultListType = string[];
 export const ContextKeyNamesResultListType = S.Array(S.String);
-export type PermissionCheckStatusType = "COMPLETE" | "IN_PROGRESS" | "FAILED";
-export const PermissionCheckStatusType = S.Literal(
-  "COMPLETE",
-  "IN_PROGRESS",
-  "FAILED",
-);
-export type PermissionCheckResultType = "ALLOWED" | "DENIED" | "UNSURE";
-export const PermissionCheckResultType = S.Literal(
-  "ALLOWED",
-  "DENIED",
-  "UNSURE",
-);
-export type PermissionsBoundaryAttachmentType = "PermissionsBoundaryPolicy";
-export const PermissionsBoundaryAttachmentType = S.Literal(
-  "PermissionsBoundaryPolicy",
-);
+export type PermissionCheckStatusType =
+  | "COMPLETE"
+  | "IN_PROGRESS"
+  | "FAILED"
+  | (string & {});
+export const PermissionCheckStatusType = S.String;
+export type PermissionCheckResultType =
+  | "ALLOWED"
+  | "DENIED"
+  | "UNSURE"
+  | (string & {});
+export const PermissionCheckResultType = S.String;
+export type PermissionsBoundaryAttachmentType =
+  | "PermissionsBoundaryPolicy"
+  | (string & {});
+export const PermissionsBoundaryAttachmentType = S.String;
 export interface AttachedPermissionsBoundary {
   PermissionsBoundaryType?: PermissionsBoundaryAttachmentType;
   PermissionsBoundaryArn?: string;
@@ -4917,32 +4871,28 @@ export type SummaryStateType =
   | "AVAILABLE"
   | "NOT_AVAILABLE"
   | "NOT_SUPPORTED"
-  | "FAILED";
-export const SummaryStateType = S.Literal(
-  "AVAILABLE",
-  "NOT_AVAILABLE",
-  "NOT_SUPPORTED",
-  "FAILED",
-);
-export type JobStatusType = "IN_PROGRESS" | "COMPLETED" | "FAILED";
-export const JobStatusType = S.Literal("IN_PROGRESS", "COMPLETED", "FAILED");
+  | "FAILED"
+  | (string & {});
+export const SummaryStateType = S.String;
+export type JobStatusType =
+  | "IN_PROGRESS"
+  | "COMPLETED"
+  | "FAILED"
+  | (string & {});
+export const JobStatusType = S.String;
 export type DeletionTaskStatusType =
   | "SUCCEEDED"
   | "IN_PROGRESS"
   | "FAILED"
-  | "NOT_STARTED";
-export const DeletionTaskStatusType = S.Literal(
-  "SUCCEEDED",
-  "IN_PROGRESS",
-  "FAILED",
-  "NOT_STARTED",
-);
+  | "NOT_STARTED"
+  | (string & {});
+export const DeletionTaskStatusType = S.String;
 export type AccountAliasListType = string[];
 export const AccountAliasListType = S.Array(S.String);
 export type PolicyParameterValuesListType = string[];
 export const PolicyParameterValuesListType = S.Array(S.String);
-export type PolicyParameterTypeEnum = "string" | "stringList";
-export const PolicyParameterTypeEnum = S.Literal("string", "stringList");
+export type PolicyParameterTypeEnum = "string" | "stringList" | (string & {});
+export const PolicyParameterTypeEnum = S.String;
 export interface PolicyParameter {
   Name?: string;
   Values?: string[];
@@ -4980,16 +4930,9 @@ export type StateType =
   | "FINALIZED"
   | "ACCEPTED"
   | "REJECTED"
-  | "EXPIRED";
-export const StateType = S.Literal(
-  "UNASSIGNED",
-  "ASSIGNED",
-  "PENDING_APPROVAL",
-  "FINALIZED",
-  "ACCEPTED",
-  "REJECTED",
-  "EXPIRED",
-);
+  | "EXPIRED"
+  | (string & {});
+export const StateType = S.String;
 export interface DelegationRequest {
   DelegationRequestId?: string;
   OwnerAccountId?: string;
@@ -6025,12 +5968,9 @@ export const GroupNameListType = S.Array(S.String);
 export type PolicyEvaluationDecisionType =
   | "allowed"
   | "explicitDeny"
-  | "implicitDeny";
-export const PolicyEvaluationDecisionType = S.Literal(
-  "allowed",
-  "explicitDeny",
-  "implicitDeny",
-);
+  | "implicitDeny"
+  | (string & {});
+export const PolicyEvaluationDecisionType = S.String;
 export interface AccessKey {
   UserName: string;
   AccessKeyId: string;
@@ -6337,12 +6277,12 @@ export const SSHPublicKeyMetadata = S.suspend(() =>
 }) as any as S.Schema<SSHPublicKeyMetadata>;
 export type SSHPublicKeyListType = SSHPublicKeyMetadata[];
 export const SSHPublicKeyListType = S.Array(SSHPublicKeyMetadata);
-export type PolicyOwnerEntityType = "USER" | "ROLE" | "GROUP";
-export const PolicyOwnerEntityType = S.Literal("USER", "ROLE", "GROUP");
+export type PolicyOwnerEntityType = "USER" | "ROLE" | "GROUP" | (string & {});
+export const PolicyOwnerEntityType = S.String;
 export type ArnListType = string[];
 export const ArnListType = S.Array(S.String);
-export type PolicyType = "INLINE" | "MANAGED";
-export const PolicyType = S.Literal("INLINE", "MANAGED");
+export type PolicyType = "INLINE" | "MANAGED" | (string & {});
+export const PolicyType = S.String;
 export type PolicySourceType =
   | "user"
   | "group"
@@ -6350,16 +6290,9 @@ export type PolicySourceType =
   | "aws-managed"
   | "user-managed"
   | "resource"
-  | "none";
-export const PolicySourceType = S.Literal(
-  "user",
-  "group",
-  "role",
-  "aws-managed",
-  "user-managed",
-  "resource",
-  "none",
-);
+  | "none"
+  | (string & {});
+export const PolicySourceType = S.String;
 export interface CreateAccessKeyResponse {
   AccessKey: AccessKey;
 }

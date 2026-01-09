@@ -482,89 +482,82 @@ export const DescribeLimitsInput = S.suspend(() =>
 ).annotations({
   identifier: "DescribeLimitsInput",
 }) as any as S.Schema<DescribeLimitsInput>;
-export type ReturnConsumedCapacity = "INDEXES" | "TOTAL" | "NONE";
-export const ReturnConsumedCapacity = S.Literal("INDEXES", "TOTAL", "NONE");
-export type ReturnItemCollectionMetrics = "SIZE" | "NONE";
-export const ReturnItemCollectionMetrics = S.Literal("SIZE", "NONE");
-export type BillingMode = "PROVISIONED" | "PAY_PER_REQUEST";
-export const BillingMode = S.Literal("PROVISIONED", "PAY_PER_REQUEST");
-export type TableClass = "STANDARD" | "STANDARD_INFREQUENT_ACCESS";
-export const TableClass = S.Literal("STANDARD", "STANDARD_INFREQUENT_ACCESS");
-export type ConditionalOperator = "AND" | "OR";
-export const ConditionalOperator = S.Literal("AND", "OR");
+export type ReturnConsumedCapacity =
+  | "INDEXES"
+  | "TOTAL"
+  | "NONE"
+  | (string & {});
+export const ReturnConsumedCapacity = S.String;
+export type ReturnItemCollectionMetrics = "SIZE" | "NONE" | (string & {});
+export const ReturnItemCollectionMetrics = S.String;
+export type BillingMode = "PROVISIONED" | "PAY_PER_REQUEST" | (string & {});
+export const BillingMode = S.String;
+export type TableClass =
+  | "STANDARD"
+  | "STANDARD_INFREQUENT_ACCESS"
+  | (string & {});
+export const TableClass = S.String;
+export type ConditionalOperator = "AND" | "OR" | (string & {});
+export const ConditionalOperator = S.String;
 export type ReturnValue =
   | "NONE"
   | "ALL_OLD"
   | "UPDATED_OLD"
   | "ALL_NEW"
-  | "UPDATED_NEW";
-export const ReturnValue = S.Literal(
-  "NONE",
-  "ALL_OLD",
-  "UPDATED_OLD",
-  "ALL_NEW",
-  "UPDATED_NEW",
-);
-export type ReturnValuesOnConditionCheckFailure = "ALL_OLD" | "NONE";
-export const ReturnValuesOnConditionCheckFailure = S.Literal("ALL_OLD", "NONE");
+  | "UPDATED_NEW"
+  | (string & {});
+export const ReturnValue = S.String;
+export type ReturnValuesOnConditionCheckFailure =
+  | "ALL_OLD"
+  | "NONE"
+  | (string & {});
+export const ReturnValuesOnConditionCheckFailure = S.String;
 export type DestinationStatus =
   | "ENABLING"
   | "ACTIVE"
   | "DISABLING"
   | "DISABLED"
   | "ENABLE_FAILED"
-  | "UPDATING";
-export const DestinationStatus = S.Literal(
-  "ENABLING",
-  "ACTIVE",
-  "DISABLING",
-  "DISABLED",
-  "ENABLE_FAILED",
-  "UPDATING",
-);
-export type S3SseAlgorithm = "AES256" | "KMS";
-export const S3SseAlgorithm = S.Literal("AES256", "KMS");
-export type ExportFormat = "DYNAMODB_JSON" | "ION";
-export const ExportFormat = S.Literal("DYNAMODB_JSON", "ION");
-export type ExportType = "FULL_EXPORT" | "INCREMENTAL_EXPORT";
-export const ExportType = S.Literal("FULL_EXPORT", "INCREMENTAL_EXPORT");
+  | "UPDATING"
+  | (string & {});
+export const DestinationStatus = S.String;
+export type S3SseAlgorithm = "AES256" | "KMS" | (string & {});
+export const S3SseAlgorithm = S.String;
+export type ExportFormat = "DYNAMODB_JSON" | "ION" | (string & {});
+export const ExportFormat = S.String;
+export type ExportType = "FULL_EXPORT" | "INCREMENTAL_EXPORT" | (string & {});
+export const ExportType = S.String;
 export type AttributeNameList = string[];
 export const AttributeNameList = S.Array(S.String);
-export type InputFormat = "DYNAMODB_JSON" | "ION" | "CSV";
-export const InputFormat = S.Literal("DYNAMODB_JSON", "ION", "CSV");
-export type InputCompressionType = "GZIP" | "ZSTD" | "NONE";
-export const InputCompressionType = S.Literal("GZIP", "ZSTD", "NONE");
-export type BackupTypeFilter = "USER" | "SYSTEM" | "AWS_BACKUP" | "ALL";
-export const BackupTypeFilter = S.Literal(
-  "USER",
-  "SYSTEM",
-  "AWS_BACKUP",
-  "ALL",
-);
+export type InputFormat = "DYNAMODB_JSON" | "ION" | "CSV" | (string & {});
+export const InputFormat = S.String;
+export type InputCompressionType = "GZIP" | "ZSTD" | "NONE" | (string & {});
+export const InputCompressionType = S.String;
+export type BackupTypeFilter =
+  | "USER"
+  | "SYSTEM"
+  | "AWS_BACKUP"
+  | "ALL"
+  | (string & {});
+export const BackupTypeFilter = S.String;
 export type Select =
   | "ALL_ATTRIBUTES"
   | "ALL_PROJECTED_ATTRIBUTES"
   | "SPECIFIC_ATTRIBUTES"
-  | "COUNT";
-export const Select = S.Literal(
-  "ALL_ATTRIBUTES",
-  "ALL_PROJECTED_ATTRIBUTES",
-  "SPECIFIC_ATTRIBUTES",
-  "COUNT",
-);
+  | "COUNT"
+  | (string & {});
+export const Select = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
-export type ContributorInsightsAction = "ENABLE" | "DISABLE";
-export const ContributorInsightsAction = S.Literal("ENABLE", "DISABLE");
+export type ContributorInsightsAction = "ENABLE" | "DISABLE" | (string & {});
+export const ContributorInsightsAction = S.String;
 export type ContributorInsightsMode =
   | "ACCESSED_AND_THROTTLED_KEYS"
-  | "THROTTLED_KEYS";
-export const ContributorInsightsMode = S.Literal(
-  "ACCESSED_AND_THROTTLED_KEYS",
-  "THROTTLED_KEYS",
-);
-export type MultiRegionConsistency = "EVENTUAL" | "STRONG";
-export const MultiRegionConsistency = S.Literal("EVENTUAL", "STRONG");
+  | "THROTTLED_KEYS"
+  | (string & {});
+export const ContributorInsightsMode = S.String;
+export type MultiRegionConsistency = "EVENTUAL" | "STRONG" | (string & {});
+export const MultiRegionConsistency = S.String;
 export interface CreateBackupInput {
   TableName: string;
   BackupName: string;
@@ -869,11 +862,9 @@ export const DescribeTimeToLiveInput = S.suspend(() =>
 }) as any as S.Schema<DescribeTimeToLiveInput>;
 export type ApproximateCreationDateTimePrecision =
   | "MILLISECOND"
-  | "MICROSECOND";
-export const ApproximateCreationDateTimePrecision = S.Literal(
-  "MILLISECOND",
-  "MICROSECOND",
-);
+  | "MICROSECOND"
+  | (string & {});
+export const ApproximateCreationDateTimePrecision = S.String;
 export interface EnableKinesisStreamingConfiguration {
   ApproximateCreationDateTimePrecision?: ApproximateCreationDateTimePrecision;
 }
@@ -1315,8 +1306,8 @@ export const PutResourcePolicyInput = S.suspend(() =>
 ).annotations({
   identifier: "PutResourcePolicyInput",
 }) as any as S.Schema<PutResourcePolicyInput>;
-export type KeyType = "HASH" | "RANGE";
-export const KeyType = S.Literal("HASH", "RANGE");
+export type KeyType = "HASH" | "RANGE" | (string & {});
+export const KeyType = S.String;
 export interface KeySchemaElement {
   AttributeName: string;
   KeyType: KeyType;
@@ -1328,8 +1319,8 @@ export const KeySchemaElement = S.suspend(() =>
 }) as any as S.Schema<KeySchemaElement>;
 export type KeySchema = KeySchemaElement[];
 export const KeySchema = S.Array(KeySchemaElement);
-export type ProjectionType = "ALL" | "KEYS_ONLY" | "INCLUDE";
-export const ProjectionType = S.Literal("ALL", "KEYS_ONLY", "INCLUDE");
+export type ProjectionType = "ALL" | "KEYS_ONLY" | "INCLUDE" | (string & {});
+export const ProjectionType = S.String;
 export type NonKeyAttributeNameList = string[];
 export const NonKeyAttributeNameList = S.Array(S.String);
 export interface Projection {
@@ -1413,8 +1404,8 @@ export const LocalSecondaryIndex = S.suspend(() =>
 }) as any as S.Schema<LocalSecondaryIndex>;
 export type LocalSecondaryIndexList = LocalSecondaryIndex[];
 export const LocalSecondaryIndexList = S.Array(LocalSecondaryIndex);
-export type SSEType = "AES256" | "KMS";
-export const SSEType = S.Literal("AES256", "KMS");
+export type SSEType = "AES256" | "KMS" | (string & {});
+export const SSEType = S.String;
 export interface SSESpecification {
   Enabled?: boolean;
   SSEType?: SSEType;
@@ -1522,22 +1513,9 @@ export type ComparisonOperator =
   | "NULL"
   | "CONTAINS"
   | "NOT_CONTAINS"
-  | "BEGINS_WITH";
-export const ComparisonOperator = S.Literal(
-  "EQ",
-  "NE",
-  "IN",
-  "LE",
-  "LT",
-  "GE",
-  "GT",
-  "BETWEEN",
-  "NOT_NULL",
-  "NULL",
-  "CONTAINS",
-  "NOT_CONTAINS",
-  "BEGINS_WITH",
-);
+  | "BEGINS_WITH"
+  | (string & {});
+export const ComparisonOperator = S.String;
 export interface Condition {
   AttributeValueList?: AttributeValue[];
   ComparisonOperator: ComparisonOperator;
@@ -1703,25 +1681,21 @@ export const UpdateContributorInsightsInput = S.suspend(() =>
 ).annotations({
   identifier: "UpdateContributorInsightsInput",
 }) as any as S.Schema<UpdateContributorInsightsInput>;
-export type ScalarAttributeType = "S" | "N" | "B";
-export const ScalarAttributeType = S.Literal("S", "N", "B");
+export type ScalarAttributeType = "S" | "N" | "B" | (string & {});
+export const ScalarAttributeType = S.String;
 export type StreamViewType =
   | "NEW_IMAGE"
   | "OLD_IMAGE"
   | "NEW_AND_OLD_IMAGES"
-  | "KEYS_ONLY";
-export const StreamViewType = S.Literal(
-  "NEW_IMAGE",
-  "OLD_IMAGE",
-  "NEW_AND_OLD_IMAGES",
-  "KEYS_ONLY",
-);
+  | "KEYS_ONLY"
+  | (string & {});
+export const StreamViewType = S.String;
 export type ListAttributeValue = AttributeValue[];
 export const ListAttributeValue = S.Array(
   S.suspend(() => AttributeValue).annotations({ identifier: "AttributeValue" }),
 ) as any as S.Schema<ListAttributeValue>;
-export type ExportViewType = "NEW_IMAGE" | "NEW_AND_OLD_IMAGES";
-export const ExportViewType = S.Literal("NEW_IMAGE", "NEW_AND_OLD_IMAGES");
+export type ExportViewType = "NEW_IMAGE" | "NEW_AND_OLD_IMAGES" | (string & {});
+export const ExportViewType = S.String;
 export type PreparedStatementParameters = AttributeValue[];
 export const PreparedStatementParameters = S.Array(
   S.suspend(() => AttributeValue).annotations({ identifier: "AttributeValue" }),
@@ -1784,14 +1758,9 @@ export type ContributorInsightsStatus =
   | "ENABLED"
   | "DISABLING"
   | "DISABLED"
-  | "FAILED";
-export const ContributorInsightsStatus = S.Literal(
-  "ENABLING",
-  "ENABLED",
-  "DISABLING",
-  "DISABLED",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const ContributorInsightsStatus = S.String;
 export interface Endpoint {
   Address: string;
   CachePeriodInMinutes: number;
@@ -2020,8 +1989,8 @@ export type KeyList = { [key: string]: AttributeValue | undefined }[];
 export const KeyList = S.Array(Key);
 export type CsvHeaderList = string[];
 export const CsvHeaderList = S.Array(S.String);
-export type AttributeAction = "ADD" | "PUT" | "DELETE";
-export const AttributeAction = S.Literal("ADD", "PUT", "DELETE");
+export type AttributeAction = "ADD" | "PUT" | "DELETE" | (string & {});
+export const AttributeAction = S.String;
 export interface BatchExecuteStatementInput {
   Statements: BatchStatementRequest[];
   ReturnConsumedCapacity?: ReturnConsumedCapacity;
@@ -2074,10 +2043,10 @@ export const DeleteResourcePolicyOutput = S.suspend(() =>
 ).annotations({
   identifier: "DeleteResourcePolicyOutput",
 }) as any as S.Schema<DeleteResourcePolicyOutput>;
-export type BackupStatus = "CREATING" | "DELETED" | "AVAILABLE";
-export const BackupStatus = S.Literal("CREATING", "DELETED", "AVAILABLE");
-export type BackupType = "USER" | "SYSTEM" | "AWS_BACKUP";
-export const BackupType = S.Literal("USER", "SYSTEM", "AWS_BACKUP");
+export type BackupStatus = "CREATING" | "DELETED" | "AVAILABLE" | (string & {});
+export const BackupStatus = S.String;
+export type BackupType = "USER" | "SYSTEM" | "AWS_BACKUP" | (string & {});
+export const BackupType = S.String;
 export interface BackupDetails {
   BackupArn: string;
   BackupName: string;
@@ -2170,13 +2139,9 @@ export type TimeToLiveStatus =
   | "ENABLING"
   | "DISABLING"
   | "ENABLED"
-  | "DISABLED";
-export const TimeToLiveStatus = S.Literal(
-  "ENABLING",
-  "DISABLING",
-  "ENABLED",
-  "DISABLED",
-);
+  | "DISABLED"
+  | (string & {});
+export const TimeToLiveStatus = S.String;
 export interface TimeToLiveDescription {
   TimeToLiveStatus?: TimeToLiveStatus;
   AttributeName?: string;
@@ -2194,14 +2159,9 @@ export type SSEStatus =
   | "ENABLED"
   | "DISABLING"
   | "DISABLED"
-  | "UPDATING";
-export const SSEStatus = S.Literal(
-  "ENABLING",
-  "ENABLED",
-  "DISABLING",
-  "DISABLED",
-  "UPDATING",
-);
+  | "UPDATING"
+  | (string & {});
+export const SSEStatus = S.String;
 export interface SSEDescription {
   Status?: SSEStatus;
   SSEType?: SSEType;
@@ -2276,17 +2236,9 @@ export type TableStatus =
   | "INACCESSIBLE_ENCRYPTION_CREDENTIALS"
   | "ARCHIVING"
   | "ARCHIVED"
-  | "REPLICATION_NOT_AUTHORIZED";
-export const TableStatus = S.Literal(
-  "CREATING",
-  "UPDATING",
-  "DELETING",
-  "ACTIVE",
-  "INACCESSIBLE_ENCRYPTION_CREDENTIALS",
-  "ARCHIVING",
-  "ARCHIVED",
-  "REPLICATION_NOT_AUTHORIZED",
-);
+  | "REPLICATION_NOT_AUTHORIZED"
+  | (string & {});
+export const TableStatus = S.String;
 export interface ProvisionedThroughputDescription {
   LastIncreaseDateTime?: Date;
   LastDecreaseDateTime?: Date;
@@ -2348,13 +2300,13 @@ export type LocalSecondaryIndexDescriptionList =
 export const LocalSecondaryIndexDescriptionList = S.Array(
   LocalSecondaryIndexDescription,
 );
-export type IndexStatus = "CREATING" | "UPDATING" | "DELETING" | "ACTIVE";
-export const IndexStatus = S.Literal(
-  "CREATING",
-  "UPDATING",
-  "DELETING",
-  "ACTIVE",
-);
+export type IndexStatus =
+  | "CREATING"
+  | "UPDATING"
+  | "DELETING"
+  | "ACTIVE"
+  | (string & {});
+export const IndexStatus = S.String;
 export interface GlobalSecondaryIndexWarmThroughputDescription {
   ReadUnitsPerSecond?: number;
   WriteUnitsPerSecond?: number;
@@ -2414,19 +2366,9 @@ export type ReplicaStatus =
   | "INACCESSIBLE_ENCRYPTION_CREDENTIALS"
   | "ARCHIVING"
   | "ARCHIVED"
-  | "REPLICATION_NOT_AUTHORIZED";
-export const ReplicaStatus = S.Literal(
-  "CREATING",
-  "CREATION_FAILED",
-  "UPDATING",
-  "DELETING",
-  "ACTIVE",
-  "REGION_DISABLED",
-  "INACCESSIBLE_ENCRYPTION_CREDENTIALS",
-  "ARCHIVING",
-  "ARCHIVED",
-  "REPLICATION_NOT_AUTHORIZED",
-);
+  | "REPLICATION_NOT_AUTHORIZED"
+  | (string & {});
+export const ReplicaStatus = S.String;
 export interface ProvisionedThroughputOverride {
   ReadCapacityUnits?: number;
 }
@@ -2528,8 +2470,8 @@ export const ReplicaDescription = S.suspend(() =>
 }) as any as S.Schema<ReplicaDescription>;
 export type ReplicaDescriptionList = ReplicaDescription[];
 export const ReplicaDescriptionList = S.Array(ReplicaDescription);
-export type WitnessStatus = "CREATING" | "DELETING" | "ACTIVE";
-export const WitnessStatus = S.Literal("CREATING", "DELETING", "ACTIVE");
+export type WitnessStatus = "CREATING" | "DELETING" | "ACTIVE" | (string & {});
+export const WitnessStatus = S.String;
 export interface GlobalTableWitnessDescription {
   RegionName?: string;
   WitnessStatus?: WitnessStatus;
@@ -3023,30 +2965,29 @@ export const KeysAndAttributes = S.suspend(() =>
 ).annotations({
   identifier: "KeysAndAttributes",
 }) as any as S.Schema<KeysAndAttributes>;
-export type ContinuousBackupsStatus = "ENABLED" | "DISABLED";
-export const ContinuousBackupsStatus = S.Literal("ENABLED", "DISABLED");
-export type ExportStatus = "IN_PROGRESS" | "COMPLETED" | "FAILED";
-export const ExportStatus = S.Literal("IN_PROGRESS", "COMPLETED", "FAILED");
-export type GlobalTableStatus = "CREATING" | "ACTIVE" | "DELETING" | "UPDATING";
-export const GlobalTableStatus = S.Literal(
-  "CREATING",
-  "ACTIVE",
-  "DELETING",
-  "UPDATING",
-);
+export type ContinuousBackupsStatus = "ENABLED" | "DISABLED" | (string & {});
+export const ContinuousBackupsStatus = S.String;
+export type ExportStatus =
+  | "IN_PROGRESS"
+  | "COMPLETED"
+  | "FAILED"
+  | (string & {});
+export const ExportStatus = S.String;
+export type GlobalTableStatus =
+  | "CREATING"
+  | "ACTIVE"
+  | "DELETING"
+  | "UPDATING"
+  | (string & {});
+export const GlobalTableStatus = S.String;
 export type ImportStatus =
   | "IN_PROGRESS"
   | "COMPLETED"
   | "CANCELLING"
   | "CANCELLED"
-  | "FAILED";
-export const ImportStatus = S.Literal(
-  "IN_PROGRESS",
-  "COMPLETED",
-  "CANCELLING",
-  "CANCELLED",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const ImportStatus = S.String;
 export type MapAttributeValue = { [key: string]: AttributeValue | undefined };
 export const MapAttributeValue = S.Record({
   key: S.String,
@@ -3757,8 +3698,8 @@ export const DeleteRequest = S.suspend(() =>
 ).annotations({
   identifier: "DeleteRequest",
 }) as any as S.Schema<DeleteRequest>;
-export type PointInTimeRecoveryStatus = "ENABLED" | "DISABLED";
-export const PointInTimeRecoveryStatus = S.Literal("ENABLED", "DISABLED");
+export type PointInTimeRecoveryStatus = "ENABLED" | "DISABLED" | (string & {});
+export const PointInTimeRecoveryStatus = S.String;
 export interface BatchGetItemInput {
   RequestItems: { [key: string]: KeysAndAttributes | undefined };
   ReturnConsumedCapacity?: ReturnConsumedCapacity;
@@ -4518,20 +4459,9 @@ export type BatchStatementErrorCodeEnum =
   | "InternalServerError"
   | "ResourceNotFound"
   | "AccessDenied"
-  | "DuplicateItem";
-export const BatchStatementErrorCodeEnum = S.Literal(
-  "ConditionalCheckFailed",
-  "ItemCollectionSizeLimitExceeded",
-  "RequestLimitExceeded",
-  "ValidationError",
-  "ProvisionedThroughputExceeded",
-  "TransactionConflict",
-  "ThrottlingError",
-  "InternalServerError",
-  "ResourceNotFound",
-  "AccessDenied",
-  "DuplicateItem",
-);
+  | "DuplicateItem"
+  | (string & {});
+export const BatchStatementErrorCodeEnum = S.String;
 export interface ReplicaGlobalSecondaryIndexAutoScalingDescription {
   IndexName?: string;
   IndexStatus?: IndexStatus;

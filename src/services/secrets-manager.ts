@@ -156,19 +156,15 @@ export type ErrorCode = string;
 //# Schemas
 export type SecretIdListType = string[];
 export const SecretIdListType = S.Array(S.String);
-export type SortOrderType = "asc" | "desc";
-export const SortOrderType = S.Literal("asc", "desc");
+export type SortOrderType = "asc" | "desc" | (string & {});
+export const SortOrderType = S.String;
 export type SortByType =
   | "created-date"
   | "last-accessed-date"
   | "last-changed-date"
-  | "name";
-export const SortByType = S.Literal(
-  "created-date",
-  "last-accessed-date",
-  "last-changed-date",
-  "name",
-);
+  | "name"
+  | (string & {});
+export const SortByType = S.String;
 export type SecretVersionStagesType = string[];
 export const SecretVersionStagesType = S.Array(S.String);
 export type RemoveReplicaRegionListType = string[];
@@ -280,16 +276,9 @@ export type FilterNameStringType =
   | "tag-value"
   | "primary-region"
   | "owning-service"
-  | "all";
-export const FilterNameStringType = S.Literal(
-  "description",
-  "name",
-  "tag-key",
-  "tag-value",
-  "primary-region",
-  "owning-service",
-  "all",
-);
+  | "all"
+  | (string & {});
+export const FilterNameStringType = S.String;
 export type FilterValuesStringList = string[];
 export const FilterValuesStringList = S.Array(S.String);
 export interface Filter {
@@ -717,8 +706,8 @@ export const PutSecretValueResponse = S.suspend(() =>
 ).annotations({
   identifier: "PutSecretValueResponse",
 }) as any as S.Schema<PutSecretValueResponse>;
-export type StatusType = "InSync" | "Failed" | "InProgress";
-export const StatusType = S.Literal("InSync", "Failed", "InProgress");
+export type StatusType = "InSync" | "Failed" | "InProgress" | (string & {});
+export const StatusType = S.String;
 export interface ReplicationStatusType {
   Region?: string;
   KmsKeyId?: string;

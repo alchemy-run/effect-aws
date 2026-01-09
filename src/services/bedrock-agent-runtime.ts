@@ -179,21 +179,21 @@ export type PartBody = Uint8Array | redacted.Redacted<Uint8Array>;
 export type FileBody = Uint8Array | redacted.Redacted<Uint8Array>;
 
 //# Schemas
-export type FlowExecutionEventType = "Node" | "Flow";
-export const FlowExecutionEventType = S.Literal("Node", "Flow");
+export type FlowExecutionEventType = "Node" | "Flow" | (string & {});
+export const FlowExecutionEventType = S.String;
 export type AgentCollaboration =
   | "SUPERVISOR"
   | "SUPERVISOR_ROUTER"
-  | "DISABLED";
-export const AgentCollaboration = S.Literal(
-  "SUPERVISOR",
-  "SUPERVISOR_ROUTER",
-  "DISABLED",
-);
-export type OrchestrationType = "DEFAULT" | "CUSTOM_ORCHESTRATION";
-export const OrchestrationType = S.Literal("DEFAULT", "CUSTOM_ORCHESTRATION");
-export type MemoryType = "SESSION_SUMMARY";
-export const MemoryType = S.Literal("SESSION_SUMMARY");
+  | "DISABLED"
+  | (string & {});
+export const AgentCollaboration = S.String;
+export type OrchestrationType =
+  | "DEFAULT"
+  | "CUSTOM_ORCHESTRATION"
+  | (string & {});
+export const OrchestrationType = S.String;
+export type MemoryType = "SESSION_SUMMARY" | (string & {});
+export const MemoryType = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export interface GetExecutionFlowSnapshotRequest {
@@ -351,8 +351,8 @@ export const FlowInput = S.suspend(() =>
 ).annotations({ identifier: "FlowInput" }) as any as S.Schema<FlowInput>;
 export type FlowInputs = FlowInput[];
 export const FlowInputs = S.Array(FlowInput);
-export type PerformanceConfigLatency = "standard" | "optimized";
-export const PerformanceConfigLatency = S.Literal("standard", "optimized");
+export type PerformanceConfigLatency = "standard" | "optimized" | (string & {});
+export const PerformanceConfigLatency = S.String;
 export interface PerformanceConfiguration {
   latency?: PerformanceConfigLatency;
 }
@@ -475,13 +475,13 @@ export const RetrieveAndGenerateInput = S.suspend(() =>
 ).annotations({
   identifier: "RetrieveAndGenerateInput",
 }) as any as S.Schema<RetrieveAndGenerateInput>;
-export type RetrieveAndGenerateType = "KNOWLEDGE_BASE" | "EXTERNAL_SOURCES";
-export const RetrieveAndGenerateType = S.Literal(
-  "KNOWLEDGE_BASE",
-  "EXTERNAL_SOURCES",
-);
-export type SearchType = "HYBRID" | "SEMANTIC";
-export const SearchType = S.Literal("HYBRID", "SEMANTIC");
+export type RetrieveAndGenerateType =
+  | "KNOWLEDGE_BASE"
+  | "EXTERNAL_SOURCES"
+  | (string & {});
+export const RetrieveAndGenerateType = S.String;
+export type SearchType = "HYBRID" | "SEMANTIC" | (string & {});
+export const SearchType = S.String;
 export interface FilterAttribute {
   key: string;
   value: any;
@@ -710,10 +710,10 @@ export const RetrievalFilter = S.Union(
     }),
   }),
 ) as any as S.Schema<RetrievalFilter>;
-export type VectorSearchRerankingConfigurationType = "BEDROCK_RERANKING_MODEL";
-export const VectorSearchRerankingConfigurationType = S.Literal(
-  "BEDROCK_RERANKING_MODEL",
-);
+export type VectorSearchRerankingConfigurationType =
+  | "BEDROCK_RERANKING_MODEL"
+  | (string & {});
+export const VectorSearchRerankingConfigurationType = S.String;
 export type AdditionalModelRequestFields = { [key: string]: any | undefined };
 export const AdditionalModelRequestFields = S.Record({
   key: S.String,
@@ -731,8 +731,11 @@ export const VectorSearchBedrockRerankingModelConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "VectorSearchBedrockRerankingModelConfiguration",
 }) as any as S.Schema<VectorSearchBedrockRerankingModelConfiguration>;
-export type RerankingMetadataSelectionMode = "SELECTIVE" | "ALL";
-export const RerankingMetadataSelectionMode = S.Literal("SELECTIVE", "ALL");
+export type RerankingMetadataSelectionMode =
+  | "SELECTIVE"
+  | "ALL"
+  | (string & {});
+export const RerankingMetadataSelectionMode = S.String;
 export interface FieldForReranking {
   fieldName: string;
 }
@@ -792,13 +795,13 @@ export const VectorSearchRerankingConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "VectorSearchRerankingConfiguration",
 }) as any as S.Schema<VectorSearchRerankingConfiguration>;
-export type AttributeType = "STRING" | "NUMBER" | "BOOLEAN" | "STRING_LIST";
-export const AttributeType = S.Literal(
-  "STRING",
-  "NUMBER",
-  "BOOLEAN",
-  "STRING_LIST",
-);
+export type AttributeType =
+  | "STRING"
+  | "NUMBER"
+  | "BOOLEAN"
+  | "STRING_LIST"
+  | (string & {});
+export const AttributeType = S.String;
 export interface MetadataAttributeSchema {
   key: string;
   type: AttributeType;
@@ -912,8 +915,8 @@ export const GenerationConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "GenerationConfiguration",
 }) as any as S.Schema<GenerationConfiguration>;
-export type QueryTransformationType = "QUERY_DECOMPOSITION";
-export const QueryTransformationType = S.Literal("QUERY_DECOMPOSITION");
+export type QueryTransformationType = "QUERY_DECOMPOSITION" | (string & {});
+export const QueryTransformationType = S.String;
 export interface QueryTransformationConfiguration {
   type: QueryTransformationType;
 }
@@ -960,8 +963,8 @@ export const KnowledgeBaseRetrieveAndGenerateConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "KnowledgeBaseRetrieveAndGenerateConfiguration",
 }) as any as S.Schema<KnowledgeBaseRetrieveAndGenerateConfiguration>;
-export type ExternalSourceType = "S3" | "BYTE_CONTENT";
-export const ExternalSourceType = S.Literal("S3", "BYTE_CONTENT");
+export type ExternalSourceType = "S3" | "BYTE_CONTENT" | (string & {});
+export const ExternalSourceType = S.String;
 export interface S3ObjectDoc {
   uri: string;
 }
@@ -1369,49 +1372,41 @@ export interface UntagResourceResponse {}
 export const UntagResourceResponse = S.suspend(() => S.Struct({})).annotations({
   identifier: "UntagResourceResponse",
 }) as any as S.Schema<UntagResourceResponse>;
-export type InputQueryType = "TEXT";
-export const InputQueryType = S.Literal("TEXT");
-export type QueryTransformationMode = "TEXT_TO_SQL";
-export const QueryTransformationMode = S.Literal("TEXT_TO_SQL");
+export type InputQueryType = "TEXT" | (string & {});
+export const InputQueryType = S.String;
+export type QueryTransformationMode = "TEXT_TO_SQL" | (string & {});
+export const QueryTransformationMode = S.String;
 export type ActionGroupSignature =
   | "AMAZON.UserInput"
   | "AMAZON.CodeInterpreter"
   | "ANTHROPIC.Computer"
   | "ANTHROPIC.Bash"
-  | "ANTHROPIC.TextEditor";
-export const ActionGroupSignature = S.Literal(
-  "AMAZON.UserInput",
-  "AMAZON.CodeInterpreter",
-  "ANTHROPIC.Computer",
-  "ANTHROPIC.Bash",
-  "ANTHROPIC.TextEditor",
-);
-export type RelayConversationHistory = "TO_COLLABORATOR" | "DISABLED";
-export const RelayConversationHistory = S.Literal(
-  "TO_COLLABORATOR",
-  "DISABLED",
-);
-export type RerankQueryContentType = "TEXT";
-export const RerankQueryContentType = S.Literal("TEXT");
-export type RerankSourceType = "INLINE";
-export const RerankSourceType = S.Literal("INLINE");
-export type RerankingConfigurationType = "BEDROCK_RERANKING_MODEL";
-export const RerankingConfigurationType = S.Literal("BEDROCK_RERANKING_MODEL");
-export type KnowledgeBaseQueryType = "TEXT" | "IMAGE";
-export const KnowledgeBaseQueryType = S.Literal("TEXT", "IMAGE");
+  | "ANTHROPIC.TextEditor"
+  | (string & {});
+export const ActionGroupSignature = S.String;
+export type RelayConversationHistory =
+  | "TO_COLLABORATOR"
+  | "DISABLED"
+  | (string & {});
+export const RelayConversationHistory = S.String;
+export type RerankQueryContentType = "TEXT" | (string & {});
+export const RerankQueryContentType = S.String;
+export type RerankSourceType = "INLINE" | (string & {});
+export const RerankSourceType = S.String;
+export type RerankingConfigurationType =
+  | "BEDROCK_RERANKING_MODEL"
+  | (string & {});
+export const RerankingConfigurationType = S.String;
+export type KnowledgeBaseQueryType = "TEXT" | "IMAGE" | (string & {});
+export const KnowledgeBaseQueryType = S.String;
 export type FlowExecutionStatus =
   | "Running"
   | "Succeeded"
   | "Failed"
   | "TimedOut"
-  | "Aborted";
-export const FlowExecutionStatus = S.Literal(
-  "Running",
-  "Succeeded",
-  "Failed",
-  "TimedOut",
-  "Aborted",
-);
+  | "Aborted"
+  | (string & {});
+export const FlowExecutionStatus = S.String;
 export interface QueryGenerationInput {
   type: InputQueryType;
   text: string;
@@ -1506,12 +1501,12 @@ export const PromptSessionAttributesMap = S.Record({
   key: S.String,
   value: S.UndefinedOr(S.String),
 });
-export type ConfirmationState = "CONFIRM" | "DENY";
-export const ConfirmationState = S.Literal("CONFIRM", "DENY");
-export type ResponseState = "FAILURE" | "REPROMPT";
-export const ResponseState = S.Literal("FAILURE", "REPROMPT");
-export type ImageInputFormat = "png" | "jpeg" | "gif" | "webp";
-export const ImageInputFormat = S.Literal("png", "jpeg", "gif", "webp");
+export type ConfirmationState = "CONFIRM" | "DENY" | (string & {});
+export const ConfirmationState = S.String;
+export type ResponseState = "FAILURE" | "REPROMPT" | (string & {});
+export const ResponseState = S.String;
+export type ImageInputFormat = "png" | "jpeg" | "gif" | "webp" | (string & {});
+export const ImageInputFormat = S.String;
 export type ImageInputSource = { bytes: Uint8Array };
 export const ImageInputSource = S.Union(S.Struct({ bytes: T.Blob }));
 export interface ImageInput {
@@ -1586,8 +1581,8 @@ export const InvocationResultMember = S.Union(
 );
 export type ReturnControlInvocationResults = InvocationResultMember[];
 export const ReturnControlInvocationResults = S.Array(InvocationResultMember);
-export type FileSourceType = "S3" | "BYTE_CONTENT";
-export const FileSourceType = S.Literal("S3", "BYTE_CONTENT");
+export type FileSourceType = "S3" | "BYTE_CONTENT" | (string & {});
+export const FileSourceType = S.String;
 export interface S3ObjectFile {
   uri: string;
 }
@@ -1615,8 +1610,8 @@ export const FileSource = S.suspend(() =>
     byteContent: S.optional(ByteContentFile),
   }),
 ).annotations({ identifier: "FileSource" }) as any as S.Schema<FileSource>;
-export type FileUseCase = "CODE_INTERPRETER" | "CHAT";
-export const FileUseCase = S.Literal("CODE_INTERPRETER", "CHAT");
+export type FileUseCase = "CODE_INTERPRETER" | "CHAT" | (string & {});
+export const FileUseCase = S.String;
 export interface InputFile {
   name: string;
   source: FileSource;
@@ -1627,8 +1622,8 @@ export const InputFile = S.suspend(() =>
 ).annotations({ identifier: "InputFile" }) as any as S.Schema<InputFile>;
 export type InputFiles = InputFile[];
 export const InputFiles = S.Array(InputFile);
-export type ConversationRole = "user" | "assistant";
-export const ConversationRole = S.Literal("user", "assistant");
+export type ConversationRole = "user" | "assistant" | (string & {});
+export const ConversationRole = S.String;
 export type ContentBlock = { text: string };
 export const ContentBlock = S.Union(S.Struct({ text: S.String }));
 export type ContentBlocks = ContentBlock[];
@@ -1670,8 +1665,8 @@ export const InlineSessionState = S.suspend(() =>
 ).annotations({
   identifier: "InlineSessionState",
 }) as any as S.Schema<InlineSessionState>;
-export type CustomControlMethod = "RETURN_CONTROL";
-export const CustomControlMethod = S.Literal("RETURN_CONTROL");
+export type CustomControlMethod = "RETURN_CONTROL" | (string & {});
+export const CustomControlMethod = S.String;
 export type ActionGroupExecutor =
   | { lambda: string; customControl?: never }
   | { lambda?: never; customControl: CustomControlMethod };
@@ -1701,14 +1696,9 @@ export type ParameterType =
   | "number"
   | "integer"
   | "boolean"
-  | "array";
-export const ParameterType = S.Literal(
-  "string",
-  "number",
-  "integer",
-  "boolean",
-  "array",
-);
+  | "array"
+  | (string & {});
+export const ParameterType = S.String;
 export interface ParameterDetail {
   description?: string;
   type: ParameterType;
@@ -1728,8 +1718,8 @@ export const ParameterMap = S.Record({
   key: S.String,
   value: S.UndefinedOr(ParameterDetail),
 });
-export type RequireConfirmation = "ENABLED" | "DISABLED";
-export const RequireConfirmation = S.Literal("ENABLED", "DISABLED");
+export type RequireConfirmation = "ENABLED" | "DISABLED" | (string & {});
+export const RequireConfirmation = S.String;
 export interface FunctionDefinition {
   name: string | redacted.Redacted<string>;
   description?: string;
@@ -1784,18 +1774,13 @@ export type PromptType =
   | "ORCHESTRATION"
   | "KNOWLEDGE_BASE_RESPONSE_GENERATION"
   | "POST_PROCESSING"
-  | "ROUTING_CLASSIFIER";
-export const PromptType = S.Literal(
-  "PRE_PROCESSING",
-  "ORCHESTRATION",
-  "KNOWLEDGE_BASE_RESPONSE_GENERATION",
-  "POST_PROCESSING",
-  "ROUTING_CLASSIFIER",
-);
-export type CreationMode = "DEFAULT" | "OVERRIDDEN";
-export const CreationMode = S.Literal("DEFAULT", "OVERRIDDEN");
-export type PromptState = "ENABLED" | "DISABLED";
-export const PromptState = S.Literal("ENABLED", "DISABLED");
+  | "ROUTING_CLASSIFIER"
+  | (string & {});
+export const PromptType = S.String;
+export type CreationMode = "DEFAULT" | "OVERRIDDEN" | (string & {});
+export const CreationMode = S.String;
+export type PromptState = "ENABLED" | "DISABLED" | (string & {});
+export const PromptState = S.String;
 export type StopSequences = string[];
 export const StopSequences = S.Array(S.String);
 export interface InferenceConfiguration {
@@ -1892,14 +1877,14 @@ export const InlineBedrockModelConfigurations = S.suspend(() =>
 ).annotations({
   identifier: "InlineBedrockModelConfigurations",
 }) as any as S.Schema<InlineBedrockModelConfigurations>;
-export type SessionStatus = "ACTIVE" | "EXPIRED" | "ENDED";
-export const SessionStatus = S.Literal("ACTIVE", "EXPIRED", "ENDED");
-export type TextToSqlConfigurationType = "KNOWLEDGE_BASE";
-export const TextToSqlConfigurationType = S.Literal("KNOWLEDGE_BASE");
-export type RerankDocumentType = "TEXT" | "JSON";
-export const RerankDocumentType = S.Literal("TEXT", "JSON");
-export type InputImageFormat = "png" | "jpeg" | "gif" | "webp";
-export const InputImageFormat = S.Literal("png", "jpeg", "gif", "webp");
+export type SessionStatus = "ACTIVE" | "EXPIRED" | "ENDED" | (string & {});
+export const SessionStatus = S.String;
+export type TextToSqlConfigurationType = "KNOWLEDGE_BASE" | (string & {});
+export const TextToSqlConfigurationType = S.String;
+export type RerankDocumentType = "TEXT" | "JSON" | (string & {});
+export const RerankDocumentType = S.String;
+export type InputImageFormat = "png" | "jpeg" | "gif" | "webp" | (string & {});
+export const InputImageFormat = S.String;
 export interface GetExecutionFlowSnapshotResponse {
   flowIdentifier: string;
   flowAliasIdentifier: string;
@@ -2028,8 +2013,8 @@ export const ListTagsForResourceResponse = S.suspend(() =>
 ).annotations({
   identifier: "ListTagsForResourceResponse",
 }) as any as S.Schema<ListTagsForResourceResponse>;
-export type FlowExecutionErrorType = "ExecutionTimedOut";
-export const FlowExecutionErrorType = S.Literal("ExecutionTimedOut");
+export type FlowExecutionErrorType = "ExecutionTimedOut" | (string & {});
+export const FlowExecutionErrorType = S.String;
 export interface KnowledgeBaseConfiguration {
   knowledgeBaseId: string;
   retrievalConfiguration: KnowledgeBaseRetrievalConfiguration;
@@ -2087,8 +2072,8 @@ export const RetrievalFilterList = S.Array(
     identifier: "RetrievalFilter",
   }),
 ) as any as S.Schema<RetrievalFilterList>;
-export type ImageFormat = "png" | "jpeg" | "gif" | "webp";
-export const ImageFormat = S.Literal("png", "jpeg", "gif", "webp");
+export type ImageFormat = "png" | "jpeg" | "gif" | "webp" | (string & {});
+export const ImageFormat = S.String;
 export interface FlowExecutionError {
   nodeName?: string;
   error?: FlowExecutionErrorType;
@@ -2282,22 +2267,15 @@ export type NodeErrorCode =
   | "VALIDATION"
   | "DEPENDENCY_FAILED"
   | "BAD_GATEWAY"
-  | "INTERNAL_SERVER";
-export const NodeErrorCode = S.Literal(
-  "VALIDATION",
-  "DEPENDENCY_FAILED",
-  "BAD_GATEWAY",
-  "INTERNAL_SERVER",
-);
+  | "INTERNAL_SERVER"
+  | (string & {});
+export const NodeErrorCode = S.String;
 export type FlowErrorCode =
   | "VALIDATION"
   | "INTERNAL_SERVER"
-  | "NODE_EXECUTION_FAILED";
-export const FlowErrorCode = S.Literal(
-  "VALIDATION",
-  "INTERNAL_SERVER",
-  "NODE_EXECUTION_FAILED",
-);
+  | "NODE_EXECUTION_FAILED"
+  | (string & {});
+export const FlowErrorCode = S.String;
 export type NodeType =
   | "FlowInputNode"
   | "FlowOutputNode"
@@ -2305,18 +2283,11 @@ export type NodeType =
   | "KnowledgeBaseNode"
   | "PromptNode"
   | "ConditionNode"
-  | "LexNode";
-export const NodeType = S.Literal(
-  "FlowInputNode",
-  "FlowOutputNode",
-  "LambdaFunctionNode",
-  "KnowledgeBaseNode",
-  "PromptNode",
-  "ConditionNode",
-  "LexNode",
-);
-export type FlowCompletionReason = "SUCCESS" | "INPUT_REQUIRED";
-export const FlowCompletionReason = S.Literal("SUCCESS", "INPUT_REQUIRED");
+  | "LexNode"
+  | (string & {});
+export const NodeType = S.String;
+export type FlowCompletionReason = "SUCCESS" | "INPUT_REQUIRED" | (string & {});
+export const FlowCompletionReason = S.String;
 export interface TextToSqlKnowledgeBaseConfiguration {
   knowledgeBaseArn: string;
 }
@@ -2325,8 +2296,8 @@ export const TextToSqlKnowledgeBaseConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "TextToSqlKnowledgeBaseConfiguration",
 }) as any as S.Schema<TextToSqlKnowledgeBaseConfiguration>;
-export type GuadrailAction = "INTERVENED" | "NONE";
-export const GuadrailAction = S.Literal("INTERVENED", "NONE");
+export type GuadrailAction = "INTERVENED" | "NONE" | (string & {});
+export const GuadrailAction = S.String;
 export interface GetFlowExecutionResponse {
   executionArn: string;
   status: FlowExecutionStatus;
@@ -2582,23 +2553,15 @@ export type FlowNodeIODataType =
   | "Number"
   | "Boolean"
   | "Object"
-  | "Array";
-export const FlowNodeIODataType = S.Literal(
-  "String",
-  "Number",
-  "Boolean",
-  "Object",
-  "Array",
-);
+  | "Array"
+  | (string & {});
+export const FlowNodeIODataType = S.String;
 export type FlowNodeInputCategory =
   | "LoopCondition"
   | "ReturnValueToLoopStart"
-  | "ExitLoop";
-export const FlowNodeInputCategory = S.Literal(
-  "LoopCondition",
-  "ReturnValueToLoopStart",
-  "ExitLoop",
-);
+  | "ExitLoop"
+  | (string & {});
+export const FlowNodeInputCategory = S.String;
 export interface TransformationConfiguration {
   mode: QueryTransformationMode;
   textToSqlConfiguration?: TextToSqlConfiguration;
@@ -2685,14 +2648,9 @@ export type RetrievalResultContentType =
   | "IMAGE"
   | "ROW"
   | "AUDIO"
-  | "VIDEO";
-export const RetrievalResultContentType = S.Literal(
-  "TEXT",
-  "IMAGE",
-  "ROW",
-  "AUDIO",
-  "VIDEO",
-);
+  | "VIDEO"
+  | (string & {});
+export const RetrievalResultContentType = S.String;
 export interface VideoSegment {
   s3Uri: string;
   summary?: string;
@@ -2713,15 +2671,9 @@ export type RetrievalResultContentColumnType =
   | "DOUBLE"
   | "NULL"
   | "LONG"
-  | "STRING";
-export const RetrievalResultContentColumnType = S.Literal(
-  "BLOB",
-  "BOOLEAN",
-  "DOUBLE",
-  "NULL",
-  "LONG",
-  "STRING",
-);
+  | "STRING"
+  | (string & {});
+export const RetrievalResultContentColumnType = S.String;
 export interface RetrievalResultContentColumn {
   columnName?: string;
   columnValue?: string;
@@ -2766,17 +2718,9 @@ export type RetrievalResultLocationType =
   | "SHAREPOINT"
   | "CUSTOM"
   | "KENDRA"
-  | "SQL";
-export const RetrievalResultLocationType = S.Literal(
-  "S3",
-  "WEB",
-  "CONFLUENCE",
-  "SALESFORCE",
-  "SHAREPOINT",
-  "CUSTOM",
-  "KENDRA",
-  "SQL",
-);
+  | "SQL"
+  | (string & {});
+export const RetrievalResultLocationType = S.String;
 export interface RetrievalResultS3Location {
   uri?: string;
 }
@@ -2898,8 +2842,8 @@ export const Citation = S.suspend(() =>
     retrievedReferences: S.optional(RetrievedReferences),
   }),
 ).annotations({ identifier: "Citation" }) as any as S.Schema<Citation>;
-export type FlowControlNodeType = "Iterator" | "Loop";
-export const FlowControlNodeType = S.Literal("Iterator", "Loop");
+export type FlowControlNodeType = "Iterator" | "Loop" | (string & {});
+export const FlowControlNodeType = S.String;
 export interface StartFlowExecutionResponse {
   executionArn?: string;
 }
@@ -3151,12 +3095,12 @@ export const FlowTraceCondition = S.suspend(() =>
 }) as any as S.Schema<FlowTraceCondition>;
 export type FlowTraceConditions = FlowTraceCondition[];
 export const FlowTraceConditions = S.Array(FlowTraceCondition);
-export type GuardrailAction = "INTERVENED" | "NONE";
-export const GuardrailAction = S.Literal("INTERVENED", "NONE");
-export type GuardrailTopicType = "DENY";
-export const GuardrailTopicType = S.Literal("DENY");
-export type GuardrailTopicPolicyAction = "BLOCKED";
-export const GuardrailTopicPolicyAction = S.Literal("BLOCKED");
+export type GuardrailAction = "INTERVENED" | "NONE" | (string & {});
+export const GuardrailAction = S.String;
+export type GuardrailTopicType = "DENY" | (string & {});
+export const GuardrailTopicType = S.String;
+export type GuardrailTopicPolicyAction = "BLOCKED" | (string & {});
+export const GuardrailTopicPolicyAction = S.String;
 export interface GuardrailTopic {
   name?: string;
   type?: GuardrailTopicType;
@@ -3187,28 +3131,18 @@ export type GuardrailContentFilterType =
   | "SEXUAL"
   | "VIOLENCE"
   | "MISCONDUCT"
-  | "PROMPT_ATTACK";
-export const GuardrailContentFilterType = S.Literal(
-  "INSULTS",
-  "HATE",
-  "SEXUAL",
-  "VIOLENCE",
-  "MISCONDUCT",
-  "PROMPT_ATTACK",
-);
+  | "PROMPT_ATTACK"
+  | (string & {});
+export const GuardrailContentFilterType = S.String;
 export type GuardrailContentFilterConfidence =
   | "NONE"
   | "LOW"
   | "MEDIUM"
-  | "HIGH";
-export const GuardrailContentFilterConfidence = S.Literal(
-  "NONE",
-  "LOW",
-  "MEDIUM",
-  "HIGH",
-);
-export type GuardrailContentPolicyAction = "BLOCKED";
-export const GuardrailContentPolicyAction = S.Literal("BLOCKED");
+  | "HIGH"
+  | (string & {});
+export const GuardrailContentFilterConfidence = S.String;
+export type GuardrailContentPolicyAction = "BLOCKED" | (string & {});
+export const GuardrailContentPolicyAction = S.String;
 export interface GuardrailContentFilter {
   type?: GuardrailContentFilterType;
   confidence?: GuardrailContentFilterConfidence;
@@ -3233,8 +3167,8 @@ export const GuardrailContentPolicyAssessment = S.suspend(() =>
 ).annotations({
   identifier: "GuardrailContentPolicyAssessment",
 }) as any as S.Schema<GuardrailContentPolicyAssessment>;
-export type GuardrailWordPolicyAction = "BLOCKED";
-export const GuardrailWordPolicyAction = S.Literal("BLOCKED");
+export type GuardrailWordPolicyAction = "BLOCKED" | (string & {});
+export const GuardrailWordPolicyAction = S.String;
 export interface GuardrailCustomWord {
   match?: string;
   action?: GuardrailWordPolicyAction;
@@ -3249,8 +3183,8 @@ export const GuardrailCustomWord = S.suspend(() =>
 }) as any as S.Schema<GuardrailCustomWord>;
 export type GuardrailCustomWordList = GuardrailCustomWord[];
 export const GuardrailCustomWordList = S.Array(GuardrailCustomWord);
-export type GuardrailManagedWordType = "PROFANITY";
-export const GuardrailManagedWordType = S.Literal("PROFANITY");
+export type GuardrailManagedWordType = "PROFANITY" | (string & {});
+export const GuardrailManagedWordType = S.String;
 export interface GuardrailManagedWord {
   match?: string;
   type?: GuardrailManagedWordType;
@@ -3310,47 +3244,14 @@ export type GuardrailPiiEntityType =
   | "US_INDIVIDUAL_TAX_IDENTIFICATION_NUMBER"
   | "US_PASSPORT_NUMBER"
   | "US_SOCIAL_SECURITY_NUMBER"
-  | "VEHICLE_IDENTIFICATION_NUMBER";
-export const GuardrailPiiEntityType = S.Literal(
-  "ADDRESS",
-  "AGE",
-  "AWS_ACCESS_KEY",
-  "AWS_SECRET_KEY",
-  "CA_HEALTH_NUMBER",
-  "CA_SOCIAL_INSURANCE_NUMBER",
-  "CREDIT_DEBIT_CARD_CVV",
-  "CREDIT_DEBIT_CARD_EXPIRY",
-  "CREDIT_DEBIT_CARD_NUMBER",
-  "DRIVER_ID",
-  "EMAIL",
-  "INTERNATIONAL_BANK_ACCOUNT_NUMBER",
-  "IP_ADDRESS",
-  "LICENSE_PLATE",
-  "MAC_ADDRESS",
-  "NAME",
-  "PASSWORD",
-  "PHONE",
-  "PIN",
-  "SWIFT_CODE",
-  "UK_NATIONAL_HEALTH_SERVICE_NUMBER",
-  "UK_NATIONAL_INSURANCE_NUMBER",
-  "UK_UNIQUE_TAXPAYER_REFERENCE_NUMBER",
-  "URL",
-  "USERNAME",
-  "US_BANK_ACCOUNT_NUMBER",
-  "US_BANK_ROUTING_NUMBER",
-  "US_INDIVIDUAL_TAX_IDENTIFICATION_NUMBER",
-  "US_PASSPORT_NUMBER",
-  "US_SOCIAL_SECURITY_NUMBER",
-  "VEHICLE_IDENTIFICATION_NUMBER",
-);
+  | "VEHICLE_IDENTIFICATION_NUMBER"
+  | (string & {});
+export const GuardrailPiiEntityType = S.String;
 export type GuardrailSensitiveInformationPolicyAction =
   | "BLOCKED"
-  | "ANONYMIZED";
-export const GuardrailSensitiveInformationPolicyAction = S.Literal(
-  "BLOCKED",
-  "ANONYMIZED",
-);
+  | "ANONYMIZED"
+  | (string & {});
+export const GuardrailSensitiveInformationPolicyAction = S.String;
 export interface GuardrailPiiEntityFilter {
   type?: GuardrailPiiEntityType;
   match?: string;
@@ -3567,14 +3468,9 @@ export type InvocationType =
   | "KNOWLEDGE_BASE"
   | "FINISH"
   | "ACTION_GROUP_CODE_INTERPRETER"
-  | "AGENT_COLLABORATOR";
-export const InvocationType = S.Literal(
-  "ACTION_GROUP",
-  "KNOWLEDGE_BASE",
-  "FINISH",
-  "ACTION_GROUP_CODE_INTERPRETER",
-  "AGENT_COLLABORATOR",
-);
+  | "AGENT_COLLABORATOR"
+  | (string & {});
+export const InvocationType = S.String;
 export interface Parameter {
   name?: string;
   type?: string;
@@ -3600,8 +3496,8 @@ export interface RequestBody {
 export const RequestBody = S.suspend(() =>
   S.Struct({ content: S.optional(ContentMap) }),
 ).annotations({ identifier: "RequestBody" }) as any as S.Schema<RequestBody>;
-export type ExecutionType = "LAMBDA" | "RETURN_CONTROL";
-export const ExecutionType = S.Literal("LAMBDA", "RETURN_CONTROL");
+export type ExecutionType = "LAMBDA" | "RETURN_CONTROL" | (string & {});
+export const ExecutionType = S.String;
 export interface ActionGroupInvocationInput {
   actionGroupName?: string | redacted.Redacted<string>;
   verb?: string | redacted.Redacted<string>;
@@ -3649,8 +3545,8 @@ export const CodeInterpreterInvocationInput = S.suspend(() =>
 ).annotations({
   identifier: "CodeInterpreterInvocationInput",
 }) as any as S.Schema<CodeInterpreterInvocationInput>;
-export type PayloadType = "TEXT" | "RETURN_CONTROL";
-export const PayloadType = S.Literal("TEXT", "RETURN_CONTROL");
+export type PayloadType = "TEXT" | "RETURN_CONTROL" | (string & {});
+export const PayloadType = S.String;
 export interface ReturnControlResults {
   invocationId?: string;
   returnControlInvocationResults?: InvocationResultMember[];
@@ -3719,15 +3615,9 @@ export type Type =
   | "KNOWLEDGE_BASE"
   | "FINISH"
   | "ASK_USER"
-  | "REPROMPT";
-export const Type = S.Literal(
-  "ACTION_GROUP",
-  "AGENT_COLLABORATOR",
-  "KNOWLEDGE_BASE",
-  "FINISH",
-  "ASK_USER",
-  "REPROMPT",
-);
+  | "REPROMPT"
+  | (string & {});
+export const Type = S.String;
 export interface ActionGroupInvocationOutput {
   text?: string | redacted.Redacted<string>;
   metadata?: Metadata;
@@ -3780,12 +3670,9 @@ export const ApiRequestBody = S.suspend(() =>
 export type ActionInvocationType =
   | "RESULT"
   | "USER_CONFIRMATION"
-  | "USER_CONFIRMATION_AND_RESULT";
-export const ActionInvocationType = S.Literal(
-  "RESULT",
-  "USER_CONFIRMATION",
-  "USER_CONFIRMATION_AND_RESULT",
-);
+  | "USER_CONFIRMATION_AND_RESULT"
+  | (string & {});
+export const ActionInvocationType = S.String;
 export interface ApiInvocationInput {
   actionGroup: string;
   httpMethod?: string;
@@ -3924,8 +3811,12 @@ export const FinalResponse = S.suspend(() =>
 ).annotations({
   identifier: "FinalResponse",
 }) as any as S.Schema<FinalResponse>;
-export type Source = "ACTION_GROUP" | "KNOWLEDGE_BASE" | "PARSER";
-export const Source = S.Literal("ACTION_GROUP", "KNOWLEDGE_BASE", "PARSER");
+export type Source =
+  | "ACTION_GROUP"
+  | "KNOWLEDGE_BASE"
+  | "PARSER"
+  | (string & {});
+export const Source = S.String;
 export interface RepromptResponse {
   text?: string;
   source?: Source;
@@ -4322,8 +4213,8 @@ export const NodeOutputEvent = S.suspend(() =>
 ).annotations({
   identifier: "NodeOutputEvent",
 }) as any as S.Schema<NodeOutputEvent>;
-export type GeneratedQueryType = "REDSHIFT_SQL";
-export const GeneratedQueryType = S.Literal("REDSHIFT_SQL");
+export type GeneratedQueryType = "REDSHIFT_SQL" | (string & {});
+export const GeneratedQueryType = S.String;
 export interface AnalyzePromptEvent {
   message?: string;
 }

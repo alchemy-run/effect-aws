@@ -344,11 +344,11 @@ export const GetEmailContactResponse = S.suspend(() =>
 ).annotations({
   identifier: "GetEmailContactResponse",
 }) as any as S.Schema<GetEmailContactResponse>;
-export type ValidationExceptionReason = "fieldValidationFailed" | "other";
-export const ValidationExceptionReason = S.Literal(
-  "fieldValidationFailed",
-  "other",
-);
+export type ValidationExceptionReason =
+  | "fieldValidationFailed"
+  | "other"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 export interface ValidationExceptionField {
   name: string;
   message: string;

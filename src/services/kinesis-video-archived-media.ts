@@ -107,31 +107,39 @@ export type DASHStreamingSessionURL = string;
 export type HLSStreamingSessionURL = string;
 
 //# Schemas
-export type DASHPlaybackMode = "LIVE" | "LIVE_REPLAY" | "ON_DEMAND";
-export const DASHPlaybackMode = S.Literal("LIVE", "LIVE_REPLAY", "ON_DEMAND");
-export type DASHDisplayFragmentTimestamp = "ALWAYS" | "NEVER";
-export const DASHDisplayFragmentTimestamp = S.Literal("ALWAYS", "NEVER");
-export type DASHDisplayFragmentNumber = "ALWAYS" | "NEVER";
-export const DASHDisplayFragmentNumber = S.Literal("ALWAYS", "NEVER");
-export type HLSPlaybackMode = "LIVE" | "LIVE_REPLAY" | "ON_DEMAND";
-export const HLSPlaybackMode = S.Literal("LIVE", "LIVE_REPLAY", "ON_DEMAND");
-export type ContainerFormat = "FRAGMENTED_MP4" | "MPEG_TS";
-export const ContainerFormat = S.Literal("FRAGMENTED_MP4", "MPEG_TS");
-export type HLSDiscontinuityMode = "ALWAYS" | "NEVER" | "ON_DISCONTINUITY";
-export const HLSDiscontinuityMode = S.Literal(
-  "ALWAYS",
-  "NEVER",
-  "ON_DISCONTINUITY",
-);
-export type HLSDisplayFragmentTimestamp = "ALWAYS" | "NEVER";
-export const HLSDisplayFragmentTimestamp = S.Literal("ALWAYS", "NEVER");
-export type ImageSelectorType = "PRODUCER_TIMESTAMP" | "SERVER_TIMESTAMP";
-export const ImageSelectorType = S.Literal(
-  "PRODUCER_TIMESTAMP",
-  "SERVER_TIMESTAMP",
-);
-export type Format = "JPEG" | "PNG";
-export const Format = S.Literal("JPEG", "PNG");
+export type DASHPlaybackMode =
+  | "LIVE"
+  | "LIVE_REPLAY"
+  | "ON_DEMAND"
+  | (string & {});
+export const DASHPlaybackMode = S.String;
+export type DASHDisplayFragmentTimestamp = "ALWAYS" | "NEVER" | (string & {});
+export const DASHDisplayFragmentTimestamp = S.String;
+export type DASHDisplayFragmentNumber = "ALWAYS" | "NEVER" | (string & {});
+export const DASHDisplayFragmentNumber = S.String;
+export type HLSPlaybackMode =
+  | "LIVE"
+  | "LIVE_REPLAY"
+  | "ON_DEMAND"
+  | (string & {});
+export const HLSPlaybackMode = S.String;
+export type ContainerFormat = "FRAGMENTED_MP4" | "MPEG_TS" | (string & {});
+export const ContainerFormat = S.String;
+export type HLSDiscontinuityMode =
+  | "ALWAYS"
+  | "NEVER"
+  | "ON_DISCONTINUITY"
+  | (string & {});
+export const HLSDiscontinuityMode = S.String;
+export type HLSDisplayFragmentTimestamp = "ALWAYS" | "NEVER" | (string & {});
+export const HLSDisplayFragmentTimestamp = S.String;
+export type ImageSelectorType =
+  | "PRODUCER_TIMESTAMP"
+  | "SERVER_TIMESTAMP"
+  | (string & {});
+export const ImageSelectorType = S.String;
+export type Format = "JPEG" | "PNG" | (string & {});
+export const Format = S.String;
 export type FragmentNumberList = string[];
 export const FragmentNumberList = S.Array(S.String);
 export interface GetMediaForFragmentListInput {
@@ -159,30 +167,26 @@ export const GetMediaForFragmentListInput = S.suspend(() =>
 }) as any as S.Schema<GetMediaForFragmentListInput>;
 export type ClipFragmentSelectorType =
   | "PRODUCER_TIMESTAMP"
-  | "SERVER_TIMESTAMP";
-export const ClipFragmentSelectorType = S.Literal(
-  "PRODUCER_TIMESTAMP",
-  "SERVER_TIMESTAMP",
-);
+  | "SERVER_TIMESTAMP"
+  | (string & {});
+export const ClipFragmentSelectorType = S.String;
 export type DASHFragmentSelectorType =
   | "PRODUCER_TIMESTAMP"
-  | "SERVER_TIMESTAMP";
-export const DASHFragmentSelectorType = S.Literal(
-  "PRODUCER_TIMESTAMP",
-  "SERVER_TIMESTAMP",
-);
-export type HLSFragmentSelectorType = "PRODUCER_TIMESTAMP" | "SERVER_TIMESTAMP";
-export const HLSFragmentSelectorType = S.Literal(
-  "PRODUCER_TIMESTAMP",
-  "SERVER_TIMESTAMP",
-);
-export type FormatConfigKey = "JPEGQuality";
-export const FormatConfigKey = S.Literal("JPEGQuality");
-export type FragmentSelectorType = "PRODUCER_TIMESTAMP" | "SERVER_TIMESTAMP";
-export const FragmentSelectorType = S.Literal(
-  "PRODUCER_TIMESTAMP",
-  "SERVER_TIMESTAMP",
-);
+  | "SERVER_TIMESTAMP"
+  | (string & {});
+export const DASHFragmentSelectorType = S.String;
+export type HLSFragmentSelectorType =
+  | "PRODUCER_TIMESTAMP"
+  | "SERVER_TIMESTAMP"
+  | (string & {});
+export const HLSFragmentSelectorType = S.String;
+export type FormatConfigKey = "JPEGQuality" | (string & {});
+export const FormatConfigKey = S.String;
+export type FragmentSelectorType =
+  | "PRODUCER_TIMESTAMP"
+  | "SERVER_TIMESTAMP"
+  | (string & {});
+export const FragmentSelectorType = S.String;
 export type FormatConfig = { [key in FormatConfigKey]?: string };
 export const FormatConfig = S.partial(
   S.Record({ key: FormatConfigKey, value: S.UndefinedOr(S.String) }),
@@ -452,8 +456,8 @@ export const ListFragmentsInput = S.suspend(() =>
 ).annotations({
   identifier: "ListFragmentsInput",
 }) as any as S.Schema<ListFragmentsInput>;
-export type ImageError = "NO_MEDIA" | "MEDIA_ERROR";
-export const ImageError = S.Literal("NO_MEDIA", "MEDIA_ERROR");
+export type ImageError = "NO_MEDIA" | "MEDIA_ERROR" | (string & {});
+export const ImageError = S.String;
 export interface Image {
   TimeStamp?: Date;
   Error?: ImageError;

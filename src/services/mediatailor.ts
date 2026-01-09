@@ -93,28 +93,35 @@ export type __integerMin1Max100 = number;
 export type __timestampUnix = Date;
 
 //# Schemas
-export type LoggingStrategy = "VENDED_LOGS" | "LEGACY_CLOUDWATCH";
-export const LoggingStrategy = S.Literal("VENDED_LOGS", "LEGACY_CLOUDWATCH");
+export type LoggingStrategy =
+  | "VENDED_LOGS"
+  | "LEGACY_CLOUDWATCH"
+  | (string & {});
+export const LoggingStrategy = S.String;
 export type __listOfLoggingStrategies = LoggingStrategy[];
 export const __listOfLoggingStrategies = S.Array(LoggingStrategy);
 export type __listOf__string = string[];
 export const __listOf__string = S.Array(S.String);
-export type PlaybackMode = "LOOP" | "LINEAR";
-export const PlaybackMode = S.Literal("LOOP", "LINEAR");
-export type Tier = "BASIC" | "STANDARD";
-export const Tier = S.Literal("BASIC", "STANDARD");
+export type PlaybackMode = "LOOP" | "LINEAR" | (string & {});
+export const PlaybackMode = S.String;
+export type Tier = "BASIC" | "STANDARD" | (string & {});
+export const Tier = S.String;
 export type Audiences = string[];
 export const Audiences = S.Array(S.String);
-export type LogType = "AS_RUN";
-export const LogType = S.Literal("AS_RUN");
+export type LogType = "AS_RUN" | (string & {});
+export const LogType = S.String;
 export type LogTypes = LogType[];
 export const LogTypes = S.Array(LogType);
-export type InsertionMode = "STITCHED_ONLY" | "PLAYER_SELECT";
-export const InsertionMode = S.Literal("STITCHED_ONLY", "PLAYER_SELECT");
-export type PrefetchScheduleType = "SINGLE" | "RECURRING";
-export const PrefetchScheduleType = S.Literal("SINGLE", "RECURRING");
-export type ListPrefetchScheduleType = "SINGLE" | "RECURRING" | "ALL";
-export const ListPrefetchScheduleType = S.Literal("SINGLE", "RECURRING", "ALL");
+export type InsertionMode = "STITCHED_ONLY" | "PLAYER_SELECT" | (string & {});
+export const InsertionMode = S.String;
+export type PrefetchScheduleType = "SINGLE" | "RECURRING" | (string & {});
+export const PrefetchScheduleType = S.String;
+export type ListPrefetchScheduleType =
+  | "SINGLE"
+  | "RECURRING"
+  | "ALL"
+  | (string & {});
+export const ListPrefetchScheduleType = S.String;
 export interface ListAlertsRequest {
   MaxResults?: number;
   NextToken?: string;
@@ -223,8 +230,8 @@ export const DashPlaylistSettings = S.suspend(() =>
 ).annotations({
   identifier: "DashPlaylistSettings",
 }) as any as S.Schema<DashPlaylistSettings>;
-export type AdMarkupType = "DATERANGE" | "SCTE35_ENHANCED";
-export const AdMarkupType = S.Literal("DATERANGE", "SCTE35_ENHANCED");
+export type AdMarkupType = "DATERANGE" | "SCTE35_ENHANCED" | (string & {});
+export const AdMarkupType = S.String;
 export type AdMarkupTypes = AdMarkupType[];
 export const AdMarkupTypes = S.Array(AdMarkupType);
 export interface HlsPlaylistSettings {
@@ -564,8 +571,8 @@ export const DescribeLiveSourceRequest = S.suspend(() =>
 ).annotations({
   identifier: "DescribeLiveSourceRequest",
 }) as any as S.Schema<DescribeLiveSourceRequest>;
-export type Type = "DASH" | "HLS";
-export const Type = S.Literal("DASH", "HLS");
+export type Type = "DASH" | "HLS" | (string & {});
+export const Type = S.String;
 export interface HttpPackageConfiguration {
   Path: string;
   SourceGroup: string;
@@ -833,12 +840,9 @@ export const DescribeSourceLocationRequest = S.suspend(() =>
 export type AccessType =
   | "S3_SIGV4"
   | "SECRETS_MANAGER_ACCESS_TOKEN"
-  | "AUTODETECT_SIGV4";
-export const AccessType = S.Literal(
-  "S3_SIGV4",
-  "SECRETS_MANAGER_ACCESS_TOKEN",
-  "AUTODETECT_SIGV4",
-);
+  | "AUTODETECT_SIGV4"
+  | (string & {});
+export const AccessType = S.String;
 export interface SecretsManagerAccessTokenConfiguration {
   HeaderName?: string;
   SecretArn?: string;
@@ -1113,9 +1117,10 @@ export const ListVodSourcesRequest = S.suspend(() =>
 ).annotations({
   identifier: "ListVodSourcesRequest",
 }) as any as S.Schema<ListVodSourcesRequest>;
-export type AdsInteractionPublishOptInEventType = "RAW_ADS_RESPONSE";
-export const AdsInteractionPublishOptInEventType =
-  S.Literal("RAW_ADS_RESPONSE");
+export type AdsInteractionPublishOptInEventType =
+  | "RAW_ADS_RESPONSE"
+  | (string & {});
+export const AdsInteractionPublishOptInEventType = S.String;
 export type __adsInteractionPublishOptInEventTypesList =
   AdsInteractionPublishOptInEventType[];
 export const __adsInteractionPublishOptInEventTypesList = S.Array(
@@ -1162,50 +1167,9 @@ export type AdsInteractionExcludeEventType =
   | "VOD_TIME_BASED_AVAIL_PLAN_SUCCESS"
   | "VOD_TIME_BASED_AVAIL_PLAN_WARNING_NO_ADVERTISEMENTS"
   | "INTERSTITIAL_VOD_SUCCESS"
-  | "INTERSTITIAL_VOD_FAILURE";
-export const AdsInteractionExcludeEventType = S.Literal(
-  "AD_MARKER_FOUND",
-  "NON_AD_MARKER_FOUND",
-  "MAKING_ADS_REQUEST",
-  "MODIFIED_TARGET_URL",
-  "VAST_REDIRECT",
-  "EMPTY_VAST_RESPONSE",
-  "EMPTY_VMAP_RESPONSE",
-  "VAST_RESPONSE",
-  "REDIRECTED_VAST_RESPONSE",
-  "FILLED_AVAIL",
-  "FILLED_OVERLAY_AVAIL",
-  "BEACON_FIRED",
-  "WARNING_NO_ADVERTISEMENTS",
-  "WARNING_VPAID_AD_DROPPED",
-  "WARNING_URL_VARIABLE_SUBSTITUTION_FAILED",
-  "ERROR_UNKNOWN",
-  "ERROR_UNKNOWN_HOST",
-  "ERROR_DISALLOWED_HOST",
-  "ERROR_ADS_IO",
-  "ERROR_ADS_TIMEOUT",
-  "ERROR_ADS_RESPONSE_PARSE",
-  "ERROR_ADS_RESPONSE_UNKNOWN_ROOT_ELEMENT",
-  "ERROR_ADS_INVALID_RESPONSE",
-  "ERROR_VAST_REDIRECT_EMPTY_RESPONSE",
-  "ERROR_VAST_REDIRECT_MULTIPLE_VAST",
-  "ERROR_VAST_REDIRECT_FAILED",
-  "ERROR_VAST_MISSING_MEDIAFILES",
-  "ERROR_VAST_MISSING_CREATIVES",
-  "ERROR_VAST_MISSING_OVERLAYS",
-  "ERROR_VAST_MISSING_IMPRESSION",
-  "ERROR_VAST_INVALID_VAST_AD_TAG_URI",
-  "ERROR_VAST_MULTIPLE_TRACKING_EVENTS",
-  "ERROR_VAST_MULTIPLE_LINEAR",
-  "ERROR_VAST_INVALID_MEDIA_FILE",
-  "ERROR_FIRING_BEACON_FAILED",
-  "ERROR_PERSONALIZATION_DISABLED",
-  "VOD_TIME_BASED_AVAIL_PLAN_VAST_RESPONSE_FOR_OFFSET",
-  "VOD_TIME_BASED_AVAIL_PLAN_SUCCESS",
-  "VOD_TIME_BASED_AVAIL_PLAN_WARNING_NO_ADVERTISEMENTS",
-  "INTERSTITIAL_VOD_SUCCESS",
-  "INTERSTITIAL_VOD_FAILURE",
-);
+  | "INTERSTITIAL_VOD_FAILURE"
+  | (string & {});
+export const AdsInteractionExcludeEventType = S.String;
 export type __adsInteractionExcludeEventTypesList =
   AdsInteractionExcludeEventType[];
 export const __adsInteractionExcludeEventTypesList = S.Array(
@@ -1243,58 +1207,36 @@ export type ManifestServiceExcludeEventType =
   | "ERROR_SLATE_AD_URL_INTERPOLATION"
   | "ERROR_PROFILE_NAME_INTERPOLATION"
   | "ERROR_BUMPER_START_INTERPOLATION"
-  | "ERROR_BUMPER_END_INTERPOLATION";
-export const ManifestServiceExcludeEventType = S.Literal(
-  "GENERATED_MANIFEST",
-  "ORIGIN_MANIFEST",
-  "SESSION_INITIALIZED",
-  "TRACKING_RESPONSE",
-  "CONFIG_SYNTAX_ERROR",
-  "CONFIG_SECURITY_ERROR",
-  "UNKNOWN_HOST",
-  "TIMEOUT_ERROR",
-  "CONNECTION_ERROR",
-  "IO_ERROR",
-  "UNKNOWN_ERROR",
-  "HOST_DISALLOWED",
-  "PARSING_ERROR",
-  "MANIFEST_ERROR",
-  "NO_MASTER_OR_MEDIA_PLAYLIST",
-  "NO_MASTER_PLAYLIST",
-  "NO_MEDIA_PLAYLIST",
-  "INCOMPATIBLE_HLS_VERSION",
-  "SCTE35_PARSING_ERROR",
-  "INVALID_SINGLE_PERIOD_DASH_MANIFEST",
-  "UNSUPPORTED_SINGLE_PERIOD_DASH_MANIFEST",
-  "LAST_PERIOD_MISSING_AUDIO",
-  "LAST_PERIOD_MISSING_AUDIO_WARNING",
-  "ERROR_ORIGIN_PREFIX_INTERPOLATION",
-  "ERROR_ADS_INTERPOLATION",
-  "ERROR_LIVE_PRE_ROLL_ADS_INTERPOLATION",
-  "ERROR_CDN_AD_SEGMENT_INTERPOLATION",
-  "ERROR_CDN_CONTENT_SEGMENT_INTERPOLATION",
-  "ERROR_SLATE_AD_URL_INTERPOLATION",
-  "ERROR_PROFILE_NAME_INTERPOLATION",
-  "ERROR_BUMPER_START_INTERPOLATION",
-  "ERROR_BUMPER_END_INTERPOLATION",
-);
+  | "ERROR_BUMPER_END_INTERPOLATION"
+  | (string & {});
+export const ManifestServiceExcludeEventType = S.String;
 export type __manifestServiceExcludeEventTypesList =
   ManifestServiceExcludeEventType[];
 export const __manifestServiceExcludeEventTypesList = S.Array(
   ManifestServiceExcludeEventType,
 );
-export type MessageType = "SPLICE_INSERT" | "TIME_SIGNAL";
-export const MessageType = S.Literal("SPLICE_INSERT", "TIME_SIGNAL");
-export type Mode = "OFF" | "BEHIND_LIVE_EDGE" | "AFTER_LIVE_EDGE";
-export const Mode = S.Literal("OFF", "BEHIND_LIVE_EDGE", "AFTER_LIVE_EDGE");
-export type FillPolicy = "FULL_AVAIL_ONLY" | "PARTIAL_AVAIL";
-export const FillPolicy = S.Literal("FULL_AVAIL_ONLY", "PARTIAL_AVAIL");
-export type OriginManifestType = "SINGLE_PERIOD" | "MULTI_PERIOD";
-export const OriginManifestType = S.Literal("SINGLE_PERIOD", "MULTI_PERIOD");
-export type StreamingMediaFileConditioning = "TRANSCODE" | "NONE";
-export const StreamingMediaFileConditioning = S.Literal("TRANSCODE", "NONE");
-export type TrafficShapingType = "RETRIEVAL_WINDOW" | "TPS";
-export const TrafficShapingType = S.Literal("RETRIEVAL_WINDOW", "TPS");
+export type MessageType = "SPLICE_INSERT" | "TIME_SIGNAL" | (string & {});
+export const MessageType = S.String;
+export type Mode =
+  | "OFF"
+  | "BEHIND_LIVE_EDGE"
+  | "AFTER_LIVE_EDGE"
+  | (string & {});
+export const Mode = S.String;
+export type FillPolicy = "FULL_AVAIL_ONLY" | "PARTIAL_AVAIL" | (string & {});
+export const FillPolicy = S.String;
+export type OriginManifestType =
+  | "SINGLE_PERIOD"
+  | "MULTI_PERIOD"
+  | (string & {});
+export const OriginManifestType = S.String;
+export type StreamingMediaFileConditioning =
+  | "TRANSCODE"
+  | "NONE"
+  | (string & {});
+export const StreamingMediaFileConditioning = S.String;
+export type TrafficShapingType = "RETRIEVAL_WINDOW" | "TPS" | (string & {});
+export const TrafficShapingType = S.String;
 export interface AdsInteractionLog {
   PublishOptInEventTypes?: AdsInteractionPublishOptInEventType[];
   ExcludeEventTypes?: AdsInteractionExcludeEventType[];
@@ -1319,8 +1261,8 @@ export const ManifestServiceInteractionLog = S.suspend(() =>
 ).annotations({
   identifier: "ManifestServiceInteractionLog",
 }) as any as S.Schema<ManifestServiceInteractionLog>;
-export type ChannelState = "RUNNING" | "STOPPED";
-export const ChannelState = S.Literal("RUNNING", "STOPPED");
+export type ChannelState = "RUNNING" | "STOPPED" | (string & {});
+export const ChannelState = S.String;
 export interface AvailSuppression {
   Mode?: Mode;
   Value?: string;
@@ -1393,14 +1335,17 @@ export const AdConditioningConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "AdConditioningConfiguration",
 }) as any as S.Schema<AdConditioningConfiguration>;
-export type RelativePosition = "BEFORE_PROGRAM" | "AFTER_PROGRAM";
-export const RelativePosition = S.Literal("BEFORE_PROGRAM", "AFTER_PROGRAM");
-export type Method = "GET" | "POST";
-export const Method = S.Literal("GET", "POST");
-export type CompressionMethod = "NONE" | "GZIP";
-export const CompressionMethod = S.Literal("NONE", "GZIP");
-export type Operator = "EQUALS";
-export const Operator = S.Literal("EQUALS");
+export type RelativePosition =
+  | "BEFORE_PROGRAM"
+  | "AFTER_PROGRAM"
+  | (string & {});
+export const RelativePosition = S.String;
+export type Method = "GET" | "POST" | (string & {});
+export const Method = S.String;
+export type CompressionMethod = "NONE" | "GZIP" | (string & {});
+export const CompressionMethod = S.String;
+export type Operator = "EQUALS" | (string & {});
+export const Operator = S.String;
 export interface ConfigureLogsForPlaybackConfigurationRequest {
   PercentEnabled: number;
   PlaybackConfigurationName: string;
@@ -2019,18 +1964,18 @@ export const UpdateVodSourceResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateVodSourceResponse",
 }) as any as S.Schema<UpdateVodSourceResponse>;
-export type AlertCategory = "SCHEDULING_ERROR" | "PLAYBACK_WARNING" | "INFO";
-export const AlertCategory = S.Literal(
-  "SCHEDULING_ERROR",
-  "PLAYBACK_WARNING",
-  "INFO",
-);
-export type ScheduleEntryType = "PROGRAM" | "FILLER_SLATE" | "ALTERNATE_MEDIA";
-export const ScheduleEntryType = S.Literal(
-  "PROGRAM",
-  "FILLER_SLATE",
-  "ALTERNATE_MEDIA",
-);
+export type AlertCategory =
+  | "SCHEDULING_ERROR"
+  | "PLAYBACK_WARNING"
+  | "INFO"
+  | (string & {});
+export const AlertCategory = S.String;
+export type ScheduleEntryType =
+  | "PROGRAM"
+  | "FILLER_SLATE"
+  | "ALTERNATE_MEDIA"
+  | (string & {});
+export const ScheduleEntryType = S.String;
 export interface Transition {
   DurationMillis?: number;
   RelativePosition: RelativePosition;

@@ -195,19 +195,15 @@ export type ConfigurationItemType =
   | "SERVER"
   | "PROCESS"
   | "CONNECTION"
-  | "APPLICATION";
-export const ConfigurationItemType = S.Literal(
-  "SERVER",
-  "PROCESS",
-  "CONNECTION",
-  "APPLICATION",
-);
-export type DeletionConfigurationItemType = "SERVER";
-export const DeletionConfigurationItemType = S.Literal("SERVER");
-export type DataSource = "AGENT";
-export const DataSource = S.Literal("AGENT");
-export type ExportDataFormat = "CSV";
-export const ExportDataFormat = S.Literal("CSV");
+  | "APPLICATION"
+  | (string & {});
+export const ConfigurationItemType = S.String;
+export type DeletionConfigurationItemType = "SERVER" | (string & {});
+export const DeletionConfigurationItemType = S.String;
+export type DataSource = "AGENT" | (string & {});
+export const DataSource = S.String;
+export type ExportDataFormat = "CSV" | (string & {});
+export const ExportDataFormat = S.String;
 export type ExportDataFormats = ExportDataFormat[];
 export const ExportDataFormats = S.Array(ExportDataFormat);
 export interface AssociateConfigurationItemsToApplicationRequest {
@@ -634,17 +630,13 @@ export type ImportTaskFilterName =
   | "IMPORT_TASK_ID"
   | "STATUS"
   | "NAME"
-  | "FILE_CLASSIFICATION";
-export const ImportTaskFilterName = S.Literal(
-  "IMPORT_TASK_ID",
-  "STATUS",
-  "NAME",
-  "FILE_CLASSIFICATION",
-);
+  | "FILE_CLASSIFICATION"
+  | (string & {});
+export const ImportTaskFilterName = S.String;
 export type ImportTaskFilterValueList = string[];
 export const ImportTaskFilterValueList = S.Array(S.String);
-export type OrderString = "ASC" | "DESC";
-export const OrderString = S.Literal("ASC", "DESC");
+export type OrderString = "ASC" | "DESC" | (string & {});
+export const OrderString = S.String;
 export interface DeleteAgent {
   agentId: string;
   force?: boolean;
@@ -801,8 +793,8 @@ export const SchemaStorageConfig = S.Record({
   key: S.String,
   value: S.UndefinedOr(S.String),
 });
-export type Tenancy = "DEDICATED" | "SHARED";
-export const Tenancy = S.Literal("DEDICATED", "SHARED");
+export type Tenancy = "DEDICATED" | "SHARED" | (string & {});
+export const Tenancy = S.String;
 export type ExcludedInstanceTypes = string[];
 export const ExcludedInstanceTypes = S.Array(S.String);
 export interface BatchDeleteAgentsRequest {
@@ -1075,25 +1067,17 @@ export const StopDataCollectionByAgentIdsResponse = S.suspend(() =>
 export type BatchDeleteImportDataErrorCode =
   | "NOT_FOUND"
   | "INTERNAL_SERVER_ERROR"
-  | "OVER_LIMIT";
-export const BatchDeleteImportDataErrorCode = S.Literal(
-  "NOT_FOUND",
-  "INTERNAL_SERVER_ERROR",
-  "OVER_LIMIT",
-);
+  | "OVER_LIMIT"
+  | (string & {});
+export const BatchDeleteImportDataErrorCode = S.String;
 export type BatchDeleteConfigurationTaskStatus =
   | "INITIALIZING"
   | "VALIDATING"
   | "DELETING"
   | "COMPLETED"
-  | "FAILED";
-export const BatchDeleteConfigurationTaskStatus = S.Literal(
-  "INITIALIZING",
-  "VALIDATING",
-  "DELETING",
-  "COMPLETED",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const BatchDeleteConfigurationTaskStatus = S.String;
 export type ContinuousExportStatus =
   | "START_IN_PROGRESS"
   | "START_FAILED"
@@ -1101,18 +1085,15 @@ export type ContinuousExportStatus =
   | "ERROR"
   | "STOP_IN_PROGRESS"
   | "STOP_FAILED"
-  | "INACTIVE";
-export const ContinuousExportStatus = S.Literal(
-  "START_IN_PROGRESS",
-  "START_FAILED",
-  "ACTIVE",
-  "ERROR",
-  "STOP_IN_PROGRESS",
-  "STOP_FAILED",
-  "INACTIVE",
-);
-export type ExportStatus = "FAILED" | "SUCCEEDED" | "IN_PROGRESS";
-export const ExportStatus = S.Literal("FAILED", "SUCCEEDED", "IN_PROGRESS");
+  | "INACTIVE"
+  | (string & {});
+export const ContinuousExportStatus = S.String;
+export type ExportStatus =
+  | "FAILED"
+  | "SUCCEEDED"
+  | "IN_PROGRESS"
+  | (string & {});
+export const ExportStatus = S.String;
 export type ImportStatus =
   | "IMPORT_IN_PROGRESS"
   | "IMPORT_COMPLETE"
@@ -1125,42 +1106,26 @@ export type ImportStatus =
   | "DELETE_COMPLETE"
   | "DELETE_FAILED"
   | "DELETE_FAILED_LIMIT_EXCEEDED"
-  | "INTERNAL_ERROR";
-export const ImportStatus = S.Literal(
-  "IMPORT_IN_PROGRESS",
-  "IMPORT_COMPLETE",
-  "IMPORT_COMPLETE_WITH_ERRORS",
-  "IMPORT_FAILED",
-  "IMPORT_FAILED_SERVER_LIMIT_EXCEEDED",
-  "IMPORT_FAILED_RECORD_LIMIT_EXCEEDED",
-  "IMPORT_FAILED_UNSUPPORTED_FILE_TYPE",
-  "DELETE_IN_PROGRESS",
-  "DELETE_COMPLETE",
-  "DELETE_FAILED",
-  "DELETE_FAILED_LIMIT_EXCEEDED",
-  "INTERNAL_ERROR",
-);
+  | "INTERNAL_ERROR"
+  | (string & {});
+export const ImportStatus = S.String;
 export type FileClassification =
   | "MODELIZEIT_EXPORT"
   | "RVTOOLS_EXPORT"
   | "VMWARE_NSX_EXPORT"
-  | "IMPORT_TEMPLATE";
-export const FileClassification = S.Literal(
-  "MODELIZEIT_EXPORT",
-  "RVTOOLS_EXPORT",
-  "VMWARE_NSX_EXPORT",
-  "IMPORT_TEMPLATE",
-);
-export type PurchasingOption = "ALL_UPFRONT" | "PARTIAL_UPFRONT" | "NO_UPFRONT";
-export const PurchasingOption = S.Literal(
-  "ALL_UPFRONT",
-  "PARTIAL_UPFRONT",
-  "NO_UPFRONT",
-);
-export type OfferingClass = "STANDARD" | "CONVERTIBLE";
-export const OfferingClass = S.Literal("STANDARD", "CONVERTIBLE");
-export type TermLength = "ONE_YEAR" | "THREE_YEAR";
-export const TermLength = S.Literal("ONE_YEAR", "THREE_YEAR");
+  | "IMPORT_TEMPLATE"
+  | (string & {});
+export const FileClassification = S.String;
+export type PurchasingOption =
+  | "ALL_UPFRONT"
+  | "PARTIAL_UPFRONT"
+  | "NO_UPFRONT"
+  | (string & {});
+export const PurchasingOption = S.String;
+export type OfferingClass = "STANDARD" | "CONVERTIBLE" | (string & {});
+export const OfferingClass = S.String;
+export type TermLength = "ONE_YEAR" | "THREE_YEAR" | (string & {});
+export const TermLength = S.String;
 export interface BatchDeleteImportDataError {
   importTaskId?: string;
   errorCode?: BatchDeleteImportDataErrorCode;
@@ -1437,27 +1402,18 @@ export const StartImportTaskResponse = S.suspend(() =>
 export type DeleteAgentErrorCode =
   | "NOT_FOUND"
   | "INTERNAL_SERVER_ERROR"
-  | "AGENT_IN_USE";
-export const DeleteAgentErrorCode = S.Literal(
-  "NOT_FOUND",
-  "INTERNAL_SERVER_ERROR",
-  "AGENT_IN_USE",
-);
+  | "AGENT_IN_USE"
+  | (string & {});
+export const DeleteAgentErrorCode = S.String;
 export type AgentStatus =
   | "HEALTHY"
   | "UNHEALTHY"
   | "RUNNING"
   | "UNKNOWN"
   | "BLACKLISTED"
-  | "SHUTDOWN";
-export const AgentStatus = S.Literal(
-  "HEALTHY",
-  "UNHEALTHY",
-  "RUNNING",
-  "UNKNOWN",
-  "BLACKLISTED",
-  "SHUTDOWN",
-);
+  | "SHUTDOWN"
+  | (string & {});
+export const AgentStatus = S.String;
 export interface FailedConfiguration {
   configurationId?: string;
   errorStatusCode?: number;

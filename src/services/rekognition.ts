@@ -179,17 +179,23 @@ export type SynthesizedJsonHumanLoopActivationConditionsEvaluationResults =
 //# Schemas
 export type UserFaceIdList = string[];
 export const UserFaceIdList = S.Array(S.String);
-export type QualityFilter = "NONE" | "AUTO" | "LOW" | "MEDIUM" | "HIGH";
-export const QualityFilter = S.Literal("NONE", "AUTO", "LOW", "MEDIUM", "HIGH");
-export type DatasetType = "TRAIN" | "TEST";
-export const DatasetType = S.Literal("TRAIN", "TEST");
-export type CustomizationFeature = "CONTENT_MODERATION" | "CUSTOM_LABELS";
-export const CustomizationFeature = S.Literal(
-  "CONTENT_MODERATION",
-  "CUSTOM_LABELS",
-);
-export type ProjectAutoUpdate = "ENABLED" | "DISABLED";
-export const ProjectAutoUpdate = S.Literal("ENABLED", "DISABLED");
+export type QualityFilter =
+  | "NONE"
+  | "AUTO"
+  | "LOW"
+  | "MEDIUM"
+  | "HIGH"
+  | (string & {});
+export const QualityFilter = S.String;
+export type DatasetType = "TRAIN" | "TEST" | (string & {});
+export const DatasetType = S.String;
+export type CustomizationFeature =
+  | "CONTENT_MODERATION"
+  | "CUSTOM_LABELS"
+  | (string & {});
+export const CustomizationFeature = S.String;
+export type ProjectAutoUpdate = "ENABLED" | "DISABLED" | (string & {});
+export const ProjectAutoUpdate = S.String;
 export type FaceIdList = string[];
 export const FaceIdList = S.Array(S.String);
 export type ProjectNames = string[];
@@ -212,67 +218,57 @@ export type Attribute =
   | "MUSTACHE"
   | "FACE_OCCLUDED"
   | "SMILE"
-  | "SUNGLASSES";
-export const Attribute = S.Literal(
-  "DEFAULT",
-  "ALL",
-  "AGE_RANGE",
-  "BEARD",
-  "EMOTIONS",
-  "EYE_DIRECTION",
-  "EYEGLASSES",
-  "EYES_OPEN",
-  "GENDER",
-  "MOUTH_OPEN",
-  "MUSTACHE",
-  "FACE_OCCLUDED",
-  "SMILE",
-  "SUNGLASSES",
-);
+  | "SUNGLASSES"
+  | (string & {});
+export const Attribute = S.String;
 export type Attributes = Attribute[];
 export const Attributes = S.Array(Attribute);
-export type DetectLabelsFeatureName = "GENERAL_LABELS" | "IMAGE_PROPERTIES";
-export const DetectLabelsFeatureName = S.Literal(
-  "GENERAL_LABELS",
-  "IMAGE_PROPERTIES",
-);
+export type DetectLabelsFeatureName =
+  | "GENERAL_LABELS"
+  | "IMAGE_PROPERTIES"
+  | (string & {});
+export const DetectLabelsFeatureName = S.String;
 export type DetectLabelsFeatureList = DetectLabelsFeatureName[];
 export const DetectLabelsFeatureList = S.Array(DetectLabelsFeatureName);
-export type CelebrityRecognitionSortBy = "ID" | "TIMESTAMP";
-export const CelebrityRecognitionSortBy = S.Literal("ID", "TIMESTAMP");
-export type ContentModerationSortBy = "NAME" | "TIMESTAMP";
-export const ContentModerationSortBy = S.Literal("NAME", "TIMESTAMP");
-export type ContentModerationAggregateBy = "TIMESTAMPS" | "SEGMENTS";
-export const ContentModerationAggregateBy = S.Literal("TIMESTAMPS", "SEGMENTS");
-export type FaceSearchSortBy = "INDEX" | "TIMESTAMP";
-export const FaceSearchSortBy = S.Literal("INDEX", "TIMESTAMP");
-export type LabelDetectionSortBy = "NAME" | "TIMESTAMP";
-export const LabelDetectionSortBy = S.Literal("NAME", "TIMESTAMP");
-export type LabelDetectionAggregateBy = "TIMESTAMPS" | "SEGMENTS";
-export const LabelDetectionAggregateBy = S.Literal("TIMESTAMPS", "SEGMENTS");
-export type PersonTrackingSortBy = "INDEX" | "TIMESTAMP";
-export const PersonTrackingSortBy = S.Literal("INDEX", "TIMESTAMP");
+export type CelebrityRecognitionSortBy = "ID" | "TIMESTAMP" | (string & {});
+export const CelebrityRecognitionSortBy = S.String;
+export type ContentModerationSortBy = "NAME" | "TIMESTAMP" | (string & {});
+export const ContentModerationSortBy = S.String;
+export type ContentModerationAggregateBy =
+  | "TIMESTAMPS"
+  | "SEGMENTS"
+  | (string & {});
+export const ContentModerationAggregateBy = S.String;
+export type FaceSearchSortBy = "INDEX" | "TIMESTAMP" | (string & {});
+export const FaceSearchSortBy = S.String;
+export type LabelDetectionSortBy = "NAME" | "TIMESTAMP" | (string & {});
+export const LabelDetectionSortBy = S.String;
+export type LabelDetectionAggregateBy =
+  | "TIMESTAMPS"
+  | "SEGMENTS"
+  | (string & {});
+export const LabelDetectionAggregateBy = S.String;
+export type PersonTrackingSortBy = "INDEX" | "TIMESTAMP" | (string & {});
+export const PersonTrackingSortBy = S.String;
 export type DatasetLabels = string[];
 export const DatasetLabels = S.Array(S.String);
-export type FaceAttributes = "DEFAULT" | "ALL";
-export const FaceAttributes = S.Literal("DEFAULT", "ALL");
-export type LabelDetectionFeatureName = "GENERAL_LABELS";
-export const LabelDetectionFeatureName = S.Literal("GENERAL_LABELS");
+export type FaceAttributes = "DEFAULT" | "ALL" | (string & {});
+export const FaceAttributes = S.String;
+export type LabelDetectionFeatureName = "GENERAL_LABELS" | (string & {});
+export const LabelDetectionFeatureName = S.String;
 export type LabelDetectionFeatureList = LabelDetectionFeatureName[];
 export const LabelDetectionFeatureList = S.Array(LabelDetectionFeatureName);
-export type SegmentType = "TECHNICAL_CUE" | "SHOT";
-export const SegmentType = S.Literal("TECHNICAL_CUE", "SHOT");
+export type SegmentType = "TECHNICAL_CUE" | "SHOT" | (string & {});
+export const SegmentType = S.String;
 export type SegmentTypes = SegmentType[];
 export const SegmentTypes = S.Array(SegmentType);
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export type StreamProcessorParameterToDelete =
   | "ConnectedHomeMinConfidence"
-  | "RegionsOfInterest";
-export const StreamProcessorParameterToDelete = S.Literal(
-  "ConnectedHomeMinConfidence",
-  "RegionsOfInterest",
-);
+  | "RegionsOfInterest"
+  | (string & {});
+export const StreamProcessorParameterToDelete = S.String;
 export type StreamProcessorParametersToDelete =
   StreamProcessorParameterToDelete[];
 export const StreamProcessorParametersToDelete = S.Array(
@@ -1211,21 +1207,18 @@ export const UntagResourceResponse = S.suspend(() => S.Struct({})).annotations({
 export type ProtectiveEquipmentType =
   | "FACE_COVER"
   | "HAND_COVER"
-  | "HEAD_COVER";
-export const ProtectiveEquipmentType = S.Literal(
-  "FACE_COVER",
-  "HAND_COVER",
-  "HEAD_COVER",
-);
+  | "HEAD_COVER"
+  | (string & {});
+export const ProtectiveEquipmentType = S.String;
 export type ProtectiveEquipmentTypes = ProtectiveEquipmentType[];
 export const ProtectiveEquipmentTypes = S.Array(ProtectiveEquipmentType);
-export type UserStatus = "ACTIVE" | "UPDATING" | "CREATING" | "CREATED";
-export const UserStatus = S.Literal(
-  "ACTIVE",
-  "UPDATING",
-  "CREATING",
-  "CREATED",
-);
+export type UserStatus =
+  | "ACTIVE"
+  | "UPDATING"
+  | "CREATING"
+  | "CREATED"
+  | (string & {});
+export const UserStatus = S.String;
 export interface OutputConfig {
   S3Bucket?: string;
   S3KeyPrefix?: string;
@@ -1275,8 +1268,8 @@ export const StreamProcessorDataSharingPreference = S.suspend(() =>
 ).annotations({
   identifier: "StreamProcessorDataSharingPreference",
 }) as any as S.Schema<StreamProcessorDataSharingPreference>;
-export type ProjectStatus = "CREATING" | "CREATED" | "DELETING";
-export const ProjectStatus = S.Literal("CREATING", "CREATED", "DELETING");
+export type ProjectStatus = "CREATING" | "CREATED" | "DELETING" | (string & {});
+export const ProjectStatus = S.String;
 export type ProjectVersionStatus =
   | "TRAINING_IN_PROGRESS"
   | "TRAINING_COMPLETED"
@@ -1291,49 +1284,25 @@ export type ProjectVersionStatus =
   | "COPYING_COMPLETED"
   | "COPYING_FAILED"
   | "DEPRECATED"
-  | "EXPIRED";
-export const ProjectVersionStatus = S.Literal(
-  "TRAINING_IN_PROGRESS",
-  "TRAINING_COMPLETED",
-  "TRAINING_FAILED",
-  "STARTING",
-  "RUNNING",
-  "FAILED",
-  "STOPPING",
-  "STOPPED",
-  "DELETING",
-  "COPYING_IN_PROGRESS",
-  "COPYING_COMPLETED",
-  "COPYING_FAILED",
-  "DEPRECATED",
-  "EXPIRED",
-);
+  | "EXPIRED"
+  | (string & {});
+export const ProjectVersionStatus = S.String;
 export type StreamProcessorStatus =
   | "STOPPED"
   | "STARTING"
   | "RUNNING"
   | "FAILED"
   | "STOPPING"
-  | "UPDATING";
-export const StreamProcessorStatus = S.Literal(
-  "STOPPED",
-  "STARTING",
-  "RUNNING",
-  "FAILED",
-  "STOPPING",
-  "UPDATING",
-);
+  | "UPDATING"
+  | (string & {});
+export const StreamProcessorStatus = S.String;
 export type OrientationCorrection =
   | "ROTATE_0"
   | "ROTATE_90"
   | "ROTATE_180"
-  | "ROTATE_270";
-export const OrientationCorrection = S.Literal(
-  "ROTATE_0",
-  "ROTATE_90",
-  "ROTATE_180",
-  "ROTATE_270",
-);
+  | "ROTATE_270"
+  | (string & {});
+export const OrientationCorrection = S.String;
 export interface ProtectiveEquipmentSummarizationAttributes {
   MinConfidence: number;
   RequiredEquipmentTypes: ProtectiveEquipmentType[];
@@ -1358,21 +1327,20 @@ export type DistributeDatasetMetadataList = DistributeDataset[];
 export const DistributeDatasetMetadataList = S.Array(DistributeDataset);
 export type Urls = string[];
 export const Urls = S.Array(S.String);
-export type VideoJobStatus = "IN_PROGRESS" | "SUCCEEDED" | "FAILED";
-export const VideoJobStatus = S.Literal("IN_PROGRESS", "SUCCEEDED", "FAILED");
+export type VideoJobStatus =
+  | "IN_PROGRESS"
+  | "SUCCEEDED"
+  | "FAILED"
+  | (string & {});
+export const VideoJobStatus = S.String;
 export type LivenessSessionStatus =
   | "CREATED"
   | "IN_PROGRESS"
   | "SUCCEEDED"
   | "FAILED"
-  | "EXPIRED";
-export const LivenessSessionStatus = S.Literal(
-  "CREATED",
-  "IN_PROGRESS",
-  "SUCCEEDED",
-  "FAILED",
-  "EXPIRED",
-);
+  | "EXPIRED"
+  | (string & {});
+export const LivenessSessionStatus = S.String;
 export interface BoundingBox {
   Width?: number;
   Height?: number;
@@ -1406,16 +1374,11 @@ export type MediaAnalysisJobStatus =
   | "QUEUED"
   | "IN_PROGRESS"
   | "SUCCEEDED"
-  | "FAILED";
-export const MediaAnalysisJobStatus = S.Literal(
-  "CREATED",
-  "QUEUED",
-  "IN_PROGRESS",
-  "SUCCEEDED",
-  "FAILED",
-);
-export type VideoColorRange = "FULL" | "LIMITED";
-export const VideoColorRange = S.Literal("FULL", "LIMITED");
+  | "FAILED"
+  | (string & {});
+export const MediaAnalysisJobStatus = S.String;
+export type VideoColorRange = "FULL" | "LIMITED" | (string & {});
+export const VideoColorRange = S.String;
 export interface VideoMetadata {
   Codec?: string;
   DurationMillis?: number;
@@ -1556,20 +1519,16 @@ export const DatasetChanges = S.suspend(() =>
 }) as any as S.Schema<DatasetChanges>;
 export type ChallengeType =
   | "FaceMovementAndLightChallenge"
-  | "FaceMovementChallenge";
-export const ChallengeType = S.Literal(
-  "FaceMovementAndLightChallenge",
-  "FaceMovementChallenge",
-);
+  | "FaceMovementChallenge"
+  | (string & {});
+export const ChallengeType = S.String;
 export type ConnectedHomeLabels = string[];
 export const ConnectedHomeLabels = S.Array(S.String);
 export type ContentClassifier =
   | "FreeOfPersonallyIdentifiableInformation"
-  | "FreeOfAdultContent";
-export const ContentClassifier = S.Literal(
-  "FreeOfPersonallyIdentifiableInformation",
-  "FreeOfAdultContent",
-);
+  | "FreeOfAdultContent"
+  | (string & {});
+export const ContentClassifier = S.String;
 export type ContentClassifiers = ContentClassifier[];
 export const ContentClassifiers = S.Array(ContentClassifier);
 export interface CopyProjectVersionRequest {
@@ -2032,12 +1991,9 @@ export const UpdateDatasetEntriesResponse = S.suspend(() =>
 export type UnsuccessfulFaceAssociationReason =
   | "FACE_NOT_FOUND"
   | "ASSOCIATED_TO_A_DIFFERENT_USER"
-  | "LOW_MATCH_CONFIDENCE";
-export const UnsuccessfulFaceAssociationReason = S.Literal(
-  "FACE_NOT_FOUND",
-  "ASSOCIATED_TO_A_DIFFERENT_USER",
-  "LOW_MATCH_CONFIDENCE",
-);
+  | "LOW_MATCH_CONFIDENCE"
+  | (string & {});
+export const UnsuccessfulFaceAssociationReason = S.String;
 export type UnsuccessfulFaceAssociationReasons =
   UnsuccessfulFaceAssociationReason[];
 export const UnsuccessfulFaceAssociationReasons = S.Array(
@@ -2062,11 +2018,9 @@ export const CustomizationFeatureContentModerationConfig = S.suspend(() =>
 }) as any as S.Schema<CustomizationFeatureContentModerationConfig>;
 export type UnsuccessfulFaceDeletionReason =
   | "ASSOCIATED_TO_AN_EXISTING_USER"
-  | "FACE_NOT_FOUND";
-export const UnsuccessfulFaceDeletionReason = S.Literal(
-  "ASSOCIATED_TO_AN_EXISTING_USER",
-  "FACE_NOT_FOUND",
-);
+  | "FACE_NOT_FOUND"
+  | (string & {});
+export const UnsuccessfulFaceDeletionReason = S.String;
 export type UnsuccessfulFaceDeletionReasons = UnsuccessfulFaceDeletionReason[];
 export const UnsuccessfulFaceDeletionReasons = S.Array(
   UnsuccessfulFaceDeletionReason,
@@ -2078,25 +2032,15 @@ export type DatasetStatus =
   | "UPDATE_IN_PROGRESS"
   | "UPDATE_COMPLETE"
   | "UPDATE_FAILED"
-  | "DELETE_IN_PROGRESS";
-export const DatasetStatus = S.Literal(
-  "CREATE_IN_PROGRESS",
-  "CREATE_COMPLETE",
-  "CREATE_FAILED",
-  "UPDATE_IN_PROGRESS",
-  "UPDATE_COMPLETE",
-  "UPDATE_FAILED",
-  "DELETE_IN_PROGRESS",
-);
+  | "DELETE_IN_PROGRESS"
+  | (string & {});
+export const DatasetStatus = S.String;
 export type DatasetStatusMessageCode =
   | "SUCCESS"
   | "SERVICE_ERROR"
-  | "CLIENT_ERROR";
-export const DatasetStatusMessageCode = S.Literal(
-  "SUCCESS",
-  "SERVICE_ERROR",
-  "CLIENT_ERROR",
-);
+  | "CLIENT_ERROR"
+  | (string & {});
+export const DatasetStatusMessageCode = S.String;
 export interface DetectLabelsImagePropertiesSettings {
   MaxDominantColors?: number;
 }
@@ -2115,23 +2059,21 @@ export const HumanLoopDataAttributes = S.suspend(() =>
 }) as any as S.Schema<HumanLoopDataAttributes>;
 export type UnsuccessfulFaceDisassociationReason =
   | "FACE_NOT_FOUND"
-  | "ASSOCIATED_TO_A_DIFFERENT_USER";
-export const UnsuccessfulFaceDisassociationReason = S.Literal(
-  "FACE_NOT_FOUND",
-  "ASSOCIATED_TO_A_DIFFERENT_USER",
-);
+  | "ASSOCIATED_TO_A_DIFFERENT_USER"
+  | (string & {});
+export const UnsuccessfulFaceDisassociationReason = S.String;
 export type UnsuccessfulFaceDisassociationReasons =
   UnsuccessfulFaceDisassociationReason[];
 export const UnsuccessfulFaceDisassociationReasons = S.Array(
   UnsuccessfulFaceDisassociationReason,
 );
-export type KnownGenderType = "Male" | "Female" | "Nonbinary" | "Unlisted";
-export const KnownGenderType = S.Literal(
-  "Male",
-  "Female",
-  "Nonbinary",
-  "Unlisted",
-);
+export type KnownGenderType =
+  | "Male"
+  | "Female"
+  | "Nonbinary"
+  | "Unlisted"
+  | (string & {});
+export const KnownGenderType = S.String;
 export type MediaAnalysisJobFailureCode =
   | "INTERNAL_ERROR"
   | "INVALID_S3_OBJECT"
@@ -2141,18 +2083,9 @@ export type MediaAnalysisJobFailureCode =
   | "ACCESS_DENIED"
   | "RESOURCE_NOT_FOUND"
   | "RESOURCE_NOT_READY"
-  | "THROTTLED";
-export const MediaAnalysisJobFailureCode = S.Literal(
-  "INTERNAL_ERROR",
-  "INVALID_S3_OBJECT",
-  "INVALID_MANIFEST",
-  "INVALID_OUTPUT_CONFIG",
-  "INVALID_KMS_KEY",
-  "ACCESS_DENIED",
-  "RESOURCE_NOT_FOUND",
-  "RESOURCE_NOT_READY",
-  "THROTTLED",
-);
+  | "THROTTLED"
+  | (string & {});
+export const MediaAnalysisJobFailureCode = S.String;
 export type Reason =
   | "EXCEEDS_MAX_FACES"
   | "EXTREME_POSE"
@@ -2160,16 +2093,9 @@ export type Reason =
   | "LOW_SHARPNESS"
   | "LOW_CONFIDENCE"
   | "SMALL_BOUNDING_BOX"
-  | "LOW_FACE_QUALITY";
-export const Reason = S.Literal(
-  "EXCEEDS_MAX_FACES",
-  "EXTREME_POSE",
-  "LOW_BRIGHTNESS",
-  "LOW_SHARPNESS",
-  "LOW_CONFIDENCE",
-  "SMALL_BOUNDING_BOX",
-  "LOW_FACE_QUALITY",
-);
+  | "LOW_FACE_QUALITY"
+  | (string & {});
+export const Reason = S.String;
 export type Reasons = Reason[];
 export const Reasons = S.Array(Reason);
 export type UnsearchedFaceReason =
@@ -2180,17 +2106,9 @@ export type UnsearchedFaceReason =
   | "LOW_SHARPNESS"
   | "LOW_CONFIDENCE"
   | "SMALL_BOUNDING_BOX"
-  | "LOW_FACE_QUALITY";
-export const UnsearchedFaceReason = S.Literal(
-  "FACE_NOT_LARGEST",
-  "EXCEEDS_MAX_FACES",
-  "EXTREME_POSE",
-  "LOW_BRIGHTNESS",
-  "LOW_SHARPNESS",
-  "LOW_CONFIDENCE",
-  "SMALL_BOUNDING_BOX",
-  "LOW_FACE_QUALITY",
-);
+  | "LOW_FACE_QUALITY"
+  | (string & {});
+export const UnsearchedFaceReason = S.String;
 export type UnsearchedFaceReasons = UnsearchedFaceReason[];
 export const UnsearchedFaceReasons = S.Array(UnsearchedFaceReason);
 export interface MediaAnalysisDetectModerationLabelsConfig {
@@ -2424,8 +2342,8 @@ export interface Sunglasses {
 export const Sunglasses = S.suspend(() =>
   S.Struct({ Value: S.optional(S.Boolean), Confidence: S.optional(S.Number) }),
 ).annotations({ identifier: "Sunglasses" }) as any as S.Schema<Sunglasses>;
-export type GenderType = "Male" | "Female";
-export const GenderType = S.Literal("Male", "Female");
+export type GenderType = "Male" | "Female" | (string & {});
+export const GenderType = S.String;
 export interface Gender {
   Value?: GenderType;
   Confidence?: number;
@@ -2470,18 +2388,9 @@ export type EmotionName =
   | "SURPRISED"
   | "CALM"
   | "UNKNOWN"
-  | "FEAR";
-export const EmotionName = S.Literal(
-  "HAPPY",
-  "SAD",
-  "ANGRY",
-  "CONFUSED",
-  "DISGUSTED",
-  "SURPRISED",
-  "CALM",
-  "UNKNOWN",
-  "FEAR",
-);
+  | "FEAR"
+  | (string & {});
+export const EmotionName = S.String;
 export interface Emotion {
   Type?: EmotionName;
   Confidence?: number;
@@ -2521,39 +2430,9 @@ export type LandmarkType =
   | "midJawlineLeft"
   | "chinBottom"
   | "midJawlineRight"
-  | "upperJawlineRight";
-export const LandmarkType = S.Literal(
-  "eyeLeft",
-  "eyeRight",
-  "nose",
-  "mouthLeft",
-  "mouthRight",
-  "leftEyeBrowLeft",
-  "leftEyeBrowRight",
-  "leftEyeBrowUp",
-  "rightEyeBrowLeft",
-  "rightEyeBrowRight",
-  "rightEyeBrowUp",
-  "leftEyeLeft",
-  "leftEyeRight",
-  "leftEyeUp",
-  "leftEyeDown",
-  "rightEyeLeft",
-  "rightEyeRight",
-  "rightEyeUp",
-  "rightEyeDown",
-  "noseLeft",
-  "noseRight",
-  "mouthUp",
-  "mouthDown",
-  "leftPupil",
-  "rightPupil",
-  "upperJawlineLeft",
-  "midJawlineLeft",
-  "chinBottom",
-  "midJawlineRight",
-  "upperJawlineRight",
-);
+  | "upperJawlineRight"
+  | (string & {});
+export const LandmarkType = S.String;
 export interface Landmark {
   Type?: LandmarkType;
   X?: number;
@@ -3014,18 +2893,11 @@ export type TechnicalCueType =
   | "OpeningCredits"
   | "StudioLogo"
   | "Slate"
-  | "Content";
-export const TechnicalCueType = S.Literal(
-  "ColorBars",
-  "EndCredits",
-  "BlackFrames",
-  "OpeningCredits",
-  "StudioLogo",
-  "Slate",
-  "Content",
-);
-export type TextTypes = "LINE" | "WORD";
-export const TextTypes = S.Literal("LINE", "WORD");
+  | "Content"
+  | (string & {});
+export const TechnicalCueType = S.String;
+export type TextTypes = "LINE" | "WORD" | (string & {});
+export const TextTypes = S.String;
 export interface BlackFrame {
   MaxPixelThreshold?: number;
   MinCoveragePercentage?: number;
@@ -4044,8 +3916,13 @@ export interface Summary {
 export const Summary = S.suspend(() =>
   S.Struct({ S3Object: S.optional(S3Object) }),
 ).annotations({ identifier: "Summary" }) as any as S.Schema<Summary>;
-export type BodyPart = "FACE" | "HEAD" | "LEFT_HAND" | "RIGHT_HAND";
-export const BodyPart = S.Literal("FACE", "HEAD", "LEFT_HAND", "RIGHT_HAND");
+export type BodyPart =
+  | "FACE"
+  | "HEAD"
+  | "LEFT_HAND"
+  | "RIGHT_HAND"
+  | (string & {});
+export const BodyPart = S.String;
 export interface CreateDatasetResponse {
   DatasetArn?: string;
 }

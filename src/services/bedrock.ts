@@ -357,87 +357,72 @@ export type AutomatedReasoningCheckResult =
   | "IMPOSSIBLE"
   | "TRANSLATION_AMBIGUOUS"
   | "TOO_COMPLEX"
-  | "NO_TRANSLATION";
-export const AutomatedReasoningCheckResult = S.Literal(
-  "VALID",
-  "INVALID",
-  "SATISFIABLE",
-  "IMPOSSIBLE",
-  "TRANSLATION_AMBIGUOUS",
-  "TOO_COMPLEX",
-  "NO_TRANSLATION",
-);
+  | "NO_TRANSLATION"
+  | (string & {});
+export const AutomatedReasoningCheckResult = S.String;
 export type AutomatedReasoningPolicyBuildResultAssetType =
   | "BUILD_LOG"
   | "QUALITY_REPORT"
   | "POLICY_DEFINITION"
   | "GENERATED_TEST_CASES"
-  | "POLICY_SCENARIOS";
-export const AutomatedReasoningPolicyBuildResultAssetType = S.Literal(
-  "BUILD_LOG",
-  "QUALITY_REPORT",
-  "POLICY_DEFINITION",
-  "GENERATED_TEST_CASES",
-  "POLICY_SCENARIOS",
-);
+  | "POLICY_SCENARIOS"
+  | (string & {});
+export const AutomatedReasoningPolicyBuildResultAssetType = S.String;
 export type AutomatedReasoningPolicyBuildWorkflowType =
   | "INGEST_CONTENT"
   | "REFINE_POLICY"
-  | "IMPORT_POLICY";
-export const AutomatedReasoningPolicyBuildWorkflowType = S.Literal(
-  "INGEST_CONTENT",
-  "REFINE_POLICY",
-  "IMPORT_POLICY",
-);
+  | "IMPORT_POLICY"
+  | (string & {});
+export const AutomatedReasoningPolicyBuildWorkflowType = S.String;
 export type AutomatedReasoningPolicyTestCaseIdList = string[];
 export const AutomatedReasoningPolicyTestCaseIdList = S.Array(S.String);
-export type SortModelsBy = "CreationTime";
-export const SortModelsBy = S.Literal("CreationTime");
-export type SortOrder = "Ascending" | "Descending";
-export const SortOrder = S.Literal("Ascending", "Descending");
-export type CustomModelDeploymentStatus = "Creating" | "Active" | "Failed";
-export const CustomModelDeploymentStatus = S.Literal(
-  "Creating",
-  "Active",
-  "Failed",
-);
-export type ModelStatus = "Active" | "Creating" | "Failed";
-export const ModelStatus = S.Literal("Active", "Creating", "Failed");
+export type SortModelsBy = "CreationTime" | (string & {});
+export const SortModelsBy = S.String;
+export type SortOrder = "Ascending" | "Descending" | (string & {});
+export const SortOrder = S.String;
+export type CustomModelDeploymentStatus =
+  | "Creating"
+  | "Active"
+  | "Failed"
+  | (string & {});
+export const CustomModelDeploymentStatus = S.String;
+export type ModelStatus = "Active" | "Creating" | "Failed" | (string & {});
+export const ModelStatus = S.String;
 export type EvaluationJobIdentifiers = string | redacted.Redacted<string>[];
 export const EvaluationJobIdentifiers = S.Array(SensitiveString);
-export type ApplicationType = "ModelEvaluation" | "RagEvaluation";
-export const ApplicationType = S.Literal("ModelEvaluation", "RagEvaluation");
+export type ApplicationType =
+  | "ModelEvaluation"
+  | "RagEvaluation"
+  | (string & {});
+export const ApplicationType = S.String;
 export type EvaluationJobStatus =
   | "InProgress"
   | "Completed"
   | "Failed"
   | "Stopping"
   | "Stopped"
-  | "Deleting";
-export const EvaluationJobStatus = S.Literal(
-  "InProgress",
-  "Completed",
-  "Failed",
-  "Stopping",
-  "Stopped",
-  "Deleting",
-);
-export type SortJobsBy = "CreationTime";
-export const SortJobsBy = S.Literal("CreationTime");
-export type InferenceProfileType = "SYSTEM_DEFINED" | "APPLICATION";
-export const InferenceProfileType = S.Literal("SYSTEM_DEFINED", "APPLICATION");
-export type ModelCopyJobStatus = "InProgress" | "Completed" | "Failed";
-export const ModelCopyJobStatus = S.Literal(
-  "InProgress",
-  "Completed",
-  "Failed",
-);
-export type ModelImportJobStatus = "InProgress" | "Completed" | "Failed";
-export const ModelImportJobStatus = S.Literal(
-  "InProgress",
-  "Completed",
-  "Failed",
-);
+  | "Deleting"
+  | (string & {});
+export const EvaluationJobStatus = S.String;
+export type SortJobsBy = "CreationTime" | (string & {});
+export const SortJobsBy = S.String;
+export type InferenceProfileType =
+  | "SYSTEM_DEFINED"
+  | "APPLICATION"
+  | (string & {});
+export const InferenceProfileType = S.String;
+export type ModelCopyJobStatus =
+  | "InProgress"
+  | "Completed"
+  | "Failed"
+  | (string & {});
+export const ModelCopyJobStatus = S.String;
+export type ModelImportJobStatus =
+  | "InProgress"
+  | "Completed"
+  | "Failed"
+  | (string & {});
+export const ModelImportJobStatus = S.String;
 export type ModelInvocationJobStatus =
   | "Submitted"
   | "InProgress"
@@ -448,51 +433,34 @@ export type ModelInvocationJobStatus =
   | "PartiallyCompleted"
   | "Expired"
   | "Validating"
-  | "Scheduled";
-export const ModelInvocationJobStatus = S.Literal(
-  "Submitted",
-  "InProgress",
-  "Completed",
-  "Failed",
-  "Stopping",
-  "Stopped",
-  "PartiallyCompleted",
-  "Expired",
-  "Validating",
-  "Scheduled",
-);
+  | "Scheduled"
+  | (string & {});
+export const ModelInvocationJobStatus = S.String;
 export type ModelCustomization =
   | "FINE_TUNING"
   | "CONTINUED_PRE_TRAINING"
-  | "DISTILLATION";
-export const ModelCustomization = S.Literal(
-  "FINE_TUNING",
-  "CONTINUED_PRE_TRAINING",
-  "DISTILLATION",
-);
-export type ModelModality = "TEXT" | "IMAGE" | "EMBEDDING";
-export const ModelModality = S.Literal("TEXT", "IMAGE", "EMBEDDING");
-export type InferenceType = "ON_DEMAND" | "PROVISIONED";
-export const InferenceType = S.Literal("ON_DEMAND", "PROVISIONED");
-export type PromptRouterType = "custom" | "default";
-export const PromptRouterType = S.Literal("custom", "default");
-export type CommitmentDuration = "OneMonth" | "SixMonths";
-export const CommitmentDuration = S.Literal("OneMonth", "SixMonths");
+  | "DISTILLATION"
+  | (string & {});
+export const ModelCustomization = S.String;
+export type ModelModality = "TEXT" | "IMAGE" | "EMBEDDING" | (string & {});
+export const ModelModality = S.String;
+export type InferenceType = "ON_DEMAND" | "PROVISIONED" | (string & {});
+export const InferenceType = S.String;
+export type PromptRouterType = "custom" | "default" | (string & {});
+export const PromptRouterType = S.String;
+export type CommitmentDuration = "OneMonth" | "SixMonths" | (string & {});
+export const CommitmentDuration = S.String;
 export type ProvisionedModelStatus =
   | "Creating"
   | "InService"
   | "Updating"
-  | "Failed";
-export const ProvisionedModelStatus = S.Literal(
-  "Creating",
-  "InService",
-  "Updating",
-  "Failed",
-);
-export type SortByProvisionedModels = "CreationTime";
-export const SortByProvisionedModels = S.Literal("CreationTime");
-export type OfferType = "ALL" | "PUBLIC";
-export const OfferType = S.Literal("ALL", "PUBLIC");
+  | "Failed"
+  | (string & {});
+export const ProvisionedModelStatus = S.String;
+export type SortByProvisionedModels = "CreationTime" | (string & {});
+export const SortByProvisionedModels = S.String;
+export type OfferType = "ALL" | "PUBLIC" | (string & {});
+export const OfferType = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export type CustomizationType =
@@ -500,27 +468,17 @@ export type CustomizationType =
   | "CONTINUED_PRE_TRAINING"
   | "DISTILLATION"
   | "REINFORCEMENT_FINE_TUNING"
-  | "IMPORTED";
-export const CustomizationType = S.Literal(
-  "FINE_TUNING",
-  "CONTINUED_PRE_TRAINING",
-  "DISTILLATION",
-  "REINFORCEMENT_FINE_TUNING",
-  "IMPORTED",
-);
+  | "IMPORTED"
+  | (string & {});
+export const CustomizationType = S.String;
 export type FineTuningJobStatus =
   | "InProgress"
   | "Completed"
   | "Failed"
   | "Stopping"
-  | "Stopped";
-export const FineTuningJobStatus = S.Literal(
-  "InProgress",
-  "Completed",
-  "Failed",
-  "Stopping",
-  "Stopped",
-);
+  | "Stopped"
+  | (string & {});
+export const FineTuningJobStatus = S.String;
 export interface GetUseCaseForModelAccessResponse {
   formData: Uint8Array;
 }
@@ -1823,10 +1781,10 @@ export const GetGuardrailRequest = S.suspend(() =>
 }) as any as S.Schema<GetGuardrailRequest>;
 export type GuardrailTopicExamples = string | redacted.Redacted<string>[];
 export const GuardrailTopicExamples = S.Array(SensitiveString);
-export type GuardrailTopicType = "DENY";
-export const GuardrailTopicType = S.Literal("DENY");
-export type GuardrailTopicAction = "BLOCK" | "NONE";
-export const GuardrailTopicAction = S.Literal("BLOCK", "NONE");
+export type GuardrailTopicType = "DENY" | (string & {});
+export const GuardrailTopicType = S.String;
+export type GuardrailTopicAction = "BLOCK" | "NONE" | (string & {});
+export const GuardrailTopicAction = S.String;
 export interface GuardrailTopicConfig {
   name: string | redacted.Redacted<string>;
   definition: string | redacted.Redacted<string>;
@@ -1853,8 +1811,8 @@ export const GuardrailTopicConfig = S.suspend(() =>
 }) as any as S.Schema<GuardrailTopicConfig>;
 export type GuardrailTopicsConfig = GuardrailTopicConfig[];
 export const GuardrailTopicsConfig = S.Array(GuardrailTopicConfig);
-export type GuardrailTopicsTierName = "CLASSIC" | "STANDARD";
-export const GuardrailTopicsTierName = S.Literal("CLASSIC", "STANDARD");
+export type GuardrailTopicsTierName = "CLASSIC" | "STANDARD" | (string & {});
+export const GuardrailTopicsTierName = S.String;
 export interface GuardrailTopicsTierConfig {
   tierName: GuardrailTopicsTierName;
 }
@@ -1881,28 +1839,22 @@ export type GuardrailContentFilterType =
   | "HATE"
   | "INSULTS"
   | "MISCONDUCT"
-  | "PROMPT_ATTACK";
-export const GuardrailContentFilterType = S.Literal(
-  "SEXUAL",
-  "VIOLENCE",
-  "HATE",
-  "INSULTS",
-  "MISCONDUCT",
-  "PROMPT_ATTACK",
-);
-export type GuardrailFilterStrength = "NONE" | "LOW" | "MEDIUM" | "HIGH";
-export const GuardrailFilterStrength = S.Literal(
-  "NONE",
-  "LOW",
-  "MEDIUM",
-  "HIGH",
-);
-export type GuardrailModality = "TEXT" | "IMAGE";
-export const GuardrailModality = S.Literal("TEXT", "IMAGE");
+  | "PROMPT_ATTACK"
+  | (string & {});
+export const GuardrailContentFilterType = S.String;
+export type GuardrailFilterStrength =
+  | "NONE"
+  | "LOW"
+  | "MEDIUM"
+  | "HIGH"
+  | (string & {});
+export const GuardrailFilterStrength = S.String;
+export type GuardrailModality = "TEXT" | "IMAGE" | (string & {});
+export const GuardrailModality = S.String;
 export type GuardrailModalities = GuardrailModality[];
 export const GuardrailModalities = S.Array(GuardrailModality);
-export type GuardrailContentFilterAction = "BLOCK" | "NONE";
-export const GuardrailContentFilterAction = S.Literal("BLOCK", "NONE");
+export type GuardrailContentFilterAction = "BLOCK" | "NONE" | (string & {});
+export const GuardrailContentFilterAction = S.String;
 export interface GuardrailContentFilterConfig {
   type: GuardrailContentFilterType;
   inputStrength: GuardrailFilterStrength;
@@ -1933,8 +1885,11 @@ export type GuardrailContentFiltersConfig = GuardrailContentFilterConfig[];
 export const GuardrailContentFiltersConfig = S.Array(
   GuardrailContentFilterConfig,
 );
-export type GuardrailContentFiltersTierName = "CLASSIC" | "STANDARD";
-export const GuardrailContentFiltersTierName = S.Literal("CLASSIC", "STANDARD");
+export type GuardrailContentFiltersTierName =
+  | "CLASSIC"
+  | "STANDARD"
+  | (string & {});
+export const GuardrailContentFiltersTierName = S.String;
 export interface GuardrailContentFiltersTierConfig {
   tierName: GuardrailContentFiltersTierName;
 }
@@ -1955,8 +1910,8 @@ export const GuardrailContentPolicyConfig = S.suspend(() =>
 ).annotations({
   identifier: "GuardrailContentPolicyConfig",
 }) as any as S.Schema<GuardrailContentPolicyConfig>;
-export type GuardrailWordAction = "BLOCK" | "NONE";
-export const GuardrailWordAction = S.Literal("BLOCK", "NONE");
+export type GuardrailWordAction = "BLOCK" | "NONE" | (string & {});
+export const GuardrailWordAction = S.String;
 export interface GuardrailWordConfig {
   text: string;
   inputAction?: GuardrailWordAction;
@@ -1977,8 +1932,8 @@ export const GuardrailWordConfig = S.suspend(() =>
 }) as any as S.Schema<GuardrailWordConfig>;
 export type GuardrailWordsConfig = GuardrailWordConfig[];
 export const GuardrailWordsConfig = S.Array(GuardrailWordConfig);
-export type GuardrailManagedWordsType = "PROFANITY";
-export const GuardrailManagedWordsType = S.Literal("PROFANITY");
+export type GuardrailManagedWordsType = "PROFANITY" | (string & {});
+export const GuardrailManagedWordsType = S.String;
 export interface GuardrailManagedWordsConfig {
   type: GuardrailManagedWordsType;
   inputAction?: GuardrailWordAction;
@@ -2044,49 +1999,15 @@ export type GuardrailPiiEntityType =
   | "US_INDIVIDUAL_TAX_IDENTIFICATION_NUMBER"
   | "US_PASSPORT_NUMBER"
   | "US_SOCIAL_SECURITY_NUMBER"
-  | "VEHICLE_IDENTIFICATION_NUMBER";
-export const GuardrailPiiEntityType = S.Literal(
-  "ADDRESS",
-  "AGE",
-  "AWS_ACCESS_KEY",
-  "AWS_SECRET_KEY",
-  "CA_HEALTH_NUMBER",
-  "CA_SOCIAL_INSURANCE_NUMBER",
-  "CREDIT_DEBIT_CARD_CVV",
-  "CREDIT_DEBIT_CARD_EXPIRY",
-  "CREDIT_DEBIT_CARD_NUMBER",
-  "DRIVER_ID",
-  "EMAIL",
-  "INTERNATIONAL_BANK_ACCOUNT_NUMBER",
-  "IP_ADDRESS",
-  "LICENSE_PLATE",
-  "MAC_ADDRESS",
-  "NAME",
-  "PASSWORD",
-  "PHONE",
-  "PIN",
-  "SWIFT_CODE",
-  "UK_NATIONAL_HEALTH_SERVICE_NUMBER",
-  "UK_NATIONAL_INSURANCE_NUMBER",
-  "UK_UNIQUE_TAXPAYER_REFERENCE_NUMBER",
-  "URL",
-  "USERNAME",
-  "US_BANK_ACCOUNT_NUMBER",
-  "US_BANK_ROUTING_NUMBER",
-  "US_INDIVIDUAL_TAX_IDENTIFICATION_NUMBER",
-  "US_PASSPORT_NUMBER",
-  "US_SOCIAL_SECURITY_NUMBER",
-  "VEHICLE_IDENTIFICATION_NUMBER",
-);
+  | "VEHICLE_IDENTIFICATION_NUMBER"
+  | (string & {});
+export const GuardrailPiiEntityType = S.String;
 export type GuardrailSensitiveInformationAction =
   | "BLOCK"
   | "ANONYMIZE"
-  | "NONE";
-export const GuardrailSensitiveInformationAction = S.Literal(
-  "BLOCK",
-  "ANONYMIZE",
-  "NONE",
-);
+  | "NONE"
+  | (string & {});
+export const GuardrailSensitiveInformationAction = S.String;
 export interface GuardrailPiiEntityConfig {
   type: GuardrailPiiEntityType;
   action: GuardrailSensitiveInformationAction;
@@ -2147,13 +2068,16 @@ export const GuardrailSensitiveInformationPolicyConfig = S.suspend(() =>
 ).annotations({
   identifier: "GuardrailSensitiveInformationPolicyConfig",
 }) as any as S.Schema<GuardrailSensitiveInformationPolicyConfig>;
-export type GuardrailContextualGroundingFilterType = "GROUNDING" | "RELEVANCE";
-export const GuardrailContextualGroundingFilterType = S.Literal(
-  "GROUNDING",
-  "RELEVANCE",
-);
-export type GuardrailContextualGroundingAction = "BLOCK" | "NONE";
-export const GuardrailContextualGroundingAction = S.Literal("BLOCK", "NONE");
+export type GuardrailContextualGroundingFilterType =
+  | "GROUNDING"
+  | "RELEVANCE"
+  | (string & {});
+export const GuardrailContextualGroundingFilterType = S.String;
+export type GuardrailContextualGroundingAction =
+  | "BLOCK"
+  | "NONE"
+  | (string & {});
+export const GuardrailContextualGroundingAction = S.String;
 export interface GuardrailContextualGroundingFilterConfig {
   type: GuardrailContextualGroundingFilterType;
   threshold: number;
@@ -3284,8 +3208,8 @@ export const StopModelCustomizationJobResponse = S.suspend(() =>
 ).annotations({
   identifier: "StopModelCustomizationJobResponse",
 }) as any as S.Schema<StopModelCustomizationJobResponse>;
-export type InputTags = "HONOR" | "IGNORE";
-export const InputTags = S.Literal("HONOR", "IGNORE");
+export type InputTags = "HONOR" | "IGNORE" | (string & {});
+export const InputTags = S.String;
 export type AutomatedReasoningPolicyBuildWorkflowStatus =
   | "SCHEDULED"
   | "CANCEL_REQUESTED"
@@ -3294,22 +3218,14 @@ export type AutomatedReasoningPolicyBuildWorkflowStatus =
   | "TESTING"
   | "COMPLETED"
   | "FAILED"
-  | "CANCELLED";
-export const AutomatedReasoningPolicyBuildWorkflowStatus = S.Literal(
-  "SCHEDULED",
-  "CANCEL_REQUESTED",
-  "PREPROCESSING",
-  "BUILDING",
-  "TESTING",
-  "COMPLETED",
-  "FAILED",
-  "CANCELLED",
-);
-export type AutomatedReasoningPolicyBuildDocumentContentType = "pdf" | "txt";
-export const AutomatedReasoningPolicyBuildDocumentContentType = S.Literal(
-  "pdf",
-  "txt",
-);
+  | "CANCELLED"
+  | (string & {});
+export const AutomatedReasoningPolicyBuildWorkflowStatus = S.String;
+export type AutomatedReasoningPolicyBuildDocumentContentType =
+  | "pdf"
+  | "txt"
+  | (string & {});
+export const AutomatedReasoningPolicyBuildDocumentContentType = S.String;
 export interface AutomatedReasoningPolicyTestCase {
   testCaseId: string;
   guardContent: string | redacted.Redacted<string>;
@@ -3342,14 +3258,9 @@ export type AutomatedReasoningPolicyTestRunStatus =
   | "SCHEDULED"
   | "IN_PROGRESS"
   | "COMPLETED"
-  | "FAILED";
-export const AutomatedReasoningPolicyTestRunStatus = S.Literal(
-  "NOT_STARTED",
-  "SCHEDULED",
-  "IN_PROGRESS",
-  "COMPLETED",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const AutomatedReasoningPolicyTestRunStatus = S.String;
 export interface AutomatedReasoningLogicStatement {
   logic: string | redacted.Redacted<string>;
   naturalLanguage?: string | redacted.Redacted<string>;
@@ -3428,11 +3339,9 @@ export const AutomatedReasoningCheckRuleList = S.Array(
 );
 export type AutomatedReasoningCheckLogicWarningType =
   | "ALWAYS_TRUE"
-  | "ALWAYS_FALSE";
-export const AutomatedReasoningCheckLogicWarningType = S.Literal(
-  "ALWAYS_TRUE",
-  "ALWAYS_FALSE",
-);
+  | "ALWAYS_FALSE"
+  | (string & {});
+export const AutomatedReasoningCheckLogicWarningType = S.String;
 export interface AutomatedReasoningCheckLogicWarning {
   type?: AutomatedReasoningCheckLogicWarningType;
   premises?: AutomatedReasoningLogicStatement[];
@@ -3639,11 +3548,11 @@ export type AutomatedReasoningCheckFindingList =
 export const AutomatedReasoningCheckFindingList = S.Array(
   AutomatedReasoningCheckFinding,
 );
-export type AutomatedReasoningPolicyTestRunResult = "PASSED" | "FAILED";
-export const AutomatedReasoningPolicyTestRunResult = S.Literal(
-  "PASSED",
-  "FAILED",
-);
+export type AutomatedReasoningPolicyTestRunResult =
+  | "PASSED"
+  | "FAILED"
+  | (string & {});
+export const AutomatedReasoningPolicyTestRunResult = S.String;
 export interface AutomatedReasoningPolicyTestResult {
   testCase: AutomatedReasoningPolicyTestCase;
   policyArn: string;
@@ -3694,8 +3603,8 @@ export const EvaluationOutputDataConfig = S.suspend(() =>
 ).annotations({
   identifier: "EvaluationOutputDataConfig",
 }) as any as S.Schema<EvaluationOutputDataConfig>;
-export type EvaluationJobType = "Human" | "Automated";
-export const EvaluationJobType = S.Literal("Human", "Automated");
+export type EvaluationJobType = "Human" | "Automated" | (string & {});
+export const EvaluationJobType = S.String;
 export type ErrorMessages = string[];
 export const ErrorMessages = S.Array(S.String);
 export type GuardrailStatus =
@@ -3704,15 +3613,9 @@ export type GuardrailStatus =
   | "VERSIONING"
   | "READY"
   | "FAILED"
-  | "DELETING";
-export const GuardrailStatus = S.Literal(
-  "CREATING",
-  "UPDATING",
-  "VERSIONING",
-  "READY",
-  "FAILED",
-  "DELETING",
-);
+  | "DELETING"
+  | (string & {});
+export const GuardrailStatus = S.String;
 export type GuardrailStatusReasons = string | redacted.Redacted<string>[];
 export const GuardrailStatusReasons = S.Array(SensitiveString);
 export type GuardrailFailureRecommendations =
@@ -3723,8 +3626,8 @@ export type InferenceProfileModelSource = { copyFrom: string };
 export const InferenceProfileModelSource = S.Union(
   S.Struct({ copyFrom: S.String }),
 );
-export type InferenceProfileStatus = "ACTIVE";
-export const InferenceProfileStatus = S.Literal("ACTIVE");
+export type InferenceProfileStatus = "ACTIVE" | (string & {});
+export const InferenceProfileStatus = S.String;
 export interface PromptRouterTargetModel {
   modelArn?: string;
 }
@@ -3743,14 +3646,20 @@ export const RoutingCriteria = S.suspend(() =>
 ).annotations({
   identifier: "RoutingCriteria",
 }) as any as S.Schema<RoutingCriteria>;
-export type PromptRouterStatus = "AVAILABLE";
-export const PromptRouterStatus = S.Literal("AVAILABLE");
-export type AuthorizationStatus = "AUTHORIZED" | "NOT_AUTHORIZED";
-export const AuthorizationStatus = S.Literal("AUTHORIZED", "NOT_AUTHORIZED");
-export type EntitlementAvailability = "AVAILABLE" | "NOT_AVAILABLE";
-export const EntitlementAvailability = S.Literal("AVAILABLE", "NOT_AVAILABLE");
-export type RegionAvailability = "AVAILABLE" | "NOT_AVAILABLE";
-export const RegionAvailability = S.Literal("AVAILABLE", "NOT_AVAILABLE");
+export type PromptRouterStatus = "AVAILABLE" | (string & {});
+export const PromptRouterStatus = S.String;
+export type AuthorizationStatus =
+  | "AUTHORIZED"
+  | "NOT_AUTHORIZED"
+  | (string & {});
+export const AuthorizationStatus = S.String;
+export type EntitlementAvailability =
+  | "AVAILABLE"
+  | "NOT_AVAILABLE"
+  | (string & {});
+export const EntitlementAvailability = S.String;
+export type RegionAvailability = "AVAILABLE" | "NOT_AVAILABLE" | (string & {});
+export const RegionAvailability = S.String;
 export interface OutputDataConfig {
   s3Uri: string;
 }
@@ -3771,18 +3680,13 @@ export type ModelCustomizationJobStatus =
   | "Completed"
   | "Failed"
   | "Stopping"
-  | "Stopped";
-export const ModelCustomizationJobStatus = S.Literal(
-  "InProgress",
-  "Completed",
-  "Failed",
-  "Stopping",
-  "Stopped",
-);
+  | "Stopped"
+  | (string & {});
+export const ModelCustomizationJobStatus = S.String;
 export type AutomatedReasoningPolicyDefinitionRuleIdList = string[];
 export const AutomatedReasoningPolicyDefinitionRuleIdList = S.Array(S.String);
-export type S3InputFormat = "JSONL";
-export const S3InputFormat = S.Literal("JSONL");
+export type S3InputFormat = "JSONL" | (string & {});
+export const S3InputFormat = S.String;
 export interface GetAutomatedReasoningPolicyResponse {
   policyArn: string;
   name: string | redacted.Redacted<string>;
@@ -4383,8 +4287,8 @@ export const UpdateAutomatedReasoningPolicyTestCaseResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateAutomatedReasoningPolicyTestCaseResponse",
 }) as any as S.Schema<UpdateAutomatedReasoningPolicyTestCaseResponse>;
-export type Status = "REGISTERED" | "INCOMPATIBLE_ENDPOINT";
-export const Status = S.Literal("REGISTERED", "INCOMPATIBLE_ENDPOINT");
+export type Status = "REGISTERED" | "INCOMPATIBLE_ENDPOINT" | (string & {});
+export const Status = S.String;
 export interface MarketplaceModelEndpoint {
   endpointArn: string;
   modelSourceIdentifier: string;
@@ -4470,14 +4374,9 @@ export type EvaluationTaskType =
   | "Classification"
   | "QuestionAndAnswer"
   | "Generation"
-  | "Custom";
-export const EvaluationTaskType = S.Literal(
-  "Summarization",
-  "Classification",
-  "QuestionAndAnswer",
-  "Generation",
-  "Custom",
-);
+  | "Custom"
+  | (string & {});
+export const EvaluationTaskType = S.String;
 export type EvaluationDatasetLocation = { s3Uri: string };
 export const EvaluationDatasetLocation = S.Union(S.Struct({ s3Uri: S.String }));
 export interface EvaluationDataset {
@@ -4669,8 +4568,8 @@ export const EvaluationConfig = S.Union(
   S.Struct({ automated: AutomatedEvaluationConfig }),
   S.Struct({ human: HumanEvaluationConfig }),
 );
-export type PerformanceConfigLatency = "standard" | "optimized";
-export const PerformanceConfigLatency = S.Literal("standard", "optimized");
+export type PerformanceConfigLatency = "standard" | "optimized" | (string & {});
+export const PerformanceConfigLatency = S.String;
 export interface PerformanceConfiguration {
   latency?: PerformanceConfigLatency;
 }
@@ -4715,8 +4614,8 @@ export const EvaluationModelConfig = S.Union(
 );
 export type EvaluationModelConfigs = EvaluationModelConfig[];
 export const EvaluationModelConfigs = S.Array(EvaluationModelConfig);
-export type SearchType = "HYBRID" | "SEMANTIC";
-export const SearchType = S.Literal("HYBRID", "SEMANTIC");
+export type SearchType = "HYBRID" | "SEMANTIC" | (string & {});
+export const SearchType = S.String;
 export interface FilterAttribute {
   key: string;
   value: any;
@@ -4945,13 +4844,13 @@ export const RetrievalFilter = S.Union(
     }),
   }),
 ) as any as S.Schema<RetrievalFilter>;
-export type AttributeType = "STRING" | "NUMBER" | "BOOLEAN" | "STRING_LIST";
-export const AttributeType = S.Literal(
-  "STRING",
-  "NUMBER",
-  "BOOLEAN",
-  "STRING_LIST",
-);
+export type AttributeType =
+  | "STRING"
+  | "NUMBER"
+  | "BOOLEAN"
+  | "STRING_LIST"
+  | (string & {});
+export const AttributeType = S.String;
 export interface MetadataAttributeSchema {
   key: string;
   type: AttributeType;
@@ -4976,10 +4875,10 @@ export const ImplicitFilterConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "ImplicitFilterConfiguration",
 }) as any as S.Schema<ImplicitFilterConfiguration>;
-export type VectorSearchRerankingConfigurationType = "BEDROCK_RERANKING_MODEL";
-export const VectorSearchRerankingConfigurationType = S.Literal(
-  "BEDROCK_RERANKING_MODEL",
-);
+export type VectorSearchRerankingConfigurationType =
+  | "BEDROCK_RERANKING_MODEL"
+  | (string & {});
+export const VectorSearchRerankingConfigurationType = S.String;
 export type AdditionalModelRequestFields = { [key: string]: any | undefined };
 export const AdditionalModelRequestFields = S.Record({
   key: S.String,
@@ -4997,8 +4896,11 @@ export const VectorSearchBedrockRerankingModelConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "VectorSearchBedrockRerankingModelConfiguration",
 }) as any as S.Schema<VectorSearchBedrockRerankingModelConfiguration>;
-export type RerankingMetadataSelectionMode = "SELECTIVE" | "ALL";
-export const RerankingMetadataSelectionMode = S.Literal("SELECTIVE", "ALL");
+export type RerankingMetadataSelectionMode =
+  | "SELECTIVE"
+  | "ALL"
+  | (string & {});
+export const RerankingMetadataSelectionMode = S.String;
 export interface FieldForReranking {
   fieldName: string;
 }
@@ -5098,11 +5000,11 @@ export const RetrieveConfig = S.suspend(() =>
 ).annotations({
   identifier: "RetrieveConfig",
 }) as any as S.Schema<RetrieveConfig>;
-export type RetrieveAndGenerateType = "KNOWLEDGE_BASE" | "EXTERNAL_SOURCES";
-export const RetrieveAndGenerateType = S.Literal(
-  "KNOWLEDGE_BASE",
-  "EXTERNAL_SOURCES",
-);
+export type RetrieveAndGenerateType =
+  | "KNOWLEDGE_BASE"
+  | "EXTERNAL_SOURCES"
+  | (string & {});
+export const RetrieveAndGenerateType = S.String;
 export interface PromptTemplate {
   textPromptTemplate?: string | redacted.Redacted<string>;
 }
@@ -5162,8 +5064,8 @@ export const GenerationConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "GenerationConfiguration",
 }) as any as S.Schema<GenerationConfiguration>;
-export type QueryTransformationType = "QUERY_DECOMPOSITION";
-export const QueryTransformationType = S.Literal("QUERY_DECOMPOSITION");
+export type QueryTransformationType = "QUERY_DECOMPOSITION" | (string & {});
+export const QueryTransformationType = S.String;
 export interface QueryTransformationConfiguration {
   type: QueryTransformationType;
 }
@@ -5200,8 +5102,8 @@ export const KnowledgeBaseRetrieveAndGenerateConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "KnowledgeBaseRetrieveAndGenerateConfiguration",
 }) as any as S.Schema<KnowledgeBaseRetrieveAndGenerateConfiguration>;
-export type ExternalSourceType = "S3" | "BYTE_CONTENT";
-export const ExternalSourceType = S.Literal("S3", "BYTE_CONTENT");
+export type ExternalSourceType = "S3" | "BYTE_CONTENT" | (string & {});
+export const ExternalSourceType = S.String;
 export interface S3ObjectDoc {
   uri: string;
 }
@@ -5761,12 +5663,9 @@ export const ListTagsForResourceResponse = S.suspend(() =>
 export type CustomModelDeploymentUpdateStatus =
   | "Updating"
   | "UpdateCompleted"
-  | "UpdateFailed";
-export const CustomModelDeploymentUpdateStatus = S.Literal(
-  "Updating",
-  "UpdateCompleted",
-  "UpdateFailed",
-);
+  | "UpdateFailed"
+  | (string & {});
+export const CustomModelDeploymentUpdateStatus = S.String;
 export type EvaluationTaskTypes = EvaluationTaskType[];
 export const EvaluationTaskTypes = S.Array(EvaluationTaskType);
 export type EvaluationBedrockModelIdentifiers = string[];
@@ -5785,13 +5684,9 @@ export type AgreementStatus =
   | "AVAILABLE"
   | "PENDING"
   | "NOT_AVAILABLE"
-  | "ERROR";
-export const AgreementStatus = S.Literal(
-  "AVAILABLE",
-  "PENDING",
-  "NOT_AVAILABLE",
-  "ERROR",
-);
+  | "ERROR"
+  | (string & {});
+export const AgreementStatus = S.String;
 export interface Validator {
   s3Uri: string;
 }
@@ -5800,8 +5695,8 @@ export const Validator = S.suspend(() =>
 ).annotations({ identifier: "Validator" }) as any as S.Schema<Validator>;
 export type Validators = Validator[];
 export const Validators = S.Array(Validator);
-export type ReasoningEffort = "low" | "medium" | "high";
-export const ReasoningEffort = S.Literal("low", "medium", "high");
+export type ReasoningEffort = "low" | "medium" | "high" | (string & {});
+export const ReasoningEffort = S.String;
 export interface AutomatedReasoningPolicySummary {
   policyArn: string;
   name: string | redacted.Redacted<string>;
@@ -6261,8 +6156,11 @@ export const ModelInvocationJobSummary = S.suspend(() =>
 }) as any as S.Schema<ModelInvocationJobSummary>;
 export type ModelInvocationJobSummaries = ModelInvocationJobSummary[];
 export const ModelInvocationJobSummaries = S.Array(ModelInvocationJobSummary);
-export type FoundationModelLifecycleStatus = "ACTIVE" | "LEGACY";
-export const FoundationModelLifecycleStatus = S.Literal("ACTIVE", "LEGACY");
+export type FoundationModelLifecycleStatus =
+  | "ACTIVE"
+  | "LEGACY"
+  | (string & {});
+export const FoundationModelLifecycleStatus = S.String;
 export interface FoundationModelLifecycle {
   status: FoundationModelLifecycleStatus;
 }
@@ -6390,15 +6288,9 @@ export type JobStatusDetails =
   | "Stopping"
   | "Stopped"
   | "Failed"
-  | "NotStarted";
-export const JobStatusDetails = S.Literal(
-  "InProgress",
-  "Completed",
-  "Stopping",
-  "Stopped",
-  "Failed",
-  "NotStarted",
-);
+  | "NotStarted"
+  | (string & {});
+export const JobStatusDetails = S.String;
 export interface ValidationDetails {
   status?: JobStatusDetails;
   creationTime?: Date;
@@ -7459,11 +7351,11 @@ export const GuardrailContextualGroundingFilters = S.Array(
 );
 export type AutomatedReasoningPolicyDisjointedRuleIdList = string[];
 export const AutomatedReasoningPolicyDisjointedRuleIdList = S.Array(S.String);
-export type AutomatedReasoningPolicyAnnotationStatus = "APPLIED" | "FAILED";
-export const AutomatedReasoningPolicyAnnotationStatus = S.Literal(
-  "APPLIED",
-  "FAILED",
-);
+export type AutomatedReasoningPolicyAnnotationStatus =
+  | "APPLIED"
+  | "FAILED"
+  | (string & {});
+export const AutomatedReasoningPolicyAnnotationStatus = S.String;
 export type EvaluationPrecomputedInferenceSourceIdentifiers = string[];
 export const EvaluationPrecomputedInferenceSourceIdentifiers = S.Array(
   S.String,
@@ -7950,12 +7842,9 @@ export const AutomatedReasoningPolicyPlanning = S.suspend(() =>
 export type AutomatedReasoningPolicyBuildMessageType =
   | "INFO"
   | "WARNING"
-  | "ERROR";
-export const AutomatedReasoningPolicyBuildMessageType = S.Literal(
-  "INFO",
-  "WARNING",
-  "ERROR",
-);
+  | "ERROR"
+  | (string & {});
+export const AutomatedReasoningPolicyBuildMessageType = S.String;
 export interface EvaluationSummary {
   jobArn: string;
   jobName: string;

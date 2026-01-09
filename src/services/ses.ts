@@ -251,8 +251,8 @@ export const ListVerifiedEmailAddressesRequest = S.suspend(() =>
 ).annotations({
   identifier: "ListVerifiedEmailAddressesRequest",
 }) as any as S.Schema<ListVerifiedEmailAddressesRequest>;
-export type TlsPolicy = "Require" | "Optional";
-export const TlsPolicy = S.Literal("Require", "Optional");
+export type TlsPolicy = "Require" | "Optional" | (string & {});
+export const TlsPolicy = S.String;
 export type RecipientsList = string[];
 export const RecipientsList = S.Array(S.String);
 export interface S3Action {
@@ -296,8 +296,8 @@ export const WorkmailAction = S.suspend(() =>
 ).annotations({
   identifier: "WorkmailAction",
 }) as any as S.Schema<WorkmailAction>;
-export type InvocationType = "Event" | "RequestResponse";
-export const InvocationType = S.Literal("Event", "RequestResponse");
+export type InvocationType = "Event" | "RequestResponse" | (string & {});
+export const InvocationType = S.String;
 export interface LambdaAction {
   TopicArn?: string;
   FunctionArn: string;
@@ -310,8 +310,8 @@ export const LambdaAction = S.suspend(() =>
     InvocationType: S.optional(InvocationType),
   }),
 ).annotations({ identifier: "LambdaAction" }) as any as S.Schema<LambdaAction>;
-export type StopScope = "RuleSet";
-export const StopScope = S.Literal("RuleSet");
+export type StopScope = "RuleSet" | (string & {});
+export const StopScope = S.String;
 export interface StopAction {
   Scope: StopScope;
   TopicArn?: string;
@@ -328,8 +328,8 @@ export const AddHeaderAction = S.suspend(() =>
 ).annotations({
   identifier: "AddHeaderAction",
 }) as any as S.Schema<AddHeaderAction>;
-export type SNSActionEncoding = "UTF-8" | "Base64";
-export const SNSActionEncoding = S.Literal("UTF-8", "Base64");
+export type SNSActionEncoding = "UTF-8" | "Base64" | (string & {});
+export const SNSActionEncoding = S.String;
 export interface SNSAction {
   TopicArn: string;
   Encoding?: SNSActionEncoding;
@@ -396,23 +396,19 @@ export type ConfigurationSetAttribute =
   | "eventDestinations"
   | "trackingOptions"
   | "deliveryOptions"
-  | "reputationOptions";
-export const ConfigurationSetAttribute = S.Literal(
-  "eventDestinations",
-  "trackingOptions",
-  "deliveryOptions",
-  "reputationOptions",
-);
+  | "reputationOptions"
+  | (string & {});
+export const ConfigurationSetAttribute = S.String;
 export type ConfigurationSetAttributeList = ConfigurationSetAttribute[];
 export const ConfigurationSetAttributeList = S.Array(ConfigurationSetAttribute);
 export type IdentityList = string[];
 export const IdentityList = S.Array(S.String);
 export type PolicyNameList = string[];
 export const PolicyNameList = S.Array(S.String);
-export type IdentityType = "EmailAddress" | "Domain";
-export const IdentityType = S.Literal("EmailAddress", "Domain");
-export type ReceiptFilterPolicy = "Block" | "Allow";
-export const ReceiptFilterPolicy = S.Literal("Block", "Allow");
+export type IdentityType = "EmailAddress" | "Domain" | (string & {});
+export const IdentityType = S.String;
+export type ReceiptFilterPolicy = "Block" | "Allow" | (string & {});
+export const ReceiptFilterPolicy = S.String;
 export interface ReceiptIpFilter {
   Policy: ReceiptFilterPolicy;
   Cidr: string;
@@ -437,13 +433,17 @@ export type AddressList = string[];
 export const AddressList = S.Array(S.String);
 export type ReceiptRuleNamesList = string[];
 export const ReceiptRuleNamesList = S.Array(S.String);
-export type NotificationType = "Bounce" | "Complaint" | "Delivery";
-export const NotificationType = S.Literal("Bounce", "Complaint", "Delivery");
-export type BehaviorOnMXFailure = "UseDefaultValue" | "RejectMessage";
-export const BehaviorOnMXFailure = S.Literal(
-  "UseDefaultValue",
-  "RejectMessage",
-);
+export type NotificationType =
+  | "Bounce"
+  | "Complaint"
+  | "Delivery"
+  | (string & {});
+export const NotificationType = S.String;
+export type BehaviorOnMXFailure =
+  | "UseDefaultValue"
+  | "RejectMessage"
+  | (string & {});
+export const BehaviorOnMXFailure = S.String;
 export interface CloneReceiptRuleSetRequest {
   RuleSetName: string;
   OriginalRuleSetName: string;
@@ -1530,17 +1530,9 @@ export type EventType =
   | "delivery"
   | "open"
   | "click"
-  | "renderingFailure";
-export const EventType = S.Literal(
-  "send",
-  "reject",
-  "bounce",
-  "complaint",
-  "delivery",
-  "open",
-  "click",
-  "renderingFailure",
-);
+  | "renderingFailure"
+  | (string & {});
+export const EventType = S.String;
 export type EventTypes = EventType[];
 export const EventTypes = S.Array(EventType);
 export interface KinesisFirehoseDestination {
@@ -1552,12 +1544,12 @@ export const KinesisFirehoseDestination = S.suspend(() =>
 ).annotations({
   identifier: "KinesisFirehoseDestination",
 }) as any as S.Schema<KinesisFirehoseDestination>;
-export type DimensionValueSource = "messageTag" | "emailHeader" | "linkTag";
-export const DimensionValueSource = S.Literal(
-  "messageTag",
-  "emailHeader",
-  "linkTag",
-);
+export type DimensionValueSource =
+  | "messageTag"
+  | "emailHeader"
+  | "linkTag"
+  | (string & {});
+export const DimensionValueSource = S.String;
 export interface CloudWatchDimensionConfiguration {
   DimensionName: string;
   DimensionValueSource: DimensionValueSource;
@@ -1917,15 +1909,9 @@ export type BounceType =
   | "ExceededQuota"
   | "ContentRejected"
   | "Undefined"
-  | "TemporaryFailure";
-export const BounceType = S.Literal(
-  "DoesNotExist",
-  "MessageTooLarge",
-  "ExceededQuota",
-  "ContentRejected",
-  "Undefined",
-  "TemporaryFailure",
-);
+  | "TemporaryFailure"
+  | (string & {});
+export const BounceType = S.String;
 export interface ConfigurationSet {
   Name: string;
 }
@@ -2009,14 +1995,9 @@ export type DsnAction =
   | "delayed"
   | "delivered"
   | "relayed"
-  | "expanded";
-export const DsnAction = S.Literal(
-  "failed",
-  "delayed",
-  "delivered",
-  "relayed",
-  "expanded",
-);
+  | "expanded"
+  | (string & {});
+export const DsnAction = S.String;
 export interface CreateConfigurationSetRequest {
   ConfigurationSet: ConfigurationSet;
 }
@@ -2491,25 +2472,16 @@ export type VerificationStatus =
   | "Success"
   | "Failed"
   | "TemporaryFailure"
-  | "NotStarted";
-export const VerificationStatus = S.Literal(
-  "Pending",
-  "Success",
-  "Failed",
-  "TemporaryFailure",
-  "NotStarted",
-);
+  | "NotStarted"
+  | (string & {});
+export const VerificationStatus = S.String;
 export type CustomMailFromStatus =
   | "Pending"
   | "Success"
   | "Failed"
-  | "TemporaryFailure";
-export const CustomMailFromStatus = S.Literal(
-  "Pending",
-  "Success",
-  "Failed",
-  "TemporaryFailure",
-);
+  | "TemporaryFailure"
+  | (string & {});
+export const CustomMailFromStatus = S.String;
 export interface CreateReceiptFilterRequest {
   Filter: ReceiptFilter;
 }
@@ -2736,23 +2708,9 @@ export type BulkEmailStatus =
   | "ConfigurationSetSendingPaused"
   | "InvalidParameterValue"
   | "TransientFailure"
-  | "Failed";
-export const BulkEmailStatus = S.Literal(
-  "Success",
-  "MessageRejected",
-  "MailFromDomainNotVerified",
-  "ConfigurationSetDoesNotExist",
-  "TemplateDoesNotExist",
-  "AccountSuspended",
-  "AccountThrottled",
-  "AccountDailyQuotaExceeded",
-  "InvalidSendingPoolName",
-  "AccountSendingPaused",
-  "ConfigurationSetSendingPaused",
-  "InvalidParameterValue",
-  "TransientFailure",
-  "Failed",
-);
+  | "Failed"
+  | (string & {});
+export const BulkEmailStatus = S.String;
 export type DkimAttributes = {
   [key: string]: IdentityDkimAttributes | undefined;
 };

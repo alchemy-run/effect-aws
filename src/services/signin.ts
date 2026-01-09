@@ -207,15 +207,9 @@ export type OAuth2ErrorCode =
   | "INSUFFICIENT_PERMISSIONS"
   | "AUTHCODE_EXPIRED"
   | "server_error"
-  | "INVALID_REQUEST";
-export const OAuth2ErrorCode = S.Literal(
-  "TOKEN_EXPIRED",
-  "USER_CREDENTIALS_CHANGED",
-  "INSUFFICIENT_PERMISSIONS",
-  "AUTHCODE_EXPIRED",
-  "server_error",
-  "INVALID_REQUEST",
-);
+  | "INVALID_REQUEST"
+  | (string & {});
+export const OAuth2ErrorCode = S.String;
 
 //# Errors
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(

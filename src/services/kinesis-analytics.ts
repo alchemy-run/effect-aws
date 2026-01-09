@@ -163,8 +163,8 @@ export const InputParallelism = S.suspend(() =>
 ).annotations({
   identifier: "InputParallelism",
 }) as any as S.Schema<InputParallelism>;
-export type RecordFormatType = "JSON" | "CSV";
-export const RecordFormatType = S.Literal("JSON", "CSV");
+export type RecordFormatType = "JSON" | "CSV" | (string & {});
+export const RecordFormatType = S.String;
 export interface JSONMappingParameters {
   RecordRowPath: string;
 }
@@ -607,12 +607,9 @@ export const UntagResourceResponse = S.suspend(() =>
 export type InputStartingPosition =
   | "NOW"
   | "TRIM_HORIZON"
-  | "LAST_STOPPED_POINT";
-export const InputStartingPosition = S.Literal(
-  "NOW",
-  "TRIM_HORIZON",
-  "LAST_STOPPED_POINT",
-);
+  | "LAST_STOPPED_POINT"
+  | (string & {});
+export const InputStartingPosition = S.String;
 export interface InputStartingPositionConfiguration {
   InputStartingPosition?: InputStartingPosition;
 }
@@ -793,15 +790,9 @@ export type ApplicationStatus =
   | "STOPPING"
   | "READY"
   | "RUNNING"
-  | "UPDATING";
-export const ApplicationStatus = S.Literal(
-  "DELETING",
-  "STARTING",
-  "STOPPING",
-  "READY",
-  "RUNNING",
-  "UPDATING",
-);
+  | "UPDATING"
+  | (string & {});
+export const ApplicationStatus = S.String;
 export interface CloudWatchLoggingOptionUpdate {
   CloudWatchLoggingOptionId: string;
   LogStreamARNUpdate?: string;

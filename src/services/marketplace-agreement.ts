@@ -137,8 +137,8 @@ export const GetAgreementTermsInput = S.suspend(() =>
 }) as any as S.Schema<GetAgreementTermsInput>;
 export type FilterValueList = string[];
 export const FilterValueList = S.Array(S.String);
-export type SortOrder = "ASCENDING" | "DESCENDING";
-export const SortOrder = S.Literal("ASCENDING", "DESCENDING");
+export type SortOrder = "ASCENDING" | "DESCENDING" | (string & {});
+export const SortOrder = S.String;
 export type AgreementStatus =
   | "ACTIVE"
   | "ARCHIVED"
@@ -148,18 +148,9 @@ export type AgreementStatus =
   | "REPLACED"
   | "ROLLED_BACK"
   | "SUPERSEDED"
-  | "TERMINATED";
-export const AgreementStatus = S.Literal(
-  "ACTIVE",
-  "ARCHIVED",
-  "CANCELLED",
-  "EXPIRED",
-  "RENEWED",
-  "REPLACED",
-  "ROLLED_BACK",
-  "SUPERSEDED",
-  "TERMINATED",
-);
+  | "TERMINATED"
+  | (string & {});
+export const AgreementStatus = S.String;
 export interface Filter {
   name?: string;
   values?: string[];
@@ -310,11 +301,9 @@ export const FixedUpfrontPricingTerm = S.suspend(() =>
 }) as any as S.Schema<FixedUpfrontPricingTerm>;
 export type PaymentRequestApprovalStrategy =
   | "AUTO_APPROVE_ON_EXPIRATION"
-  | "WAIT_FOR_APPROVAL";
-export const PaymentRequestApprovalStrategy = S.Literal(
-  "AUTO_APPROVE_ON_EXPIRATION",
-  "WAIT_FOR_APPROVAL",
-);
+  | "WAIT_FOR_APPROVAL"
+  | (string & {});
+export const PaymentRequestApprovalStrategy = S.String;
 export interface ProposalSummary {
   resources?: Resource[];
   offerId?: string;
@@ -803,8 +792,8 @@ export const GetAgreementTermsOutput = S.suspend(() =>
 ).annotations({
   identifier: "GetAgreementTermsOutput",
 }) as any as S.Schema<GetAgreementTermsOutput>;
-export type ResourceType = "Agreement";
-export const ResourceType = S.Literal("Agreement");
+export type ResourceType = "Agreement" | (string & {});
+export const ResourceType = S.String;
 export type ValidationExceptionReason =
   | "INVALID_AGREEMENT_ID"
   | "MISSING_AGREEMENT_ID"
@@ -816,20 +805,9 @@ export type ValidationExceptionReason =
   | "INVALID_NEXT_TOKEN"
   | "INVALID_MAX_RESULTS"
   | "UNSUPPORTED_FILTERS"
-  | "OTHER";
-export const ValidationExceptionReason = S.Literal(
-  "INVALID_AGREEMENT_ID",
-  "MISSING_AGREEMENT_ID",
-  "INVALID_CATALOG",
-  "INVALID_FILTER_NAME",
-  "INVALID_FILTER_VALUES",
-  "INVALID_SORT_BY",
-  "INVALID_SORT_ORDER",
-  "INVALID_NEXT_TOKEN",
-  "INVALID_MAX_RESULTS",
-  "UNSUPPORTED_FILTERS",
-  "OTHER",
-);
+  | "OTHER"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 export interface ValidationExceptionField {
   name: string;
   message: string;

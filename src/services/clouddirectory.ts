@@ -122,12 +122,17 @@ export type RuleParameterValue = string;
 export type BatchOperationIndex = number;
 
 //# Schemas
-export type ConsistencyLevel = "SERIALIZABLE" | "EVENTUAL";
-export const ConsistencyLevel = S.Literal("SERIALIZABLE", "EVENTUAL");
-export type ObjectType = "NODE" | "LEAF_NODE" | "POLICY" | "INDEX";
-export const ObjectType = S.Literal("NODE", "LEAF_NODE", "POLICY", "INDEX");
-export type FacetStyle = "STATIC" | "DYNAMIC";
-export const FacetStyle = S.Literal("STATIC", "DYNAMIC");
+export type ConsistencyLevel = "SERIALIZABLE" | "EVENTUAL" | (string & {});
+export const ConsistencyLevel = S.String;
+export type ObjectType =
+  | "NODE"
+  | "LEAF_NODE"
+  | "POLICY"
+  | "INDEX"
+  | (string & {});
+export const ObjectType = S.String;
+export type FacetStyle = "STATIC" | "DYNAMIC" | (string & {});
+export const FacetStyle = S.String;
 export interface SchemaFacet {
   SchemaArn?: string;
   FacetName?: string;
@@ -142,8 +147,8 @@ export type SchemaFacetList = SchemaFacet[];
 export const SchemaFacetList = S.Array(SchemaFacet);
 export type AttributeNameList = string[];
 export const AttributeNameList = S.Array(S.String);
-export type DirectoryState = "ENABLED" | "DISABLED" | "DELETED";
-export const DirectoryState = S.Literal("ENABLED", "DISABLED", "DELETED");
+export type DirectoryState = "ENABLED" | "DISABLED" | "DELETED" | (string & {});
+export const DirectoryState = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export interface ApplySchemaRequest {
@@ -1236,14 +1241,9 @@ export type RangeMode =
   | "LAST"
   | "LAST_BEFORE_MISSING_VALUES"
   | "INCLUSIVE"
-  | "EXCLUSIVE";
-export const RangeMode = S.Literal(
-  "FIRST",
-  "LAST",
-  "LAST_BEFORE_MISSING_VALUES",
-  "INCLUSIVE",
-  "EXCLUSIVE",
-);
+  | "EXCLUSIVE"
+  | (string & {});
+export const RangeMode = S.String;
 export interface TypedAttributeValueRange {
   StartMode: RangeMode;
   StartValue?: TypedAttributeValue;
@@ -1658,13 +1658,13 @@ export const UpgradePublishedSchemaRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpgradePublishedSchemaRequest",
 }) as any as S.Schema<UpgradePublishedSchemaRequest>;
-export type RequiredAttributeBehavior = "REQUIRED_ALWAYS" | "NOT_REQUIRED";
-export const RequiredAttributeBehavior = S.Literal(
-  "REQUIRED_ALWAYS",
-  "NOT_REQUIRED",
-);
-export type UpdateActionType = "CREATE_OR_UPDATE" | "DELETE";
-export const UpdateActionType = S.Literal("CREATE_OR_UPDATE", "DELETE");
+export type RequiredAttributeBehavior =
+  | "REQUIRED_ALWAYS"
+  | "NOT_REQUIRED"
+  | (string & {});
+export const RequiredAttributeBehavior = S.String;
+export type UpdateActionType = "CREATE_OR_UPDATE" | "DELETE" | (string & {});
+export const UpdateActionType = S.String;
 export type AttributeKeyList = AttributeKey[];
 export const AttributeKeyList = S.Array(AttributeKey);
 export type Arns = string[];
@@ -1724,26 +1724,16 @@ export type FacetAttributeType =
   | "BOOLEAN"
   | "NUMBER"
   | "DATETIME"
-  | "VARIANT";
-export const FacetAttributeType = S.Literal(
-  "STRING",
-  "BINARY",
-  "BOOLEAN",
-  "NUMBER",
-  "DATETIME",
-  "VARIANT",
-);
+  | "VARIANT"
+  | (string & {});
+export const FacetAttributeType = S.String;
 export type RuleType =
   | "BINARY_LENGTH"
   | "NUMBER_COMPARISON"
   | "STRING_FROM_SET"
-  | "STRING_LENGTH";
-export const RuleType = S.Literal(
-  "BINARY_LENGTH",
-  "NUMBER_COMPARISON",
-  "STRING_FROM_SET",
-  "STRING_LENGTH",
-);
+  | "STRING_LENGTH"
+  | (string & {});
+export const RuleType = S.String;
 export type RuleParameterMap = { [key: string]: string | undefined };
 export const RuleParameterMap = S.Record({
   key: S.String,
@@ -3445,22 +3435,9 @@ export type BatchReadExceptionType =
   | "NotPolicyException"
   | "DirectoryNotEnabledException"
   | "LimitExceededException"
-  | "InternalServiceException";
-export const BatchReadExceptionType = S.Literal(
-  "ValidationException",
-  "InvalidArnException",
-  "ResourceNotFoundException",
-  "InvalidNextTokenException",
-  "AccessDeniedException",
-  "NotNodeException",
-  "FacetValidationException",
-  "CannotListParentOfRootException",
-  "NotIndexException",
-  "NotPolicyException",
-  "DirectoryNotEnabledException",
-  "LimitExceededException",
-  "InternalServiceException",
-);
+  | "InternalServiceException"
+  | (string & {});
+export const BatchReadExceptionType = S.String;
 export interface BatchReadException {
   Type?: BatchReadExceptionType;
   Message?: string;
@@ -3851,27 +3828,9 @@ export type BatchWriteExceptionType =
   | "NotPolicyException"
   | "DirectoryNotEnabledException"
   | "LimitExceededException"
-  | "UnsupportedIndexTypeException";
-export const BatchWriteExceptionType = S.Literal(
-  "InternalServiceException",
-  "ValidationException",
-  "InvalidArnException",
-  "LinkNameAlreadyInUseException",
-  "StillContainsLinksException",
-  "FacetValidationException",
-  "ObjectNotDetachedException",
-  "ResourceNotFoundException",
-  "AccessDeniedException",
-  "InvalidAttachmentException",
-  "NotIndexException",
-  "NotNodeException",
-  "IndexedAttributeMissingException",
-  "ObjectAlreadyDetachedException",
-  "NotPolicyException",
-  "DirectoryNotEnabledException",
-  "LimitExceededException",
-  "UnsupportedIndexTypeException",
-);
+  | "UnsupportedIndexTypeException"
+  | (string & {});
+export const BatchWriteExceptionType = S.String;
 export interface BatchReadResponse {
   Responses?: BatchReadOperationResponse[];
 }

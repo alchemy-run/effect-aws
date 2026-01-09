@@ -177,8 +177,8 @@ export type MetaDataKey = string;
 export type MetaDataValue = string;
 
 //# Schemas
-export type GroupingType = "ACCOUNT_BASED";
-export const GroupingType = S.Literal("ACCOUNT_BASED");
+export type GroupingType = "ACCOUNT_BASED" | (string & {});
+export const GroupingType = S.String;
 export type ResourceList = string[];
 export const ResourceList = S.Array(S.String);
 export type Tier =
@@ -204,46 +204,27 @@ export type Tier =
   | "ACTIVE_DIRECTORY"
   | "SAP_NETWEAVER_STANDARD"
   | "SAP_NETWEAVER_DISTRIBUTED"
-  | "SAP_NETWEAVER_HIGH_AVAILABILITY";
-export const Tier = S.Literal(
-  "CUSTOM",
-  "DEFAULT",
-  "DOT_NET_CORE",
-  "DOT_NET_WORKER",
-  "DOT_NET_WEB_TIER",
-  "DOT_NET_WEB",
-  "SQL_SERVER",
-  "SQL_SERVER_ALWAYSON_AVAILABILITY_GROUP",
-  "MYSQL",
-  "POSTGRESQL",
-  "JAVA_JMX",
-  "ORACLE",
-  "SAP_HANA_MULTI_NODE",
-  "SAP_HANA_SINGLE_NODE",
-  "SAP_HANA_HIGH_AVAILABILITY",
-  "SAP_ASE_SINGLE_NODE",
-  "SAP_ASE_HIGH_AVAILABILITY",
-  "SQL_SERVER_FAILOVER_CLUSTER_INSTANCE",
-  "SHAREPOINT",
-  "ACTIVE_DIRECTORY",
-  "SAP_NETWEAVER_STANDARD",
-  "SAP_NETWEAVER_DISTRIBUTED",
-  "SAP_NETWEAVER_HIGH_AVAILABILITY",
-);
-export type RecommendationType = "INFRA_ONLY" | "WORKLOAD_ONLY" | "ALL";
-export const RecommendationType = S.Literal(
-  "INFRA_ONLY",
-  "WORKLOAD_ONLY",
-  "ALL",
-);
-export type ConfigurationEventStatus = "INFO" | "WARN" | "ERROR";
-export const ConfigurationEventStatus = S.Literal("INFO", "WARN", "ERROR");
-export type Visibility = "IGNORED" | "VISIBLE";
-export const Visibility = S.Literal("IGNORED", "VISIBLE");
+  | "SAP_NETWEAVER_HIGH_AVAILABILITY"
+  | (string & {});
+export const Tier = S.String;
+export type RecommendationType =
+  | "INFRA_ONLY"
+  | "WORKLOAD_ONLY"
+  | "ALL"
+  | (string & {});
+export const RecommendationType = S.String;
+export type ConfigurationEventStatus =
+  | "INFO"
+  | "WARN"
+  | "ERROR"
+  | (string & {});
+export const ConfigurationEventStatus = S.String;
+export type Visibility = "IGNORED" | "VISIBLE" | (string & {});
+export const Visibility = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
-export type UpdateStatus = "RESOLVED";
-export const UpdateStatus = S.Literal("RESOLVED");
+export type UpdateStatus = "RESOLVED" | (string & {});
+export const UpdateStatus = S.String;
 export interface CreateComponentRequest {
   ResourceGroupName: string;
   ComponentName: string;
@@ -838,8 +819,11 @@ export const UpdateWorkloadRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateWorkloadRequest",
 }) as any as S.Schema<UpdateWorkloadRequest>;
-export type DiscoveryType = "RESOURCE_GROUP_BASED" | "ACCOUNT_BASED";
-export const DiscoveryType = S.Literal("RESOURCE_GROUP_BASED", "ACCOUNT_BASED");
+export type DiscoveryType =
+  | "RESOURCE_GROUP_BASED"
+  | "ACCOUNT_BASED"
+  | (string & {});
+export const DiscoveryType = S.String;
 export interface ApplicationInfo {
   AccountId?: string;
   ResourceGroupName?: string;
@@ -872,8 +856,8 @@ export const ApplicationInfo = S.suspend(() =>
 }) as any as S.Schema<ApplicationInfo>;
 export type ApplicationInfoList = ApplicationInfo[];
 export const ApplicationInfoList = S.Array(ApplicationInfo);
-export type OsType = "WINDOWS" | "LINUX";
-export const OsType = S.Literal("WINDOWS", "LINUX");
+export type OsType = "WINDOWS" | "LINUX" | (string & {});
+export const OsType = S.String;
 export type WorkloadMetaData = { [key: string]: string | undefined };
 export const WorkloadMetaData = S.Record({
   key: S.String,
@@ -934,26 +918,34 @@ export type Status =
   | "RESOLVED"
   | "PENDING"
   | "RECURRING"
-  | "RECOVERING";
-export const Status = S.Literal(
-  "IGNORE",
-  "RESOLVED",
-  "PENDING",
-  "RECURRING",
-  "RECOVERING",
-);
-export type SeverityLevel = "Informative" | "Low" | "Medium" | "High";
-export const SeverityLevel = S.Literal("Informative", "Low", "Medium", "High");
-export type FeedbackKey = "INSIGHTS_FEEDBACK";
-export const FeedbackKey = S.Literal("INSIGHTS_FEEDBACK");
-export type FeedbackValue = "NOT_SPECIFIED" | "USEFUL" | "NOT_USEFUL";
-export const FeedbackValue = S.Literal("NOT_SPECIFIED", "USEFUL", "NOT_USEFUL");
+  | "RECOVERING"
+  | (string & {});
+export const Status = S.String;
+export type SeverityLevel =
+  | "Informative"
+  | "Low"
+  | "Medium"
+  | "High"
+  | (string & {});
+export const SeverityLevel = S.String;
+export type FeedbackKey = "INSIGHTS_FEEDBACK" | (string & {});
+export const FeedbackKey = S.String;
+export type FeedbackValue =
+  | "NOT_SPECIFIED"
+  | "USEFUL"
+  | "NOT_USEFUL"
+  | (string & {});
+export const FeedbackValue = S.String;
 export type Feedback = { [key in FeedbackKey]?: FeedbackValue };
 export const Feedback = S.partial(
   S.Record({ key: FeedbackKey, value: S.UndefinedOr(FeedbackValue) }),
 );
-export type ResolutionMethod = "MANUAL" | "AUTOMATIC" | "UNRESOLVED";
-export const ResolutionMethod = S.Literal("MANUAL", "AUTOMATIC", "UNRESOLVED");
+export type ResolutionMethod =
+  | "MANUAL"
+  | "AUTOMATIC"
+  | "UNRESOLVED"
+  | (string & {});
+export const ResolutionMethod = S.String;
 export interface Problem {
   Id?: string;
   Title?: string;
@@ -1204,15 +1196,15 @@ export const UpdateWorkloadResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateWorkloadResponse",
 }) as any as S.Schema<UpdateWorkloadResponse>;
-export type LogFilter = "ERROR" | "WARN" | "INFO";
-export const LogFilter = S.Literal("ERROR", "WARN", "INFO");
-export type CloudWatchEventSource = "EC2" | "CODE_DEPLOY" | "HEALTH" | "RDS";
-export const CloudWatchEventSource = S.Literal(
-  "EC2",
-  "CODE_DEPLOY",
-  "HEALTH",
-  "RDS",
-);
+export type LogFilter = "ERROR" | "WARN" | "INFO" | (string & {});
+export const LogFilter = S.String;
+export type CloudWatchEventSource =
+  | "EC2"
+  | "CODE_DEPLOY"
+  | "HEALTH"
+  | "RDS"
+  | (string & {});
+export const CloudWatchEventSource = S.String;
 export interface Observation {
   Id?: string;
   StartTime?: Date;
@@ -1315,13 +1307,9 @@ export type ConfigurationEventResourceType =
   | "CLOUDWATCH_ALARM"
   | "CLOUDWATCH_LOG"
   | "CLOUDFORMATION"
-  | "SSM_ASSOCIATION";
-export const ConfigurationEventResourceType = S.Literal(
-  "CLOUDWATCH_ALARM",
-  "CLOUDWATCH_LOG",
-  "CLOUDFORMATION",
-  "SSM_ASSOCIATION",
-);
+  | "SSM_ASSOCIATION"
+  | (string & {});
+export const ConfigurationEventResourceType = S.String;
 export interface RelatedObservations {
   ObservationList?: Observation[];
 }

@@ -2176,14 +2176,9 @@ export type ManagedWorkgroupStatus =
   | "DELETING"
   | "MODIFYING"
   | "AVAILABLE"
-  | "NOT_AVAILABLE";
-export const ManagedWorkgroupStatus = S.Literal(
-  "CREATING",
-  "DELETING",
-  "MODIFYING",
-  "AVAILABLE",
-  "NOT_AVAILABLE",
-);
+  | "NOT_AVAILABLE"
+  | (string & {});
+export const ManagedWorkgroupStatus = S.String;
 export interface Association {
   customDomainCertificateArn?: string;
   customDomainCertificateExpiryTime?: Date;

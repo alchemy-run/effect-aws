@@ -148,12 +148,12 @@ export type ControlArnFilterList = string[];
 export const ControlArnFilterList = S.Array(S.String);
 export type CommonControlArnFilterList = string[];
 export const CommonControlArnFilterList = S.Array(S.String);
-export type MappingType = "FRAMEWORK" | "COMMON_CONTROL" | "RELATED_CONTROL";
-export const MappingType = S.Literal(
-  "FRAMEWORK",
-  "COMMON_CONTROL",
-  "RELATED_CONTROL",
-);
+export type MappingType =
+  | "FRAMEWORK"
+  | "COMMON_CONTROL"
+  | "RELATED_CONTROL"
+  | (string & {});
+export const MappingType = S.String;
 export type MappingTypeFilterList = MappingType[];
 export const MappingTypeFilterList = S.Array(MappingType);
 export interface ControlMappingFilter {
@@ -172,14 +172,19 @@ export const ControlMappingFilter = S.suspend(() =>
 }) as any as S.Schema<ControlMappingFilter>;
 export type ControlAliases = string[];
 export const ControlAliases = S.Array(S.String);
-export type ControlBehavior = "PREVENTIVE" | "PROACTIVE" | "DETECTIVE";
-export const ControlBehavior = S.Literal(
-  "PREVENTIVE",
-  "PROACTIVE",
-  "DETECTIVE",
-);
-export type ControlSeverity = "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
-export const ControlSeverity = S.Literal("LOW", "MEDIUM", "HIGH", "CRITICAL");
+export type ControlBehavior =
+  | "PREVENTIVE"
+  | "PROACTIVE"
+  | "DETECTIVE"
+  | (string & {});
+export const ControlBehavior = S.String;
+export type ControlSeverity =
+  | "LOW"
+  | "MEDIUM"
+  | "HIGH"
+  | "CRITICAL"
+  | (string & {});
+export const ControlSeverity = S.String;
 export type GovernedResources = string[];
 export const GovernedResources = S.Array(S.String);
 export type ImplementationTypeFilterList = string[];
@@ -219,8 +224,8 @@ export const ObjectiveResourceFilter = S.suspend(() =>
 }) as any as S.Schema<ObjectiveResourceFilter>;
 export type ObjectiveResourceFilterList = ObjectiveResourceFilter[];
 export const ObjectiveResourceFilterList = S.Array(ObjectiveResourceFilter);
-export type ControlScope = "GLOBAL" | "REGIONAL";
-export const ControlScope = S.Literal("GLOBAL", "REGIONAL");
+export type ControlScope = "GLOBAL" | "REGIONAL" | (string & {});
+export const ControlScope = S.String;
 export type DeployableRegions = string[];
 export const DeployableRegions = S.Array(S.String);
 export interface ImplementationFilter {
@@ -431,12 +436,9 @@ export const ListObjectivesRequest = S.suspend(() =>
 export type ControlRelationType =
   | "COMPLEMENTARY"
   | "ALTERNATIVE"
-  | "MUTUALLY_EXCLUSIVE";
-export const ControlRelationType = S.Literal(
-  "COMPLEMENTARY",
-  "ALTERNATIVE",
-  "MUTUALLY_EXCLUSIVE",
-);
+  | "MUTUALLY_EXCLUSIVE"
+  | (string & {});
+export const ControlRelationType = S.String;
 export interface AssociatedDomainSummary {
   Arn?: string;
   Name?: string;

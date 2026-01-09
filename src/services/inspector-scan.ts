@@ -90,12 +90,12 @@ const rules = T.EndpointResolver((p, _) => {
 export type Sbom = unknown;
 
 //# Schemas
-export type OutputFormat = "CYCLONE_DX_1_5" | "INSPECTOR" | "INSPECTOR_ALT";
-export const OutputFormat = S.Literal(
-  "CYCLONE_DX_1_5",
-  "INSPECTOR",
-  "INSPECTOR_ALT",
-);
+export type OutputFormat =
+  | "CYCLONE_DX_1_5"
+  | "INSPECTOR"
+  | "INSPECTOR_ALT"
+  | (string & {});
+export const OutputFormat = S.String;
 export interface ScanSbomRequest {
   sbom: any;
   outputFormat?: OutputFormat;
@@ -122,24 +122,19 @@ export const ScanSbomResponse = S.suspend(() =>
 ).annotations({
   identifier: "ScanSbomResponse",
 }) as any as S.Schema<ScanSbomResponse>;
-export type InternalServerExceptionReason = "FAILED_TO_GENERATE_SBOM" | "OTHER";
-export const InternalServerExceptionReason = S.Literal(
-  "FAILED_TO_GENERATE_SBOM",
-  "OTHER",
-);
+export type InternalServerExceptionReason =
+  | "FAILED_TO_GENERATE_SBOM"
+  | "OTHER"
+  | (string & {});
+export const InternalServerExceptionReason = S.String;
 export type ValidationExceptionReason =
   | "UNKNOWN_OPERATION"
   | "CANNOT_PARSE"
   | "FIELD_VALIDATION_FAILED"
   | "UNSUPPORTED_SBOM_TYPE"
-  | "OTHER";
-export const ValidationExceptionReason = S.Literal(
-  "UNKNOWN_OPERATION",
-  "CANNOT_PARSE",
-  "FIELD_VALIDATION_FAILED",
-  "UNSUPPORTED_SBOM_TYPE",
-  "OTHER",
-);
+  | "OTHER"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 export interface ValidationExceptionField {
   name: string;
   message: string;

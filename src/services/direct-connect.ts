@@ -218,10 +218,10 @@ export const DescribeVirtualGatewaysRequest = S.suspend(() =>
 ).annotations({
   identifier: "DescribeVirtualGatewaysRequest",
 }) as any as S.Schema<DescribeVirtualGatewaysRequest>;
-export type LoaContentType = "application/pdf";
-export const LoaContentType = S.Literal("application/pdf");
-export type NniPartnerType = "v1" | "v2" | "nonPartner";
-export const NniPartnerType = S.Literal("v1", "v2", "nonPartner");
+export type LoaContentType = "application/pdf" | (string & {});
+export const LoaContentType = S.String;
+export type NniPartnerType = "v1" | "v2" | "nonPartner" | (string & {});
+export const NniPartnerType = S.String;
 export type ResourceArnList = string[];
 export const ResourceArnList = S.Array(S.String);
 export type BGPPeerIdList = string[];
@@ -1447,8 +1447,8 @@ export const UpdateVirtualInterfaceAttributesRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateVirtualInterfaceAttributesRequest",
 }) as any as S.Schema<UpdateVirtualInterfaceAttributesRequest>;
-export type AddressFamily = "ipv4" | "ipv6";
-export const AddressFamily = S.Literal("ipv4", "ipv6");
+export type AddressFamily = "ipv4" | "ipv6" | (string & {});
+export const AddressFamily = S.String;
 export type AvailablePortSpeeds = string[];
 export const AvailablePortSpeeds = S.Array(S.String);
 export type ProviderList = string[];
@@ -1464,20 +1464,11 @@ export type ConnectionState =
   | "deleting"
   | "deleted"
   | "rejected"
-  | "unknown";
-export const ConnectionState = S.Literal(
-  "ordering",
-  "requested",
-  "pending",
-  "available",
-  "down",
-  "deleting",
-  "deleted",
-  "rejected",
-  "unknown",
-);
-export type HasLogicalRedundancy = "unknown" | "yes" | "no";
-export const HasLogicalRedundancy = S.Literal("unknown", "yes", "no");
+  | "unknown"
+  | (string & {});
+export const ConnectionState = S.String;
+export type HasLogicalRedundancy = "unknown" | "yes" | "no" | (string & {});
+export const HasLogicalRedundancy = S.String;
 export interface NewPrivateVirtualInterfaceAllocation {
   virtualInterfaceName: string;
   vlan: number;
@@ -1572,19 +1563,9 @@ export type VirtualInterfaceState =
   | "deleting"
   | "deleted"
   | "rejected"
-  | "unknown";
-export const VirtualInterfaceState = S.Literal(
-  "confirming",
-  "verifying",
-  "pending",
-  "available",
-  "down",
-  "testing",
-  "deleting",
-  "deleted",
-  "rejected",
-  "unknown",
-);
+  | "unknown"
+  | (string & {});
+export const VirtualInterfaceState = S.String;
 export interface NewBGPPeer {
   asn?: number;
   asnLong?: number;
@@ -1610,16 +1591,9 @@ export type InterconnectState =
   | "down"
   | "deleting"
   | "deleted"
-  | "unknown";
-export const InterconnectState = S.Literal(
-  "requested",
-  "pending",
-  "available",
-  "down",
-  "deleting",
-  "deleted",
-  "unknown",
-);
+  | "unknown"
+  | (string & {});
+export const InterconnectState = S.String;
 export type LagState =
   | "requested"
   | "pending"
@@ -1627,16 +1601,9 @@ export type LagState =
   | "down"
   | "deleting"
   | "deleted"
-  | "unknown";
-export const LagState = S.Literal(
-  "requested",
-  "pending",
-  "available",
-  "down",
-  "deleting",
-  "deleted",
-  "unknown",
-);
+  | "unknown"
+  | (string & {});
+export const LagState = S.String;
 export interface MacSecKey {
   secretARN?: string;
   ckn?: string;
@@ -1818,14 +1785,14 @@ export const AgreementList = S.Array(CustomerAgreement);
 export type DirectConnectGatewayAssociationProposalState =
   | "requested"
   | "accepted"
-  | "deleted";
-export const DirectConnectGatewayAssociationProposalState = S.Literal(
-  "requested",
-  "accepted",
-  "deleted",
-);
-export type GatewayType = "virtualPrivateGateway" | "transitGateway";
-export const GatewayType = S.Literal("virtualPrivateGateway", "transitGateway");
+  | "deleted"
+  | (string & {});
+export const DirectConnectGatewayAssociationProposalState = S.String;
+export type GatewayType =
+  | "virtualPrivateGateway"
+  | "transitGateway"
+  | (string & {});
+export const GatewayType = S.String;
 export interface AssociatedGateway {
   id?: string;
   type?: GatewayType;
@@ -1878,14 +1845,9 @@ export type DirectConnectGatewayAssociationState =
   | "associated"
   | "disassociating"
   | "disassociated"
-  | "updating";
-export const DirectConnectGatewayAssociationState = S.Literal(
-  "associating",
-  "associated",
-  "disassociating",
-  "disassociated",
-  "updating",
-);
+  | "updating"
+  | (string & {});
+export const DirectConnectGatewayAssociationState = S.String;
 export interface AssociatedCoreNetwork {
   id?: string;
   ownerAccount?: string;
@@ -1939,13 +1901,9 @@ export type DirectConnectGatewayState =
   | "pending"
   | "available"
   | "deleting"
-  | "deleted";
-export const DirectConnectGatewayState = S.Literal(
-  "pending",
-  "available",
-  "deleting",
-  "deleted",
-);
+  | "deleted"
+  | (string & {});
+export const DirectConnectGatewayState = S.String;
 export interface DirectConnectGateway {
   directConnectGatewayId?: string;
   directConnectGatewayName?: string;
@@ -2105,16 +2063,11 @@ export type BGPPeerState =
   | "pending"
   | "available"
   | "deleting"
-  | "deleted";
-export const BGPPeerState = S.Literal(
-  "verifying",
-  "pending",
-  "available",
-  "deleting",
-  "deleted",
-);
-export type BGPStatus = "up" | "down" | "unknown";
-export const BGPStatus = S.Literal("up", "down", "unknown");
+  | "deleted"
+  | (string & {});
+export const BGPPeerState = S.String;
+export type BGPStatus = "up" | "down" | "unknown" | (string & {});
+export const BGPStatus = S.String;
 export interface BGPPeer {
   bgpPeerId?: string;
   asn?: number;
@@ -2761,20 +2714,14 @@ export type DirectConnectGatewayAttachmentState =
   | "attaching"
   | "attached"
   | "detaching"
-  | "detached";
-export const DirectConnectGatewayAttachmentState = S.Literal(
-  "attaching",
-  "attached",
-  "detaching",
-  "detached",
-);
+  | "detached"
+  | (string & {});
+export const DirectConnectGatewayAttachmentState = S.String;
 export type DirectConnectGatewayAttachmentType =
   | "TransitVirtualInterface"
-  | "PrivateVirtualInterface";
-export const DirectConnectGatewayAttachmentType = S.Literal(
-  "TransitVirtualInterface",
-  "PrivateVirtualInterface",
-);
+  | "PrivateVirtualInterface"
+  | (string & {});
+export const DirectConnectGatewayAttachmentType = S.String;
 export interface DirectConnectGatewayAttachment {
   directConnectGatewayId?: string;
   virtualInterfaceId?: string;

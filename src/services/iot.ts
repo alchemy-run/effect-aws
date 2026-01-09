@@ -727,67 +727,58 @@ export const GetRegistrationCodeRequest = S.suspend(() =>
 }) as any as S.Schema<GetRegistrationCodeRequest>;
 export type JobTargets = string[];
 export const JobTargets = S.Array(S.String);
-export type ThingPrincipalType = "EXCLUSIVE_THING" | "NON_EXCLUSIVE_THING";
-export const ThingPrincipalType = S.Literal(
-  "EXCLUSIVE_THING",
-  "NON_EXCLUSIVE_THING",
-);
-export type AuthorizerStatus = "ACTIVE" | "INACTIVE";
-export const AuthorizerStatus = S.Literal("ACTIVE", "INACTIVE");
-export type CertificateProviderOperation = "CreateCertificateFromCsr";
-export const CertificateProviderOperation = S.Literal(
-  "CreateCertificateFromCsr",
-);
+export type ThingPrincipalType =
+  | "EXCLUSIVE_THING"
+  | "NON_EXCLUSIVE_THING"
+  | (string & {});
+export const ThingPrincipalType = S.String;
+export type AuthorizerStatus = "ACTIVE" | "INACTIVE" | (string & {});
+export const AuthorizerStatus = S.String;
+export type CertificateProviderOperation =
+  | "CreateCertificateFromCsr"
+  | (string & {});
+export const CertificateProviderOperation = S.String;
 export type CertificateProviderAccountDefaultForOperations =
   CertificateProviderOperation[];
 export const CertificateProviderAccountDefaultForOperations = S.Array(
   CertificateProviderOperation,
 );
-export type CommandNamespace = "AWS-IoT" | "AWS-IoT-FleetWise";
-export const CommandNamespace = S.Literal("AWS-IoT", "AWS-IoT-FleetWise");
+export type CommandNamespace = "AWS-IoT" | "AWS-IoT-FleetWise" | (string & {});
+export const CommandNamespace = S.String;
 export type CustomMetricType =
   | "string-list"
   | "ip-address-list"
   | "number-list"
-  | "number";
-export const CustomMetricType = S.Literal(
-  "string-list",
-  "ip-address-list",
-  "number-list",
-  "number",
-);
-export type DimensionType = "TOPIC_FILTER";
-export const DimensionType = S.Literal("TOPIC_FILTER");
+  | "number"
+  | (string & {});
+export const CustomMetricType = S.String;
+export type DimensionType = "TOPIC_FILTER" | (string & {});
+export const DimensionType = S.String;
 export type DimensionStringValues = string[];
 export const DimensionStringValues = S.Array(S.String);
 export type ServerCertificateArns = string[];
 export const ServerCertificateArns = S.Array(S.String);
-export type ServiceType = "DATA" | "CREDENTIAL_PROVIDER" | "JOBS";
-export const ServiceType = S.Literal("DATA", "CREDENTIAL_PROVIDER", "JOBS");
+export type ServiceType =
+  | "DATA"
+  | "CREDENTIAL_PROVIDER"
+  | "JOBS"
+  | (string & {});
+export const ServiceType = S.String;
 export type AuthenticationType =
   | "CUSTOM_AUTH_X509"
   | "CUSTOM_AUTH"
   | "AWS_X509"
   | "AWS_SIGV4"
-  | "DEFAULT";
-export const AuthenticationType = S.Literal(
-  "CUSTOM_AUTH_X509",
-  "CUSTOM_AUTH",
-  "AWS_X509",
-  "AWS_SIGV4",
-  "DEFAULT",
-);
+  | "DEFAULT"
+  | (string & {});
+export const AuthenticationType = S.String;
 export type ApplicationProtocol =
   | "SECURE_MQTT"
   | "MQTT_WSS"
   | "HTTPS"
-  | "DEFAULT";
-export const ApplicationProtocol = S.Literal(
-  "SECURE_MQTT",
-  "MQTT_WSS",
-  "HTTPS",
-  "DEFAULT",
-);
+  | "DEFAULT"
+  | (string & {});
+export const ApplicationProtocol = S.String;
 export type FleetMetricUnit =
   | "Seconds"
   | "Microseconds"
@@ -815,65 +806,38 @@ export type FleetMetricUnit =
   | "Gigabits/Second"
   | "Terabits/Second"
   | "Count/Second"
-  | "None";
-export const FleetMetricUnit = S.Literal(
-  "Seconds",
-  "Microseconds",
-  "Milliseconds",
-  "Bytes",
-  "Kilobytes",
-  "Megabytes",
-  "Gigabytes",
-  "Terabytes",
-  "Bits",
-  "Kilobits",
-  "Megabits",
-  "Gigabits",
-  "Terabits",
-  "Percent",
-  "Count",
-  "Bytes/Second",
-  "Kilobytes/Second",
-  "Megabytes/Second",
-  "Gigabytes/Second",
-  "Terabytes/Second",
-  "Bits/Second",
-  "Kilobits/Second",
-  "Megabits/Second",
-  "Gigabits/Second",
-  "Terabits/Second",
-  "Count/Second",
-  "None",
-);
-export type TargetSelection = "CONTINUOUS" | "SNAPSHOT";
-export const TargetSelection = S.Literal("CONTINUOUS", "SNAPSHOT");
+  | "None"
+  | (string & {});
+export const FleetMetricUnit = S.String;
+export type TargetSelection = "CONTINUOUS" | "SNAPSHOT" | (string & {});
+export const TargetSelection = S.String;
 export type DestinationPackageVersions = string[];
 export const DestinationPackageVersions = S.Array(S.String);
 export type Targets = string[];
 export const Targets = S.Array(S.String);
-export type Protocol = "MQTT" | "HTTP";
-export const Protocol = S.Literal("MQTT", "HTTP");
+export type Protocol = "MQTT" | "HTTP" | (string & {});
+export const Protocol = S.String;
 export type Protocols = Protocol[];
 export const Protocols = S.Array(Protocol);
-export type TemplateType = "FLEET_PROVISIONING" | "JITP";
-export const TemplateType = S.Literal("FLEET_PROVISIONING", "JITP");
-export type AuditFrequency = "DAILY" | "WEEKLY" | "BIWEEKLY" | "MONTHLY";
-export const AuditFrequency = S.Literal(
-  "DAILY",
-  "WEEKLY",
-  "BIWEEKLY",
-  "MONTHLY",
-);
-export type DayOfWeek = "SUN" | "MON" | "TUE" | "WED" | "THU" | "FRI" | "SAT";
-export const DayOfWeek = S.Literal(
-  "SUN",
-  "MON",
-  "TUE",
-  "WED",
-  "THU",
-  "FRI",
-  "SAT",
-);
+export type TemplateType = "FLEET_PROVISIONING" | "JITP" | (string & {});
+export const TemplateType = S.String;
+export type AuditFrequency =
+  | "DAILY"
+  | "WEEKLY"
+  | "BIWEEKLY"
+  | "MONTHLY"
+  | (string & {});
+export const AuditFrequency = S.String;
+export type DayOfWeek =
+  | "SUN"
+  | "MON"
+  | "TUE"
+  | "WED"
+  | "THU"
+  | "FRI"
+  | "SAT"
+  | (string & {});
+export const DayOfWeek = S.String;
 export type TargetAuditCheckNames = string[];
 export const TargetAuditCheckNames = S.Array(S.String);
 export type AdditionalMetricsToRetainList = string[];
@@ -883,102 +847,76 @@ export type LogTargetType =
   | "THING_GROUP"
   | "CLIENT_ID"
   | "SOURCE_IP"
-  | "PRINCIPAL_ID";
-export const LogTargetType = S.Literal(
-  "DEFAULT",
-  "THING_GROUP",
-  "CLIENT_ID",
-  "SOURCE_IP",
-  "PRINCIPAL_ID",
-);
-export type EncryptionType = "CUSTOMER_MANAGED_KMS_KEY" | "AWS_OWNED_KMS_KEY";
-export const EncryptionType = S.Literal(
-  "CUSTOMER_MANAGED_KMS_KEY",
-  "AWS_OWNED_KMS_KEY",
-);
-export type LogLevel = "DEBUG" | "INFO" | "ERROR" | "WARN" | "DISABLED";
-export const LogLevel = S.Literal("DEBUG", "INFO", "ERROR", "WARN", "DISABLED");
+  | "PRINCIPAL_ID"
+  | (string & {});
+export const LogTargetType = S.String;
+export type EncryptionType =
+  | "CUSTOMER_MANAGED_KMS_KEY"
+  | "AWS_OWNED_KMS_KEY"
+  | (string & {});
+export const EncryptionType = S.String;
+export type LogLevel =
+  | "DEBUG"
+  | "INFO"
+  | "ERROR"
+  | "WARN"
+  | "DISABLED"
+  | (string & {});
+export const LogLevel = S.String;
 export type PercentList = number[];
 export const PercentList = S.Array(S.Number);
 export type BehaviorCriteriaType =
   | "STATIC"
   | "STATISTICAL"
-  | "MACHINE_LEARNING";
-export const BehaviorCriteriaType = S.Literal(
-  "STATIC",
-  "STATISTICAL",
-  "MACHINE_LEARNING",
-);
+  | "MACHINE_LEARNING"
+  | (string & {});
+export const BehaviorCriteriaType = S.String;
 export type VerificationState =
   | "FALSE_POSITIVE"
   | "BENIGN_POSITIVE"
   | "TRUE_POSITIVE"
-  | "UNKNOWN";
-export const VerificationState = S.Literal(
-  "FALSE_POSITIVE",
-  "BENIGN_POSITIVE",
-  "TRUE_POSITIVE",
-  "UNKNOWN",
-);
+  | "UNKNOWN"
+  | (string & {});
+export const VerificationState = S.String;
 export type AuditMitigationActionsExecutionStatus =
   | "IN_PROGRESS"
   | "COMPLETED"
   | "FAILED"
   | "CANCELED"
   | "SKIPPED"
-  | "PENDING";
-export const AuditMitigationActionsExecutionStatus = S.Literal(
-  "IN_PROGRESS",
-  "COMPLETED",
-  "FAILED",
-  "CANCELED",
-  "SKIPPED",
-  "PENDING",
-);
+  | "PENDING"
+  | (string & {});
+export const AuditMitigationActionsExecutionStatus = S.String;
 export type AuditMitigationActionsTaskStatus =
   | "IN_PROGRESS"
   | "COMPLETED"
   | "FAILED"
-  | "CANCELED";
-export const AuditMitigationActionsTaskStatus = S.Literal(
-  "IN_PROGRESS",
-  "COMPLETED",
-  "FAILED",
-  "CANCELED",
-);
-export type AuditTaskType = "ON_DEMAND_AUDIT_TASK" | "SCHEDULED_AUDIT_TASK";
-export const AuditTaskType = S.Literal(
-  "ON_DEMAND_AUDIT_TASK",
-  "SCHEDULED_AUDIT_TASK",
-);
+  | "CANCELED"
+  | (string & {});
+export const AuditMitigationActionsTaskStatus = S.String;
+export type AuditTaskType =
+  | "ON_DEMAND_AUDIT_TASK"
+  | "SCHEDULED_AUDIT_TASK"
+  | (string & {});
+export const AuditTaskType = S.String;
 export type AuditTaskStatus =
   | "IN_PROGRESS"
   | "COMPLETED"
   | "FAILED"
-  | "CANCELED";
-export const AuditTaskStatus = S.Literal(
-  "IN_PROGRESS",
-  "COMPLETED",
-  "FAILED",
-  "CANCELED",
-);
+  | "CANCELED"
+  | (string & {});
+export const AuditTaskStatus = S.String;
 export type CommandExecutionStatus =
   | "CREATED"
   | "IN_PROGRESS"
   | "SUCCEEDED"
   | "FAILED"
   | "REJECTED"
-  | "TIMED_OUT";
-export const CommandExecutionStatus = S.Literal(
-  "CREATED",
-  "IN_PROGRESS",
-  "SUCCEEDED",
-  "FAILED",
-  "REJECTED",
-  "TIMED_OUT",
-);
-export type SortOrder = "ASCENDING" | "DESCENDING";
-export const SortOrder = S.Literal("ASCENDING", "DESCENDING");
+  | "TIMED_OUT"
+  | (string & {});
+export const CommandExecutionStatus = S.String;
+export type SortOrder = "ASCENDING" | "DESCENDING" | (string & {});
+export const SortOrder = S.String;
 export type JobExecutionStatus =
   | "QUEUED"
   | "IN_PROGRESS"
@@ -987,116 +925,80 @@ export type JobExecutionStatus =
   | "TIMED_OUT"
   | "REJECTED"
   | "REMOVED"
-  | "CANCELED";
-export const JobExecutionStatus = S.Literal(
-  "QUEUED",
-  "IN_PROGRESS",
-  "SUCCEEDED",
-  "FAILED",
-  "TIMED_OUT",
-  "REJECTED",
-  "REMOVED",
-  "CANCELED",
-);
+  | "CANCELED"
+  | (string & {});
+export const JobExecutionStatus = S.String;
 export type JobStatus =
   | "IN_PROGRESS"
   | "CANCELED"
   | "COMPLETED"
   | "DELETION_IN_PROGRESS"
-  | "SCHEDULED";
-export const JobStatus = S.Literal(
-  "IN_PROGRESS",
-  "CANCELED",
-  "COMPLETED",
-  "DELETION_IN_PROGRESS",
-  "SCHEDULED",
-);
-export type DimensionValueOperator = "IN" | "NOT_IN";
-export const DimensionValueOperator = S.Literal("IN", "NOT_IN");
+  | "SCHEDULED"
+  | (string & {});
+export const JobStatus = S.String;
+export type DimensionValueOperator = "IN" | "NOT_IN" | (string & {});
+export const DimensionValueOperator = S.String;
 export type MitigationActionType =
   | "UPDATE_DEVICE_CERTIFICATE"
   | "UPDATE_CA_CERTIFICATE"
   | "ADD_THINGS_TO_THING_GROUP"
   | "REPLACE_DEFAULT_POLICY_VERSION"
   | "ENABLE_IOT_LOGGING"
-  | "PUBLISH_FINDING_TO_SNS";
-export const MitigationActionType = S.Literal(
-  "UPDATE_DEVICE_CERTIFICATE",
-  "UPDATE_CA_CERTIFICATE",
-  "ADD_THINGS_TO_THING_GROUP",
-  "REPLACE_DEFAULT_POLICY_VERSION",
-  "ENABLE_IOT_LOGGING",
-  "PUBLISH_FINDING_TO_SNS",
-);
+  | "PUBLISH_FINDING_TO_SNS"
+  | (string & {});
+export const MitigationActionType = S.String;
 export type OTAUpdateStatus =
   | "CREATE_PENDING"
   | "CREATE_IN_PROGRESS"
   | "CREATE_COMPLETE"
   | "CREATE_FAILED"
   | "DELETE_IN_PROGRESS"
-  | "DELETE_FAILED";
-export const OTAUpdateStatus = S.Literal(
-  "CREATE_PENDING",
-  "CREATE_IN_PROGRESS",
-  "CREATE_COMPLETE",
-  "CREATE_FAILED",
-  "DELETE_IN_PROGRESS",
-  "DELETE_FAILED",
-);
-export type PackageVersionStatus = "DRAFT" | "PUBLISHED" | "DEPRECATED";
-export const PackageVersionStatus = S.Literal(
-  "DRAFT",
-  "PUBLISHED",
-  "DEPRECATED",
-);
-export type SbomValidationResult = "FAILED" | "SUCCEEDED";
-export const SbomValidationResult = S.Literal("FAILED", "SUCCEEDED");
-export type ReportType = "ERRORS" | "RESULTS";
-export const ReportType = S.Literal("ERRORS", "RESULTS");
+  | "DELETE_FAILED"
+  | (string & {});
+export const OTAUpdateStatus = S.String;
+export type PackageVersionStatus =
+  | "DRAFT"
+  | "PUBLISHED"
+  | "DEPRECATED"
+  | (string & {});
+export const PackageVersionStatus = S.String;
+export type SbomValidationResult = "FAILED" | "SUCCEEDED" | (string & {});
+export const SbomValidationResult = S.String;
+export type ReportType = "ERRORS" | "RESULTS" | (string & {});
+export const ReportType = S.String;
 export type Status =
   | "InProgress"
   | "Completed"
   | "Failed"
   | "Cancelled"
-  | "Cancelling";
-export const Status = S.Literal(
-  "InProgress",
-  "Completed",
-  "Failed",
-  "Cancelled",
-  "Cancelling",
-);
-export type CertificateMode = "DEFAULT" | "SNI_ONLY";
-export const CertificateMode = S.Literal("DEFAULT", "SNI_ONLY");
+  | "Cancelling"
+  | (string & {});
+export const Status = S.String;
+export type CertificateMode = "DEFAULT" | "SNI_ONLY" | (string & {});
+export const CertificateMode = S.String;
 export type CertificateStatus =
   | "ACTIVE"
   | "INACTIVE"
   | "REVOKED"
   | "PENDING_TRANSFER"
   | "REGISTER_INACTIVE"
-  | "PENDING_ACTIVATION";
-export const CertificateStatus = S.Literal(
-  "ACTIVE",
-  "INACTIVE",
-  "REVOKED",
-  "PENDING_TRANSFER",
-  "REGISTER_INACTIVE",
-  "PENDING_ACTIVATION",
-);
+  | "PENDING_ACTIVATION"
+  | (string & {});
+export const CertificateStatus = S.String;
 export type DetectMitigationActionsToExecuteList = string[];
 export const DetectMitigationActionsToExecuteList = S.Array(S.String);
 export type PolicyNames = string[];
 export const PolicyNames = S.Array(S.String);
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
-export type CACertificateStatus = "ACTIVE" | "INACTIVE";
-export const CACertificateStatus = S.Literal("ACTIVE", "INACTIVE");
-export type AutoRegistrationStatus = "ENABLE" | "DISABLE";
-export const AutoRegistrationStatus = S.Literal("ENABLE", "DISABLE");
-export type DomainConfigurationStatus = "ENABLED" | "DISABLED";
-export const DomainConfigurationStatus = S.Literal("ENABLED", "DISABLED");
-export type PackageVersionAction = "PUBLISH" | "DEPRECATE";
-export const PackageVersionAction = S.Literal("PUBLISH", "DEPRECATE");
+export type CACertificateStatus = "ACTIVE" | "INACTIVE" | (string & {});
+export const CACertificateStatus = S.String;
+export type AutoRegistrationStatus = "ENABLE" | "DISABLE" | (string & {});
+export const AutoRegistrationStatus = S.String;
+export type DomainConfigurationStatus = "ENABLED" | "DISABLED" | (string & {});
+export const DomainConfigurationStatus = S.String;
+export type PackageVersionAction = "PUBLISH" | "DEPRECATE" | (string & {});
+export const PackageVersionAction = S.String;
 export type ThingGroupList = string[];
 export const ThingGroupList = S.Array(S.String);
 export type TopicRuleDestinationStatus =
@@ -1104,14 +1006,9 @@ export type TopicRuleDestinationStatus =
   | "IN_PROGRESS"
   | "DISABLED"
   | "ERROR"
-  | "DELETING";
-export const TopicRuleDestinationStatus = S.Literal(
-  "ENABLED",
-  "IN_PROGRESS",
-  "DISABLED",
-  "ERROR",
-  "DELETING",
-);
+  | "DELETING"
+  | (string & {});
+export const TopicRuleDestinationStatus = S.String;
 export interface AcceptCertificateTransferRequest {
   certificateId: string;
   setAsActive?: boolean;
@@ -5834,8 +5731,8 @@ export const RemoveThingFromThingGroupResponse = S.suspend(() =>
 ).annotations({
   identifier: "RemoveThingFromThingGroupResponse",
 }) as any as S.Schema<RemoveThingFromThingGroupResponse>;
-export type DynamoKeyType = "STRING" | "NUMBER";
-export const DynamoKeyType = S.Literal("STRING", "NUMBER");
+export type DynamoKeyType = "STRING" | "NUMBER" | (string & {});
+export const DynamoKeyType = S.String;
 export interface DynamoDBAction {
   tableName: string;
   roleArn: string;
@@ -5885,8 +5782,8 @@ export interface LambdaAction {
 export const LambdaAction = S.suspend(() =>
   S.Struct({ functionArn: S.String }),
 ).annotations({ identifier: "LambdaAction" }) as any as S.Schema<LambdaAction>;
-export type MessageFormat = "RAW" | "JSON";
-export const MessageFormat = S.Literal("RAW", "JSON");
+export type MessageFormat = "RAW" | "JSON" | (string & {});
+export const MessageFormat = S.String;
 export interface SnsAction {
   targetArn: string;
   roleArn: string;
@@ -5976,17 +5873,9 @@ export type CannedAccessControlList =
   | "authenticated-read"
   | "bucket-owner-read"
   | "bucket-owner-full-control"
-  | "log-delivery-write";
-export const CannedAccessControlList = S.Literal(
-  "private",
-  "public-read",
-  "public-read-write",
-  "aws-exec-read",
-  "authenticated-read",
-  "bucket-owner-read",
-  "bucket-owner-full-control",
-  "log-delivery-write",
-);
+  | "log-delivery-write"
+  | (string & {});
+export const CannedAccessControlList = S.String;
 export interface S3Action {
   roleArn: string;
   bucketName: string;
@@ -6724,8 +6613,8 @@ export interface UntagResourceResponse {}
 export const UntagResourceResponse = S.suspend(() => S.Struct({})).annotations({
   identifier: "UntagResourceResponse",
 }) as any as S.Schema<UntagResourceResponse>;
-export type AuditNotificationType = "SNS";
-export const AuditNotificationType = S.Literal("SNS");
+export type AuditNotificationType = "SNS" | (string & {});
+export const AuditNotificationType = S.String;
 export interface AuditNotificationTarget {
   targetArn?: string;
   roleArn?: string;
@@ -6751,11 +6640,9 @@ export const AuditNotificationTargetConfigurations = S.partial(
 );
 export type ConfigName =
   | "CERT_AGE_THRESHOLD_IN_DAYS"
-  | "CERT_EXPIRATION_THRESHOLD_IN_DAYS";
-export const ConfigName = S.Literal(
-  "CERT_AGE_THRESHOLD_IN_DAYS",
-  "CERT_EXPIRATION_THRESHOLD_IN_DAYS",
-);
+  | "CERT_EXPIRATION_THRESHOLD_IN_DAYS"
+  | (string & {});
+export const ConfigName = S.String;
 export type CheckCustomConfiguration = { [key in ConfigName]?: string };
 export const CheckCustomConfiguration = S.partial(
   S.Record({ key: ConfigName, value: S.UndefinedOr(S.String) }),
@@ -7237,20 +7124,9 @@ export type EventType =
   | "JOB_EXECUTION"
   | "POLICY"
   | "CERTIFICATE"
-  | "CA_CERTIFICATE";
-export const EventType = S.Literal(
-  "THING",
-  "THING_GROUP",
-  "THING_TYPE",
-  "THING_GROUP_MEMBERSHIP",
-  "THING_GROUP_HIERARCHY",
-  "THING_TYPE_ASSOCIATION",
-  "JOB",
-  "JOB_EXECUTION",
-  "POLICY",
-  "CERTIFICATE",
-  "CA_CERTIFICATE",
-);
+  | "CA_CERTIFICATE"
+  | (string & {});
+export const EventType = S.String;
 export interface Configuration {
   Enabled?: boolean;
 }
@@ -7286,12 +7162,12 @@ export const UpdateEventConfigurationsResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateEventConfigurationsResponse",
 }) as any as S.Schema<UpdateEventConfigurationsResponse>;
-export type AggregationTypeName = "Statistics" | "Percentiles" | "Cardinality";
-export const AggregationTypeName = S.Literal(
-  "Statistics",
-  "Percentiles",
-  "Cardinality",
-);
+export type AggregationTypeName =
+  | "Statistics"
+  | "Percentiles"
+  | "Cardinality"
+  | (string & {});
+export const AggregationTypeName = S.String;
 export type AggregationTypeValues = string[];
 export const AggregationTypeValues = S.Array(S.String);
 export interface AggregationType {
@@ -7349,20 +7225,20 @@ export const UpdateFleetMetricResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateFleetMetricResponse",
 }) as any as S.Schema<UpdateFleetMetricResponse>;
-export type ThingIndexingMode = "OFF" | "REGISTRY" | "REGISTRY_AND_SHADOW";
-export const ThingIndexingMode = S.Literal(
-  "OFF",
-  "REGISTRY",
-  "REGISTRY_AND_SHADOW",
-);
-export type ThingConnectivityIndexingMode = "OFF" | "STATUS";
-export const ThingConnectivityIndexingMode = S.Literal("OFF", "STATUS");
-export type DeviceDefenderIndexingMode = "OFF" | "VIOLATIONS";
-export const DeviceDefenderIndexingMode = S.Literal("OFF", "VIOLATIONS");
-export type NamedShadowIndexingMode = "OFF" | "ON";
-export const NamedShadowIndexingMode = S.Literal("OFF", "ON");
-export type FieldType = "Number" | "String" | "Boolean";
-export const FieldType = S.Literal("Number", "String", "Boolean");
+export type ThingIndexingMode =
+  | "OFF"
+  | "REGISTRY"
+  | "REGISTRY_AND_SHADOW"
+  | (string & {});
+export const ThingIndexingMode = S.String;
+export type ThingConnectivityIndexingMode = "OFF" | "STATUS" | (string & {});
+export const ThingConnectivityIndexingMode = S.String;
+export type DeviceDefenderIndexingMode = "OFF" | "VIOLATIONS" | (string & {});
+export const DeviceDefenderIndexingMode = S.String;
+export type NamedShadowIndexingMode = "OFF" | "ON" | (string & {});
+export const NamedShadowIndexingMode = S.String;
+export type FieldType = "Number" | "String" | "Boolean" | (string & {});
+export const FieldType = S.String;
 export interface Field {
   name?: string;
   type?: FieldType;
@@ -7374,8 +7250,8 @@ export type Fields = Field[];
 export const Fields = S.Array(Field);
 export type NamedShadowNamesFilter = string[];
 export const NamedShadowNamesFilter = S.Array(S.String);
-export type TargetFieldOrder = "LatLon" | "LonLat";
-export const TargetFieldOrder = S.Literal("LatLon", "LonLat");
+export type TargetFieldOrder = "LatLon" | "LonLat" | (string & {});
+export const TargetFieldOrder = S.String;
 export interface GeoLocationTarget {
   name?: string;
   order?: TargetFieldOrder;
@@ -7421,8 +7297,8 @@ export const ThingIndexingConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "ThingIndexingConfiguration",
 }) as any as S.Schema<ThingIndexingConfiguration>;
-export type ThingGroupIndexingMode = "OFF" | "ON";
-export const ThingGroupIndexingMode = S.Literal("OFF", "ON");
+export type ThingGroupIndexingMode = "OFF" | "ON" | (string & {});
+export const ThingGroupIndexingMode = S.String;
 export interface ThingGroupIndexingConfiguration {
   thingGroupIndexingMode: ThingGroupIndexingMode;
   managedFields?: Field[];
@@ -7520,15 +7396,11 @@ export type JobExecutionFailureType =
   | "FAILED"
   | "REJECTED"
   | "TIMED_OUT"
-  | "ALL";
-export const JobExecutionFailureType = S.Literal(
-  "FAILED",
-  "REJECTED",
-  "TIMED_OUT",
-  "ALL",
-);
-export type AbortAction = "CANCEL";
-export const AbortAction = S.Literal("CANCEL");
+  | "ALL"
+  | (string & {});
+export const JobExecutionFailureType = S.String;
+export type AbortAction = "CANCEL" | (string & {});
+export const AbortAction = S.String;
 export interface AbortCriteria {
   failureType: JobExecutionFailureType;
   action: AbortAction;
@@ -7561,8 +7433,12 @@ export const TimeoutConfig = S.suspend(() =>
 ).annotations({
   identifier: "TimeoutConfig",
 }) as any as S.Schema<TimeoutConfig>;
-export type RetryableFailureType = "FAILED" | "TIMED_OUT" | "ALL";
-export const RetryableFailureType = S.Literal("FAILED", "TIMED_OUT", "ALL");
+export type RetryableFailureType =
+  | "FAILED"
+  | "TIMED_OUT"
+  | "ALL"
+  | (string & {});
+export const RetryableFailureType = S.String;
 export interface RetryCriteria {
   failureType: RetryableFailureType;
   numberOfRetries: number;
@@ -7619,8 +7495,8 @@ export interface UpdateJobResponse {}
 export const UpdateJobResponse = S.suspend(() => S.Struct({})).annotations({
   identifier: "UpdateJobResponse",
 }) as any as S.Schema<UpdateJobResponse>;
-export type DeviceCertificateUpdateAction = "DEACTIVATE";
-export const DeviceCertificateUpdateAction = S.Literal("DEACTIVATE");
+export type DeviceCertificateUpdateAction = "DEACTIVATE" | (string & {});
+export const DeviceCertificateUpdateAction = S.String;
 export interface UpdateDeviceCertificateParams {
   action: DeviceCertificateUpdateAction;
 }
@@ -7629,8 +7505,8 @@ export const UpdateDeviceCertificateParams = S.suspend(() =>
 ).annotations({
   identifier: "UpdateDeviceCertificateParams",
 }) as any as S.Schema<UpdateDeviceCertificateParams>;
-export type CACertificateUpdateAction = "DEACTIVATE";
-export const CACertificateUpdateAction = S.Literal("DEACTIVATE");
+export type CACertificateUpdateAction = "DEACTIVATE" | (string & {});
+export const CACertificateUpdateAction = S.String;
 export interface UpdateCACertificateParams {
   action: CACertificateUpdateAction;
 }
@@ -7653,8 +7529,8 @@ export const AddThingsToThingGroupParams = S.suspend(() =>
 ).annotations({
   identifier: "AddThingsToThingGroupParams",
 }) as any as S.Schema<AddThingsToThingGroupParams>;
-export type PolicyTemplateName = "BLANK_POLICY";
-export const PolicyTemplateName = S.Literal("BLANK_POLICY");
+export type PolicyTemplateName = "BLANK_POLICY" | (string & {});
+export const PolicyTemplateName = S.String;
 export interface ReplaceDefaultPolicyVersionParams {
   templateName: PolicyTemplateName;
 }
@@ -7995,19 +7871,9 @@ export type ComparisonOperator =
   | "in-port-set"
   | "not-in-port-set"
   | "in-set"
-  | "not-in-set";
-export const ComparisonOperator = S.Literal(
-  "less-than",
-  "less-than-equals",
-  "greater-than",
-  "greater-than-equals",
-  "in-cidr-set",
-  "not-in-cidr-set",
-  "in-port-set",
-  "not-in-port-set",
-  "in-set",
-  "not-in-set",
-);
+  | "not-in-set"
+  | (string & {});
+export const ComparisonOperator = S.String;
 export type Cidrs = string[];
 export const Cidrs = S.Array(S.String);
 export type Ports = number[];
@@ -8042,8 +7908,8 @@ export const StatisticalThreshold = S.suspend(() =>
 ).annotations({
   identifier: "StatisticalThreshold",
 }) as any as S.Schema<StatisticalThreshold>;
-export type ConfidenceLevel = "LOW" | "MEDIUM" | "HIGH";
-export const ConfidenceLevel = S.Literal("LOW", "MEDIUM", "HIGH");
+export type ConfidenceLevel = "LOW" | "MEDIUM" | "HIGH" | (string & {});
+export const ConfidenceLevel = S.String;
 export interface MachineLearningDetectionConfig {
   confidenceLevel: ConfidenceLevel;
 }
@@ -8094,8 +7960,8 @@ export const Behavior = S.suspend(() =>
 ).annotations({ identifier: "Behavior" }) as any as S.Schema<Behavior>;
 export type Behaviors = Behavior[];
 export const Behaviors = S.Array(Behavior);
-export type AlertTargetType = "SNS";
-export const AlertTargetType = S.Literal("SNS");
+export type AlertTargetType = "SNS" | (string & {});
+export const AlertTargetType = S.String;
 export interface AlertTarget {
   alertTargetArn: string;
   roleArn: string;
@@ -8413,37 +8279,30 @@ export type CommandParameterType =
   | "LONG"
   | "UNSIGNEDLONG"
   | "BOOLEAN"
-  | "BINARY";
-export const CommandParameterType = S.Literal(
-  "STRING",
-  "INTEGER",
-  "DOUBLE",
-  "LONG",
-  "UNSIGNEDLONG",
-  "BOOLEAN",
-  "BINARY",
-);
-export type JobEndBehavior = "STOP_ROLLOUT" | "CANCEL" | "FORCE_CANCEL";
-export const JobEndBehavior = S.Literal(
-  "STOP_ROLLOUT",
-  "CANCEL",
-  "FORCE_CANCEL",
-);
-export type ConfigurationStatus = "HEALTHY" | "UNHEALTHY";
-export const ConfigurationStatus = S.Literal("HEALTHY", "UNHEALTHY");
+  | "BINARY"
+  | (string & {});
+export const CommandParameterType = S.String;
+export type JobEndBehavior =
+  | "STOP_ROLLOUT"
+  | "CANCEL"
+  | "FORCE_CANCEL"
+  | (string & {});
+export const JobEndBehavior = S.String;
+export type ConfigurationStatus = "HEALTHY" | "UNHEALTHY" | (string & {});
+export const ConfigurationStatus = S.String;
 export type FindingIds = string[];
 export const FindingIds = S.Array(S.String);
 export type MitigationActionNameList = string[];
 export const MitigationActionNameList = S.Array(S.String);
 export type TargetViolationIdsForDetectMitigationActions = string[];
 export const TargetViolationIdsForDetectMitigationActions = S.Array(S.String);
-export type ActionType = "PUBLISH" | "SUBSCRIBE" | "RECEIVE" | "CONNECT";
-export const ActionType = S.Literal(
-  "PUBLISH",
-  "SUBSCRIBE",
-  "RECEIVE",
-  "CONNECT",
-);
+export type ActionType =
+  | "PUBLISH"
+  | "SUBSCRIBE"
+  | "RECEIVE"
+  | "CONNECT"
+  | (string & {});
+export const ActionType = S.String;
 export type Resources = string[];
 export const Resources = S.Array(S.String);
 export type DetailsMap = { [key: string]: string | undefined };
@@ -8548,12 +8407,12 @@ export const AuthorizerDescription = S.suspend(() =>
 ).annotations({
   identifier: "AuthorizerDescription",
 }) as any as S.Schema<AuthorizerDescription>;
-export type DomainType = "ENDPOINT" | "AWS_MANAGED" | "CUSTOMER_MANAGED";
-export const DomainType = S.Literal(
-  "ENDPOINT",
-  "AWS_MANAGED",
-  "CUSTOMER_MANAGED",
-);
+export type DomainType =
+  | "ENDPOINT"
+  | "AWS_MANAGED"
+  | "CUSTOMER_MANAGED"
+  | (string & {});
+export const DomainType = S.String;
 export interface ConfigurationDetails {
   configurationStatus?: ConfigurationStatus;
   errorCode?: string;
@@ -8568,18 +8427,22 @@ export const ConfigurationDetails = S.suspend(() =>
 ).annotations({
   identifier: "ConfigurationDetails",
 }) as any as S.Schema<ConfigurationDetails>;
-export type IndexStatus = "ACTIVE" | "BUILDING" | "REBUILDING";
-export const IndexStatus = S.Literal("ACTIVE", "BUILDING", "REBUILDING");
+export type IndexStatus = "ACTIVE" | "BUILDING" | "REBUILDING" | (string & {});
+export const IndexStatus = S.String;
 export type Environments = string[];
 export const Environments = S.Array(S.String);
-export type DynamicGroupStatus = "ACTIVE" | "BUILDING" | "REBUILDING";
-export const DynamicGroupStatus = S.Literal("ACTIVE", "BUILDING", "REBUILDING");
-export type SbomValidationStatus = "IN_PROGRESS" | "FAILED" | "SUCCEEDED";
-export const SbomValidationStatus = S.Literal(
-  "IN_PROGRESS",
-  "FAILED",
-  "SUCCEEDED",
-);
+export type DynamicGroupStatus =
+  | "ACTIVE"
+  | "BUILDING"
+  | "REBUILDING"
+  | (string & {});
+export const DynamicGroupStatus = S.String;
+export type SbomValidationStatus =
+  | "IN_PROGRESS"
+  | "FAILED"
+  | "SUCCEEDED"
+  | (string & {});
+export const SbomValidationStatus = S.String;
 export type DisconnectReasonValue =
   | "AUTH_ERROR"
   | "CLIENT_INITIATED_DISCONNECT"
@@ -8594,30 +8457,16 @@ export type DisconnectReasonValue =
   | "WEBSOCKET_TTL_EXPIRATION"
   | "CUSTOMAUTH_TTL_EXPIRATION"
   | "UNKNOWN"
-  | "NONE";
-export const DisconnectReasonValue = S.Literal(
-  "AUTH_ERROR",
-  "CLIENT_INITIATED_DISCONNECT",
-  "CLIENT_ERROR",
-  "CONNECTION_LOST",
-  "DUPLICATE_CLIENTID",
-  "FORBIDDEN_ACCESS",
-  "MQTT_KEEP_ALIVE_TIMEOUT",
-  "SERVER_ERROR",
-  "SERVER_INITIATED_DISCONNECT",
-  "THROTTLED",
-  "WEBSOCKET_TTL_EXPIRATION",
-  "CUSTOMAUTH_TTL_EXPIRATION",
-  "UNKNOWN",
-  "NONE",
-);
-export type AuditFindingSeverity = "CRITICAL" | "HIGH" | "MEDIUM" | "LOW";
-export const AuditFindingSeverity = S.Literal(
-  "CRITICAL",
-  "HIGH",
-  "MEDIUM",
-  "LOW",
-);
+  | "NONE"
+  | (string & {});
+export const DisconnectReasonValue = S.String;
+export type AuditFindingSeverity =
+  | "CRITICAL"
+  | "HIGH"
+  | "MEDIUM"
+  | "LOW"
+  | (string & {});
+export const AuditFindingSeverity = S.String;
 export type ResourceType =
   | "DEVICE_CERTIFICATE"
   | "CA_CERTIFICATE"
@@ -8627,18 +8476,9 @@ export type ResourceType =
   | "ACCOUNT_SETTINGS"
   | "ROLE_ALIAS"
   | "IAM_ROLE"
-  | "ISSUER_CERTIFICATE";
-export const ResourceType = S.Literal(
-  "DEVICE_CERTIFICATE",
-  "CA_CERTIFICATE",
-  "IOT_POLICY",
-  "COGNITO_IDENTITY_POOL",
-  "CLIENT_ID",
-  "ACCOUNT_SETTINGS",
-  "ROLE_ALIAS",
-  "IAM_ROLE",
-  "ISSUER_CERTIFICATE",
-);
+  | "ISSUER_CERTIFICATE"
+  | (string & {});
+export const ResourceType = S.String;
 export type StringMap = { [key: string]: string | undefined };
 export const StringMap = S.Record({
   key: S.String,
@@ -8717,13 +8557,9 @@ export type DetectMitigationActionsTaskStatus =
   | "IN_PROGRESS"
   | "SUCCESSFUL"
   | "FAILED"
-  | "CANCELED";
-export const DetectMitigationActionsTaskStatus = S.Literal(
-  "IN_PROGRESS",
-  "SUCCESSFUL",
-  "FAILED",
-  "CANCELED",
-);
+  | "CANCELED"
+  | (string & {});
+export const DetectMitigationActionsTaskStatus = S.String;
 export interface DetectMitigationActionsTaskTarget {
   violationIds?: string[];
   securityProfileName?: string;
@@ -8913,8 +8749,8 @@ export interface TlsContext {
 export const TlsContext = S.suspend(() =>
   S.Struct({ serverName: S.optional(S.String) }),
 ).annotations({ identifier: "TlsContext" }) as any as S.Schema<TlsContext>;
-export type OutputFormat = "JSON" | "CBOR";
-export const OutputFormat = S.Literal("JSON", "CBOR");
+export type OutputFormat = "JSON" | "CBOR" | (string & {});
+export const OutputFormat = S.String;
 export type CommandParameterValueComparisonOperator =
   | "EQUALS"
   | "NOT_EQUALS"
@@ -8925,32 +8761,18 @@ export type CommandParameterValueComparisonOperator =
   | "IN_SET"
   | "NOT_IN_SET"
   | "IN_RANGE"
-  | "NOT_IN_RANGE";
-export const CommandParameterValueComparisonOperator = S.Literal(
-  "EQUALS",
-  "NOT_EQUALS",
-  "LESS_THAN",
-  "LESS_THAN_EQUALS",
-  "GREATER_THAN",
-  "GREATER_THAN_EQUALS",
-  "IN_SET",
-  "NOT_IN_SET",
-  "IN_RANGE",
-  "NOT_IN_RANGE",
-);
+  | "NOT_IN_RANGE"
+  | (string & {});
+export const CommandParameterValueComparisonOperator = S.String;
 export type AwsJobAbortCriteriaFailureType =
   | "FAILED"
   | "REJECTED"
   | "TIMED_OUT"
-  | "ALL";
-export const AwsJobAbortCriteriaFailureType = S.Literal(
-  "FAILED",
-  "REJECTED",
-  "TIMED_OUT",
-  "ALL",
-);
-export type AwsJobAbortCriteriaAbortAction = "CANCEL";
-export const AwsJobAbortCriteriaAbortAction = S.Literal("CANCEL");
+  | "ALL"
+  | (string & {});
+export const AwsJobAbortCriteriaFailureType = S.String;
+export type AwsJobAbortCriteriaAbortAction = "CANCEL" | (string & {});
+export const AwsJobAbortCriteriaAbortAction = S.String;
 export type SubnetIdList = string[];
 export const SubnetIdList = S.Array(S.String);
 export type SecurityGroupList = string[];
@@ -11041,10 +10863,14 @@ export const VpcDestinationConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "VpcDestinationConfiguration",
 }) as any as S.Schema<VpcDestinationConfiguration>;
-export type ServerCertificateStatus = "INVALID" | "VALID";
-export const ServerCertificateStatus = S.Literal("INVALID", "VALID");
-export type ModelStatus = "PENDING_BUILD" | "ACTIVE" | "EXPIRED";
-export const ModelStatus = S.Literal("PENDING_BUILD", "ACTIVE", "EXPIRED");
+export type ServerCertificateStatus = "INVALID" | "VALID" | (string & {});
+export const ServerCertificateStatus = S.String;
+export type ModelStatus =
+  | "PENDING_BUILD"
+  | "ACTIVE"
+  | "EXPIRED"
+  | (string & {});
+export const ModelStatus = S.String;
 export interface TermsAggregation {
   maxBuckets?: number;
 }
@@ -11057,29 +10883,20 @@ export type DetectMitigationActionExecutionStatus =
   | "IN_PROGRESS"
   | "SUCCESSFUL"
   | "FAILED"
-  | "SKIPPED";
-export const DetectMitigationActionExecutionStatus = S.Literal(
-  "IN_PROGRESS",
-  "SUCCESSFUL",
-  "FAILED",
-  "SKIPPED",
-);
+  | "SKIPPED"
+  | (string & {});
+export const DetectMitigationActionExecutionStatus = S.String;
 export type SbomValidationErrorCode =
   | "INCOMPATIBLE_FORMAT"
-  | "FILE_SIZE_LIMIT_EXCEEDED";
-export const SbomValidationErrorCode = S.Literal(
-  "INCOMPATIBLE_FORMAT",
-  "FILE_SIZE_LIMIT_EXCEEDED",
-);
+  | "FILE_SIZE_LIMIT_EXCEEDED"
+  | (string & {});
+export const SbomValidationErrorCode = S.String;
 export type ViolationEventType =
   | "in-alarm"
   | "alarm-cleared"
-  | "alarm-invalidated";
-export const ViolationEventType = S.Literal(
-  "in-alarm",
-  "alarm-cleared",
-  "alarm-invalidated",
-);
+  | "alarm-invalidated"
+  | (string & {});
+export const ViolationEventType = S.String;
 export type ThingGroupNameList = string[];
 export const ThingGroupNameList = S.Array(S.String);
 export type AuditCheckToReasonCodeFilter = {
@@ -12187,15 +12004,9 @@ export type AuditCheckRunStatus =
   | "CANCELED"
   | "COMPLETED_COMPLIANT"
   | "COMPLETED_NON_COMPLIANT"
-  | "FAILED";
-export const AuditCheckRunStatus = S.Literal(
-  "IN_PROGRESS",
-  "WAITING_FOR_DATA_COLLECTION",
-  "CANCELED",
-  "COMPLETED_COMPLIANT",
-  "COMPLETED_NON_COMPLIANT",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const AuditCheckRunStatus = S.String;
 export type ProcessingTargetNameList = string[];
 export const ProcessingTargetNameList = S.Array(S.String);
 export interface AssociateSbomWithPackageVersionRequest {
@@ -13511,12 +13322,12 @@ export const ThingConnectivity = S.suspend(() =>
 ).annotations({
   identifier: "ThingConnectivity",
 }) as any as S.Schema<ThingConnectivity>;
-export type AuthDecision = "ALLOWED" | "EXPLICIT_DENY" | "IMPLICIT_DENY";
-export const AuthDecision = S.Literal(
-  "ALLOWED",
-  "EXPLICIT_DENY",
-  "IMPLICIT_DENY",
-);
+export type AuthDecision =
+  | "ALLOWED"
+  | "EXPLICIT_DENY"
+  | "IMPLICIT_DENY"
+  | (string & {});
+export const AuthDecision = S.String;
 export type MissingContextValues = string[];
 export const MissingContextValues = S.Array(S.String);
 export interface SigningProfileParameter {

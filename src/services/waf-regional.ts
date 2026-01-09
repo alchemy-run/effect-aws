@@ -142,13 +142,13 @@ export const GetChangeTokenRequest = S.suspend(() =>
 ).annotations({
   identifier: "GetChangeTokenRequest",
 }) as any as S.Schema<GetChangeTokenRequest>;
-export type RateKey = "IP";
-export const RateKey = S.Literal("IP");
-export type ResourceType = "APPLICATION_LOAD_BALANCER" | "API_GATEWAY";
-export const ResourceType = S.Literal(
-  "APPLICATION_LOAD_BALANCER",
-  "API_GATEWAY",
-);
+export type RateKey = "IP" | (string & {});
+export const RateKey = S.String;
+export type ResourceType =
+  | "APPLICATION_LOAD_BALANCER"
+  | "API_GATEWAY"
+  | (string & {});
+export const ResourceType = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export interface AssociateWebACLRequest {
@@ -1478,8 +1478,8 @@ export const UntagResourceResponse = S.suspend(() =>
 ).annotations({
   identifier: "UntagResourceResponse",
 }) as any as S.Schema<UntagResourceResponse>;
-export type ChangeAction = "INSERT" | "DELETE";
-export const ChangeAction = S.Literal("INSERT", "DELETE");
+export type ChangeAction = "INSERT" | "DELETE" | (string & {});
+export const ChangeAction = S.String;
 export type PredicateType =
   | "IPMatch"
   | "ByteMatch"
@@ -1487,16 +1487,9 @@ export type PredicateType =
   | "GeoMatch"
   | "SizeConstraint"
   | "XssMatch"
-  | "RegexMatch";
-export const PredicateType = S.Literal(
-  "IPMatch",
-  "ByteMatch",
-  "SqlInjectionMatch",
-  "GeoMatch",
-  "SizeConstraint",
-  "XssMatch",
-  "RegexMatch",
-);
+  | "RegexMatch"
+  | (string & {});
+export const PredicateType = S.String;
 export interface Predicate {
   Negated: boolean;
   Type: PredicateType;
@@ -1538,8 +1531,8 @@ export const UpdateRuleRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateRuleRequest",
 }) as any as S.Schema<UpdateRuleRequest>;
-export type WafActionType = "BLOCK" | "ALLOW" | "COUNT";
-export const WafActionType = S.Literal("BLOCK", "ALLOW", "COUNT");
+export type WafActionType = "BLOCK" | "ALLOW" | "COUNT" | (string & {});
+export const WafActionType = S.String;
 export type LogDestinationConfigs = string[];
 export const LogDestinationConfigs = S.Array(S.String);
 export interface WafAction {
@@ -1548,8 +1541,12 @@ export interface WafAction {
 export const WafAction = S.suspend(() =>
   S.Struct({ Type: WafActionType }),
 ).annotations({ identifier: "WafAction" }) as any as S.Schema<WafAction>;
-export type ChangeTokenStatus = "PROVISIONED" | "PENDING" | "INSYNC";
-export const ChangeTokenStatus = S.Literal("PROVISIONED", "PENDING", "INSYNC");
+export type ChangeTokenStatus =
+  | "PROVISIONED"
+  | "PENDING"
+  | "INSYNC"
+  | (string & {});
+export const ChangeTokenStatus = S.String;
 export type ManagedKeys = string[];
 export const ManagedKeys = S.Array(S.String);
 export interface TimeWindow {
@@ -1562,8 +1559,8 @@ export const TimeWindow = S.suspend(() =>
     EndTime: S.Date.pipe(T.TimestampFormat("epoch-seconds")),
   }),
 ).annotations({ identifier: "TimeWindow" }) as any as S.Schema<TimeWindow>;
-export type WafOverrideActionType = "NONE" | "COUNT";
-export const WafOverrideActionType = S.Literal("NONE", "COUNT");
+export type WafOverrideActionType = "NONE" | "COUNT" | (string & {});
+export const WafOverrideActionType = S.String;
 export interface WafOverrideAction {
   Type: WafOverrideActionType;
 }
@@ -1572,8 +1569,8 @@ export const WafOverrideAction = S.suspend(() =>
 ).annotations({
   identifier: "WafOverrideAction",
 }) as any as S.Schema<WafOverrideAction>;
-export type WafRuleType = "REGULAR" | "RATE_BASED" | "GROUP";
-export const WafRuleType = S.Literal("REGULAR", "RATE_BASED", "GROUP");
+export type WafRuleType = "REGULAR" | "RATE_BASED" | "GROUP" | (string & {});
+export const WafRuleType = S.String;
 export interface ExcludedRule {
   RuleId: string;
 }
@@ -1611,16 +1608,9 @@ export type MatchFieldType =
   | "METHOD"
   | "BODY"
   | "SINGLE_QUERY_ARG"
-  | "ALL_QUERY_ARGS";
-export const MatchFieldType = S.Literal(
-  "URI",
-  "QUERY_STRING",
-  "HEADER",
-  "METHOD",
-  "BODY",
-  "SINGLE_QUERY_ARG",
-  "ALL_QUERY_ARGS",
-);
+  | "ALL_QUERY_ARGS"
+  | (string & {});
+export const MatchFieldType = S.String;
 export interface FieldToMatch {
   Type: MatchFieldType;
   Data?: string;
@@ -1685,30 +1675,19 @@ export type TextTransformation =
   | "HTML_ENTITY_DECODE"
   | "LOWERCASE"
   | "CMD_LINE"
-  | "URL_DECODE";
-export const TextTransformation = S.Literal(
-  "NONE",
-  "COMPRESS_WHITE_SPACE",
-  "HTML_ENTITY_DECODE",
-  "LOWERCASE",
-  "CMD_LINE",
-  "URL_DECODE",
-);
+  | "URL_DECODE"
+  | (string & {});
+export const TextTransformation = S.String;
 export type PositionalConstraint =
   | "EXACTLY"
   | "STARTS_WITH"
   | "ENDS_WITH"
   | "CONTAINS"
-  | "CONTAINS_WORD";
-export const PositionalConstraint = S.Literal(
-  "EXACTLY",
-  "STARTS_WITH",
-  "ENDS_WITH",
-  "CONTAINS",
-  "CONTAINS_WORD",
-);
-export type GeoMatchConstraintType = "Country";
-export const GeoMatchConstraintType = S.Literal("Country");
+  | "CONTAINS_WORD"
+  | (string & {});
+export const PositionalConstraint = S.String;
+export type GeoMatchConstraintType = "Country" | (string & {});
+export const GeoMatchConstraintType = S.String;
 export type GeoMatchConstraintValue =
   | "AF"
   | "AX"
@@ -1958,262 +1937,20 @@ export type GeoMatchConstraintValue =
   | "EH"
   | "YE"
   | "ZM"
-  | "ZW";
-export const GeoMatchConstraintValue = S.Literal(
-  "AF",
-  "AX",
-  "AL",
-  "DZ",
-  "AS",
-  "AD",
-  "AO",
-  "AI",
-  "AQ",
-  "AG",
-  "AR",
-  "AM",
-  "AW",
-  "AU",
-  "AT",
-  "AZ",
-  "BS",
-  "BH",
-  "BD",
-  "BB",
-  "BY",
-  "BE",
-  "BZ",
-  "BJ",
-  "BM",
-  "BT",
-  "BO",
-  "BQ",
-  "BA",
-  "BW",
-  "BV",
-  "BR",
-  "IO",
-  "BN",
-  "BG",
-  "BF",
-  "BI",
-  "KH",
-  "CM",
-  "CA",
-  "CV",
-  "KY",
-  "CF",
-  "TD",
-  "CL",
-  "CN",
-  "CX",
-  "CC",
-  "CO",
-  "KM",
-  "CG",
-  "CD",
-  "CK",
-  "CR",
-  "CI",
-  "HR",
-  "CU",
-  "CW",
-  "CY",
-  "CZ",
-  "DK",
-  "DJ",
-  "DM",
-  "DO",
-  "EC",
-  "EG",
-  "SV",
-  "GQ",
-  "ER",
-  "EE",
-  "ET",
-  "FK",
-  "FO",
-  "FJ",
-  "FI",
-  "FR",
-  "GF",
-  "PF",
-  "TF",
-  "GA",
-  "GM",
-  "GE",
-  "DE",
-  "GH",
-  "GI",
-  "GR",
-  "GL",
-  "GD",
-  "GP",
-  "GU",
-  "GT",
-  "GG",
-  "GN",
-  "GW",
-  "GY",
-  "HT",
-  "HM",
-  "VA",
-  "HN",
-  "HK",
-  "HU",
-  "IS",
-  "IN",
-  "ID",
-  "IR",
-  "IQ",
-  "IE",
-  "IM",
-  "IL",
-  "IT",
-  "JM",
-  "JP",
-  "JE",
-  "JO",
-  "KZ",
-  "KE",
-  "KI",
-  "KP",
-  "KR",
-  "KW",
-  "KG",
-  "LA",
-  "LV",
-  "LB",
-  "LS",
-  "LR",
-  "LY",
-  "LI",
-  "LT",
-  "LU",
-  "MO",
-  "MK",
-  "MG",
-  "MW",
-  "MY",
-  "MV",
-  "ML",
-  "MT",
-  "MH",
-  "MQ",
-  "MR",
-  "MU",
-  "YT",
-  "MX",
-  "FM",
-  "MD",
-  "MC",
-  "MN",
-  "ME",
-  "MS",
-  "MA",
-  "MZ",
-  "MM",
-  "NA",
-  "NR",
-  "NP",
-  "NL",
-  "NC",
-  "NZ",
-  "NI",
-  "NE",
-  "NG",
-  "NU",
-  "NF",
-  "MP",
-  "NO",
-  "OM",
-  "PK",
-  "PW",
-  "PS",
-  "PA",
-  "PG",
-  "PY",
-  "PE",
-  "PH",
-  "PN",
-  "PL",
-  "PT",
-  "PR",
-  "QA",
-  "RE",
-  "RO",
-  "RU",
-  "RW",
-  "BL",
-  "SH",
-  "KN",
-  "LC",
-  "MF",
-  "PM",
-  "VC",
-  "WS",
-  "SM",
-  "ST",
-  "SA",
-  "SN",
-  "RS",
-  "SC",
-  "SL",
-  "SG",
-  "SX",
-  "SK",
-  "SI",
-  "SB",
-  "SO",
-  "ZA",
-  "GS",
-  "SS",
-  "ES",
-  "LK",
-  "SD",
-  "SR",
-  "SJ",
-  "SZ",
-  "SE",
-  "CH",
-  "SY",
-  "TW",
-  "TJ",
-  "TZ",
-  "TH",
-  "TL",
-  "TG",
-  "TK",
-  "TO",
-  "TT",
-  "TN",
-  "TR",
-  "TM",
-  "TC",
-  "TV",
-  "UG",
-  "UA",
-  "AE",
-  "GB",
-  "US",
-  "UM",
-  "UY",
-  "UZ",
-  "VU",
-  "VE",
-  "VN",
-  "VG",
-  "VI",
-  "WF",
-  "EH",
-  "YE",
-  "ZM",
-  "ZW",
-);
-export type IPSetDescriptorType = "IPV4" | "IPV6";
-export const IPSetDescriptorType = S.Literal("IPV4", "IPV6");
-export type ComparisonOperator = "EQ" | "NE" | "LE" | "LT" | "GE" | "GT";
-export const ComparisonOperator = S.Literal("EQ", "NE", "LE", "LT", "GE", "GT");
+  | "ZW"
+  | (string & {});
+export const GeoMatchConstraintValue = S.String;
+export type IPSetDescriptorType = "IPV4" | "IPV6" | (string & {});
+export const IPSetDescriptorType = S.String;
+export type ComparisonOperator =
+  | "EQ"
+  | "NE"
+  | "LE"
+  | "LT"
+  | "GE"
+  | "GT"
+  | (string & {});
+export const ComparisonOperator = S.String;
 export interface CreateRateBasedRuleRequest {
   Name: string;
   MetricName: string;
@@ -2895,38 +2632,16 @@ export type ParameterExceptionField =
   | "NEXT_MARKER"
   | "RESOURCE_ARN"
   | "TAGS"
-  | "TAG_KEYS";
-export const ParameterExceptionField = S.Literal(
-  "CHANGE_ACTION",
-  "WAF_ACTION",
-  "WAF_OVERRIDE_ACTION",
-  "PREDICATE_TYPE",
-  "IPSET_TYPE",
-  "BYTE_MATCH_FIELD_TYPE",
-  "SQL_INJECTION_MATCH_FIELD_TYPE",
-  "BYTE_MATCH_TEXT_TRANSFORMATION",
-  "BYTE_MATCH_POSITIONAL_CONSTRAINT",
-  "SIZE_CONSTRAINT_COMPARISON_OPERATOR",
-  "GEO_MATCH_LOCATION_TYPE",
-  "GEO_MATCH_LOCATION_VALUE",
-  "RATE_KEY",
-  "RULE_TYPE",
-  "NEXT_MARKER",
-  "RESOURCE_ARN",
-  "TAGS",
-  "TAG_KEYS",
-);
+  | "TAG_KEYS"
+  | (string & {});
+export const ParameterExceptionField = S.String;
 export type ParameterExceptionReason =
   | "INVALID_OPTION"
   | "ILLEGAL_COMBINATION"
   | "ILLEGAL_ARGUMENT"
-  | "INVALID_TAG_KEY";
-export const ParameterExceptionReason = S.Literal(
-  "INVALID_OPTION",
-  "ILLEGAL_COMBINATION",
-  "ILLEGAL_ARGUMENT",
-  "INVALID_TAG_KEY",
-);
+  | "INVALID_TAG_KEY"
+  | (string & {});
+export const ParameterExceptionReason = S.String;
 export type MigrationErrorType =
   | "ENTITY_NOT_SUPPORTED"
   | "ENTITY_NOT_FOUND"
@@ -2934,16 +2649,9 @@ export type MigrationErrorType =
   | "S3_BUCKET_NOT_ACCESSIBLE"
   | "S3_BUCKET_NOT_FOUND"
   | "S3_BUCKET_INVALID_REGION"
-  | "S3_INTERNAL_ERROR";
-export const MigrationErrorType = S.Literal(
-  "ENTITY_NOT_SUPPORTED",
-  "ENTITY_NOT_FOUND",
-  "S3_BUCKET_NO_PERMISSION",
-  "S3_BUCKET_NOT_ACCESSIBLE",
-  "S3_BUCKET_NOT_FOUND",
-  "S3_BUCKET_INVALID_REGION",
-  "S3_INTERNAL_ERROR",
-);
+  | "S3_INTERNAL_ERROR"
+  | (string & {});
+export const MigrationErrorType = S.String;
 export interface RateBasedRule {
   RuleId: string;
   Name?: string;

@@ -102,8 +102,8 @@ export type ManifestFilePath = string;
 export type ModelVersion = string;
 
 //# Schemas
-export type LanguageCode = "en";
-export const LanguageCode = S.Literal("en");
+export type LanguageCode = "en" | (string & {});
+export const LanguageCode = S.String;
 export interface DescribeEntitiesDetectionV2JobRequest {
   JobId: string;
 }
@@ -221,16 +221,9 @@ export type JobStatus =
   | "PARTIAL_SUCCESS"
   | "FAILED"
   | "STOP_REQUESTED"
-  | "STOPPED";
-export const JobStatus = S.Literal(
-  "SUBMITTED",
-  "IN_PROGRESS",
-  "COMPLETED",
-  "PARTIAL_SUCCESS",
-  "FAILED",
-  "STOP_REQUESTED",
-  "STOPPED",
-);
+  | "STOPPED"
+  | (string & {});
+export const JobStatus = S.String;
 export interface ComprehendMedicalAsyncJobFilter {
   JobName?: string;
   JobStatus?: JobStatus;
@@ -575,16 +568,9 @@ export type EntityType =
   | "TEST_TREATMENT_PROCEDURE"
   | "ANATOMY"
   | "TIME_EXPRESSION"
-  | "BEHAVIORAL_ENVIRONMENTAL_SOCIAL";
-export const EntityType = S.Literal(
-  "MEDICATION",
-  "MEDICAL_CONDITION",
-  "PROTECTED_HEALTH_INFORMATION",
-  "TEST_TREATMENT_PROCEDURE",
-  "ANATOMY",
-  "TIME_EXPRESSION",
-  "BEHAVIORAL_ENVIRONMENTAL_SOCIAL",
-);
+  | "BEHAVIORAL_ENVIRONMENTAL_SOCIAL"
+  | (string & {});
+export const EntityType = S.String;
 export type EntitySubType =
   | "NAME"
   | "DX_NAME"
@@ -630,54 +616,9 @@ export type EntitySubType =
   | "ALLERGIES"
   | "TOBACCO_USE"
   | "ALCOHOL_CONSUMPTION"
-  | "REC_DRUG_USE";
-export const EntitySubType = S.Literal(
-  "NAME",
-  "DX_NAME",
-  "DOSAGE",
-  "ROUTE_OR_MODE",
-  "FORM",
-  "FREQUENCY",
-  "DURATION",
-  "GENERIC_NAME",
-  "BRAND_NAME",
-  "STRENGTH",
-  "RATE",
-  "ACUITY",
-  "TEST_NAME",
-  "TEST_VALUE",
-  "TEST_UNITS",
-  "TEST_UNIT",
-  "PROCEDURE_NAME",
-  "TREATMENT_NAME",
-  "DATE",
-  "AGE",
-  "CONTACT_POINT",
-  "PHONE_OR_FAX",
-  "EMAIL",
-  "IDENTIFIER",
-  "ID",
-  "URL",
-  "ADDRESS",
-  "PROFESSION",
-  "SYSTEM_ORGAN_SITE",
-  "DIRECTION",
-  "QUALITY",
-  "QUANTITY",
-  "TIME_EXPRESSION",
-  "TIME_TO_MEDICATION_NAME",
-  "TIME_TO_DX_NAME",
-  "TIME_TO_TEST_NAME",
-  "TIME_TO_PROCEDURE_NAME",
-  "TIME_TO_TREATMENT_NAME",
-  "AMOUNT",
-  "GENDER",
-  "RACE_ETHNICITY",
-  "ALLERGIES",
-  "TOBACCO_USE",
-  "ALCOHOL_CONSUMPTION",
-  "REC_DRUG_USE",
-);
+  | "REC_DRUG_USE"
+  | (string & {});
+export const EntitySubType = S.String;
 export type AttributeName =
   | "SIGN"
   | "SYMPTOM"
@@ -687,18 +628,9 @@ export type AttributeName =
   | "HYPOTHETICAL"
   | "LOW_CONFIDENCE"
   | "PAST_HISTORY"
-  | "FUTURE";
-export const AttributeName = S.Literal(
-  "SIGN",
-  "SYMPTOM",
-  "DIAGNOSIS",
-  "NEGATION",
-  "PERTAINS_TO_FAMILY",
-  "HYPOTHETICAL",
-  "LOW_CONFIDENCE",
-  "PAST_HISTORY",
-  "FUTURE",
-);
+  | "FUTURE"
+  | (string & {});
+export const AttributeName = S.String;
 export interface Trait {
   Name?: AttributeName;
   Score?: number;
@@ -730,31 +662,9 @@ export type RelationshipType =
   | "SYSTEM_ORGAN_SITE"
   | "AMOUNT"
   | "USAGE"
-  | "QUALITY";
-export const RelationshipType = S.Literal(
-  "EVERY",
-  "WITH_DOSAGE",
-  "ADMINISTERED_VIA",
-  "FOR",
-  "NEGATIVE",
-  "OVERLAP",
-  "DOSAGE",
-  "ROUTE_OR_MODE",
-  "FORM",
-  "FREQUENCY",
-  "DURATION",
-  "STRENGTH",
-  "RATE",
-  "ACUITY",
-  "TEST_VALUE",
-  "TEST_UNITS",
-  "TEST_UNIT",
-  "DIRECTION",
-  "SYSTEM_ORGAN_SITE",
-  "AMOUNT",
-  "USAGE",
-  "QUALITY",
-);
+  | "QUALITY"
+  | (string & {});
+export const RelationshipType = S.String;
 export interface Attribute {
   Type?: EntitySubType;
   Score?: number;
@@ -1018,34 +928,27 @@ export const StopSNOMEDCTInferenceJobResponse = S.suspend(() =>
 ).annotations({
   identifier: "StopSNOMEDCTInferenceJobResponse",
 }) as any as S.Schema<StopSNOMEDCTInferenceJobResponse>;
-export type ICD10CMEntityCategory = "MEDICAL_CONDITION";
-export const ICD10CMEntityCategory = S.Literal("MEDICAL_CONDITION");
-export type ICD10CMEntityType = "DX_NAME" | "TIME_EXPRESSION";
-export const ICD10CMEntityType = S.Literal("DX_NAME", "TIME_EXPRESSION");
-export type RxNormEntityCategory = "MEDICATION";
-export const RxNormEntityCategory = S.Literal("MEDICATION");
-export type RxNormEntityType = "BRAND_NAME" | "GENERIC_NAME";
-export const RxNormEntityType = S.Literal("BRAND_NAME", "GENERIC_NAME");
+export type ICD10CMEntityCategory = "MEDICAL_CONDITION" | (string & {});
+export const ICD10CMEntityCategory = S.String;
+export type ICD10CMEntityType = "DX_NAME" | "TIME_EXPRESSION" | (string & {});
+export const ICD10CMEntityType = S.String;
+export type RxNormEntityCategory = "MEDICATION" | (string & {});
+export const RxNormEntityCategory = S.String;
+export type RxNormEntityType = "BRAND_NAME" | "GENERIC_NAME" | (string & {});
+export const RxNormEntityType = S.String;
 export type SNOMEDCTEntityCategory =
   | "MEDICAL_CONDITION"
   | "ANATOMY"
-  | "TEST_TREATMENT_PROCEDURE";
-export const SNOMEDCTEntityCategory = S.Literal(
-  "MEDICAL_CONDITION",
-  "ANATOMY",
-  "TEST_TREATMENT_PROCEDURE",
-);
+  | "TEST_TREATMENT_PROCEDURE"
+  | (string & {});
+export const SNOMEDCTEntityCategory = S.String;
 export type SNOMEDCTEntityType =
   | "DX_NAME"
   | "TEST_NAME"
   | "PROCEDURE_NAME"
-  | "TREATMENT_NAME";
-export const SNOMEDCTEntityType = S.Literal(
-  "DX_NAME",
-  "TEST_NAME",
-  "PROCEDURE_NAME",
-  "TREATMENT_NAME",
-);
+  | "TREATMENT_NAME"
+  | (string & {});
+export const SNOMEDCTEntityType = S.String;
 export interface SNOMEDCTDetails {
   Edition?: string;
   Language?: string;
@@ -1073,25 +976,15 @@ export type ICD10CMAttributeType =
   | "QUALITY"
   | "QUANTITY"
   | "TIME_TO_DX_NAME"
-  | "TIME_EXPRESSION";
-export const ICD10CMAttributeType = S.Literal(
-  "ACUITY",
-  "DIRECTION",
-  "SYSTEM_ORGAN_SITE",
-  "QUALITY",
-  "QUANTITY",
-  "TIME_TO_DX_NAME",
-  "TIME_EXPRESSION",
-);
+  | "TIME_EXPRESSION"
+  | (string & {});
+export const ICD10CMAttributeType = S.String;
 export type ICD10CMRelationshipType =
   | "OVERLAP"
   | "SYSTEM_ORGAN_SITE"
-  | "QUALITY";
-export const ICD10CMRelationshipType = S.Literal(
-  "OVERLAP",
-  "SYSTEM_ORGAN_SITE",
-  "QUALITY",
-);
+  | "QUALITY"
+  | (string & {});
+export const ICD10CMRelationshipType = S.String;
 export type ICD10CMTraitName =
   | "NEGATION"
   | "DIAGNOSIS"
@@ -1099,16 +992,9 @@ export type ICD10CMTraitName =
   | "SYMPTOM"
   | "PERTAINS_TO_FAMILY"
   | "HYPOTHETICAL"
-  | "LOW_CONFIDENCE";
-export const ICD10CMTraitName = S.Literal(
-  "NEGATION",
-  "DIAGNOSIS",
-  "SIGN",
-  "SYMPTOM",
-  "PERTAINS_TO_FAMILY",
-  "HYPOTHETICAL",
-  "LOW_CONFIDENCE",
-);
+  | "LOW_CONFIDENCE"
+  | (string & {});
+export const ICD10CMTraitName = S.String;
 export type RxNormAttributeType =
   | "DOSAGE"
   | "DURATION"
@@ -1116,33 +1002,20 @@ export type RxNormAttributeType =
   | "FREQUENCY"
   | "RATE"
   | "ROUTE_OR_MODE"
-  | "STRENGTH";
-export const RxNormAttributeType = S.Literal(
-  "DOSAGE",
-  "DURATION",
-  "FORM",
-  "FREQUENCY",
-  "RATE",
-  "ROUTE_OR_MODE",
-  "STRENGTH",
-);
-export type RxNormTraitName = "NEGATION" | "PAST_HISTORY";
-export const RxNormTraitName = S.Literal("NEGATION", "PAST_HISTORY");
+  | "STRENGTH"
+  | (string & {});
+export const RxNormAttributeType = S.String;
+export type RxNormTraitName = "NEGATION" | "PAST_HISTORY" | (string & {});
+export const RxNormTraitName = S.String;
 export type SNOMEDCTAttributeType =
   | "ACUITY"
   | "QUALITY"
   | "DIRECTION"
   | "SYSTEM_ORGAN_SITE"
   | "TEST_VALUE"
-  | "TEST_UNIT";
-export const SNOMEDCTAttributeType = S.Literal(
-  "ACUITY",
-  "QUALITY",
-  "DIRECTION",
-  "SYSTEM_ORGAN_SITE",
-  "TEST_VALUE",
-  "TEST_UNIT",
-);
+  | "TEST_UNIT"
+  | (string & {});
+export const SNOMEDCTAttributeType = S.String;
 export type SNOMEDCTRelationshipType =
   | "ACUITY"
   | "QUALITY"
@@ -1150,16 +1023,9 @@ export type SNOMEDCTRelationshipType =
   | "TEST_UNITS"
   | "DIRECTION"
   | "SYSTEM_ORGAN_SITE"
-  | "TEST_UNIT";
-export const SNOMEDCTRelationshipType = S.Literal(
-  "ACUITY",
-  "QUALITY",
-  "TEST_VALUE",
-  "TEST_UNITS",
-  "DIRECTION",
-  "SYSTEM_ORGAN_SITE",
-  "TEST_UNIT",
-);
+  | "TEST_UNIT"
+  | (string & {});
+export const SNOMEDCTRelationshipType = S.String;
 export type SNOMEDCTTraitName =
   | "NEGATION"
   | "DIAGNOSIS"
@@ -1169,18 +1035,9 @@ export type SNOMEDCTTraitName =
   | "HYPOTHETICAL"
   | "LOW_CONFIDENCE"
   | "PAST_HISTORY"
-  | "FUTURE";
-export const SNOMEDCTTraitName = S.Literal(
-  "NEGATION",
-  "DIAGNOSIS",
-  "SIGN",
-  "SYMPTOM",
-  "PERTAINS_TO_FAMILY",
-  "HYPOTHETICAL",
-  "LOW_CONFIDENCE",
-  "PAST_HISTORY",
-  "FUTURE",
-);
+  | "FUTURE"
+  | (string & {});
+export const SNOMEDCTTraitName = S.String;
 export interface DescribeEntitiesDetectionV2JobResponse {
   ComprehendMedicalAsyncJobProperties?: ComprehendMedicalAsyncJobProperties;
 }

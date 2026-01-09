@@ -597,6 +597,133 @@ describe("ec2Query protocol", () => {
   });
 
   // ==========================================================================
+  // Empty List Handling
+  // ==========================================================================
+
+  describe("empty list handling", () => {
+    it.effect("should handle empty wrapper element as empty array", () =>
+      Effect.gen(function* () {
+        // When XML has an empty wrapper like <reservationSet></reservationSet>
+        const response: Response = {
+          status: 200,
+          statusText: "OK",
+          headers: { "Content-Type": "text/xml;charset=UTF-8" },
+          body: `<?xml version="1.0" encoding="UTF-8"?>
+<DescribeInstancesResponse xmlns="http://ec2.amazonaws.com/doc/2016-11-15/">
+    <requestId>abc123</requestId>
+    <reservationSet></reservationSet>
+</DescribeInstancesResponse>`,
+        };
+
+        const result = yield* parseResponse(DescribeInstancesResult, response);
+
+        // Should be an empty array, not [undefined]
+        expect(result.Reservations).toEqual([]);
+      }),
+    );
+
+    it.effect("should handle self-closing empty wrapper element", () =>
+      Effect.gen(function* () {
+        // When XML has a self-closing wrapper like <reservationSet/>
+        const response: Response = {
+          status: 200,
+          statusText: "OK",
+          headers: { "Content-Type": "text/xml;charset=UTF-8" },
+          body: `<?xml version="1.0" encoding="UTF-8"?>
+<DescribeInstancesResponse xmlns="http://ec2.amazonaws.com/doc/2016-11-15/">
+    <requestId>abc123</requestId>
+    <reservationSet/>
+</DescribeInstancesResponse>`,
+        };
+
+        const result = yield* parseResponse(DescribeInstancesResult, response);
+
+        // Should be an empty array, not [undefined]
+        expect(result.Reservations).toEqual([]);
+      }),
+    );
+
+    it.effect("should handle empty hostIdSet wrapper", () =>
+      Effect.gen(function* () {
+        const response: Response = {
+          status: 200,
+          statusText: "OK",
+          headers: { "Content-Type": "text/xml;charset=UTF-8" },
+          body: `<?xml version="1.0" encoding="UTF-8"?>
+<AllocateHostsResponse xmlns="http://ec2.amazonaws.com/doc/2016-11-15/">
+    <requestId>abc123</requestId>
+    <hostIdSet></hostIdSet>
+</AllocateHostsResponse>`,
+        };
+
+        const result = yield* parseResponse(AllocateHostsResult, response);
+
+        // Should be an empty array, not [undefined]
+        expect(result.HostIds).toEqual([]);
+      }),
+    );
+
+    it.effect(
+      "should handle nested empty lists in objects (historyRecordSet)",
+      () =>
+        Effect.gen(function* () {
+          const response: Response = {
+            status: 200,
+            statusText: "OK",
+            headers: { "Content-Type": "text/xml;charset=UTF-8" },
+            body: `<?xml version="1.0" encoding="UTF-8"?>
+<DescribeSpotFleetRequestHistoryResponse xmlns="http://ec2.amazonaws.com/doc/2016-11-15/">
+    <requestId>abc123</requestId>
+    <spotFleetRequestId>sfr-12345678</spotFleetRequestId>
+    <startTime>2024-01-15T12:30:00.000Z</startTime>
+    <lastEvaluatedTime>2024-01-15T14:30:00.000Z</lastEvaluatedTime>
+    <historyRecordSet></historyRecordSet>
+</DescribeSpotFleetRequestHistoryResponse>`,
+          };
+
+          const result = yield* parseResponse(
+            DescribeSpotFleetRequestHistoryResponse,
+            response,
+          );
+
+          expect(result.SpotFleetRequestId).toBe("sfr-12345678");
+          // Should be an empty array, not [undefined]
+          expect(result.HistoryRecords).toEqual([]);
+        }),
+    );
+
+    it.effect("should handle mix of empty and populated lists", () =>
+      Effect.gen(function* () {
+        const response: Response = {
+          status: 200,
+          statusText: "OK",
+          headers: { "Content-Type": "text/xml;charset=UTF-8" },
+          body: `<?xml version="1.0" encoding="UTF-8"?>
+<DescribeInstancesResponse xmlns="http://ec2.amazonaws.com/doc/2016-11-15/">
+    <requestId>abc123</requestId>
+    <nextToken>token123</nextToken>
+    <reservationSet>
+        <item>
+            <reservationId>r-12345678</reservationId>
+            <instancesSet></instancesSet>
+            <groupSet/>
+        </item>
+    </reservationSet>
+</DescribeInstancesResponse>`,
+        };
+
+        const result = yield* parseResponse(DescribeInstancesResult, response);
+
+        expect(result.Reservations).toHaveLength(1);
+        expect(result.Reservations?.[0].ReservationId).toBe("r-12345678");
+        // Nested empty lists should be empty arrays, not [undefined]
+        expect(result.Reservations?.[0].Instances).toEqual([]);
+        expect(result.Reservations?.[0].Groups).toEqual([]);
+      }),
+    );
+  });
+
+  // ==========================================================================
   // Error Deserialization
   // ==========================================================================
 

@@ -447,37 +447,24 @@ export type SymmetricKeyAlgorithm =
   | "HMAC_SHA256"
   | "HMAC_SHA384"
   | "HMAC_SHA512"
-  | "HMAC_SHA224";
-export const SymmetricKeyAlgorithm = S.Literal(
-  "TDES_2KEY",
-  "TDES_3KEY",
-  "AES_128",
-  "AES_192",
-  "AES_256",
-  "HMAC_SHA256",
-  "HMAC_SHA384",
-  "HMAC_SHA512",
-  "HMAC_SHA224",
-);
-export type KeyDerivationFunction = "NIST_SP800" | "ANSI_X963";
-export const KeyDerivationFunction = S.Literal("NIST_SP800", "ANSI_X963");
-export type KeyDerivationHashAlgorithm = "SHA_256" | "SHA_384" | "SHA_512";
-export const KeyDerivationHashAlgorithm = S.Literal(
-  "SHA_256",
-  "SHA_384",
-  "SHA_512",
-);
+  | "HMAC_SHA224"
+  | (string & {});
+export const SymmetricKeyAlgorithm = S.String;
+export type KeyDerivationFunction = "NIST_SP800" | "ANSI_X963" | (string & {});
+export const KeyDerivationFunction = S.String;
+export type KeyDerivationHashAlgorithm =
+  | "SHA_256"
+  | "SHA_384"
+  | "SHA_512"
+  | (string & {});
+export const KeyDerivationHashAlgorithm = S.String;
 export type As2805KeyVariant =
   | "TERMINAL_MAJOR_KEY_VARIANT_00"
   | "PIN_ENCRYPTION_KEY_VARIANT_28"
   | "MESSAGE_AUTHENTICATION_KEY_VARIANT_24"
-  | "DATA_ENCRYPTION_KEY_VARIANT_22";
-export const As2805KeyVariant = S.Literal(
-  "TERMINAL_MAJOR_KEY_VARIANT_00",
-  "PIN_ENCRYPTION_KEY_VARIANT_28",
-  "MESSAGE_AUTHENTICATION_KEY_VARIANT_24",
-  "DATA_ENCRYPTION_KEY_VARIANT_22",
-);
+  | "DATA_ENCRYPTION_KEY_VARIANT_22"
+  | (string & {});
+export const As2805KeyVariant = S.String;
 export interface DisableDefaultKeyReplicationRegionsOutput {
   EnabledReplicationRegions: string[];
 }

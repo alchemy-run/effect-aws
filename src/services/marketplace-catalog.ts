@@ -155,10 +155,10 @@ export type VisibilityValue = string;
 export type OfferBuyerAccountsString = string;
 
 //# Schemas
-export type OwnershipType = "SELF" | "SHARED";
-export const OwnershipType = S.Literal("SELF", "SHARED");
-export type Intent = "VALIDATE" | "APPLY";
-export const Intent = S.Literal("VALIDATE", "APPLY");
+export type OwnershipType = "SELF" | "SHARED" | (string & {});
+export const OwnershipType = S.String;
+export type Intent = "VALIDATE" | "APPLY" | (string & {});
+export const Intent = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export interface CancelChangeSetRequest {
@@ -360,8 +360,8 @@ export const UntagResourceResponse = S.suspend(() => S.Struct({})).annotations({
 }) as any as S.Schema<UntagResourceResponse>;
 export type ValueList = string[];
 export const ValueList = S.Array(S.String);
-export type SortOrder = "ASCENDING" | "DESCENDING";
-export const SortOrder = S.Literal("ASCENDING", "DESCENDING");
+export type SortOrder = "ASCENDING" | "DESCENDING" | (string & {});
+export const SortOrder = S.String;
 export interface EntityRequest {
   Catalog: string;
   EntityId: string;
@@ -378,16 +378,11 @@ export type ChangeStatus =
   | "APPLYING"
   | "SUCCEEDED"
   | "CANCELLED"
-  | "FAILED";
-export const ChangeStatus = S.Literal(
-  "PREPARING",
-  "APPLYING",
-  "SUCCEEDED",
-  "CANCELLED",
-  "FAILED",
-);
-export type FailureCode = "CLIENT_ERROR" | "SERVER_FAULT";
-export const FailureCode = S.Literal("CLIENT_ERROR", "SERVER_FAULT");
+  | "FAILED"
+  | (string & {});
+export const ChangeStatus = S.String;
+export type FailureCode = "CLIENT_ERROR" | "SERVER_FAULT" | (string & {});
+export const FailureCode = S.String;
 export interface Filter {
   Name?: string;
   ValueList?: string[];
@@ -408,37 +403,24 @@ export type DataProductSortBy =
   | "EntityId"
   | "ProductTitle"
   | "Visibility"
-  | "LastModifiedDate";
-export const DataProductSortBy = S.Literal(
-  "EntityId",
-  "ProductTitle",
-  "Visibility",
-  "LastModifiedDate",
-);
+  | "LastModifiedDate"
+  | (string & {});
+export const DataProductSortBy = S.String;
 export type SaaSProductSortBy =
   | "EntityId"
   | "ProductTitle"
   | "Visibility"
   | "LastModifiedDate"
-  | "DeliveryOptionTypes";
-export const SaaSProductSortBy = S.Literal(
-  "EntityId",
-  "ProductTitle",
-  "Visibility",
-  "LastModifiedDate",
-  "DeliveryOptionTypes",
-);
+  | "DeliveryOptionTypes"
+  | (string & {});
+export const SaaSProductSortBy = S.String;
 export type AmiProductSortBy =
   | "EntityId"
   | "LastModifiedDate"
   | "ProductTitle"
-  | "Visibility";
-export const AmiProductSortBy = S.Literal(
-  "EntityId",
-  "LastModifiedDate",
-  "ProductTitle",
-  "Visibility",
-);
+  | "Visibility"
+  | (string & {});
+export const AmiProductSortBy = S.String;
 export type OfferSortBy =
   | "EntityId"
   | "Name"
@@ -450,33 +432,17 @@ export type OfferSortBy =
   | "State"
   | "Targeting"
   | "LastModifiedDate"
-  | "OfferSetId";
-export const OfferSortBy = S.Literal(
-  "EntityId",
-  "Name",
-  "ProductId",
-  "ResaleAuthorizationId",
-  "ReleaseDate",
-  "AvailabilityEndDate",
-  "BuyerAccounts",
-  "State",
-  "Targeting",
-  "LastModifiedDate",
-  "OfferSetId",
-);
+  | "OfferSetId"
+  | (string & {});
+export const OfferSortBy = S.String;
 export type ContainerProductSortBy =
   | "EntityId"
   | "LastModifiedDate"
   | "ProductTitle"
   | "Visibility"
-  | "CompatibleAWSServices";
-export const ContainerProductSortBy = S.Literal(
-  "EntityId",
-  "LastModifiedDate",
-  "ProductTitle",
-  "Visibility",
-  "CompatibleAWSServices",
-);
+  | "CompatibleAWSServices"
+  | (string & {});
+export const ContainerProductSortBy = S.String;
 export type ResaleAuthorizationSortBy =
   | "EntityId"
   | "Name"
@@ -490,48 +456,25 @@ export type ResaleAuthorizationSortBy =
   | "OfferExtendedStatus"
   | "CreatedDate"
   | "AvailabilityEndDate"
-  | "LastModifiedDate";
-export const ResaleAuthorizationSortBy = S.Literal(
-  "EntityId",
-  "Name",
-  "ProductId",
-  "ProductName",
-  "ManufacturerAccountId",
-  "ManufacturerLegalName",
-  "ResellerAccountID",
-  "ResellerLegalName",
-  "Status",
-  "OfferExtendedStatus",
-  "CreatedDate",
-  "AvailabilityEndDate",
-  "LastModifiedDate",
-);
+  | "LastModifiedDate"
+  | (string & {});
+export const ResaleAuthorizationSortBy = S.String;
 export type MachineLearningProductSortBy =
   | "EntityId"
   | "LastModifiedDate"
   | "ProductTitle"
-  | "Visibility";
-export const MachineLearningProductSortBy = S.Literal(
-  "EntityId",
-  "LastModifiedDate",
-  "ProductTitle",
-  "Visibility",
-);
+  | "Visibility"
+  | (string & {});
+export const MachineLearningProductSortBy = S.String;
 export type OfferSetSortBy =
   | "Name"
   | "State"
   | "ReleaseDate"
   | "SolutionId"
   | "EntityId"
-  | "LastModifiedDate";
-export const OfferSetSortBy = S.Literal(
-  "Name",
-  "State",
-  "ReleaseDate",
-  "SolutionId",
-  "EntityId",
-  "LastModifiedDate",
-);
+  | "LastModifiedDate"
+  | (string & {});
+export const OfferSetSortBy = S.String;
 export interface BatchDescribeEntitiesRequest {
   EntityRequestList: EntityRequest[];
 }
@@ -733,14 +676,9 @@ export type DataProductVisibilityString =
   | "Public"
   | "Restricted"
   | "Unavailable"
-  | "Draft";
-export const DataProductVisibilityString = S.Literal(
-  "Limited",
-  "Public",
-  "Restricted",
-  "Unavailable",
-  "Draft",
-);
+  | "Draft"
+  | (string & {});
+export const DataProductVisibilityString = S.String;
 export type DataProductVisibilityFilterValueList =
   DataProductVisibilityString[];
 export const DataProductVisibilityFilterValueList = S.Array(
@@ -754,13 +692,9 @@ export type SaaSProductVisibilityString =
   | "Limited"
   | "Public"
   | "Restricted"
-  | "Draft";
-export const SaaSProductVisibilityString = S.Literal(
-  "Limited",
-  "Public",
-  "Restricted",
-  "Draft",
-);
+  | "Draft"
+  | (string & {});
+export const SaaSProductVisibilityString = S.String;
 export type SaaSProductVisibilityFilterValueList =
   SaaSProductVisibilityString[];
 export const SaaSProductVisibilityFilterValueList = S.Array(
@@ -774,13 +708,9 @@ export type AmiProductVisibilityString =
   | "Limited"
   | "Public"
   | "Restricted"
-  | "Draft";
-export const AmiProductVisibilityString = S.Literal(
-  "Limited",
-  "Public",
-  "Restricted",
-  "Draft",
-);
+  | "Draft"
+  | (string & {});
+export const AmiProductVisibilityString = S.String;
 export type AmiProductVisibilityFilterValueList = AmiProductVisibilityString[];
 export const AmiProductVisibilityFilterValueList = S.Array(
   AmiProductVisibilityString,
@@ -793,21 +723,17 @@ export type OfferProductIdFilterValueList = string[];
 export const OfferProductIdFilterValueList = S.Array(S.String);
 export type OfferResaleAuthorizationIdFilterValueList = string[];
 export const OfferResaleAuthorizationIdFilterValueList = S.Array(S.String);
-export type OfferStateString = "Draft" | "Released";
-export const OfferStateString = S.Literal("Draft", "Released");
+export type OfferStateString = "Draft" | "Released" | (string & {});
+export const OfferStateString = S.String;
 export type OfferStateFilterValueList = OfferStateString[];
 export const OfferStateFilterValueList = S.Array(OfferStateString);
 export type OfferTargetingString =
   | "BuyerAccounts"
   | "ParticipatingPrograms"
   | "CountryCodes"
-  | "None";
-export const OfferTargetingString = S.Literal(
-  "BuyerAccounts",
-  "ParticipatingPrograms",
-  "CountryCodes",
-  "None",
-);
+  | "None"
+  | (string & {});
+export const OfferTargetingString = S.String;
 export type OfferTargetingFilterValueList = OfferTargetingString[];
 export const OfferTargetingFilterValueList = S.Array(OfferTargetingString);
 export type OfferSetIdFilterValueList = string[];
@@ -820,13 +746,9 @@ export type ContainerProductVisibilityString =
   | "Limited"
   | "Public"
   | "Restricted"
-  | "Draft";
-export const ContainerProductVisibilityString = S.Literal(
-  "Limited",
-  "Public",
-  "Restricted",
-  "Draft",
-);
+  | "Draft"
+  | (string & {});
+export const ContainerProductVisibilityString = S.String;
 export type ContainerProductVisibilityFilterValueList =
   ContainerProductVisibilityString[];
 export const ContainerProductVisibilityFilterValueList = S.Array(
@@ -862,12 +784,12 @@ export type ResaleAuthorizationResellerLegalNameFilterValueList = string[];
 export const ResaleAuthorizationResellerLegalNameFilterValueList = S.Array(
   S.String,
 );
-export type ResaleAuthorizationStatusString = "Draft" | "Active" | "Restricted";
-export const ResaleAuthorizationStatusString = S.Literal(
-  "Draft",
-  "Active",
-  "Restricted",
-);
+export type ResaleAuthorizationStatusString =
+  | "Draft"
+  | "Active"
+  | "Restricted"
+  | (string & {});
+export const ResaleAuthorizationStatusString = S.String;
 export type ResaleAuthorizationStatusFilterValueList =
   ResaleAuthorizationStatusString[];
 export const ResaleAuthorizationStatusFilterValueList = S.Array(
@@ -885,13 +807,9 @@ export type MachineLearningProductVisibilityString =
   | "Limited"
   | "Public"
   | "Restricted"
-  | "Draft";
-export const MachineLearningProductVisibilityString = S.Literal(
-  "Limited",
-  "Public",
-  "Restricted",
-  "Draft",
-);
+  | "Draft"
+  | (string & {});
+export const MachineLearningProductVisibilityString = S.String;
 export type MachineLearningProductVisibilityFilterValueList =
   MachineLearningProductVisibilityString[];
 export const MachineLearningProductVisibilityFilterValueList = S.Array(
@@ -901,8 +819,8 @@ export type OfferSetEntityIdFilterValueList = string[];
 export const OfferSetEntityIdFilterValueList = S.Array(S.String);
 export type OfferSetNameFilterValueList = string[];
 export const OfferSetNameFilterValueList = S.Array(S.String);
-export type OfferSetStateString = "Draft" | "Released";
-export const OfferSetStateString = S.Literal("Draft", "Released");
+export type OfferSetStateString = "Draft" | "Released" | (string & {});
+export const OfferSetStateString = S.String;
 export type OfferSetStateFilterValueList = OfferSetStateString[];
 export const OfferSetStateFilterValueList = S.Array(OfferSetStateString);
 export type OfferSetAssociatedOfferIdsFilterValueList = string[];

@@ -114,12 +114,12 @@ export type RetryAfterSeconds = number;
 //# Schemas
 export type ApplicationIds = string[];
 export const ApplicationIds = S.Array(S.String);
-export type ApplicationStatus = "NOT_STARTED" | "IN_PROGRESS" | "COMPLETED";
-export const ApplicationStatus = S.Literal(
-  "NOT_STARTED",
-  "IN_PROGRESS",
-  "COMPLETED",
-);
+export type ApplicationStatus =
+  | "NOT_STARTED"
+  | "IN_PROGRESS"
+  | "COMPLETED"
+  | (string & {});
+export const ApplicationStatus = S.String;
 export interface CreateProgressUpdateStreamRequest {
   ProgressUpdateStreamName: string;
   DryRun?: boolean;
@@ -420,13 +420,13 @@ export const NotifyApplicationStateResult = S.suspend(() =>
 ).annotations({
   identifier: "NotifyApplicationStateResult",
 }) as any as S.Schema<NotifyApplicationStateResult>;
-export type Status = "NOT_STARTED" | "IN_PROGRESS" | "FAILED" | "COMPLETED";
-export const Status = S.Literal(
-  "NOT_STARTED",
-  "IN_PROGRESS",
-  "FAILED",
-  "COMPLETED",
-);
+export type Status =
+  | "NOT_STARTED"
+  | "IN_PROGRESS"
+  | "FAILED"
+  | "COMPLETED"
+  | (string & {});
+export const Status = S.String;
 export type ResourceAttributeType =
   | "IPV4_ADDRESS"
   | "IPV6_ADDRESS"
@@ -437,19 +437,9 @@ export type ResourceAttributeType =
   | "VM_NAME"
   | "VM_PATH"
   | "BIOS_ID"
-  | "MOTHERBOARD_SERIAL_NUMBER";
-export const ResourceAttributeType = S.Literal(
-  "IPV4_ADDRESS",
-  "IPV6_ADDRESS",
-  "MAC_ADDRESS",
-  "FQDN",
-  "VM_MANAGER_ID",
-  "VM_MANAGED_OBJECT_REFERENCE",
-  "VM_NAME",
-  "VM_PATH",
-  "BIOS_ID",
-  "MOTHERBOARD_SERIAL_NUMBER",
-);
+  | "MOTHERBOARD_SERIAL_NUMBER"
+  | (string & {});
+export const ResourceAttributeType = S.String;
 export interface CreatedArtifact {
   Name: string;
   Description?: string;
@@ -687,8 +677,8 @@ export const PutResourceAttributesResult = S.suspend(() =>
 }) as any as S.Schema<PutResourceAttributesResult>;
 export type LatestResourceAttributeList = ResourceAttribute[];
 export const LatestResourceAttributeList = S.Array(ResourceAttribute);
-export type UpdateType = "MIGRATION_TASK_STATE_UPDATED";
-export const UpdateType = S.Literal("MIGRATION_TASK_STATE_UPDATED");
+export type UpdateType = "MIGRATION_TASK_STATE_UPDATED" | (string & {});
+export const UpdateType = S.String;
 export interface MigrationTask {
   ProgressUpdateStream?: string;
   MigrationTaskName?: string;

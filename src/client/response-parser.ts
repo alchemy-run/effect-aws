@@ -24,6 +24,8 @@ import { makeStreamParser } from "./stream-parser.ts";
 export interface ResponseParserOptions {
   /** Override the protocol (otherwise discovered from schema annotations) */
   protocol?: Protocol;
+  /** Skip schema validation - returns raw deserialized response */
+  skipValidation?: boolean;
 }
 
 export type ResponseParser<A, R> = (
@@ -56,8 +58,10 @@ export const makeResponseParser = <A>(
   // Create the protocol handler (preprocessing done once)
   const protocol: ProtocolHandler = protocolFactory(operation as Operation);
 
-  // Pre-create the decoder (done once)
-  const decode = Schema.decodeUnknown(outputSchema);
+  // Pre-create the decoder (done once, unless skipping validation)
+  const decode = options?.skipValidation
+    ? undefined
+    : Schema.decodeUnknown(outputSchema);
 
   // Create stream parser if output has event stream member (done once)
   const streamParser = makeStreamParser(outputAst);
@@ -105,6 +109,11 @@ export const makeResponseParser = <A>(
       const stream = streamParser?.(deserialized);
       if (stream) {
         return stream as A;
+      }
+
+      // Skip validation if requested - return raw deserialized response
+      if (!decode) {
+        return deserialized as A;
       }
 
       return yield* decode(deserialized);

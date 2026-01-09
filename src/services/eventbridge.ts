@@ -271,40 +271,24 @@ export type ApiDestinationHttpMethod =
   | "OPTIONS"
   | "PUT"
   | "PATCH"
-  | "DELETE";
-export const ApiDestinationHttpMethod = S.Literal(
-  "POST",
-  "GET",
-  "HEAD",
-  "OPTIONS",
-  "PUT",
-  "PATCH",
-  "DELETE",
-);
+  | "DELETE"
+  | (string & {});
+export const ApiDestinationHttpMethod = S.String;
 export type ConnectionAuthorizationType =
   | "BASIC"
   | "OAUTH_CLIENT_CREDENTIALS"
-  | "API_KEY";
-export const ConnectionAuthorizationType = S.Literal(
-  "BASIC",
-  "OAUTH_CLIENT_CREDENTIALS",
-  "API_KEY",
-);
+  | "API_KEY"
+  | (string & {});
+export const ConnectionAuthorizationType = S.String;
 export type ArchiveState =
   | "ENABLED"
   | "DISABLED"
   | "CREATING"
   | "UPDATING"
   | "CREATE_FAILED"
-  | "UPDATE_FAILED";
-export const ArchiveState = S.Literal(
-  "ENABLED",
-  "DISABLED",
-  "CREATING",
-  "UPDATING",
-  "CREATE_FAILED",
-  "UPDATE_FAILED",
-);
+  | "UPDATE_FAILED"
+  | (string & {});
+export const ArchiveState = S.String;
 export type ConnectionState =
   | "CREATING"
   | "UPDATING"
@@ -314,42 +298,24 @@ export type ConnectionState =
   | "AUTHORIZING"
   | "DEAUTHORIZING"
   | "ACTIVE"
-  | "FAILED_CONNECTIVITY";
-export const ConnectionState = S.Literal(
-  "CREATING",
-  "UPDATING",
-  "DELETING",
-  "AUTHORIZED",
-  "DEAUTHORIZED",
-  "AUTHORIZING",
-  "DEAUTHORIZING",
-  "ACTIVE",
-  "FAILED_CONNECTIVITY",
-);
+  | "FAILED_CONNECTIVITY"
+  | (string & {});
+export const ConnectionState = S.String;
 export type ReplayState =
   | "STARTING"
   | "RUNNING"
   | "CANCELLING"
   | "COMPLETED"
   | "CANCELLED"
-  | "FAILED";
-export const ReplayState = S.Literal(
-  "STARTING",
-  "RUNNING",
-  "CANCELLING",
-  "COMPLETED",
-  "CANCELLED",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const ReplayState = S.String;
 export type RuleState =
   | "ENABLED"
   | "DISABLED"
-  | "ENABLED_WITH_ALL_CLOUDTRAIL_MANAGEMENT_EVENTS";
-export const RuleState = S.Literal(
-  "ENABLED",
-  "DISABLED",
-  "ENABLED_WITH_ALL_CLOUDTRAIL_MANAGEMENT_EVENTS",
-);
+  | "ENABLED_WITH_ALL_CLOUDTRAIL_MANAGEMENT_EVENTS"
+  | (string & {});
+export const RuleState = S.String;
 export type TargetIdList = string[];
 export const TargetIdList = S.Array(S.String);
 export type TagKeyList = string[];
@@ -1481,8 +1447,8 @@ export const RoutingConfig = S.suspend(() =>
 ).annotations({
   identifier: "RoutingConfig",
 }) as any as S.Schema<RoutingConfig>;
-export type ReplicationState = "ENABLED" | "DISABLED";
-export const ReplicationState = S.Literal("ENABLED", "DISABLED");
+export type ReplicationState = "ENABLED" | "DISABLED" | (string & {});
+export const ReplicationState = S.String;
 export interface ReplicationConfig {
   State?: ReplicationState;
 }
@@ -1539,10 +1505,10 @@ export const DeadLetterConfig = S.suspend(() =>
 ).annotations({
   identifier: "DeadLetterConfig",
 }) as any as S.Schema<DeadLetterConfig>;
-export type IncludeDetail = "NONE" | "FULL";
-export const IncludeDetail = S.Literal("NONE", "FULL");
-export type Level = "OFF" | "ERROR" | "INFO" | "TRACE";
-export const Level = S.Literal("OFF", "ERROR", "INFO", "TRACE");
+export type IncludeDetail = "NONE" | "FULL" | (string & {});
+export const IncludeDetail = S.String;
+export type Level = "OFF" | "ERROR" | "INFO" | "TRACE" | (string & {});
+export const Level = S.String;
 export interface LogConfig {
   IncludeDetail?: IncludeDetail;
   Level?: Level;
@@ -1585,8 +1551,8 @@ export type EventResourceList = string[];
 export const EventResourceList = S.Array(S.String);
 export type ReplayDestinationFilters = string[];
 export const ReplayDestinationFilters = S.Array(S.String);
-export type ApiDestinationState = "ACTIVE" | "INACTIVE";
-export const ApiDestinationState = S.Literal("ACTIVE", "INACTIVE");
+export type ApiDestinationState = "ACTIVE" | "INACTIVE" | (string & {});
+export const ApiDestinationState = S.String;
 export type EndpointState =
   | "ACTIVE"
   | "CREATING"
@@ -1594,18 +1560,11 @@ export type EndpointState =
   | "DELETING"
   | "CREATE_FAILED"
   | "UPDATE_FAILED"
-  | "DELETE_FAILED";
-export const EndpointState = S.Literal(
-  "ACTIVE",
-  "CREATING",
-  "UPDATING",
-  "DELETING",
-  "CREATE_FAILED",
-  "UPDATE_FAILED",
-  "DELETE_FAILED",
-);
-export type EventSourceState = "PENDING" | "ACTIVE" | "DELETED";
-export const EventSourceState = S.Literal("PENDING", "ACTIVE", "DELETED");
+  | "DELETE_FAILED"
+  | (string & {});
+export const EndpointState = S.String;
+export type EventSourceState = "PENDING" | "ACTIVE" | "DELETED" | (string & {});
+export const EventSourceState = S.String;
 export type RuleNameList = string[];
 export const RuleNameList = S.Array(S.String);
 export interface PutEventsRequestEntry {
@@ -1671,12 +1630,12 @@ export const ReplayDestination = S.suspend(() =>
 ).annotations({
   identifier: "ReplayDestination",
 }) as any as S.Schema<ReplayDestination>;
-export type ConnectionOAuthHttpMethod = "GET" | "POST" | "PUT";
-export const ConnectionOAuthHttpMethod = S.Literal("GET", "POST", "PUT");
-export type LaunchType = "EC2" | "FARGATE" | "EXTERNAL";
-export const LaunchType = S.Literal("EC2", "FARGATE", "EXTERNAL");
-export type PropagateTags = "TASK_DEFINITION";
-export const PropagateTags = S.Literal("TASK_DEFINITION");
+export type ConnectionOAuthHttpMethod = "GET" | "POST" | "PUT" | (string & {});
+export const ConnectionOAuthHttpMethod = S.String;
+export type LaunchType = "EC2" | "FARGATE" | "EXTERNAL" | (string & {});
+export const LaunchType = S.String;
+export type PropagateTags = "TASK_DEFINITION" | (string & {});
+export const PropagateTags = S.String;
 export type PathParameterList = string[];
 export const PathParameterList = S.Array(S.String);
 export type Sqls = string | redacted.Redacted<string>[];
@@ -2100,8 +2059,8 @@ export const RunCommandParameters = S.suspend(() =>
 }) as any as S.Schema<RunCommandParameters>;
 export type StringList = string[];
 export const StringList = S.Array(S.String);
-export type AssignPublicIp = "ENABLED" | "DISABLED";
-export const AssignPublicIp = S.Literal("ENABLED", "DISABLED");
+export type AssignPublicIp = "ENABLED" | "DISABLED" | (string & {});
+export const AssignPublicIp = S.String;
 export interface AwsVpcConfiguration {
   Subnets: string[];
   SecurityGroups?: string[];
@@ -2140,11 +2099,11 @@ export const CapacityProviderStrategyItem = S.suspend(() =>
 }) as any as S.Schema<CapacityProviderStrategyItem>;
 export type CapacityProviderStrategy = CapacityProviderStrategyItem[];
 export const CapacityProviderStrategy = S.Array(CapacityProviderStrategyItem);
-export type PlacementConstraintType = "distinctInstance" | "memberOf";
-export const PlacementConstraintType = S.Literal(
-  "distinctInstance",
-  "memberOf",
-);
+export type PlacementConstraintType =
+  | "distinctInstance"
+  | "memberOf"
+  | (string & {});
+export const PlacementConstraintType = S.String;
 export interface PlacementConstraint {
   type?: PlacementConstraintType;
   expression?: string;
@@ -2159,8 +2118,12 @@ export const PlacementConstraint = S.suspend(() =>
 }) as any as S.Schema<PlacementConstraint>;
 export type PlacementConstraints = PlacementConstraint[];
 export const PlacementConstraints = S.Array(PlacementConstraint);
-export type PlacementStrategyType = "random" | "spread" | "binpack";
-export const PlacementStrategyType = S.Literal("random", "spread", "binpack");
+export type PlacementStrategyType =
+  | "random"
+  | "spread"
+  | "binpack"
+  | (string & {});
+export const PlacementStrategyType = S.String;
 export interface PlacementStrategy {
   type?: PlacementStrategyType;
   field?: string;

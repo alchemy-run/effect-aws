@@ -43,11 +43,13 @@
     "attachInternetGateway": {
       "errors": [
         "InvalidInternetGatewayID.NotFound",
-        "InvalidInternetGatewayId.Malformed"
+        "InvalidInternetGatewayId.Malformed",
+        "InvalidVpcId.Malformed"
       ]
     },
     "detachInternetGateway": {
       "errors": [
+        "Gateway.NotAttached",
         "InvalidInternetGatewayID.NotFound"
       ]
     },
@@ -66,8 +68,13 @@
     },
     "createRoute": {
       "errors": [
+        "InvalidGatewayID.NotFound",
+        "InvalidInstanceID.Malformed",
+        "InvalidNetworkInterfaceID.NotFound",
+        "InvalidPrefixListID.NotFound",
         "InvalidRouteTableID.NotFound",
-        "InvalidRouteTableId.Malformed"
+        "InvalidRouteTableId.Malformed",
+        "InvalidVpcEndpointId.NotFound"
       ]
     },
     "createNatGateway": {
@@ -75,6 +82,7 @@
         "InvalidElasticIpID.NotFound",
         "InvalidSubnet",
         "InvalidSubnetID.NotFound",
+        "MissingParameter",
         "ParseError"
       ]
     },
@@ -145,6 +153,7 @@
     },
     "associateDhcpOptions": {
       "errors": [
+        "InvalidDhcpOptionsId.Malformed",
         "InvalidVpcID.NotFound",
         "InvalidVpcId.Malformed"
       ]
@@ -178,7 +187,8 @@
       "errors": [
         "InvalidServiceName",
         "InvalidVpcID.NotFound",
-        "InvalidVpcId.NotFound"
+        "InvalidVpcId.NotFound",
+        "ParseError"
       ]
     },
     "deleteVpcEndpoints": {
@@ -212,7 +222,8 @@
     "disassociateVpcCidrBlock": {
       "errors": [
         "InvalidVpcCidrBlockAssociationID.NotFound",
-        "InvalidVpcCidrBlockAssociationIdError.NotFound"
+        "InvalidVpcCidrBlockAssociationIdError.NotFound",
+        "OperationNotPermitted"
       ]
     },
     "authorizeSecurityGroupIngress": {
@@ -225,6 +236,7 @@
       "errors": [
         "InvalidGroup.NotFound",
         "InvalidGroupId.Malformed",
+        "InvalidPermission.NotFound",
         "MissingParameter",
         "ParseError"
       ]
@@ -263,11 +275,13 @@
     },
     "deleteVpnGateway": {
       "errors": [
+        "IncorrectState",
         "InvalidVpnGatewayID.NotFound"
       ]
     },
     "attachVpnGateway": {
       "errors": [
+        "InvalidVpcID.NotFound",
         "InvalidVpnGatewayID.NotFound"
       ]
     },
@@ -279,6 +293,7 @@
     "createSecurityGroup": {
       "errors": [
         "InvalidGroup.Duplicate",
+        "InvalidParameterValue",
         "InvalidVpcID.NotFound",
         "InvalidVpcId.Malformed",
         "MissingParameter",
@@ -299,13 +314,16 @@
     },
     "deleteNetworkAclEntry": {
       "errors": [
+        "InvalidNetworkAclEntry.NotFound",
         "InvalidNetworkAclID.NotFound",
-        "InvalidNetworkAclId.Malformed"
+        "InvalidNetworkAclId.Malformed",
+        "MissingParameter"
       ]
     },
     "replaceNetworkAclEntry": {
       "errors": [
-        "InvalidNetworkAclID.NotFound"
+        "InvalidNetworkAclID.NotFound",
+        "InvalidNetworkAclId.Malformed"
       ]
     },
     "createVpnConnection": {
@@ -331,6 +349,7 @@
     },
     "describeVpcAttribute": {
       "errors": [
+        "InvalidParameterCombination",
         "InvalidVpcID.NotFound"
       ]
     },
@@ -347,6 +366,7 @@
     "authorizeSecurityGroupEgress": {
       "errors": [
         "InvalidGroup.NotFound",
+        "InvalidGroupId.Malformed",
         "MissingParameter"
       ]
     },
@@ -371,7 +391,8 @@
     "describeNetworkAcls": {
       "errors": [
         "InvalidNetworkAclID.NotFound",
-        "InvalidRouteTableID.NotFound"
+        "InvalidRouteTableID.NotFound",
+        "ParseError"
       ]
     },
     "createCarrierGateway": {
@@ -416,7 +437,8 @@
     },
     "describeVpcEndpoints": {
       "errors": [
-        "InvalidVpcEndpointId.NotFound"
+        "InvalidVpcEndpointId.NotFound",
+        "ParseError"
       ]
     },
     "modifyVpcEndpoint": {
@@ -446,7 +468,8 @@
     },
     "modifyNetworkInterfaceAttribute": {
       "errors": [
-        "InvalidNetworkInterfaceID.NotFound"
+        "InvalidNetworkInterfaceID.NotFound",
+        "InvalidNetworkInterfaceId.Malformed"
       ]
     },
     "describeNetworkInterfaces": {
@@ -458,6 +481,7 @@
     },
     "describeManagedPrefixLists": {
       "errors": [
+        "InvalidPrefixListID.NotFound",
         "ParseError"
       ]
     },
@@ -516,12 +540,14 @@
     "describeDhcpOptions": {
       "errors": [
         "InvalidDhcpOptionID.NotFound",
+        "InvalidParameterValue",
         "ParseError"
       ]
     },
     "describeNetworkInterfaceAttribute": {
       "errors": [
-        "InvalidNetworkInterfaceID.NotFound"
+        "InvalidNetworkInterfaceID.NotFound",
+        "InvalidParameterCombination"
       ]
     },
     "attachNetworkInterface": {
@@ -633,6 +659,7 @@
     },
     "associateAddress": {
       "errors": [
+        "InvalidAllocationID.NotFound",
         "InvalidInstanceID.NotFound"
       ]
     },
@@ -725,7 +752,8 @@
     },
     "describeInstances": {
       "errors": [
-        "InvalidInstanceID.NotFound"
+        "InvalidInstanceID.NotFound",
+        "ParseError"
       ]
     },
     "detachVolume": {
@@ -1115,6 +1143,78 @@
         "DryRunOperation",
         "InvalidAssociationID.NotFound",
         "MissingParameter"
+      ]
+    },
+    "acceptVpcEndpointConnections": {
+      "errors": [
+        "InvalidParameter"
+      ]
+    },
+    "rejectVpcEndpointConnections": {
+      "errors": [
+        "InvalidParameter"
+      ]
+    },
+    "modifyManagedPrefixList": {
+      "errors": [
+        "InvalidPrefixListID.NotFound"
+      ]
+    },
+    "modifySecurityGroupRules": {
+      "errors": [
+        "MissingParameter"
+      ]
+    }
+  },
+  "enums": {
+    "InstanceType": {
+      "add": [
+        "c8gb.12xlarge",
+        "c8gb.16xlarge",
+        "c8gb.24xlarge",
+        "c8gb.2xlarge",
+        "c8gb.4xlarge",
+        "c8gb.8xlarge",
+        "c8gb.large",
+        "c8gb.medium",
+        "c8gb.metal-24xl",
+        "c8gb.xlarge",
+        "m8gb.12xlarge",
+        "m8gb.16xlarge",
+        "m8gb.24xlarge",
+        "m8gb.2xlarge",
+        "m8gb.4xlarge",
+        "m8gb.8xlarge",
+        "m8gb.large",
+        "m8gb.medium",
+        "m8gb.xlarge",
+        "m8gn.12xlarge",
+        "m8gn.16xlarge",
+        "m8gn.24xlarge",
+        "m8gn.2xlarge",
+        "m8gn.48xlarge",
+        "m8gn.4xlarge",
+        "m8gn.8xlarge",
+        "m8gn.large",
+        "m8gn.medium",
+        "m8gn.xlarge"
+      ]
+    },
+    "RIProductDescription": {
+      "add": [
+        "Red Hat Enterprise Linux",
+        "SUSE Linux",
+        "Ubuntu Pro Linux"
+      ]
+    },
+    "HypervisorType": {
+      "add": [
+        "nitro"
+      ]
+    },
+    "VirtualizationType": {
+      "add": [
+        "nested-virtualization"
       ]
     }
   }

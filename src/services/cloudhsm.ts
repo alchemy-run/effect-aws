@@ -119,10 +119,10 @@ export const ListAvailableZonesRequest = S.suspend(() =>
 ).annotations({
   identifier: "ListAvailableZonesRequest",
 }) as any as S.Schema<ListAvailableZonesRequest>;
-export type SubscriptionType = "PRODUCTION";
-export const SubscriptionType = S.Literal("PRODUCTION");
-export type ClientVersion = "5.1" | "5.3";
-export const ClientVersion = S.Literal("5.1", "5.3");
+export type SubscriptionType = "PRODUCTION" | (string & {});
+export const SubscriptionType = S.String;
+export type ClientVersion = "5.1" | "5.3" | (string & {});
+export const ClientVersion = S.String;
 export type HapgList = string[];
 export const HapgList = S.Array(S.String);
 export type AZList = string[];
@@ -405,8 +405,12 @@ export type TagList = Tag[];
 export const TagList = S.Array(Tag);
 export type HsmList = string[];
 export const HsmList = S.Array(S.String);
-export type CloudHsmObjectState = "READY" | "UPDATING" | "DEGRADED";
-export const CloudHsmObjectState = S.Literal("READY", "UPDATING", "DEGRADED");
+export type CloudHsmObjectState =
+  | "READY"
+  | "UPDATING"
+  | "DEGRADED"
+  | (string & {});
+export const CloudHsmObjectState = S.String;
 export type HsmStatus =
   | "PENDING"
   | "RUNNING"
@@ -414,16 +418,9 @@ export type HsmStatus =
   | "SUSPENDED"
   | "TERMINATING"
   | "TERMINATED"
-  | "DEGRADED";
-export const HsmStatus = S.Literal(
-  "PENDING",
-  "RUNNING",
-  "UPDATING",
-  "SUSPENDED",
-  "TERMINATING",
-  "TERMINATED",
-  "DEGRADED",
-);
+  | "DEGRADED"
+  | (string & {});
+export const HsmStatus = S.String;
 export type PartitionList = string[];
 export const PartitionList = S.Array(S.String);
 export type ClientList = string[];

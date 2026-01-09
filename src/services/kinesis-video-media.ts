@@ -101,15 +101,9 @@ export type StartSelectorType =
   | "PRODUCER_TIMESTAMP"
   | "NOW"
   | "EARLIEST"
-  | "CONTINUATION_TOKEN";
-export const StartSelectorType = S.Literal(
-  "FRAGMENT_NUMBER",
-  "SERVER_TIMESTAMP",
-  "PRODUCER_TIMESTAMP",
-  "NOW",
-  "EARLIEST",
-  "CONTINUATION_TOKEN",
-);
+  | "CONTINUATION_TOKEN"
+  | (string & {});
+export const StartSelectorType = S.String;
 export interface StartSelector {
   StartSelectorType: StartSelectorType;
   AfterFragmentNumber?: string;

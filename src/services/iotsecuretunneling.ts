@@ -125,8 +125,8 @@ export type TunnelArn = string;
 export type ClientAccessToken = string | redacted.Redacted<string>;
 
 //# Schemas
-export type ClientMode = "SOURCE" | "DESTINATION" | "ALL";
-export const ClientMode = S.Literal("SOURCE", "DESTINATION", "ALL");
+export type ClientMode = "SOURCE" | "DESTINATION" | "ALL" | (string & {});
+export const ClientMode = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export interface CloseTunnelRequest {
@@ -353,8 +353,8 @@ export const RotateTunnelAccessTokenResponse = S.suspend(() =>
 ).annotations({
   identifier: "RotateTunnelAccessTokenResponse",
 }) as any as S.Schema<RotateTunnelAccessTokenResponse>;
-export type TunnelStatus = "OPEN" | "CLOSED";
-export const TunnelStatus = S.Literal("OPEN", "CLOSED");
+export type TunnelStatus = "OPEN" | "CLOSED" | (string & {});
+export const TunnelStatus = S.String;
 export interface TunnelSummary {
   tunnelId?: string;
   tunnelArn?: string;
@@ -377,8 +377,8 @@ export const TunnelSummary = S.suspend(() =>
 }) as any as S.Schema<TunnelSummary>;
 export type TunnelSummaryList = TunnelSummary[];
 export const TunnelSummaryList = S.Array(TunnelSummary);
-export type ConnectionStatus = "CONNECTED" | "DISCONNECTED";
-export const ConnectionStatus = S.Literal("CONNECTED", "DISCONNECTED");
+export type ConnectionStatus = "CONNECTED" | "DISCONNECTED" | (string & {});
+export const ConnectionStatus = S.String;
 export interface ListTunnelsResponse {
   tunnelSummaries?: TunnelSummary[];
   nextToken?: string;

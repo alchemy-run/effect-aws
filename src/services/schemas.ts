@@ -93,8 +93,8 @@ export type __stringMin0Max36 = string;
 export type __timestampIso8601 = Date;
 
 //# Schemas
-export type Type = "OpenApi3" | "JSONSchemaDraft4";
-export const Type = S.Literal("OpenApi3", "JSONSchemaDraft4");
+export type Type = "OpenApi3" | "JSONSchemaDraft4" | (string & {});
+export const Type = S.String;
 export type __listOfGetDiscoveredSchemaVersionItemInput = string[];
 export const __listOfGetDiscoveredSchemaVersionItemInput = S.Array(S.String);
 export type __listOf__string = string[];
@@ -843,14 +843,11 @@ export const UpdateSchemaRequest = S.suspend(() =>
 export type CodeGenerationStatus =
   | "CREATE_IN_PROGRESS"
   | "CREATE_COMPLETE"
-  | "CREATE_FAILED";
-export const CodeGenerationStatus = S.Literal(
-  "CREATE_IN_PROGRESS",
-  "CREATE_COMPLETE",
-  "CREATE_FAILED",
-);
-export type DiscovererState = "STARTED" | "STOPPED";
-export const DiscovererState = S.Literal("STARTED", "STOPPED");
+  | "CREATE_FAILED"
+  | (string & {});
+export const CodeGenerationStatus = S.String;
+export type DiscovererState = "STARTED" | "STOPPED" | (string & {});
+export const DiscovererState = S.String;
 export interface CreateDiscovererRequest {
   Description?: string;
   SourceArn?: string;

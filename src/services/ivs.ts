@@ -146,20 +146,18 @@ export type ChannelArnList = string[];
 export const ChannelArnList = S.Array(S.String);
 export type StreamKeyArnList = string[];
 export const StreamKeyArnList = S.Array(S.String);
-export type ChannelType = "BASIC" | "STANDARD" | "ADVANCED_SD" | "ADVANCED_HD";
-export const ChannelType = S.Literal(
-  "BASIC",
-  "STANDARD",
-  "ADVANCED_SD",
-  "ADVANCED_HD",
-);
+export type ChannelType =
+  | "BASIC"
+  | "STANDARD"
+  | "ADVANCED_SD"
+  | "ADVANCED_HD"
+  | (string & {});
+export const ChannelType = S.String;
 export type TranscodePreset =
   | "HIGHER_BANDWIDTH_DELIVERY"
-  | "CONSTRAINED_BANDWIDTH_DELIVERY";
-export const TranscodePreset = S.Literal(
-  "HIGHER_BANDWIDTH_DELIVERY",
-  "CONSTRAINED_BANDWIDTH_DELIVERY",
-);
+  | "CONSTRAINED_BANDWIDTH_DELIVERY"
+  | (string & {});
+export const TranscodePreset = S.String;
 export type PlaybackRestrictionPolicyAllowedCountryList = string[];
 export const PlaybackRestrictionPolicyAllowedCountryList = S.Array(S.String);
 export type PlaybackRestrictionPolicyAllowedOriginList = string[];
@@ -778,10 +776,14 @@ export interface UntagResourceResponse {}
 export const UntagResourceResponse = S.suspend(() => S.Struct({})).annotations({
   identifier: "UntagResourceResponse",
 }) as any as S.Schema<UntagResourceResponse>;
-export type MultitrackPolicy = "ALLOW" | "REQUIRE";
-export const MultitrackPolicy = S.Literal("ALLOW", "REQUIRE");
-export type MultitrackMaximumResolution = "SD" | "HD" | "FULL_HD";
-export const MultitrackMaximumResolution = S.Literal("SD", "HD", "FULL_HD");
+export type MultitrackPolicy = "ALLOW" | "REQUIRE" | (string & {});
+export const MultitrackPolicy = S.String;
+export type MultitrackMaximumResolution =
+  | "SD"
+  | "HD"
+  | "FULL_HD"
+  | (string & {});
+export const MultitrackMaximumResolution = S.String;
 export interface MultitrackInputConfiguration {
   enabled?: boolean;
   policy?: MultitrackPolicy;
@@ -866,26 +868,18 @@ export type ThumbnailConfigurationResolution =
   | "SD"
   | "HD"
   | "FULL_HD"
-  | "LOWEST_RESOLUTION";
-export const ThumbnailConfigurationResolution = S.Literal(
-  "SD",
-  "HD",
-  "FULL_HD",
-  "LOWEST_RESOLUTION",
-);
+  | "LOWEST_RESOLUTION"
+  | (string & {});
+export const ThumbnailConfigurationResolution = S.String;
 export type ThumbnailConfigurationStorageList = string[];
 export const ThumbnailConfigurationStorageList = S.Array(S.String);
 export type RenditionConfigurationRendition =
   | "SD"
   | "HD"
   | "FULL_HD"
-  | "LOWEST_RESOLUTION";
-export const RenditionConfigurationRendition = S.Literal(
-  "SD",
-  "HD",
-  "FULL_HD",
-  "LOWEST_RESOLUTION",
-);
+  | "LOWEST_RESOLUTION"
+  | (string & {});
+export const RenditionConfigurationRendition = S.String;
 export type RenditionConfigurationRenditionList =
   RenditionConfigurationRendition[];
 export const RenditionConfigurationRenditionList = S.Array(

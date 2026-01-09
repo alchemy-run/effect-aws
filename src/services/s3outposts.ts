@@ -108,8 +108,8 @@ export type ErrorCode = string;
 export type Message = string;
 
 //# Schemas
-export type EndpointAccessType = "Private" | "CustomerOwnedIp";
-export const EndpointAccessType = S.Literal("Private", "CustomerOwnedIp");
+export type EndpointAccessType = "Private" | "CustomerOwnedIp" | (string & {});
+export const EndpointAccessType = S.String;
 export interface CreateEndpointRequest {
   OutpostId: string;
   SubnetId: string;
@@ -240,14 +240,9 @@ export type EndpointStatus =
   | "Available"
   | "Deleting"
   | "Create_Failed"
-  | "Delete_Failed";
-export const EndpointStatus = S.Literal(
-  "Pending",
-  "Available",
-  "Deleting",
-  "Create_Failed",
-  "Delete_Failed",
-);
+  | "Delete_Failed"
+  | (string & {});
+export const EndpointStatus = S.String;
 export interface NetworkInterface {
   NetworkInterfaceId?: string;
 }

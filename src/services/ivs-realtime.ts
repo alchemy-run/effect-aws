@@ -167,8 +167,8 @@ export type CompositionRecordingTargetSegmentDurationSeconds = number;
 export type ParticipantTokenString = string | redacted.Redacted<string>;
 
 //# Schemas
-export type IngestProtocol = "RTMP" | "RTMPS";
-export const IngestProtocol = S.Literal("RTMP", "RTMPS");
+export type IngestProtocol = "RTMP" | "RTMPS" | (string & {});
+export const IngestProtocol = S.String;
 export type ParticipantTokenCapabilities = string[];
 export const ParticipantTokenCapabilities = S.Array(S.String);
 export type TagKeyList = string[];
@@ -892,22 +892,19 @@ export const UpdateIngestConfigurationRequest = S.suspend(() =>
 export type ParticipantRecordingMediaType =
   | "AUDIO_VIDEO"
   | "AUDIO_ONLY"
-  | "NONE";
-export const ParticipantRecordingMediaType = S.Literal(
-  "AUDIO_VIDEO",
-  "AUDIO_ONLY",
-  "NONE",
-);
+  | "NONE"
+  | (string & {});
+export const ParticipantRecordingMediaType = S.String;
 export type ParticipantRecordingMediaTypeList = ParticipantRecordingMediaType[];
 export const ParticipantRecordingMediaTypeList = S.Array(
   ParticipantRecordingMediaType,
 );
-export type ThumbnailStorageType = "SEQUENTIAL" | "LATEST";
-export const ThumbnailStorageType = S.Literal("SEQUENTIAL", "LATEST");
+export type ThumbnailStorageType = "SEQUENTIAL" | "LATEST" | (string & {});
+export const ThumbnailStorageType = S.String;
 export type ThumbnailStorageTypeList = ThumbnailStorageType[];
 export const ThumbnailStorageTypeList = S.Array(ThumbnailStorageType);
-export type ThumbnailRecordingMode = "INTERVAL" | "DISABLED";
-export const ThumbnailRecordingMode = S.Literal("INTERVAL", "DISABLED");
+export type ThumbnailRecordingMode = "INTERVAL" | "DISABLED" | (string & {});
+export const ThumbnailRecordingMode = S.String;
 export interface ParticipantThumbnailConfiguration {
   targetIntervalSeconds?: number;
   storage?: ThumbnailStorageType[];
@@ -1022,28 +1019,24 @@ export const S3StorageConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "S3StorageConfiguration",
 }) as any as S.Schema<S3StorageConfiguration>;
-export type VideoAspectRatio = "AUTO" | "VIDEO" | "SQUARE" | "PORTRAIT";
-export const VideoAspectRatio = S.Literal(
-  "AUTO",
-  "VIDEO",
-  "SQUARE",
-  "PORTRAIT",
-);
-export type VideoFillMode = "FILL" | "COVER" | "CONTAIN";
-export const VideoFillMode = S.Literal("FILL", "COVER", "CONTAIN");
-export type PipBehavior = "STATIC" | "DYNAMIC";
-export const PipBehavior = S.Literal("STATIC", "DYNAMIC");
+export type VideoAspectRatio =
+  | "AUTO"
+  | "VIDEO"
+  | "SQUARE"
+  | "PORTRAIT"
+  | (string & {});
+export const VideoAspectRatio = S.String;
+export type VideoFillMode = "FILL" | "COVER" | "CONTAIN" | (string & {});
+export const VideoFillMode = S.String;
+export type PipBehavior = "STATIC" | "DYNAMIC" | (string & {});
+export const PipBehavior = S.String;
 export type PipPosition =
   | "TOP_LEFT"
   | "TOP_RIGHT"
   | "BOTTOM_LEFT"
-  | "BOTTOM_RIGHT";
-export const PipPosition = S.Literal(
-  "TOP_LEFT",
-  "TOP_RIGHT",
-  "BOTTOM_LEFT",
-  "BOTTOM_RIGHT",
-);
+  | "BOTTOM_RIGHT"
+  | (string & {});
+export const PipPosition = S.String;
 export type EncoderConfigurationArnList = string[];
 export const EncoderConfigurationArnList = S.Array(S.String);
 export interface CreateEncoderConfigurationRequest {
@@ -1326,13 +1319,13 @@ export const UpdateStageResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateStageResponse",
 }) as any as S.Schema<UpdateStageResponse>;
-export type ParticipantProtocol = "UNKNOWN" | "WHIP" | "RTMP" | "RTMPS";
-export const ParticipantProtocol = S.Literal(
-  "UNKNOWN",
-  "WHIP",
-  "RTMP",
-  "RTMPS",
-);
+export type ParticipantProtocol =
+  | "UNKNOWN"
+  | "WHIP"
+  | "RTMP"
+  | "RTMPS"
+  | (string & {});
+export const ParticipantProtocol = S.String;
 export type EventErrorCode =
   | "INSUFFICIENT_CAPABILITIES"
   | "QUOTA_EXCEEDED"
@@ -1347,23 +1340,9 @@ export type EventErrorCode =
   | "REUSE_OF_STREAM_KEY"
   | "B_FRAME_PRESENT"
   | "INVALID_INPUT"
-  | "INTERNAL_SERVER_EXCEPTION";
-export const EventErrorCode = S.Literal(
-  "INSUFFICIENT_CAPABILITIES",
-  "QUOTA_EXCEEDED",
-  "PUBLISHER_NOT_FOUND",
-  "BITRATE_EXCEEDED",
-  "RESOLUTION_EXCEEDED",
-  "STREAM_DURATION_EXCEEDED",
-  "INVALID_AUDIO_CODEC",
-  "INVALID_VIDEO_CODEC",
-  "INVALID_PROTOCOL",
-  "INVALID_STREAM_KEY",
-  "REUSE_OF_STREAM_KEY",
-  "B_FRAME_PRESENT",
-  "INVALID_INPUT",
-  "INTERNAL_SERVER_EXCEPTION",
-);
+  | "INTERNAL_SERVER_EXCEPTION"
+  | (string & {});
+export const EventErrorCode = S.String;
 export interface GridConfiguration {
   featuredParticipantAttribute?: string;
   omitStoppedVideo?: boolean;

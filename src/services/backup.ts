@@ -184,18 +184,9 @@ export type BackupJobState =
   | "COMPLETED"
   | "FAILED"
   | "EXPIRED"
-  | "PARTIAL";
-export const BackupJobState = S.Literal(
-  "CREATED",
-  "PENDING",
-  "RUNNING",
-  "ABORTING",
-  "ABORTED",
-  "COMPLETED",
-  "FAILED",
-  "EXPIRED",
-  "PARTIAL",
-);
+  | "PARTIAL"
+  | (string & {});
+export const BackupJobState = S.String;
 export type BackupJobStatus =
   | "CREATED"
   | "PENDING"
@@ -207,48 +198,29 @@ export type BackupJobStatus =
   | "EXPIRED"
   | "PARTIAL"
   | "AGGREGATE_ALL"
-  | "ANY";
-export const BackupJobStatus = S.Literal(
-  "CREATED",
-  "PENDING",
-  "RUNNING",
-  "ABORTING",
-  "ABORTED",
-  "COMPLETED",
-  "FAILED",
-  "EXPIRED",
-  "PARTIAL",
-  "AGGREGATE_ALL",
-  "ANY",
-);
-export type AggregationPeriod = "ONE_DAY" | "SEVEN_DAYS" | "FOURTEEN_DAYS";
-export const AggregationPeriod = S.Literal(
-  "ONE_DAY",
-  "SEVEN_DAYS",
-  "FOURTEEN_DAYS",
-);
+  | "ANY"
+  | (string & {});
+export const BackupJobStatus = S.String;
+export type AggregationPeriod =
+  | "ONE_DAY"
+  | "SEVEN_DAYS"
+  | "FOURTEEN_DAYS"
+  | (string & {});
+export const AggregationPeriod = S.String;
 export type VaultType =
   | "BACKUP_VAULT"
   | "LOGICALLY_AIR_GAPPED_BACKUP_VAULT"
-  | "RESTORE_ACCESS_BACKUP_VAULT";
-export const VaultType = S.Literal(
-  "BACKUP_VAULT",
-  "LOGICALLY_AIR_GAPPED_BACKUP_VAULT",
-  "RESTORE_ACCESS_BACKUP_VAULT",
-);
+  | "RESTORE_ACCESS_BACKUP_VAULT"
+  | (string & {});
+export const VaultType = S.String;
 export type CopyJobState =
   | "CREATED"
   | "RUNNING"
   | "COMPLETED"
   | "FAILED"
-  | "PARTIAL";
-export const CopyJobState = S.Literal(
-  "CREATED",
-  "RUNNING",
-  "COMPLETED",
-  "FAILED",
-  "PARTIAL",
-);
+  | "PARTIAL"
+  | (string & {});
+export const CopyJobState = S.String;
 export type CopyJobStatus =
   | "CREATED"
   | "RUNNING"
@@ -260,35 +232,24 @@ export type CopyJobStatus =
   | "FAILED"
   | "PARTIAL"
   | "AGGREGATE_ALL"
-  | "ANY";
-export const CopyJobStatus = S.Literal(
-  "CREATED",
-  "RUNNING",
-  "ABORTING",
-  "ABORTED",
-  "COMPLETING",
-  "COMPLETED",
-  "FAILING",
-  "FAILED",
-  "PARTIAL",
-  "AGGREGATE_ALL",
-  "ANY",
-);
-export type IndexStatus = "PENDING" | "ACTIVE" | "FAILED" | "DELETING";
-export const IndexStatus = S.Literal("PENDING", "ACTIVE", "FAILED", "DELETING");
+  | "ANY"
+  | (string & {});
+export const CopyJobStatus = S.String;
+export type IndexStatus =
+  | "PENDING"
+  | "ACTIVE"
+  | "FAILED"
+  | "DELETING"
+  | (string & {});
+export const IndexStatus = S.String;
 export type RestoreJobStatus =
   | "PENDING"
   | "RUNNING"
   | "COMPLETED"
   | "ABORTED"
-  | "FAILED";
-export const RestoreJobStatus = S.Literal(
-  "PENDING",
-  "RUNNING",
-  "COMPLETED",
-  "ABORTED",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const RestoreJobStatus = S.String;
 export type RestoreJobState =
   | "CREATED"
   | "PENDING"
@@ -297,38 +258,27 @@ export type RestoreJobState =
   | "COMPLETED"
   | "FAILED"
   | "AGGREGATE_ALL"
-  | "ANY";
-export const RestoreJobState = S.Literal(
-  "CREATED",
-  "PENDING",
-  "RUNNING",
-  "ABORTED",
-  "COMPLETED",
-  "FAILED",
-  "AGGREGATE_ALL",
-  "ANY",
-);
-export type MalwareScanner = "GUARDDUTY";
-export const MalwareScanner = S.Literal("GUARDDUTY");
-export type ScanResourceType = "EBS" | "EC2" | "S3";
-export const ScanResourceType = S.Literal("EBS", "EC2", "S3");
-export type ScanResultStatus = "NO_THREATS_FOUND" | "THREATS_FOUND";
-export const ScanResultStatus = S.Literal("NO_THREATS_FOUND", "THREATS_FOUND");
+  | "ANY"
+  | (string & {});
+export const RestoreJobState = S.String;
+export type MalwareScanner = "GUARDDUTY" | (string & {});
+export const MalwareScanner = S.String;
+export type ScanResourceType = "EBS" | "EC2" | "S3" | (string & {});
+export const ScanResourceType = S.String;
+export type ScanResultStatus =
+  | "NO_THREATS_FOUND"
+  | "THREATS_FOUND"
+  | (string & {});
+export const ScanResultStatus = S.String;
 export type ScanState =
   | "CANCELED"
   | "COMPLETED"
   | "COMPLETED_WITH_ISSUES"
   | "CREATED"
   | "FAILED"
-  | "RUNNING";
-export const ScanState = S.Literal(
-  "CANCELED",
-  "COMPLETED",
-  "COMPLETED_WITH_ISSUES",
-  "CREATED",
-  "FAILED",
-  "RUNNING",
-);
+  | "RUNNING"
+  | (string & {});
+export const ScanState = S.String;
 export type ScanJobStatus =
   | "CREATED"
   | "COMPLETED"
@@ -337,17 +287,9 @@ export type ScanJobStatus =
   | "FAILED"
   | "CANCELED"
   | "AGGREGATE_ALL"
-  | "ANY";
-export const ScanJobStatus = S.Literal(
-  "CREATED",
-  "COMPLETED",
-  "COMPLETED_WITH_ISSUES",
-  "RUNNING",
-  "FAILED",
-  "CANCELED",
-  "AGGREGATE_ALL",
-  "ANY",
-);
+  | "ANY"
+  | (string & {});
+export const ScanJobStatus = S.String;
 export type BackupVaultEvent =
   | "BACKUP_JOB_STARTED"
   | "BACKUP_JOB_COMPLETED"
@@ -369,47 +311,22 @@ export type BackupVaultEvent =
   | "CONTINUOUS_BACKUP_INTERRUPTED"
   | "RECOVERY_POINT_INDEX_COMPLETED"
   | "RECOVERY_POINT_INDEX_DELETED"
-  | "RECOVERY_POINT_INDEXING_FAILED";
-export const BackupVaultEvent = S.Literal(
-  "BACKUP_JOB_STARTED",
-  "BACKUP_JOB_COMPLETED",
-  "BACKUP_JOB_SUCCESSFUL",
-  "BACKUP_JOB_FAILED",
-  "BACKUP_JOB_EXPIRED",
-  "RESTORE_JOB_STARTED",
-  "RESTORE_JOB_COMPLETED",
-  "RESTORE_JOB_SUCCESSFUL",
-  "RESTORE_JOB_FAILED",
-  "COPY_JOB_STARTED",
-  "COPY_JOB_SUCCESSFUL",
-  "COPY_JOB_FAILED",
-  "RECOVERY_POINT_MODIFIED",
-  "BACKUP_PLAN_CREATED",
-  "BACKUP_PLAN_MODIFIED",
-  "S3_BACKUP_OBJECT_FAILED",
-  "S3_RESTORE_OBJECT_FAILED",
-  "CONTINUOUS_BACKUP_INTERRUPTED",
-  "RECOVERY_POINT_INDEX_COMPLETED",
-  "RECOVERY_POINT_INDEX_DELETED",
-  "RECOVERY_POINT_INDEXING_FAILED",
-);
+  | "RECOVERY_POINT_INDEXING_FAILED"
+  | (string & {});
+export const BackupVaultEvent = S.String;
 export type BackupVaultEvents = BackupVaultEvent[];
 export const BackupVaultEvents = S.Array(BackupVaultEvent);
 export type RestoreValidationStatus =
   | "FAILED"
   | "SUCCESSFUL"
   | "TIMED_OUT"
-  | "VALIDATING";
-export const RestoreValidationStatus = S.Literal(
-  "FAILED",
-  "SUCCESSFUL",
-  "TIMED_OUT",
-  "VALIDATING",
-);
-export type Index = "ENABLED" | "DISABLED";
-export const Index = S.Literal("ENABLED", "DISABLED");
-export type ScanMode = "FULL_SCAN" | "INCREMENTAL_SCAN";
-export const ScanMode = S.Literal("FULL_SCAN", "INCREMENTAL_SCAN");
+  | "VALIDATING"
+  | (string & {});
+export const RestoreValidationStatus = S.String;
+export type Index = "ENABLED" | "DISABLED" | (string & {});
+export const Index = S.String;
+export type ScanMode = "FULL_SCAN" | "INCREMENTAL_SCAN" | (string & {});
+export const ScanMode = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export interface AssociateBackupVaultMpaApprovalTeamInput {
@@ -2583,8 +2500,8 @@ export const RevokeRestoreAccessBackupVaultResponse = S.suspend(() =>
 ).annotations({
   identifier: "RevokeRestoreAccessBackupVaultResponse",
 }) as any as S.Schema<RevokeRestoreAccessBackupVaultResponse>;
-export type LifecycleDeleteAfterEvent = "DELETE_AFTER_COPY";
-export const LifecycleDeleteAfterEvent = S.Literal("DELETE_AFTER_COPY");
+export type LifecycleDeleteAfterEvent = "DELETE_AFTER_COPY" | (string & {});
+export const LifecycleDeleteAfterEvent = S.String;
 export interface Lifecycle {
   MoveToColdStorageAfterDays?: number;
   DeleteAfterDays?: number;
@@ -3163,8 +3080,8 @@ export type VaultNames = string[];
 export const VaultNames = S.Array(S.String);
 export type ResourceIdentifiers = string[];
 export const ResourceIdentifiers = S.Array(S.String);
-export type VaultState = "CREATING" | "AVAILABLE" | "FAILED";
-export const VaultState = S.Literal("CREATING", "AVAILABLE", "FAILED");
+export type VaultState = "CREATING" | "AVAILABLE" | "FAILED" | (string & {});
+export const VaultState = S.String;
 export type SensitiveStringMap = { [key: string]: string | undefined };
 export const SensitiveStringMap = S.Record({
   key: S.String,
@@ -3172,11 +3089,9 @@ export const SensitiveStringMap = S.Record({
 });
 export type EncryptionKeyType =
   | "AWS_OWNED_KMS_KEY"
-  | "CUSTOMER_MANAGED_KMS_KEY";
-export const EncryptionKeyType = S.Literal(
-  "AWS_OWNED_KMS_KEY",
-  "CUSTOMER_MANAGED_KMS_KEY",
-);
+  | "CUSTOMER_MANAGED_KMS_KEY"
+  | (string & {});
+export const EncryptionKeyType = S.String;
 export type RecoveryPointStatus =
   | "COMPLETED"
   | "PARTIAL"
@@ -3184,31 +3099,24 @@ export type RecoveryPointStatus =
   | "EXPIRED"
   | "AVAILABLE"
   | "STOPPED"
-  | "CREATING";
-export const RecoveryPointStatus = S.Literal(
-  "COMPLETED",
-  "PARTIAL",
-  "DELETING",
-  "EXPIRED",
-  "AVAILABLE",
-  "STOPPED",
-  "CREATING",
-);
-export type StorageClass = "WARM" | "COLD" | "DELETED";
-export const StorageClass = S.Literal("WARM", "COLD", "DELETED");
-export type RestoreDeletionStatus = "DELETING" | "FAILED" | "SUCCESSFUL";
-export const RestoreDeletionStatus = S.Literal(
-  "DELETING",
-  "FAILED",
-  "SUCCESSFUL",
-);
-export type LegalHoldStatus = "CREATING" | "ACTIVE" | "CANCELING" | "CANCELED";
-export const LegalHoldStatus = S.Literal(
-  "CREATING",
-  "ACTIVE",
-  "CANCELING",
-  "CANCELED",
-);
+  | "CREATING"
+  | (string & {});
+export const RecoveryPointStatus = S.String;
+export type StorageClass = "WARM" | "COLD" | "DELETED" | (string & {});
+export const StorageClass = S.String;
+export type RestoreDeletionStatus =
+  | "DELETING"
+  | "FAILED"
+  | "SUCCESSFUL"
+  | (string & {});
+export const RestoreDeletionStatus = S.String;
+export type LegalHoldStatus =
+  | "CREATING"
+  | "ACTIVE"
+  | "CANCELING"
+  | "CANCELED"
+  | (string & {});
+export const LegalHoldStatus = S.String;
 export interface BackupPlansListMember {
   BackupPlanArn?: string;
   BackupPlanId?: string;
@@ -3402,16 +3310,14 @@ export const Metadata = S.Record({
 });
 export type RestoreTestingRecoveryPointSelectionAlgorithm =
   | "LATEST_WITHIN_WINDOW"
-  | "RANDOM_WITHIN_WINDOW";
-export const RestoreTestingRecoveryPointSelectionAlgorithm = S.Literal(
-  "LATEST_WITHIN_WINDOW",
-  "RANDOM_WITHIN_WINDOW",
-);
-export type RestoreTestingRecoveryPointType = "CONTINUOUS" | "SNAPSHOT";
-export const RestoreTestingRecoveryPointType = S.Literal(
-  "CONTINUOUS",
-  "SNAPSHOT",
-);
+  | "RANDOM_WITHIN_WINDOW"
+  | (string & {});
+export const RestoreTestingRecoveryPointSelectionAlgorithm = S.String;
+export type RestoreTestingRecoveryPointType =
+  | "CONTINUOUS"
+  | "SNAPSHOT"
+  | (string & {});
+export const RestoreTestingRecoveryPointType = S.String;
 export type RestoreTestingRecoveryPointTypeList =
   RestoreTestingRecoveryPointType[];
 export const RestoreTestingRecoveryPointTypeList = S.Array(
@@ -3518,8 +3424,8 @@ export const TieringConfigurationInputForUpdate = S.suspend(() =>
 ).annotations({
   identifier: "TieringConfigurationInputForUpdate",
 }) as any as S.Schema<TieringConfigurationInputForUpdate>;
-export type ConditionType = "STRINGEQUALS";
-export const ConditionType = S.Literal("STRINGEQUALS");
+export type ConditionType = "STRINGEQUALS" | (string & {});
+export const ConditionType = S.String;
 export interface CreateBackupVaultOutput {
   BackupVaultName?: string;
   BackupVaultArn?: string;
@@ -4446,32 +4352,29 @@ export const UpdateTieringConfigurationInput = S.suspend(() =>
 ).annotations({
   identifier: "UpdateTieringConfigurationInput",
 }) as any as S.Schema<UpdateTieringConfigurationInput>;
-export type MpaSessionStatus = "PENDING" | "APPROVED" | "FAILED";
-export const MpaSessionStatus = S.Literal("PENDING", "APPROVED", "FAILED");
+export type MpaSessionStatus =
+  | "PENDING"
+  | "APPROVED"
+  | "FAILED"
+  | (string & {});
+export const MpaSessionStatus = S.String;
 export type ScanJobState =
   | "COMPLETED"
   | "COMPLETED_WITH_ISSUES"
   | "FAILED"
-  | "CANCELED";
-export const ScanJobState = S.Literal(
-  "COMPLETED",
-  "COMPLETED_WITH_ISSUES",
-  "FAILED",
-  "CANCELED",
-);
-export type ScanFinding = "MALWARE";
-export const ScanFinding = S.Literal("MALWARE");
+  | "CANCELED"
+  | (string & {});
+export const ScanJobState = S.String;
+export type ScanFinding = "MALWARE" | (string & {});
+export const ScanFinding = S.String;
 export type ScanFindings = ScanFinding[];
 export const ScanFindings = S.Array(ScanFinding);
 export type RuleExecutionType =
   | "CONTINUOUS"
   | "SNAPSHOTS"
-  | "CONTINUOUS_AND_SNAPSHOTS";
-export const RuleExecutionType = S.Literal(
-  "CONTINUOUS",
-  "SNAPSHOTS",
-  "CONTINUOUS_AND_SNAPSHOTS",
-);
+  | "CONTINUOUS_AND_SNAPSHOTS"
+  | (string & {});
+export const RuleExecutionType = S.String;
 export interface RestoreTestingPlanForCreate {
   RecoveryPointSelection: RestoreTestingRecoveryPointSelection;
   RestoreTestingPlanName: string;
@@ -5184,8 +5087,8 @@ export type TieringConfigurationsList = TieringConfigurationsListMember[];
 export const TieringConfigurationsList = S.Array(
   TieringConfigurationsListMember,
 );
-export type MpaRevokeSessionStatus = "PENDING" | "FAILED";
-export const MpaRevokeSessionStatus = S.Literal("PENDING", "FAILED");
+export type MpaRevokeSessionStatus = "PENDING" | "FAILED" | (string & {});
+export const MpaRevokeSessionStatus = S.String;
 export interface CreateFrameworkInput {
   FrameworkName: string;
   FrameworkDescription?: string;

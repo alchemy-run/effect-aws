@@ -127,11 +127,11 @@ const tools = toolkit.toLayer(
   Effect.gen(function* () {
     return {
       ListServices: Effect.fn(function* () {
-        yield* Console.log("ListServices");
+        yield* Console.log("\x1b[90mListServices\x1b[0m");
         return Object.keys(AWS);
       }),
       ListOperations: Effect.fn(function* ({ service }) {
-        yield* Console.log("ListOperations", service);
+        yield* Console.log(`\x1b[90mListOperations ${service}\x1b[0m`);
         return yield* getService(service).pipe(Effect.map(Object.keys));
       }),
       DescribeOperation: Effect.fn(function* ({ service, operation }) {
@@ -143,7 +143,9 @@ const tools = toolkit.toLayer(
           inputSchema: JSONSchema.make(api.input),
           knownErrors: api.errors.map((err) => err._tag),
         };
-        yield* Console.log("DescribeOperation", service, operation, spec);
+        yield* Console.log(
+          `\x1b[90mDescribeOperation ${service} ${operation}\x1b[0m`,
+        );
         return JSON.stringify(spec);
       }),
       // Done: Effect.fn(function* ({ summary }) {
@@ -501,11 +503,9 @@ const discover = Command.make(
           role: "system",
           content: SYSTEM_PROMPT,
         },
-      ]);
-
-      const basePrompt = `Discover missing or incorrectly named errors for AWS APIs.
-
-**Your task:** ${userPrompt}
+        {
+          role: "user",
+          content: `Discover missing or incorrectly named errors for AWS APIs.
 
 ## How to proceed:
 
@@ -532,7 +532,14 @@ const discover = Command.make(
    - This keeps the environment clean for future runs
 10. When done cleaning up, provide a summary of what you found.
 
-Begin by understanding what the user wants to explore, then use the appropriate tools.`;
+Begin by understanding what the user wants to explore, then use the appropriate tools.`,
+        },
+        {
+          role: "assistant",
+          content:
+            "Got it, I can do that for you. Any specifics you can provide me?",
+        },
+      ]);
 
       let isFirstIteration = true;
 
@@ -542,7 +549,7 @@ Begin by understanding what the user wants to explore, then use the appropriate 
         const stream = chat.streamText({
           toolkit,
           // Only send the full prompt on the first iteration
-          prompt: isFirstIteration ? basePrompt : "Continue.",
+          prompt: isFirstIteration ? userPrompt : "Continue",
         });
         isFirstIteration = false;
 

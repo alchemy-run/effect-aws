@@ -91,27 +91,26 @@ export type InvestigationContent = string;
 //# Schemas
 export type TagKeys = string[];
 export const TagKeys = S.Array(S.String);
-export type ResolverType = "AWS" | "Self";
-export const ResolverType = S.Literal("AWS", "Self");
-export type EngagementType = "Security Incident" | "Investigation";
-export const EngagementType = S.Literal("Security Incident", "Investigation");
+export type ResolverType = "AWS" | "Self" | (string & {});
+export const ResolverType = S.String;
+export type EngagementType =
+  | "Security Incident"
+  | "Investigation"
+  | (string & {});
+export const EngagementType = S.String;
 export type ImpactedAccounts = string[];
 export const ImpactedAccounts = S.Array(S.String);
 export type ImpactedServicesList = string[];
 export const ImpactedServicesList = S.Array(S.String);
-export type UsefulnessRating = "USEFUL" | "NOT_USEFUL";
-export const UsefulnessRating = S.Literal("USEFUL", "NOT_USEFUL");
+export type UsefulnessRating = "USEFUL" | "NOT_USEFUL" | (string & {});
+export const UsefulnessRating = S.String;
 export type SelfManagedCaseStatus =
   | "Submitted"
   | "Detection and Analysis"
   | "Containment, Eradication and Recovery"
-  | "Post-incident Activities";
-export const SelfManagedCaseStatus = S.Literal(
-  "Submitted",
-  "Detection and Analysis",
-  "Containment, Eradication and Recovery",
-  "Post-incident Activities",
-);
+  | "Post-incident Activities"
+  | (string & {});
+export const SelfManagedCaseStatus = S.String;
 export type AWSAccountIds = string[];
 export const AWSAccountIds = S.Array(S.String);
 export interface ListTagsForResourceInput {
@@ -570,45 +569,9 @@ export type AwsRegion =
   | "us-east-1"
   | "us-east-2"
   | "us-west-1"
-  | "us-west-2";
-export const AwsRegion = S.Literal(
-  "af-south-1",
-  "ap-east-1",
-  "ap-east-2",
-  "ap-northeast-1",
-  "ap-northeast-2",
-  "ap-northeast-3",
-  "ap-south-1",
-  "ap-south-2",
-  "ap-southeast-1",
-  "ap-southeast-2",
-  "ap-southeast-3",
-  "ap-southeast-4",
-  "ap-southeast-5",
-  "ap-southeast-6",
-  "ap-southeast-7",
-  "ca-central-1",
-  "ca-west-1",
-  "cn-north-1",
-  "cn-northwest-1",
-  "eu-central-1",
-  "eu-central-2",
-  "eu-north-1",
-  "eu-south-1",
-  "eu-south-2",
-  "eu-west-1",
-  "eu-west-2",
-  "eu-west-3",
-  "il-central-1",
-  "me-central-1",
-  "me-south-1",
-  "mx-central-1",
-  "sa-east-1",
-  "us-east-1",
-  "us-east-2",
-  "us-west-1",
-  "us-west-2",
-);
+  | "us-west-2"
+  | (string & {});
+export const AwsRegion = S.String;
 export type CommunicationType =
   | "Case Created"
   | "Case Updated"
@@ -625,29 +588,13 @@ export type CommunicationType =
   | "Membership Cancelled"
   | "Register Delegated Administrator"
   | "Deregister Delegated Administrator"
-  | "Disable AWS Service Access";
-export const CommunicationType = S.Literal(
-  "Case Created",
-  "Case Updated",
-  "Case Acknowledged",
-  "Case Closed",
-  "Case Updated To Service Managed",
-  "Case Status Updated",
-  "Case Pending Customer Action Reminder",
-  "Case Attachment Url Uploaded",
-  "Case Comment Added",
-  "Case Comment Updated",
-  "Membership Created",
-  "Membership Updated",
-  "Membership Cancelled",
-  "Register Delegated Administrator",
-  "Deregister Delegated Administrator",
-  "Disable AWS Service Access",
-);
+  | "Disable AWS Service Access"
+  | (string & {});
+export const CommunicationType = S.String;
 export type CommunicationPreferences = CommunicationType[];
 export const CommunicationPreferences = S.Array(CommunicationType);
-export type OptInFeatureName = "Triage";
-export const OptInFeatureName = S.Literal("Triage");
+export type OptInFeatureName = "Triage" | (string & {});
+export const OptInFeatureName = S.String;
 export type OrganizationalUnits = string[];
 export const OrganizationalUnits = S.Array(S.String);
 export type TagMap = { [key: string]: string | undefined };
@@ -697,29 +644,18 @@ export type CaseStatus =
   | "Containment, Eradication and Recovery"
   | "Post-incident Activities"
   | "Ready to Close"
-  | "Closed";
-export const CaseStatus = S.Literal(
-  "Submitted",
-  "Acknowledged",
-  "Detection and Analysis",
-  "Containment, Eradication and Recovery",
-  "Post-incident Activities",
-  "Ready to Close",
-  "Closed",
-);
-export type PendingAction = "Customer" | "None";
-export const PendingAction = S.Literal("Customer", "None");
+  | "Closed"
+  | (string & {});
+export const CaseStatus = S.String;
+export type PendingAction = "Customer" | "None" | (string & {});
+export const PendingAction = S.String;
 export type ClosureCode =
   | "Investigation Completed"
   | "Not Resolved"
   | "False Positive"
-  | "Duplicate";
-export const ClosureCode = S.Literal(
-  "Investigation Completed",
-  "Not Resolved",
-  "False Positive",
-  "Duplicate",
-);
+  | "Duplicate"
+  | (string & {});
+export const ClosureCode = S.String;
 export interface CaseMetadataEntry {
   key: string;
   value: string;
@@ -758,10 +694,14 @@ export const OptInFeature = S.suspend(() =>
 ).annotations({ identifier: "OptInFeature" }) as any as S.Schema<OptInFeature>;
 export type OptInFeatures = OptInFeature[];
 export const OptInFeatures = S.Array(OptInFeature);
-export type MembershipStatus = "Active" | "Cancelled" | "Terminated";
-export const MembershipStatus = S.Literal("Active", "Cancelled", "Terminated");
-export type CustomerType = "Standalone" | "Organization";
-export const CustomerType = S.Literal("Standalone", "Organization");
+export type MembershipStatus =
+  | "Active"
+  | "Cancelled"
+  | "Terminated"
+  | (string & {});
+export const MembershipStatus = S.String;
+export type CustomerType = "Standalone" | "Organization" | (string & {});
+export const CustomerType = S.String;
 export interface MembershipAccountsConfigurationsUpdate {
   coverEntireOrganization?: boolean;
   organizationalUnitsToAdd?: string[];
@@ -1053,43 +993,38 @@ export const CancelMembershipResponse = S.suspend(() =>
 ).annotations({
   identifier: "CancelMembershipResponse",
 }) as any as S.Schema<CancelMembershipResponse>;
-export type CaseAttachmentStatus = "Verified" | "Failed" | "Pending";
-export const CaseAttachmentStatus = S.Literal("Verified", "Failed", "Pending");
-export type ActionType = "Evidence" | "Investigation" | "Summarization";
-export const ActionType = S.Literal(
-  "Evidence",
-  "Investigation",
-  "Summarization",
-);
+export type CaseAttachmentStatus =
+  | "Verified"
+  | "Failed"
+  | "Pending"
+  | (string & {});
+export const CaseAttachmentStatus = S.String;
+export type ActionType =
+  | "Evidence"
+  | "Investigation"
+  | "Summarization"
+  | (string & {});
+export const ActionType = S.String;
 export type ExecutionStatus =
   | "Pending"
   | "InProgress"
   | "Waiting"
   | "Completed"
   | "Failed"
-  | "Cancelled";
-export const ExecutionStatus = S.Literal(
-  "Pending",
-  "InProgress",
-  "Waiting",
-  "Completed",
-  "Failed",
-  "Cancelled",
-);
+  | "Cancelled"
+  | (string & {});
+export const ExecutionStatus = S.String;
 export type MembershipAccountRelationshipStatus =
   | "Associated"
   | "Disassociated"
-  | "Unassociated";
-export const MembershipAccountRelationshipStatus = S.Literal(
-  "Associated",
-  "Disassociated",
-  "Unassociated",
-);
-export type MembershipAccountRelationshipType = "Organization" | "Unrelated";
-export const MembershipAccountRelationshipType = S.Literal(
-  "Organization",
-  "Unrelated",
-);
+  | "Unassociated"
+  | (string & {});
+export const MembershipAccountRelationshipStatus = S.String;
+export type MembershipAccountRelationshipType =
+  | "Organization"
+  | "Unrelated"
+  | (string & {});
+export const MembershipAccountRelationshipType = S.String;
 export interface CaseAttachmentAttributes {
   attachmentId: string;
   fileName: string | redacted.Redacted<string>;
@@ -1441,13 +1376,9 @@ export type ValidationExceptionReason =
   | "UNKNOWN_OPERATION"
   | "CANNOT_PARSE"
   | "FIELD_VALIDATION_FAILED"
-  | "OTHER";
-export const ValidationExceptionReason = S.Literal(
-  "UNKNOWN_OPERATION",
-  "CANNOT_PARSE",
-  "FIELD_VALIDATION_FAILED",
-  "OTHER",
-);
+  | "OTHER"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 export interface InvestigationAction {
   investigationId: string;
   actionType: ActionType;

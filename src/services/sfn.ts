@@ -169,36 +169,33 @@ export type ExceptionHandlerIndex = number;
 export type RetryBackoffIntervalSeconds = number;
 
 //# Schemas
-export type StateMachineType = "STANDARD" | "EXPRESS";
-export const StateMachineType = S.Literal("STANDARD", "EXPRESS");
-export type IncludedData = "ALL_DATA" | "METADATA_ONLY";
-export const IncludedData = S.Literal("ALL_DATA", "METADATA_ONLY");
+export type StateMachineType = "STANDARD" | "EXPRESS" | (string & {});
+export const StateMachineType = S.String;
+export type IncludedData = "ALL_DATA" | "METADATA_ONLY" | (string & {});
+export const IncludedData = S.String;
 export type ExecutionStatus =
   | "RUNNING"
   | "SUCCEEDED"
   | "FAILED"
   | "TIMED_OUT"
   | "ABORTED"
-  | "PENDING_REDRIVE";
-export const ExecutionStatus = S.Literal(
-  "RUNNING",
-  "SUCCEEDED",
-  "FAILED",
-  "TIMED_OUT",
-  "ABORTED",
-  "PENDING_REDRIVE",
-);
-export type ExecutionRedriveFilter = "REDRIVEN" | "NOT_REDRIVEN";
-export const ExecutionRedriveFilter = S.Literal("REDRIVEN", "NOT_REDRIVEN");
-export type InspectionLevel = "INFO" | "DEBUG" | "TRACE";
-export const InspectionLevel = S.Literal("INFO", "DEBUG", "TRACE");
+  | "PENDING_REDRIVE"
+  | (string & {});
+export const ExecutionStatus = S.String;
+export type ExecutionRedriveFilter =
+  | "REDRIVEN"
+  | "NOT_REDRIVEN"
+  | (string & {});
+export const ExecutionRedriveFilter = S.String;
+export type InspectionLevel = "INFO" | "DEBUG" | "TRACE" | (string & {});
+export const InspectionLevel = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
-export type ValidateStateMachineDefinitionSeverity = "ERROR" | "WARNING";
-export const ValidateStateMachineDefinitionSeverity = S.Literal(
-  "ERROR",
-  "WARNING",
-);
+export type ValidateStateMachineDefinitionSeverity =
+  | "ERROR"
+  | "WARNING"
+  | (string & {});
+export const ValidateStateMachineDefinitionSeverity = S.String;
 export interface DeleteActivityInput {
   activityArn: string;
 }
@@ -920,8 +917,8 @@ export const UpdateMapRunOutput = S.suspend(() =>
 ).annotations({
   identifier: "UpdateMapRunOutput",
 }) as any as S.Schema<UpdateMapRunOutput>;
-export type LogLevel = "ALL" | "ERROR" | "FATAL" | "OFF";
-export const LogLevel = S.Literal("ALL", "ERROR", "FATAL", "OFF");
+export type LogLevel = "ALL" | "ERROR" | "FATAL" | "OFF" | (string & {});
+export const LogLevel = S.String;
 export interface CloudWatchLogsLogGroup {
   logGroupArn?: string;
 }
@@ -962,11 +959,11 @@ export const TracingConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "TracingConfiguration",
 }) as any as S.Schema<TracingConfiguration>;
-export type EncryptionType = "AWS_OWNED_KEY" | "CUSTOMER_MANAGED_KMS_KEY";
-export const EncryptionType = S.Literal(
-  "AWS_OWNED_KEY",
-  "CUSTOMER_MANAGED_KMS_KEY",
-);
+export type EncryptionType =
+  | "AWS_OWNED_KEY"
+  | "CUSTOMER_MANAGED_KMS_KEY"
+  | (string & {});
+export const EncryptionType = S.String;
 export interface EncryptionConfiguration {
   kmsKeyId?: string;
   kmsDataKeyReusePeriodSeconds?: number;
@@ -1076,36 +1073,33 @@ export const ValidateStateMachineDefinitionInput = S.suspend(() =>
 ).annotations({
   identifier: "ValidateStateMachineDefinitionInput",
 }) as any as S.Schema<ValidateStateMachineDefinitionInput>;
-export type MockResponseValidationMode = "STRICT" | "PRESENT" | "NONE";
-export const MockResponseValidationMode = S.Literal(
-  "STRICT",
-  "PRESENT",
-  "NONE",
-);
+export type MockResponseValidationMode =
+  | "STRICT"
+  | "PRESENT"
+  | "NONE"
+  | (string & {});
+export const MockResponseValidationMode = S.String;
 export type ExecutionRedriveStatus =
   | "REDRIVABLE"
   | "NOT_REDRIVABLE"
-  | "REDRIVABLE_BY_MAP_RUN";
-export const ExecutionRedriveStatus = S.Literal(
-  "REDRIVABLE",
-  "NOT_REDRIVABLE",
-  "REDRIVABLE_BY_MAP_RUN",
-);
-export type MapRunStatus = "RUNNING" | "SUCCEEDED" | "FAILED" | "ABORTED";
-export const MapRunStatus = S.Literal(
-  "RUNNING",
-  "SUCCEEDED",
-  "FAILED",
-  "ABORTED",
-);
-export type StateMachineStatus = "ACTIVE" | "DELETING";
-export const StateMachineStatus = S.Literal("ACTIVE", "DELETING");
-export type SyncExecutionStatus = "SUCCEEDED" | "FAILED" | "TIMED_OUT";
-export const SyncExecutionStatus = S.Literal(
-  "SUCCEEDED",
-  "FAILED",
-  "TIMED_OUT",
-);
+  | "REDRIVABLE_BY_MAP_RUN"
+  | (string & {});
+export const ExecutionRedriveStatus = S.String;
+export type MapRunStatus =
+  | "RUNNING"
+  | "SUCCEEDED"
+  | "FAILED"
+  | "ABORTED"
+  | (string & {});
+export const MapRunStatus = S.String;
+export type StateMachineStatus = "ACTIVE" | "DELETING" | (string & {});
+export const StateMachineStatus = S.String;
+export type SyncExecutionStatus =
+  | "SUCCEEDED"
+  | "FAILED"
+  | "TIMED_OUT"
+  | (string & {});
+export const SyncExecutionStatus = S.String;
 export interface TestStateConfiguration {
   retrierRetryCount?: number;
   errorCausedByState?: string | redacted.Redacted<string>;
@@ -1122,8 +1116,11 @@ export const TestStateConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "TestStateConfiguration",
 }) as any as S.Schema<TestStateConfiguration>;
-export type ValidateStateMachineDefinitionResultCode = "OK" | "FAIL";
-export const ValidateStateMachineDefinitionResultCode = S.Literal("OK", "FAIL");
+export type ValidateStateMachineDefinitionResultCode =
+  | "OK"
+  | "FAIL"
+  | (string & {});
+export const ValidateStateMachineDefinitionResultCode = S.String;
 export interface CreateActivityInput {
   name: string;
   tags?: Tag[];
@@ -1401,71 +1398,9 @@ export type HistoryEventType =
   | "MapRunSucceeded"
   | "ExecutionRedriven"
   | "MapRunRedriven"
-  | "EvaluationFailed";
-export const HistoryEventType = S.Literal(
-  "ActivityFailed",
-  "ActivityScheduled",
-  "ActivityScheduleFailed",
-  "ActivityStarted",
-  "ActivitySucceeded",
-  "ActivityTimedOut",
-  "ChoiceStateEntered",
-  "ChoiceStateExited",
-  "ExecutionAborted",
-  "ExecutionFailed",
-  "ExecutionStarted",
-  "ExecutionSucceeded",
-  "ExecutionTimedOut",
-  "FailStateEntered",
-  "LambdaFunctionFailed",
-  "LambdaFunctionScheduled",
-  "LambdaFunctionScheduleFailed",
-  "LambdaFunctionStarted",
-  "LambdaFunctionStartFailed",
-  "LambdaFunctionSucceeded",
-  "LambdaFunctionTimedOut",
-  "MapIterationAborted",
-  "MapIterationFailed",
-  "MapIterationStarted",
-  "MapIterationSucceeded",
-  "MapStateAborted",
-  "MapStateEntered",
-  "MapStateExited",
-  "MapStateFailed",
-  "MapStateStarted",
-  "MapStateSucceeded",
-  "ParallelStateAborted",
-  "ParallelStateEntered",
-  "ParallelStateExited",
-  "ParallelStateFailed",
-  "ParallelStateStarted",
-  "ParallelStateSucceeded",
-  "PassStateEntered",
-  "PassStateExited",
-  "SucceedStateEntered",
-  "SucceedStateExited",
-  "TaskFailed",
-  "TaskScheduled",
-  "TaskStarted",
-  "TaskStartFailed",
-  "TaskStateAborted",
-  "TaskStateEntered",
-  "TaskStateExited",
-  "TaskSubmitFailed",
-  "TaskSubmitted",
-  "TaskSucceeded",
-  "TaskTimedOut",
-  "WaitStateAborted",
-  "WaitStateEntered",
-  "WaitStateExited",
-  "MapRunAborted",
-  "MapRunFailed",
-  "MapRunStarted",
-  "MapRunSucceeded",
-  "ExecutionRedriven",
-  "MapRunRedriven",
-  "EvaluationFailed",
-);
+  | "EvaluationFailed"
+  | (string & {});
+export const HistoryEventType = S.String;
 export interface MockErrorOutput {
   error?: string | redacted.Redacted<string>;
   cause?: string | redacted.Redacted<string>;
@@ -1707,13 +1642,9 @@ export type ValidationExceptionReason =
   | "API_DOES_NOT_SUPPORT_LABELED_ARNS"
   | "MISSING_REQUIRED_PARAMETER"
   | "CANNOT_UPDATE_COMPLETED_MAP_RUN"
-  | "INVALID_ROUTING_CONFIGURATION";
-export const ValidationExceptionReason = S.Literal(
-  "API_DOES_NOT_SUPPORT_LABELED_ARNS",
-  "MISSING_REQUIRED_PARAMETER",
-  "CANNOT_UPDATE_COMPLETED_MAP_RUN",
-  "INVALID_ROUTING_CONFIGURATION",
-);
+  | "INVALID_ROUTING_CONFIGURATION"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 export interface CreateActivityOutput {
   activityArn: string;
   creationDate: Date;
@@ -2424,25 +2355,16 @@ export type KmsKeyState =
   | "PENDING_DELETION"
   | "PENDING_IMPORT"
   | "UNAVAILABLE"
-  | "CREATING";
-export const KmsKeyState = S.Literal(
-  "DISABLED",
-  "PENDING_DELETION",
-  "PENDING_IMPORT",
-  "UNAVAILABLE",
-  "CREATING",
-);
+  | "CREATING"
+  | (string & {});
+export const KmsKeyState = S.String;
 export type TestExecutionStatus =
   | "SUCCEEDED"
   | "FAILED"
   | "RETRIABLE"
-  | "CAUGHT_ERROR";
-export const TestExecutionStatus = S.Literal(
-  "SUCCEEDED",
-  "FAILED",
-  "RETRIABLE",
-  "CAUGHT_ERROR",
-);
+  | "CAUGHT_ERROR"
+  | (string & {});
+export const TestExecutionStatus = S.String;
 export type AssignedVariables = {
   [key: string]: string | redacted.Redacted<string> | undefined;
 };

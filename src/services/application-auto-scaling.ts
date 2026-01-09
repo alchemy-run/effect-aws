@@ -150,24 +150,9 @@ export type ServiceNamespace =
   | "kafka"
   | "elasticache"
   | "neptune"
-  | "workspaces";
-export const ServiceNamespace = S.Literal(
-  "ecs",
-  "elasticmapreduce",
-  "ec2",
-  "appstream",
-  "dynamodb",
-  "rds",
-  "sagemaker",
-  "custom-resource",
-  "comprehend",
-  "lambda",
-  "cassandra",
-  "kafka",
-  "elasticache",
-  "neptune",
-  "workspaces",
-);
+  | "workspaces"
+  | (string & {});
+export const ServiceNamespace = S.String;
 export type ScalableDimension =
   | "ecs:service:DesiredCount"
   | "ec2:spot-fleet-request:TargetCapacity"
@@ -192,44 +177,17 @@ export type ScalableDimension =
   | "neptune:cluster:ReadReplicaCount"
   | "sagemaker:variant:DesiredProvisionedConcurrency"
   | "sagemaker:inference-component:DesiredCopyCount"
-  | "workspaces:workspacespool:DesiredUserSessions";
-export const ScalableDimension = S.Literal(
-  "ecs:service:DesiredCount",
-  "ec2:spot-fleet-request:TargetCapacity",
-  "elasticmapreduce:instancegroup:InstanceCount",
-  "appstream:fleet:DesiredCapacity",
-  "dynamodb:table:ReadCapacityUnits",
-  "dynamodb:table:WriteCapacityUnits",
-  "dynamodb:index:ReadCapacityUnits",
-  "dynamodb:index:WriteCapacityUnits",
-  "rds:cluster:ReadReplicaCount",
-  "sagemaker:variant:DesiredInstanceCount",
-  "custom-resource:ResourceType:Property",
-  "comprehend:document-classifier-endpoint:DesiredInferenceUnits",
-  "comprehend:entity-recognizer-endpoint:DesiredInferenceUnits",
-  "lambda:function:ProvisionedConcurrency",
-  "cassandra:table:ReadCapacityUnits",
-  "cassandra:table:WriteCapacityUnits",
-  "kafka:broker-storage:VolumeSize",
-  "elasticache:cache-cluster:Nodes",
-  "elasticache:replication-group:NodeGroups",
-  "elasticache:replication-group:Replicas",
-  "neptune:cluster:ReadReplicaCount",
-  "sagemaker:variant:DesiredProvisionedConcurrency",
-  "sagemaker:inference-component:DesiredCopyCount",
-  "workspaces:workspacespool:DesiredUserSessions",
-);
+  | "workspaces:workspacespool:DesiredUserSessions"
+  | (string & {});
+export const ScalableDimension = S.String;
 export type ResourceIdsMaxLen1600 = string[];
 export const ResourceIdsMaxLen1600 = S.Array(S.String);
 export type PolicyType =
   | "StepScaling"
   | "TargetTrackingScaling"
-  | "PredictiveScaling";
-export const PolicyType = S.Literal(
-  "StepScaling",
-  "TargetTrackingScaling",
-  "PredictiveScaling",
-);
+  | "PredictiveScaling"
+  | (string & {});
+export const PolicyType = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export interface DeleteScalingPolicyRequest {
@@ -458,26 +416,25 @@ export const UntagResourceResponse = S.suspend(() => S.Struct({})).annotations({
 export type AdjustmentType =
   | "ChangeInCapacity"
   | "PercentChangeInCapacity"
-  | "ExactCapacity";
-export const AdjustmentType = S.Literal(
-  "ChangeInCapacity",
-  "PercentChangeInCapacity",
-  "ExactCapacity",
-);
-export type MetricAggregationType = "Average" | "Minimum" | "Maximum";
-export const MetricAggregationType = S.Literal("Average", "Minimum", "Maximum");
-export type PredictiveScalingMode = "ForecastOnly" | "ForecastAndScale";
-export const PredictiveScalingMode = S.Literal(
-  "ForecastOnly",
-  "ForecastAndScale",
-);
+  | "ExactCapacity"
+  | (string & {});
+export const AdjustmentType = S.String;
+export type MetricAggregationType =
+  | "Average"
+  | "Minimum"
+  | "Maximum"
+  | (string & {});
+export const MetricAggregationType = S.String;
+export type PredictiveScalingMode =
+  | "ForecastOnly"
+  | "ForecastAndScale"
+  | (string & {});
+export const PredictiveScalingMode = S.String;
 export type PredictiveScalingMaxCapacityBreachBehavior =
   | "HonorMaxCapacity"
-  | "IncreaseMaxCapacity";
-export const PredictiveScalingMaxCapacityBreachBehavior = S.Literal(
-  "HonorMaxCapacity",
-  "IncreaseMaxCapacity",
-);
+  | "IncreaseMaxCapacity"
+  | (string & {});
+export const PredictiveScalingMaxCapacityBreachBehavior = S.String;
 export interface ScalableTargetAction {
   MinCapacity?: number;
   MaxCapacity?: number;
@@ -533,51 +490,17 @@ export type MetricType =
   | "SageMakerInferenceComponentInvocationsPerCopy"
   | "WorkSpacesAverageUserSessionsCapacityUtilization"
   | "SageMakerInferenceComponentConcurrentRequestsPerCopyHighResolution"
-  | "SageMakerVariantConcurrentRequestsPerModelHighResolution";
-export const MetricType = S.Literal(
-  "DynamoDBReadCapacityUtilization",
-  "DynamoDBWriteCapacityUtilization",
-  "ALBRequestCountPerTarget",
-  "RDSReaderAverageCPUUtilization",
-  "RDSReaderAverageDatabaseConnections",
-  "EC2SpotFleetRequestAverageCPUUtilization",
-  "EC2SpotFleetRequestAverageNetworkIn",
-  "EC2SpotFleetRequestAverageNetworkOut",
-  "SageMakerVariantInvocationsPerInstance",
-  "ECSServiceAverageCPUUtilization",
-  "ECSServiceAverageMemoryUtilization",
-  "AppStreamAverageCapacityUtilization",
-  "ComprehendInferenceUtilization",
-  "LambdaProvisionedConcurrencyUtilization",
-  "CassandraReadCapacityUtilization",
-  "CassandraWriteCapacityUtilization",
-  "KafkaBrokerStorageUtilization",
-  "ElastiCacheEngineCPUUtilization",
-  "ElastiCacheDatabaseMemoryUsagePercentage",
-  "ElastiCachePrimaryEngineCPUUtilization",
-  "ElastiCacheReplicaEngineCPUUtilization",
-  "ElastiCacheDatabaseMemoryUsageCountedForEvictPercentage",
-  "NeptuneReaderAverageCPUUtilization",
-  "SageMakerVariantProvisionedConcurrencyUtilization",
-  "ElastiCacheDatabaseCapacityUsageCountedForEvictPercentage",
-  "SageMakerInferenceComponentInvocationsPerCopy",
-  "WorkSpacesAverageUserSessionsCapacityUtilization",
-  "SageMakerInferenceComponentConcurrentRequestsPerCopyHighResolution",
-  "SageMakerVariantConcurrentRequestsPerModelHighResolution",
-);
+  | "SageMakerVariantConcurrentRequestsPerModelHighResolution"
+  | (string & {});
+export const MetricType = S.String;
 export type MetricStatistic =
   | "Average"
   | "Minimum"
   | "Maximum"
   | "SampleCount"
-  | "Sum";
-export const MetricStatistic = S.Literal(
-  "Average",
-  "Minimum",
-  "Maximum",
-  "SampleCount",
-  "Sum",
-);
+  | "Sum"
+  | (string & {});
+export const MetricStatistic = S.String;
 export interface ListTagsForResourceResponse {
   Tags?: { [key: string]: string | undefined };
 }
@@ -652,15 +575,9 @@ export type ScalingActivityStatusCode =
   | "Successful"
   | "Overridden"
   | "Unfulfilled"
-  | "Failed";
-export const ScalingActivityStatusCode = S.Literal(
-  "Pending",
-  "InProgress",
-  "Successful",
-  "Overridden",
-  "Unfulfilled",
-  "Failed",
-);
+  | "Failed"
+  | (string & {});
+export const ScalingActivityStatusCode = S.String;
 export type PredictiveScalingForecastTimestamps = Date[];
 export const PredictiveScalingForecastTimestamps = S.Array(
   S.Date.pipe(T.TimestampFormat("epoch-seconds")),

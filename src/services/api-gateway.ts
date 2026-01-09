@@ -107,12 +107,12 @@ export const GetAccountRequest = S.suspend(() =>
 ).annotations({
   identifier: "GetAccountRequest",
 }) as any as S.Schema<GetAccountRequest>;
-export type AuthorizerType = "TOKEN" | "REQUEST" | "COGNITO_USER_POOLS";
-export const AuthorizerType = S.Literal(
-  "TOKEN",
-  "REQUEST",
-  "COGNITO_USER_POOLS",
-);
+export type AuthorizerType =
+  | "TOKEN"
+  | "REQUEST"
+  | "COGNITO_USER_POOLS"
+  | (string & {});
+export const AuthorizerType = S.String;
 export type ListOfARNs = string[];
 export const ListOfARNs = S.Array(S.String);
 export type CacheClusterSize =
@@ -123,17 +123,9 @@ export type CacheClusterSize =
   | "28.4"
   | "58.2"
   | "118"
-  | "237";
-export const CacheClusterSize = S.Literal(
-  "0.5",
-  "1.6",
-  "6.1",
-  "13.5",
-  "28.4",
-  "58.2",
-  "118",
-  "237",
-);
+  | "237"
+  | (string & {});
+export const CacheClusterSize = S.String;
 export type SecurityPolicy =
   | "TLS_1_0"
   | "TLS_1_2"
@@ -145,37 +137,23 @@ export type SecurityPolicy =
   | "SecurityPolicy_TLS13_1_2_2021_06"
   | "SecurityPolicy_TLS13_2025_EDGE"
   | "SecurityPolicy_TLS12_PFS_2025_EDGE"
-  | "SecurityPolicy_TLS12_2018_EDGE";
-export const SecurityPolicy = S.Literal(
-  "TLS_1_0",
-  "TLS_1_2",
-  "SecurityPolicy_TLS13_1_3_2025_09",
-  "SecurityPolicy_TLS13_1_3_FIPS_2025_09",
-  "SecurityPolicy_TLS13_1_2_PFS_PQ_2025_09",
-  "SecurityPolicy_TLS13_1_2_FIPS_PQ_2025_09",
-  "SecurityPolicy_TLS13_1_2_PQ_2025_09",
-  "SecurityPolicy_TLS13_1_2_2021_06",
-  "SecurityPolicy_TLS13_2025_EDGE",
-  "SecurityPolicy_TLS12_PFS_2025_EDGE",
-  "SecurityPolicy_TLS12_2018_EDGE",
-);
-export type EndpointAccessMode = "BASIC" | "STRICT";
-export const EndpointAccessMode = S.Literal("BASIC", "STRICT");
+  | "SecurityPolicy_TLS12_2018_EDGE"
+  | (string & {});
+export const SecurityPolicy = S.String;
+export type EndpointAccessMode = "BASIC" | "STRICT" | (string & {});
+export const EndpointAccessMode = S.String;
 export type RoutingMode =
   | "BASE_PATH_MAPPING_ONLY"
   | "ROUTING_RULE_ONLY"
-  | "ROUTING_RULE_THEN_BASE_PATH_MAPPING";
-export const RoutingMode = S.Literal(
-  "BASE_PATH_MAPPING_ONLY",
-  "ROUTING_RULE_ONLY",
-  "ROUTING_RULE_THEN_BASE_PATH_MAPPING",
-);
-export type AccessAssociationSourceType = "VPCE";
-export const AccessAssociationSourceType = S.Literal("VPCE");
+  | "ROUTING_RULE_THEN_BASE_PATH_MAPPING"
+  | (string & {});
+export const RoutingMode = S.String;
+export type AccessAssociationSourceType = "VPCE" | (string & {});
+export const AccessAssociationSourceType = S.String;
 export type ListOfString = string[];
 export const ListOfString = S.Array(S.String);
-export type ApiKeySourceType = "HEADER" | "AUTHORIZER";
-export const ApiKeySourceType = S.Literal("HEADER", "AUTHORIZER");
+export type ApiKeySourceType = "HEADER" | "AUTHORIZER" | (string & {});
+export const ApiKeySourceType = S.String;
 export type GatewayResponseType =
   | "DEFAULT_4XX"
   | "DEFAULT_5XX"
@@ -197,30 +175,9 @@ export type GatewayResponseType =
   | "REQUEST_TOO_LARGE"
   | "THROTTLED"
   | "QUOTA_EXCEEDED"
-  | "WAF_FILTERED";
-export const GatewayResponseType = S.Literal(
-  "DEFAULT_4XX",
-  "DEFAULT_5XX",
-  "RESOURCE_NOT_FOUND",
-  "UNAUTHORIZED",
-  "INVALID_API_KEY",
-  "ACCESS_DENIED",
-  "AUTHORIZER_FAILURE",
-  "AUTHORIZER_CONFIGURATION_ERROR",
-  "INVALID_SIGNATURE",
-  "EXPIRED_TOKEN",
-  "MISSING_AUTHENTICATION_TOKEN",
-  "INTEGRATION_FAILURE",
-  "INTEGRATION_TIMEOUT",
-  "API_CONFIGURATION_ERROR",
-  "UNSUPPORTED_MEDIA_TYPE",
-  "BAD_REQUEST_PARAMETERS",
-  "BAD_REQUEST_BODY",
-  "REQUEST_TOO_LARGE",
-  "THROTTLED",
-  "QUOTA_EXCEEDED",
-  "WAF_FILTERED",
-);
+  | "WAF_FILTERED"
+  | (string & {});
+export const GatewayResponseType = S.String;
 export type DocumentationPartType =
   | "API"
   | "AUTHORIZER"
@@ -233,51 +190,34 @@ export type DocumentationPartType =
   | "REQUEST_BODY"
   | "RESPONSE"
   | "RESPONSE_HEADER"
-  | "RESPONSE_BODY";
-export const DocumentationPartType = S.Literal(
-  "API",
-  "AUTHORIZER",
-  "MODEL",
-  "RESOURCE",
-  "METHOD",
-  "PATH_PARAMETER",
-  "QUERY_PARAMETER",
-  "REQUEST_HEADER",
-  "REQUEST_BODY",
-  "RESPONSE",
-  "RESPONSE_HEADER",
-  "RESPONSE_BODY",
-);
-export type LocationStatusType = "DOCUMENTED" | "UNDOCUMENTED";
-export const LocationStatusType = S.Literal("DOCUMENTED", "UNDOCUMENTED");
-export type ResourceOwner = "SELF" | "OTHER_ACCOUNTS";
-export const ResourceOwner = S.Literal("SELF", "OTHER_ACCOUNTS");
-export type ApiKeysFormat = "csv";
-export const ApiKeysFormat = S.Literal("csv");
-export type PutMode = "merge" | "overwrite";
-export const PutMode = S.Literal("merge", "overwrite");
+  | "RESPONSE_BODY"
+  | (string & {});
+export const DocumentationPartType = S.String;
+export type LocationStatusType = "DOCUMENTED" | "UNDOCUMENTED" | (string & {});
+export const LocationStatusType = S.String;
+export type ResourceOwner = "SELF" | "OTHER_ACCOUNTS" | (string & {});
+export const ResourceOwner = S.String;
+export type ApiKeysFormat = "csv" | (string & {});
+export const ApiKeysFormat = S.String;
+export type PutMode = "merge" | "overwrite" | (string & {});
+export const PutMode = S.String;
 export type IntegrationType =
   | "HTTP"
   | "AWS"
   | "MOCK"
   | "HTTP_PROXY"
-  | "AWS_PROXY";
-export const IntegrationType = S.Literal(
-  "HTTP",
-  "AWS",
-  "MOCK",
-  "HTTP_PROXY",
-  "AWS_PROXY",
-);
-export type ConnectionType = "INTERNET" | "VPC_LINK";
-export const ConnectionType = S.Literal("INTERNET", "VPC_LINK");
-export type ContentHandlingStrategy = "CONVERT_TO_BINARY" | "CONVERT_TO_TEXT";
-export const ContentHandlingStrategy = S.Literal(
-  "CONVERT_TO_BINARY",
-  "CONVERT_TO_TEXT",
-);
-export type ResponseTransferMode = "BUFFERED" | "STREAM";
-export const ResponseTransferMode = S.Literal("BUFFERED", "STREAM");
+  | "AWS_PROXY"
+  | (string & {});
+export const IntegrationType = S.String;
+export type ConnectionType = "INTERNET" | "VPC_LINK" | (string & {});
+export const ConnectionType = S.String;
+export type ContentHandlingStrategy =
+  | "CONVERT_TO_BINARY"
+  | "CONVERT_TO_TEXT"
+  | (string & {});
+export const ContentHandlingStrategy = S.String;
+export type ResponseTransferMode = "BUFFERED" | "STREAM" | (string & {});
+export const ResponseTransferMode = S.String;
 export interface CreateAuthorizerRequest {
   restApiId: string;
   name: string;
@@ -484,12 +424,12 @@ export const CreateResourceRequest = S.suspend(() =>
 ).annotations({
   identifier: "CreateResourceRequest",
 }) as any as S.Schema<CreateResourceRequest>;
-export type EndpointType = "REGIONAL" | "EDGE" | "PRIVATE";
-export const EndpointType = S.Literal("REGIONAL", "EDGE", "PRIVATE");
+export type EndpointType = "REGIONAL" | "EDGE" | "PRIVATE" | (string & {});
+export const EndpointType = S.String;
 export type ListOfEndpointType = EndpointType[];
 export const ListOfEndpointType = S.Array(EndpointType);
-export type IpAddressType = "ipv4" | "dualstack";
-export const IpAddressType = S.Literal("ipv4", "dualstack");
+export type IpAddressType = "ipv4" | "dualstack" | (string & {});
+export const IpAddressType = S.String;
 export interface EndpointConfiguration {
   types?: EndpointType[];
   ipAddressType?: IpAddressType;
@@ -2754,8 +2694,15 @@ export interface UntagResourceResponse {}
 export const UntagResourceResponse = S.suspend(() => S.Struct({})).annotations({
   identifier: "UntagResourceResponse",
 }) as any as S.Schema<UntagResourceResponse>;
-export type Op = "add" | "remove" | "replace" | "move" | "copy" | "test";
-export const Op = S.Literal("add", "remove", "replace", "move", "copy", "test");
+export type Op =
+  | "add"
+  | "remove"
+  | "replace"
+  | "move"
+  | "copy"
+  | "test"
+  | (string & {});
+export const Op = S.String;
 export interface PatchOperation {
   op?: Op;
   path?: string;
@@ -3309,8 +3256,8 @@ export const UpdateVpcLinkRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateVpcLinkRequest",
 }) as any as S.Schema<UpdateVpcLinkRequest>;
-export type QuotaPeriodType = "DAY" | "WEEK" | "MONTH";
-export const QuotaPeriodType = S.Literal("DAY", "WEEK", "MONTH");
+export type QuotaPeriodType = "DAY" | "WEEK" | "MONTH" | (string & {});
+export const QuotaPeriodType = S.String;
 export interface StageKey {
   restApiId?: string;
   stageName?: string;
@@ -3367,13 +3314,13 @@ export const MutualTlsAuthenticationInput = S.suspend(() =>
 ).annotations({
   identifier: "MutualTlsAuthenticationInput",
 }) as any as S.Schema<MutualTlsAuthenticationInput>;
-export type ApiStatus = "UPDATING" | "AVAILABLE" | "PENDING" | "FAILED";
-export const ApiStatus = S.Literal(
-  "UPDATING",
-  "AVAILABLE",
-  "PENDING",
-  "FAILED",
-);
+export type ApiStatus =
+  | "UPDATING"
+  | "AVAILABLE"
+  | "PENDING"
+  | "FAILED"
+  | (string & {});
+export const ApiStatus = S.String;
 export interface CanarySettings {
   percentTraffic?: number;
   deploymentId?: string;
@@ -3404,13 +3351,13 @@ export const QuotaSettings = S.suspend(() =>
 ).annotations({
   identifier: "QuotaSettings",
 }) as any as S.Schema<QuotaSettings>;
-export type VpcLinkStatus = "AVAILABLE" | "PENDING" | "DELETING" | "FAILED";
-export const VpcLinkStatus = S.Literal(
-  "AVAILABLE",
-  "PENDING",
-  "DELETING",
-  "FAILED",
-);
+export type VpcLinkStatus =
+  | "AVAILABLE"
+  | "PENDING"
+  | "DELETING"
+  | "FAILED"
+  | (string & {});
+export const VpcLinkStatus = S.String;
 export interface ApiKey {
   id?: string;
   value?: string;
@@ -3587,15 +3534,9 @@ export type DomainNameStatus =
   | "PENDING"
   | "PENDING_CERTIFICATE_REIMPORT"
   | "PENDING_OWNERSHIP_VERIFICATION"
-  | "FAILED";
-export const DomainNameStatus = S.Literal(
-  "AVAILABLE",
-  "UPDATING",
-  "PENDING",
-  "PENDING_CERTIFICATE_REIMPORT",
-  "PENDING_OWNERSHIP_VERIFICATION",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const DomainNameStatus = S.String;
 export interface DomainNameAccessAssociation {
   domainNameAccessAssociationArn?: string;
   domainNameArn?: string;
@@ -3970,23 +3911,15 @@ export type CacheClusterStatus =
   | "AVAILABLE"
   | "DELETE_IN_PROGRESS"
   | "NOT_AVAILABLE"
-  | "FLUSH_IN_PROGRESS";
-export const CacheClusterStatus = S.Literal(
-  "CREATE_IN_PROGRESS",
-  "AVAILABLE",
-  "DELETE_IN_PROGRESS",
-  "NOT_AVAILABLE",
-  "FLUSH_IN_PROGRESS",
-);
+  | "FLUSH_IN_PROGRESS"
+  | (string & {});
+export const CacheClusterStatus = S.String;
 export type UnauthorizedCacheControlHeaderStrategy =
   | "FAIL_WITH_403"
   | "SUCCEED_WITH_RESPONSE_HEADER"
-  | "SUCCEED_WITHOUT_RESPONSE_HEADER";
-export const UnauthorizedCacheControlHeaderStrategy = S.Literal(
-  "FAIL_WITH_403",
-  "SUCCEED_WITH_RESPONSE_HEADER",
-  "SUCCEED_WITHOUT_RESPONSE_HEADER",
-);
+  | "SUCCEED_WITHOUT_RESPONSE_HEADER"
+  | (string & {});
+export const UnauthorizedCacheControlHeaderStrategy = S.String;
 export interface MethodSetting {
   metricsEnabled?: boolean;
   loggingLevel?: string;

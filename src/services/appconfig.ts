@@ -135,16 +135,16 @@ export const GetAccountSettingsRequest = S.suspend(() =>
 ).annotations({
   identifier: "GetAccountSettingsRequest",
 }) as any as S.Schema<GetAccountSettingsRequest>;
-export type GrowthType = "LINEAR" | "EXPONENTIAL";
-export const GrowthType = S.Literal("LINEAR", "EXPONENTIAL");
-export type ReplicateTo = "NONE" | "SSM_DOCUMENT";
-export const ReplicateTo = S.Literal("NONE", "SSM_DOCUMENT");
-export type DeletionProtectionCheck = "ACCOUNT_DEFAULT" | "APPLY" | "BYPASS";
-export const DeletionProtectionCheck = S.Literal(
-  "ACCOUNT_DEFAULT",
-  "APPLY",
-  "BYPASS",
-);
+export type GrowthType = "LINEAR" | "EXPONENTIAL" | (string & {});
+export const GrowthType = S.String;
+export type ReplicateTo = "NONE" | "SSM_DOCUMENT" | (string & {});
+export const ReplicateTo = S.String;
+export type DeletionProtectionCheck =
+  | "ACCOUNT_DEFAULT"
+  | "APPLY"
+  | "BYPASS"
+  | (string & {});
+export const DeletionProtectionCheck = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export type TagMap = { [key: string]: string | undefined };
@@ -1014,8 +1014,8 @@ export const UpdateApplicationRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateApplicationRequest",
 }) as any as S.Schema<UpdateApplicationRequest>;
-export type ValidatorType = "JSON_SCHEMA" | "LAMBDA";
-export const ValidatorType = S.Literal("JSON_SCHEMA", "LAMBDA");
+export type ValidatorType = "JSON_SCHEMA" | "LAMBDA" | (string & {});
+export const ValidatorType = S.String;
 export interface Validator {
   Type: ValidatorType;
   Content: string | redacted.Redacted<string>;
@@ -1140,17 +1140,9 @@ export type ActionPoint =
   | "ON_DEPLOYMENT_STEP"
   | "ON_DEPLOYMENT_BAKING"
   | "ON_DEPLOYMENT_COMPLETE"
-  | "ON_DEPLOYMENT_ROLLED_BACK";
-export const ActionPoint = S.Literal(
-  "PRE_CREATE_HOSTED_CONFIGURATION_VERSION",
-  "PRE_START_DEPLOYMENT",
-  "AT_DEPLOYMENT_TICK",
-  "ON_DEPLOYMENT_START",
-  "ON_DEPLOYMENT_STEP",
-  "ON_DEPLOYMENT_BAKING",
-  "ON_DEPLOYMENT_COMPLETE",
-  "ON_DEPLOYMENT_ROLLED_BACK",
-);
+  | "ON_DEPLOYMENT_ROLLED_BACK"
+  | (string & {});
+export const ActionPoint = S.String;
 export interface Action {
   Name?: string;
   Description?: string;
@@ -1280,8 +1272,8 @@ export const ValidateConfigurationResponse = S.suspend(() =>
 ).annotations({
   identifier: "ValidateConfigurationResponse",
 }) as any as S.Schema<ValidateConfigurationResponse>;
-export type BadRequestReason = "InvalidConfiguration";
-export const BadRequestReason = S.Literal("InvalidConfiguration");
+export type BadRequestReason = "InvalidConfiguration" | (string & {});
+export const BadRequestReason = S.String;
 export type DeploymentState =
   | "BAKING"
   | "VALIDATING"
@@ -1289,29 +1281,17 @@ export type DeploymentState =
   | "COMPLETE"
   | "ROLLING_BACK"
   | "ROLLED_BACK"
-  | "REVERTED";
-export const DeploymentState = S.Literal(
-  "BAKING",
-  "VALIDATING",
-  "DEPLOYING",
-  "COMPLETE",
-  "ROLLING_BACK",
-  "ROLLED_BACK",
-  "REVERTED",
-);
+  | "REVERTED"
+  | (string & {});
+export const DeploymentState = S.String;
 export type EnvironmentState =
   | "READY_FOR_DEPLOYMENT"
   | "DEPLOYING"
   | "ROLLING_BACK"
   | "ROLLED_BACK"
-  | "REVERTED";
-export const EnvironmentState = S.Literal(
-  "READY_FOR_DEPLOYMENT",
-  "DEPLOYING",
-  "ROLLING_BACK",
-  "ROLLED_BACK",
-  "REVERTED",
-);
+  | "REVERTED"
+  | (string & {});
+export const EnvironmentState = S.String;
 export interface Application {
   Id?: string;
   Name?: string;
@@ -1696,27 +1676,16 @@ export type DeploymentEventType =
   | "BAKE_TIME_STARTED"
   | "DEPLOYMENT_STARTED"
   | "DEPLOYMENT_COMPLETED"
-  | "REVERT_COMPLETED";
-export const DeploymentEventType = S.Literal(
-  "PERCENTAGE_UPDATED",
-  "ROLLBACK_STARTED",
-  "ROLLBACK_COMPLETED",
-  "BAKE_TIME_STARTED",
-  "DEPLOYMENT_STARTED",
-  "DEPLOYMENT_COMPLETED",
-  "REVERT_COMPLETED",
-);
+  | "REVERT_COMPLETED"
+  | (string & {});
+export const DeploymentEventType = S.String;
 export type TriggeredBy =
   | "USER"
   | "APPCONFIG"
   | "CLOUDWATCH_ALARM"
-  | "INTERNAL_ERROR";
-export const TriggeredBy = S.Literal(
-  "USER",
-  "APPCONFIG",
-  "CLOUDWATCH_ALARM",
-  "INTERNAL_ERROR",
-);
+  | "INTERNAL_ERROR"
+  | (string & {});
+export const TriggeredBy = S.String;
 export type ValidatorTypeList = ValidatorType[];
 export const ValidatorTypeList = S.Array(ValidatorType);
 export interface AppliedExtension {
@@ -2069,8 +2038,8 @@ export const Deployment = S.suspend(() =>
     VersionLabel: S.optional(S.String),
   }),
 ).annotations({ identifier: "Deployment" }) as any as S.Schema<Deployment>;
-export type BytesMeasure = "KILOBYTES";
-export const BytesMeasure = S.Literal("KILOBYTES");
+export type BytesMeasure = "KILOBYTES" | (string & {});
+export const BytesMeasure = S.String;
 
 //# Errors
 export class BadRequestException extends S.TaggedError<BadRequestException>()(

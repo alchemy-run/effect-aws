@@ -429,8 +429,8 @@ export const GetTrafficPolicyInstanceCountRequest = S.suspend(() =>
 ).annotations({
   identifier: "GetTrafficPolicyInstanceCountRequest",
 }) as any as S.Schema<GetTrafficPolicyInstanceCountRequest>;
-export type TagResourceType = "healthcheck" | "hostedzone";
-export const TagResourceType = S.Literal("healthcheck", "hostedzone");
+export type TagResourceType = "healthcheck" | "hostedzone" | (string & {});
+export const TagResourceType = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String.pipe(T.XmlName("Key")));
 export type AccountLimitType =
@@ -438,30 +438,22 @@ export type AccountLimitType =
   | "MAX_HOSTED_ZONES_BY_OWNER"
   | "MAX_TRAFFIC_POLICY_INSTANCES_BY_OWNER"
   | "MAX_REUSABLE_DELEGATION_SETS_BY_OWNER"
-  | "MAX_TRAFFIC_POLICIES_BY_OWNER";
-export const AccountLimitType = S.Literal(
-  "MAX_HEALTH_CHECKS_BY_OWNER",
-  "MAX_HOSTED_ZONES_BY_OWNER",
-  "MAX_TRAFFIC_POLICY_INSTANCES_BY_OWNER",
-  "MAX_REUSABLE_DELEGATION_SETS_BY_OWNER",
-  "MAX_TRAFFIC_POLICIES_BY_OWNER",
-);
+  | "MAX_TRAFFIC_POLICIES_BY_OWNER"
+  | (string & {});
+export const AccountLimitType = S.String;
 export type CheckerIpRanges = string[];
 export const CheckerIpRanges = S.Array(S.String);
 export type HostedZoneLimitType =
   | "MAX_RRSETS_BY_ZONE"
-  | "MAX_VPCS_ASSOCIATED_BY_ZONE";
-export const HostedZoneLimitType = S.Literal(
-  "MAX_RRSETS_BY_ZONE",
-  "MAX_VPCS_ASSOCIATED_BY_ZONE",
-);
+  | "MAX_VPCS_ASSOCIATED_BY_ZONE"
+  | (string & {});
+export const HostedZoneLimitType = S.String;
 export type ReusableDelegationSetLimitType =
-  "MAX_ZONES_BY_REUSABLE_DELEGATION_SET";
-export const ReusableDelegationSetLimitType = S.Literal(
-  "MAX_ZONES_BY_REUSABLE_DELEGATION_SET",
-);
-export type HostedZoneType = "PrivateHostedZone";
-export const HostedZoneType = S.Literal("PrivateHostedZone");
+  | "MAX_ZONES_BY_REUSABLE_DELEGATION_SET"
+  | (string & {});
+export const ReusableDelegationSetLimitType = S.String;
+export type HostedZoneType = "PrivateHostedZone" | (string & {});
+export const HostedZoneType = S.String;
 export type VPCRegion =
   | "us-east-1"
   | "us-east-2"
@@ -508,55 +500,9 @@ export type VPCRegion =
   | "eu-isoe-west-1"
   | "ap-southeast-6"
   | "us-isob-west-1"
-  | "eusc-de-east-1";
-export const VPCRegion = S.Literal(
-  "us-east-1",
-  "us-east-2",
-  "us-west-1",
-  "us-west-2",
-  "eu-west-1",
-  "eu-west-2",
-  "eu-west-3",
-  "eu-central-1",
-  "eu-central-2",
-  "ap-east-1",
-  "me-south-1",
-  "us-gov-west-1",
-  "us-gov-east-1",
-  "us-iso-east-1",
-  "us-iso-west-1",
-  "us-isob-east-1",
-  "me-central-1",
-  "ap-southeast-1",
-  "ap-southeast-2",
-  "ap-southeast-3",
-  "ap-south-1",
-  "ap-south-2",
-  "ap-northeast-1",
-  "ap-northeast-2",
-  "ap-northeast-3",
-  "eu-north-1",
-  "sa-east-1",
-  "ca-central-1",
-  "cn-north-1",
-  "cn-northwest-1",
-  "af-south-1",
-  "eu-south-1",
-  "eu-south-2",
-  "ap-southeast-4",
-  "il-central-1",
-  "ca-west-1",
-  "ap-southeast-5",
-  "mx-central-1",
-  "us-isof-south-1",
-  "us-isof-east-1",
-  "ap-southeast-7",
-  "ap-east-2",
-  "eu-isoe-west-1",
-  "ap-southeast-6",
-  "us-isob-west-1",
-  "eusc-de-east-1",
-);
+  | "eusc-de-east-1"
+  | (string & {});
+export const VPCRegion = S.String;
 export type RRType =
   | "SOA"
   | "A"
@@ -574,26 +520,9 @@ export type RRType =
   | "TLSA"
   | "SSHFP"
   | "SVCB"
-  | "HTTPS";
-export const RRType = S.Literal(
-  "SOA",
-  "A",
-  "TXT",
-  "NS",
-  "CNAME",
-  "MX",
-  "NAPTR",
-  "PTR",
-  "SRV",
-  "SPF",
-  "AAAA",
-  "CAA",
-  "DS",
-  "TLSA",
-  "SSHFP",
-  "SVCB",
-  "HTTPS",
-);
+  | "HTTPS"
+  | (string & {});
+export const RRType = S.String;
 export type TagResourceIdList = string[];
 export const TagResourceIdList = S.Array(
   S.String.pipe(T.XmlName("ResourceId")),
@@ -610,17 +539,9 @@ export type HealthCheckRegion =
   | "ap-southeast-1"
   | "ap-southeast-2"
   | "ap-northeast-1"
-  | "sa-east-1";
-export const HealthCheckRegion = S.Literal(
-  "us-east-1",
-  "us-west-1",
-  "us-west-2",
-  "eu-west-1",
-  "ap-southeast-1",
-  "ap-southeast-2",
-  "ap-northeast-1",
-  "sa-east-1",
-);
+  | "sa-east-1"
+  | (string & {});
+export const HealthCheckRegion = S.String;
 export type HealthCheckRegionList = HealthCheckRegion[];
 export const HealthCheckRegionList = S.Array(
   HealthCheckRegion.pipe(T.XmlName("Region")),
@@ -628,23 +549,16 @@ export const HealthCheckRegionList = S.Array(
 export type InsufficientDataHealthStatus =
   | "Healthy"
   | "Unhealthy"
-  | "LastKnownStatus";
-export const InsufficientDataHealthStatus = S.Literal(
-  "Healthy",
-  "Unhealthy",
-  "LastKnownStatus",
-);
+  | "LastKnownStatus"
+  | (string & {});
+export const InsufficientDataHealthStatus = S.String;
 export type ResettableElementName =
   | "FullyQualifiedDomainName"
   | "Regions"
   | "ResourcePath"
-  | "ChildHealthChecks";
-export const ResettableElementName = S.Literal(
-  "FullyQualifiedDomainName",
-  "Regions",
-  "ResourcePath",
-  "ChildHealthChecks",
-);
+  | "ChildHealthChecks"
+  | (string & {});
+export const ResettableElementName = S.String;
 export type ResettableElementNameList = ResettableElementName[];
 export const ResettableElementNameList = S.Array(
   ResettableElementName.pipe(T.XmlName("ResettableElementName")),
@@ -2172,8 +2086,11 @@ export const UpdateTrafficPolicyInstanceRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateTrafficPolicyInstanceRequest",
 }) as any as S.Schema<UpdateTrafficPolicyInstanceRequest>;
-export type CidrCollectionChangeAction = "PUT" | "DELETE_IF_EXISTS";
-export const CidrCollectionChangeAction = S.Literal("PUT", "DELETE_IF_EXISTS");
+export type CidrCollectionChangeAction =
+  | "PUT"
+  | "DELETE_IF_EXISTS"
+  | (string & {});
+export const CidrCollectionChangeAction = S.String;
 export type CidrList = string[];
 export const CidrList = S.Array(S.String.pipe(T.XmlName("Cidr")));
 export type HealthCheckType =
@@ -2184,17 +2101,9 @@ export type HealthCheckType =
   | "TCP"
   | "CALCULATED"
   | "CLOUDWATCH_METRIC"
-  | "RECOVERY_CONTROL";
-export const HealthCheckType = S.Literal(
-  "HTTP",
-  "HTTPS",
-  "HTTP_STR_MATCH",
-  "HTTPS_STR_MATCH",
-  "TCP",
-  "CALCULATED",
-  "CLOUDWATCH_METRIC",
-  "RECOVERY_CONTROL",
-);
+  | "RECOVERY_CONTROL"
+  | (string & {});
+export const HealthCheckType = S.String;
 export type CloudWatchRegion =
   | "us-east-1"
   | "us-east-2"
@@ -2241,55 +2150,9 @@ export type CloudWatchRegion =
   | "eu-isoe-west-1"
   | "ap-southeast-6"
   | "us-isob-west-1"
-  | "eusc-de-east-1";
-export const CloudWatchRegion = S.Literal(
-  "us-east-1",
-  "us-east-2",
-  "us-west-1",
-  "us-west-2",
-  "ca-central-1",
-  "eu-central-1",
-  "eu-central-2",
-  "eu-west-1",
-  "eu-west-2",
-  "eu-west-3",
-  "ap-east-1",
-  "me-south-1",
-  "me-central-1",
-  "ap-south-1",
-  "ap-south-2",
-  "ap-southeast-1",
-  "ap-southeast-2",
-  "ap-southeast-3",
-  "ap-northeast-1",
-  "ap-northeast-2",
-  "ap-northeast-3",
-  "eu-north-1",
-  "sa-east-1",
-  "cn-northwest-1",
-  "cn-north-1",
-  "af-south-1",
-  "eu-south-1",
-  "eu-south-2",
-  "us-gov-west-1",
-  "us-gov-east-1",
-  "us-iso-east-1",
-  "us-iso-west-1",
-  "us-isob-east-1",
-  "ap-southeast-4",
-  "il-central-1",
-  "ca-west-1",
-  "ap-southeast-5",
-  "mx-central-1",
-  "us-isof-south-1",
-  "us-isof-east-1",
-  "ap-southeast-7",
-  "ap-east-2",
-  "eu-isoe-west-1",
-  "ap-southeast-6",
-  "us-isob-west-1",
-  "eusc-de-east-1",
-);
+  | "eusc-de-east-1"
+  | (string & {});
+export const CloudWatchRegion = S.String;
 export interface CidrCollectionChange {
   LocationName: string;
   Action: CidrCollectionChangeAction;
@@ -2470,26 +2333,17 @@ export type ComparisonOperator =
   | "GreaterThanOrEqualToThreshold"
   | "GreaterThanThreshold"
   | "LessThanThreshold"
-  | "LessThanOrEqualToThreshold";
-export const ComparisonOperator = S.Literal(
-  "GreaterThanOrEqualToThreshold",
-  "GreaterThanThreshold",
-  "LessThanThreshold",
-  "LessThanOrEqualToThreshold",
-);
+  | "LessThanOrEqualToThreshold"
+  | (string & {});
+export const ComparisonOperator = S.String;
 export type Statistic =
   | "Average"
   | "Sum"
   | "SampleCount"
   | "Maximum"
-  | "Minimum";
-export const Statistic = S.Literal(
-  "Average",
-  "Sum",
-  "SampleCount",
-  "Maximum",
-  "Minimum",
-);
+  | "Minimum"
+  | (string & {});
+export const Statistic = S.String;
 export interface Dimension {
   Name: string;
   Value: string;
@@ -2559,17 +2413,9 @@ export type AcceleratedRecoveryStatus =
   | "DISABLING"
   | "DISABLE_FAILED"
   | "DISABLED"
-  | "DISABLING_HOSTED_ZONE_LOCKED";
-export const AcceleratedRecoveryStatus = S.Literal(
-  "ENABLING",
-  "ENABLE_FAILED",
-  "ENABLING_HOSTED_ZONE_LOCKED",
-  "ENABLED",
-  "DISABLING",
-  "DISABLE_FAILED",
-  "DISABLED",
-  "DISABLING_HOSTED_ZONE_LOCKED",
-);
+  | "DISABLING_HOSTED_ZONE_LOCKED"
+  | (string & {});
+export const AcceleratedRecoveryStatus = S.String;
 export interface HostedZoneFailureReasons {
   AcceleratedRecovery?: string;
 }
@@ -2740,8 +2586,8 @@ export const TrafficPolicies = S.Array(
 );
 export type RecordData = string[];
 export const RecordData = S.Array(S.String.pipe(T.XmlName("RecordDataEntry")));
-export type ChangeAction = "CREATE" | "DELETE" | "UPSERT";
-export const ChangeAction = S.Literal("CREATE", "DELETE", "UPSERT");
+export type ChangeAction = "CREATE" | "DELETE" | "UPSERT" | (string & {});
+export const ChangeAction = S.String;
 export interface AssociateVPCWithHostedZoneRequest {
   HostedZoneId: string;
   VPC: VPC;
@@ -2899,8 +2745,8 @@ export const CreateVPCAssociationAuthorizationResponse = S.suspend(() =>
 ).annotations({
   identifier: "CreateVPCAssociationAuthorizationResponse",
 }) as any as S.Schema<CreateVPCAssociationAuthorizationResponse>;
-export type ChangeStatus = "PENDING" | "INSYNC";
-export const ChangeStatus = S.Literal("PENDING", "INSYNC");
+export type ChangeStatus = "PENDING" | "INSYNC" | (string & {});
+export const ChangeStatus = S.String;
 export interface ChangeInfo {
   Id: string;
   Status: ChangeStatus;
@@ -3380,48 +3226,9 @@ export type ResourceRecordSetRegion =
   | "us-gov-west-1"
   | "ap-east-2"
   | "ap-southeast-6"
-  | "eusc-de-east-1";
-export const ResourceRecordSetRegion = S.Literal(
-  "us-east-1",
-  "us-east-2",
-  "us-west-1",
-  "us-west-2",
-  "ca-central-1",
-  "eu-west-1",
-  "eu-west-2",
-  "eu-west-3",
-  "eu-central-1",
-  "eu-central-2",
-  "ap-southeast-1",
-  "ap-southeast-2",
-  "ap-southeast-3",
-  "ap-northeast-1",
-  "ap-northeast-2",
-  "ap-northeast-3",
-  "eu-north-1",
-  "sa-east-1",
-  "cn-north-1",
-  "cn-northwest-1",
-  "ap-east-1",
-  "me-south-1",
-  "me-central-1",
-  "ap-south-1",
-  "ap-south-2",
-  "af-south-1",
-  "eu-south-1",
-  "eu-south-2",
-  "ap-southeast-4",
-  "il-central-1",
-  "ca-west-1",
-  "ap-southeast-5",
-  "mx-central-1",
-  "ap-southeast-7",
-  "us-gov-east-1",
-  "us-gov-west-1",
-  "ap-east-2",
-  "ap-southeast-6",
-  "eusc-de-east-1",
-);
+  | "eusc-de-east-1"
+  | (string & {});
+export const ResourceRecordSetRegion = S.String;
 export interface GeoLocation {
   ContinentCode?: string;
   CountryCode?: string;
@@ -3434,8 +3241,8 @@ export const GeoLocation = S.suspend(() =>
     SubdivisionCode: S.optional(S.String),
   }),
 ).annotations({ identifier: "GeoLocation" }) as any as S.Schema<GeoLocation>;
-export type ResourceRecordSetFailover = "PRIMARY" | "SECONDARY";
-export const ResourceRecordSetFailover = S.Literal("PRIMARY", "SECONDARY");
+export type ResourceRecordSetFailover = "PRIMARY" | "SECONDARY" | (string & {});
+export const ResourceRecordSetFailover = S.String;
 export interface ResourceRecord {
   Value: string;
 }

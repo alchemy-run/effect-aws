@@ -94,22 +94,22 @@ export type AvailabilityZoneList = string[];
 export const AvailabilityZoneList = S.Array(S.String);
 export type SecurityGroupIdentifierList = string[];
 export const SecurityGroupIdentifierList = S.Array(S.String);
-export type ClusterEndpointEncryptionType = "NONE" | "TLS";
-export const ClusterEndpointEncryptionType = S.Literal("NONE", "TLS");
-export type NetworkType = "ipv4" | "ipv6" | "dual_stack";
-export const NetworkType = S.Literal("ipv4", "ipv6", "dual_stack");
+export type ClusterEndpointEncryptionType = "NONE" | "TLS" | (string & {});
+export const ClusterEndpointEncryptionType = S.String;
+export type NetworkType = "ipv4" | "ipv6" | "dual_stack" | (string & {});
+export const NetworkType = S.String;
 export type SubnetIdentifierList = string[];
 export const SubnetIdentifierList = S.Array(S.String);
 export type NodeIdentifierList = string[];
 export const NodeIdentifierList = S.Array(S.String);
 export type ClusterNameList = string[];
 export const ClusterNameList = S.Array(S.String);
-export type SourceType = "CLUSTER" | "PARAMETER_GROUP" | "SUBNET_GROUP";
-export const SourceType = S.Literal(
-  "CLUSTER",
-  "PARAMETER_GROUP",
-  "SUBNET_GROUP",
-);
+export type SourceType =
+  | "CLUSTER"
+  | "PARAMETER_GROUP"
+  | "SUBNET_GROUP"
+  | (string & {});
+export const SourceType = S.String;
 export type ParameterGroupNameList = string[];
 export const ParameterGroupNameList = S.Array(S.String);
 export type SubnetGroupNameList = string[];
@@ -639,13 +639,13 @@ export const ParameterGroupStatus = S.suspend(() =>
 ).annotations({
   identifier: "ParameterGroupStatus",
 }) as any as S.Schema<ParameterGroupStatus>;
-export type SSEStatus = "ENABLING" | "ENABLED" | "DISABLING" | "DISABLED";
-export const SSEStatus = S.Literal(
-  "ENABLING",
-  "ENABLED",
-  "DISABLING",
-  "DISABLED",
-);
+export type SSEStatus =
+  | "ENABLING"
+  | "ENABLED"
+  | "DISABLING"
+  | "DISABLED"
+  | (string & {});
+export const SSEStatus = S.String;
 export interface SSEDescription {
   Status?: SSEStatus;
 }
@@ -858,8 +858,8 @@ export const DescribeParameterGroupsResponse = S.suspend(() =>
 ).annotations({
   identifier: "DescribeParameterGroupsResponse",
 }) as any as S.Schema<DescribeParameterGroupsResponse>;
-export type ParameterType = "DEFAULT" | "NODE_TYPE_SPECIFIC";
-export const ParameterType = S.Literal("DEFAULT", "NODE_TYPE_SPECIFIC");
+export type ParameterType = "DEFAULT" | "NODE_TYPE_SPECIFIC" | (string & {});
+export const ParameterType = S.String;
 export interface NodeTypeSpecificValue {
   NodeType?: string;
   Value?: string;
@@ -871,10 +871,10 @@ export const NodeTypeSpecificValue = S.suspend(() =>
 }) as any as S.Schema<NodeTypeSpecificValue>;
 export type NodeTypeSpecificValueList = NodeTypeSpecificValue[];
 export const NodeTypeSpecificValueList = S.Array(NodeTypeSpecificValue);
-export type IsModifiable = "TRUE" | "FALSE" | "CONDITIONAL";
-export const IsModifiable = S.Literal("TRUE", "FALSE", "CONDITIONAL");
-export type ChangeType = "IMMEDIATE" | "REQUIRES_REBOOT";
-export const ChangeType = S.Literal("IMMEDIATE", "REQUIRES_REBOOT");
+export type IsModifiable = "TRUE" | "FALSE" | "CONDITIONAL" | (string & {});
+export const IsModifiable = S.String;
+export type ChangeType = "IMMEDIATE" | "REQUIRES_REBOOT" | (string & {});
+export const ChangeType = S.String;
 export interface Parameter {
   ParameterName?: string;
   ParameterType?: ParameterType;

@@ -130,60 +130,54 @@ export type __stringMin1Max64 = string;
 export type __stringMin1Max16 = string;
 
 //# Schemas
-export type IpAddressType = "ipv4" | "dualstack";
-export const IpAddressType = S.Literal("ipv4", "dualstack");
-export type ProtocolType = "WEBSOCKET" | "HTTP";
-export const ProtocolType = S.Literal("WEBSOCKET", "HTTP");
-export type AuthorizerType = "REQUEST" | "JWT";
-export const AuthorizerType = S.Literal("REQUEST", "JWT");
+export type IpAddressType = "ipv4" | "dualstack" | (string & {});
+export const IpAddressType = S.String;
+export type ProtocolType = "WEBSOCKET" | "HTTP" | (string & {});
+export const ProtocolType = S.String;
+export type AuthorizerType = "REQUEST" | "JWT" | (string & {});
+export const AuthorizerType = S.String;
 export type IdentitySourceList = string[];
 export const IdentitySourceList = S.Array(S.String);
 export type RoutingMode =
   | "API_MAPPING_ONLY"
   | "ROUTING_RULE_ONLY"
-  | "ROUTING_RULE_THEN_API_MAPPING";
-export const RoutingMode = S.Literal(
-  "API_MAPPING_ONLY",
-  "ROUTING_RULE_ONLY",
-  "ROUTING_RULE_THEN_API_MAPPING",
-);
-export type ConnectionType = "INTERNET" | "VPC_LINK";
-export const ConnectionType = S.Literal("INTERNET", "VPC_LINK");
-export type ContentHandlingStrategy = "CONVERT_TO_BINARY" | "CONVERT_TO_TEXT";
-export const ContentHandlingStrategy = S.Literal(
-  "CONVERT_TO_BINARY",
-  "CONVERT_TO_TEXT",
-);
+  | "ROUTING_RULE_THEN_API_MAPPING"
+  | (string & {});
+export const RoutingMode = S.String;
+export type ConnectionType = "INTERNET" | "VPC_LINK" | (string & {});
+export const ConnectionType = S.String;
+export type ContentHandlingStrategy =
+  | "CONVERT_TO_BINARY"
+  | "CONVERT_TO_TEXT"
+  | (string & {});
+export const ContentHandlingStrategy = S.String;
 export type IntegrationType =
   | "AWS"
   | "HTTP"
   | "MOCK"
   | "HTTP_PROXY"
-  | "AWS_PROXY";
-export const IntegrationType = S.Literal(
-  "AWS",
-  "HTTP",
-  "MOCK",
-  "HTTP_PROXY",
-  "AWS_PROXY",
-);
+  | "AWS_PROXY"
+  | (string & {});
+export const IntegrationType = S.String;
 export type PassthroughBehavior =
   | "WHEN_NO_MATCH"
   | "NEVER"
-  | "WHEN_NO_TEMPLATES";
-export const PassthroughBehavior = S.Literal(
-  "WHEN_NO_MATCH",
-  "NEVER",
-  "WHEN_NO_TEMPLATES",
-);
+  | "WHEN_NO_TEMPLATES"
+  | (string & {});
+export const PassthroughBehavior = S.String;
 export type __listOf__stringMin20Max2048 = string[];
 export const __listOf__stringMin20Max2048 = S.Array(S.String);
-export type TryItState = "ENABLED" | "DISABLED";
-export const TryItState = S.Literal("ENABLED", "DISABLED");
+export type TryItState = "ENABLED" | "DISABLED" | (string & {});
+export const TryItState = S.String;
 export type AuthorizationScopes = string[];
 export const AuthorizationScopes = S.Array(S.String);
-export type AuthorizationType = "NONE" | "AWS_IAM" | "CUSTOM" | "JWT";
-export const AuthorizationType = S.Literal("NONE", "AWS_IAM", "CUSTOM", "JWT");
+export type AuthorizationType =
+  | "NONE"
+  | "AWS_IAM"
+  | "CUSTOM"
+  | "JWT"
+  | (string & {});
+export const AuthorizationType = S.String;
 export type SecurityGroupIdList = string[];
 export const SecurityGroupIdList = S.Array(S.String);
 export type SubnetIdList = string[];
@@ -2497,17 +2491,13 @@ export type DomainNameStatus =
   | "AVAILABLE"
   | "UPDATING"
   | "PENDING_CERTIFICATE_REIMPORT"
-  | "PENDING_OWNERSHIP_VERIFICATION";
-export const DomainNameStatus = S.Literal(
-  "AVAILABLE",
-  "UPDATING",
-  "PENDING_CERTIFICATE_REIMPORT",
-  "PENDING_OWNERSHIP_VERIFICATION",
-);
-export type EndpointType = "REGIONAL" | "EDGE";
-export const EndpointType = S.Literal("REGIONAL", "EDGE");
-export type SecurityPolicy = "TLS_1_0" | "TLS_1_2";
-export const SecurityPolicy = S.Literal("TLS_1_0", "TLS_1_2");
+  | "PENDING_OWNERSHIP_VERIFICATION"
+  | (string & {});
+export const DomainNameStatus = S.String;
+export type EndpointType = "REGIONAL" | "EDGE" | (string & {});
+export const EndpointType = S.String;
+export type SecurityPolicy = "TLS_1_0" | "TLS_1_2" | (string & {});
+export const SecurityPolicy = S.String;
 export interface DomainNameConfiguration {
   ApiGatewayDomainName?: string;
   CertificateArn?: string;
@@ -3129,8 +3119,8 @@ export const AccessLogSettings = S.suspend(() =>
 ).annotations({
   identifier: "AccessLogSettings",
 }) as any as S.Schema<AccessLogSettings>;
-export type LoggingLevel = "ERROR" | "INFO" | "OFF";
-export const LoggingLevel = S.Literal("ERROR", "INFO", "OFF");
+export type LoggingLevel = "ERROR" | "INFO" | "OFF" | (string & {});
+export const LoggingLevel = S.String;
 export interface RouteSettings {
   DataTraceEnabled?: boolean;
   DetailedMetricsEnabled?: boolean;
@@ -3235,36 +3225,31 @@ export const UpdateVpcLinkRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateVpcLinkRequest",
 }) as any as S.Schema<UpdateVpcLinkRequest>;
-export type DeploymentStatus = "PENDING" | "FAILED" | "DEPLOYED";
-export const DeploymentStatus = S.Literal("PENDING", "FAILED", "DEPLOYED");
+export type DeploymentStatus =
+  | "PENDING"
+  | "FAILED"
+  | "DEPLOYED"
+  | (string & {});
+export const DeploymentStatus = S.String;
 export type VpcLinkStatus =
   | "PENDING"
   | "AVAILABLE"
   | "DELETING"
   | "FAILED"
-  | "INACTIVE";
-export const VpcLinkStatus = S.Literal(
-  "PENDING",
-  "AVAILABLE",
-  "DELETING",
-  "FAILED",
-  "INACTIVE",
-);
-export type VpcLinkVersion = "V2";
-export const VpcLinkVersion = S.Literal("V2");
+  | "INACTIVE"
+  | (string & {});
+export const VpcLinkStatus = S.String;
+export type VpcLinkVersion = "V2" | (string & {});
+export const VpcLinkVersion = S.String;
 export type PublishStatus =
   | "PUBLISHED"
   | "PUBLISH_IN_PROGRESS"
   | "PUBLISH_FAILED"
-  | "DISABLED";
-export const PublishStatus = S.Literal(
-  "PUBLISHED",
-  "PUBLISH_IN_PROGRESS",
-  "PUBLISH_FAILED",
-  "DISABLED",
-);
-export type Status = "AVAILABLE" | "IN_PROGRESS" | "FAILED";
-export const Status = S.Literal("AVAILABLE", "IN_PROGRESS", "FAILED");
+  | "DISABLED"
+  | (string & {});
+export const PublishStatus = S.String;
+export type Status = "AVAILABLE" | "IN_PROGRESS" | "FAILED" | (string & {});
+export const Status = S.String;
 export interface CreateApiRequest {
   ApiKeySelectionExpression?: string;
   CorsConfiguration?: Cors;
@@ -4736,12 +4721,9 @@ export const EndpointConfigurationResponse = S.suspend(() =>
 export type PreviewStatus =
   | "PREVIEW_IN_PROGRESS"
   | "PREVIEW_FAILED"
-  | "PREVIEW_READY";
-export const PreviewStatus = S.Literal(
-  "PREVIEW_IN_PROGRESS",
-  "PREVIEW_FAILED",
-  "PREVIEW_READY",
-);
+  | "PREVIEW_READY"
+  | (string & {});
+export const PreviewStatus = S.String;
 export interface StatusException {
   Exception?: string;
   Message?: string;

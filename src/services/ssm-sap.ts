@@ -112,32 +112,27 @@ export type RuleResultMetadataKey = string;
 export type RuleResultMetadataValue = string;
 
 //# Schemas
-export type PermissionActionType = "RESTORE";
-export const PermissionActionType = S.Literal("RESTORE");
+export type PermissionActionType = "RESTORE" | (string & {});
+export const PermissionActionType = S.String;
 export type ConfigurationCheckOperationListingMode =
   | "ALL_OPERATIONS"
-  | "LATEST_PER_CHECK";
-export const ConfigurationCheckOperationListingMode = S.Literal(
-  "ALL_OPERATIONS",
-  "LATEST_PER_CHECK",
-);
-export type ApplicationType = "HANA" | "SAP_ABAP";
-export const ApplicationType = S.Literal("HANA", "SAP_ABAP");
+  | "LATEST_PER_CHECK"
+  | (string & {});
+export const ConfigurationCheckOperationListingMode = S.String;
+export type ApplicationType = "HANA" | "SAP_ABAP" | (string & {});
+export const ApplicationType = S.String;
 export type InstanceList = string[];
 export const InstanceList = S.Array(S.String);
 export type ConfigurationCheckType =
   | "SAP_CHECK_01"
   | "SAP_CHECK_02"
-  | "SAP_CHECK_03";
-export const ConfigurationCheckType = S.Literal(
-  "SAP_CHECK_01",
-  "SAP_CHECK_02",
-  "SAP_CHECK_03",
-);
+  | "SAP_CHECK_03"
+  | (string & {});
+export const ConfigurationCheckType = S.String;
 export type ConfigurationCheckTypeList = ConfigurationCheckType[];
 export const ConfigurationCheckTypeList = S.Array(ConfigurationCheckType);
-export type ConnectedEntityType = "DBMS";
-export const ConnectedEntityType = S.Literal("DBMS");
+export type ConnectedEntityType = "DBMS" | (string & {});
+export const ConnectedEntityType = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export interface DeleteResourcePermissionInput {
@@ -354,12 +349,9 @@ export const ListConfigurationCheckDefinitionsInput = S.suspend(() =>
 export type FilterOperator =
   | "Equals"
   | "GreaterThanOrEquals"
-  | "LessThanOrEquals";
-export const FilterOperator = S.Literal(
-  "Equals",
-  "GreaterThanOrEquals",
-  "LessThanOrEquals",
-);
+  | "LessThanOrEquals"
+  | (string & {});
+export const FilterOperator = S.String;
 export interface Filter {
   Name: string;
   Value: string;
@@ -691,8 +683,8 @@ export interface UntagResourceResponse {}
 export const UntagResourceResponse = S.suspend(() => S.Struct({})).annotations({
   identifier: "UntagResourceResponse",
 }) as any as S.Schema<UntagResourceResponse>;
-export type CredentialType = "ADMIN";
-export const CredentialType = S.Literal("ADMIN");
+export type CredentialType = "ADMIN" | (string & {});
+export const CredentialType = S.String;
 export type ComponentType =
   | "HANA"
   | "HANA_NODE"
@@ -701,21 +693,17 @@ export type ComponentType =
   | "DIALOG"
   | "WEBDISP"
   | "WD"
-  | "ERS";
-export const ComponentType = S.Literal(
-  "HANA",
-  "HANA_NODE",
-  "ABAP",
-  "ASCS",
-  "DIALOG",
-  "WEBDISP",
-  "WD",
-  "ERS",
-);
-export type BackintMode = "AWSBackup";
-export const BackintMode = S.Literal("AWSBackup");
-export type OperationStatus = "INPROGRESS" | "SUCCESS" | "ERROR";
-export const OperationStatus = S.Literal("INPROGRESS", "SUCCESS", "ERROR");
+  | "ERS"
+  | (string & {});
+export const ComponentType = S.String;
+export type BackintMode = "AWSBackup" | (string & {});
+export const BackintMode = S.String;
+export type OperationStatus =
+  | "INPROGRESS"
+  | "SUCCESS"
+  | "ERROR"
+  | (string & {});
+export const OperationStatus = S.String;
 export interface RuleStatusCounts {
   Failed?: number;
   Warning?: number;
@@ -1027,30 +1015,17 @@ export type ApplicationStatus =
   | "FAILED"
   | "REGISTERING"
   | "DELETING"
-  | "UNKNOWN";
-export const ApplicationStatus = S.Literal(
-  "ACTIVATED",
-  "STARTING",
-  "STOPPED",
-  "STOPPING",
-  "FAILED",
-  "REGISTERING",
-  "DELETING",
-  "UNKNOWN",
-);
+  | "UNKNOWN"
+  | (string & {});
+export const ApplicationStatus = S.String;
 export type ApplicationDiscoveryStatus =
   | "SUCCESS"
   | "REGISTRATION_FAILED"
   | "REFRESH_FAILED"
   | "REGISTERING"
-  | "DELETING";
-export const ApplicationDiscoveryStatus = S.Literal(
-  "SUCCESS",
-  "REGISTRATION_FAILED",
-  "REFRESH_FAILED",
-  "REGISTERING",
-  "DELETING",
-);
+  | "DELETING"
+  | (string & {});
+export const ApplicationDiscoveryStatus = S.String;
 export type ComponentIdList = string[];
 export const ComponentIdList = S.Array(S.String);
 export type ApplicationArnList = string[];
@@ -1062,20 +1037,13 @@ export type ComponentStatus =
   | "STOPPING"
   | "RUNNING"
   | "RUNNING_WITH_ERROR"
-  | "UNDEFINED";
-export const ComponentStatus = S.Literal(
-  "ACTIVATED",
-  "STARTING",
-  "STOPPED",
-  "STOPPING",
-  "RUNNING",
-  "RUNNING_WITH_ERROR",
-  "UNDEFINED",
-);
+  | "UNDEFINED"
+  | (string & {});
+export const ComponentStatus = S.String;
 export type DatabaseIdList = string[];
 export const DatabaseIdList = S.Array(S.String);
-export type DatabaseType = "SYSTEM" | "TENANT";
-export const DatabaseType = S.Literal("SYSTEM", "TENANT");
+export type DatabaseType = "SYSTEM" | "TENANT" | (string & {});
+export const DatabaseType = S.String;
 export type DatabaseStatus =
   | "RUNNING"
   | "STARTING"
@@ -1083,26 +1051,19 @@ export type DatabaseStatus =
   | "WARNING"
   | "UNKNOWN"
   | "ERROR"
-  | "STOPPING";
-export const DatabaseStatus = S.Literal(
-  "RUNNING",
-  "STARTING",
-  "STOPPED",
-  "WARNING",
-  "UNKNOWN",
-  "ERROR",
-  "STOPPING",
-);
+  | "STOPPING"
+  | (string & {});
+export const DatabaseStatus = S.String;
 export type ComponentArnList = string[];
 export const ComponentArnList = S.Array(S.String);
 export type ApplicationTypeList = ApplicationType[];
 export const ApplicationTypeList = S.Array(ApplicationType);
-export type OperationEventStatus = "IN_PROGRESS" | "COMPLETED" | "FAILED";
-export const OperationEventStatus = S.Literal(
-  "IN_PROGRESS",
-  "COMPLETED",
-  "FAILED",
-);
+export type OperationEventStatus =
+  | "IN_PROGRESS"
+  | "COMPLETED"
+  | "FAILED"
+  | (string & {});
+export const OperationEventStatus = S.String;
 export type SubCheckReferencesList = string[];
 export const SubCheckReferencesList = S.Array(S.String);
 export type RuleResultStatus =
@@ -1110,14 +1071,9 @@ export type RuleResultStatus =
   | "FAILED"
   | "WARNING"
   | "INFO"
-  | "UNKNOWN";
-export const RuleResultStatus = S.Literal(
-  "PASSED",
-  "FAILED",
-  "WARNING",
-  "INFO",
-  "UNKNOWN",
-);
+  | "UNKNOWN"
+  | (string & {});
+export const RuleResultStatus = S.String;
 export interface Application {
   Id?: string;
   Type?: ApplicationType;
@@ -1256,44 +1212,39 @@ export type SubCheckResultList = SubCheckResult[];
 export const SubCheckResultList = S.Array(SubCheckResult);
 export type OperationIdList = string[];
 export const OperationIdList = S.Array(S.String);
-export type ReplicationMode = "PRIMARY" | "NONE" | "SYNC" | "SYNCMEM" | "ASYNC";
-export const ReplicationMode = S.Literal(
-  "PRIMARY",
-  "NONE",
-  "SYNC",
-  "SYNCMEM",
-  "ASYNC",
-);
+export type ReplicationMode =
+  | "PRIMARY"
+  | "NONE"
+  | "SYNC"
+  | "SYNCMEM"
+  | "ASYNC"
+  | (string & {});
+export const ReplicationMode = S.String;
 export type OperationMode =
   | "PRIMARY"
   | "LOGREPLAY"
   | "DELTA_DATASHIPPING"
   | "LOGREPLAY_READACCESS"
-  | "NONE";
-export const OperationMode = S.Literal(
-  "PRIMARY",
-  "LOGREPLAY",
-  "DELTA_DATASHIPPING",
-  "LOGREPLAY_READACCESS",
-  "NONE",
-);
+  | "NONE"
+  | (string & {});
+export const OperationMode = S.String;
 export type ClusterStatus =
   | "ONLINE"
   | "STANDBY"
   | "MAINTENANCE"
   | "OFFLINE"
-  | "NONE";
-export const ClusterStatus = S.Literal(
-  "ONLINE",
-  "STANDBY",
-  "MAINTENANCE",
-  "OFFLINE",
-  "NONE",
-);
-export type HostRole = "LEADER" | "WORKER" | "STANDBY" | "UNKNOWN";
-export const HostRole = S.Literal("LEADER", "WORKER", "STANDBY", "UNKNOWN");
-export type DatabaseConnectionMethod = "DIRECT" | "OVERLAY";
-export const DatabaseConnectionMethod = S.Literal("DIRECT", "OVERLAY");
+  | "NONE"
+  | (string & {});
+export const ClusterStatus = S.String;
+export type HostRole =
+  | "LEADER"
+  | "WORKER"
+  | "STANDBY"
+  | "UNKNOWN"
+  | (string & {});
+export const HostRole = S.String;
+export type DatabaseConnectionMethod = "DIRECT" | "OVERLAY" | (string & {});
+export const DatabaseConnectionMethod = S.String;
 export interface GetApplicationOutput {
   Application?: Application;
   Tags?: { [key: string]: string | undefined };
@@ -1453,13 +1404,9 @@ export type AllocationType =
   | "VPC_SUBNET"
   | "ELASTIC_IP"
   | "OVERLAY"
-  | "UNKNOWN";
-export const AllocationType = S.Literal(
-  "VPC_SUBNET",
-  "ELASTIC_IP",
-  "OVERLAY",
-  "UNKNOWN",
-);
+  | "UNKNOWN"
+  | (string & {});
+export const AllocationType = S.String;
 export interface ApplicationSummary {
   Id?: string;
   DiscoveryStatus?: ApplicationDiscoveryStatus;

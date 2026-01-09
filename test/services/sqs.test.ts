@@ -127,10 +127,10 @@ test(
       }).pipe(Effect.retry(retryQueueNotExist));
       expect(getUrlResult.QueueUrl).toEqual(queueUrl);
 
-      // List queues and verify our queue is in the list
+      // List queues and verify our queue is in the list (retry for eventual consistency)
       const listResult = yield* listQueues({
         QueueNamePrefix: "itty-sqs-lifecycle",
-      });
+      }).pipe(Effect.retry(retryQueueNotExist));
       const foundQueue = listResult.QueueUrls?.find((url) =>
         url.includes("itty-sqs-lifecycle"),
       );
@@ -167,7 +167,7 @@ test(
             "DelaySeconds",
             "ApproximateNumberOfMessages",
           ],
-        });
+        }).pipe(Effect.retry(retryQueueNotExist));
 
         // Check if attributes are updated yet
         if (attrs.Attributes?.VisibilityTimeout !== "60") {
@@ -208,31 +208,37 @@ test(
         },
       }).pipe(Effect.retry(retryQueueNotExist));
 
-      // List tags
-      const tagsResult = yield* listQueueTags({ QueueUrl: queueUrl });
+      // List tags (retry for eventual consistency)
+      const tagsResult = yield* listQueueTags({ QueueUrl: queueUrl }).pipe(
+        Effect.retry(retryQueueNotExist),
+      );
       expect(tagsResult.Tags?.Environment).toEqual("Test");
       expect(tagsResult.Tags?.Project).toEqual("itty-aws");
 
-      // Update a tag
+      // Update a tag (retry for eventual consistency)
       yield* tagQueue({
         QueueUrl: queueUrl,
         Tags: {
           Environment: "Production",
         },
-      });
+      }).pipe(Effect.retry(retryQueueNotExist));
 
-      // Verify update
-      const updatedTags = yield* listQueueTags({ QueueUrl: queueUrl });
+      // Verify update (retry for eventual consistency)
+      const updatedTags = yield* listQueueTags({ QueueUrl: queueUrl }).pipe(
+        Effect.retry(retryQueueNotExist),
+      );
       expect(updatedTags.Tags?.Environment).toEqual("Production");
 
-      // Remove a tag
+      // Remove a tag (retry for eventual consistency)
       yield* untagQueue({
         QueueUrl: queueUrl,
         TagKeys: ["Project"],
-      });
+      }).pipe(Effect.retry(retryQueueNotExist));
 
-      // Verify tag removal
-      const finalTags = yield* listQueueTags({ QueueUrl: queueUrl });
+      // Verify tag removal (retry for eventual consistency)
+      const finalTags = yield* listQueueTags({ QueueUrl: queueUrl }).pipe(
+        Effect.retry(retryQueueNotExist),
+      );
       expect(finalTags.Tags?.Project).toBeUndefined();
       expect(finalTags.Tags?.Environment).toEqual("Production");
     }),
@@ -258,12 +264,12 @@ test(
       expect(sendResult.MessageId).toBeDefined();
       expect(sendResult.MD5OfMessageBody).toBeDefined();
 
-      // Receive message
+      // Receive message (retry for eventual consistency)
       const receiveResult = yield* receiveMessage({
         QueueUrl: queueUrl,
         MaxNumberOfMessages: 1,
         WaitTimeSeconds: 5,
-      });
+      }).pipe(Effect.retry(retryQueueNotExist));
 
       expect(receiveResult.Messages).toBeDefined();
       expect(receiveResult.Messages!.length).toBeGreaterThan(0);
@@ -272,18 +278,18 @@ test(
       expect(message.Body).toEqual(messageBody);
       expect(message.ReceiptHandle).toBeDefined();
 
-      // Delete the message
+      // Delete the message (retry for eventual consistency)
       yield* deleteMessage({
         QueueUrl: queueUrl,
         ReceiptHandle: message.ReceiptHandle!,
-      });
+      }).pipe(Effect.retry(retryQueueNotExist));
 
       // Verify message is deleted (receive should return empty)
       const receiveAfterDelete = yield* receiveMessage({
         QueueUrl: queueUrl,
         MaxNumberOfMessages: 1,
         WaitTimeSeconds: 1,
-      });
+      }).pipe(Effect.retry(retryQueueNotExist));
 
       expect(
         receiveAfterDelete.Messages === undefined ||
@@ -311,7 +317,7 @@ test(
         QueueUrl: queueUrl,
         MaxNumberOfMessages: 1,
         WaitTimeSeconds: 0,
-      });
+      }).pipe(Effect.retry(retryQueueNotExist));
 
       // Message should not be immediately available due to delay
       // (though timing might vary in LocalStack)
@@ -328,7 +334,7 @@ test(
         QueueUrl: queueUrl,
         MaxNumberOfMessages: 1,
         WaitTimeSeconds: 5,
-      });
+      }).pipe(Effect.retry(retryQueueNotExist));
 
       expect(delayedReceive.Messages).toBeDefined();
       expect(delayedReceive.Messages!.length).toBeGreaterThan(0);
@@ -359,13 +365,13 @@ test(
         },
       }).pipe(Effect.retry(retryQueueNotExist));
 
-      // Receive message with attributes
+      // Receive message with attributes (retry for eventual consistency)
       const receiveResult = yield* receiveMessage({
         QueueUrl: queueUrl,
         MaxNumberOfMessages: 1,
         WaitTimeSeconds: 5,
         MessageAttributeNames: ["All"],
-      });
+      }).pipe(Effect.retry(retryQueueNotExist));
 
       expect(receiveResult.Messages).toBeDefined();
       expect(receiveResult.Messages!.length).toBeGreaterThan(0);
@@ -417,32 +423,32 @@ test(
         MessageBody: messageBody,
       }).pipe(Effect.retry(retryQueueNotExist));
 
-      // Receive message
+      // Receive message (retry for eventual consistency)
       const receiveResult = yield* receiveMessage({
         QueueUrl: queueUrl,
         MaxNumberOfMessages: 1,
         WaitTimeSeconds: 5,
         VisibilityTimeout: 30, // Set initial visibility timeout
-      });
+      }).pipe(Effect.retry(retryQueueNotExist));
 
       expect(receiveResult.Messages).toBeDefined();
       expect(receiveResult.Messages!.length).toBeGreaterThan(0);
 
       const message = receiveResult.Messages![0];
 
-      // Change visibility timeout
+      // Change visibility timeout (retry for eventual consistency)
       yield* changeMessageVisibility({
         QueueUrl: queueUrl,
         ReceiptHandle: message.ReceiptHandle!,
         VisibilityTimeout: 60, // Extend to 60 seconds
-      });
+      }).pipe(Effect.retry(retryQueueNotExist));
 
       // Message should still not be visible (extended timeout)
       const immediateReceive = yield* receiveMessage({
         QueueUrl: queueUrl,
         MaxNumberOfMessages: 1,
         WaitTimeSeconds: 1,
-      });
+      }).pipe(Effect.retry(retryQueueNotExist));
 
       // Should not receive the same message due to visibility timeout
       const sameMessageReceived = Boolean(
@@ -488,7 +494,7 @@ test(
           QueueUrl: queueUrl,
           MaxNumberOfMessages: 10,
           WaitTimeSeconds: 3,
-        });
+        }).pipe(Effect.retry(retryQueueNotExist));
 
         if (receiveResult.Messages) {
           allMessages.push(...receiveResult.Messages);
@@ -509,7 +515,7 @@ test(
         yield* deleteMessage({
           QueueUrl: queueUrl,
           ReceiptHandle: msg.ReceiptHandle!,
-        });
+        }).pipe(Effect.retry(retryQueueNotExist));
       }
 
       // Verify queue is empty
@@ -517,7 +523,7 @@ test(
         QueueUrl: queueUrl,
         MaxNumberOfMessages: 10,
         WaitTimeSeconds: 1,
-      });
+      }).pipe(Effect.retry(retryQueueNotExist));
 
       expect(
         finalReceive.Messages === undefined ||
@@ -549,8 +555,10 @@ test(
         MessageBody: "Purge me 3",
       });
 
-      // Purge the queue
-      yield* purgeQueue({ QueueUrl: queueUrl });
+      // Purge the queue (retry for eventual consistency)
+      yield* purgeQueue({ QueueUrl: queueUrl }).pipe(
+        Effect.retry(retryQueueNotExist),
+      );
 
       // Wait a moment for purge to take effect
       yield* Effect.sleep("2 seconds");
@@ -560,7 +568,7 @@ test(
         QueueUrl: queueUrl,
         MaxNumberOfMessages: 10,
         WaitTimeSeconds: 1,
-      });
+      }).pipe(Effect.retry(retryQueueNotExist));
 
       expect(
         receiveResult.Messages === undefined ||
@@ -598,26 +606,26 @@ test(
         MessageGroupId: "group1",
       });
 
-      // Receive messages - should be in order
+      // Receive messages - should be in order (retry for eventual consistency)
       const receiveResult1 = yield* receiveMessage({
         QueueUrl: queueUrl,
         MaxNumberOfMessages: 1,
         WaitTimeSeconds: 5,
-      });
+      }).pipe(Effect.retry(retryQueueNotExist));
 
       expect(receiveResult1.Messages?.[0]?.Body).toEqual("FIFO Message 1");
 
-      // Delete first message before receiving next
+      // Delete first message before receiving next (retry for eventual consistency)
       yield* deleteMessage({
         QueueUrl: queueUrl,
         ReceiptHandle: receiveResult1.Messages![0].ReceiptHandle!,
-      });
+      }).pipe(Effect.retry(retryQueueNotExist));
 
       const receiveResult2 = yield* receiveMessage({
         QueueUrl: queueUrl,
         MaxNumberOfMessages: 1,
         WaitTimeSeconds: 5,
-      });
+      }).pipe(Effect.retry(retryQueueNotExist));
 
       expect(receiveResult2.Messages?.[0]?.Body).toEqual("FIFO Message 2");
 
@@ -653,12 +661,12 @@ test(
         MessageGroupId: "groupA",
       });
 
-      // Receive all messages (up to 10)
+      // Receive all messages (up to 10) - retry for eventual consistency
       const receiveResult = yield* receiveMessage({
         QueueUrl: queueUrl,
         MaxNumberOfMessages: 10,
         WaitTimeSeconds: 5,
-      });
+      }).pipe(Effect.retry(retryQueueNotExist));
 
       expect(receiveResult.Messages).toBeDefined();
       expect(receiveResult.Messages!.length).toEqual(3);
@@ -691,12 +699,12 @@ test(
         MessageBody: "Long poll test",
       }).pipe(Effect.retry(retryQueueNotExist));
 
-      // Long poll should find the message
+      // Long poll should find the message (retry for eventual consistency)
       const receiveResult = yield* receiveMessage({
         QueueUrl: queueUrl,
         MaxNumberOfMessages: 1,
         WaitTimeSeconds: 5,
-      });
+      }).pipe(Effect.retry(retryQueueNotExist));
 
       expect(receiveResult.Messages).toBeDefined();
       expect(receiveResult.Messages!.length).toBeGreaterThan(0);
@@ -706,13 +714,13 @@ test(
       yield* deleteMessage({
         QueueUrl: queueUrl,
         ReceiptHandle: receiveResult.Messages![0].ReceiptHandle!,
-      });
+      }).pipe(Effect.retry(retryQueueNotExist));
 
       const emptyReceive = yield* receiveMessage({
         QueueUrl: queueUrl,
         MaxNumberOfMessages: 1,
         WaitTimeSeconds: 1,
-      });
+      }).pipe(Effect.retry(retryQueueNotExist));
 
       // Should return empty since no messages
       expect(
@@ -737,13 +745,13 @@ test(
         MessageBody: "System attributes test",
       }).pipe(Effect.retry(retryQueueNotExist));
 
-      // Receive with all system attributes
+      // Receive with all system attributes (retry for eventual consistency)
       const receiveResult = yield* receiveMessage({
         QueueUrl: queueUrl,
         MaxNumberOfMessages: 1,
         WaitTimeSeconds: 5,
         MessageSystemAttributeNames: ["All"],
-      });
+      }).pipe(Effect.retry(retryQueueNotExist));
 
       expect(receiveResult.Messages).toBeDefined();
       expect(receiveResult.Messages!.length).toBeGreaterThan(0);

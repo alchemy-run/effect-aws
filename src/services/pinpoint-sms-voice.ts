@@ -247,16 +247,9 @@ export type EventType =
   | "COMPLETED_CALL"
   | "BUSY"
   | "FAILED"
-  | "NO_ANSWER";
-export const EventType = S.Literal(
-  "INITIATED_CALL",
-  "RINGING",
-  "ANSWERED",
-  "COMPLETED_CALL",
-  "BUSY",
-  "FAILED",
-  "NO_ANSWER",
-);
+  | "NO_ANSWER"
+  | (string & {});
+export const EventType = S.String;
 export type EventTypes = EventType[];
 export const EventTypes = S.Array(EventType);
 export interface SnsDestination {

@@ -177,8 +177,12 @@ export const VpcSecurityGroupIdList = S.Array(
 );
 export type IamRoleArnList = string[];
 export const IamRoleArnList = S.Array(S.String.pipe(T.XmlName("IamRoleArn")));
-export type AquaConfigurationStatus = "enabled" | "disabled" | "auto";
-export const AquaConfigurationStatus = S.Literal("enabled", "disabled", "auto");
+export type AquaConfigurationStatus =
+  | "enabled"
+  | "disabled"
+  | "auto"
+  | (string & {});
+export const AquaConfigurationStatus = S.String;
 export type SubnetIdentifierList = string[];
 export const SubnetIdentifierList = S.Array(
   S.String.pipe(T.XmlName("SubnetIdentifier")),
@@ -189,8 +193,8 @@ export type EventCategoriesList = string[];
 export const EventCategoriesList = S.Array(
   S.String.pipe(T.XmlName("EventCategory")),
 );
-export type ApplicationType = "None" | "Lakehouse";
-export const ApplicationType = S.Literal("None", "Lakehouse");
+export type ApplicationType = "None" | "Lakehouse" | (string & {});
+export const ApplicationType = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String.pipe(T.XmlName("TagKey")));
 export type ScheduleDefinitionList = string[];
@@ -200,22 +204,19 @@ export const ScheduleDefinitionList = S.Array(
 export type UsageLimitFeatureType =
   | "spectrum"
   | "concurrency-scaling"
-  | "cross-region-datasharing";
-export const UsageLimitFeatureType = S.Literal(
-  "spectrum",
-  "concurrency-scaling",
-  "cross-region-datasharing",
-);
-export type UsageLimitLimitType = "time" | "data-scanned";
-export const UsageLimitLimitType = S.Literal("time", "data-scanned");
-export type UsageLimitPeriod = "daily" | "weekly" | "monthly";
-export const UsageLimitPeriod = S.Literal("daily", "weekly", "monthly");
-export type UsageLimitBreachAction = "log" | "emit-metric" | "disable";
-export const UsageLimitBreachAction = S.Literal(
-  "log",
-  "emit-metric",
-  "disable",
-);
+  | "cross-region-datasharing"
+  | (string & {});
+export const UsageLimitFeatureType = S.String;
+export type UsageLimitLimitType = "time" | "data-scanned" | (string & {});
+export const UsageLimitLimitType = S.String;
+export type UsageLimitPeriod = "daily" | "weekly" | "monthly" | (string & {});
+export const UsageLimitPeriod = S.String;
+export type UsageLimitBreachAction =
+  | "log"
+  | "emit-metric"
+  | "disable"
+  | (string & {});
+export const UsageLimitBreachAction = S.String;
 export type ConsumerIdentifierList = string[];
 export const ConsumerIdentifierList = S.Array(S.String);
 export type AttributeNameList = string[];
@@ -224,54 +225,38 @@ export const AttributeNameList = S.Array(
 );
 export type TagValueList = string[];
 export const TagValueList = S.Array(S.String.pipe(T.XmlName("TagValue")));
-export type DataShareStatusForConsumer = "ACTIVE" | "AVAILABLE";
-export const DataShareStatusForConsumer = S.Literal("ACTIVE", "AVAILABLE");
+export type DataShareStatusForConsumer = "ACTIVE" | "AVAILABLE" | (string & {});
+export const DataShareStatusForConsumer = S.String;
 export type DataShareStatusForProducer =
   | "ACTIVE"
   | "AUTHORIZED"
   | "PENDING_AUTHORIZATION"
   | "DEAUTHORIZED"
-  | "REJECTED";
-export const DataShareStatusForProducer = S.Literal(
-  "ACTIVE",
-  "AUTHORIZED",
-  "PENDING_AUTHORIZATION",
-  "DEAUTHORIZED",
-  "REJECTED",
-);
+  | "REJECTED"
+  | (string & {});
+export const DataShareStatusForProducer = S.String;
 export type SourceType =
   | "cluster"
   | "cluster-parameter-group"
   | "cluster-security-group"
   | "cluster-snapshot"
-  | "scheduled-action";
-export const SourceType = S.Literal(
-  "cluster",
-  "cluster-parameter-group",
-  "cluster-security-group",
-  "cluster-snapshot",
-  "scheduled-action",
-);
+  | "scheduled-action"
+  | (string & {});
+export const SourceType = S.String;
 export type ActionType =
   | "restore-cluster"
   | "recommend-node-config"
-  | "resize-cluster";
-export const ActionType = S.Literal(
-  "restore-cluster",
-  "recommend-node-config",
-  "resize-cluster",
-);
+  | "resize-cluster"
+  | (string & {});
+export const ActionType = S.String;
 export type ScheduledActionTypeValues =
   | "ResizeCluster"
   | "PauseCluster"
-  | "ResumeCluster";
-export const ScheduledActionTypeValues = S.Literal(
-  "ResizeCluster",
-  "PauseCluster",
-  "ResumeCluster",
-);
-export type LogDestinationType = "s3" | "cloudwatch";
-export const LogDestinationType = S.Literal("s3", "cloudwatch");
+  | "ResumeCluster"
+  | (string & {});
+export const ScheduledActionTypeValues = S.String;
+export type LogDestinationType = "s3" | "cloudwatch" | (string & {});
+export const LogDestinationType = S.String;
 export type LogTypeList = string[];
 export const LogTypeList = S.Array(S.String);
 export type DbGroupList = string[];
@@ -282,26 +267,23 @@ export const ClusterIdentifierList = S.Array(
 );
 export type ReservedNodeExchangeActionType =
   | "restore-cluster"
-  | "resize-cluster";
-export const ReservedNodeExchangeActionType = S.Literal(
-  "restore-cluster",
-  "resize-cluster",
-);
-export type LakehouseRegistration = "Register" | "Deregister";
-export const LakehouseRegistration = S.Literal("Register", "Deregister");
-export type LakehouseIdcRegistration = "Associate" | "Disassociate";
-export const LakehouseIdcRegistration = S.Literal("Associate", "Disassociate");
+  | "resize-cluster"
+  | (string & {});
+export const ReservedNodeExchangeActionType = S.String;
+export type LakehouseRegistration = "Register" | "Deregister" | (string & {});
+export const LakehouseRegistration = S.String;
+export type LakehouseIdcRegistration =
+  | "Associate"
+  | "Disassociate"
+  | (string & {});
+export const LakehouseIdcRegistration = S.String;
 export type PartnerIntegrationStatus =
   | "Active"
   | "Inactive"
   | "RuntimeFailure"
-  | "ConnectionFailure";
-export const PartnerIntegrationStatus = S.Literal(
-  "Active",
-  "Inactive",
-  "RuntimeFailure",
-  "ConnectionFailure",
-);
+  | "ConnectionFailure"
+  | (string & {});
+export const PartnerIntegrationStatus = S.String;
 export interface AcceptReservedNodeExchangeInputMessage {
   ReservedNodeId?: string;
   TargetReservedNodeOfferingId?: string;
@@ -3084,8 +3066,8 @@ export const AuthorizedTokenIssuer = S.suspend(() =>
 }) as any as S.Schema<AuthorizedTokenIssuer>;
 export type AuthorizedTokenIssuerList = AuthorizedTokenIssuer[];
 export const AuthorizedTokenIssuerList = S.Array(AuthorizedTokenIssuer);
-export type ServiceAuthorization = "Enabled" | "Disabled";
-export const ServiceAuthorization = S.Literal("Enabled", "Disabled");
+export type ServiceAuthorization = "Enabled" | "Disabled" | (string & {});
+export const ServiceAuthorization = S.String;
 export interface LakeFormationQuery {
   Authorization?: ServiceAuthorization;
 }
@@ -3504,8 +3486,8 @@ export const RejectDataShareMessage = S.suspend(() =>
 ).annotations({
   identifier: "RejectDataShareMessage",
 }) as any as S.Schema<RejectDataShareMessage>;
-export type ParameterApplyType = "static" | "dynamic";
-export const ParameterApplyType = S.Literal("static", "dynamic");
+export type ParameterApplyType = "static" | "dynamic" | (string & {});
+export const ParameterApplyType = S.String;
 export interface Parameter {
   ParameterName?: string;
   ParameterValue?: string;
@@ -3821,25 +3803,18 @@ export const UpdatePartnerStatusInputMessage = S.suspend(() =>
 export type SnapshotAttributeToSortBy =
   | "SOURCE_TYPE"
   | "TOTAL_SIZE"
-  | "CREATE_TIME";
-export const SnapshotAttributeToSortBy = S.Literal(
-  "SOURCE_TYPE",
-  "TOTAL_SIZE",
-  "CREATE_TIME",
-);
-export type SortByOrder = "ASC" | "DESC";
-export const SortByOrder = S.Literal("ASC", "DESC");
+  | "CREATE_TIME"
+  | (string & {});
+export const SnapshotAttributeToSortBy = S.String;
+export type SortByOrder = "ASC" | "DESC" | (string & {});
+export const SortByOrder = S.String;
 export type DescribeIntegrationsFilterName =
   | "integration-arn"
   | "source-arn"
   | "source-types"
-  | "status";
-export const DescribeIntegrationsFilterName = S.Literal(
-  "integration-arn",
-  "source-arn",
-  "source-types",
-  "status",
-);
+  | "status"
+  | (string & {});
+export const DescribeIntegrationsFilterName = S.String;
 export type DescribeIntegrationsFilterValueList = string[];
 export const DescribeIntegrationsFilterValueList = S.Array(
   S.String.pipe(T.XmlName("Value")),
@@ -3848,34 +3823,30 @@ export type NodeConfigurationOptionsFilterName =
   | "NodeType"
   | "NumberOfNodes"
   | "EstimatedDiskUtilizationPercent"
-  | "Mode";
-export const NodeConfigurationOptionsFilterName = S.Literal(
-  "NodeType",
-  "NumberOfNodes",
-  "EstimatedDiskUtilizationPercent",
-  "Mode",
-);
-export type OperatorType = "eq" | "lt" | "gt" | "le" | "ge" | "in" | "between";
-export const OperatorType = S.Literal(
-  "eq",
-  "lt",
-  "gt",
-  "le",
-  "ge",
-  "in",
-  "between",
-);
+  | "Mode"
+  | (string & {});
+export const NodeConfigurationOptionsFilterName = S.String;
+export type OperatorType =
+  | "eq"
+  | "lt"
+  | "gt"
+  | "le"
+  | "ge"
+  | "in"
+  | "between"
+  | (string & {});
+export const OperatorType = S.String;
 export type ValueStringList = string[];
 export const ValueStringList = S.Array(S.String.pipe(T.XmlName("item")));
-export type ScheduledActionFilterName = "cluster-identifier" | "iam-role";
-export const ScheduledActionFilterName = S.Literal(
-  "cluster-identifier",
-  "iam-role",
-);
-export type DataShareType = "INTERNAL";
-export const DataShareType = S.Literal("INTERNAL");
-export type AuthorizationStatus = "Authorized" | "Revoking";
-export const AuthorizationStatus = S.Literal("Authorized", "Revoking");
+export type ScheduledActionFilterName =
+  | "cluster-identifier"
+  | "iam-role"
+  | (string & {});
+export const ScheduledActionFilterName = S.String;
+export type DataShareType = "INTERNAL" | (string & {});
+export const DataShareType = S.String;
+export type AuthorizationStatus = "Authorized" | "Revoking" | (string & {});
+export const AuthorizationStatus = S.String;
 export interface SnapshotErrorMessage {
   SnapshotIdentifier?: string;
   SnapshotClusterIdentifier?: string;
@@ -3920,16 +3891,9 @@ export type ZeroETLIntegrationStatus =
   | "failed"
   | "deleting"
   | "syncing"
-  | "needs_attention";
-export const ZeroETLIntegrationStatus = S.Literal(
-  "creating",
-  "active",
-  "modifying",
-  "failed",
-  "deleting",
-  "syncing",
-  "needs_attention",
-);
+  | "needs_attention"
+  | (string & {});
+export const ZeroETLIntegrationStatus = S.String;
 export interface ClusterParameterGroup {
   ParameterGroupName?: string;
   ParameterGroupFamily?: string;
@@ -4244,8 +4208,8 @@ export const DeferredMaintenanceWindowsList = S.Array(
     T.XmlName("DeferredMaintenanceWindow"),
   ).annotations({ identifier: "DeferredMaintenanceWindow" }),
 );
-export type ScheduleState = "MODIFYING" | "ACTIVE" | "FAILED";
-export const ScheduleState = S.Literal("MODIFYING", "ACTIVE", "FAILED");
+export type ScheduleState = "MODIFYING" | "ACTIVE" | "FAILED" | (string & {});
+export const ScheduleState = S.String;
 export interface ResizeInfo {
   ResizeType?: string;
   AllowCancelResize?: boolean;
@@ -4256,8 +4220,8 @@ export const ResizeInfo = S.suspend(() =>
     AllowCancelResize: S.optional(S.Boolean),
   }),
 ).annotations({ identifier: "ResizeInfo" }) as any as S.Schema<ResizeInfo>;
-export type AquaStatus = "enabled" | "disabled" | "applying";
-export const AquaStatus = S.Literal("enabled", "disabled", "applying");
+export type AquaStatus = "enabled" | "disabled" | "applying" | (string & {});
+export const AquaStatus = S.String;
 export interface AquaConfiguration {
   AquaStatus?: AquaStatus;
   AquaConfigurationStatus?: AquaConfigurationStatus;
@@ -4276,15 +4240,9 @@ export type ReservedNodeExchangeStatusType =
   | "IN_PROGRESS"
   | "RETRYING"
   | "SUCCEEDED"
-  | "FAILED";
-export const ReservedNodeExchangeStatusType = S.Literal(
-  "REQUESTED",
-  "PENDING",
-  "IN_PROGRESS",
-  "RETRYING",
-  "SUCCEEDED",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const ReservedNodeExchangeStatusType = S.String;
 export interface ReservedNodeExchangeStatus {
   ReservedNodeExchangeRequestId?: string;
   Status?: ReservedNodeExchangeStatusType;
@@ -4619,15 +4577,9 @@ export type DataShareStatus =
   | "AUTHORIZED"
   | "DEAUTHORIZED"
   | "REJECTED"
-  | "AVAILABLE";
-export const DataShareStatus = S.Literal(
-  "ACTIVE",
-  "PENDING_AUTHORIZATION",
-  "AUTHORIZED",
-  "DEAUTHORIZED",
-  "REJECTED",
-  "AVAILABLE",
-);
+  | "AVAILABLE"
+  | (string & {});
+export const DataShareStatus = S.String;
 export interface DataShareAssociation {
   ConsumerIdentifier?: string;
   Status?: DataShareStatus;
@@ -4869,8 +4821,8 @@ export const RecurringChargeList = S.Array(
     identifier: "RecurringCharge",
   }),
 );
-export type ReservedNodeOfferingType = "Regular" | "Upgradable";
-export const ReservedNodeOfferingType = S.Literal("Regular", "Upgradable");
+export type ReservedNodeOfferingType = "Regular" | "Upgradable" | (string & {});
+export const ReservedNodeOfferingType = S.String;
 export interface ReservedNode {
   ReservedNodeId?: string;
   ReservedNodeOfferingId?: string;
@@ -5017,19 +4969,19 @@ export const UsageLimit = S.suspend(() =>
 ).annotations({ identifier: "UsageLimit" }) as any as S.Schema<UsageLimit>;
 export type UsageLimits = UsageLimit[];
 export const UsageLimits = S.Array(UsageLimit);
-export type ScheduledActionState = "ACTIVE" | "DISABLED";
-export const ScheduledActionState = S.Literal("ACTIVE", "DISABLED");
+export type ScheduledActionState = "ACTIVE" | "DISABLED" | (string & {});
+export const ScheduledActionState = S.String;
 export type ScheduledActionTimeList = Date[];
 export const ScheduledActionTimeList = S.Array(
   S.Date.pipe(T.TimestampFormat("date-time")).pipe(
     T.XmlName("ScheduledActionTime"),
   ),
 );
-export type NamespaceRegistrationStatus = "Registering" | "Deregistering";
-export const NamespaceRegistrationStatus = S.Literal(
-  "Registering",
-  "Deregistering",
-);
+export type NamespaceRegistrationStatus =
+  | "Registering"
+  | "Deregistering"
+  | (string & {});
+export const NamespaceRegistrationStatus = S.String;
 export interface BatchModifyClusterSnapshotsOutputMessage {
   Resources?: string[];
   Errors?: SnapshotErrorMessage[];
@@ -6184,14 +6136,9 @@ export type TableRestoreStatusType =
   | "IN_PROGRESS"
   | "SUCCEEDED"
   | "FAILED"
-  | "CANCELED";
-export const TableRestoreStatusType = S.Literal(
-  "PENDING",
-  "IN_PROGRESS",
-  "SUCCEEDED",
-  "FAILED",
-  "CANCELED",
-);
+  | "CANCELED"
+  | (string & {});
+export const TableRestoreStatusType = S.String;
 export interface TableRestoreStatus {
   TableRestoreRequestId?: string;
   Status?: TableRestoreStatusType;
@@ -6268,8 +6215,8 @@ export const RotateEncryptionKeyResult = S.suspend(() =>
 ).annotations({
   identifier: "RotateEncryptionKeyResult",
 }) as any as S.Schema<RotateEncryptionKeyResult>;
-export type ImpactRankingType = "HIGH" | "MEDIUM" | "LOW";
-export const ImpactRankingType = S.Literal("HIGH", "MEDIUM", "LOW");
+export type ImpactRankingType = "HIGH" | "MEDIUM" | "LOW" | (string & {});
+export const ImpactRankingType = S.String;
 export type BatchSnapshotOperationErrorList = SnapshotErrorMessage[];
 export const BatchSnapshotOperationErrorList = S.Array(
   SnapshotErrorMessage.pipe(T.XmlName("SnapshotErrorMessage")).annotations({
@@ -6517,8 +6464,8 @@ export const ReservedNodeConfigurationOptionList = S.Array(
     T.XmlName("ReservedNodeConfigurationOption"),
   ).annotations({ identifier: "ReservedNodeConfigurationOption" }),
 );
-export type RecommendedActionType = "SQL" | "CLI";
-export const RecommendedActionType = S.Literal("SQL", "CLI");
+export type RecommendedActionType = "SQL" | "CLI" | (string & {});
+export const RecommendedActionType = S.String;
 export interface BatchDeleteClusterSnapshotsResult {
   Resources?: string[];
   Errors?: SnapshotErrorMessage[];
@@ -6882,8 +6829,8 @@ export const EventInfoMapList = S.Array(
     identifier: "EventInfoMap",
   }),
 );
-export type Mode = "standard" | "high-performance";
-export const Mode = S.Literal("standard", "high-performance");
+export type Mode = "standard" | "high-performance" | (string & {});
+export const Mode = S.String;
 export interface RecommendedAction {
   Text?: string;
   Database?: string;

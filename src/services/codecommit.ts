@@ -169,30 +169,23 @@ export const RepositoryNameList = S.Array(S.String);
 export type MergeOptionTypeEnum =
   | "FAST_FORWARD_MERGE"
   | "SQUASH_MERGE"
-  | "THREE_WAY_MERGE";
-export const MergeOptionTypeEnum = S.Literal(
-  "FAST_FORWARD_MERGE",
-  "SQUASH_MERGE",
-  "THREE_WAY_MERGE",
-);
+  | "THREE_WAY_MERGE"
+  | (string & {});
+export const MergeOptionTypeEnum = S.String;
 export type FilePaths = string[];
 export const FilePaths = S.Array(S.String);
-export type ConflictDetailLevelTypeEnum = "FILE_LEVEL" | "LINE_LEVEL";
-export const ConflictDetailLevelTypeEnum = S.Literal(
-  "FILE_LEVEL",
-  "LINE_LEVEL",
-);
+export type ConflictDetailLevelTypeEnum =
+  | "FILE_LEVEL"
+  | "LINE_LEVEL"
+  | (string & {});
+export const ConflictDetailLevelTypeEnum = S.String;
 export type ConflictResolutionStrategyTypeEnum =
   | "NONE"
   | "ACCEPT_SOURCE"
   | "ACCEPT_DESTINATION"
-  | "AUTOMERGE";
-export const ConflictResolutionStrategyTypeEnum = S.Literal(
-  "NONE",
-  "ACCEPT_SOURCE",
-  "ACCEPT_DESTINATION",
-  "AUTOMERGE",
-);
+  | "AUTOMERGE"
+  | (string & {});
+export const ConflictResolutionStrategyTypeEnum = S.String;
 export type CommitIdsInputList = string[];
 export const CommitIdsInputList = S.Array(S.String);
 export type PullRequestEventType =
@@ -204,32 +197,27 @@ export type PullRequestEventType =
   | "PULL_REQUEST_APPROVAL_RULE_UPDATED"
   | "PULL_REQUEST_APPROVAL_RULE_DELETED"
   | "PULL_REQUEST_APPROVAL_RULE_OVERRIDDEN"
-  | "PULL_REQUEST_APPROVAL_STATE_CHANGED";
-export const PullRequestEventType = S.Literal(
-  "PULL_REQUEST_CREATED",
-  "PULL_REQUEST_STATUS_CHANGED",
-  "PULL_REQUEST_SOURCE_REFERENCE_UPDATED",
-  "PULL_REQUEST_MERGE_STATE_CHANGED",
-  "PULL_REQUEST_APPROVAL_RULE_CREATED",
-  "PULL_REQUEST_APPROVAL_RULE_UPDATED",
-  "PULL_REQUEST_APPROVAL_RULE_DELETED",
-  "PULL_REQUEST_APPROVAL_RULE_OVERRIDDEN",
-  "PULL_REQUEST_APPROVAL_STATE_CHANGED",
-);
-export type PullRequestStatusEnum = "OPEN" | "CLOSED";
-export const PullRequestStatusEnum = S.Literal("OPEN", "CLOSED");
-export type SortByEnum = "repositoryName" | "lastModifiedDate";
-export const SortByEnum = S.Literal("repositoryName", "lastModifiedDate");
-export type OrderEnum = "ascending" | "descending";
-export const OrderEnum = S.Literal("ascending", "descending");
-export type OverrideStatus = "OVERRIDE" | "REVOKE";
-export const OverrideStatus = S.Literal("OVERRIDE", "REVOKE");
-export type FileModeTypeEnum = "EXECUTABLE" | "NORMAL" | "SYMLINK";
-export const FileModeTypeEnum = S.Literal("EXECUTABLE", "NORMAL", "SYMLINK");
+  | "PULL_REQUEST_APPROVAL_STATE_CHANGED"
+  | (string & {});
+export const PullRequestEventType = S.String;
+export type PullRequestStatusEnum = "OPEN" | "CLOSED" | (string & {});
+export const PullRequestStatusEnum = S.String;
+export type SortByEnum = "repositoryName" | "lastModifiedDate" | (string & {});
+export const SortByEnum = S.String;
+export type OrderEnum = "ascending" | "descending" | (string & {});
+export const OrderEnum = S.String;
+export type OverrideStatus = "OVERRIDE" | "REVOKE" | (string & {});
+export const OverrideStatus = S.String;
+export type FileModeTypeEnum =
+  | "EXECUTABLE"
+  | "NORMAL"
+  | "SYMLINK"
+  | (string & {});
+export const FileModeTypeEnum = S.String;
 export type TagKeysList = string[];
 export const TagKeysList = S.Array(S.String);
-export type ApprovalState = "APPROVE" | "REVOKE";
-export const ApprovalState = S.Literal("APPROVE", "REVOKE");
+export type ApprovalState = "APPROVE" | "REVOKE" | (string & {});
+export const ApprovalState = S.String;
 export interface AssociateApprovalRuleTemplateWithRepositoryInput {
   approvalRuleTemplateName: string;
   repositoryName: string;
@@ -1352,13 +1340,9 @@ export type ReplacementTypeEnum =
   | "KEEP_BASE"
   | "KEEP_SOURCE"
   | "KEEP_DESTINATION"
-  | "USE_NEW_CONTENT";
-export const ReplacementTypeEnum = S.Literal(
-  "KEEP_BASE",
-  "KEEP_SOURCE",
-  "KEEP_DESTINATION",
-  "USE_NEW_CONTENT",
-);
+  | "USE_NEW_CONTENT"
+  | (string & {});
+export const ReplacementTypeEnum = S.String;
 export interface ReplaceContentEntry {
   filePath: string;
   replacementType: ReplacementTypeEnum;
@@ -1622,8 +1606,8 @@ export const OverridePullRequestApprovalRulesResponse = S.suspend(() =>
 ).annotations({
   identifier: "OverridePullRequestApprovalRulesResponse",
 }) as any as S.Schema<OverridePullRequestApprovalRulesResponse>;
-export type RelativeFileVersionEnum = "BEFORE" | "AFTER";
-export const RelativeFileVersionEnum = S.Literal("BEFORE", "AFTER");
+export type RelativeFileVersionEnum = "BEFORE" | "AFTER" | (string & {});
+export const RelativeFileVersionEnum = S.String;
 export interface Location {
   filePath?: string;
   filePosition?: number;
@@ -1787,13 +1771,9 @@ export type RepositoryTriggerEventEnum =
   | "all"
   | "updateReference"
   | "createReference"
-  | "deleteReference";
-export const RepositoryTriggerEventEnum = S.Literal(
-  "all",
-  "updateReference",
-  "createReference",
-  "deleteReference",
-);
+  | "deleteReference"
+  | (string & {});
+export const RepositoryTriggerEventEnum = S.String;
 export type RepositoryTriggerEventList = RepositoryTriggerEventEnum[];
 export const RepositoryTriggerEventList = S.Array(RepositoryTriggerEventEnum);
 export interface RepositoryTrigger {
@@ -2204,13 +2184,9 @@ export type ObjectTypeEnum =
   | "FILE"
   | "DIRECTORY"
   | "GIT_LINK"
-  | "SYMBOLIC_LINK";
-export const ObjectTypeEnum = S.Literal(
-  "FILE",
-  "DIRECTORY",
-  "GIT_LINK",
-  "SYMBOLIC_LINK",
-);
+  | "SYMBOLIC_LINK"
+  | (string & {});
+export const ObjectTypeEnum = S.String;
 export interface ObjectTypes {
   source?: ObjectTypeEnum;
   destination?: ObjectTypeEnum;
@@ -2235,8 +2211,8 @@ export const IsBinaryFile = S.suspend(() =>
     base: S.optional(S.Boolean),
   }),
 ).annotations({ identifier: "IsBinaryFile" }) as any as S.Schema<IsBinaryFile>;
-export type ChangeTypeEnum = "A" | "M" | "D";
-export const ChangeTypeEnum = S.Literal("A", "M", "D");
+export type ChangeTypeEnum = "A" | "M" | "D" | (string & {});
+export const ChangeTypeEnum = S.String;
 export interface MergeOperations {
   source?: ChangeTypeEnum;
   destination?: ChangeTypeEnum;
@@ -3075,15 +3051,9 @@ export type BatchGetRepositoriesErrorCodeEnum =
   | "EncryptionKeyDisabledException"
   | "EncryptionKeyNotFoundException"
   | "EncryptionKeyUnavailableException"
-  | "RepositoryDoesNotExistException";
-export const BatchGetRepositoriesErrorCodeEnum = S.Literal(
-  "EncryptionIntegrityChecksFailedException",
-  "EncryptionKeyAccessDeniedException",
-  "EncryptionKeyDisabledException",
-  "EncryptionKeyNotFoundException",
-  "EncryptionKeyUnavailableException",
-  "RepositoryDoesNotExistException",
-);
+  | "RepositoryDoesNotExistException"
+  | (string & {});
+export const BatchGetRepositoriesErrorCodeEnum = S.String;
 export interface SourceFileSpecifier {
   filePath: string;
   isMove?: boolean;

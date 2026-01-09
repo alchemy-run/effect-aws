@@ -71,16 +71,15 @@ export type SearchJobState =
   | "COMPLETED"
   | "STOPPING"
   | "STOPPED"
-  | "FAILED";
-export const SearchJobState = S.Literal(
-  "RUNNING",
-  "COMPLETED",
-  "STOPPING",
-  "STOPPED",
-  "FAILED",
-);
-export type ExportJobStatus = "RUNNING" | "FAILED" | "COMPLETED";
-export const ExportJobStatus = S.Literal("RUNNING", "FAILED", "COMPLETED");
+  | "FAILED"
+  | (string & {});
+export const SearchJobState = S.String;
+export type ExportJobStatus =
+  | "RUNNING"
+  | "FAILED"
+  | "COMPLETED"
+  | (string & {});
+export const ExportJobStatus = S.String;
 export interface ListSearchJobBackupsInput {
   SearchJobIdentifier: string;
   NextToken?: string;
@@ -292,8 +291,8 @@ export const ListSearchResultExportJobsInput = S.suspend(() =>
 ).annotations({
   identifier: "ListSearchResultExportJobsInput",
 }) as any as S.Schema<ListSearchResultExportJobsInput>;
-export type ResourceType = "S3" | "EBS";
-export const ResourceType = S.Literal("S3", "EBS");
+export type ResourceType = "S3" | "EBS" | (string & {});
+export const ResourceType = S.String;
 export type ResourceTypeList = ResourceType[];
 export const ResourceTypeList = S.Array(ResourceType);
 export type ResourceArnList = string[];
@@ -400,17 +399,9 @@ export type StringConditionOperator =
   | "BEGINS_WITH"
   | "ENDS_WITH"
   | "DOES_NOT_BEGIN_WITH"
-  | "DOES_NOT_END_WITH";
-export const StringConditionOperator = S.Literal(
-  "EQUALS_TO",
-  "NOT_EQUALS_TO",
-  "CONTAINS",
-  "DOES_NOT_CONTAIN",
-  "BEGINS_WITH",
-  "ENDS_WITH",
-  "DOES_NOT_BEGIN_WITH",
-  "DOES_NOT_END_WITH",
-);
+  | "DOES_NOT_END_WITH"
+  | (string & {});
+export const StringConditionOperator = S.String;
 export interface StringCondition {
   Value: string;
   Operator?: StringConditionOperator;
@@ -426,13 +417,9 @@ export type LongConditionOperator =
   | "EQUALS_TO"
   | "NOT_EQUALS_TO"
   | "LESS_THAN_EQUAL_TO"
-  | "GREATER_THAN_EQUAL_TO";
-export const LongConditionOperator = S.Literal(
-  "EQUALS_TO",
-  "NOT_EQUALS_TO",
-  "LESS_THAN_EQUAL_TO",
-  "GREATER_THAN_EQUAL_TO",
-);
+  | "GREATER_THAN_EQUAL_TO"
+  | (string & {});
+export const LongConditionOperator = S.String;
 export interface LongCondition {
   Value: number;
   Operator?: LongConditionOperator;
@@ -448,13 +435,9 @@ export type TimeConditionOperator =
   | "EQUALS_TO"
   | "NOT_EQUALS_TO"
   | "LESS_THAN_EQUAL_TO"
-  | "GREATER_THAN_EQUAL_TO";
-export const TimeConditionOperator = S.Literal(
-  "EQUALS_TO",
-  "NOT_EQUALS_TO",
-  "LESS_THAN_EQUAL_TO",
-  "GREATER_THAN_EQUAL_TO",
-);
+  | "GREATER_THAN_EQUAL_TO"
+  | (string & {});
+export const TimeConditionOperator = S.String;
 export interface TimeCondition {
   Value: Date;
   Operator?: TimeConditionOperator;

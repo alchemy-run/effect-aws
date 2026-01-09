@@ -115,10 +115,10 @@ export type TranslatedDocumentContent =
   | redacted.Redacted<Uint8Array>;
 
 //# Schemas
-export type TerminologyDataFormat = "CSV" | "TMX" | "TSV";
-export const TerminologyDataFormat = S.Literal("CSV", "TMX", "TSV");
-export type MergeStrategy = "OVERWRITE";
-export const MergeStrategy = S.Literal("OVERWRITE");
+export type TerminologyDataFormat = "CSV" | "TMX" | "TSV" | (string & {});
+export const TerminologyDataFormat = S.String;
+export type MergeStrategy = "OVERWRITE" | (string & {});
+export const MergeStrategy = S.String;
 export type DisplayLanguageCode =
   | "de"
   | "en"
@@ -129,19 +129,9 @@ export type DisplayLanguageCode =
   | "ko"
   | "pt"
   | "zh"
-  | "zh-TW";
-export const DisplayLanguageCode = S.Literal(
-  "de",
-  "en",
-  "es",
-  "fr",
-  "it",
-  "ja",
-  "ko",
-  "pt",
-  "zh",
-  "zh-TW",
-);
+  | "zh-TW"
+  | (string & {});
+export const DisplayLanguageCode = S.String;
 export type TargetLanguageCodeStringList = string[];
 export const TargetLanguageCodeStringList = S.Array(S.String);
 export type ResourceNameList = string[];
@@ -296,12 +286,12 @@ export interface TagResourceResponse {}
 export const TagResourceResponse = S.suspend(() => S.Struct({})).annotations({
   identifier: "TagResourceResponse",
 }) as any as S.Schema<TagResourceResponse>;
-export type Formality = "FORMAL" | "INFORMAL";
-export const Formality = S.Literal("FORMAL", "INFORMAL");
-export type Profanity = "MASK";
-export const Profanity = S.Literal("MASK");
-export type Brevity = "ON";
-export const Brevity = S.Literal("ON");
+export type Formality = "FORMAL" | "INFORMAL" | (string & {});
+export const Formality = S.String;
+export type Profanity = "MASK" | (string & {});
+export const Profanity = S.String;
+export type Brevity = "ON" | (string & {});
+export const Brevity = S.String;
 export interface TranslationSettings {
   Formality?: Formality;
   Profanity?: Profanity;
@@ -351,8 +341,8 @@ export interface UntagResourceResponse {}
 export const UntagResourceResponse = S.suspend(() => S.Struct({})).annotations({
   identifier: "UntagResourceResponse",
 }) as any as S.Schema<UntagResourceResponse>;
-export type ParallelDataFormat = "TSV" | "CSV" | "TMX";
-export const ParallelDataFormat = S.Literal("TSV", "CSV", "TMX");
+export type ParallelDataFormat = "TSV" | "CSV" | "TMX" | (string & {});
+export const ParallelDataFormat = S.String;
 export interface ParallelDataConfig {
   S3Uri?: string;
   Format?: ParallelDataFormat;
@@ -383,10 +373,10 @@ export const UpdateParallelDataRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateParallelDataRequest",
 }) as any as S.Schema<UpdateParallelDataRequest>;
-export type EncryptionKeyType = "KMS";
-export const EncryptionKeyType = S.Literal("KMS");
-export type Directionality = "UNI" | "MULTI";
-export const Directionality = S.Literal("UNI", "MULTI");
+export type EncryptionKeyType = "KMS" | (string & {});
+export const EncryptionKeyType = S.String;
+export type Directionality = "UNI" | "MULTI" | (string & {});
+export const Directionality = S.String;
 export type JobStatus =
   | "SUBMITTED"
   | "IN_PROGRESS"
@@ -394,16 +384,9 @@ export type JobStatus =
   | "COMPLETED_WITH_ERROR"
   | "FAILED"
   | "STOP_REQUESTED"
-  | "STOPPED";
-export const JobStatus = S.Literal(
-  "SUBMITTED",
-  "IN_PROGRESS",
-  "COMPLETED",
-  "COMPLETED_WITH_ERROR",
-  "FAILED",
-  "STOP_REQUESTED",
-  "STOPPED",
-);
+  | "STOPPED"
+  | (string & {});
+export const JobStatus = S.String;
 export interface EncryptionKey {
   Type: EncryptionKeyType;
   Id: string;
@@ -418,14 +401,9 @@ export type ParallelDataStatus =
   | "UPDATING"
   | "ACTIVE"
   | "DELETING"
-  | "FAILED";
-export const ParallelDataStatus = S.Literal(
-  "CREATING",
-  "UPDATING",
-  "ACTIVE",
-  "DELETING",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const ParallelDataStatus = S.String;
 export interface TerminologyData {
   File: Uint8Array | redacted.Redacted<Uint8Array>;
   Format: TerminologyDataFormat;

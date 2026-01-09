@@ -320,41 +320,35 @@ export const GetSubscriptionStateRequest = S.suspend(() =>
 ).annotations({
   identifier: "GetSubscriptionStateRequest",
 }) as any as S.Schema<GetSubscriptionStateRequest>;
-export type ProtectionGroupAggregation = "SUM" | "MEAN" | "MAX";
-export const ProtectionGroupAggregation = S.Literal("SUM", "MEAN", "MAX");
-export type ProtectionGroupPattern = "ALL" | "ARBITRARY" | "BY_RESOURCE_TYPE";
-export const ProtectionGroupPattern = S.Literal(
-  "ALL",
-  "ARBITRARY",
-  "BY_RESOURCE_TYPE",
-);
+export type ProtectionGroupAggregation = "SUM" | "MEAN" | "MAX" | (string & {});
+export const ProtectionGroupAggregation = S.String;
+export type ProtectionGroupPattern =
+  | "ALL"
+  | "ARBITRARY"
+  | "BY_RESOURCE_TYPE"
+  | (string & {});
+export const ProtectionGroupPattern = S.String;
 export type ProtectedResourceType =
   | "CLOUDFRONT_DISTRIBUTION"
   | "ROUTE_53_HOSTED_ZONE"
   | "ELASTIC_IP_ALLOCATION"
   | "CLASSIC_LOAD_BALANCER"
   | "APPLICATION_LOAD_BALANCER"
-  | "GLOBAL_ACCELERATOR";
-export const ProtectedResourceType = S.Literal(
-  "CLOUDFRONT_DISTRIBUTION",
-  "ROUTE_53_HOSTED_ZONE",
-  "ELASTIC_IP_ALLOCATION",
-  "CLASSIC_LOAD_BALANCER",
-  "APPLICATION_LOAD_BALANCER",
-  "GLOBAL_ACCELERATOR",
-);
+  | "GLOBAL_ACCELERATOR"
+  | (string & {});
+export const ProtectedResourceType = S.String;
 export type ProtectionGroupMembers = string[];
 export const ProtectionGroupMembers = S.Array(S.String);
 export type LogBucketList = string[];
 export const LogBucketList = S.Array(S.String);
-export type SubscriptionState = "ACTIVE" | "INACTIVE";
-export const SubscriptionState = S.Literal("ACTIVE", "INACTIVE");
+export type SubscriptionState = "ACTIVE" | "INACTIVE" | (string & {});
+export const SubscriptionState = S.String;
 export type ResourceArnFilterList = string[];
 export const ResourceArnFilterList = S.Array(S.String);
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
-export type AutoRenew = "ENABLED" | "DISABLED";
-export const AutoRenew = S.Literal("ENABLED", "DISABLED");
+export type AutoRenew = "ENABLED" | "DISABLED" | (string & {});
+export const AutoRenew = S.String;
 export interface AssociateDRTLogBucketRequest {
   LogBucket: string;
 }
@@ -950,12 +944,12 @@ export const UpdateSubscriptionResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateSubscriptionResponse",
 }) as any as S.Schema<UpdateSubscriptionResponse>;
-export type ProactiveEngagementStatus = "ENABLED" | "DISABLED" | "PENDING";
-export const ProactiveEngagementStatus = S.Literal(
-  "ENABLED",
-  "DISABLED",
-  "PENDING",
-);
+export type ProactiveEngagementStatus =
+  | "ENABLED"
+  | "DISABLED"
+  | "PENDING"
+  | (string & {});
+export const ProactiveEngagementStatus = S.String;
 export type ProtectionGroupIdFilters = string[];
 export const ProtectionGroupIdFilters = S.Array(S.String);
 export type ProtectionGroupPatternFilters = ProtectionGroupPattern[];
@@ -970,11 +964,11 @@ export type ResourceArnFilters = string[];
 export const ResourceArnFilters = S.Array(S.String);
 export type ProtectionNameFilters = string[];
 export const ProtectionNameFilters = S.Array(S.String);
-export type ValidationExceptionReason = "FIELD_VALIDATION_FAILED" | "OTHER";
-export const ValidationExceptionReason = S.Literal(
-  "FIELD_VALIDATION_FAILED",
-  "OTHER",
-);
+export type ValidationExceptionReason =
+  | "FIELD_VALIDATION_FAILED"
+  | "OTHER"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 export interface InclusionProtectionGroupFilters {
   ProtectionGroupIds?: string[];
   Patterns?: ProtectionGroupPattern[];
@@ -1192,11 +1186,11 @@ export type ValidationExceptionFieldList = ValidationExceptionField[];
 export const ValidationExceptionFieldList = S.Array(ValidationExceptionField);
 export type ProtectionGroups = ProtectionGroup[];
 export const ProtectionGroups = S.Array(ProtectionGroup);
-export type ApplicationLayerAutomaticResponseStatus = "ENABLED" | "DISABLED";
-export const ApplicationLayerAutomaticResponseStatus = S.Literal(
-  "ENABLED",
-  "DISABLED",
-);
+export type ApplicationLayerAutomaticResponseStatus =
+  | "ENABLED"
+  | "DISABLED"
+  | (string & {});
+export const ApplicationLayerAutomaticResponseStatus = S.String;
 export interface ApplicationLayerAutomaticResponseConfiguration {
   Status: ApplicationLayerAutomaticResponseStatus;
   Action: ResponseAction;
@@ -1231,10 +1225,10 @@ export const Protection = S.suspend(() =>
 ).annotations({ identifier: "Protection" }) as any as S.Schema<Protection>;
 export type Protections = Protection[];
 export const Protections = S.Array(Protection);
-export type SubResourceType = "IP" | "URL";
-export const SubResourceType = S.Literal("IP", "URL");
-export type AttackLayer = "NETWORK" | "APPLICATION";
-export const AttackLayer = S.Literal("NETWORK", "APPLICATION");
+export type SubResourceType = "IP" | "URL" | (string & {});
+export const SubResourceType = S.String;
+export type AttackLayer = "NETWORK" | "APPLICATION" | (string & {});
+export const AttackLayer = S.String;
 export type AttackPropertyIdentifier =
   | "DESTINATION_URL"
   | "REFERRER"
@@ -1243,19 +1237,11 @@ export type AttackPropertyIdentifier =
   | "SOURCE_IP_ADDRESS"
   | "SOURCE_USER_AGENT"
   | "WORDPRESS_PINGBACK_REFLECTOR"
-  | "WORDPRESS_PINGBACK_SOURCE";
-export const AttackPropertyIdentifier = S.Literal(
-  "DESTINATION_URL",
-  "REFERRER",
-  "SOURCE_ASN",
-  "SOURCE_COUNTRY",
-  "SOURCE_IP_ADDRESS",
-  "SOURCE_USER_AGENT",
-  "WORDPRESS_PINGBACK_REFLECTOR",
-  "WORDPRESS_PINGBACK_SOURCE",
-);
-export type Unit = "BITS" | "BYTES" | "PACKETS" | "REQUESTS";
-export const Unit = S.Literal("BITS", "BYTES", "PACKETS", "REQUESTS");
+  | "WORDPRESS_PINGBACK_SOURCE"
+  | (string & {});
+export const AttackPropertyIdentifier = S.String;
+export type Unit = "BITS" | "BYTES" | "PACKETS" | "REQUESTS" | (string & {});
+export const Unit = S.String;
 export interface AttackVolumeStatistics {
   Max: number;
 }

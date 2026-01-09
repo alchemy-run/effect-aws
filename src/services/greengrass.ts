@@ -160,15 +160,11 @@ export type DeploymentType =
   | "NewDeployment"
   | "Redeployment"
   | "ResetDeployment"
-  | "ForceResetDeployment";
-export const DeploymentType = S.Literal(
-  "NewDeployment",
-  "Redeployment",
-  "ResetDeployment",
-  "ForceResetDeployment",
-);
-export type SoftwareToUpdate = "core" | "ota_agent";
-export const SoftwareToUpdate = S.Literal("core", "ota_agent");
+  | "ForceResetDeployment"
+  | (string & {});
+export const DeploymentType = S.String;
+export type SoftwareToUpdate = "core" | "ota_agent" | (string & {});
+export const SoftwareToUpdate = S.String;
 export type UpdateAgentLogLevel =
   | "NONE"
   | "TRACE"
@@ -177,41 +173,25 @@ export type UpdateAgentLogLevel =
   | "INFO"
   | "WARN"
   | "ERROR"
-  | "FATAL";
-export const UpdateAgentLogLevel = S.Literal(
-  "NONE",
-  "TRACE",
-  "DEBUG",
-  "VERBOSE",
-  "INFO",
-  "WARN",
-  "ERROR",
-  "FATAL",
-);
+  | "FATAL"
+  | (string & {});
+export const UpdateAgentLogLevel = S.String;
 export type UpdateTargets = string[];
 export const UpdateTargets = S.Array(S.String);
 export type UpdateTargetsArchitecture =
   | "armv6l"
   | "armv7l"
   | "x86_64"
-  | "aarch64";
-export const UpdateTargetsArchitecture = S.Literal(
-  "armv6l",
-  "armv7l",
-  "x86_64",
-  "aarch64",
-);
+  | "aarch64"
+  | (string & {});
+export const UpdateTargetsArchitecture = S.String;
 export type UpdateTargetsOperatingSystem =
   | "ubuntu"
   | "raspbian"
   | "amazon_linux"
-  | "openwrt";
-export const UpdateTargetsOperatingSystem = S.Literal(
-  "ubuntu",
-  "raspbian",
-  "amazon_linux",
-  "openwrt",
-);
+  | "openwrt"
+  | (string & {});
+export const UpdateTargetsOperatingSystem = S.String;
 export type __listOf__string = string[];
 export const __listOf__string = S.Array(S.String);
 export interface AssociateRoleToGroupRequest {
@@ -2057,14 +2037,20 @@ export const UpdateSubscriptionDefinitionResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateSubscriptionDefinitionResponse",
 }) as any as S.Schema<UpdateSubscriptionDefinitionResponse>;
-export type LoggerComponent = "GreengrassSystem" | "Lambda";
-export const LoggerComponent = S.Literal("GreengrassSystem", "Lambda");
-export type LoggerLevel = "DEBUG" | "INFO" | "WARN" | "ERROR" | "FATAL";
-export const LoggerLevel = S.Literal("DEBUG", "INFO", "WARN", "ERROR", "FATAL");
-export type LoggerType = "FileSystem" | "AWSCloudWatch";
-export const LoggerType = S.Literal("FileSystem", "AWSCloudWatch");
-export type Telemetry = "On" | "Off";
-export const Telemetry = S.Literal("On", "Off");
+export type LoggerComponent = "GreengrassSystem" | "Lambda" | (string & {});
+export const LoggerComponent = S.String;
+export type LoggerLevel =
+  | "DEBUG"
+  | "INFO"
+  | "WARN"
+  | "ERROR"
+  | "FATAL"
+  | (string & {});
+export const LoggerLevel = S.String;
+export type LoggerType = "FileSystem" | "AWSCloudWatch" | (string & {});
+export const LoggerType = S.String;
+export type Telemetry = "On" | "Off" | (string & {});
+export const Telemetry = S.String;
 export type __mapOf__string = { [key: string]: string | undefined };
 export const __mapOf__string = S.Record({
   key: S.String,
@@ -2140,11 +2126,11 @@ export const DeviceDefinitionVersion = S.suspend(() =>
 ).annotations({
   identifier: "DeviceDefinitionVersion",
 }) as any as S.Schema<DeviceDefinitionVersion>;
-export type FunctionIsolationMode = "GreengrassContainer" | "NoContainer";
-export const FunctionIsolationMode = S.Literal(
-  "GreengrassContainer",
-  "NoContainer",
-);
+export type FunctionIsolationMode =
+  | "GreengrassContainer"
+  | "NoContainer"
+  | (string & {});
+export const FunctionIsolationMode = S.String;
 export interface FunctionRunAsConfig {
   Gid?: number;
   Uid?: number;
@@ -2174,8 +2160,8 @@ export const FunctionDefaultConfig = S.suspend(() =>
 ).annotations({
   identifier: "FunctionDefaultConfig",
 }) as any as S.Schema<FunctionDefaultConfig>;
-export type EncodingType = "binary" | "json";
-export const EncodingType = S.Literal("binary", "json");
+export type EncodingType = "binary" | "json" | (string & {});
+export const EncodingType = S.String;
 export interface FunctionExecutionConfig {
   IsolationMode?: FunctionIsolationMode;
   RunAs?: FunctionRunAsConfig;
@@ -2188,8 +2174,8 @@ export const FunctionExecutionConfig = S.suspend(() =>
 ).annotations({
   identifier: "FunctionExecutionConfig",
 }) as any as S.Schema<FunctionExecutionConfig>;
-export type Permission = "ro" | "rw";
-export const Permission = S.Literal("ro", "rw");
+export type Permission = "ro" | "rw" | (string & {});
+export const Permission = S.String;
 export interface ResourceAccessPolicy {
   Permission?: Permission;
   ResourceId?: string;
@@ -2482,15 +2468,9 @@ export type BulkDeploymentStatus =
   | "Completed"
   | "Stopping"
   | "Stopped"
-  | "Failed";
-export const BulkDeploymentStatus = S.Literal(
-  "Initializing",
-  "Running",
-  "Completed",
-  "Stopping",
-  "Stopped",
-  "Failed",
-);
+  | "Failed"
+  | (string & {});
+export const BulkDeploymentStatus = S.String;
 export interface ConnectivityInfo {
   HostAddress?: string;
   Id?: string;
@@ -3818,8 +3798,8 @@ export const GroupInformation = S.suspend(() =>
 }) as any as S.Schema<GroupInformation>;
 export type __listOfGroupInformation = GroupInformation[];
 export const __listOfGroupInformation = S.Array(GroupInformation);
-export type ConfigurationSyncStatus = "InSync" | "OutOfSync";
-export const ConfigurationSyncStatus = S.Literal("InSync", "OutOfSync");
+export type ConfigurationSyncStatus = "InSync" | "OutOfSync" | (string & {});
+export const ConfigurationSyncStatus = S.String;
 export interface CreateConnectorDefinitionResponse {
   Arn?: string;
   CreationTimestamp?: string;

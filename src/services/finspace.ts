@@ -179,22 +179,22 @@ export type Port = number;
 export type IcmpTypeOrCode = number;
 
 //# Schemas
-export type FederationMode = "FEDERATED" | "LOCAL";
-export const FederationMode = S.Literal("FEDERATED", "LOCAL");
+export type FederationMode = "FEDERATED" | "LOCAL" | (string & {});
+export const FederationMode = S.String;
 export type DataBundleArns = string[];
 export const DataBundleArns = S.Array(S.String);
-export type KxClusterType = "HDB" | "RDB" | "GATEWAY" | "GP" | "TICKERPLANT";
-export const KxClusterType = S.Literal(
-  "HDB",
-  "RDB",
-  "GATEWAY",
-  "GP",
-  "TICKERPLANT",
-);
-export type KxAzMode = "SINGLE" | "MULTI";
-export const KxAzMode = S.Literal("SINGLE", "MULTI");
-export type KxVolumeType = "NAS_1";
-export const KxVolumeType = S.Literal("NAS_1");
+export type KxClusterType =
+  | "HDB"
+  | "RDB"
+  | "GATEWAY"
+  | "GP"
+  | "TICKERPLANT"
+  | (string & {});
+export const KxClusterType = S.String;
+export type KxAzMode = "SINGLE" | "MULTI" | (string & {});
+export const KxAzMode = S.String;
+export type KxVolumeType = "NAS_1" | (string & {});
+export const KxVolumeType = S.String;
 export type AvailabilityZoneIds = string[];
 export const AvailabilityZoneIds = S.Array(S.String);
 export type TagKeyList = string[];
@@ -1357,8 +1357,8 @@ export const UpdateKxUserRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateKxUserRequest",
 }) as any as S.Schema<UpdateKxUserRequest>;
-export type KxNAS1Type = "SSD_1000" | "SSD_250" | "HDD_12";
-export const KxNAS1Type = S.Literal("SSD_1000", "SSD_250", "HDD_12");
+export type KxNAS1Type = "SSD_1000" | "SSD_250" | "HDD_12" | (string & {});
+export const KxNAS1Type = S.String;
 export interface KxNAS1Configuration {
   type?: KxNAS1Type;
   size?: number;
@@ -1398,31 +1398,28 @@ export const UpdateKxVolumeRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateKxVolumeRequest",
 }) as any as S.Schema<UpdateKxVolumeRequest>;
-export type ChangeType = "PUT" | "DELETE";
-export const ChangeType = S.Literal("PUT", "DELETE");
+export type ChangeType = "PUT" | "DELETE" | (string & {});
+export const ChangeType = S.String;
 export type TickerplantLogVolumes = string[];
 export const TickerplantLogVolumes = S.Array(S.String);
-export type AutoScalingMetric = "CPU_UTILIZATION_PERCENTAGE";
-export const AutoScalingMetric = S.Literal("CPU_UTILIZATION_PERCENTAGE");
+export type AutoScalingMetric = "CPU_UTILIZATION_PERCENTAGE" | (string & {});
+export const AutoScalingMetric = S.String;
 export type SecurityGroupIdList = string[];
 export const SecurityGroupIdList = S.Array(S.String);
 export type SubnetIdList = string[];
 export const SubnetIdList = S.Array(S.String);
-export type IPAddressType = "IP_V4";
-export const IPAddressType = S.Literal("IP_V4");
-export type KxSavedownStorageType = "SDS01";
-export const KxSavedownStorageType = S.Literal("SDS01");
+export type IPAddressType = "IP_V4" | (string & {});
+export const IPAddressType = S.String;
+export type KxSavedownStorageType = "SDS01" | (string & {});
+export const KxSavedownStorageType = S.String;
 export type KxClusterCodeDeploymentStrategy =
   | "NO_RESTART"
   | "ROLLING"
-  | "FORCE";
-export const KxClusterCodeDeploymentStrategy = S.Literal(
-  "NO_RESTART",
-  "ROLLING",
-  "FORCE",
-);
-export type KxDeploymentStrategy = "NO_RESTART" | "ROLLING";
-export const KxDeploymentStrategy = S.Literal("NO_RESTART", "ROLLING");
+  | "FORCE"
+  | (string & {});
+export const KxClusterCodeDeploymentStrategy = S.String;
+export type KxDeploymentStrategy = "NO_RESTART" | "ROLLING" | (string & {});
+export const KxDeploymentStrategy = S.String;
 export interface SuperuserParameters {
   emailAddress: string | redacted.Redacted<string>;
   firstName: string;
@@ -1589,44 +1586,25 @@ export type EnvironmentStatus =
   | "UPDATE_NETWORK_REQUESTED"
   | "UPDATING_NETWORK"
   | "FAILED_UPDATING_NETWORK"
-  | "SUSPENDED";
-export const EnvironmentStatus = S.Literal(
-  "CREATE_REQUESTED",
-  "CREATING",
-  "CREATED",
-  "DELETE_REQUESTED",
-  "DELETING",
-  "DELETED",
-  "FAILED_CREATION",
-  "RETRY_DELETION",
-  "FAILED_DELETION",
-  "UPDATE_NETWORK_REQUESTED",
-  "UPDATING_NETWORK",
-  "FAILED_UPDATING_NETWORK",
-  "SUSPENDED",
-);
+  | "SUSPENDED"
+  | (string & {});
+export const EnvironmentStatus = S.String;
 export type KxScalingGroupStatus =
   | "CREATING"
   | "CREATE_FAILED"
   | "ACTIVE"
   | "DELETING"
   | "DELETED"
-  | "DELETE_FAILED";
-export const KxScalingGroupStatus = S.Literal(
-  "CREATING",
-  "CREATE_FAILED",
-  "ACTIVE",
-  "DELETING",
-  "DELETED",
-  "DELETE_FAILED",
-);
-export type ChangesetStatus = "PENDING" | "PROCESSING" | "FAILED" | "COMPLETED";
-export const ChangesetStatus = S.Literal(
-  "PENDING",
-  "PROCESSING",
-  "FAILED",
-  "COMPLETED",
-);
+  | "DELETE_FAILED"
+  | (string & {});
+export const KxScalingGroupStatus = S.String;
+export type ChangesetStatus =
+  | "PENDING"
+  | "PROCESSING"
+  | "FAILED"
+  | "COMPLETED"
+  | (string & {});
+export const ChangesetStatus = S.String;
 export type KxClusterStatus =
   | "PENDING"
   | "CREATING"
@@ -1635,56 +1613,33 @@ export type KxClusterStatus =
   | "UPDATING"
   | "DELETING"
   | "DELETED"
-  | "DELETE_FAILED";
-export const KxClusterStatus = S.Literal(
-  "PENDING",
-  "CREATING",
-  "CREATE_FAILED",
-  "RUNNING",
-  "UPDATING",
-  "DELETING",
-  "DELETED",
-  "DELETE_FAILED",
-);
+  | "DELETE_FAILED"
+  | (string & {});
+export const KxClusterStatus = S.String;
 export type KxDataviewStatus =
   | "CREATING"
   | "ACTIVE"
   | "UPDATING"
   | "FAILED"
-  | "DELETING";
-export const KxDataviewStatus = S.Literal(
-  "CREATING",
-  "ACTIVE",
-  "UPDATING",
-  "FAILED",
-  "DELETING",
-);
+  | "DELETING"
+  | (string & {});
+export const KxDataviewStatus = S.String;
 export type TgwStatus =
   | "NONE"
   | "UPDATE_REQUESTED"
   | "UPDATING"
   | "FAILED_UPDATE"
-  | "SUCCESSFULLY_UPDATED";
-export const TgwStatus = S.Literal(
-  "NONE",
-  "UPDATE_REQUESTED",
-  "UPDATING",
-  "FAILED_UPDATE",
-  "SUCCESSFULLY_UPDATED",
-);
+  | "SUCCESSFULLY_UPDATED"
+  | (string & {});
+export const TgwStatus = S.String;
 export type DnsStatus =
   | "NONE"
   | "UPDATE_REQUESTED"
   | "UPDATING"
   | "FAILED_UPDATE"
-  | "SUCCESSFULLY_UPDATED";
-export const DnsStatus = S.Literal(
-  "NONE",
-  "UPDATE_REQUESTED",
-  "UPDATING",
-  "FAILED_UPDATE",
-  "SUCCESSFULLY_UPDATED",
-);
+  | "SUCCESSFULLY_UPDATED"
+  | (string & {});
+export const DnsStatus = S.String;
 export type KxClusterNameList = string[];
 export const KxClusterNameList = S.Array(S.String);
 export type KxVolumeStatus =
@@ -1696,18 +1651,9 @@ export type KxVolumeStatus =
   | "UPDATE_FAILED"
   | "DELETING"
   | "DELETED"
-  | "DELETE_FAILED";
-export const KxVolumeStatus = S.Literal(
-  "CREATING",
-  "CREATE_FAILED",
-  "ACTIVE",
-  "UPDATING",
-  "UPDATED",
-  "UPDATE_FAILED",
-  "DELETING",
-  "DELETED",
-  "DELETE_FAILED",
-);
+  | "DELETE_FAILED"
+  | (string & {});
+export const KxVolumeStatus = S.String;
 export interface Environment {
   name?: string;
   environmentId?: string;
@@ -1769,8 +1715,8 @@ export type CustomDNSConfiguration = CustomDNSServer[];
 export const CustomDNSConfiguration = S.Array(CustomDNSServer);
 export type DbPaths = string[];
 export const DbPaths = S.Array(S.String);
-export type RuleAction = "allow" | "deny";
-export const RuleAction = S.Literal("allow", "deny");
+export type RuleAction = "allow" | "deny" | (string & {});
+export const RuleAction = S.String;
 export interface CreateKxChangesetRequest {
   environmentId: string;
   databaseName: string;
@@ -2515,21 +2461,13 @@ export type ErrorDetails =
   | "The system temporarily lacks sufficient resources to process the request."
   | "An internal error has occurred."
   | "Cancelled"
-  | "A user recoverable error has occurred";
-export const ErrorDetails = S.Literal(
-  "The inputs to this request are invalid.",
-  "Service limits have been exceeded.",
-  "Missing required permission to perform this request.",
-  "One or more inputs to this request were not found.",
-  "The system temporarily lacks sufficient resources to process the request.",
-  "An internal error has occurred.",
-  "Cancelled",
-  "A user recoverable error has occurred",
-);
-export type VolumeType = "NAS_1";
-export const VolumeType = S.Literal("NAS_1");
-export type KxNodeStatus = "RUNNING" | "PROVISIONING";
-export const KxNodeStatus = S.Literal("RUNNING", "PROVISIONING");
+  | "A user recoverable error has occurred"
+  | (string & {});
+export const ErrorDetails = S.String;
+export type VolumeType = "NAS_1" | (string & {});
+export const VolumeType = S.String;
+export type KxNodeStatus = "RUNNING" | "PROVISIONING" | (string & {});
+export const KxNodeStatus = S.String;
 export interface ErrorInfo {
   errorMessage?: string;
   errorType?: ErrorDetails;

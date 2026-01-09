@@ -122,31 +122,9 @@ export type QueueAttributeName =
   | "DeduplicationScope"
   | "FifoThroughputLimit"
   | "RedriveAllowPolicy"
-  | "SqsManagedSseEnabled";
-export const QueueAttributeName = S.Literal(
-  "All",
-  "Policy",
-  "VisibilityTimeout",
-  "MaximumMessageSize",
-  "MessageRetentionPeriod",
-  "ApproximateNumberOfMessages",
-  "ApproximateNumberOfMessagesNotVisible",
-  "CreatedTimestamp",
-  "LastModifiedTimestamp",
-  "QueueArn",
-  "ApproximateNumberOfMessagesDelayed",
-  "DelaySeconds",
-  "ReceiveMessageWaitTimeSeconds",
-  "RedrivePolicy",
-  "FifoQueue",
-  "ContentBasedDeduplication",
-  "KmsMasterKeyId",
-  "KmsDataKeyReusePeriodSeconds",
-  "DeduplicationScope",
-  "FifoThroughputLimit",
-  "RedriveAllowPolicy",
-  "SqsManagedSseEnabled",
-);
+  | "SqsManagedSseEnabled"
+  | (string & {});
+export const QueueAttributeName = S.String;
 export type AttributeNameList = QueueAttributeName[];
 export const AttributeNameList = S.Array(QueueAttributeName);
 export type MessageSystemAttributeName =
@@ -159,19 +137,9 @@ export type MessageSystemAttributeName =
   | "MessageDeduplicationId"
   | "MessageGroupId"
   | "AWSTraceHeader"
-  | "DeadLetterQueueSourceArn";
-export const MessageSystemAttributeName = S.Literal(
-  "All",
-  "SenderId",
-  "SentTimestamp",
-  "ApproximateReceiveCount",
-  "ApproximateFirstReceiveTimestamp",
-  "SequenceNumber",
-  "MessageDeduplicationId",
-  "MessageGroupId",
-  "AWSTraceHeader",
-  "DeadLetterQueueSourceArn",
-);
+  | "DeadLetterQueueSourceArn"
+  | (string & {});
+export const MessageSystemAttributeName = S.String;
 export type MessageSystemAttributeList = MessageSystemAttributeName[];
 export const MessageSystemAttributeList = S.Array(MessageSystemAttributeName);
 export type MessageAttributeNameList = string[];
@@ -501,8 +469,10 @@ export interface UntagQueueResponse {}
 export const UntagQueueResponse = S.suspend(() => S.Struct({})).annotations({
   identifier: "UntagQueueResponse",
 }) as any as S.Schema<UntagQueueResponse>;
-export type MessageSystemAttributeNameForSends = "AWSTraceHeader";
-export const MessageSystemAttributeNameForSends = S.Literal("AWSTraceHeader");
+export type MessageSystemAttributeNameForSends =
+  | "AWSTraceHeader"
+  | (string & {});
+export const MessageSystemAttributeNameForSends = S.String;
 export interface ChangeMessageVisibilityBatchRequestEntry {
   Id: string;
   ReceiptHandle: string;

@@ -108,12 +108,16 @@ export type SharedSecret = string | redacted.Redacted<string>;
 //# Schemas
 export type TagKeys = string[];
 export const TagKeys = S.Array(S.String);
-export type Size = "SMALL" | "MEDIUM" | "LARGE";
-export const Size = S.Literal("SMALL", "MEDIUM", "LARGE");
+export type Size = "SMALL" | "MEDIUM" | "LARGE" | (string & {});
+export const Size = S.String;
 export type StringList = string[];
 export const StringList = S.Array(S.String);
-export type PurchaseOption = "ONDEMAND" | "SPOT" | "CAPACITY_BLOCK";
-export const PurchaseOption = S.Literal("ONDEMAND", "SPOT", "CAPACITY_BLOCK");
+export type PurchaseOption =
+  | "ONDEMAND"
+  | "SPOT"
+  | "CAPACITY_BLOCK"
+  | (string & {});
+export const PurchaseOption = S.String;
 export interface ListTagsForResourceRequest {
   resourceArn: string;
 }
@@ -294,23 +298,20 @@ export const ListQueuesRequest = S.suspend(() =>
 ).annotations({
   identifier: "ListQueuesRequest",
 }) as any as S.Schema<ListQueuesRequest>;
-export type SchedulerType = "SLURM";
-export const SchedulerType = S.Literal("SLURM");
+export type SchedulerType = "SLURM" | (string & {});
+export const SchedulerType = S.String;
 export type SubnetIdList = string[];
 export const SubnetIdList = S.Array(S.String);
 export type SecurityGroupIdList = string[];
 export const SecurityGroupIdList = S.Array(S.String);
-export type NetworkType = "IPV4" | "IPV6";
-export const NetworkType = S.Literal("IPV4", "IPV6");
+export type NetworkType = "IPV4" | "IPV6" | (string & {});
+export const NetworkType = S.String;
 export type SpotAllocationStrategy =
   | "lowest-price"
   | "capacity-optimized"
-  | "price-capacity-optimized";
-export const SpotAllocationStrategy = S.Literal(
-  "lowest-price",
-  "capacity-optimized",
-  "price-capacity-optimized",
-);
+  | "price-capacity-optimized"
+  | (string & {});
+export const SpotAllocationStrategy = S.String;
 export type RequestTagMap = { [key: string]: string | undefined };
 export const RequestTagMap = S.Record({
   key: S.String,
@@ -428,10 +429,10 @@ export const UpdateQueueSlurmConfigurationRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateQueueSlurmConfigurationRequest",
 }) as any as S.Schema<UpdateQueueSlurmConfigurationRequest>;
-export type AccountingMode = "STANDARD" | "NONE";
-export const AccountingMode = S.Literal("STANDARD", "NONE");
-export type SlurmRestMode = "STANDARD" | "NONE";
-export const SlurmRestMode = S.Literal("STANDARD", "NONE");
+export type AccountingMode = "STANDARD" | "NONE" | (string & {});
+export const AccountingMode = S.String;
+export type SlurmRestMode = "STANDARD" | "NONE" | (string & {});
+export const SlurmRestMode = S.String;
 export interface TagResourceRequest {
   resourceArn: string;
   tags: { [key: string]: string | undefined };
@@ -612,20 +613,15 @@ export type ClusterStatus =
   | "DELETE_FAILED"
   | "UPDATE_FAILED"
   | "SUSPENDING"
-  | "SUSPENDED";
-export const ClusterStatus = S.Literal(
-  "CREATING",
-  "ACTIVE",
-  "UPDATING",
-  "DELETING",
-  "CREATE_FAILED",
-  "DELETE_FAILED",
-  "UPDATE_FAILED",
-  "SUSPENDING",
-  "SUSPENDED",
-);
-export type EndpointType = "SLURMCTLD" | "SLURMDBD" | "SLURMRESTD";
-export const EndpointType = S.Literal("SLURMCTLD", "SLURMDBD", "SLURMRESTD");
+  | "SUSPENDED"
+  | (string & {});
+export const ClusterStatus = S.String;
+export type EndpointType =
+  | "SLURMCTLD"
+  | "SLURMDBD"
+  | "SLURMRESTD"
+  | (string & {});
+export const EndpointType = S.String;
 export type ComputeNodeGroupStatus =
   | "CREATING"
   | "ACTIVE"
@@ -636,19 +632,9 @@ export type ComputeNodeGroupStatus =
   | "UPDATE_FAILED"
   | "DELETED"
   | "SUSPENDING"
-  | "SUSPENDED";
-export const ComputeNodeGroupStatus = S.Literal(
-  "CREATING",
-  "ACTIVE",
-  "UPDATING",
-  "DELETING",
-  "CREATE_FAILED",
-  "DELETE_FAILED",
-  "UPDATE_FAILED",
-  "DELETED",
-  "SUSPENDING",
-  "SUSPENDED",
-);
+  | "SUSPENDED"
+  | (string & {});
+export const ComputeNodeGroupStatus = S.String;
 export type QueueStatus =
   | "CREATING"
   | "ACTIVE"
@@ -658,18 +644,9 @@ export type QueueStatus =
   | "DELETE_FAILED"
   | "UPDATE_FAILED"
   | "SUSPENDING"
-  | "SUSPENDED";
-export const QueueStatus = S.Literal(
-  "CREATING",
-  "ACTIVE",
-  "UPDATING",
-  "DELETING",
-  "CREATE_FAILED",
-  "DELETE_FAILED",
-  "UPDATE_FAILED",
-  "SUSPENDING",
-  "SUSPENDED",
-);
+  | "SUSPENDED"
+  | (string & {});
+export const QueueStatus = S.String;
 export type ResponseTagMap = { [key: string]: string | undefined };
 export const ResponseTagMap = S.Record({
   key: S.String,
@@ -1160,13 +1137,9 @@ export type ValidationExceptionReason =
   | "unknownOperation"
   | "cannotParse"
   | "fieldValidationFailed"
-  | "other";
-export const ValidationExceptionReason = S.Literal(
-  "unknownOperation",
-  "cannotParse",
-  "fieldValidationFailed",
-  "other",
-);
+  | "other"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 export interface GetClusterResponse {
   cluster?: Cluster;
 }

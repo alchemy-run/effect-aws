@@ -137,12 +137,12 @@ export type ResourceTypeFilterList = string[];
 export const ResourceTypeFilterList = S.Array(S.String);
 export type TagKeyFilterList = string[];
 export const TagKeyFilterList = S.Array(S.String);
-export type GroupByAttribute = "TARGET_ID" | "REGION" | "RESOURCE_TYPE";
-export const GroupByAttribute = S.Literal(
-  "TARGET_ID",
-  "REGION",
-  "RESOURCE_TYPE",
-);
+export type GroupByAttribute =
+  | "TARGET_ID"
+  | "REGION"
+  | "RESOURCE_TYPE"
+  | (string & {});
+export const GroupByAttribute = S.String;
 export type GroupBy = GroupByAttribute[];
 export const GroupBy = S.Array(GroupByAttribute);
 export type ResourceARNListForGet = string[];
@@ -393,8 +393,8 @@ export const TagResourcesInput = S.suspend(() =>
 ).annotations({
   identifier: "TagResourcesInput",
 }) as any as S.Schema<TagResourcesInput>;
-export type TargetIdType = "ACCOUNT" | "OU" | "ROOT";
-export const TargetIdType = S.Literal("ACCOUNT", "OU", "ROOT");
+export type TargetIdType = "ACCOUNT" | "OU" | "ROOT" | (string & {});
+export const TargetIdType = S.String;
 export type CloudFormationResourceTypes = string[];
 export const CloudFormationResourceTypes = S.Array(S.String);
 export type ReportingTagKeys = string[];
@@ -435,11 +435,9 @@ export type RequiredTagsForListRequiredTags = RequiredTag[];
 export const RequiredTagsForListRequiredTags = S.Array(RequiredTag);
 export type ErrorCode =
   | "InternalServiceException"
-  | "InvalidParameterException";
-export const ErrorCode = S.Literal(
-  "InternalServiceException",
-  "InvalidParameterException",
-);
+  | "InvalidParameterException"
+  | (string & {});
+export const ErrorCode = S.String;
 export interface GetComplianceSummaryOutput {
   SummaryList?: Summary[];
   PaginationToken?: string;

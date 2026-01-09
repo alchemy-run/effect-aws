@@ -165,21 +165,9 @@ export type RuntimeEnvironment =
   | "ZEPPELIN-FLINK-3_0"
   | "FLINK-1_18"
   | "FLINK-1_19"
-  | "FLINK-1_20";
-export const RuntimeEnvironment = S.Literal(
-  "SQL-1_0",
-  "FLINK-1_6",
-  "FLINK-1_8",
-  "ZEPPELIN-FLINK-1_0",
-  "FLINK-1_11",
-  "FLINK-1_13",
-  "ZEPPELIN-FLINK-2_0",
-  "FLINK-1_15",
-  "ZEPPELIN-FLINK-3_0",
-  "FLINK-1_18",
-  "FLINK-1_19",
-  "FLINK-1_20",
-);
+  | "FLINK-1_20"
+  | (string & {});
+export const RuntimeEnvironment = S.String;
 export interface CloudWatchLoggingOption {
   LogStreamARN: string;
 }
@@ -190,21 +178,17 @@ export const CloudWatchLoggingOption = S.suspend(() =>
 }) as any as S.Schema<CloudWatchLoggingOption>;
 export type CloudWatchLoggingOptions = CloudWatchLoggingOption[];
 export const CloudWatchLoggingOptions = S.Array(CloudWatchLoggingOption);
-export type ApplicationMode = "STREAMING" | "INTERACTIVE";
-export const ApplicationMode = S.Literal("STREAMING", "INTERACTIVE");
-export type UrlType = "FLINK_DASHBOARD_URL" | "ZEPPELIN_UI_URL";
-export const UrlType = S.Literal("FLINK_DASHBOARD_URL", "ZEPPELIN_UI_URL");
+export type ApplicationMode = "STREAMING" | "INTERACTIVE" | (string & {});
+export const ApplicationMode = S.String;
+export type UrlType = "FLINK_DASHBOARD_URL" | "ZEPPELIN_UI_URL" | (string & {});
+export const UrlType = S.String;
 export type OperationStatus =
   | "IN_PROGRESS"
   | "CANCELLED"
   | "SUCCESSFUL"
-  | "FAILED";
-export const OperationStatus = S.Literal(
-  "IN_PROGRESS",
-  "CANCELLED",
-  "SUCCESSFUL",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const OperationStatus = S.String;
 export type TagKeys = string[];
 export const TagKeys = S.Array(S.String);
 export interface CreateApplicationPresignedUrlRequest {
@@ -752,12 +736,9 @@ export const VpcConfigurations = S.Array(VpcConfiguration);
 export type InputStartingPosition =
   | "NOW"
   | "TRIM_HORIZON"
-  | "LAST_STOPPED_POINT";
-export const InputStartingPosition = S.Literal(
-  "NOW",
-  "TRIM_HORIZON",
-  "LAST_STOPPED_POINT",
-);
+  | "LAST_STOPPED_POINT"
+  | (string & {});
+export const InputStartingPosition = S.String;
 export interface InputStartingPositionConfiguration {
   InputStartingPosition?: InputStartingPosition;
 }
@@ -775,15 +756,15 @@ export const S3Configuration = S.suspend(() =>
 ).annotations({
   identifier: "S3Configuration",
 }) as any as S.Schema<S3Configuration>;
-export type SnapshotStatus = "CREATING" | "READY" | "DELETING" | "FAILED";
-export const SnapshotStatus = S.Literal(
-  "CREATING",
-  "READY",
-  "DELETING",
-  "FAILED",
-);
-export type KeyType = "AWS_OWNED_KEY" | "CUSTOMER_MANAGED_KEY";
-export const KeyType = S.Literal("AWS_OWNED_KEY", "CUSTOMER_MANAGED_KEY");
+export type SnapshotStatus =
+  | "CREATING"
+  | "READY"
+  | "DELETING"
+  | "FAILED"
+  | (string & {});
+export const SnapshotStatus = S.String;
+export type KeyType = "AWS_OWNED_KEY" | "CUSTOMER_MANAGED_KEY" | (string & {});
+export const KeyType = S.String;
 export interface ApplicationEncryptionConfigurationDescription {
   KeyId?: string;
   KeyType: KeyType;
@@ -830,12 +811,9 @@ export const FlinkRunConfiguration = S.suspend(() =>
 export type ApplicationRestoreType =
   | "SKIP_RESTORE_FROM_SNAPSHOT"
   | "RESTORE_FROM_LATEST_SNAPSHOT"
-  | "RESTORE_FROM_CUSTOM_SNAPSHOT";
-export const ApplicationRestoreType = S.Literal(
-  "SKIP_RESTORE_FROM_SNAPSHOT",
-  "RESTORE_FROM_LATEST_SNAPSHOT",
-  "RESTORE_FROM_CUSTOM_SNAPSHOT",
-);
+  | "RESTORE_FROM_CUSTOM_SNAPSHOT"
+  | (string & {});
+export const ApplicationRestoreType = S.String;
 export interface ApplicationRestoreConfiguration {
   ApplicationRestoreType: ApplicationRestoreType;
   SnapshotName?: string;
@@ -886,8 +864,8 @@ export const ApplicationMaintenanceConfigurationUpdate = S.suspend(() =>
 ).annotations({
   identifier: "ApplicationMaintenanceConfigurationUpdate",
 }) as any as S.Schema<ApplicationMaintenanceConfigurationUpdate>;
-export type RecordFormatType = "JSON" | "CSV";
-export const RecordFormatType = S.Literal("JSON", "CSV");
+export type RecordFormatType = "JSON" | "CSV" | (string & {});
+export const RecordFormatType = S.String;
 export interface InputLambdaProcessor {
   ResourceARN: string;
 }
@@ -1086,8 +1064,8 @@ export const ReferenceDataSource = S.suspend(() =>
 }) as any as S.Schema<ReferenceDataSource>;
 export type ReferenceDataSources = ReferenceDataSource[];
 export const ReferenceDataSources = S.Array(ReferenceDataSource);
-export type CodeContentType = "PLAINTEXT" | "ZIPFILE";
-export const CodeContentType = S.Literal("PLAINTEXT", "ZIPFILE");
+export type CodeContentType = "PLAINTEXT" | "ZIPFILE" | (string & {});
+export const CodeContentType = S.String;
 export interface AddApplicationCloudWatchLoggingOptionRequest {
   ApplicationName: string;
   CurrentApplicationVersionId?: number;
@@ -1210,20 +1188,9 @@ export type ApplicationStatus =
   | "FORCE_STOPPING"
   | "ROLLING_BACK"
   | "MAINTENANCE"
-  | "ROLLED_BACK";
-export const ApplicationStatus = S.Literal(
-  "DELETING",
-  "STARTING",
-  "STOPPING",
-  "READY",
-  "RUNNING",
-  "UPDATING",
-  "AUTOSCALING",
-  "FORCE_STOPPING",
-  "ROLLING_BACK",
-  "MAINTENANCE",
-  "ROLLED_BACK",
-);
+  | "ROLLED_BACK"
+  | (string & {});
+export const ApplicationStatus = S.String;
 export type InAppStreamNames = string[];
 export const InAppStreamNames = S.Array(S.String);
 export interface InputLambdaProcessorDescription {
@@ -1460,8 +1427,8 @@ export const RunConfigurationDescription = S.suspend(() =>
 ).annotations({
   identifier: "RunConfigurationDescription",
 }) as any as S.Schema<RunConfigurationDescription>;
-export type ConfigurationType = "DEFAULT" | "CUSTOM";
-export const ConfigurationType = S.Literal("DEFAULT", "CUSTOM");
+export type ConfigurationType = "DEFAULT" | "CUSTOM" | (string & {});
+export const ConfigurationType = S.String;
 export interface CheckpointConfigurationDescription {
   ConfigurationType?: ConfigurationType;
   CheckpointingEnabled?: boolean;
@@ -1478,15 +1445,15 @@ export const CheckpointConfigurationDescription = S.suspend(() =>
 ).annotations({
   identifier: "CheckpointConfigurationDescription",
 }) as any as S.Schema<CheckpointConfigurationDescription>;
-export type MetricsLevel = "APPLICATION" | "TASK" | "OPERATOR" | "PARALLELISM";
-export const MetricsLevel = S.Literal(
-  "APPLICATION",
-  "TASK",
-  "OPERATOR",
-  "PARALLELISM",
-);
-export type LogLevel = "INFO" | "WARN" | "ERROR" | "DEBUG";
-export const LogLevel = S.Literal("INFO", "WARN", "ERROR", "DEBUG");
+export type MetricsLevel =
+  | "APPLICATION"
+  | "TASK"
+  | "OPERATOR"
+  | "PARALLELISM"
+  | (string & {});
+export const MetricsLevel = S.String;
+export type LogLevel = "INFO" | "WARN" | "ERROR" | "DEBUG" | (string & {});
+export const LogLevel = S.String;
 export interface MonitoringConfigurationDescription {
   ConfigurationType?: ConfigurationType;
   MetricsLevel?: MetricsLevel;
@@ -1645,8 +1612,8 @@ export const DeployAsApplicationConfigurationDescription = S.suspend(() =>
 ).annotations({
   identifier: "DeployAsApplicationConfigurationDescription",
 }) as any as S.Schema<DeployAsApplicationConfigurationDescription>;
-export type ArtifactType = "UDF" | "DEPENDENCY_JAR";
-export const ArtifactType = S.Literal("UDF", "DEPENDENCY_JAR");
+export type ArtifactType = "UDF" | "DEPENDENCY_JAR" | (string & {});
+export const ArtifactType = S.String;
 export interface S3ContentLocation {
   BucketARN: string;
   FileKey: string;

@@ -101,22 +101,19 @@ export const GetPreferencesRequest = S.suspend(() =>
 export type RateType =
   | "BEFORE_DISCOUNTS"
   | "AFTER_DISCOUNTS"
-  | "AFTER_DISCOUNTS_AND_COMMITMENTS";
-export const RateType = S.Literal(
-  "BEFORE_DISCOUNTS",
-  "AFTER_DISCOUNTS",
-  "AFTER_DISCOUNTS_AND_COMMITMENTS",
-);
+  | "AFTER_DISCOUNTS_AND_COMMITMENTS"
+  | (string & {});
+export const RateType = S.String;
 export type RateTypes = RateType[];
 export const RateTypes = S.Array(RateType);
 export type ResourceTagKeys = string[];
 export const ResourceTagKeys = S.Array(S.String);
-export type GroupSharingPreferenceEnum = "OPEN" | "PRIORITIZED" | "RESTRICTED";
-export const GroupSharingPreferenceEnum = S.Literal(
-  "OPEN",
-  "PRIORITIZED",
-  "RESTRICTED",
-);
+export type GroupSharingPreferenceEnum =
+  | "OPEN"
+  | "PRIORITIZED"
+  | "RESTRICTED"
+  | (string & {});
+export const GroupSharingPreferenceEnum = S.String;
 export type BatchDeleteBillScenarioCommitmentModificationEntries = string[];
 export const BatchDeleteBillScenarioCommitmentModificationEntries = S.Array(
   S.String,
@@ -128,12 +125,9 @@ export const BatchDeleteBillScenarioUsageModificationEntries = S.Array(
 export type WorkloadEstimateRateType =
   | "BEFORE_DISCOUNTS"
   | "AFTER_DISCOUNTS"
-  | "AFTER_DISCOUNTS_AND_COMMITMENTS";
-export const WorkloadEstimateRateType = S.Literal(
-  "BEFORE_DISCOUNTS",
-  "AFTER_DISCOUNTS",
-  "AFTER_DISCOUNTS_AND_COMMITMENTS",
-);
+  | "AFTER_DISCOUNTS_AND_COMMITMENTS"
+  | (string & {});
+export const WorkloadEstimateRateType = S.String;
 export type BatchDeleteWorkloadEstimateUsageEntries = string[];
 export const BatchDeleteWorkloadEstimateUsageEntries = S.Array(S.String);
 export interface GetPreferencesResponse {
@@ -400,24 +394,13 @@ export type ListUsageFilterName =
   | "HISTORICAL_SERVICE_CODE"
   | "HISTORICAL_USAGE_TYPE"
   | "HISTORICAL_OPERATION"
-  | "HISTORICAL_LOCATION";
-export const ListUsageFilterName = S.Literal(
-  "USAGE_ACCOUNT_ID",
-  "SERVICE_CODE",
-  "USAGE_TYPE",
-  "OPERATION",
-  "LOCATION",
-  "USAGE_GROUP",
-  "HISTORICAL_USAGE_ACCOUNT_ID",
-  "HISTORICAL_SERVICE_CODE",
-  "HISTORICAL_USAGE_TYPE",
-  "HISTORICAL_OPERATION",
-  "HISTORICAL_LOCATION",
-);
+  | "HISTORICAL_LOCATION"
+  | (string & {});
+export const ListUsageFilterName = S.String;
 export type ListUsageFilterValues = string[];
 export const ListUsageFilterValues = S.Array(S.String);
-export type MatchOption = "EQUALS" | "STARTS_WITH" | "CONTAINS";
-export const MatchOption = S.Literal("EQUALS", "STARTS_WITH", "CONTAINS");
+export type MatchOption = "EQUALS" | "STARTS_WITH" | "CONTAINS" | (string & {});
+export const MatchOption = S.String;
 export interface ListUsageFilter {
   name: ListUsageFilterName;
   values: string[];
@@ -561,8 +544,8 @@ export const BatchDeleteWorkloadEstimateUsageRequest = S.suspend(() =>
 ).annotations({
   identifier: "BatchDeleteWorkloadEstimateUsageRequest",
 }) as any as S.Schema<BatchDeleteWorkloadEstimateUsageRequest>;
-export type ListBillEstimatesFilterName = "STATUS" | "NAME";
-export const ListBillEstimatesFilterName = S.Literal("STATUS", "NAME");
+export type ListBillEstimatesFilterName = "STATUS" | "NAME" | (string & {});
+export const ListBillEstimatesFilterName = S.String;
 export type ListBillEstimatesFilterValues = string[];
 export const ListBillEstimatesFilterValues = S.Array(S.String);
 export type ListBillEstimateLineItemsFilterName =
@@ -571,40 +554,30 @@ export type ListBillEstimateLineItemsFilterName =
   | "USAGE_TYPE"
   | "OPERATION"
   | "LOCATION"
-  | "LINE_ITEM_TYPE";
-export const ListBillEstimateLineItemsFilterName = S.Literal(
-  "USAGE_ACCOUNT_ID",
-  "SERVICE_CODE",
-  "USAGE_TYPE",
-  "OPERATION",
-  "LOCATION",
-  "LINE_ITEM_TYPE",
-);
+  | "LINE_ITEM_TYPE"
+  | (string & {});
+export const ListBillEstimateLineItemsFilterName = S.String;
 export type ListBillEstimateLineItemsFilterValues = string[];
 export const ListBillEstimateLineItemsFilterValues = S.Array(S.String);
 export type ListBillScenariosFilterName =
   | "STATUS"
   | "NAME"
   | "GROUP_SHARING_PREFERENCE"
-  | "COST_CATEGORY_ARN";
-export const ListBillScenariosFilterName = S.Literal(
-  "STATUS",
-  "NAME",
-  "GROUP_SHARING_PREFERENCE",
-  "COST_CATEGORY_ARN",
-);
+  | "COST_CATEGORY_ARN"
+  | (string & {});
+export const ListBillScenariosFilterName = S.String;
 export type ListBillScenariosFilterValues = string[];
 export const ListBillScenariosFilterValues = S.Array(S.String);
-export type ListWorkloadEstimatesFilterName = "STATUS" | "NAME";
-export const ListWorkloadEstimatesFilterName = S.Literal("STATUS", "NAME");
+export type ListWorkloadEstimatesFilterName = "STATUS" | "NAME" | (string & {});
+export const ListWorkloadEstimatesFilterName = S.String;
 export type ListWorkloadEstimatesFilterValues = string[];
 export const ListWorkloadEstimatesFilterValues = S.Array(S.String);
-export type BillEstimateStatus = "IN_PROGRESS" | "COMPLETE" | "FAILED";
-export const BillEstimateStatus = S.Literal(
-  "IN_PROGRESS",
-  "COMPLETE",
-  "FAILED",
-);
+export type BillEstimateStatus =
+  | "IN_PROGRESS"
+  | "COMPLETE"
+  | "FAILED"
+  | (string & {});
+export const BillEstimateStatus = S.String;
 export interface ListBillEstimatesFilter {
   name: ListBillEstimatesFilterName;
   values: string[];
@@ -654,13 +627,13 @@ export type ListBillEstimateLineItemsFilters =
 export const ListBillEstimateLineItemsFilters = S.Array(
   ListBillEstimateLineItemsFilter,
 );
-export type BillScenarioStatus = "READY" | "LOCKED" | "FAILED" | "STALE";
-export const BillScenarioStatus = S.Literal(
-  "READY",
-  "LOCKED",
-  "FAILED",
-  "STALE",
-);
+export type BillScenarioStatus =
+  | "READY"
+  | "LOCKED"
+  | "FAILED"
+  | "STALE"
+  | (string & {});
+export const BillScenarioStatus = S.String;
 export interface ListBillScenariosFilter {
   name: ListBillScenariosFilterName;
   values: string[];
@@ -726,15 +699,11 @@ export type WorkloadEstimateStatus =
   | "UPDATING"
   | "VALID"
   | "INVALID"
-  | "ACTION_NEEDED";
-export const WorkloadEstimateStatus = S.Literal(
-  "UPDATING",
-  "VALID",
-  "INVALID",
-  "ACTION_NEEDED",
-);
-export type CurrencyCode = "USD";
-export const CurrencyCode = S.Literal("USD");
+  | "ACTION_NEEDED"
+  | (string & {});
+export const WorkloadEstimateStatus = S.String;
+export type CurrencyCode = "USD" | (string & {});
+export const CurrencyCode = S.String;
 export interface ListWorkloadEstimatesFilter {
   name: ListWorkloadEstimatesFilterName;
   values: string[];
@@ -1342,46 +1311,36 @@ export const BatchUpdateWorkloadEstimateUsageRequest = S.suspend(() =>
 ).annotations({
   identifier: "BatchUpdateWorkloadEstimateUsageRequest",
 }) as any as S.Schema<BatchUpdateWorkloadEstimateUsageRequest>;
-export type PurchaseAgreementType = "SAVINGS_PLANS" | "RESERVED_INSTANCE";
-export const PurchaseAgreementType = S.Literal(
-  "SAVINGS_PLANS",
-  "RESERVED_INSTANCE",
-);
+export type PurchaseAgreementType =
+  | "SAVINGS_PLANS"
+  | "RESERVED_INSTANCE"
+  | (string & {});
+export const PurchaseAgreementType = S.String;
 export type BatchDeleteBillScenarioCommitmentModificationErrorCode =
   | "BAD_REQUEST"
   | "CONFLICT"
-  | "INTERNAL_SERVER_ERROR";
-export const BatchDeleteBillScenarioCommitmentModificationErrorCode = S.Literal(
-  "BAD_REQUEST",
-  "CONFLICT",
-  "INTERNAL_SERVER_ERROR",
-);
+  | "INTERNAL_SERVER_ERROR"
+  | (string & {});
+export const BatchDeleteBillScenarioCommitmentModificationErrorCode = S.String;
 export type BatchDeleteBillScenarioUsageModificationErrorCode =
   | "BAD_REQUEST"
   | "CONFLICT"
-  | "INTERNAL_SERVER_ERROR";
-export const BatchDeleteBillScenarioUsageModificationErrorCode = S.Literal(
-  "BAD_REQUEST",
-  "CONFLICT",
-  "INTERNAL_SERVER_ERROR",
-);
-export type WorkloadEstimateCostStatus = "VALID" | "INVALID" | "STALE";
-export const WorkloadEstimateCostStatus = S.Literal(
-  "VALID",
-  "INVALID",
-  "STALE",
-);
+  | "INTERNAL_SERVER_ERROR"
+  | (string & {});
+export const BatchDeleteBillScenarioUsageModificationErrorCode = S.String;
+export type WorkloadEstimateCostStatus =
+  | "VALID"
+  | "INVALID"
+  | "STALE"
+  | (string & {});
+export const WorkloadEstimateCostStatus = S.String;
 export type WorkloadEstimateUpdateUsageErrorCode =
   | "BAD_REQUEST"
   | "NOT_FOUND"
   | "CONFLICT"
-  | "INTERNAL_SERVER_ERROR";
-export const WorkloadEstimateUpdateUsageErrorCode = S.Literal(
-  "BAD_REQUEST",
-  "NOT_FOUND",
-  "CONFLICT",
-  "INTERNAL_SERVER_ERROR",
-);
+  | "INTERNAL_SERVER_ERROR"
+  | (string & {});
+export const WorkloadEstimateUpdateUsageErrorCode = S.String;
 export type ExpressionList = Expression[];
 export const ExpressionList = S.Array(
   S.suspend((): S.Schema<Expression, any> => Expression).annotations({
@@ -1621,13 +1580,9 @@ export type BatchUpdateBillScenarioCommitmentModificationErrorCode =
   | "BAD_REQUEST"
   | "NOT_FOUND"
   | "CONFLICT"
-  | "INTERNAL_SERVER_ERROR";
-export const BatchUpdateBillScenarioCommitmentModificationErrorCode = S.Literal(
-  "BAD_REQUEST",
-  "NOT_FOUND",
-  "CONFLICT",
-  "INTERNAL_SERVER_ERROR",
-);
+  | "INTERNAL_SERVER_ERROR"
+  | (string & {});
+export const BatchUpdateBillScenarioCommitmentModificationErrorCode = S.String;
 export interface UsageQuantity {
   startHour?: Date;
   unit?: string;
@@ -1648,13 +1603,9 @@ export type BatchUpdateBillScenarioUsageModificationErrorCode =
   | "BAD_REQUEST"
   | "NOT_FOUND"
   | "CONFLICT"
-  | "INTERNAL_SERVER_ERROR";
-export const BatchUpdateBillScenarioUsageModificationErrorCode = S.Literal(
-  "BAD_REQUEST",
-  "NOT_FOUND",
-  "CONFLICT",
-  "INTERNAL_SERVER_ERROR",
-);
+  | "INTERNAL_SERVER_ERROR"
+  | (string & {});
+export const BatchUpdateBillScenarioUsageModificationErrorCode = S.String;
 export interface WorkloadEstimateUsageQuantity {
   unit?: string;
   amount?: number;
@@ -1668,13 +1619,9 @@ export type BatchCreateWorkloadEstimateUsageCode =
   | "BAD_REQUEST"
   | "NOT_FOUND"
   | "CONFLICT"
-  | "INTERNAL_SERVER_ERROR";
-export const BatchCreateWorkloadEstimateUsageCode = S.Literal(
-  "BAD_REQUEST",
-  "NOT_FOUND",
-  "CONFLICT",
-  "INTERNAL_SERVER_ERROR",
-);
+  | "INTERNAL_SERVER_ERROR"
+  | (string & {});
+export const BatchCreateWorkloadEstimateUsageCode = S.String;
 export interface BillEstimateSummary {
   id: string;
   name?: string;
@@ -2327,12 +2274,9 @@ export const BatchCreateBillScenarioUsageModificationRequest = S.suspend(() =>
 export type BatchCreateBillScenarioCommitmentModificationErrorCode =
   | "CONFLICT"
   | "INTERNAL_SERVER_ERROR"
-  | "INVALID_ACCOUNT";
-export const BatchCreateBillScenarioCommitmentModificationErrorCode = S.Literal(
-  "CONFLICT",
-  "INTERNAL_SERVER_ERROR",
-  "INVALID_ACCOUNT",
-);
+  | "INVALID_ACCOUNT"
+  | (string & {});
+export const BatchCreateBillScenarioCommitmentModificationErrorCode = S.String;
 export interface BatchCreateBillScenarioCommitmentModificationItem {
   key?: string;
   id?: string;
@@ -2395,13 +2339,9 @@ export type BatchCreateBillScenarioUsageModificationErrorCode =
   | "BAD_REQUEST"
   | "NOT_FOUND"
   | "CONFLICT"
-  | "INTERNAL_SERVER_ERROR";
-export const BatchCreateBillScenarioUsageModificationErrorCode = S.Literal(
-  "BAD_REQUEST",
-  "NOT_FOUND",
-  "CONFLICT",
-  "INTERNAL_SERVER_ERROR",
-);
+  | "INTERNAL_SERVER_ERROR"
+  | (string & {});
+export const BatchCreateBillScenarioUsageModificationErrorCode = S.String;
 export interface BatchCreateBillScenarioUsageModificationItem {
   serviceCode: string;
   usageType: string;

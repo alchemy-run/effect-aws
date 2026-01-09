@@ -123,28 +123,22 @@ export const GetConfigurationRequest = S.suspend(() =>
 ).annotations({
   identifier: "GetConfigurationRequest",
 }) as any as S.Schema<GetConfigurationRequest>;
-export type ResourceType = "CFN_STACK" | "RESOURCE_TAG_VALUE";
-export const ResourceType = S.Literal("CFN_STACK", "RESOURCE_TAG_VALUE");
+export type ResourceType = "CFN_STACK" | "RESOURCE_TAG_VALUE" | (string & {});
+export const ResourceType = S.String;
 export type AssociationOption =
   | "APPLY_APPLICATION_TAG"
-  | "SKIP_APPLICATION_TAG";
-export const AssociationOption = S.Literal(
-  "APPLY_APPLICATION_TAG",
-  "SKIP_APPLICATION_TAG",
-);
+  | "SKIP_APPLICATION_TAG"
+  | (string & {});
+export const AssociationOption = S.String;
 export type Options = AssociationOption[];
 export const Options = S.Array(AssociationOption);
 export type ResourceItemStatus =
   | "SUCCESS"
   | "FAILED"
   | "IN_PROGRESS"
-  | "SKIPPED";
-export const ResourceItemStatus = S.Literal(
-  "SUCCESS",
-  "FAILED",
-  "IN_PROGRESS",
-  "SKIPPED",
-);
+  | "SKIPPED"
+  | (string & {});
+export const ResourceItemStatus = S.String;
 export type GetAssociatedResourceFilter = ResourceItemStatus[];
 export const GetAssociatedResourceFilter = S.Array(ResourceItemStatus);
 export type TagKeys = string[];
@@ -726,8 +720,8 @@ export const AttributeGroupSummary = S.suspend(() =>
 }) as any as S.Schema<AttributeGroupSummary>;
 export type AttributeGroupSummaries = AttributeGroupSummary[];
 export const AttributeGroupSummaries = S.Array(AttributeGroupSummary);
-export type SyncAction = "START_SYNC" | "NO_ACTION";
-export const SyncAction = S.Literal("START_SYNC", "NO_ACTION");
+export type SyncAction = "START_SYNC" | "NO_ACTION" | (string & {});
+export const SyncAction = S.String;
 export interface AssociateAttributeGroupResponse {
   applicationArn?: string;
   attributeGroupArn?: string;
@@ -917,12 +911,12 @@ export const UpdateAttributeGroupResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateAttributeGroupResponse",
 }) as any as S.Schema<UpdateAttributeGroupResponse>;
-export type ApplicationTagStatus = "IN_PROGRESS" | "SUCCESS" | "FAILURE";
-export const ApplicationTagStatus = S.Literal(
-  "IN_PROGRESS",
-  "SUCCESS",
-  "FAILURE",
-);
+export type ApplicationTagStatus =
+  | "IN_PROGRESS"
+  | "SUCCESS"
+  | "FAILURE"
+  | (string & {});
+export const ApplicationTagStatus = S.String;
 export type ApplicationTagDefinition = { [key: string]: string | undefined };
 export const ApplicationTagDefinition = S.Record({
   key: S.String,
@@ -974,15 +968,9 @@ export type ResourceGroupState =
   | "CREATE_FAILED"
   | "UPDATING"
   | "UPDATE_COMPLETE"
-  | "UPDATE_FAILED";
-export const ResourceGroupState = S.Literal(
-  "CREATING",
-  "CREATE_COMPLETE",
-  "CREATE_FAILED",
-  "UPDATING",
-  "UPDATE_COMPLETE",
-  "UPDATE_FAILED",
-);
+  | "UPDATE_FAILED"
+  | (string & {});
+export const ResourceGroupState = S.String;
 export interface CreateApplicationResponse {
   application?: Application;
 }

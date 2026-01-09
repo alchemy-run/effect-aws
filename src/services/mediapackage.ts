@@ -91,8 +91,8 @@ export type MaxResults = number;
 export type SensitiveString = string | redacted.Redacted<string>;
 
 //# Schemas
-export type Origination = "ALLOW" | "DENY";
-export const Origination = S.Literal("ALLOW", "DENY");
+export type Origination = "ALLOW" | "DENY" | (string & {});
+export const Origination = S.String;
 export type __listOf__string = string[];
 export const __listOf__string = S.Array(S.String);
 export interface DeleteChannelRequest {
@@ -379,21 +379,16 @@ export const Authorization = S.suspend(() =>
 ).annotations({
   identifier: "Authorization",
 }) as any as S.Schema<Authorization>;
-export type CmafEncryptionMethod = "SAMPLE_AES" | "AES_CTR";
-export const CmafEncryptionMethod = S.Literal("SAMPLE_AES", "AES_CTR");
+export type CmafEncryptionMethod = "SAMPLE_AES" | "AES_CTR" | (string & {});
+export const CmafEncryptionMethod = S.String;
 export type PresetSpeke20Audio =
   | "PRESET-AUDIO-1"
   | "PRESET-AUDIO-2"
   | "PRESET-AUDIO-3"
   | "SHARED"
-  | "UNENCRYPTED";
-export const PresetSpeke20Audio = S.Literal(
-  "PRESET-AUDIO-1",
-  "PRESET-AUDIO-2",
-  "PRESET-AUDIO-3",
-  "SHARED",
-  "UNENCRYPTED",
-);
+  | "UNENCRYPTED"
+  | (string & {});
+export const PresetSpeke20Audio = S.String;
 export type PresetSpeke20Video =
   | "PRESET-VIDEO-1"
   | "PRESET-VIDEO-2"
@@ -404,19 +399,9 @@ export type PresetSpeke20Video =
   | "PRESET-VIDEO-7"
   | "PRESET-VIDEO-8"
   | "SHARED"
-  | "UNENCRYPTED";
-export const PresetSpeke20Video = S.Literal(
-  "PRESET-VIDEO-1",
-  "PRESET-VIDEO-2",
-  "PRESET-VIDEO-3",
-  "PRESET-VIDEO-4",
-  "PRESET-VIDEO-5",
-  "PRESET-VIDEO-6",
-  "PRESET-VIDEO-7",
-  "PRESET-VIDEO-8",
-  "SHARED",
-  "UNENCRYPTED",
-);
+  | "UNENCRYPTED"
+  | (string & {});
+export const PresetSpeke20Video = S.String;
 export interface EncryptionContractConfiguration {
   PresetSpeke20Audio?: PresetSpeke20Audio;
   PresetSpeke20Video?: PresetSpeke20Video;
@@ -483,13 +468,9 @@ export type AdMarkers =
   | "NONE"
   | "SCTE35_ENHANCED"
   | "PASSTHROUGH"
-  | "DATERANGE";
-export const AdMarkers = S.Literal(
-  "NONE",
-  "SCTE35_ENHANCED",
-  "PASSTHROUGH",
-  "DATERANGE",
-);
+  | "DATERANGE"
+  | (string & {});
+export const AdMarkers = S.String;
 export type __AdTriggersElement =
   | "SPLICE_INSERT"
   | "BREAK"
@@ -498,32 +479,20 @@ export type __AdTriggersElement =
   | "PROVIDER_PLACEMENT_OPPORTUNITY"
   | "DISTRIBUTOR_PLACEMENT_OPPORTUNITY"
   | "PROVIDER_OVERLAY_PLACEMENT_OPPORTUNITY"
-  | "DISTRIBUTOR_OVERLAY_PLACEMENT_OPPORTUNITY";
-export const __AdTriggersElement = S.Literal(
-  "SPLICE_INSERT",
-  "BREAK",
-  "PROVIDER_ADVERTISEMENT",
-  "DISTRIBUTOR_ADVERTISEMENT",
-  "PROVIDER_PLACEMENT_OPPORTUNITY",
-  "DISTRIBUTOR_PLACEMENT_OPPORTUNITY",
-  "PROVIDER_OVERLAY_PLACEMENT_OPPORTUNITY",
-  "DISTRIBUTOR_OVERLAY_PLACEMENT_OPPORTUNITY",
-);
+  | "DISTRIBUTOR_OVERLAY_PLACEMENT_OPPORTUNITY"
+  | (string & {});
+export const __AdTriggersElement = S.String;
 export type AdTriggers = __AdTriggersElement[];
 export const AdTriggers = S.Array(__AdTriggersElement);
 export type AdsOnDeliveryRestrictions =
   | "NONE"
   | "RESTRICTED"
   | "UNRESTRICTED"
-  | "BOTH";
-export const AdsOnDeliveryRestrictions = S.Literal(
-  "NONE",
-  "RESTRICTED",
-  "UNRESTRICTED",
-  "BOTH",
-);
-export type PlaylistType = "NONE" | "EVENT" | "VOD";
-export const PlaylistType = S.Literal("NONE", "EVENT", "VOD");
+  | "BOTH"
+  | (string & {});
+export const AdsOnDeliveryRestrictions = S.String;
+export type PlaylistType = "NONE" | "EVENT" | "VOD" | (string & {});
+export const PlaylistType = S.String;
 export interface HlsManifestCreateOrUpdateParameters {
   AdMarkers?: AdMarkers;
   AdTriggers?: __AdTriggersElement[];
@@ -566,12 +535,9 @@ export const __listOfHlsManifestCreateOrUpdateParameters = S.Array(
 export type StreamOrder =
   | "ORIGINAL"
   | "VIDEO_BITRATE_ASCENDING"
-  | "VIDEO_BITRATE_DESCENDING";
-export const StreamOrder = S.Literal(
-  "ORIGINAL",
-  "VIDEO_BITRATE_ASCENDING",
-  "VIDEO_BITRATE_DESCENDING",
-);
+  | "VIDEO_BITRATE_DESCENDING"
+  | (string & {});
+export const StreamOrder = S.String;
 export interface StreamSelection {
   MaxVideoBitsPerSecond?: number;
   MinVideoBitsPerSecond?: number;
@@ -632,39 +598,36 @@ export const DashEncryption = S.suspend(() =>
 ).annotations({
   identifier: "DashEncryption",
 }) as any as S.Schema<DashEncryption>;
-export type ManifestLayout = "FULL" | "COMPACT" | "DRM_TOP_LEVEL_COMPACT";
-export const ManifestLayout = S.Literal(
-  "FULL",
-  "COMPACT",
-  "DRM_TOP_LEVEL_COMPACT",
-);
-export type __PeriodTriggersElement = "ADS";
-export const __PeriodTriggersElement = S.Literal("ADS");
+export type ManifestLayout =
+  | "FULL"
+  | "COMPACT"
+  | "DRM_TOP_LEVEL_COMPACT"
+  | (string & {});
+export const ManifestLayout = S.String;
+export type __PeriodTriggersElement = "ADS" | (string & {});
+export const __PeriodTriggersElement = S.String;
 export type __listOf__PeriodTriggersElement = __PeriodTriggersElement[];
 export const __listOf__PeriodTriggersElement = S.Array(__PeriodTriggersElement);
-export type Profile = "NONE" | "HBBTV_1_5" | "HYBRIDCAST" | "DVB_DASH_2014";
-export const Profile = S.Literal(
-  "NONE",
-  "HBBTV_1_5",
-  "HYBRIDCAST",
-  "DVB_DASH_2014",
-);
+export type Profile =
+  | "NONE"
+  | "HBBTV_1_5"
+  | "HYBRIDCAST"
+  | "DVB_DASH_2014"
+  | (string & {});
+export const Profile = S.String;
 export type SegmentTemplateFormat =
   | "NUMBER_WITH_TIMELINE"
   | "TIME_WITH_TIMELINE"
-  | "NUMBER_WITH_DURATION";
-export const SegmentTemplateFormat = S.Literal(
-  "NUMBER_WITH_TIMELINE",
-  "TIME_WITH_TIMELINE",
-  "NUMBER_WITH_DURATION",
-);
-export type UtcTiming = "NONE" | "HTTP-HEAD" | "HTTP-ISO" | "HTTP-XSDATE";
-export const UtcTiming = S.Literal(
-  "NONE",
-  "HTTP-HEAD",
-  "HTTP-ISO",
-  "HTTP-XSDATE",
-);
+  | "NUMBER_WITH_DURATION"
+  | (string & {});
+export const SegmentTemplateFormat = S.String;
+export type UtcTiming =
+  | "NONE"
+  | "HTTP-HEAD"
+  | "HTTP-ISO"
+  | "HTTP-XSDATE"
+  | (string & {});
+export const UtcTiming = S.String;
 export interface DashPackage {
   AdTriggers?: __AdTriggersElement[];
   AdsOnDeliveryRestrictions?: AdsOnDeliveryRestrictions;
@@ -727,8 +690,8 @@ export const DashPackage = S.suspend(() =>
     UtcTimingUri: S.optional(S.String).pipe(T.JsonName("utcTimingUri")),
   }),
 ).annotations({ identifier: "DashPackage" }) as any as S.Schema<DashPackage>;
-export type EncryptionMethod = "AES_128" | "SAMPLE_AES";
-export const EncryptionMethod = S.Literal("AES_128", "SAMPLE_AES");
+export type EncryptionMethod = "AES_128" | "SAMPLE_AES" | (string & {});
+export const EncryptionMethod = S.String;
 export interface HlsEncryption {
   ConstantInitializationVector?: string;
   EncryptionMethod?: EncryptionMethod;
@@ -926,8 +889,8 @@ export const S3Destination = S.suspend(() =>
 ).annotations({
   identifier: "S3Destination",
 }) as any as S.Schema<S3Destination>;
-export type Status = "IN_PROGRESS" | "SUCCEEDED" | "FAILED";
-export const Status = S.Literal("IN_PROGRESS", "SUCCEEDED", "FAILED");
+export type Status = "IN_PROGRESS" | "SUCCEEDED" | "FAILED" | (string & {});
+export const Status = S.String;
 export type __mapOf__string = { [key: string]: string | undefined };
 export const __mapOf__string = S.Record({
   key: S.String,

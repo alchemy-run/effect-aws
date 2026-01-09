@@ -106,12 +106,12 @@ export type RoleArn = string;
 //# Schemas
 export type __listOfString = string[];
 export const __listOfString = S.Array(S.String);
-export type DesiredState = "ACTIVE" | "STANDBY" | "DELETED";
-export const DesiredState = S.Literal("ACTIVE", "STANDBY", "DELETED");
-export type Algorithm = "aes128" | "aes192" | "aes256";
-export const Algorithm = S.Literal("aes128", "aes192", "aes256");
-export type KeyType = "speke" | "static-key" | "srt-password";
-export const KeyType = S.Literal("speke", "static-key", "srt-password");
+export type DesiredState = "ACTIVE" | "STANDBY" | "DELETED" | (string & {});
+export const DesiredState = S.String;
+export type Algorithm = "aes128" | "aes192" | "aes256" | (string & {});
+export const Algorithm = S.String;
+export type KeyType = "speke" | "static-key" | "srt-password" | (string & {});
+export const KeyType = S.String;
 export interface Encryption {
   Algorithm?: Algorithm;
   ConstantInitializationVector?: string;
@@ -138,8 +138,8 @@ export const Encryption = S.suspend(() =>
     Url: S.optional(S.String).pipe(T.JsonName("url")),
   }),
 ).annotations({ identifier: "Encryption" }) as any as S.Schema<Encryption>;
-export type EncodingName = "jxsv" | "raw" | "smpte291" | "pcm";
-export const EncodingName = S.Literal("jxsv", "raw", "smpte291", "pcm");
+export type EncodingName = "jxsv" | "raw" | "smpte291" | "pcm" | (string & {});
+export const EncodingName = S.String;
 export interface InterfaceRequest {
   Name?: string;
 }
@@ -199,21 +199,9 @@ export type Protocol =
   | "srt-caller"
   | "fujitsu-qos"
   | "udp"
-  | "ndi-speed-hq";
-export const Protocol = S.Literal(
-  "zixi-push",
-  "rtp-fec",
-  "rtp",
-  "zixi-pull",
-  "rist",
-  "st2110-jpegxs",
-  "cdi",
-  "srt-listener",
-  "srt-caller",
-  "fujitsu-qos",
-  "udp",
-  "ndi-speed-hq",
-);
+  | "ndi-speed-hq"
+  | (string & {});
+export const Protocol = S.String;
 export interface VpcInterfaceAttachment {
   VpcInterfaceName?: string;
 }
@@ -243,13 +231,13 @@ export const __mapOfString = S.Record({
   key: S.String,
   value: S.UndefinedOr(S.String),
 });
-export type State = "ENABLED" | "DISABLED";
-export const State = S.Literal("ENABLED", "DISABLED");
-export type FlowTransitEncryptionKeyType = "SECRETS_MANAGER" | "AUTOMATIC";
-export const FlowTransitEncryptionKeyType = S.Literal(
-  "SECRETS_MANAGER",
-  "AUTOMATIC",
-);
+export type State = "ENABLED" | "DISABLED" | (string & {});
+export const State = S.String;
+export type FlowTransitEncryptionKeyType =
+  | "SECRETS_MANAGER"
+  | "AUTOMATIC"
+  | (string & {});
+export const FlowTransitEncryptionKeyType = S.String;
 export interface SecretsManagerEncryptionKeyConfiguration {
   SecretArn: string;
   RoleArn: string;
@@ -372,30 +360,38 @@ export const SetSourceRequest = S.suspend(() =>
 }) as any as S.Schema<SetSourceRequest>;
 export type __listOfSetSourceRequest = SetSourceRequest[];
 export const __listOfSetSourceRequest = S.Array(SetSourceRequest);
-export type FlowSize = "MEDIUM" | "LARGE";
-export const FlowSize = S.Literal("MEDIUM", "LARGE");
-export type EntitlementStatus = "ENABLED" | "DISABLED";
-export const EntitlementStatus = S.Literal("ENABLED", "DISABLED");
-export type MediaStreamType = "video" | "audio" | "ancillary-data";
-export const MediaStreamType = S.Literal("video", "audio", "ancillary-data");
-export type OutputStatus = "ENABLED" | "DISABLED";
-export const OutputStatus = S.Literal("ENABLED", "DISABLED");
-export type BridgePlacement = "AVAILABLE" | "LOCKED";
-export const BridgePlacement = S.Literal("AVAILABLE", "LOCKED");
-export type RoutingScope = "REGIONAL" | "GLOBAL";
-export const RoutingScope = S.Literal("REGIONAL", "GLOBAL");
-export type RouterInputTier = "INPUT_100" | "INPUT_50" | "INPUT_20";
-export const RouterInputTier = S.Literal("INPUT_100", "INPUT_50", "INPUT_20");
+export type FlowSize = "MEDIUM" | "LARGE" | (string & {});
+export const FlowSize = S.String;
+export type EntitlementStatus = "ENABLED" | "DISABLED" | (string & {});
+export const EntitlementStatus = S.String;
+export type MediaStreamType =
+  | "video"
+  | "audio"
+  | "ancillary-data"
+  | (string & {});
+export const MediaStreamType = S.String;
+export type OutputStatus = "ENABLED" | "DISABLED" | (string & {});
+export const OutputStatus = S.String;
+export type BridgePlacement = "AVAILABLE" | "LOCKED" | (string & {});
+export const BridgePlacement = S.String;
+export type RoutingScope = "REGIONAL" | "GLOBAL" | (string & {});
+export const RoutingScope = S.String;
+export type RouterInputTier =
+  | "INPUT_100"
+  | "INPUT_50"
+  | "INPUT_20"
+  | (string & {});
+export const RouterInputTier = S.String;
 export type RouterInputArnList = string[];
 export const RouterInputArnList = S.Array(S.String);
 export type RouterNetworkInterfaceArnList = string[];
 export const RouterNetworkInterfaceArnList = S.Array(S.String);
-export type RouterOutputTier = "OUTPUT_100" | "OUTPUT_50" | "OUTPUT_20";
-export const RouterOutputTier = S.Literal(
-  "OUTPUT_100",
-  "OUTPUT_50",
-  "OUTPUT_20",
-);
+export type RouterOutputTier =
+  | "OUTPUT_100"
+  | "OUTPUT_50"
+  | "OUTPUT_20"
+  | (string & {});
+export const RouterOutputTier = S.String;
 export type RouterOutputArnList = string[];
 export const RouterOutputArnList = S.Array(S.String);
 export interface ListEntitlementsRequest {
@@ -866,27 +862,17 @@ export type Colorimetry =
   | "BT2100"
   | "ST2065-1"
   | "ST2065-3"
-  | "XYZ";
-export const Colorimetry = S.Literal(
-  "BT601",
-  "BT709",
-  "BT2020",
-  "BT2100",
-  "ST2065-1",
-  "ST2065-3",
-  "XYZ",
-);
-export type Range = "NARROW" | "FULL" | "FULLPROTECT";
-export const Range = S.Literal("NARROW", "FULL", "FULLPROTECT");
+  | "XYZ"
+  | (string & {});
+export const Colorimetry = S.String;
+export type Range = "NARROW" | "FULL" | "FULLPROTECT" | (string & {});
+export const Range = S.String;
 export type ScanMode =
   | "progressive"
   | "interlace"
-  | "progressive-segmented-frame";
-export const ScanMode = S.Literal(
-  "progressive",
-  "interlace",
-  "progressive-segmented-frame",
-);
+  | "progressive-segmented-frame"
+  | (string & {});
+export const ScanMode = S.String;
 export type Tcs =
   | "SDR"
   | "PQ"
@@ -896,18 +882,9 @@ export type Tcs =
   | "BT2100LINHLG"
   | "ST2065-1"
   | "ST428-1"
-  | "DENSITY";
-export const Tcs = S.Literal(
-  "SDR",
-  "PQ",
-  "HLG",
-  "LINEAR",
-  "BT2100LINPQ",
-  "BT2100LINHLG",
-  "ST2065-1",
-  "ST428-1",
-  "DENSITY",
-);
+  | "DENSITY"
+  | (string & {});
+export const Tcs = S.String;
 export interface FmtpRequest {
   ChannelOrder?: string;
   Colorimetry?: Colorimetry;
@@ -1018,8 +995,8 @@ export type __listOfDestinationConfigurationRequest =
 export const __listOfDestinationConfigurationRequest = S.Array(
   DestinationConfigurationRequest,
 );
-export type EncoderProfile = "main" | "high";
-export const EncoderProfile = S.Literal("main", "high");
+export type EncoderProfile = "main" | "high" | (string & {});
+export const EncoderProfile = S.String;
 export interface EncodingParametersRequest {
   CompressionFactor?: number;
   EncoderProfile?: EncoderProfile;
@@ -1169,8 +1146,8 @@ export const AddFlowSourcesRequest = S.suspend(() =>
 ).annotations({
   identifier: "AddFlowSourcesRequest",
 }) as any as S.Schema<AddFlowSourcesRequest>;
-export type NetworkInterfaceType = "ena" | "efa";
-export const NetworkInterfaceType = S.Literal("ena", "efa");
+export type NetworkInterfaceType = "ena" | "efa" | (string & {});
+export const NetworkInterfaceType = S.String;
 export interface VpcInterfaceRequest {
   Name?: string;
   NetworkInterfaceType?: NetworkInterfaceType;
@@ -1733,8 +1710,11 @@ export const GetRouterInputRequest = S.suspend(() =>
 ).annotations({
   identifier: "GetRouterInputRequest",
 }) as any as S.Schema<GetRouterInputRequest>;
-export type ForwardErrorCorrectionState = "ENABLED" | "DISABLED";
-export const ForwardErrorCorrectionState = S.Literal("ENABLED", "DISABLED");
+export type ForwardErrorCorrectionState =
+  | "ENABLED"
+  | "DISABLED"
+  | (string & {});
+export const ForwardErrorCorrectionState = S.String;
 export interface RtpRouterInputConfiguration {
   Port: number;
   ForwardErrorCorrection?: ForwardErrorCorrectionState;
@@ -1866,13 +1846,9 @@ export type RouterInputProtocol =
   | "RTP"
   | "RIST"
   | "SRT_CALLER"
-  | "SRT_LISTENER";
-export const RouterInputProtocol = S.Literal(
-  "RTP",
-  "RIST",
-  "SRT_CALLER",
-  "SRT_LISTENER",
-);
+  | "SRT_LISTENER"
+  | (string & {});
+export const RouterInputProtocol = S.String;
 export interface StandardRouterInputConfiguration {
   NetworkInterfaceArn: string;
   ProtocolConfiguration: RouterInputProtocolConfiguration;
@@ -1943,11 +1919,9 @@ export const FailoverRouterInputProtocolConfigurationList = S.Array(
 );
 export type FailoverInputSourcePriorityMode =
   | "NO_PRIORITY"
-  | "PRIMARY_SECONDARY";
-export const FailoverInputSourcePriorityMode = S.Literal(
-  "NO_PRIORITY",
-  "PRIMARY_SECONDARY",
-);
+  | "PRIMARY_SECONDARY"
+  | (string & {});
+export const FailoverInputSourcePriorityMode = S.String;
 export interface FailoverRouterInputConfiguration {
   NetworkInterfaceArn: string;
   ProtocolConfigurations: FailoverRouterInputProtocolConfiguration[];
@@ -2073,11 +2047,9 @@ export const RouterInputConfiguration = S.Union(
 );
 export type RouterInputTransitEncryptionKeyType =
   | "SECRETS_MANAGER"
-  | "AUTOMATIC";
-export const RouterInputTransitEncryptionKeyType = S.Literal(
-  "SECRETS_MANAGER",
-  "AUTOMATIC",
-);
+  | "AUTOMATIC"
+  | (string & {});
+export const RouterInputTransitEncryptionKeyType = S.String;
 export type RouterInputTransitEncryptionKeyConfiguration =
   | {
       SecretsManager: SecretsManagerEncryptionKeyConfiguration;
@@ -2120,16 +2092,9 @@ export type Day =
   | "THURSDAY"
   | "FRIDAY"
   | "SATURDAY"
-  | "SUNDAY";
-export const Day = S.Literal(
-  "MONDAY",
-  "TUESDAY",
-  "WEDNESDAY",
-  "THURSDAY",
-  "FRIDAY",
-  "SATURDAY",
-  "SUNDAY",
-);
+  | "SUNDAY"
+  | (string & {});
+export const Day = S.String;
 export interface PreferredDayTimeMaintenanceConfiguration {
   Day: Day;
   Time: string;
@@ -2601,13 +2566,9 @@ export type RouterOutputProtocol =
   | "RTP"
   | "RIST"
   | "SRT_CALLER"
-  | "SRT_LISTENER";
-export const RouterOutputProtocol = S.Literal(
-  "RTP",
-  "RIST",
-  "SRT_CALLER",
-  "SRT_LISTENER",
-);
+  | "SRT_LISTENER"
+  | (string & {});
+export const RouterOutputProtocol = S.String;
 export interface StandardRouterOutputConfiguration {
   NetworkInterfaceArn: string;
   ProtocolConfiguration: RouterOutputProtocolConfiguration;
@@ -2640,13 +2601,16 @@ export const MediaConnectFlowRouterOutputConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "MediaConnectFlowRouterOutputConfiguration",
 }) as any as S.Schema<MediaConnectFlowRouterOutputConfiguration>;
-export type MediaLiveInputPipelineId = "PIPELINE_0" | "PIPELINE_1";
-export const MediaLiveInputPipelineId = S.Literal("PIPELINE_0", "PIPELINE_1");
-export type MediaLiveTransitEncryptionKeyType = "SECRETS_MANAGER" | "AUTOMATIC";
-export const MediaLiveTransitEncryptionKeyType = S.Literal(
-  "SECRETS_MANAGER",
-  "AUTOMATIC",
-);
+export type MediaLiveInputPipelineId =
+  | "PIPELINE_0"
+  | "PIPELINE_1"
+  | (string & {});
+export const MediaLiveInputPipelineId = S.String;
+export type MediaLiveTransitEncryptionKeyType =
+  | "SECRETS_MANAGER"
+  | "AUTOMATIC"
+  | (string & {});
+export const MediaLiveTransitEncryptionKeyType = S.String;
 export type MediaLiveTransitEncryptionKeyConfiguration =
   | {
       SecretsManager: SecretsManagerEncryptionKeyConfiguration;
@@ -2878,8 +2842,8 @@ export const BatchGetRouterOutputRequest = S.suspend(() =>
 ).annotations({
   identifier: "BatchGetRouterOutputRequest",
 }) as any as S.Schema<BatchGetRouterOutputRequest>;
-export type FailoverMode = "MERGE" | "FAILOVER";
-export const FailoverMode = S.Literal("MERGE", "FAILOVER");
+export type FailoverMode = "MERGE" | "FAILOVER" | (string & {});
+export const FailoverMode = S.String;
 export type MaintenanceDay =
   | "Monday"
   | "Tuesday"
@@ -2887,41 +2851,33 @@ export type MaintenanceDay =
   | "Thursday"
   | "Friday"
   | "Saturday"
-  | "Sunday";
-export const MaintenanceDay = S.Literal(
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-  "Sunday",
-);
-export type ThumbnailState = "ENABLED" | "DISABLED";
-export const ThumbnailState = S.Literal("ENABLED", "DISABLED");
-export type ContentQualityAnalysisState = "ENABLED" | "DISABLED";
-export const ContentQualityAnalysisState = S.Literal("ENABLED", "DISABLED");
-export type NdiState = "ENABLED" | "DISABLED";
-export const NdiState = S.Literal("ENABLED", "DISABLED");
+  | "Sunday"
+  | (string & {});
+export const MaintenanceDay = S.String;
+export type ThumbnailState = "ENABLED" | "DISABLED" | (string & {});
+export const ThumbnailState = S.String;
+export type ContentQualityAnalysisState =
+  | "ENABLED"
+  | "DISABLED"
+  | (string & {});
+export const ContentQualityAnalysisState = S.String;
+export type NdiState = "ENABLED" | "DISABLED" | (string & {});
+export const NdiState = S.String;
 export type StringList = string[];
 export const StringList = S.Array(S.String);
 export type RouterInputType =
   | "STANDARD"
   | "FAILOVER"
   | "MERGE"
-  | "MEDIACONNECT_FLOW";
-export const RouterInputType = S.Literal(
-  "STANDARD",
-  "FAILOVER",
-  "MERGE",
-  "MEDIACONNECT_FLOW",
-);
+  | "MEDIACONNECT_FLOW"
+  | (string & {});
+export const RouterInputType = S.String;
 export type RouterInputTypeList = RouterInputType[];
 export const RouterInputTypeList = S.Array(RouterInputType);
 export type RoutingScopeList = RoutingScope[];
 export const RoutingScopeList = S.Array(RoutingScope);
-export type RouterNetworkInterfaceType = "PUBLIC" | "VPC";
-export const RouterNetworkInterfaceType = S.Literal("PUBLIC", "VPC");
+export type RouterNetworkInterfaceType = "PUBLIC" | "VPC" | (string & {});
+export const RouterNetworkInterfaceType = S.String;
 export type RouterNetworkInterfaceTypeList = RouterNetworkInterfaceType[];
 export const RouterNetworkInterfaceTypeList = S.Array(
   RouterNetworkInterfaceType,
@@ -2929,12 +2885,9 @@ export const RouterNetworkInterfaceTypeList = S.Array(
 export type RouterOutputType =
   | "STANDARD"
   | "MEDIACONNECT_FLOW"
-  | "MEDIALIVE_INPUT";
-export const RouterOutputType = S.Literal(
-  "STANDARD",
-  "MEDIACONNECT_FLOW",
-  "MEDIALIVE_INPUT",
-);
+  | "MEDIALIVE_INPUT"
+  | (string & {});
+export const RouterOutputType = S.String;
 export type RouterOutputTypeList = RouterOutputType[];
 export const RouterOutputTypeList = S.Array(RouterOutputType);
 export interface AddEgressGatewayBridgeRequest {
@@ -3080,16 +3033,9 @@ export type Status =
   | "DELETING"
   | "STARTING"
   | "STOPPING"
-  | "ERROR";
-export const Status = S.Literal(
-  "STANDBY",
-  "ACTIVE",
-  "UPDATING",
-  "DELETING",
-  "STARTING",
-  "STOPPING",
-  "ERROR",
-);
+  | "ERROR"
+  | (string & {});
+export const Status = S.String;
 export interface UpdateEncryption {
   Algorithm?: Algorithm;
   ConstantInitializationVector?: string;
@@ -3138,15 +3084,9 @@ export type InstanceState =
   | "DEREGISTERING"
   | "DEREGISTERED"
   | "REGISTRATION_ERROR"
-  | "DEREGISTRATION_ERROR";
-export const InstanceState = S.Literal(
-  "REGISTERING",
-  "ACTIVE",
-  "DEREGISTERING",
-  "DEREGISTERED",
-  "REGISTRATION_ERROR",
-  "DEREGISTRATION_ERROR",
-);
+  | "DEREGISTRATION_ERROR"
+  | (string & {});
+export const InstanceState = S.String;
 export interface GatewayNetwork {
   CidrBlock?: string;
   Name?: string;
@@ -3161,12 +3101,12 @@ export const GatewayNetwork = S.suspend(() =>
 }) as any as S.Schema<GatewayNetwork>;
 export type __listOfGatewayNetwork = GatewayNetwork[];
 export const __listOfGatewayNetwork = S.Array(GatewayNetwork);
-export type DurationUnits = "MONTHS";
-export const DurationUnits = S.Literal("MONTHS");
-export type PriceUnits = "HOURLY";
-export const PriceUnits = S.Literal("HOURLY");
-export type ResourceType = "Mbps_Outbound_Bandwidth";
-export const ResourceType = S.Literal("Mbps_Outbound_Bandwidth");
+export type DurationUnits = "MONTHS" | (string & {});
+export const DurationUnits = S.String;
+export type PriceUnits = "HOURLY" | (string & {});
+export const PriceUnits = S.String;
+export type ResourceType = "Mbps_Outbound_Bandwidth" | (string & {});
+export const ResourceType = S.String;
 export interface ResourceSpecification {
   ReservedBitrate?: number;
   ResourceType?: ResourceType;
@@ -3207,13 +3147,13 @@ export const Offering = S.suspend(() =>
 ).annotations({ identifier: "Offering" }) as any as S.Schema<Offering>;
 export type __listOfOffering = Offering[];
 export const __listOfOffering = S.Array(Offering);
-export type ReservationState = "ACTIVE" | "EXPIRED" | "PROCESSING" | "CANCELED";
-export const ReservationState = S.Literal(
-  "ACTIVE",
-  "EXPIRED",
-  "PROCESSING",
-  "CANCELED",
-);
+export type ReservationState =
+  | "ACTIVE"
+  | "EXPIRED"
+  | "PROCESSING"
+  | "CANCELED"
+  | (string & {});
+export const ReservationState = S.String;
 export interface Reservation {
   CurrencyCode?: string;
   Duration?: number;
@@ -3264,19 +3204,9 @@ export type RouterInputState =
   | "UPDATING"
   | "ERROR"
   | "RECOVERING"
-  | "MIGRATING";
-export const RouterInputState = S.Literal(
-  "CREATING",
-  "STANDBY",
-  "STARTING",
-  "ACTIVE",
-  "STOPPING",
-  "DELETING",
-  "UPDATING",
-  "ERROR",
-  "RECOVERING",
-  "MIGRATING",
-);
+  | "MIGRATING"
+  | (string & {});
+export const RouterInputState = S.String;
 export type RouterInputFilter =
   | {
       RegionNames: string[];
@@ -3328,8 +3258,8 @@ export const RouterInputFilter = S.Union(
 );
 export type RouterInputFilterList = RouterInputFilter[];
 export const RouterInputFilterList = S.Array(RouterInputFilter);
-export type MaintenanceScheduleType = "WINDOW";
-export const MaintenanceScheduleType = S.Literal("WINDOW");
+export type MaintenanceScheduleType = "WINDOW" | (string & {});
+export const MaintenanceScheduleType = S.String;
 export interface RouterInputMessage {
   Code: string;
   Message: string;
@@ -3463,8 +3393,8 @@ export const RouterInputStreamDetails = S.Union(
     ).annotations({ identifier: "MediaConnectFlowRouterInputStreamDetails" }),
   }),
 );
-export type MaintenanceType = "PREFERRED_DAY_TIME" | "DEFAULT";
-export const MaintenanceType = S.Literal("PREFERRED_DAY_TIME", "DEFAULT");
+export type MaintenanceType = "PREFERRED_DAY_TIME" | "DEFAULT" | (string & {});
+export const MaintenanceType = S.String;
 export interface WindowMaintenanceSchedule {
   Start: Date;
   End: Date;
@@ -3567,15 +3497,9 @@ export type RouterNetworkInterfaceState =
   | "UPDATING"
   | "DELETING"
   | "ERROR"
-  | "RECOVERING";
-export const RouterNetworkInterfaceState = S.Literal(
-  "CREATING",
-  "ACTIVE",
-  "UPDATING",
-  "DELETING",
-  "ERROR",
-  "RECOVERING",
-);
+  | "RECOVERING"
+  | (string & {});
+export const RouterNetworkInterfaceState = S.String;
 export type RouterNetworkInterfaceFilter =
   | {
       RegionNames: string[];
@@ -3657,19 +3581,9 @@ export type RouterOutputState =
   | "UPDATING"
   | "ERROR"
   | "RECOVERING"
-  | "MIGRATING";
-export const RouterOutputState = S.Literal(
-  "CREATING",
-  "STANDBY",
-  "STARTING",
-  "ACTIVE",
-  "STOPPING",
-  "DELETING",
-  "UPDATING",
-  "ERROR",
-  "RECOVERING",
-  "MIGRATING",
-);
+  | "MIGRATING"
+  | (string & {});
+export const RouterOutputState = S.String;
 export type RouterOutputFilter =
   | {
       RegionNames: string[];
@@ -3739,12 +3653,12 @@ export const RouterOutputFilter = S.Union(
 );
 export type RouterOutputFilterList = RouterOutputFilter[];
 export const RouterOutputFilterList = S.Array(RouterOutputFilter);
-export type RouterOutputRoutedState = "ROUTED" | "ROUTING" | "UNROUTED";
-export const RouterOutputRoutedState = S.Literal(
-  "ROUTED",
-  "ROUTING",
-  "UNROUTED",
-);
+export type RouterOutputRoutedState =
+  | "ROUTED"
+  | "ROUTING"
+  | "UNROUTED"
+  | (string & {});
+export const RouterOutputRoutedState = S.String;
 export interface RouterOutputMessage {
   Code: string;
   Message: string;
@@ -4724,42 +4638,24 @@ export type BridgeState =
   | "START_FAILED"
   | "START_PENDING"
   | "STOP_FAILED"
-  | "UPDATING";
-export const BridgeState = S.Literal(
-  "CREATING",
-  "STANDBY",
-  "STARTING",
-  "DEPLOYING",
-  "ACTIVE",
-  "STOPPING",
-  "DELETING",
-  "DELETED",
-  "START_FAILED",
-  "START_PENDING",
-  "STOP_FAILED",
-  "UPDATING",
-);
-export type SourceType = "OWNED" | "ENTITLED";
-export const SourceType = S.Literal("OWNED", "ENTITLED");
+  | "UPDATING"
+  | (string & {});
+export const BridgeState = S.String;
+export type SourceType = "OWNED" | "ENTITLED" | (string & {});
+export const SourceType = S.String;
 export type __listOfInteger = number[];
 export const __listOfInteger = S.Array(S.Number);
-export type ConnectionStatus = "CONNECTED" | "DISCONNECTED";
-export const ConnectionStatus = S.Literal("CONNECTED", "DISCONNECTED");
+export type ConnectionStatus = "CONNECTED" | "DISCONNECTED" | (string & {});
+export const ConnectionStatus = S.String;
 export type GatewayState =
   | "CREATING"
   | "ACTIVE"
   | "UPDATING"
   | "ERROR"
   | "DELETING"
-  | "DELETED";
-export const GatewayState = S.Literal(
-  "CREATING",
-  "ACTIVE",
-  "UPDATING",
-  "ERROR",
-  "DELETING",
-  "DELETED",
-);
+  | "DELETED"
+  | (string & {});
+export const GatewayState = S.String;
 export interface ListedEntitlement {
   DataTransferSubscriberFeePercent?: number;
   EntitlementArn?: string;

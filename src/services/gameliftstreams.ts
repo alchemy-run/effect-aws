@@ -95,23 +95,19 @@ export type StreamSessionStatus =
   | "RECONNECTING"
   | "TERMINATING"
   | "TERMINATED"
-  | "ERROR";
-export const StreamSessionStatus = S.Literal(
-  "ACTIVATING",
-  "ACTIVE",
-  "CONNECTED",
-  "PENDING_CLIENT_RECONNECTION",
-  "RECONNECTING",
-  "TERMINATING",
-  "TERMINATED",
-  "ERROR",
-);
-export type ExportFilesStatus = "SUCCEEDED" | "FAILED" | "PENDING";
-export const ExportFilesStatus = S.Literal("SUCCEEDED", "FAILED", "PENDING");
+  | "ERROR"
+  | (string & {});
+export const StreamSessionStatus = S.String;
+export type ExportFilesStatus =
+  | "SUCCEEDED"
+  | "FAILED"
+  | "PENDING"
+  | (string & {});
+export const ExportFilesStatus = S.String;
 export type LocationsList = string[];
 export const LocationsList = S.Array(S.String);
-export type Protocol = "WebRTC";
-export const Protocol = S.Literal("WebRTC");
+export type Protocol = "WebRTC" | (string & {});
+export const Protocol = S.String;
 export type LocationList = string[];
 export const LocationList = S.Array(S.String);
 export type GameLaunchArgList = string[];
@@ -133,22 +129,9 @@ export type StreamClass =
   | "gen6n_ultra"
   | "gen6n_ultra_win2022"
   | "gen6n_pro"
-  | "gen6n_pro_win2022";
-export const StreamClass = S.Literal(
-  "gen4n_high",
-  "gen4n_ultra",
-  "gen4n_win2022",
-  "gen5n_high",
-  "gen5n_ultra",
-  "gen5n_win2022",
-  "gen6n_small",
-  "gen6n_medium",
-  "gen6n_high",
-  "gen6n_ultra",
-  "gen6n_ultra_win2022",
-  "gen6n_pro",
-  "gen6n_pro_win2022",
-);
+  | "gen6n_pro_win2022"
+  | (string & {});
+export const StreamClass = S.String;
 export interface AssociateApplicationsInput {
   Identifier: string;
   ApplicationIdentifiers: string[];
@@ -670,8 +653,12 @@ export const ListStreamGroupsInput = S.suspend(() =>
 ).annotations({
   identifier: "ListStreamGroupsInput",
 }) as any as S.Schema<ListStreamGroupsInput>;
-export type RuntimeEnvironmentType = "PROTON" | "WINDOWS" | "UBUNTU";
-export const RuntimeEnvironmentType = S.Literal("PROTON", "WINDOWS", "UBUNTU");
+export type RuntimeEnvironmentType =
+  | "PROTON"
+  | "WINDOWS"
+  | "UBUNTU"
+  | (string & {});
+export const RuntimeEnvironmentType = S.String;
 export type ArnList = string[];
 export const ArnList = S.Array(S.String);
 export type StreamSessionStatusReason =
@@ -684,19 +671,9 @@ export type StreamSessionStatusReason =
   | "reconnectionTimeout"
   | "maxSessionLengthTimeout"
   | "idleTimeout"
-  | "apiTerminated";
-export const StreamSessionStatusReason = S.Literal(
-  "internalError",
-  "invalidSignalRequest",
-  "placementTimeout",
-  "applicationLogS3DestinationError",
-  "applicationExit",
-  "connectionTimeout",
-  "reconnectionTimeout",
-  "maxSessionLengthTimeout",
-  "idleTimeout",
-  "apiTerminated",
-);
+  | "apiTerminated"
+  | (string & {});
+export const StreamSessionStatusReason = S.String;
 export type EnvironmentVariables = { [key: string]: string | undefined };
 export const EnvironmentVariables = S.Record({
   key: S.String,
@@ -724,19 +701,14 @@ export type ApplicationStatus =
   | "PROCESSING"
   | "READY"
   | "DELETING"
-  | "ERROR";
-export const ApplicationStatus = S.Literal(
-  "INITIALIZED",
-  "PROCESSING",
-  "READY",
-  "DELETING",
-  "ERROR",
-);
-export type ApplicationStatusReason = "internalError" | "accessDenied";
-export const ApplicationStatusReason = S.Literal(
-  "internalError",
-  "accessDenied",
-);
+  | "ERROR"
+  | (string & {});
+export const ApplicationStatus = S.String;
+export type ApplicationStatusReason =
+  | "internalError"
+  | "accessDenied"
+  | (string & {});
+export const ApplicationStatusReason = S.String;
 export type StreamGroupStatus =
   | "ACTIVATING"
   | "UPDATING_LOCATIONS"
@@ -744,21 +716,14 @@ export type StreamGroupStatus =
   | "ACTIVE_WITH_ERRORS"
   | "ERROR"
   | "DELETING"
-  | "EXPIRED";
-export const StreamGroupStatus = S.Literal(
-  "ACTIVATING",
-  "UPDATING_LOCATIONS",
-  "ACTIVE",
-  "ACTIVE_WITH_ERRORS",
-  "ERROR",
-  "DELETING",
-  "EXPIRED",
-);
-export type StreamGroupStatusReason = "internalError" | "noAvailableInstances";
-export const StreamGroupStatusReason = S.Literal(
-  "internalError",
-  "noAvailableInstances",
-);
+  | "EXPIRED"
+  | (string & {});
+export const StreamGroupStatus = S.String;
+export type StreamGroupStatusReason =
+  | "internalError"
+  | "noAvailableInstances"
+  | (string & {});
+export const StreamGroupStatusReason = S.String;
 export interface AddStreamGroupLocationsInput {
   Identifier: string;
   LocationConfigurations: LocationConfiguration[];
@@ -974,8 +939,8 @@ export const CreateApplicationInput = S.suspend(() =>
 ).annotations({
   identifier: "CreateApplicationInput",
 }) as any as S.Schema<CreateApplicationInput>;
-export type ReplicationStatusType = "REPLICATING" | "COMPLETED";
-export const ReplicationStatusType = S.Literal("REPLICATING", "COMPLETED");
+export type ReplicationStatusType = "REPLICATING" | "COMPLETED" | (string & {});
+export const ReplicationStatusType = S.String;
 export interface ReplicationStatus {
   Location?: string;
   Status?: ReplicationStatusType;
@@ -1039,13 +1004,9 @@ export type StreamGroupLocationStatus =
   | "ACTIVATING"
   | "ACTIVE"
   | "ERROR"
-  | "REMOVING";
-export const StreamGroupLocationStatus = S.Literal(
-  "ACTIVATING",
-  "ACTIVE",
-  "ERROR",
-  "REMOVING",
-);
+  | "REMOVING"
+  | (string & {});
+export const StreamGroupLocationStatus = S.String;
 export interface LocationState {
   LocationName?: string;
   Status?: StreamGroupLocationStatus;

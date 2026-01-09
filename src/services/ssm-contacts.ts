@@ -126,18 +126,18 @@ export type RetryIntervalInMinutes = number;
 export type IsEssential = boolean;
 
 //# Schemas
-export type AcceptType = "DELIVERED" | "READ";
-export const AcceptType = S.Literal("DELIVERED", "READ");
-export type AcceptCodeValidation = "IGNORE" | "ENFORCE";
-export const AcceptCodeValidation = S.Literal("IGNORE", "ENFORCE");
-export type ContactType = "PERSONAL" | "ESCALATION" | "ONCALL_SCHEDULE";
-export const ContactType = S.Literal(
-  "PERSONAL",
-  "ESCALATION",
-  "ONCALL_SCHEDULE",
-);
-export type ChannelType = "SMS" | "VOICE" | "EMAIL";
-export const ChannelType = S.Literal("SMS", "VOICE", "EMAIL");
+export type AcceptType = "DELIVERED" | "READ" | (string & {});
+export const AcceptType = S.String;
+export type AcceptCodeValidation = "IGNORE" | "ENFORCE" | (string & {});
+export const AcceptCodeValidation = S.String;
+export type ContactType =
+  | "PERSONAL"
+  | "ESCALATION"
+  | "ONCALL_SCHEDULE"
+  | (string & {});
+export const ContactType = S.String;
+export type ChannelType = "SMS" | "VOICE" | "EMAIL" | (string & {});
+export const ChannelType = S.String;
 export type RotationContactsArnList = string[];
 export const RotationContactsArnList = S.Array(S.String);
 export type RotationOverrideContactsArnList = string[];
@@ -749,16 +749,16 @@ export const MonthlySetting = S.suspend(() =>
 }) as any as S.Schema<MonthlySetting>;
 export type MonthlySettings = MonthlySetting[];
 export const MonthlySettings = S.Array(MonthlySetting);
-export type DayOfWeek = "MON" | "TUE" | "WED" | "THU" | "FRI" | "SAT" | "SUN";
-export const DayOfWeek = S.Literal(
-  "MON",
-  "TUE",
-  "WED",
-  "THU",
-  "FRI",
-  "SAT",
-  "SUN",
-);
+export type DayOfWeek =
+  | "MON"
+  | "TUE"
+  | "WED"
+  | "THU"
+  | "FRI"
+  | "SAT"
+  | "SUN"
+  | (string & {});
+export const DayOfWeek = S.String;
 export interface WeeklySetting {
   DayOfWeek: DayOfWeek;
   HandOffTime: HandOffTime;
@@ -831,8 +831,8 @@ export const UpdateRotationResult = S.suspend(() => S.Struct({})).annotations({
 }) as any as S.Schema<UpdateRotationResult>;
 export type RotationOverridePreviewMemberList = string[];
 export const RotationOverridePreviewMemberList = S.Array(S.String);
-export type ActivationStatus = "ACTIVATED" | "NOT_ACTIVATED";
-export const ActivationStatus = S.Literal("ACTIVATED", "NOT_ACTIVATED");
+export type ActivationStatus = "ACTIVATED" | "NOT_ACTIVATED" | (string & {});
+export const ActivationStatus = S.String;
 export interface TimeRange {
   StartTime?: Date;
   EndTime?: Date;
@@ -1133,16 +1133,16 @@ export const StartEngagementResult = S.suspend(() =>
 ).annotations({
   identifier: "StartEngagementResult",
 }) as any as S.Schema<StartEngagementResult>;
-export type ReceiptType = "DELIVERED" | "ERROR" | "READ" | "SENT" | "STOP";
-export const ReceiptType = S.Literal(
-  "DELIVERED",
-  "ERROR",
-  "READ",
-  "SENT",
-  "STOP",
-);
-export type ShiftType = "REGULAR" | "OVERRIDDEN";
-export const ShiftType = S.Literal("REGULAR", "OVERRIDDEN");
+export type ReceiptType =
+  | "DELIVERED"
+  | "ERROR"
+  | "READ"
+  | "SENT"
+  | "STOP"
+  | (string & {});
+export const ReceiptType = S.String;
+export type ShiftType = "REGULAR" | "OVERRIDDEN" | (string & {});
+export const ShiftType = S.String;
 export interface ContactChannel {
   ContactChannelArn: string;
   ContactArn: string;
@@ -1460,13 +1460,9 @@ export type ValidationExceptionReason =
   | "UNKNOWN_OPERATION"
   | "CANNOT_PARSE"
   | "FIELD_VALIDATION_FAILED"
-  | "OTHER";
-export const ValidationExceptionReason = S.Literal(
-  "UNKNOWN_OPERATION",
-  "CANNOT_PARSE",
-  "FIELD_VALIDATION_FAILED",
-  "OTHER",
-);
+  | "OTHER"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 export interface CreateContactRequest {
   Alias: string;
   DisplayName?: string;

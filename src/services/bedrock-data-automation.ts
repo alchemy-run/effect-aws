@@ -112,26 +112,30 @@ export type EncryptionContextKey = string;
 export type EncryptionContextValue = string;
 
 //# Schemas
-export type BlueprintStage = "DEVELOPMENT" | "LIVE";
-export const BlueprintStage = S.Literal("DEVELOPMENT", "LIVE");
+export type BlueprintStage = "DEVELOPMENT" | "LIVE" | (string & {});
+export const BlueprintStage = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
-export type Type = "DOCUMENT" | "IMAGE" | "AUDIO" | "VIDEO";
-export const Type = S.Literal("DOCUMENT", "IMAGE", "AUDIO", "VIDEO");
-export type ResourceOwner = "SERVICE" | "ACCOUNT";
-export const ResourceOwner = S.Literal("SERVICE", "ACCOUNT");
-export type BlueprintStageFilter = "DEVELOPMENT" | "LIVE" | "ALL";
-export const BlueprintStageFilter = S.Literal("DEVELOPMENT", "LIVE", "ALL");
-export type DataAutomationProjectStage = "DEVELOPMENT" | "LIVE";
-export const DataAutomationProjectStage = S.Literal("DEVELOPMENT", "LIVE");
-export type DataAutomationProjectType = "ASYNC" | "SYNC";
-export const DataAutomationProjectType = S.Literal("ASYNC", "SYNC");
-export type DataAutomationProjectStageFilter = "DEVELOPMENT" | "LIVE" | "ALL";
-export const DataAutomationProjectStageFilter = S.Literal(
-  "DEVELOPMENT",
-  "LIVE",
-  "ALL",
-);
+export type Type = "DOCUMENT" | "IMAGE" | "AUDIO" | "VIDEO" | (string & {});
+export const Type = S.String;
+export type ResourceOwner = "SERVICE" | "ACCOUNT" | (string & {});
+export const ResourceOwner = S.String;
+export type BlueprintStageFilter =
+  | "DEVELOPMENT"
+  | "LIVE"
+  | "ALL"
+  | (string & {});
+export const BlueprintStageFilter = S.String;
+export type DataAutomationProjectStage = "DEVELOPMENT" | "LIVE" | (string & {});
+export const DataAutomationProjectStage = S.String;
+export type DataAutomationProjectType = "ASYNC" | "SYNC" | (string & {});
+export const DataAutomationProjectType = S.String;
+export type DataAutomationProjectStageFilter =
+  | "DEVELOPMENT"
+  | "LIVE"
+  | "ALL"
+  | (string & {});
+export const DataAutomationProjectStageFilter = S.String;
 export interface CopyBlueprintStageRequest {
   blueprintArn: string;
   sourceStage: BlueprintStage;
@@ -406,14 +410,9 @@ export type DocumentExtractionGranularityType =
   | "PAGE"
   | "ELEMENT"
   | "WORD"
-  | "LINE";
-export const DocumentExtractionGranularityType = S.Literal(
-  "DOCUMENT",
-  "PAGE",
-  "ELEMENT",
-  "WORD",
-  "LINE",
-);
+  | "LINE"
+  | (string & {});
+export const DocumentExtractionGranularityType = S.String;
 export type DocumentExtractionGranularityTypes =
   DocumentExtractionGranularityType[];
 export const DocumentExtractionGranularityTypes = S.Array(
@@ -427,8 +426,8 @@ export const DocumentExtractionGranularity = S.suspend(() =>
 ).annotations({
   identifier: "DocumentExtractionGranularity",
 }) as any as S.Schema<DocumentExtractionGranularity>;
-export type State = "ENABLED" | "DISABLED";
-export const State = S.Literal("ENABLED", "DISABLED");
+export type State = "ENABLED" | "DISABLED" | (string & {});
+export const State = S.String;
 export interface DocumentBoundingBox {
   state: State;
 }
@@ -461,13 +460,9 @@ export type DocumentOutputTextFormatType =
   | "PLAIN_TEXT"
   | "MARKDOWN"
   | "HTML"
-  | "CSV";
-export const DocumentOutputTextFormatType = S.Literal(
-  "PLAIN_TEXT",
-  "MARKDOWN",
-  "HTML",
-  "CSV",
-);
+  | "CSV"
+  | (string & {});
+export const DocumentOutputTextFormatType = S.String;
 export type DocumentOutputTextFormatTypes = DocumentOutputTextFormatType[];
 export const DocumentOutputTextFormatTypes = S.Array(
   DocumentOutputTextFormatType,
@@ -517,12 +512,9 @@ export const DocumentStandardOutputConfiguration = S.suspend(() =>
 export type ImageExtractionCategoryType =
   | "CONTENT_MODERATION"
   | "TEXT_DETECTION"
-  | "LOGOS";
-export const ImageExtractionCategoryType = S.Literal(
-  "CONTENT_MODERATION",
-  "TEXT_DETECTION",
-  "LOGOS",
-);
+  | "LOGOS"
+  | (string & {});
+export const ImageExtractionCategoryType = S.String;
 export type ImageExtractionCategoryTypes = ImageExtractionCategoryType[];
 export const ImageExtractionCategoryTypes = S.Array(
   ImageExtractionCategoryType,
@@ -556,11 +548,11 @@ export const ImageStandardExtraction = S.suspend(() =>
 ).annotations({
   identifier: "ImageStandardExtraction",
 }) as any as S.Schema<ImageStandardExtraction>;
-export type ImageStandardGenerativeFieldType = "IMAGE_SUMMARY" | "IAB";
-export const ImageStandardGenerativeFieldType = S.Literal(
-  "IMAGE_SUMMARY",
-  "IAB",
-);
+export type ImageStandardGenerativeFieldType =
+  | "IMAGE_SUMMARY"
+  | "IAB"
+  | (string & {});
+export const ImageStandardGenerativeFieldType = S.String;
 export type ImageStandardGenerativeFieldTypes =
   ImageStandardGenerativeFieldType[];
 export const ImageStandardGenerativeFieldTypes = S.Array(
@@ -594,13 +586,9 @@ export type VideoExtractionCategoryType =
   | "CONTENT_MODERATION"
   | "TEXT_DETECTION"
   | "TRANSCRIPT"
-  | "LOGOS";
-export const VideoExtractionCategoryType = S.Literal(
-  "CONTENT_MODERATION",
-  "TEXT_DETECTION",
-  "TRANSCRIPT",
-  "LOGOS",
-);
+  | "LOGOS"
+  | (string & {});
+export const VideoExtractionCategoryType = S.String;
 export type VideoExtractionCategoryTypes = VideoExtractionCategoryType[];
 export const VideoExtractionCategoryTypes = S.Array(
   VideoExtractionCategoryType,
@@ -637,12 +625,9 @@ export const VideoStandardExtraction = S.suspend(() =>
 export type VideoStandardGenerativeFieldType =
   | "VIDEO_SUMMARY"
   | "IAB"
-  | "CHAPTER_SUMMARY";
-export const VideoStandardGenerativeFieldType = S.Literal(
-  "VIDEO_SUMMARY",
-  "IAB",
-  "CHAPTER_SUMMARY",
-);
+  | "CHAPTER_SUMMARY"
+  | (string & {});
+export const VideoStandardGenerativeFieldType = S.String;
 export type VideoStandardGenerativeFieldTypes =
   VideoStandardGenerativeFieldType[];
 export const VideoStandardGenerativeFieldTypes = S.Array(
@@ -675,12 +660,9 @@ export const VideoStandardOutputConfiguration = S.suspend(() =>
 export type AudioExtractionCategoryType =
   | "AUDIO_CONTENT_MODERATION"
   | "TRANSCRIPT"
-  | "TOPIC_CONTENT_MODERATION";
-export const AudioExtractionCategoryType = S.Literal(
-  "AUDIO_CONTENT_MODERATION",
-  "TRANSCRIPT",
-  "TOPIC_CONTENT_MODERATION",
-);
+  | "TOPIC_CONTENT_MODERATION"
+  | (string & {});
+export const AudioExtractionCategoryType = S.String;
 export type AudioExtractionCategoryTypes = AudioExtractionCategoryType[];
 export const AudioExtractionCategoryTypes = S.Array(
   AudioExtractionCategoryType,
@@ -746,12 +728,9 @@ export const AudioStandardExtraction = S.suspend(() =>
 export type AudioStandardGenerativeFieldType =
   | "AUDIO_SUMMARY"
   | "IAB"
-  | "TOPIC_SUMMARY";
-export const AudioStandardGenerativeFieldType = S.Literal(
-  "AUDIO_SUMMARY",
-  "IAB",
-  "TOPIC_SUMMARY",
-);
+  | "TOPIC_SUMMARY"
+  | (string & {});
+export const AudioStandardGenerativeFieldType = S.String;
 export type AudioStandardGenerativeFieldTypes =
   AudioStandardGenerativeFieldType[];
 export const AudioStandardGenerativeFieldTypes = S.Array(
@@ -839,13 +818,14 @@ export const ModalityProcessingConfiguration = S.suspend(() =>
 }) as any as S.Schema<ModalityProcessingConfiguration>;
 export type SensitiveDataDetectionMode =
   | "DETECTION"
-  | "DETECTION_AND_REDACTION";
-export const SensitiveDataDetectionMode = S.Literal(
-  "DETECTION",
-  "DETECTION_AND_REDACTION",
-);
-export type SensitiveDataDetectionScopeType = "STANDARD" | "CUSTOM";
-export const SensitiveDataDetectionScopeType = S.Literal("STANDARD", "CUSTOM");
+  | "DETECTION_AND_REDACTION"
+  | (string & {});
+export const SensitiveDataDetectionMode = S.String;
+export type SensitiveDataDetectionScopeType =
+  | "STANDARD"
+  | "CUSTOM"
+  | (string & {});
+export const SensitiveDataDetectionScopeType = S.String;
 export type SensitiveDataDetectionScope = SensitiveDataDetectionScopeType[];
 export const SensitiveDataDetectionScope = S.Array(
   SensitiveDataDetectionScopeType,
@@ -882,45 +862,13 @@ export type PIIEntityType =
   | "CA_SOCIAL_INSURANCE_NUMBER"
   | "UK_NATIONAL_HEALTH_SERVICE_NUMBER"
   | "UK_NATIONAL_INSURANCE_NUMBER"
-  | "UK_UNIQUE_TAXPAYER_REFERENCE_NUMBER";
-export const PIIEntityType = S.Literal(
-  "ALL",
-  "ADDRESS",
-  "AGE",
-  "NAME",
-  "EMAIL",
-  "PHONE",
-  "USERNAME",
-  "PASSWORD",
-  "DRIVER_ID",
-  "LICENSE_PLATE",
-  "VEHICLE_IDENTIFICATION_NUMBER",
-  "CREDIT_DEBIT_CARD_CVV",
-  "CREDIT_DEBIT_CARD_EXPIRY",
-  "CREDIT_DEBIT_CARD_NUMBER",
-  "PIN",
-  "INTERNATIONAL_BANK_ACCOUNT_NUMBER",
-  "SWIFT_CODE",
-  "IP_ADDRESS",
-  "MAC_ADDRESS",
-  "URL",
-  "AWS_ACCESS_KEY",
-  "AWS_SECRET_KEY",
-  "US_BANK_ACCOUNT_NUMBER",
-  "US_BANK_ROUTING_NUMBER",
-  "US_INDIVIDUAL_TAX_IDENTIFICATION_NUMBER",
-  "US_PASSPORT_NUMBER",
-  "US_SOCIAL_SECURITY_NUMBER",
-  "CA_HEALTH_NUMBER",
-  "CA_SOCIAL_INSURANCE_NUMBER",
-  "UK_NATIONAL_HEALTH_SERVICE_NUMBER",
-  "UK_NATIONAL_INSURANCE_NUMBER",
-  "UK_UNIQUE_TAXPAYER_REFERENCE_NUMBER",
-);
+  | "UK_UNIQUE_TAXPAYER_REFERENCE_NUMBER"
+  | (string & {});
+export const PIIEntityType = S.String;
 export type PIIEntityTypes = PIIEntityType[];
 export const PIIEntityTypes = S.Array(PIIEntityType);
-export type PIIRedactionMaskMode = "PII" | "ENTITY_TYPE";
-export const PIIRedactionMaskMode = S.Literal("PII", "ENTITY_TYPE");
+export type PIIRedactionMaskMode = "PII" | "ENTITY_TYPE" | (string & {});
+export const PIIRedactionMaskMode = S.String;
 export interface PIIEntitiesConfiguration {
   piiEntityTypes?: PIIEntityType[];
   redactionMaskMode?: PIIRedactionMaskMode;
@@ -996,24 +944,13 @@ export type Language =
   | "KO"
   | "CN"
   | "TW"
-  | "HK";
-export const Language = S.Literal(
-  "EN",
-  "DE",
-  "ES",
-  "FR",
-  "IT",
-  "PT",
-  "JA",
-  "KO",
-  "CN",
-  "TW",
-  "HK",
-);
+  | "HK"
+  | (string & {});
+export const Language = S.String;
 export type AudioInputLanguages = Language[];
 export const AudioInputLanguages = S.Array(Language);
-export type AudioGenerativeOutputLanguage = "DEFAULT" | "EN";
-export const AudioGenerativeOutputLanguage = S.Literal("DEFAULT", "EN");
+export type AudioGenerativeOutputLanguage = "DEFAULT" | "EN" | (string & {});
+export const AudioGenerativeOutputLanguage = S.String;
 export interface AudioLanguageConfiguration {
   inputLanguages?: Language[];
   generativeOutputLanguage?: AudioGenerativeOutputLanguage;
@@ -1042,8 +979,13 @@ export const AudioOverrideConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "AudioOverrideConfiguration",
 }) as any as S.Schema<AudioOverrideConfiguration>;
-export type DesiredModality = "IMAGE" | "DOCUMENT" | "AUDIO" | "VIDEO";
-export const DesiredModality = S.Literal("IMAGE", "DOCUMENT", "AUDIO", "VIDEO");
+export type DesiredModality =
+  | "IMAGE"
+  | "DOCUMENT"
+  | "AUDIO"
+  | "VIDEO"
+  | (string & {});
+export const DesiredModality = S.String;
 export interface ModalityRoutingConfiguration {
   jpeg?: DesiredModality;
   png?: DesiredModality;
@@ -1158,14 +1100,9 @@ export type BlueprintOptimizationJobStatus =
   | "InProgress"
   | "Success"
   | "ServiceError"
-  | "ClientError";
-export const BlueprintOptimizationJobStatus = S.Literal(
-  "Created",
-  "InProgress",
-  "Success",
-  "ServiceError",
-  "ClientError",
-);
+  | "ClientError"
+  | (string & {});
+export const BlueprintOptimizationJobStatus = S.String;
 export interface DataAutomationProjectFilter {
   projectArn: string;
   projectStage?: DataAutomationProjectStage;
@@ -1181,12 +1118,9 @@ export const DataAutomationProjectFilter = S.suspend(() =>
 export type DataAutomationProjectStatus =
   | "COMPLETED"
   | "IN_PROGRESS"
-  | "FAILED";
-export const DataAutomationProjectStatus = S.Literal(
-  "COMPLETED",
-  "IN_PROGRESS",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const DataAutomationProjectStatus = S.String;
 export interface BlueprintFilter {
   blueprintArn: string;
   blueprintVersion?: string;

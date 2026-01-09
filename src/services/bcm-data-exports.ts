@@ -264,17 +264,17 @@ export const DataQuery = S.suspend(() =>
     TableConfigurations: S.optional(TableConfigurations),
   }),
 ).annotations({ identifier: "DataQuery" }) as any as S.Schema<DataQuery>;
-export type S3OutputType = "CUSTOM";
-export const S3OutputType = S.Literal("CUSTOM");
-export type FormatOption = "TEXT_OR_CSV" | "PARQUET";
-export const FormatOption = S.Literal("TEXT_OR_CSV", "PARQUET");
-export type CompressionOption = "GZIP" | "PARQUET";
-export const CompressionOption = S.Literal("GZIP", "PARQUET");
-export type OverwriteOption = "CREATE_NEW_REPORT" | "OVERWRITE_REPORT";
-export const OverwriteOption = S.Literal(
-  "CREATE_NEW_REPORT",
-  "OVERWRITE_REPORT",
-);
+export type S3OutputType = "CUSTOM" | (string & {});
+export const S3OutputType = S.String;
+export type FormatOption = "TEXT_OR_CSV" | "PARQUET" | (string & {});
+export const FormatOption = S.String;
+export type CompressionOption = "GZIP" | "PARQUET" | (string & {});
+export const CompressionOption = S.String;
+export type OverwriteOption =
+  | "CREATE_NEW_REPORT"
+  | "OVERWRITE_REPORT"
+  | (string & {});
+export const OverwriteOption = S.String;
 export interface S3OutputConfigurations {
   OutputType: S3OutputType;
   Format: FormatOption;
@@ -315,8 +315,8 @@ export const DestinationConfigurations = S.suspend(() =>
 ).annotations({
   identifier: "DestinationConfigurations",
 }) as any as S.Schema<DestinationConfigurations>;
-export type FrequencyOption = "SYNCHRONOUS";
-export const FrequencyOption = S.Literal("SYNCHRONOUS");
+export type FrequencyOption = "SYNCHRONOUS" | (string & {});
+export const FrequencyOption = S.String;
 export interface RefreshCadence {
   Frequency: FrequencyOption;
 }
@@ -403,27 +403,17 @@ export type ExecutionStatusCode =
   | "QUERY_FAILURE"
   | "DELIVERY_IN_PROCESS"
   | "DELIVERY_SUCCESS"
-  | "DELIVERY_FAILURE";
-export const ExecutionStatusCode = S.Literal(
-  "INITIATION_IN_PROCESS",
-  "QUERY_QUEUED",
-  "QUERY_IN_PROCESS",
-  "QUERY_FAILURE",
-  "DELIVERY_IN_PROCESS",
-  "DELIVERY_SUCCESS",
-  "DELIVERY_FAILURE",
-);
+  | "DELIVERY_FAILURE"
+  | (string & {});
+export const ExecutionStatusCode = S.String;
 export type ExecutionStatusReason =
   | "INSUFFICIENT_PERMISSION"
   | "BILL_OWNER_CHANGED"
-  | "INTERNAL_FAILURE";
-export const ExecutionStatusReason = S.Literal(
-  "INSUFFICIENT_PERMISSION",
-  "BILL_OWNER_CHANGED",
-  "INTERNAL_FAILURE",
-);
-export type ExportStatusCode = "HEALTHY" | "UNHEALTHY";
-export const ExportStatusCode = S.Literal("HEALTHY", "UNHEALTHY");
+  | "INTERNAL_FAILURE"
+  | (string & {});
+export const ExecutionStatusReason = S.String;
+export type ExportStatusCode = "HEALTHY" | "UNHEALTHY" | (string & {});
+export const ExportStatusCode = S.String;
 export interface ExecutionStatus {
   StatusCode?: ExecutionStatusCode;
   StatusReason?: ExecutionStatusReason;
@@ -612,13 +602,9 @@ export type ValidationExceptionReason =
   | "unknownOperation"
   | "cannotParse"
   | "fieldValidationFailed"
-  | "other";
-export const ValidationExceptionReason = S.Literal(
-  "unknownOperation",
-  "cannotParse",
-  "fieldValidationFailed",
-  "other",
-);
+  | "other"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 export interface CreateExportRequest {
   Export: Export;
   ResourceTags?: ResourceTag[];

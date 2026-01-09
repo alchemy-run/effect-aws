@@ -130,25 +130,24 @@ export const ListRealtimeContactAnalysisSegmentsRequest = S.suspend(() =>
 ).annotations({
   identifier: "ListRealtimeContactAnalysisSegmentsRequest",
 }) as any as S.Schema<ListRealtimeContactAnalysisSegmentsRequest>;
-export type SentimentValue = "POSITIVE" | "NEUTRAL" | "NEGATIVE";
-export const SentimentValue = S.Literal("POSITIVE", "NEUTRAL", "NEGATIVE");
+export type SentimentValue =
+  | "POSITIVE"
+  | "NEUTRAL"
+  | "NEGATIVE"
+  | (string & {});
+export const SentimentValue = S.String;
 export type MatchedCategories = string[];
 export const MatchedCategories = S.Array(S.String);
-export type PostContactSummaryStatus = "FAILED" | "COMPLETED";
-export const PostContactSummaryStatus = S.Literal("FAILED", "COMPLETED");
+export type PostContactSummaryStatus = "FAILED" | "COMPLETED" | (string & {});
+export const PostContactSummaryStatus = S.String;
 export type PostContactSummaryFailureCode =
   | "QUOTA_EXCEEDED"
   | "INSUFFICIENT_CONVERSATION_CONTENT"
   | "FAILED_SAFETY_GUIDELINES"
   | "INVALID_ANALYSIS_CONFIGURATION"
-  | "INTERNAL_ERROR";
-export const PostContactSummaryFailureCode = S.Literal(
-  "QUOTA_EXCEEDED",
-  "INSUFFICIENT_CONVERSATION_CONTENT",
-  "FAILED_SAFETY_GUIDELINES",
-  "INVALID_ANALYSIS_CONFIGURATION",
-  "INTERNAL_ERROR",
-);
+  | "INTERNAL_ERROR"
+  | (string & {});
+export const PostContactSummaryFailureCode = S.String;
 export interface PostContactSummary {
   Content?: string;
   Status?: PostContactSummaryStatus;

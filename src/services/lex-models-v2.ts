@@ -238,31 +238,32 @@ export const CreateUploadUrlRequest = S.suspend(() =>
 ).annotations({
   identifier: "CreateUploadUrlRequest",
 }) as any as S.Schema<CreateUploadUrlRequest>;
-export type BotType = "Bot" | "BotNetwork";
-export const BotType = S.Literal("Bot", "BotNetwork");
+export type BotType = "Bot" | "BotNetwork" | (string & {});
+export const BotType = S.String;
 export type SpeechDetectionSensitivity =
   | "Default"
   | "HighNoiseTolerance"
-  | "MaximumNoiseTolerance";
-export const SpeechDetectionSensitivity = S.Literal(
-  "Default",
-  "HighNoiseTolerance",
-  "MaximumNoiseTolerance",
-);
-export type ImportExportFileFormat = "LexJson" | "TSV" | "CSV";
-export const ImportExportFileFormat = S.Literal("LexJson", "TSV", "CSV");
-export type Effect = "Allow" | "Deny";
-export const Effect = S.Literal("Allow", "Deny");
+  | "MaximumNoiseTolerance"
+  | (string & {});
+export const SpeechDetectionSensitivity = S.String;
+export type ImportExportFileFormat = "LexJson" | "TSV" | "CSV" | (string & {});
+export const ImportExportFileFormat = S.String;
+export type Effect = "Allow" | "Deny" | (string & {});
+export const Effect = S.String;
 export type OperationList = string[];
 export const OperationList = S.Array(S.String);
-export type SearchOrder = "Ascending" | "Descending";
-export const SearchOrder = S.Literal("Ascending", "Descending");
-export type MergeStrategy = "Overwrite" | "FailOnConflict" | "Append";
-export const MergeStrategy = S.Literal("Overwrite", "FailOnConflict", "Append");
-export type TestExecutionApiMode = "Streaming" | "NonStreaming";
-export const TestExecutionApiMode = S.Literal("Streaming", "NonStreaming");
-export type TestExecutionModality = "Text" | "Audio";
-export const TestExecutionModality = S.Literal("Text", "Audio");
+export type SearchOrder = "Ascending" | "Descending" | (string & {});
+export const SearchOrder = S.String;
+export type MergeStrategy =
+  | "Overwrite"
+  | "FailOnConflict"
+  | "Append"
+  | (string & {});
+export const MergeStrategy = S.String;
+export type TestExecutionApiMode = "Streaming" | "NonStreaming" | (string & {});
+export const TestExecutionApiMode = S.String;
+export type TestExecutionModality = "Text" | "Audio" | (string & {});
+export const TestExecutionModality = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export interface BuildBotLocaleRequest {
@@ -1731,13 +1732,13 @@ export const UpdateBotAliasRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateBotAliasRequest",
 }) as any as S.Schema<UpdateBotAliasRequest>;
-export type VoiceEngine = "standard" | "neural" | "long-form" | "generative";
-export const VoiceEngine = S.Literal(
-  "standard",
-  "neural",
-  "long-form",
-  "generative",
-);
+export type VoiceEngine =
+  | "standard"
+  | "neural"
+  | "long-form"
+  | "generative"
+  | (string & {});
+export const VoiceEngine = S.String;
 export interface VoiceSettings {
   engine?: VoiceEngine;
   voiceId: string;
@@ -1764,12 +1765,12 @@ export const UnifiedSpeechSettings = S.suspend(() =>
 ).annotations({
   identifier: "UnifiedSpeechSettings",
 }) as any as S.Schema<UnifiedSpeechSettings>;
-export type SpeechModelPreference = "Standard" | "Neural" | "Deepgram";
-export const SpeechModelPreference = S.Literal(
-  "Standard",
-  "Neural",
-  "Deepgram",
-);
+export type SpeechModelPreference =
+  | "Standard"
+  | "Neural"
+  | "Deepgram"
+  | (string & {});
+export const SpeechModelPreference = S.String;
 export interface DeepgramSpeechModelConfig {
   apiTokenSecretArn: string;
   modelId?: string;
@@ -1808,8 +1809,8 @@ export const BedrockGuardrailConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "BedrockGuardrailConfiguration",
 }) as any as S.Schema<BedrockGuardrailConfiguration>;
-export type BedrockTraceStatus = "ENABLED" | "DISABLED";
-export const BedrockTraceStatus = S.Literal("ENABLED", "DISABLED");
+export type BedrockTraceStatus = "ENABLED" | "DISABLED" | (string & {});
+export const BedrockTraceStatus = S.String;
 export interface BedrockModelSpecification {
   modelArn: string;
   guardrail?: BedrockGuardrailConfiguration;
@@ -1838,8 +1839,8 @@ export const SlotResolutionImprovementSpecification = S.suspend(() =>
 ).annotations({
   identifier: "SlotResolutionImprovementSpecification",
 }) as any as S.Schema<SlotResolutionImprovementSpecification>;
-export type AssistedNluMode = "Primary" | "Fallback";
-export const AssistedNluMode = S.Literal("Primary", "Fallback");
+export type AssistedNluMode = "Primary" | "Fallback" | (string & {});
+export const AssistedNluMode = S.String;
 export interface IntentDisambiguationSettings {
   enabled: boolean;
   maxDisambiguationIntents?: number;
@@ -2080,8 +2081,8 @@ export const SlotDefaultValueSpecification = S.suspend(() =>
 ).annotations({
   identifier: "SlotDefaultValueSpecification",
 }) as any as S.Schema<SlotDefaultValueSpecification>;
-export type SlotConstraint = "Required" | "Optional";
-export const SlotConstraint = S.Literal("Required", "Optional");
+export type SlotConstraint = "Required" | "Optional" | (string & {});
+export const SlotConstraint = S.String;
 export interface PlainTextMessage {
   value: string;
 }
@@ -2154,23 +2155,17 @@ export const MessageGroup = S.suspend(() =>
 ).annotations({ identifier: "MessageGroup" }) as any as S.Schema<MessageGroup>;
 export type MessageGroupsList = MessageGroup[];
 export const MessageGroupsList = S.Array(MessageGroup);
-export type MessageSelectionStrategy = "Random" | "Ordered";
-export const MessageSelectionStrategy = S.Literal("Random", "Ordered");
+export type MessageSelectionStrategy = "Random" | "Ordered" | (string & {});
+export const MessageSelectionStrategy = S.String;
 export type PromptAttempt =
   | "Initial"
   | "Retry1"
   | "Retry2"
   | "Retry3"
   | "Retry4"
-  | "Retry5";
-export const PromptAttempt = S.Literal(
-  "Initial",
-  "Retry1",
-  "Retry2",
-  "Retry3",
-  "Retry4",
-  "Retry5",
-);
+  | "Retry5"
+  | (string & {});
+export const PromptAttempt = S.String;
 export interface AllowedInputTypes {
   allowAudioInput: boolean;
   allowDTMFInput: boolean;
@@ -2335,18 +2330,9 @@ export type DialogActionType =
   | "ConfirmIntent"
   | "FulfillIntent"
   | "CloseIntent"
-  | "EndConversation";
-export const DialogActionType = S.Literal(
-  "ElicitIntent",
-  "StartIntent",
-  "ElicitSlot",
-  "EvaluateConditional",
-  "InvokeDialogCodeHook",
-  "ConfirmIntent",
-  "FulfillIntent",
-  "CloseIntent",
-  "EndConversation",
-);
+  | "EndConversation"
+  | (string & {});
+export const DialogActionType = S.String;
 export interface DialogAction {
   type: DialogActionType;
   slotToElicit?: string;
@@ -2359,8 +2345,8 @@ export const DialogAction = S.suspend(() =>
     suppressNextMessage: S.optional(S.Boolean),
   }),
 ).annotations({ identifier: "DialogAction" }) as any as S.Schema<DialogAction>;
-export type SlotShape = "Scalar" | "List";
-export const SlotShape = S.Literal("Scalar", "List");
+export type SlotShape = "Scalar" | "List" | (string & {});
+export const SlotShape = S.String;
 export interface SlotValue {
   interpretedValue?: string;
 }
@@ -2551,8 +2537,11 @@ export const SlotCaptureSetting = S.suspend(() =>
 ).annotations({
   identifier: "SlotCaptureSetting",
 }) as any as S.Schema<SlotCaptureSetting>;
-export type SlotResolutionStrategy = "EnhancedFallback" | "Default";
-export const SlotResolutionStrategy = S.Literal("EnhancedFallback", "Default");
+export type SlotResolutionStrategy =
+  | "EnhancedFallback"
+  | "Default"
+  | (string & {});
+export const SlotResolutionStrategy = S.String;
 export interface SlotResolutionSetting {
   slotResolutionStrategy: SlotResolutionStrategy;
 }
@@ -2583,8 +2572,11 @@ export const SlotValueElicitationSetting = S.suspend(() =>
 ).annotations({
   identifier: "SlotValueElicitationSetting",
 }) as any as S.Schema<SlotValueElicitationSetting>;
-export type ObfuscationSettingType = "None" | "DefaultObfuscation";
-export const ObfuscationSettingType = S.Literal("None", "DefaultObfuscation");
+export type ObfuscationSettingType =
+  | "None"
+  | "DefaultObfuscation"
+  | (string & {});
+export const ObfuscationSettingType = S.String;
 export interface ObfuscationSetting {
   obfuscationSettingType: ObfuscationSettingType;
 }
@@ -2717,12 +2709,9 @@ export const SlotTypeValues = S.Array(SlotTypeValue);
 export type SlotValueResolutionStrategy =
   | "OriginalValue"
   | "TopResolution"
-  | "Concatenation";
-export const SlotValueResolutionStrategy = S.Literal(
-  "OriginalValue",
-  "TopResolution",
-  "Concatenation",
-);
+  | "Concatenation"
+  | (string & {});
+export const SlotValueResolutionStrategy = S.String;
 export interface SlotValueRegexFilter {
   pattern: string;
 }
@@ -2731,10 +2720,10 @@ export const SlotValueRegexFilter = S.suspend(() =>
 ).annotations({
   identifier: "SlotValueRegexFilter",
 }) as any as S.Schema<SlotValueRegexFilter>;
-export type AudioRecognitionStrategy = "UseSlotValuesAsCustomVocabulary";
-export const AudioRecognitionStrategy = S.Literal(
-  "UseSlotValuesAsCustomVocabulary",
-);
+export type AudioRecognitionStrategy =
+  | "UseSlotValuesAsCustomVocabulary"
+  | (string & {});
+export const AudioRecognitionStrategy = S.String;
 export interface AdvancedRecognitionSetting {
   audioRecognitionStrategy?: AudioRecognitionStrategy;
 }
@@ -2871,89 +2860,81 @@ export const UpdateTestSetRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateTestSetRequest",
 }) as any as S.Schema<UpdateTestSetRequest>;
-export type AggregatedUtterancesSortAttribute = "HitCount" | "MissedCount";
-export const AggregatedUtterancesSortAttribute = S.Literal(
-  "HitCount",
-  "MissedCount",
-);
-export type SortOrder = "Ascending" | "Descending";
-export const SortOrder = S.Literal("Ascending", "Descending");
-export type AggregatedUtterancesFilterName = "Utterance";
-export const AggregatedUtterancesFilterName = S.Literal("Utterance");
+export type AggregatedUtterancesSortAttribute =
+  | "HitCount"
+  | "MissedCount"
+  | (string & {});
+export const AggregatedUtterancesSortAttribute = S.String;
+export type SortOrder = "Ascending" | "Descending" | (string & {});
+export const SortOrder = S.String;
+export type AggregatedUtterancesFilterName = "Utterance" | (string & {});
+export const AggregatedUtterancesFilterName = S.String;
 export type FilterValues = string[];
 export const FilterValues = S.Array(S.String);
-export type AggregatedUtterancesFilterOperator = "CO" | "EQ";
-export const AggregatedUtterancesFilterOperator = S.Literal("CO", "EQ");
-export type BotLocaleSortAttribute = "BotLocaleName";
-export const BotLocaleSortAttribute = S.Literal("BotLocaleName");
-export type BotLocaleFilterName = "BotLocaleName";
-export const BotLocaleFilterName = S.Literal("BotLocaleName");
-export type BotLocaleFilterOperator = "CO" | "EQ";
-export const BotLocaleFilterOperator = S.Literal("CO", "EQ");
-export type GenerationSortByAttribute = "creationStartTime" | "lastUpdatedTime";
-export const GenerationSortByAttribute = S.Literal(
-  "creationStartTime",
-  "lastUpdatedTime",
-);
-export type BotSortAttribute = "BotName";
-export const BotSortAttribute = S.Literal("BotName");
-export type BotFilterName = "BotName" | "BotType";
-export const BotFilterName = S.Literal("BotName", "BotType");
-export type BotFilterOperator = "CO" | "EQ" | "NE";
-export const BotFilterOperator = S.Literal("CO", "EQ", "NE");
-export type BotVersionReplicaSortAttribute = "BotVersion";
-export const BotVersionReplicaSortAttribute = S.Literal("BotVersion");
-export type BotVersionSortAttribute = "BotVersion";
-export const BotVersionSortAttribute = S.Literal("BotVersion");
-export type BuiltInIntentSortAttribute = "IntentSignature";
-export const BuiltInIntentSortAttribute = S.Literal("IntentSignature");
-export type BuiltInSlotTypeSortAttribute = "SlotTypeSignature";
-export const BuiltInSlotTypeSortAttribute = S.Literal("SlotTypeSignature");
-export type ExportSortAttribute = "LastUpdatedDateTime";
-export const ExportSortAttribute = S.Literal("LastUpdatedDateTime");
-export type ExportFilterName = "ExportResourceType";
-export const ExportFilterName = S.Literal("ExportResourceType");
-export type ExportFilterOperator = "CO" | "EQ";
-export const ExportFilterOperator = S.Literal("CO", "EQ");
-export type ImportSortAttribute = "LastUpdatedDateTime";
-export const ImportSortAttribute = S.Literal("LastUpdatedDateTime");
-export type ImportFilterName = "ImportResourceType";
-export const ImportFilterName = S.Literal("ImportResourceType");
-export type ImportFilterOperator = "CO" | "EQ";
-export const ImportFilterOperator = S.Literal("CO", "EQ");
+export type AggregatedUtterancesFilterOperator = "CO" | "EQ" | (string & {});
+export const AggregatedUtterancesFilterOperator = S.String;
+export type BotLocaleSortAttribute = "BotLocaleName" | (string & {});
+export const BotLocaleSortAttribute = S.String;
+export type BotLocaleFilterName = "BotLocaleName" | (string & {});
+export const BotLocaleFilterName = S.String;
+export type BotLocaleFilterOperator = "CO" | "EQ" | (string & {});
+export const BotLocaleFilterOperator = S.String;
+export type GenerationSortByAttribute =
+  | "creationStartTime"
+  | "lastUpdatedTime"
+  | (string & {});
+export const GenerationSortByAttribute = S.String;
+export type BotSortAttribute = "BotName" | (string & {});
+export const BotSortAttribute = S.String;
+export type BotFilterName = "BotName" | "BotType" | (string & {});
+export const BotFilterName = S.String;
+export type BotFilterOperator = "CO" | "EQ" | "NE" | (string & {});
+export const BotFilterOperator = S.String;
+export type BotVersionReplicaSortAttribute = "BotVersion" | (string & {});
+export const BotVersionReplicaSortAttribute = S.String;
+export type BotVersionSortAttribute = "BotVersion" | (string & {});
+export const BotVersionSortAttribute = S.String;
+export type BuiltInIntentSortAttribute = "IntentSignature" | (string & {});
+export const BuiltInIntentSortAttribute = S.String;
+export type BuiltInSlotTypeSortAttribute = "SlotTypeSignature" | (string & {});
+export const BuiltInSlotTypeSortAttribute = S.String;
+export type ExportSortAttribute = "LastUpdatedDateTime" | (string & {});
+export const ExportSortAttribute = S.String;
+export type ExportFilterName = "ExportResourceType" | (string & {});
+export const ExportFilterName = S.String;
+export type ExportFilterOperator = "CO" | "EQ" | (string & {});
+export const ExportFilterOperator = S.String;
+export type ImportSortAttribute = "LastUpdatedDateTime" | (string & {});
+export const ImportSortAttribute = S.String;
+export type ImportFilterName = "ImportResourceType" | (string & {});
+export const ImportFilterName = S.String;
+export type ImportFilterOperator = "CO" | "EQ" | (string & {});
+export const ImportFilterOperator = S.String;
 export type AnalyticsIntentMetricName =
   | "Count"
   | "Success"
   | "Failure"
   | "Switched"
-  | "Dropped";
-export const AnalyticsIntentMetricName = S.Literal(
-  "Count",
-  "Success",
-  "Failure",
-  "Switched",
-  "Dropped",
-);
-export type AnalyticsMetricStatistic = "Sum" | "Avg" | "Max";
-export const AnalyticsMetricStatistic = S.Literal("Sum", "Avg", "Max");
-export type AnalyticsSortOrder = "Ascending" | "Descending";
-export const AnalyticsSortOrder = S.Literal("Ascending", "Descending");
-export type AnalyticsBinByName = "ConversationStartTime" | "UtteranceTimestamp";
-export const AnalyticsBinByName = S.Literal(
-  "ConversationStartTime",
-  "UtteranceTimestamp",
-);
-export type AnalyticsInterval = "OneHour" | "OneDay";
-export const AnalyticsInterval = S.Literal("OneHour", "OneDay");
+  | "Dropped"
+  | (string & {});
+export const AnalyticsIntentMetricName = S.String;
+export type AnalyticsMetricStatistic = "Sum" | "Avg" | "Max" | (string & {});
+export const AnalyticsMetricStatistic = S.String;
+export type AnalyticsSortOrder = "Ascending" | "Descending" | (string & {});
+export const AnalyticsSortOrder = S.String;
+export type AnalyticsBinByName =
+  | "ConversationStartTime"
+  | "UtteranceTimestamp"
+  | (string & {});
+export const AnalyticsBinByName = S.String;
+export type AnalyticsInterval = "OneHour" | "OneDay" | (string & {});
+export const AnalyticsInterval = S.String;
 export type AnalyticsIntentField =
   | "IntentName"
   | "IntentEndState"
-  | "IntentLevel";
-export const AnalyticsIntentField = S.Literal(
-  "IntentName",
-  "IntentEndState",
-  "IntentLevel",
-);
+  | "IntentLevel"
+  | (string & {});
+export const AnalyticsIntentField = S.String;
 export type AnalyticsIntentFilterName =
   | "BotAliasId"
   | "BotVersion"
@@ -2963,20 +2944,11 @@ export type AnalyticsIntentFilterName =
   | "SessionId"
   | "OriginatingRequestId"
   | "IntentName"
-  | "IntentEndState";
-export const AnalyticsIntentFilterName = S.Literal(
-  "BotAliasId",
-  "BotVersion",
-  "LocaleId",
-  "Modality",
-  "Channel",
-  "SessionId",
-  "OriginatingRequestId",
-  "IntentName",
-  "IntentEndState",
-);
-export type AnalyticsFilterOperator = "EQ" | "GT" | "LT";
-export const AnalyticsFilterOperator = S.Literal("EQ", "GT", "LT");
+  | "IntentEndState"
+  | (string & {});
+export const AnalyticsIntentFilterName = S.String;
+export type AnalyticsFilterOperator = "EQ" | "GT" | "LT" | (string & {});
+export const AnalyticsFilterOperator = S.String;
 export type AnalyticsFilterValues = string[];
 export const AnalyticsFilterValues = S.Array(S.String);
 export type AnalyticsCommonFilterName =
@@ -2984,41 +2956,31 @@ export type AnalyticsCommonFilterName =
   | "BotVersion"
   | "LocaleId"
   | "Modality"
-  | "Channel";
-export const AnalyticsCommonFilterName = S.Literal(
-  "BotAliasId",
-  "BotVersion",
-  "LocaleId",
-  "Modality",
-  "Channel",
-);
-export type IntentSortAttribute = "IntentName" | "LastUpdatedDateTime";
-export const IntentSortAttribute = S.Literal(
-  "IntentName",
-  "LastUpdatedDateTime",
-);
-export type IntentFilterName = "IntentName";
-export const IntentFilterName = S.Literal("IntentName");
-export type IntentFilterOperator = "CO" | "EQ";
-export const IntentFilterOperator = S.Literal("CO", "EQ");
+  | "Channel"
+  | (string & {});
+export const AnalyticsCommonFilterName = S.String;
+export type IntentSortAttribute =
+  | "IntentName"
+  | "LastUpdatedDateTime"
+  | (string & {});
+export const IntentSortAttribute = S.String;
+export type IntentFilterName = "IntentName" | (string & {});
+export const IntentFilterName = S.String;
+export type IntentFilterOperator = "CO" | "EQ" | (string & {});
+export const IntentFilterOperator = S.String;
 export type AnalyticsIntentStageMetricName =
   | "Count"
   | "Success"
   | "Failed"
   | "Dropped"
-  | "Retry";
-export const AnalyticsIntentStageMetricName = S.Literal(
-  "Count",
-  "Success",
-  "Failed",
-  "Dropped",
-  "Retry",
-);
-export type AnalyticsIntentStageField = "IntentStageName" | "SwitchedToIntent";
-export const AnalyticsIntentStageField = S.Literal(
-  "IntentStageName",
-  "SwitchedToIntent",
-);
+  | "Retry"
+  | (string & {});
+export const AnalyticsIntentStageMetricName = S.String;
+export type AnalyticsIntentStageField =
+  | "IntentStageName"
+  | "SwitchedToIntent"
+  | (string & {});
+export const AnalyticsIntentStageField = S.String;
 export type AnalyticsIntentStageFilterName =
   | "BotAliasId"
   | "BotVersion"
@@ -3028,27 +2990,15 @@ export type AnalyticsIntentStageFilterName =
   | "SessionId"
   | "OriginatingRequestId"
   | "IntentName"
-  | "IntentStageName";
-export const AnalyticsIntentStageFilterName = S.Literal(
-  "BotAliasId",
-  "BotVersion",
-  "LocaleId",
-  "Modality",
-  "Channel",
-  "SessionId",
-  "OriginatingRequestId",
-  "IntentName",
-  "IntentStageName",
-);
+  | "IntentStageName"
+  | (string & {});
+export const AnalyticsIntentStageFilterName = S.String;
 export type AnalyticsSessionSortByName =
   | "ConversationStartTime"
   | "NumberOfTurns"
-  | "Duration";
-export const AnalyticsSessionSortByName = S.Literal(
-  "ConversationStartTime",
-  "NumberOfTurns",
-  "Duration",
-);
+  | "Duration"
+  | (string & {});
+export const AnalyticsSessionSortByName = S.String;
 export type AnalyticsSessionFilterName =
   | "BotAliasId"
   | "BotVersion"
@@ -3059,19 +3009,9 @@ export type AnalyticsSessionFilterName =
   | "ConversationEndState"
   | "SessionId"
   | "OriginatingRequestId"
-  | "IntentPath";
-export const AnalyticsSessionFilterName = S.Literal(
-  "BotAliasId",
-  "BotVersion",
-  "LocaleId",
-  "Modality",
-  "Channel",
-  "Duration",
-  "ConversationEndState",
-  "SessionId",
-  "OriginatingRequestId",
-  "IntentPath",
-);
+  | "IntentPath"
+  | (string & {});
+export const AnalyticsSessionFilterName = S.String;
 export type AnalyticsSessionMetricName =
   | "Count"
   | "Success"
@@ -3079,64 +3019,55 @@ export type AnalyticsSessionMetricName =
   | "Dropped"
   | "Duration"
   | "TurnsPerConversation"
-  | "Concurrency";
-export const AnalyticsSessionMetricName = S.Literal(
-  "Count",
-  "Success",
-  "Failure",
-  "Dropped",
-  "Duration",
-  "TurnsPerConversation",
-  "Concurrency",
-);
-export type AnalyticsSessionField = "ConversationEndState" | "LocaleId";
-export const AnalyticsSessionField = S.Literal(
-  "ConversationEndState",
-  "LocaleId",
-);
-export type SlotSortAttribute = "SlotName" | "LastUpdatedDateTime";
-export const SlotSortAttribute = S.Literal("SlotName", "LastUpdatedDateTime");
-export type SlotFilterName = "SlotName";
-export const SlotFilterName = S.Literal("SlotName");
-export type SlotFilterOperator = "CO" | "EQ";
-export const SlotFilterOperator = S.Literal("CO", "EQ");
-export type SlotTypeSortAttribute = "SlotTypeName" | "LastUpdatedDateTime";
-export const SlotTypeSortAttribute = S.Literal(
-  "SlotTypeName",
-  "LastUpdatedDateTime",
-);
-export type SlotTypeFilterName = "SlotTypeName" | "ExternalSourceType";
-export const SlotTypeFilterName = S.Literal(
-  "SlotTypeName",
-  "ExternalSourceType",
-);
-export type SlotTypeFilterOperator = "CO" | "EQ";
-export const SlotTypeFilterOperator = S.Literal("CO", "EQ");
+  | "Concurrency"
+  | (string & {});
+export const AnalyticsSessionMetricName = S.String;
+export type AnalyticsSessionField =
+  | "ConversationEndState"
+  | "LocaleId"
+  | (string & {});
+export const AnalyticsSessionField = S.String;
+export type SlotSortAttribute =
+  | "SlotName"
+  | "LastUpdatedDateTime"
+  | (string & {});
+export const SlotSortAttribute = S.String;
+export type SlotFilterName = "SlotName" | (string & {});
+export const SlotFilterName = S.String;
+export type SlotFilterOperator = "CO" | "EQ" | (string & {});
+export const SlotFilterOperator = S.String;
+export type SlotTypeSortAttribute =
+  | "SlotTypeName"
+  | "LastUpdatedDateTime"
+  | (string & {});
+export const SlotTypeSortAttribute = S.String;
+export type SlotTypeFilterName =
+  | "SlotTypeName"
+  | "ExternalSourceType"
+  | (string & {});
+export const SlotTypeFilterName = S.String;
+export type SlotTypeFilterOperator = "CO" | "EQ" | (string & {});
+export const SlotTypeFilterOperator = S.String;
 export type TestResultTypeFilter =
   | "OverallTestResults"
   | "ConversationLevelTestResults"
   | "IntentClassificationTestResults"
   | "SlotResolutionTestResults"
-  | "UtteranceLevelResults";
-export const TestResultTypeFilter = S.Literal(
-  "OverallTestResults",
-  "ConversationLevelTestResults",
-  "IntentClassificationTestResults",
-  "SlotResolutionTestResults",
-  "UtteranceLevelResults",
-);
-export type TestExecutionSortAttribute = "TestSetName" | "CreationDateTime";
-export const TestExecutionSortAttribute = S.Literal(
-  "TestSetName",
-  "CreationDateTime",
-);
-export type TestSetSortAttribute = "TestSetName" | "LastUpdatedDateTime";
-export const TestSetSortAttribute = S.Literal(
-  "TestSetName",
-  "LastUpdatedDateTime",
-);
-export type AnalyticsUtteranceSortByName = "UtteranceTimestamp";
-export const AnalyticsUtteranceSortByName = S.Literal("UtteranceTimestamp");
+  | "UtteranceLevelResults"
+  | (string & {});
+export const TestResultTypeFilter = S.String;
+export type TestExecutionSortAttribute =
+  | "TestSetName"
+  | "CreationDateTime"
+  | (string & {});
+export const TestExecutionSortAttribute = S.String;
+export type TestSetSortAttribute =
+  | "TestSetName"
+  | "LastUpdatedDateTime"
+  | (string & {});
+export const TestSetSortAttribute = S.String;
+export type AnalyticsUtteranceSortByName = "UtteranceTimestamp" | (string & {});
+export const AnalyticsUtteranceSortByName = S.String;
 export type AnalyticsUtteranceFilterName =
   | "BotAliasId"
   | "BotVersion"
@@ -3146,41 +3077,28 @@ export type AnalyticsUtteranceFilterName =
   | "SessionId"
   | "OriginatingRequestId"
   | "UtteranceState"
-  | "UtteranceText";
-export const AnalyticsUtteranceFilterName = S.Literal(
-  "BotAliasId",
-  "BotVersion",
-  "LocaleId",
-  "Modality",
-  "Channel",
-  "SessionId",
-  "OriginatingRequestId",
-  "UtteranceState",
-  "UtteranceText",
-);
+  | "UtteranceText"
+  | (string & {});
+export const AnalyticsUtteranceFilterName = S.String;
 export type AnalyticsUtteranceMetricName =
   | "Count"
   | "Missed"
   | "Detected"
-  | "UtteranceTimestamp";
-export const AnalyticsUtteranceMetricName = S.Literal(
-  "Count",
-  "Missed",
-  "Detected",
-  "UtteranceTimestamp",
-);
-export type AnalyticsUtteranceField = "UtteranceText" | "UtteranceState";
-export const AnalyticsUtteranceField = S.Literal(
-  "UtteranceText",
-  "UtteranceState",
-);
-export type AnalyticsUtteranceAttributeName = "LastUsedIntent";
-export const AnalyticsUtteranceAttributeName = S.Literal("LastUsedIntent");
-export type AssociatedTranscriptFilterName = "IntentId" | "SlotTypeId";
-export const AssociatedTranscriptFilterName = S.Literal(
-  "IntentId",
-  "SlotTypeId",
-);
+  | "UtteranceTimestamp"
+  | (string & {});
+export const AnalyticsUtteranceMetricName = S.String;
+export type AnalyticsUtteranceField =
+  | "UtteranceText"
+  | "UtteranceState"
+  | (string & {});
+export const AnalyticsUtteranceField = S.String;
+export type AnalyticsUtteranceAttributeName = "LastUsedIntent" | (string & {});
+export const AnalyticsUtteranceAttributeName = S.String;
+export type AssociatedTranscriptFilterName =
+  | "IntentId"
+  | "SlotTypeId"
+  | (string & {});
+export const AssociatedTranscriptFilterName = S.String;
 export interface NewCustomVocabularyItem {
   phrase: string;
   weight?: number;
@@ -3234,25 +3152,16 @@ export type BotLocaleStatus =
   | "Deleting"
   | "NotBuilt"
   | "Importing"
-  | "Processing";
-export const BotLocaleStatus = S.Literal(
-  "Creating",
-  "Building",
-  "Built",
-  "ReadyExpressTesting",
-  "Failed",
-  "Deleting",
-  "NotBuilt",
-  "Importing",
-  "Processing",
-);
-export type BotReplicaStatus = "Enabling" | "Enabled" | "Deleting" | "Failed";
-export const BotReplicaStatus = S.Literal(
-  "Enabling",
-  "Enabled",
-  "Deleting",
-  "Failed",
-);
+  | "Processing"
+  | (string & {});
+export const BotLocaleStatus = S.String;
+export type BotReplicaStatus =
+  | "Enabling"
+  | "Enabled"
+  | "Deleting"
+  | "Failed"
+  | (string & {});
+export const BotReplicaStatus = S.String;
 export interface DialogCodeHookSettings {
   enabled: boolean;
 }
@@ -3348,51 +3257,38 @@ export type BotStatus =
   | "Failed"
   | "Versioning"
   | "Importing"
-  | "Updating";
-export const BotStatus = S.Literal(
-  "Creating",
-  "Available",
-  "Inactive",
-  "Deleting",
-  "Failed",
-  "Versioning",
-  "Importing",
-  "Updating",
-);
-export type BotAliasStatus = "Creating" | "Available" | "Deleting" | "Failed";
-export const BotAliasStatus = S.Literal(
-  "Creating",
-  "Available",
-  "Deleting",
-  "Failed",
-);
+  | "Updating"
+  | (string & {});
+export const BotStatus = S.String;
+export type BotAliasStatus =
+  | "Creating"
+  | "Available"
+  | "Deleting"
+  | "Failed"
+  | (string & {});
+export const BotAliasStatus = S.String;
 export type CustomVocabularyStatus =
   | "Ready"
   | "Deleting"
   | "Exporting"
   | "Importing"
-  | "Creating";
-export const CustomVocabularyStatus = S.Literal(
-  "Ready",
-  "Deleting",
-  "Exporting",
-  "Importing",
-  "Creating",
-);
-export type ExportStatus = "InProgress" | "Completed" | "Failed" | "Deleting";
-export const ExportStatus = S.Literal(
-  "InProgress",
-  "Completed",
-  "Failed",
-  "Deleting",
-);
-export type ImportStatus = "InProgress" | "Completed" | "Failed" | "Deleting";
-export const ImportStatus = S.Literal(
-  "InProgress",
-  "Completed",
-  "Failed",
-  "Deleting",
-);
+  | "Creating"
+  | (string & {});
+export const CustomVocabularyStatus = S.String;
+export type ExportStatus =
+  | "InProgress"
+  | "Completed"
+  | "Failed"
+  | "Deleting"
+  | (string & {});
+export const ExportStatus = S.String;
+export type ImportStatus =
+  | "InProgress"
+  | "Completed"
+  | "Failed"
+  | "Deleting"
+  | (string & {});
+export const ImportStatus = S.String;
 export type FailureReasons = string[];
 export const FailureReasons = S.Array(S.String);
 export type RecommendedActions = string[];
@@ -3406,20 +3302,15 @@ export type BotRecommendationStatus =
   | "Available"
   | "Failed"
   | "Stopping"
-  | "Stopped";
-export const BotRecommendationStatus = S.Literal(
-  "Processing",
-  "Deleting",
-  "Deleted",
-  "Downloading",
-  "Updating",
-  "Available",
-  "Failed",
-  "Stopping",
-  "Stopped",
-);
-export type GenerationStatus = "Failed" | "Complete" | "InProgress";
-export const GenerationStatus = S.Literal("Failed", "Complete", "InProgress");
+  | "Stopped"
+  | (string & {});
+export const BotRecommendationStatus = S.String;
+export type GenerationStatus =
+  | "Failed"
+  | "Complete"
+  | "InProgress"
+  | (string & {});
+export const GenerationStatus = S.String;
 export type TestExecutionStatus =
   | "Pending"
   | "Waiting"
@@ -3427,51 +3318,32 @@ export type TestExecutionStatus =
   | "Completed"
   | "Failed"
   | "Stopping"
-  | "Stopped";
-export const TestExecutionStatus = S.Literal(
-  "Pending",
-  "Waiting",
-  "InProgress",
-  "Completed",
-  "Failed",
-  "Stopping",
-  "Stopped",
-);
-export type TestSetModality = "Text" | "Audio";
-export const TestSetModality = S.Literal("Text", "Audio");
+  | "Stopped"
+  | (string & {});
+export const TestExecutionStatus = S.String;
+export type TestSetModality = "Text" | "Audio" | (string & {});
+export const TestSetModality = S.String;
 export type TestSetStatus =
   | "Importing"
   | "PendingAnnotation"
   | "Deleting"
   | "ValidationError"
-  | "Ready";
-export const TestSetStatus = S.Literal(
-  "Importing",
-  "PendingAnnotation",
-  "Deleting",
-  "ValidationError",
-  "Ready",
-);
+  | "Ready"
+  | (string & {});
+export const TestSetStatus = S.String;
 export type TestSetDiscrepancyReportStatus =
   | "InProgress"
   | "Completed"
-  | "Failed";
-export const TestSetDiscrepancyReportStatus = S.Literal(
-  "InProgress",
-  "Completed",
-  "Failed",
-);
+  | "Failed"
+  | (string & {});
+export const TestSetDiscrepancyReportStatus = S.String;
 export type TestSetGenerationStatus =
   | "Generating"
   | "Ready"
   | "Failed"
-  | "Pending";
-export const TestSetGenerationStatus = S.Literal(
-  "Generating",
-  "Ready",
-  "Failed",
-  "Pending",
-);
+  | "Pending"
+  | (string & {});
+export const TestSetGenerationStatus = S.String;
 export interface AggregatedUtterancesSortBy {
   attribute: AggregatedUtterancesSortAttribute;
   order: SortOrder;
@@ -3992,16 +3864,16 @@ export const SlotPriority = S.suspend(() =>
 ).annotations({ identifier: "SlotPriority" }) as any as S.Schema<SlotPriority>;
 export type SlotPrioritiesList = SlotPriority[];
 export const SlotPrioritiesList = S.Array(SlotPriority);
-export type TimeDimension = "Hours" | "Days" | "Weeks";
-export const TimeDimension = S.Literal("Hours", "Days", "Weeks");
-export type TestResultMatchStatus = "Matched" | "Mismatched" | "ExecutionError";
-export const TestResultMatchStatus = S.Literal(
-  "Matched",
-  "Mismatched",
-  "ExecutionError",
-);
-export type TranscriptFormat = "Lex";
-export const TranscriptFormat = S.Literal("Lex");
+export type TimeDimension = "Hours" | "Days" | "Weeks" | (string & {});
+export const TimeDimension = S.String;
+export type TestResultMatchStatus =
+  | "Matched"
+  | "Mismatched"
+  | "ExecutionError"
+  | (string & {});
+export const TestResultMatchStatus = S.String;
+export type TranscriptFormat = "Lex" | (string & {});
+export const TranscriptFormat = S.String;
 export interface BatchCreateCustomVocabularyItemRequest {
   botId: string;
   botVersion: string;
@@ -5160,8 +5032,8 @@ export const DescribeTestSetResponse = S.suspend(() =>
 ).annotations({
   identifier: "DescribeTestSetResponse",
 }) as any as S.Schema<DescribeTestSetResponse>;
-export type ConversationLogsInputModeFilter = "Speech" | "Text";
-export const ConversationLogsInputModeFilter = S.Literal("Speech", "Text");
+export type ConversationLogsInputModeFilter = "Speech" | "Text" | (string & {});
+export const ConversationLogsInputModeFilter = S.String;
 export interface ConversationLogsDataSourceFilterBy {
   startTime: Date;
   endTime: Date;
@@ -6464,14 +6336,9 @@ export type BotAliasReplicationStatus =
   | "Updating"
   | "Available"
   | "Deleting"
-  | "Failed";
-export const BotAliasReplicationStatus = S.Literal(
-  "Creating",
-  "Updating",
-  "Available",
-  "Deleting",
-  "Failed",
-);
+  | "Failed"
+  | (string & {});
+export const BotAliasReplicationStatus = S.String;
 export interface ConversationLevelTestResultsFilterBy {
   endToEndResult?: TestResultMatchStatus;
 }
@@ -6672,13 +6539,9 @@ export type ErrorCode =
   | "DUPLICATE_INPUT"
   | "RESOURCE_DOES_NOT_EXIST"
   | "RESOURCE_ALREADY_EXISTS"
-  | "INTERNAL_SERVER_FAILURE";
-export const ErrorCode = S.Literal(
-  "DUPLICATE_INPUT",
-  "RESOURCE_DOES_NOT_EXIST",
-  "RESOURCE_ALREADY_EXISTS",
-  "INTERNAL_SERVER_FAILURE",
-);
+  | "INTERNAL_SERVER_FAILURE"
+  | (string & {});
+export const ErrorCode = S.String;
 export interface FailedCustomVocabularyItem {
   itemId?: string;
   errorMessage?: string;
@@ -7229,61 +7092,47 @@ export type BotVersionReplicationStatus =
   | "Creating"
   | "Available"
   | "Deleting"
-  | "Failed";
-export const BotVersionReplicationStatus = S.Literal(
-  "Creating",
-  "Available",
-  "Deleting",
-  "Failed",
-);
+  | "Failed"
+  | (string & {});
+export const BotVersionReplicationStatus = S.String;
 export type ImportResourceType =
   | "Bot"
   | "BotLocale"
   | "CustomVocabulary"
-  | "TestSet";
-export const ImportResourceType = S.Literal(
-  "Bot",
-  "BotLocale",
-  "CustomVocabulary",
-  "TestSet",
-);
-export type AnalyticsNodeType = "Inner" | "Exit";
-export const AnalyticsNodeType = S.Literal("Inner", "Exit");
-export type ConversationEndState = "Success" | "Failure" | "Dropped";
-export const ConversationEndState = S.Literal("Success", "Failure", "Dropped");
-export type AnalyticsModality = "Speech" | "Text" | "DTMF" | "MultiMode";
-export const AnalyticsModality = S.Literal(
-  "Speech",
-  "Text",
-  "DTMF",
-  "MultiMode",
-);
+  | "TestSet"
+  | (string & {});
+export const ImportResourceType = S.String;
+export type AnalyticsNodeType = "Inner" | "Exit" | (string & {});
+export const AnalyticsNodeType = S.String;
+export type ConversationEndState =
+  | "Success"
+  | "Failure"
+  | "Dropped"
+  | (string & {});
+export const ConversationEndState = S.String;
+export type AnalyticsModality =
+  | "Speech"
+  | "Text"
+  | "DTMF"
+  | "MultiMode"
+  | (string & {});
+export const AnalyticsModality = S.String;
 export type SlotTypeCategory =
   | "Custom"
   | "Extended"
   | "ExternalGrammar"
-  | "Composite";
-export const SlotTypeCategory = S.Literal(
-  "Custom",
-  "Extended",
-  "ExternalGrammar",
-  "Composite",
-);
+  | "Composite"
+  | (string & {});
+export const SlotTypeCategory = S.String;
 export type IntentState =
   | "Failed"
   | "Fulfilled"
   | "InProgress"
   | "ReadyForFulfillment"
   | "Waiting"
-  | "FulfillmentInProgress";
-export const IntentState = S.Literal(
-  "Failed",
-  "Fulfilled",
-  "InProgress",
-  "ReadyForFulfillment",
-  "Waiting",
-  "FulfillmentInProgress",
-);
+  | "FulfillmentInProgress"
+  | (string & {});
+export const IntentState = S.String;
 export type SlotValues = SlotValueOverride[];
 export const SlotValues = S.Array(
   S.suspend(
@@ -7700,13 +7549,9 @@ export type UtteranceContentType =
   | "PlainText"
   | "CustomPayload"
   | "SSML"
-  | "ImageResponseCard";
-export const UtteranceContentType = S.Literal(
-  "PlainText",
-  "CustomPayload",
-  "SSML",
-  "ImageResponseCard",
-);
+  | "ImageResponseCard"
+  | (string & {});
+export const UtteranceContentType = S.String;
 export interface BatchCreateCustomVocabularyItemResponse {
   botId?: string;
   botVersion?: string;

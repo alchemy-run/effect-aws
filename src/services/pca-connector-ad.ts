@@ -453,8 +453,8 @@ export const GetTemplateGroupAccessControlEntryRequest = S.suspend(() =>
 ).annotations({
   identifier: "GetTemplateGroupAccessControlEntryRequest",
 }) as any as S.Schema<GetTemplateGroupAccessControlEntryRequest>;
-export type AccessRight = "ALLOW" | "DENY";
-export const AccessRight = S.Literal("ALLOW", "DENY");
+export type AccessRight = "ALLOW" | "DENY" | (string & {});
+export const AccessRight = S.String;
 export interface AccessRights {
   Enroll?: AccessRight;
   AutoEnroll?: AccessRight;
@@ -581,14 +581,9 @@ export type ValidityPeriodType =
   | "DAYS"
   | "WEEKS"
   | "MONTHS"
-  | "YEARS";
-export const ValidityPeriodType = S.Literal(
-  "HOURS",
-  "DAYS",
-  "WEEKS",
-  "MONTHS",
-  "YEARS",
-);
+  | "YEARS"
+  | (string & {});
+export const ValidityPeriodType = S.String;
 export interface ValidityPeriod {
   PeriodType: ValidityPeriodType;
   Period: number;
@@ -609,8 +604,8 @@ export const CertificateValidity = S.suspend(() =>
 }) as any as S.Schema<CertificateValidity>;
 export type TemplateNameList = string[];
 export const TemplateNameList = S.Array(S.String);
-export type KeySpec = "KEY_EXCHANGE" | "SIGNATURE";
-export const KeySpec = S.Literal("KEY_EXCHANGE", "SIGNATURE");
+export type KeySpec = "KEY_EXCHANGE" | "SIGNATURE" | (string & {});
+export const KeySpec = S.String;
 export type CryptoProvidersList = string[];
 export const CryptoProvidersList = S.Array(S.String);
 export interface PrivateKeyAttributesV2 {
@@ -633,15 +628,9 @@ export type ClientCompatibilityV2 =
   | "WINDOWS_SERVER_2008_R2"
   | "WINDOWS_SERVER_2012"
   | "WINDOWS_SERVER_2012_R2"
-  | "WINDOWS_SERVER_2016";
-export const ClientCompatibilityV2 = S.Literal(
-  "WINDOWS_SERVER_2003",
-  "WINDOWS_SERVER_2008",
-  "WINDOWS_SERVER_2008_R2",
-  "WINDOWS_SERVER_2012",
-  "WINDOWS_SERVER_2012_R2",
-  "WINDOWS_SERVER_2016",
-);
+  | "WINDOWS_SERVER_2016"
+  | (string & {});
+export const ClientCompatibilityV2 = S.String;
 export interface PrivateKeyFlagsV2 {
   ExportableKey?: boolean;
   StrongKeyProtectionRequired?: boolean;
@@ -806,76 +795,9 @@ export type ApplicationPolicyType =
   | "WINDOWS_SYSTEM_COMPONENT_VERIFICATION"
   | "WINDOWS_TCB_COMPONENT"
   | "WINDOWS_THIRD_PARTY_APPLICATION_COMPONENT"
-  | "WINDOWS_UPDATE";
-export const ApplicationPolicyType = S.Literal(
-  "ALL_APPLICATION_POLICIES",
-  "ANY_PURPOSE",
-  "ATTESTATION_IDENTITY_KEY_CERTIFICATE",
-  "CERTIFICATE_REQUEST_AGENT",
-  "CLIENT_AUTHENTICATION",
-  "CODE_SIGNING",
-  "CTL_USAGE",
-  "DIGITAL_RIGHTS",
-  "DIRECTORY_SERVICE_EMAIL_REPLICATION",
-  "DISALLOWED_LIST",
-  "DNS_SERVER_TRUST",
-  "DOCUMENT_ENCRYPTION",
-  "DOCUMENT_SIGNING",
-  "DYNAMIC_CODE_GENERATOR",
-  "EARLY_LAUNCH_ANTIMALWARE_DRIVER",
-  "EMBEDDED_WINDOWS_SYSTEM_COMPONENT_VERIFICATION",
-  "ENCLAVE",
-  "ENCRYPTING_FILE_SYSTEM",
-  "ENDORSEMENT_KEY_CERTIFICATE",
-  "FILE_RECOVERY",
-  "HAL_EXTENSION",
-  "IP_SECURITY_END_SYSTEM",
-  "IP_SECURITY_IKE_INTERMEDIATE",
-  "IP_SECURITY_TUNNEL_TERMINATION",
-  "IP_SECURITY_USER",
-  "ISOLATED_USER_MODE",
-  "KDC_AUTHENTICATION",
-  "KERNEL_MODE_CODE_SIGNING",
-  "KEY_PACK_LICENSES",
-  "KEY_RECOVERY",
-  "KEY_RECOVERY_AGENT",
-  "LICENSE_SERVER_VERIFICATION",
-  "LIFETIME_SIGNING",
-  "MICROSOFT_PUBLISHER",
-  "MICROSOFT_TIME_STAMPING",
-  "MICROSOFT_TRUST_LIST_SIGNING",
-  "OCSP_SIGNING",
-  "OEM_WINDOWS_SYSTEM_COMPONENT_VERIFICATION",
-  "PLATFORM_CERTIFICATE",
-  "PREVIEW_BUILD_SIGNING",
-  "PRIVATE_KEY_ARCHIVAL",
-  "PROTECTED_PROCESS_LIGHT_VERIFICATION",
-  "PROTECTED_PROCESS_VERIFICATION",
-  "QUALIFIED_SUBORDINATION",
-  "REVOKED_LIST_SIGNER",
-  "ROOT_PROGRAM_AUTO_UPDATE_CA_REVOCATION",
-  "ROOT_PROGRAM_AUTO_UPDATE_END_REVOCATION",
-  "ROOT_PROGRAM_NO_OSCP_FAILOVER_TO_CRL",
-  "ROOT_LIST_SIGNER",
-  "SECURE_EMAIL",
-  "SERVER_AUTHENTICATION",
-  "SMART_CARD_LOGIN",
-  "SPC_ENCRYPTED_DIGEST_RETRY_COUNT",
-  "SPC_RELAXED_PE_MARKER_CHECK",
-  "TIME_STAMPING",
-  "WINDOWS_HARDWARE_DRIVER_ATTESTED_VERIFICATION",
-  "WINDOWS_HARDWARE_DRIVER_EXTENDED_VERIFICATION",
-  "WINDOWS_HARDWARE_DRIVER_VERIFICATION",
-  "WINDOWS_HELLO_RECOVERY_KEY_ENCRYPTION",
-  "WINDOWS_KITS_COMPONENT",
-  "WINDOWS_RT_VERIFICATION",
-  "WINDOWS_SOFTWARE_EXTENSION_VERIFICATION",
-  "WINDOWS_STORE",
-  "WINDOWS_SYSTEM_COMPONENT_VERIFICATION",
-  "WINDOWS_TCB_COMPONENT",
-  "WINDOWS_THIRD_PARTY_APPLICATION_COMPONENT",
-  "WINDOWS_UPDATE",
-);
+  | "WINDOWS_UPDATE"
+  | (string & {});
+export const ApplicationPolicyType = S.String;
 export type ApplicationPolicy =
   | { PolicyType: ApplicationPolicyType; PolicyObjectIdentifier?: never }
   | { PolicyType?: never; PolicyObjectIdentifier: string };
@@ -929,8 +851,8 @@ export const TemplateV2 = S.suspend(() =>
     Extensions: ExtensionsV2,
   }),
 ).annotations({ identifier: "TemplateV2" }) as any as S.Schema<TemplateV2>;
-export type KeyUsagePropertyType = "ALL";
-export const KeyUsagePropertyType = S.Literal("ALL");
+export type KeyUsagePropertyType = "ALL" | (string & {});
+export const KeyUsagePropertyType = S.String;
 export interface KeyUsagePropertyFlags {
   Decrypt?: boolean;
   KeyAgreement?: boolean;
@@ -956,13 +878,9 @@ export type PrivateKeyAlgorithm =
   | "RSA"
   | "ECDH_P256"
   | "ECDH_P384"
-  | "ECDH_P521";
-export const PrivateKeyAlgorithm = S.Literal(
-  "RSA",
-  "ECDH_P256",
-  "ECDH_P384",
-  "ECDH_P521",
-);
+  | "ECDH_P521"
+  | (string & {});
+export const PrivateKeyAlgorithm = S.String;
 export interface PrivateKeyAttributesV3 {
   MinimalKeyLength: number;
   KeySpec: KeySpec;
@@ -986,14 +904,9 @@ export type ClientCompatibilityV3 =
   | "WINDOWS_SERVER_2008_R2"
   | "WINDOWS_SERVER_2012"
   | "WINDOWS_SERVER_2012_R2"
-  | "WINDOWS_SERVER_2016";
-export const ClientCompatibilityV3 = S.Literal(
-  "WINDOWS_SERVER_2008",
-  "WINDOWS_SERVER_2008_R2",
-  "WINDOWS_SERVER_2012",
-  "WINDOWS_SERVER_2012_R2",
-  "WINDOWS_SERVER_2016",
-);
+  | "WINDOWS_SERVER_2016"
+  | (string & {});
+export const ClientCompatibilityV3 = S.String;
 export interface PrivateKeyFlagsV3 {
   ExportableKey?: boolean;
   StrongKeyProtectionRequired?: boolean;
@@ -1068,8 +981,8 @@ export const GeneralFlagsV3 = S.suspend(() =>
 ).annotations({
   identifier: "GeneralFlagsV3",
 }) as any as S.Schema<GeneralFlagsV3>;
-export type HashAlgorithm = "SHA256" | "SHA384" | "SHA512";
-export const HashAlgorithm = S.Literal("SHA256", "SHA384", "SHA512");
+export type HashAlgorithm = "SHA256" | "SHA384" | "SHA512" | (string & {});
+export const HashAlgorithm = S.String;
 export interface ExtensionsV3 {
   KeyUsage: KeyUsage;
   ApplicationPolicies?: ApplicationPolicies;
@@ -1125,12 +1038,9 @@ export const PrivateKeyAttributesV4 = S.suspend(() =>
 export type ClientCompatibilityV4 =
   | "WINDOWS_SERVER_2012"
   | "WINDOWS_SERVER_2012_R2"
-  | "WINDOWS_SERVER_2016";
-export const ClientCompatibilityV4 = S.Literal(
-  "WINDOWS_SERVER_2012",
-  "WINDOWS_SERVER_2012_R2",
-  "WINDOWS_SERVER_2016",
-);
+  | "WINDOWS_SERVER_2016"
+  | (string & {});
+export const ClientCompatibilityV4 = S.String;
 export interface PrivateKeyFlagsV4 {
   ExportableKey?: boolean;
   StrongKeyProtectionRequired?: boolean;
@@ -1323,8 +1233,8 @@ export const ListTemplatesRequest = S.suspend(() =>
 ).annotations({
   identifier: "ListTemplatesRequest",
 }) as any as S.Schema<ListTemplatesRequest>;
-export type IpAddressType = "IPV4" | "DUALSTACK";
-export const IpAddressType = S.Literal("IPV4", "DUALSTACK");
+export type IpAddressType = "IPV4" | "DUALSTACK" | (string & {});
+export const IpAddressType = S.String;
 export type SecurityGroupIdList = string[];
 export const SecurityGroupIdList = S.Array(S.String);
 export interface VpcInformation {
@@ -1443,13 +1353,13 @@ export const CreateTemplateGroupAccessControlEntryResponse = S.suspend(() =>
 ).annotations({
   identifier: "CreateTemplateGroupAccessControlEntryResponse",
 }) as any as S.Schema<CreateTemplateGroupAccessControlEntryResponse>;
-export type ConnectorStatus = "CREATING" | "ACTIVE" | "DELETING" | "FAILED";
-export const ConnectorStatus = S.Literal(
-  "CREATING",
-  "ACTIVE",
-  "DELETING",
-  "FAILED",
-);
+export type ConnectorStatus =
+  | "CREATING"
+  | "ACTIVE"
+  | "DELETING"
+  | "FAILED"
+  | (string & {});
+export const ConnectorStatus = S.String;
 export type ConnectorStatusReason =
   | "CA_CERTIFICATE_REGISTRATION_FAILED"
   | "DIRECTORY_ACCESS_DENIED"
@@ -1461,74 +1371,43 @@ export type ConnectorStatusReason =
   | "SECURITY_GROUP_NOT_IN_VPC"
   | "VPC_ACCESS_DENIED"
   | "VPC_ENDPOINT_LIMIT_EXCEEDED"
-  | "VPC_RESOURCE_NOT_FOUND";
-export const ConnectorStatusReason = S.Literal(
-  "CA_CERTIFICATE_REGISTRATION_FAILED",
-  "DIRECTORY_ACCESS_DENIED",
-  "INTERNAL_FAILURE",
-  "INSUFFICIENT_FREE_ADDRESSES",
-  "INVALID_SUBNET_IP_PROTOCOL",
-  "PRIVATECA_ACCESS_DENIED",
-  "PRIVATECA_RESOURCE_NOT_FOUND",
-  "SECURITY_GROUP_NOT_IN_VPC",
-  "VPC_ACCESS_DENIED",
-  "VPC_ENDPOINT_LIMIT_EXCEEDED",
-  "VPC_RESOURCE_NOT_FOUND",
-);
+  | "VPC_RESOURCE_NOT_FOUND"
+  | (string & {});
+export const ConnectorStatusReason = S.String;
 export type DirectoryRegistrationStatus =
   | "CREATING"
   | "ACTIVE"
   | "DELETING"
-  | "FAILED";
-export const DirectoryRegistrationStatus = S.Literal(
-  "CREATING",
-  "ACTIVE",
-  "DELETING",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const DirectoryRegistrationStatus = S.String;
 export type DirectoryRegistrationStatusReason =
   | "DIRECTORY_ACCESS_DENIED"
   | "DIRECTORY_RESOURCE_NOT_FOUND"
   | "DIRECTORY_NOT_ACTIVE"
   | "DIRECTORY_NOT_REACHABLE"
   | "DIRECTORY_TYPE_NOT_SUPPORTED"
-  | "INTERNAL_FAILURE";
-export const DirectoryRegistrationStatusReason = S.Literal(
-  "DIRECTORY_ACCESS_DENIED",
-  "DIRECTORY_RESOURCE_NOT_FOUND",
-  "DIRECTORY_NOT_ACTIVE",
-  "DIRECTORY_NOT_REACHABLE",
-  "DIRECTORY_TYPE_NOT_SUPPORTED",
-  "INTERNAL_FAILURE",
-);
+  | "INTERNAL_FAILURE"
+  | (string & {});
+export const DirectoryRegistrationStatusReason = S.String;
 export type ServicePrincipalNameStatus =
   | "CREATING"
   | "ACTIVE"
   | "DELETING"
-  | "FAILED";
-export const ServicePrincipalNameStatus = S.Literal(
-  "CREATING",
-  "ACTIVE",
-  "DELETING",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const ServicePrincipalNameStatus = S.String;
 export type ServicePrincipalNameStatusReason =
   | "DIRECTORY_ACCESS_DENIED"
   | "DIRECTORY_NOT_REACHABLE"
   | "DIRECTORY_RESOURCE_NOT_FOUND"
   | "SPN_EXISTS_ON_DIFFERENT_AD_OBJECT"
   | "SPN_LIMIT_EXCEEDED"
-  | "INTERNAL_FAILURE";
-export const ServicePrincipalNameStatusReason = S.Literal(
-  "DIRECTORY_ACCESS_DENIED",
-  "DIRECTORY_NOT_REACHABLE",
-  "DIRECTORY_RESOURCE_NOT_FOUND",
-  "SPN_EXISTS_ON_DIFFERENT_AD_OBJECT",
-  "SPN_LIMIT_EXCEEDED",
-  "INTERNAL_FAILURE",
-);
-export type TemplateStatus = "ACTIVE" | "DELETING";
-export const TemplateStatus = S.Literal("ACTIVE", "DELETING");
+  | "INTERNAL_FAILURE"
+  | (string & {});
+export const ServicePrincipalNameStatusReason = S.String;
+export type TemplateStatus = "ACTIVE" | "DELETING" | (string & {});
+export const TemplateStatus = S.String;
 export interface Connector {
   Arn?: string;
   CertificateAuthorityArn?: string;
@@ -1889,18 +1768,9 @@ export type ValidationExceptionReason =
   | "MISMATCHED_VPC"
   | "NO_CLIENT_TOKEN"
   | "UNKNOWN_OPERATION"
-  | "OTHER";
-export const ValidationExceptionReason = S.Literal(
-  "FIELD_VALIDATION_FAILED",
-  "INVALID_CA_SUBJECT",
-  "INVALID_PERMISSION",
-  "INVALID_STATE",
-  "MISMATCHED_CONNECTOR",
-  "MISMATCHED_VPC",
-  "NO_CLIENT_TOKEN",
-  "UNKNOWN_OPERATION",
-  "OTHER",
-);
+  | "OTHER"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 export interface CreateTemplateRequest {
   ConnectorArn: string;
   Name: string;

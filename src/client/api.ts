@@ -12,11 +12,19 @@ import { makeEndpointResolver } from "../rules-engine/endpoint-resolver.ts";
 import { getAwsAuthSigv4, getPath } from "../traits.ts";
 import type { Operation } from "./operation.ts";
 import { makeRequestBuilder } from "./request-builder.ts";
-import { makeResponseParser } from "./response-parser.ts";
+import {
+  makeResponseParser,
+  type ResponseParserOptions,
+} from "./response-parser.ts";
 
 import { Credentials, Endpoint, Region } from "../index.ts";
 
-export const make = <Op extends Operation>(initOperation: () => Op): any => {
+export interface MakeOptions extends ResponseParserOptions {}
+
+export const make = <Op extends Operation>(
+  initOperation: () => Op,
+  options?: MakeOptions,
+): any => {
   const op = initOperation();
   let _init;
   const init = () => {
@@ -24,7 +32,7 @@ export const make = <Op extends Operation>(initOperation: () => Op): any => {
 
     // Create request builder and response parser (preprocessing done once)
     const buildRequest = makeRequestBuilder(op);
-    const parseResponse = makeResponseParser(op);
+    const parseResponse = makeResponseParser(op, options);
 
     // Get SigV4 service name from annotations
     const sigv4 = getAwsAuthSigv4(inputAst);
@@ -315,3 +323,12 @@ export const makePaginated = <Op extends Operation>(
     pagination: op.pagination,
   });
 };
+
+/**
+ * Create an API client that skips schema validation.
+ * Returns raw deserialized responses (parsed XML/JSON but not validated against schema).
+ * Useful for discovering missing enum values or debugging.
+ */
+export const makeUnvalidated = <Op extends Operation>(
+  initOperation: () => Op,
+): any => make(initOperation, { skipValidation: true });

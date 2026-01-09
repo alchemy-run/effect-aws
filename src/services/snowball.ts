@@ -117,8 +117,8 @@ export const GetSnowballUsageRequest = S.suspend(() =>
 ).annotations({
   identifier: "GetSnowballUsageRequest",
 }) as any as S.Schema<GetSnowballUsageRequest>;
-export type JobType = "IMPORT" | "EXPORT" | "LOCAL_USE";
-export const JobType = S.Literal("IMPORT", "EXPORT", "LOCAL_USE");
+export type JobType = "IMPORT" | "EXPORT" | "LOCAL_USE" | (string & {});
+export const JobType = S.String;
 export type SnowballType =
   | "STANDARD"
   | "EDGE"
@@ -129,35 +129,22 @@ export type SnowballType =
   | "SNC1_SSD"
   | "V3_5C"
   | "V3_5S"
-  | "RACK_5U_C";
-export const SnowballType = S.Literal(
-  "STANDARD",
-  "EDGE",
-  "EDGE_C",
-  "EDGE_CG",
-  "EDGE_S",
-  "SNC1_HDD",
-  "SNC1_SSD",
-  "V3_5C",
-  "V3_5S",
-  "RACK_5U_C",
-);
-export type ShippingOption = "SECOND_DAY" | "NEXT_DAY" | "EXPRESS" | "STANDARD";
-export const ShippingOption = S.Literal(
-  "SECOND_DAY",
-  "NEXT_DAY",
-  "EXPRESS",
-  "STANDARD",
-);
+  | "RACK_5U_C"
+  | (string & {});
+export const SnowballType = S.String;
+export type ShippingOption =
+  | "SECOND_DAY"
+  | "NEXT_DAY"
+  | "EXPRESS"
+  | "STANDARD"
+  | (string & {});
+export const ShippingOption = S.String;
 export type RemoteManagement =
   | "INSTALLED_ONLY"
   | "INSTALLED_AUTOSTART"
-  | "NOT_INSTALLED";
-export const RemoteManagement = S.Literal(
-  "INSTALLED_ONLY",
-  "INSTALLED_AUTOSTART",
-  "NOT_INSTALLED",
-);
+  | "NOT_INSTALLED"
+  | (string & {});
+export const RemoteManagement = S.String;
 export type LongTermPricingIdList = string[];
 export const LongTermPricingIdList = S.Array(S.String);
 export type SnowballCapacity =
@@ -171,32 +158,27 @@ export type SnowballCapacity =
   | "T32"
   | "NoPreference"
   | "T240"
-  | "T13";
-export const SnowballCapacity = S.Literal(
-  "T50",
-  "T80",
-  "T100",
-  "T42",
-  "T98",
-  "T8",
-  "T14",
-  "T32",
-  "NoPreference",
-  "T240",
-  "T13",
-);
-export type ImpactLevel = "IL2" | "IL4" | "IL5" | "IL6" | "IL99";
-export const ImpactLevel = S.Literal("IL2", "IL4", "IL5", "IL6", "IL99");
-export type LongTermPricingType = "OneYear" | "ThreeYear" | "OneMonth";
-export const LongTermPricingType = S.Literal(
-  "OneYear",
-  "ThreeYear",
-  "OneMonth",
-);
-export type ServiceName = "KUBERNETES" | "EKS_ANYWHERE";
-export const ServiceName = S.Literal("KUBERNETES", "EKS_ANYWHERE");
-export type ShipmentState = "RECEIVED" | "RETURNED";
-export const ShipmentState = S.Literal("RECEIVED", "RETURNED");
+  | "T13"
+  | (string & {});
+export const SnowballCapacity = S.String;
+export type ImpactLevel =
+  | "IL2"
+  | "IL4"
+  | "IL5"
+  | "IL6"
+  | "IL99"
+  | (string & {});
+export const ImpactLevel = S.String;
+export type LongTermPricingType =
+  | "OneYear"
+  | "ThreeYear"
+  | "OneMonth"
+  | (string & {});
+export const LongTermPricingType = S.String;
+export type ServiceName = "KUBERNETES" | "EKS_ANYWHERE" | (string & {});
+export const ServiceName = S.String;
+export type ShipmentState = "RECEIVED" | "RETURNED" | (string & {});
+export const ShipmentState = S.String;
 export interface CancelClusterRequest {
   ClusterId: string;
 }
@@ -449,13 +431,11 @@ export const KeyRange = S.suspend(() =>
 ).annotations({ identifier: "KeyRange" }) as any as S.Schema<KeyRange>;
 export type DeviceServiceName =
   | "NFS_ON_DEVICE_SERVICE"
-  | "S3_ON_DEVICE_SERVICE";
-export const DeviceServiceName = S.Literal(
-  "NFS_ON_DEVICE_SERVICE",
-  "S3_ON_DEVICE_SERVICE",
-);
-export type TransferOption = "IMPORT" | "EXPORT" | "LOCAL_USE";
-export const TransferOption = S.Literal("IMPORT", "EXPORT", "LOCAL_USE");
+  | "S3_ON_DEVICE_SERVICE"
+  | (string & {});
+export const DeviceServiceName = S.String;
+export type TransferOption = "IMPORT" | "EXPORT" | "LOCAL_USE" | (string & {});
+export const TransferOption = S.String;
 export interface TargetOnDeviceService {
   ServiceName?: DeviceServiceName;
   TransferOption?: TransferOption;
@@ -531,8 +511,8 @@ export const JobResource = S.suspend(() =>
     Ec2AmiResources: S.optional(Ec2AmiResourceList),
   }),
 ).annotations({ identifier: "JobResource" }) as any as S.Schema<JobResource>;
-export type StorageUnit = "TB";
-export const StorageUnit = S.Literal("TB");
+export type StorageUnit = "TB" | (string & {});
+export const StorageUnit = S.String;
 export interface NFSOnDeviceServiceConfiguration {
   StorageLimit?: number;
   StorageUnit?: StorageUnit;
@@ -614,22 +594,9 @@ export type JobState =
   | "Complete"
   | "Cancelled"
   | "Listing"
-  | "Pending";
-export const JobState = S.Literal(
-  "New",
-  "PreparingAppliance",
-  "PreparingShipment",
-  "InTransitToCustomer",
-  "WithCustomer",
-  "InTransitToAWS",
-  "WithAWSSortingFacility",
-  "WithAWS",
-  "InProgress",
-  "Complete",
-  "Cancelled",
-  "Listing",
-  "Pending",
-);
+  | "Pending"
+  | (string & {});
+export const JobState = S.String;
 export type JobStateList = JobState[];
 export const JobStateList = S.Array(JobState);
 export interface Notification {
@@ -777,8 +744,8 @@ export const UpdateLongTermPricingResult = S.suspend(() =>
 ).annotations({
   identifier: "UpdateLongTermPricingResult",
 }) as any as S.Schema<UpdateLongTermPricingResult>;
-export type AddressType = "CUST_PICKUP" | "AWS_SHIP";
-export const AddressType = S.Literal("CUST_PICKUP", "AWS_SHIP");
+export type AddressType = "CUST_PICKUP" | "AWS_SHIP" | (string & {});
+export const AddressType = S.String;
 export interface Address {
   AddressId?: string;
   Name?: string;
@@ -819,13 +786,9 @@ export type ShippingLabelStatus =
   | "InProgress"
   | "TimedOut"
   | "Succeeded"
-  | "Failed";
-export const ShippingLabelStatus = S.Literal(
-  "InProgress",
-  "TimedOut",
-  "Succeeded",
-  "Failed",
-);
+  | "Failed"
+  | (string & {});
+export const ShippingLabelStatus = S.String;
 export type AddressList = Address[];
 export const AddressList = S.Array(Address);
 export interface Shipment {
@@ -1111,14 +1074,9 @@ export type ClusterState =
   | "Pending"
   | "InUse"
   | "Complete"
-  | "Cancelled";
-export const ClusterState = S.Literal(
-  "AwaitingQuorum",
-  "Pending",
-  "InUse",
-  "Complete",
-  "Cancelled",
-);
+  | "Cancelled"
+  | (string & {});
+export const ClusterState = S.String;
 export type LongTermPricingAssociatedJobIdList = string[];
 export const LongTermPricingAssociatedJobIdList = S.Array(S.String);
 export interface ServiceVersion {

@@ -431,15 +431,9 @@ export type AlarmStateName =
   | "ACTIVE"
   | "ACKNOWLEDGED"
   | "SNOOZE_DISABLED"
-  | "LATCHED";
-export const AlarmStateName = S.Literal(
-  "DISABLED",
-  "NORMAL",
-  "ACTIVE",
-  "ACKNOWLEDGED",
-  "SNOOZE_DISABLED",
-  "LATCHED",
-);
+  | "LATCHED"
+  | (string & {});
+export const AlarmStateName = S.String;
 export interface Message {
   messageId: string;
   inputName: string;
@@ -503,14 +497,9 @@ export type ErrorCode =
   | "InvalidRequestException"
   | "InternalFailureException"
   | "ServiceUnavailableException"
-  | "ThrottlingException";
-export const ErrorCode = S.Literal(
-  "ResourceNotFoundException",
-  "InvalidRequestException",
-  "InternalFailureException",
-  "ServiceUnavailableException",
-  "ThrottlingException",
-);
+  | "ThrottlingException"
+  | (string & {});
+export const ErrorCode = S.String;
 export interface BatchAlarmActionErrorEntry {
   requestId?: string;
   errorCode?: ErrorCode;
@@ -615,16 +604,11 @@ export type CustomerActionName =
   | "ENABLE"
   | "DISABLE"
   | "ACKNOWLEDGE"
-  | "RESET";
-export const CustomerActionName = S.Literal(
-  "SNOOZE",
-  "ENABLE",
-  "DISABLE",
-  "ACKNOWLEDGE",
-  "RESET",
-);
-export type EventType = "STATE_CHANGE";
-export const EventType = S.Literal("STATE_CHANGE");
+  | "RESET"
+  | (string & {});
+export const CustomerActionName = S.String;
+export type EventType = "STATE_CHANGE" | (string & {});
+export const EventType = S.String;
 export interface BatchDeleteDetectorErrorEntry {
   messageId?: string;
   errorCode?: ErrorCode;
@@ -747,17 +731,11 @@ export type ComparisonOperator =
   | "LESS"
   | "LESS_OR_EQUAL"
   | "EQUAL"
-  | "NOT_EQUAL";
-export const ComparisonOperator = S.Literal(
-  "GREATER",
-  "GREATER_OR_EQUAL",
-  "LESS",
-  "LESS_OR_EQUAL",
-  "EQUAL",
-  "NOT_EQUAL",
-);
-export type TriggerType = "SNOOZE_TIMEOUT";
-export const TriggerType = S.Literal("SNOOZE_TIMEOUT");
+  | "NOT_EQUAL"
+  | (string & {});
+export const ComparisonOperator = S.String;
+export type TriggerType = "SNOOZE_TIMEOUT" | (string & {});
+export const TriggerType = S.String;
 export interface ListDetectorsResponse {
   detectorSummaries?: DetectorSummary[];
   nextToken?: string;

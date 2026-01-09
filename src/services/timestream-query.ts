@@ -147,12 +147,15 @@ export const DescribeEndpointsRequest = S.suspend(() =>
 ).annotations({
   identifier: "DescribeEndpointsRequest",
 }) as any as S.Schema<DescribeEndpointsRequest>;
-export type QueryPricingModel = "BYTES_SCANNED" | "COMPUTE_UNITS";
-export const QueryPricingModel = S.Literal("BYTES_SCANNED", "COMPUTE_UNITS");
+export type QueryPricingModel =
+  | "BYTES_SCANNED"
+  | "COMPUTE_UNITS"
+  | (string & {});
+export const QueryPricingModel = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
-export type ScheduledQueryState = "ENABLED" | "DISABLED";
-export const ScheduledQueryState = S.Literal("ENABLED", "DISABLED");
+export type ScheduledQueryState = "ENABLED" | "DISABLED" | (string & {});
+export const ScheduledQueryState = S.String;
 export interface CancelQueryRequest {
   QueryId: string;
 }
@@ -289,20 +292,18 @@ export const UpdateScheduledQueryResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateScheduledQueryResponse",
 }) as any as S.Schema<UpdateScheduledQueryResponse>;
-export type ComputeMode = "ON_DEMAND" | "PROVISIONED";
-export const ComputeMode = S.Literal("ON_DEMAND", "PROVISIONED");
+export type ComputeMode = "ON_DEMAND" | "PROVISIONED" | (string & {});
+export const ComputeMode = S.String;
 export type ScheduledQueryInsightsMode =
   | "ENABLED_WITH_RATE_CONTROL"
-  | "DISABLED";
-export const ScheduledQueryInsightsMode = S.Literal(
-  "ENABLED_WITH_RATE_CONTROL",
-  "DISABLED",
-);
-export type QueryInsightsMode = "ENABLED_WITH_RATE_CONTROL" | "DISABLED";
-export const QueryInsightsMode = S.Literal(
-  "ENABLED_WITH_RATE_CONTROL",
-  "DISABLED",
-);
+  | "DISABLED"
+  | (string & {});
+export const ScheduledQueryInsightsMode = S.String;
+export type QueryInsightsMode =
+  | "ENABLED_WITH_RATE_CONTROL"
+  | "DISABLED"
+  | (string & {});
+export const QueryInsightsMode = S.String;
 export interface ScheduleConfiguration {
   ScheduleExpression: string;
 }
@@ -336,8 +337,8 @@ export const QueryInsights = S.suspend(() =>
 ).annotations({
   identifier: "QueryInsights",
 }) as any as S.Schema<QueryInsights>;
-export type S3EncryptionOption = "SSE_S3" | "SSE_KMS";
-export const S3EncryptionOption = S.Literal("SSE_S3", "SSE_KMS");
+export type S3EncryptionOption = "SSE_S3" | "SSE_KMS" | (string & {});
+export const S3EncryptionOption = S.String;
 export interface CancelQueryResponse {
   CancellationMessage?: string;
 }
@@ -431,13 +432,9 @@ export type ScheduledQueryRunStatus =
   | "AUTO_TRIGGER_SUCCESS"
   | "AUTO_TRIGGER_FAILURE"
   | "MANUAL_TRIGGER_SUCCESS"
-  | "MANUAL_TRIGGER_FAILURE";
-export const ScheduledQueryRunStatus = S.Literal(
-  "AUTO_TRIGGER_SUCCESS",
-  "AUTO_TRIGGER_FAILURE",
-  "MANUAL_TRIGGER_SUCCESS",
-  "MANUAL_TRIGGER_FAILURE",
-);
+  | "MANUAL_TRIGGER_FAILURE"
+  | (string & {});
+export const ScheduledQueryRunStatus = S.String;
 export interface ExecutionStats {
   ExecutionTimeInMillis?: number;
   DataWrites?: number;
@@ -587,23 +584,22 @@ export const ProvisionedCapacityRequest = S.suspend(() =>
 ).annotations({
   identifier: "ProvisionedCapacityRequest",
 }) as any as S.Schema<ProvisionedCapacityRequest>;
-export type DimensionValueType = "VARCHAR";
-export const DimensionValueType = S.Literal("VARCHAR");
+export type DimensionValueType = "VARCHAR" | (string & {});
+export const DimensionValueType = S.String;
 export type MeasureValueType =
   | "BIGINT"
   | "BOOLEAN"
   | "DOUBLE"
   | "VARCHAR"
-  | "MULTI";
-export const MeasureValueType = S.Literal(
-  "BIGINT",
-  "BOOLEAN",
-  "DOUBLE",
-  "VARCHAR",
-  "MULTI",
-);
-export type LastUpdateStatus = "PENDING" | "FAILED" | "SUCCEEDED";
-export const LastUpdateStatus = S.Literal("PENDING", "FAILED", "SUCCEEDED");
+  | "MULTI"
+  | (string & {});
+export const MeasureValueType = S.String;
+export type LastUpdateStatus =
+  | "PENDING"
+  | "FAILED"
+  | "SUCCEEDED"
+  | (string & {});
+export const LastUpdateStatus = S.String;
 export interface NotificationConfiguration {
   SnsConfiguration: SnsConfiguration;
 }
@@ -631,20 +627,9 @@ export type ScalarType =
   | "INTERVAL_DAY_TO_SECOND"
   | "INTERVAL_YEAR_TO_MONTH"
   | "UNKNOWN"
-  | "INTEGER";
-export const ScalarType = S.Literal(
-  "VARCHAR",
-  "BOOLEAN",
-  "BIGINT",
-  "DOUBLE",
-  "TIMESTAMP",
-  "DATE",
-  "TIME",
-  "INTERVAL_DAY_TO_SECOND",
-  "INTERVAL_YEAR_TO_MONTH",
-  "UNKNOWN",
-  "INTEGER",
-);
+  | "INTEGER"
+  | (string & {});
+export const ScalarType = S.String;
 export interface Type {
   ScalarType?: ScalarType;
   ArrayColumnInfo?: ColumnInfo;
@@ -710,14 +695,9 @@ export type ScalarMeasureValueType =
   | "BOOLEAN"
   | "DOUBLE"
   | "VARCHAR"
-  | "TIMESTAMP";
-export const ScalarMeasureValueType = S.Literal(
-  "BIGINT",
-  "BOOLEAN",
-  "DOUBLE",
-  "VARCHAR",
-  "TIMESTAMP",
-);
+  | "TIMESTAMP"
+  | (string & {});
+export const ScalarMeasureValueType = S.String;
 export interface MultiMeasureAttributeMapping {
   SourceColumn: string;
   TargetMultiMeasureAttributeName?: string;

@@ -164,31 +164,34 @@ export const VpcSecurityGroupIdList = S.Array(
 );
 export type LogTypeList = string[];
 export const LogTypeList = S.Array(S.String);
-export type DatabaseInsightsMode = "standard" | "advanced";
-export const DatabaseInsightsMode = S.Literal("standard", "advanced");
-export type ClusterScalabilityType = "standard" | "limitless";
-export const ClusterScalabilityType = S.Literal("standard", "limitless");
-export type MasterUserAuthenticationType = "password" | "iam-db-auth";
-export const MasterUserAuthenticationType = S.Literal(
-  "password",
-  "iam-db-auth",
-);
+export type DatabaseInsightsMode = "standard" | "advanced" | (string & {});
+export const DatabaseInsightsMode = S.String;
+export type ClusterScalabilityType = "standard" | "limitless" | (string & {});
+export const ClusterScalabilityType = S.String;
+export type MasterUserAuthenticationType =
+  | "password"
+  | "iam-db-auth"
+  | (string & {});
+export const MasterUserAuthenticationType = S.String;
 export type DBSecurityGroupNameList = string[];
 export const DBSecurityGroupNameList = S.Array(
   S.String.pipe(T.XmlName("DBSecurityGroupName")),
 );
-export type ReplicaMode = "open-read-only" | "mounted";
-export const ReplicaMode = S.Literal("open-read-only", "mounted");
-export type EngineFamily = "MYSQL" | "POSTGRESQL" | "SQLSERVER";
-export const EngineFamily = S.Literal("MYSQL", "POSTGRESQL", "SQLSERVER");
-export type DefaultAuthScheme = "IAM_AUTH" | "NONE";
-export const DefaultAuthScheme = S.Literal("IAM_AUTH", "NONE");
-export type EndpointNetworkType = "IPV4" | "IPV6" | "DUAL";
-export const EndpointNetworkType = S.Literal("IPV4", "IPV6", "DUAL");
-export type TargetConnectionNetworkType = "IPV4" | "IPV6";
-export const TargetConnectionNetworkType = S.Literal("IPV4", "IPV6");
-export type DBProxyEndpointTargetRole = "READ_WRITE" | "READ_ONLY";
-export const DBProxyEndpointTargetRole = S.Literal("READ_WRITE", "READ_ONLY");
+export type ReplicaMode = "open-read-only" | "mounted" | (string & {});
+export const ReplicaMode = S.String;
+export type EngineFamily = "MYSQL" | "POSTGRESQL" | "SQLSERVER" | (string & {});
+export const EngineFamily = S.String;
+export type DefaultAuthScheme = "IAM_AUTH" | "NONE" | (string & {});
+export const DefaultAuthScheme = S.String;
+export type EndpointNetworkType = "IPV4" | "IPV6" | "DUAL" | (string & {});
+export const EndpointNetworkType = S.String;
+export type TargetConnectionNetworkType = "IPV4" | "IPV6" | (string & {});
+export const TargetConnectionNetworkType = S.String;
+export type DBProxyEndpointTargetRole =
+  | "READ_WRITE"
+  | "READ_ONLY"
+  | (string & {});
+export const DBProxyEndpointTargetRole = S.String;
 export type SubnetIdentifierList = string[];
 export const SubnetIdentifierList = S.Array(
   S.String.pipe(T.XmlName("SubnetIdentifier")),
@@ -210,45 +213,31 @@ export type SourceType =
   | "db-proxy"
   | "blue-green-deployment"
   | "db-shard-group"
-  | "zero-etl";
-export const SourceType = S.Literal(
-  "db-instance",
-  "db-parameter-group",
-  "db-security-group",
-  "db-snapshot",
-  "db-cluster",
-  "db-cluster-snapshot",
-  "custom-engine-version",
-  "db-proxy",
-  "blue-green-deployment",
-  "db-shard-group",
-  "zero-etl",
-);
-export type ExportSourceType = "SNAPSHOT" | "CLUSTER";
-export const ExportSourceType = S.Literal("SNAPSHOT", "CLUSTER");
-export type AuditPolicyState = "locked" | "unlocked";
-export const AuditPolicyState = S.Literal("locked", "unlocked");
+  | "zero-etl"
+  | (string & {});
+export const SourceType = S.String;
+export type ExportSourceType = "SNAPSHOT" | "CLUSTER" | (string & {});
+export const ExportSourceType = S.String;
+export type AuditPolicyState = "locked" | "unlocked" | (string & {});
+export const AuditPolicyState = S.String;
 export type CustomEngineVersionStatus =
   | "available"
   | "inactive"
-  | "inactive-except-restore";
-export const CustomEngineVersionStatus = S.Literal(
-  "available",
-  "inactive",
-  "inactive-except-restore",
-);
+  | "inactive-except-restore"
+  | (string & {});
+export const CustomEngineVersionStatus = S.String;
 export type AttributeValueList = string[];
 export const AttributeValueList = S.Array(
   S.String.pipe(T.XmlName("AttributeValue")),
 );
-export type AutomationMode = "full" | "all-paused";
-export const AutomationMode = S.Literal("full", "all-paused");
+export type AutomationMode = "full" | "all-paused" | (string & {});
+export const AutomationMode = S.String;
 export type OptionNamesList = string[];
 export const OptionNamesList = S.Array(S.String);
 export type KeyList = string[];
 export const KeyList = S.Array(S.String);
-export type ActivityStreamMode = "sync" | "async";
-export const ActivityStreamMode = S.Literal("sync", "async");
+export type ActivityStreamMode = "sync" | "async" | (string & {});
+export const ActivityStreamMode = S.String;
 export interface AddRoleToDBClusterMessage {
   DBClusterIdentifier?: string;
   RoleArn?: string;
@@ -3225,8 +3214,8 @@ export const ModifyDBClusterSnapshotAttributeMessage = S.suspend(() =>
 ).annotations({
   identifier: "ModifyDBClusterSnapshotAttributeMessage",
 }) as any as S.Schema<ModifyDBClusterSnapshotAttributeMessage>;
-export type ApplyMethod = "immediate" | "pending-reboot";
-export const ApplyMethod = S.Literal("immediate", "pending-reboot");
+export type ApplyMethod = "immediate" | "pending-reboot" | (string & {});
+export const ApplyMethod = S.String;
 export type EngineModeList = string[];
 export const EngineModeList = S.Array(S.String);
 export interface Parameter {
@@ -3285,23 +3274,18 @@ export const ModifyDBParameterGroupMessage = S.suspend(() =>
 ).annotations({
   identifier: "ModifyDBParameterGroupMessage",
 }) as any as S.Schema<ModifyDBParameterGroupMessage>;
-export type AuthScheme = "SECRETS";
-export const AuthScheme = S.Literal("SECRETS");
-export type IAMAuthMode = "DISABLED" | "REQUIRED" | "ENABLED";
-export const IAMAuthMode = S.Literal("DISABLED", "REQUIRED", "ENABLED");
+export type AuthScheme = "SECRETS" | (string & {});
+export const AuthScheme = S.String;
+export type IAMAuthMode = "DISABLED" | "REQUIRED" | "ENABLED" | (string & {});
+export const IAMAuthMode = S.String;
 export type ClientPasswordAuthType =
   | "MYSQL_NATIVE_PASSWORD"
   | "MYSQL_CACHING_SHA2_PASSWORD"
   | "POSTGRES_SCRAM_SHA_256"
   | "POSTGRES_MD5"
-  | "SQL_SERVER_AUTHENTICATION";
-export const ClientPasswordAuthType = S.Literal(
-  "MYSQL_NATIVE_PASSWORD",
-  "MYSQL_CACHING_SHA2_PASSWORD",
-  "POSTGRES_SCRAM_SHA_256",
-  "POSTGRES_MD5",
-  "SQL_SERVER_AUTHENTICATION",
-);
+  | "SQL_SERVER_AUTHENTICATION"
+  | (string & {});
+export const ClientPasswordAuthType = S.String;
 export interface UserAuthConfig {
   Description?: string;
   UserName?: string;
@@ -4940,16 +4924,9 @@ export type IntegrationStatus =
   | "failed"
   | "deleting"
   | "syncing"
-  | "needs_attention";
-export const IntegrationStatus = S.Literal(
-  "creating",
-  "active",
-  "modifying",
-  "failed",
-  "deleting",
-  "syncing",
-  "needs_attention",
-);
+  | "needs_attention"
+  | (string & {});
+export const IntegrationStatus = S.String;
 export interface AccountQuota {
   AccountQuotaName?: string;
   Used?: number;
@@ -5148,8 +5125,8 @@ export const DBClusterOptionGroupMemberships = S.Array(
     T.XmlName("DBClusterOptionGroup"),
   ).annotations({ identifier: "DBClusterOptionGroupStatus" }),
 );
-export type UpgradeRolloutOrder = "first" | "second" | "last";
-export const UpgradeRolloutOrder = S.Literal("first", "second", "last");
+export type UpgradeRolloutOrder = "first" | "second" | "last" | (string & {});
+export const UpgradeRolloutOrder = S.String;
 export type ReadReplicaIdentifierList = string[];
 export const ReadReplicaIdentifierList = S.Array(
   S.String.pipe(T.XmlName("ReadReplicaIdentifier")),
@@ -5314,13 +5291,9 @@ export type ActivityStreamStatus =
   | "stopped"
   | "starting"
   | "started"
-  | "stopping";
-export const ActivityStreamStatus = S.Literal(
-  "stopped",
-  "starting",
-  "started",
-  "stopping",
-);
+  | "stopping"
+  | (string & {});
+export const ActivityStreamStatus = S.String;
 export interface DomainMembership {
   Domain?: string;
   Status?: string;
@@ -5354,14 +5327,9 @@ export type WriteForwardingStatus =
   | "disabled"
   | "enabling"
   | "disabling"
-  | "unknown";
-export const WriteForwardingStatus = S.Literal(
-  "enabled",
-  "disabled",
-  "enabling",
-  "disabling",
-  "unknown",
-);
+  | "unknown"
+  | (string & {});
+export const WriteForwardingStatus = S.String;
 export interface ServerlessV2ScalingConfigurationInfo {
   MinCapacity?: number;
   MaxCapacity?: number;
@@ -5395,14 +5363,9 @@ export type LocalWriteForwardingStatus =
   | "disabled"
   | "enabling"
   | "disabling"
-  | "requested";
-export const LocalWriteForwardingStatus = S.Literal(
-  "enabled",
-  "disabled",
-  "enabling",
-  "disabling",
-  "requested",
-);
+  | "requested"
+  | (string & {});
+export const LocalWriteForwardingStatus = S.String;
 export type LimitlessDatabaseStatus =
   | "active"
   | "not-in-use"
@@ -5411,17 +5374,9 @@ export type LimitlessDatabaseStatus =
   | "enabling"
   | "disabling"
   | "modifying-max-capacity"
-  | "error";
-export const LimitlessDatabaseStatus = S.Literal(
-  "active",
-  "not-in-use",
-  "enabled",
-  "disabled",
-  "enabling",
-  "disabling",
-  "modifying-max-capacity",
-  "error",
-);
+  | "error"
+  | (string & {});
+export const LimitlessDatabaseStatus = S.String;
 export interface LimitlessDatabase {
   Status?: LimitlessDatabaseStatus;
   MinRequiredACU?: number;
@@ -6180,13 +6135,9 @@ export type ActivityStreamPolicyStatus =
   | "locked"
   | "unlocked"
   | "locking-policy"
-  | "unlocking-policy";
-export const ActivityStreamPolicyStatus = S.Literal(
-  "locked",
-  "unlocked",
-  "locking-policy",
-  "unlocking-policy",
-);
+  | "unlocking-policy"
+  | (string & {});
+export const ActivityStreamPolicyStatus = S.String;
 export interface AdditionalStorageVolumeOutput {
   VolumeName?: string;
   StorageVolumeStatus?: string;
@@ -6449,18 +6400,9 @@ export type DBProxyStatus =
   | "deleting"
   | "suspended"
   | "suspending"
-  | "reactivating";
-export const DBProxyStatus = S.Literal(
-  "available",
-  "modifying",
-  "incompatible-network",
-  "insufficient-resource-limits",
-  "creating",
-  "deleting",
-  "suspended",
-  "suspending",
-  "reactivating",
-);
+  | "reactivating"
+  | (string & {});
+export const DBProxyStatus = S.String;
 export interface UserAuthConfigInfo {
   Description?: string;
   UserName?: string;
@@ -6533,15 +6475,9 @@ export type DBProxyEndpointStatus =
   | "incompatible-network"
   | "insufficient-resource-limits"
   | "creating"
-  | "deleting";
-export const DBProxyEndpointStatus = S.Literal(
-  "available",
-  "modifying",
-  "incompatible-network",
-  "insufficient-resource-limits",
-  "creating",
-  "deleting",
-);
+  | "deleting"
+  | (string & {});
+export const DBProxyEndpointStatus = S.String;
 export interface DBProxyEndpoint {
   DBProxyEndpointName?: string;
   DBProxyEndpointArn?: string;
@@ -6851,11 +6787,9 @@ export type ReadersArnList = string[];
 export const ReadersArnList = S.Array(S.String);
 export type GlobalClusterMemberSynchronizationStatus =
   | "connected"
-  | "pending-resync";
-export const GlobalClusterMemberSynchronizationStatus = S.Literal(
-  "connected",
-  "pending-resync",
-);
+  | "pending-resync"
+  | (string & {});
+export const GlobalClusterMemberSynchronizationStatus = S.String;
 export interface GlobalClusterMember {
   DBClusterArn?: string;
   Readers?: string[];
@@ -6880,12 +6814,12 @@ export const GlobalClusterMemberList = S.Array(
     identifier: "GlobalClusterMember",
   }),
 );
-export type FailoverStatus = "pending" | "failing-over" | "cancelling";
-export const FailoverStatus = S.Literal(
-  "pending",
-  "failing-over",
-  "cancelling",
-);
+export type FailoverStatus =
+  | "pending"
+  | "failing-over"
+  | "cancelling"
+  | (string & {});
+export const FailoverStatus = S.String;
 export interface FailoverState {
   Status?: FailoverStatus;
   FromDbClusterArn?: string;
@@ -8954,40 +8888,27 @@ export const RebootDBInstanceResult = S.suspend(() =>
 export type TargetType =
   | "RDS_INSTANCE"
   | "RDS_SERVERLESS_ENDPOINT"
-  | "TRACKED_CLUSTER";
-export const TargetType = S.Literal(
-  "RDS_INSTANCE",
-  "RDS_SERVERLESS_ENDPOINT",
-  "TRACKED_CLUSTER",
-);
-export type TargetRole = "READ_WRITE" | "READ_ONLY" | "UNKNOWN";
-export const TargetRole = S.Literal("READ_WRITE", "READ_ONLY", "UNKNOWN");
+  | "TRACKED_CLUSTER"
+  | (string & {});
+export const TargetType = S.String;
+export type TargetRole = "READ_WRITE" | "READ_ONLY" | "UNKNOWN" | (string & {});
+export const TargetRole = S.String;
 export type TargetState =
   | "REGISTERING"
   | "AVAILABLE"
   | "UNAVAILABLE"
-  | "UNUSED";
-export const TargetState = S.Literal(
-  "REGISTERING",
-  "AVAILABLE",
-  "UNAVAILABLE",
-  "UNUSED",
-);
+  | "UNUSED"
+  | (string & {});
+export const TargetState = S.String;
 export type TargetHealthReason =
   | "UNREACHABLE"
   | "CONNECTION_FAILED"
   | "AUTH_FAILURE"
   | "PENDING_PROXY_CAPACITY"
   | "INVALID_REPLICATION_STATE"
-  | "PROMOTED";
-export const TargetHealthReason = S.Literal(
-  "UNREACHABLE",
-  "CONNECTION_FAILED",
-  "AUTH_FAILURE",
-  "PENDING_PROXY_CAPACITY",
-  "INVALID_REPLICATION_STATE",
-  "PROMOTED",
-);
+  | "PROMOTED"
+  | (string & {});
+export const TargetHealthReason = S.String;
 export interface TargetHealth {
   State?: TargetState;
   Reason?: TargetHealthReason;
@@ -9476,11 +9397,9 @@ export const OptionConfigurationList = S.Array(
 );
 export type LifecycleSupportName =
   | "open-source-rds-standard-support"
-  | "open-source-rds-extended-support";
-export const LifecycleSupportName = S.Literal(
-  "open-source-rds-standard-support",
-  "open-source-rds-extended-support",
-);
+  | "open-source-rds-extended-support"
+  | (string & {});
+export const LifecycleSupportName = S.String;
 export interface AddSourceIdentifierToSubscriptionResult {
   EventSubscription?: EventSubscription;
 }

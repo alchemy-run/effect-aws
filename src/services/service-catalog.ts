@@ -259,16 +259,13 @@ export const GetAWSOrganizationsAccessStatusInput = S.suspend(() =>
 export type PortfolioShareType =
   | "IMPORTED"
   | "AWS_SERVICECATALOG"
-  | "AWS_ORGANIZATIONS";
-export const PortfolioShareType = S.Literal(
-  "IMPORTED",
-  "AWS_SERVICECATALOG",
-  "AWS_ORGANIZATIONS",
-);
-export type PrincipalType = "IAM" | "IAM_PATTERN";
-export const PrincipalType = S.Literal("IAM", "IAM_PATTERN");
-export type CopyOption = "CopyTags";
-export const CopyOption = S.Literal("CopyTags");
+  | "AWS_ORGANIZATIONS"
+  | (string & {});
+export const PortfolioShareType = S.String;
+export type PrincipalType = "IAM" | "IAM_PATTERN" | (string & {});
+export const PrincipalType = S.String;
+export type CopyOption = "CopyTags" | (string & {});
+export const CopyOption = S.String;
 export type CopyOptions = CopyOption[];
 export const CopyOptions = S.Array(CopyOption);
 export type ProductType =
@@ -276,16 +273,11 @@ export type ProductType =
   | "MARKETPLACE"
   | "TERRAFORM_OPEN_SOURCE"
   | "TERRAFORM_CLOUD"
-  | "EXTERNAL";
-export const ProductType = S.Literal(
-  "CLOUD_FORMATION_TEMPLATE",
-  "MARKETPLACE",
-  "TERRAFORM_OPEN_SOURCE",
-  "TERRAFORM_CLOUD",
-  "EXTERNAL",
-);
-export type ProvisionedProductPlanType = "CLOUDFORMATION";
-export const ProvisionedProductPlanType = S.Literal("CLOUDFORMATION");
+  | "EXTERNAL"
+  | (string & {});
+export const ProductType = S.String;
+export type ProvisionedProductPlanType = "CLOUDFORMATION" | (string & {});
+export const ProvisionedProductPlanType = S.String;
 export type NotificationArns = string[];
 export const NotificationArns = S.Array(S.String);
 export interface Tag {
@@ -297,48 +289,48 @@ export const Tag = S.suspend(() =>
 ).annotations({ identifier: "Tag" }) as any as S.Schema<Tag>;
 export type Tags = Tag[];
 export const Tags = S.Array(Tag);
-export type ServiceActionDefinitionType = "SSM_AUTOMATION";
-export const ServiceActionDefinitionType = S.Literal("SSM_AUTOMATION");
+export type ServiceActionDefinitionType = "SSM_AUTOMATION" | (string & {});
+export const ServiceActionDefinitionType = S.String;
 export type DescribePortfolioShareType =
   | "ACCOUNT"
   | "ORGANIZATION"
   | "ORGANIZATIONAL_UNIT"
-  | "ORGANIZATION_MEMBER_ACCOUNT";
-export const DescribePortfolioShareType = S.Literal(
-  "ACCOUNT",
-  "ORGANIZATION",
-  "ORGANIZATIONAL_UNIT",
-  "ORGANIZATION_MEMBER_ACCOUNT",
-);
-export type AccessStatus = "ENABLED" | "UNDER_CHANGE" | "DISABLED";
-export const AccessStatus = S.Literal("ENABLED", "UNDER_CHANGE", "DISABLED");
+  | "ORGANIZATION_MEMBER_ACCOUNT"
+  | (string & {});
+export const DescribePortfolioShareType = S.String;
+export type AccessStatus =
+  | "ENABLED"
+  | "UNDER_CHANGE"
+  | "DISABLED"
+  | (string & {});
+export const AccessStatus = S.String;
 export type OutputKeys = string[];
 export const OutputKeys = S.Array(S.String);
 export type OrganizationNodeType =
   | "ORGANIZATION"
   | "ORGANIZATIONAL_UNIT"
-  | "ACCOUNT";
-export const OrganizationNodeType = S.Literal(
-  "ORGANIZATION",
-  "ORGANIZATIONAL_UNIT",
-  "ACCOUNT",
-);
-export type EngineWorkflowStatus = "SUCCEEDED" | "FAILED";
-export const EngineWorkflowStatus = S.Literal("SUCCEEDED", "FAILED");
-export type ProductViewSortBy = "Title" | "VersionCount" | "CreationDate";
-export const ProductViewSortBy = S.Literal(
-  "Title",
-  "VersionCount",
-  "CreationDate",
-);
-export type SortOrder = "ASCENDING" | "DESCENDING";
-export const SortOrder = S.Literal("ASCENDING", "DESCENDING");
-export type ProductSource = "ACCOUNT";
-export const ProductSource = S.Literal("ACCOUNT");
+  | "ACCOUNT"
+  | (string & {});
+export const OrganizationNodeType = S.String;
+export type EngineWorkflowStatus = "SUCCEEDED" | "FAILED" | (string & {});
+export const EngineWorkflowStatus = S.String;
+export type ProductViewSortBy =
+  | "Title"
+  | "VersionCount"
+  | "CreationDate"
+  | (string & {});
+export const ProductViewSortBy = S.String;
+export type SortOrder = "ASCENDING" | "DESCENDING" | (string & {});
+export const SortOrder = S.String;
+export type ProductSource = "ACCOUNT" | (string & {});
+export const ProductSource = S.String;
 export type TagKeys = string[];
 export const TagKeys = S.Array(S.String);
-export type ProvisioningArtifactGuidance = "DEFAULT" | "DEPRECATED";
-export const ProvisioningArtifactGuidance = S.Literal("DEFAULT", "DEPRECATED");
+export type ProvisioningArtifactGuidance =
+  | "DEFAULT"
+  | "DEPRECATED"
+  | (string & {});
+export const ProvisioningArtifactGuidance = S.String;
 export interface AcceptPortfolioShareInput {
   AcceptLanguage?: string;
   PortfolioId: string;
@@ -536,15 +528,9 @@ export type ProvisioningArtifactType =
   | "MARKETPLACE_CAR"
   | "TERRAFORM_OPEN_SOURCE"
   | "TERRAFORM_CLOUD"
-  | "EXTERNAL";
-export const ProvisioningArtifactType = S.Literal(
-  "CLOUD_FORMATION_TEMPLATE",
-  "MARKETPLACE_AMI",
-  "MARKETPLACE_CAR",
-  "TERRAFORM_OPEN_SOURCE",
-  "TERRAFORM_CLOUD",
-  "EXTERNAL",
-);
+  | "EXTERNAL"
+  | (string & {});
+export const ProvisioningArtifactType = S.String;
 export interface ProvisioningArtifactProperties {
   Name?: string;
   Description?: string;
@@ -1527,8 +1513,8 @@ export const RejectPortfolioShareOutput = S.suspend(() =>
 ).annotations({
   identifier: "RejectPortfolioShareOutput",
 }) as any as S.Schema<RejectPortfolioShareOutput>;
-export type AccessLevelFilterKey = "Account" | "Role" | "User";
-export const AccessLevelFilterKey = S.Literal("Account", "Role", "User");
+export type AccessLevelFilterKey = "Account" | "Role" | "User" | (string & {});
+export const AccessLevelFilterKey = S.String;
 export interface AccessLevelFilter {
   Key?: AccessLevelFilterKey;
   Value?: string;
@@ -1563,13 +1549,9 @@ export type ProductViewFilterBy =
   | "FullTextSearch"
   | "Owner"
   | "ProductType"
-  | "SourceProductId";
-export const ProductViewFilterBy = S.Literal(
-  "FullTextSearch",
-  "Owner",
-  "ProductType",
-  "SourceProductId",
-);
+  | "SourceProductId"
+  | (string & {});
+export const ProductViewFilterBy = S.String;
 export type ProductViewFilterValues = string[];
 export const ProductViewFilterValues = S.Array(S.String);
 export type ProductViewFilters = { [key in ProductViewFilterBy]?: string[] };
@@ -1693,8 +1675,8 @@ export const UpdatePortfolioShareInput = S.suspend(() =>
 ).annotations({
   identifier: "UpdatePortfolioShareInput",
 }) as any as S.Schema<UpdatePortfolioShareInput>;
-export type SourceType = "CODESTAR";
-export const SourceType = S.Literal("CODESTAR");
+export type SourceType = "CODESTAR" | (string & {});
+export const SourceType = S.String;
 export interface CodeStarParameters {
   ConnectionArn: string;
   Repository: string;
@@ -1793,13 +1775,9 @@ export type ServiceActionDefinitionKey =
   | "Name"
   | "Version"
   | "AssumeRole"
-  | "Parameters";
-export const ServiceActionDefinitionKey = S.Literal(
-  "Name",
-  "Version",
-  "AssumeRole",
-  "Parameters",
-);
+  | "Parameters"
+  | (string & {});
+export const ServiceActionDefinitionKey = S.String;
 export type ServiceActionDefinitionMap = {
   [key in ServiceActionDefinitionKey]?: string;
 };
@@ -1842,22 +1820,26 @@ export const UpdateTagOptionInput = S.suspend(() =>
 ).annotations({
   identifier: "UpdateTagOptionInput",
 }) as any as S.Schema<UpdateTagOptionInput>;
-export type ProvisioningArtifactPropertyName = "Id";
-export const ProvisioningArtifactPropertyName = S.Literal("Id");
+export type ProvisioningArtifactPropertyName = "Id" | (string & {});
+export const ProvisioningArtifactPropertyName = S.String;
 export type ExecutionParameterValueList = string[];
 export const ExecutionParameterValueList = S.Array(S.String);
 export type StackSetAccounts = string[];
 export const StackSetAccounts = S.Array(S.String);
 export type StackSetRegions = string[];
 export const StackSetRegions = S.Array(S.String);
-export type ProvisionedProductViewFilterBy = "SearchQuery";
-export const ProvisionedProductViewFilterBy = S.Literal("SearchQuery");
+export type ProvisionedProductViewFilterBy = "SearchQuery" | (string & {});
+export const ProvisionedProductViewFilterBy = S.String;
 export type ProvisionedProductViewFilterValues = string[];
 export const ProvisionedProductViewFilterValues = S.Array(S.String);
-export type StackSetOperationType = "CREATE" | "UPDATE" | "DELETE";
-export const StackSetOperationType = S.Literal("CREATE", "UPDATE", "DELETE");
-export type PropertyKey = "OWNER" | "LAUNCH_ROLE";
-export const PropertyKey = S.Literal("OWNER", "LAUNCH_ROLE");
+export type StackSetOperationType =
+  | "CREATE"
+  | "UPDATE"
+  | "DELETE"
+  | (string & {});
+export const StackSetOperationType = S.String;
+export type PropertyKey = "OWNER" | "LAUNCH_ROLE" | (string & {});
+export const PropertyKey = S.String;
 export type SourceProvisioningArtifactPropertiesMap = {
   [key in ProvisioningArtifactPropertyName]?: string;
 };
@@ -1873,8 +1855,8 @@ export type SourceProvisioningArtifactProperties = {
 export const SourceProvisioningArtifactProperties = S.Array(
   SourceProvisioningArtifactPropertiesMap,
 );
-export type Status = "AVAILABLE" | "CREATING" | "FAILED";
-export const Status = S.Literal("AVAILABLE", "CREATING", "FAILED");
+export type Status = "AVAILABLE" | "CREATING" | "FAILED" | (string & {});
+export const Status = S.String;
 export interface UpdateProvisioningParameter {
   Key?: string;
   Value?: string;
@@ -1893,12 +1875,12 @@ export type UpdateProvisioningParameters = UpdateProvisioningParameter[];
 export const UpdateProvisioningParameters = S.Array(
   UpdateProvisioningParameter,
 );
-export type CopyProductStatus = "SUCCEEDED" | "IN_PROGRESS" | "FAILED";
-export const CopyProductStatus = S.Literal(
-  "SUCCEEDED",
-  "IN_PROGRESS",
-  "FAILED",
-);
+export type CopyProductStatus =
+  | "SUCCEEDED"
+  | "IN_PROGRESS"
+  | "FAILED"
+  | (string & {});
+export const CopyProductStatus = S.String;
 export interface TagOptionDetail {
   Key?: string;
   Value?: string;
@@ -1924,14 +1906,9 @@ export type ShareStatus =
   | "IN_PROGRESS"
   | "COMPLETED"
   | "COMPLETED_WITH_ERRORS"
-  | "ERROR";
-export const ShareStatus = S.Literal(
-  "NOT_STARTED",
-  "IN_PROGRESS",
-  "COMPLETED",
-  "COMPLETED_WITH_ERRORS",
-  "ERROR",
-);
+  | "ERROR"
+  | (string & {});
+export const ShareStatus = S.String;
 export type ExecutionParameterMap = { [key: string]: string[] | undefined };
 export const ExecutionParameterMap = S.Record({
   key: S.String,
@@ -2070,14 +2047,9 @@ export type ProvisionedProductStatus =
   | "UNDER_CHANGE"
   | "TAINTED"
   | "ERROR"
-  | "PLAN_IN_PROGRESS";
-export const ProvisionedProductStatus = S.Literal(
-  "AVAILABLE",
-  "UNDER_CHANGE",
-  "TAINTED",
-  "ERROR",
-  "PLAN_IN_PROGRESS",
-);
+  | "PLAN_IN_PROGRESS"
+  | (string & {});
+export const ProvisionedProductStatus = S.String;
 export interface ProvisionedProductDetail {
   Name?: string;
   Arn?: string;
@@ -2146,8 +2118,8 @@ export const ProductViewSummary = S.suspend(() =>
 ).annotations({
   identifier: "ProductViewSummary",
 }) as any as S.Schema<ProductViewSummary>;
-export type LastSyncStatus = "SUCCEEDED" | "FAILED";
-export const LastSyncStatus = S.Literal("SUCCEEDED", "FAILED");
+export type LastSyncStatus = "SUCCEEDED" | "FAILED" | (string & {});
+export const LastSyncStatus = S.String;
 export interface LastSync {
   LastSyncTime?: Date;
   LastSyncStatus?: LastSyncStatus;
@@ -2457,14 +2429,9 @@ export type RecordStatus =
   | "IN_PROGRESS"
   | "IN_PROGRESS_IN_ERROR"
   | "SUCCEEDED"
-  | "FAILED";
-export const RecordStatus = S.Literal(
-  "CREATED",
-  "IN_PROGRESS",
-  "IN_PROGRESS_IN_ERROR",
-  "SUCCEEDED",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const RecordStatus = S.String;
 export interface RecordError {
   Code?: string;
   Description?: string;
@@ -3021,15 +2988,9 @@ export type ServiceActionAssociationErrorCode =
   | "LIMIT_EXCEEDED"
   | "RESOURCE_NOT_FOUND"
   | "THROTTLING"
-  | "INVALID_PARAMETER";
-export const ServiceActionAssociationErrorCode = S.Literal(
-  "DUPLICATE_RESOURCE",
-  "INTERNAL_FAILURE",
-  "LIMIT_EXCEEDED",
-  "RESOURCE_NOT_FOUND",
-  "THROTTLING",
-  "INVALID_PARAMETER",
-);
+  | "INVALID_PARAMETER"
+  | (string & {});
+export const ServiceActionAssociationErrorCode = S.String;
 export type SuccessfulShares = string[];
 export const SuccessfulShares = S.Array(S.String);
 export type ProvisionedProductPlanStatus =
@@ -3038,44 +2999,32 @@ export type ProvisionedProductPlanStatus =
   | "CREATE_FAILED"
   | "EXECUTE_IN_PROGRESS"
   | "EXECUTE_SUCCESS"
-  | "EXECUTE_FAILED";
-export const ProvisionedProductPlanStatus = S.Literal(
-  "CREATE_IN_PROGRESS",
-  "CREATE_SUCCESS",
-  "CREATE_FAILED",
-  "EXECUTE_IN_PROGRESS",
-  "EXECUTE_SUCCESS",
-  "EXECUTE_FAILED",
-);
-export type ChangeAction = "ADD" | "MODIFY" | "REMOVE";
-export const ChangeAction = S.Literal("ADD", "MODIFY", "REMOVE");
-export type Replacement = "TRUE" | "FALSE" | "CONDITIONAL";
-export const Replacement = S.Literal("TRUE", "FALSE", "CONDITIONAL");
+  | "EXECUTE_FAILED"
+  | (string & {});
+export const ProvisionedProductPlanStatus = S.String;
+export type ChangeAction = "ADD" | "MODIFY" | "REMOVE" | (string & {});
+export const ChangeAction = S.String;
+export type Replacement = "TRUE" | "FALSE" | "CONDITIONAL" | (string & {});
+export const Replacement = S.String;
 export type ResourceAttribute =
   | "PROPERTIES"
   | "METADATA"
   | "CREATIONPOLICY"
   | "UPDATEPOLICY"
   | "DELETIONPOLICY"
-  | "TAGS";
-export const ResourceAttribute = S.Literal(
-  "PROPERTIES",
-  "METADATA",
-  "CREATIONPOLICY",
-  "UPDATEPOLICY",
-  "DELETIONPOLICY",
-  "TAGS",
-);
+  | "TAGS"
+  | (string & {});
+export const ResourceAttribute = S.String;
 export type Scope = ResourceAttribute[];
 export const Scope = S.Array(ResourceAttribute);
 export type TagOptionValues = string[];
 export const TagOptionValues = S.Array(S.String);
-export type StackInstanceStatus = "CURRENT" | "OUTDATED" | "INOPERABLE";
-export const StackInstanceStatus = S.Literal(
-  "CURRENT",
-  "OUTDATED",
-  "INOPERABLE",
-);
+export type StackInstanceStatus =
+  | "CURRENT"
+  | "OUTDATED"
+  | "INOPERABLE"
+  | (string & {});
+export const StackInstanceStatus = S.String;
 export interface UniqueTagResourceIdentifier {
   Key?: string;
   Value?: string;
@@ -3372,8 +3321,8 @@ export type ProductViewSummaries = ProductViewSummary[];
 export const ProductViewSummaries = S.Array(ProductViewSummary);
 export type Namespaces = string[];
 export const Namespaces = S.Array(S.String);
-export type EvaluationType = "STATIC" | "DYNAMIC";
-export const EvaluationType = S.Literal("STATIC", "DYNAMIC");
+export type EvaluationType = "STATIC" | "DYNAMIC" | (string & {});
+export const EvaluationType = S.String;
 export type AllowedValues = string[];
 export const AllowedValues = S.Array(S.String);
 export interface BatchAssociateServiceActionWithProvisioningArtifactOutput {
@@ -3814,8 +3763,12 @@ export const ShareError = S.suspend(() =>
 ).annotations({ identifier: "ShareError" }) as any as S.Schema<ShareError>;
 export type ShareErrors = ShareError[];
 export const ShareErrors = S.Array(ShareError);
-export type RequiresRecreation = "NEVER" | "CONDITIONALLY" | "ALWAYS";
-export const RequiresRecreation = S.Literal("NEVER", "CONDITIONALLY", "ALWAYS");
+export type RequiresRecreation =
+  | "NEVER"
+  | "CONDITIONALLY"
+  | "ALWAYS"
+  | (string & {});
+export const RequiresRecreation = S.String;
 export interface ShareDetails {
   SuccessfulShares?: string[];
   ShareErrors?: ShareError[];

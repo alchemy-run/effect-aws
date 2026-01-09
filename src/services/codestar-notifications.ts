@@ -114,10 +114,10 @@ export type NotificationRuleId = string;
 //# Schemas
 export type EventTypeIds = string[];
 export const EventTypeIds = S.Array(S.String);
-export type DetailType = "BASIC" | "FULL";
-export const DetailType = S.Literal("BASIC", "FULL");
-export type NotificationRuleStatus = "ENABLED" | "DISABLED";
-export const NotificationRuleStatus = S.Literal("ENABLED", "DISABLED");
+export type DetailType = "BASIC" | "FULL" | (string & {});
+export const DetailType = S.String;
+export type NotificationRuleStatus = "ENABLED" | "DISABLED" | (string & {});
+export const NotificationRuleStatus = S.String;
 export type TagKeys = string[];
 export const TagKeys = S.Array(S.String);
 export interface DeleteNotificationRuleRequest {
@@ -329,31 +329,24 @@ export const UpdateNotificationRuleResult = S.suspend(() =>
 ).annotations({
   identifier: "UpdateNotificationRuleResult",
 }) as any as S.Schema<UpdateNotificationRuleResult>;
-export type ListEventTypesFilterName = "RESOURCE_TYPE" | "SERVICE_NAME";
-export const ListEventTypesFilterName = S.Literal(
-  "RESOURCE_TYPE",
-  "SERVICE_NAME",
-);
+export type ListEventTypesFilterName =
+  | "RESOURCE_TYPE"
+  | "SERVICE_NAME"
+  | (string & {});
+export const ListEventTypesFilterName = S.String;
 export type ListNotificationRulesFilterName =
   | "EVENT_TYPE_ID"
   | "CREATED_BY"
   | "RESOURCE"
-  | "TARGET_ADDRESS";
-export const ListNotificationRulesFilterName = S.Literal(
-  "EVENT_TYPE_ID",
-  "CREATED_BY",
-  "RESOURCE",
-  "TARGET_ADDRESS",
-);
+  | "TARGET_ADDRESS"
+  | (string & {});
+export const ListNotificationRulesFilterName = S.String;
 export type ListTargetsFilterName =
   | "TARGET_TYPE"
   | "TARGET_ADDRESS"
-  | "TARGET_STATUS";
-export const ListTargetsFilterName = S.Literal(
-  "TARGET_TYPE",
-  "TARGET_ADDRESS",
-  "TARGET_STATUS",
-);
+  | "TARGET_STATUS"
+  | (string & {});
+export const ListTargetsFilterName = S.String;
 export interface ListEventTypesFilter {
   Name: ListEventTypesFilterName;
   Value: string;
@@ -536,14 +529,9 @@ export type TargetStatus =
   | "ACTIVE"
   | "UNREACHABLE"
   | "INACTIVE"
-  | "DEACTIVATED";
-export const TargetStatus = S.Literal(
-  "PENDING",
-  "ACTIVE",
-  "UNREACHABLE",
-  "INACTIVE",
-  "DEACTIVATED",
-);
+  | "DEACTIVATED"
+  | (string & {});
+export const TargetStatus = S.String;
 export interface EventTypeSummary {
   EventTypeId?: string;
   ServiceName?: string;

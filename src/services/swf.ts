@@ -148,10 +148,14 @@ export type CauseMessage = string;
 export type OpenDecisionTasksCount = number;
 
 //# Schemas
-export type RegistrationStatus = "REGISTERED" | "DEPRECATED";
-export const RegistrationStatus = S.Literal("REGISTERED", "DEPRECATED");
-export type ChildPolicy = "TERMINATE" | "REQUEST_CANCEL" | "ABANDON";
-export const ChildPolicy = S.Literal("TERMINATE", "REQUEST_CANCEL", "ABANDON");
+export type RegistrationStatus = "REGISTERED" | "DEPRECATED" | (string & {});
+export const RegistrationStatus = S.String;
+export type ChildPolicy =
+  | "TERMINATE"
+  | "REQUEST_CANCEL"
+  | "ABANDON"
+  | (string & {});
+export const ChildPolicy = S.String;
 export type TagList = string[];
 export const TagList = S.Array(S.String);
 export type ResourceTagKeyList = string[];
@@ -461,15 +465,9 @@ export type CloseStatus =
   | "CANCELED"
   | "TERMINATED"
   | "CONTINUED_AS_NEW"
-  | "TIMED_OUT";
-export const CloseStatus = S.Literal(
-  "COMPLETED",
-  "FAILED",
-  "CANCELED",
-  "TERMINATED",
-  "CONTINUED_AS_NEW",
-  "TIMED_OUT",
-);
+  | "TIMED_OUT"
+  | (string & {});
+export const CloseStatus = S.String;
 export interface CloseStatusFilter {
   status: CloseStatus;
 }
@@ -1153,22 +1151,9 @@ export type DecisionType =
   | "SignalExternalWorkflowExecution"
   | "RequestCancelExternalWorkflowExecution"
   | "StartChildWorkflowExecution"
-  | "ScheduleLambdaFunction";
-export const DecisionType = S.Literal(
-  "ScheduleActivityTask",
-  "RequestCancelActivityTask",
-  "CompleteWorkflowExecution",
-  "FailWorkflowExecution",
-  "CancelWorkflowExecution",
-  "ContinueAsNewWorkflowExecution",
-  "RecordMarker",
-  "StartTimer",
-  "CancelTimer",
-  "SignalExternalWorkflowExecution",
-  "RequestCancelExternalWorkflowExecution",
-  "StartChildWorkflowExecution",
-  "ScheduleLambdaFunction",
-);
+  | "ScheduleLambdaFunction"
+  | (string & {});
+export const DecisionType = S.String;
 export interface ActivityTypeInfo {
   activityType: ActivityType;
   status: RegistrationStatus;
@@ -1481,63 +1466,9 @@ export type EventType =
   | "LambdaFunctionFailed"
   | "LambdaFunctionTimedOut"
   | "ScheduleLambdaFunctionFailed"
-  | "StartLambdaFunctionFailed";
-export const EventType = S.Literal(
-  "WorkflowExecutionStarted",
-  "WorkflowExecutionCancelRequested",
-  "WorkflowExecutionCompleted",
-  "CompleteWorkflowExecutionFailed",
-  "WorkflowExecutionFailed",
-  "FailWorkflowExecutionFailed",
-  "WorkflowExecutionTimedOut",
-  "WorkflowExecutionCanceled",
-  "CancelWorkflowExecutionFailed",
-  "WorkflowExecutionContinuedAsNew",
-  "ContinueAsNewWorkflowExecutionFailed",
-  "WorkflowExecutionTerminated",
-  "DecisionTaskScheduled",
-  "DecisionTaskStarted",
-  "DecisionTaskCompleted",
-  "DecisionTaskTimedOut",
-  "ActivityTaskScheduled",
-  "ScheduleActivityTaskFailed",
-  "ActivityTaskStarted",
-  "ActivityTaskCompleted",
-  "ActivityTaskFailed",
-  "ActivityTaskTimedOut",
-  "ActivityTaskCanceled",
-  "ActivityTaskCancelRequested",
-  "RequestCancelActivityTaskFailed",
-  "WorkflowExecutionSignaled",
-  "MarkerRecorded",
-  "RecordMarkerFailed",
-  "TimerStarted",
-  "StartTimerFailed",
-  "TimerFired",
-  "TimerCanceled",
-  "CancelTimerFailed",
-  "StartChildWorkflowExecutionInitiated",
-  "StartChildWorkflowExecutionFailed",
-  "ChildWorkflowExecutionStarted",
-  "ChildWorkflowExecutionCompleted",
-  "ChildWorkflowExecutionFailed",
-  "ChildWorkflowExecutionTimedOut",
-  "ChildWorkflowExecutionCanceled",
-  "ChildWorkflowExecutionTerminated",
-  "SignalExternalWorkflowExecutionInitiated",
-  "SignalExternalWorkflowExecutionFailed",
-  "ExternalWorkflowExecutionSignaled",
-  "RequestCancelExternalWorkflowExecutionInitiated",
-  "RequestCancelExternalWorkflowExecutionFailed",
-  "ExternalWorkflowExecutionCancelRequested",
-  "LambdaFunctionScheduled",
-  "LambdaFunctionStarted",
-  "LambdaFunctionCompleted",
-  "LambdaFunctionFailed",
-  "LambdaFunctionTimedOut",
-  "ScheduleLambdaFunctionFailed",
-  "StartLambdaFunctionFailed",
-);
+  | "StartLambdaFunctionFailed"
+  | (string & {});
+export const EventType = S.String;
 export interface WorkflowExecutionStartedEventAttributes {
   input?: string;
   executionStartToCloseTimeout?: string;
@@ -1584,11 +1515,9 @@ export const WorkflowExecutionCompletedEventAttributes = S.suspend(() =>
 }) as any as S.Schema<WorkflowExecutionCompletedEventAttributes>;
 export type CompleteWorkflowExecutionFailedCause =
   | "UNHANDLED_DECISION"
-  | "OPERATION_NOT_PERMITTED";
-export const CompleteWorkflowExecutionFailedCause = S.Literal(
-  "UNHANDLED_DECISION",
-  "OPERATION_NOT_PERMITTED",
-);
+  | "OPERATION_NOT_PERMITTED"
+  | (string & {});
+export const CompleteWorkflowExecutionFailedCause = S.String;
 export interface CompleteWorkflowExecutionFailedEventAttributes {
   cause: CompleteWorkflowExecutionFailedCause;
   decisionTaskCompletedEventId: number;
@@ -1617,11 +1546,9 @@ export const WorkflowExecutionFailedEventAttributes = S.suspend(() =>
 }) as any as S.Schema<WorkflowExecutionFailedEventAttributes>;
 export type FailWorkflowExecutionFailedCause =
   | "UNHANDLED_DECISION"
-  | "OPERATION_NOT_PERMITTED";
-export const FailWorkflowExecutionFailedCause = S.Literal(
-  "UNHANDLED_DECISION",
-  "OPERATION_NOT_PERMITTED",
-);
+  | "OPERATION_NOT_PERMITTED"
+  | (string & {});
+export const FailWorkflowExecutionFailedCause = S.String;
 export interface FailWorkflowExecutionFailedEventAttributes {
   cause: FailWorkflowExecutionFailedCause;
   decisionTaskCompletedEventId: number;
@@ -1634,8 +1561,8 @@ export const FailWorkflowExecutionFailedEventAttributes = S.suspend(() =>
 ).annotations({
   identifier: "FailWorkflowExecutionFailedEventAttributes",
 }) as any as S.Schema<FailWorkflowExecutionFailedEventAttributes>;
-export type WorkflowExecutionTimeoutType = "START_TO_CLOSE";
-export const WorkflowExecutionTimeoutType = S.Literal("START_TO_CLOSE");
+export type WorkflowExecutionTimeoutType = "START_TO_CLOSE" | (string & {});
+export const WorkflowExecutionTimeoutType = S.String;
 export interface WorkflowExecutionTimedOutEventAttributes {
   timeoutType: WorkflowExecutionTimeoutType;
   childPolicy: ChildPolicy;
@@ -1662,11 +1589,9 @@ export const WorkflowExecutionCanceledEventAttributes = S.suspend(() =>
 }) as any as S.Schema<WorkflowExecutionCanceledEventAttributes>;
 export type CancelWorkflowExecutionFailedCause =
   | "UNHANDLED_DECISION"
-  | "OPERATION_NOT_PERMITTED";
-export const CancelWorkflowExecutionFailedCause = S.Literal(
-  "UNHANDLED_DECISION",
-  "OPERATION_NOT_PERMITTED",
-);
+  | "OPERATION_NOT_PERMITTED"
+  | (string & {});
+export const CancelWorkflowExecutionFailedCause = S.String;
 export interface CancelWorkflowExecutionFailedEventAttributes {
   cause: CancelWorkflowExecutionFailedCause;
   decisionTaskCompletedEventId: number;
@@ -1718,18 +1643,9 @@ export type ContinueAsNewWorkflowExecutionFailedCause =
   | "DEFAULT_TASK_LIST_UNDEFINED"
   | "DEFAULT_CHILD_POLICY_UNDEFINED"
   | "CONTINUE_AS_NEW_WORKFLOW_EXECUTION_RATE_EXCEEDED"
-  | "OPERATION_NOT_PERMITTED";
-export const ContinueAsNewWorkflowExecutionFailedCause = S.Literal(
-  "UNHANDLED_DECISION",
-  "WORKFLOW_TYPE_DEPRECATED",
-  "WORKFLOW_TYPE_DOES_NOT_EXIST",
-  "DEFAULT_EXECUTION_START_TO_CLOSE_TIMEOUT_UNDEFINED",
-  "DEFAULT_TASK_START_TO_CLOSE_TIMEOUT_UNDEFINED",
-  "DEFAULT_TASK_LIST_UNDEFINED",
-  "DEFAULT_CHILD_POLICY_UNDEFINED",
-  "CONTINUE_AS_NEW_WORKFLOW_EXECUTION_RATE_EXCEEDED",
-  "OPERATION_NOT_PERMITTED",
-);
+  | "OPERATION_NOT_PERMITTED"
+  | (string & {});
+export const ContinueAsNewWorkflowExecutionFailedCause = S.String;
 export interface ContinueAsNewWorkflowExecutionFailedEventAttributes {
   cause: ContinueAsNewWorkflowExecutionFailedCause;
   decisionTaskCompletedEventId: number;
@@ -1746,12 +1662,9 @@ export const ContinueAsNewWorkflowExecutionFailedEventAttributes = S.suspend(
 export type WorkflowExecutionTerminatedCause =
   | "CHILD_POLICY_APPLIED"
   | "EVENT_LIMIT_EXCEEDED"
-  | "OPERATOR_INITIATED";
-export const WorkflowExecutionTerminatedCause = S.Literal(
-  "CHILD_POLICY_APPLIED",
-  "EVENT_LIMIT_EXCEEDED",
-  "OPERATOR_INITIATED",
-);
+  | "OPERATOR_INITIATED"
+  | (string & {});
+export const WorkflowExecutionTerminatedCause = S.String;
 export interface WorkflowExecutionTerminatedEventAttributes {
   reason?: string;
   details?: string;
@@ -1768,10 +1681,10 @@ export const WorkflowExecutionTerminatedEventAttributes = S.suspend(() =>
 ).annotations({
   identifier: "WorkflowExecutionTerminatedEventAttributes",
 }) as any as S.Schema<WorkflowExecutionTerminatedEventAttributes>;
-export type WorkflowExecutionCancelRequestedCause = "CHILD_POLICY_APPLIED";
-export const WorkflowExecutionCancelRequestedCause = S.Literal(
-  "CHILD_POLICY_APPLIED",
-);
+export type WorkflowExecutionCancelRequestedCause =
+  | "CHILD_POLICY_APPLIED"
+  | (string & {});
+export const WorkflowExecutionCancelRequestedCause = S.String;
 export interface WorkflowExecutionCancelRequestedEventAttributes {
   externalWorkflowExecution?: WorkflowExecution;
   externalInitiatedEventId?: number;
@@ -1829,11 +1742,11 @@ export const DecisionTaskCompletedEventAttributes = S.suspend(() =>
 ).annotations({
   identifier: "DecisionTaskCompletedEventAttributes",
 }) as any as S.Schema<DecisionTaskCompletedEventAttributes>;
-export type DecisionTaskTimeoutType = "START_TO_CLOSE" | "SCHEDULE_TO_START";
-export const DecisionTaskTimeoutType = S.Literal(
-  "START_TO_CLOSE",
-  "SCHEDULE_TO_START",
-);
+export type DecisionTaskTimeoutType =
+  | "START_TO_CLOSE"
+  | "SCHEDULE_TO_START"
+  | (string & {});
+export const DecisionTaskTimeoutType = S.String;
 export interface DecisionTaskTimedOutEventAttributes {
   timeoutType: DecisionTaskTimeoutType;
   scheduledEventId: number;
@@ -1921,13 +1834,9 @@ export type ActivityTaskTimeoutType =
   | "START_TO_CLOSE"
   | "SCHEDULE_TO_START"
   | "SCHEDULE_TO_CLOSE"
-  | "HEARTBEAT";
-export const ActivityTaskTimeoutType = S.Literal(
-  "START_TO_CLOSE",
-  "SCHEDULE_TO_START",
-  "SCHEDULE_TO_CLOSE",
-  "HEARTBEAT",
-);
+  | "HEARTBEAT"
+  | (string & {});
+export const ActivityTaskTimeoutType = S.String;
 export interface ActivityTaskTimedOutEventAttributes {
   timeoutType: ActivityTaskTimeoutType;
   scheduledEventId: number;
@@ -1999,8 +1908,8 @@ export const MarkerRecordedEventAttributes = S.suspend(() =>
 ).annotations({
   identifier: "MarkerRecordedEventAttributes",
 }) as any as S.Schema<MarkerRecordedEventAttributes>;
-export type RecordMarkerFailedCause = "OPERATION_NOT_PERMITTED";
-export const RecordMarkerFailedCause = S.Literal("OPERATION_NOT_PERMITTED");
+export type RecordMarkerFailedCause = "OPERATION_NOT_PERMITTED" | (string & {});
+export const RecordMarkerFailedCause = S.String;
 export interface RecordMarkerFailedEventAttributes {
   markerName: string;
   cause: RecordMarkerFailedCause;
@@ -2227,12 +2136,9 @@ export const ExternalWorkflowExecutionSignaledEventAttributes = S.suspend(() =>
 export type SignalExternalWorkflowExecutionFailedCause =
   | "UNKNOWN_EXTERNAL_WORKFLOW_EXECUTION"
   | "SIGNAL_EXTERNAL_WORKFLOW_EXECUTION_RATE_EXCEEDED"
-  | "OPERATION_NOT_PERMITTED";
-export const SignalExternalWorkflowExecutionFailedCause = S.Literal(
-  "UNKNOWN_EXTERNAL_WORKFLOW_EXECUTION",
-  "SIGNAL_EXTERNAL_WORKFLOW_EXECUTION_RATE_EXCEEDED",
-  "OPERATION_NOT_PERMITTED",
-);
+  | "OPERATION_NOT_PERMITTED"
+  | (string & {});
+export const SignalExternalWorkflowExecutionFailedCause = S.String;
 export interface SignalExternalWorkflowExecutionFailedEventAttributes {
   workflowId: string;
   runId?: string;
@@ -2288,12 +2194,9 @@ export const RequestCancelExternalWorkflowExecutionInitiatedEventAttributes =
 export type RequestCancelExternalWorkflowExecutionFailedCause =
   | "UNKNOWN_EXTERNAL_WORKFLOW_EXECUTION"
   | "REQUEST_CANCEL_EXTERNAL_WORKFLOW_EXECUTION_RATE_EXCEEDED"
-  | "OPERATION_NOT_PERMITTED";
-export const RequestCancelExternalWorkflowExecutionFailedCause = S.Literal(
-  "UNKNOWN_EXTERNAL_WORKFLOW_EXECUTION",
-  "REQUEST_CANCEL_EXTERNAL_WORKFLOW_EXECUTION_RATE_EXCEEDED",
-  "OPERATION_NOT_PERMITTED",
-);
+  | "OPERATION_NOT_PERMITTED"
+  | (string & {});
+export const RequestCancelExternalWorkflowExecutionFailedCause = S.String;
 export interface RequestCancelExternalWorkflowExecutionFailedEventAttributes {
   workflowId: string;
   runId?: string;
@@ -2326,20 +2229,9 @@ export type ScheduleActivityTaskFailedCause =
   | "DEFAULT_SCHEDULE_TO_START_TIMEOUT_UNDEFINED"
   | "DEFAULT_START_TO_CLOSE_TIMEOUT_UNDEFINED"
   | "DEFAULT_HEARTBEAT_TIMEOUT_UNDEFINED"
-  | "OPERATION_NOT_PERMITTED";
-export const ScheduleActivityTaskFailedCause = S.Literal(
-  "ACTIVITY_TYPE_DEPRECATED",
-  "ACTIVITY_TYPE_DOES_NOT_EXIST",
-  "ACTIVITY_ID_ALREADY_IN_USE",
-  "OPEN_ACTIVITIES_LIMIT_EXCEEDED",
-  "ACTIVITY_CREATION_RATE_EXCEEDED",
-  "DEFAULT_SCHEDULE_TO_CLOSE_TIMEOUT_UNDEFINED",
-  "DEFAULT_TASK_LIST_UNDEFINED",
-  "DEFAULT_SCHEDULE_TO_START_TIMEOUT_UNDEFINED",
-  "DEFAULT_START_TO_CLOSE_TIMEOUT_UNDEFINED",
-  "DEFAULT_HEARTBEAT_TIMEOUT_UNDEFINED",
-  "OPERATION_NOT_PERMITTED",
-);
+  | "OPERATION_NOT_PERMITTED"
+  | (string & {});
+export const ScheduleActivityTaskFailedCause = S.String;
 export interface ScheduleActivityTaskFailedEventAttributes {
   activityType: ActivityType;
   activityId: string;
@@ -2358,11 +2250,9 @@ export const ScheduleActivityTaskFailedEventAttributes = S.suspend(() =>
 }) as any as S.Schema<ScheduleActivityTaskFailedEventAttributes>;
 export type RequestCancelActivityTaskFailedCause =
   | "ACTIVITY_ID_UNKNOWN"
-  | "OPERATION_NOT_PERMITTED";
-export const RequestCancelActivityTaskFailedCause = S.Literal(
-  "ACTIVITY_ID_UNKNOWN",
-  "OPERATION_NOT_PERMITTED",
-);
+  | "OPERATION_NOT_PERMITTED"
+  | (string & {});
+export const RequestCancelActivityTaskFailedCause = S.String;
 export interface RequestCancelActivityTaskFailedEventAttributes {
   activityId: string;
   cause: RequestCancelActivityTaskFailedCause;
@@ -2381,13 +2271,9 @@ export type StartTimerFailedCause =
   | "TIMER_ID_ALREADY_IN_USE"
   | "OPEN_TIMERS_LIMIT_EXCEEDED"
   | "TIMER_CREATION_RATE_EXCEEDED"
-  | "OPERATION_NOT_PERMITTED";
-export const StartTimerFailedCause = S.Literal(
-  "TIMER_ID_ALREADY_IN_USE",
-  "OPEN_TIMERS_LIMIT_EXCEEDED",
-  "TIMER_CREATION_RATE_EXCEEDED",
-  "OPERATION_NOT_PERMITTED",
-);
+  | "OPERATION_NOT_PERMITTED"
+  | (string & {});
+export const StartTimerFailedCause = S.String;
 export interface StartTimerFailedEventAttributes {
   timerId: string;
   cause: StartTimerFailedCause;
@@ -2404,11 +2290,9 @@ export const StartTimerFailedEventAttributes = S.suspend(() =>
 }) as any as S.Schema<StartTimerFailedEventAttributes>;
 export type CancelTimerFailedCause =
   | "TIMER_ID_UNKNOWN"
-  | "OPERATION_NOT_PERMITTED";
-export const CancelTimerFailedCause = S.Literal(
-  "TIMER_ID_UNKNOWN",
-  "OPERATION_NOT_PERMITTED",
-);
+  | "OPERATION_NOT_PERMITTED"
+  | (string & {});
+export const CancelTimerFailedCause = S.String;
 export interface CancelTimerFailedEventAttributes {
   timerId: string;
   cause: CancelTimerFailedCause;
@@ -2434,20 +2318,9 @@ export type StartChildWorkflowExecutionFailedCause =
   | "DEFAULT_TASK_LIST_UNDEFINED"
   | "DEFAULT_TASK_START_TO_CLOSE_TIMEOUT_UNDEFINED"
   | "DEFAULT_CHILD_POLICY_UNDEFINED"
-  | "OPERATION_NOT_PERMITTED";
-export const StartChildWorkflowExecutionFailedCause = S.Literal(
-  "WORKFLOW_TYPE_DOES_NOT_EXIST",
-  "WORKFLOW_TYPE_DEPRECATED",
-  "OPEN_CHILDREN_LIMIT_EXCEEDED",
-  "OPEN_WORKFLOWS_LIMIT_EXCEEDED",
-  "CHILD_CREATION_RATE_EXCEEDED",
-  "WORKFLOW_ALREADY_RUNNING",
-  "DEFAULT_EXECUTION_START_TO_CLOSE_TIMEOUT_UNDEFINED",
-  "DEFAULT_TASK_LIST_UNDEFINED",
-  "DEFAULT_TASK_START_TO_CLOSE_TIMEOUT_UNDEFINED",
-  "DEFAULT_CHILD_POLICY_UNDEFINED",
-  "OPERATION_NOT_PERMITTED",
-);
+  | "OPERATION_NOT_PERMITTED"
+  | (string & {});
+export const StartChildWorkflowExecutionFailedCause = S.String;
 export interface StartChildWorkflowExecutionFailedEventAttributes {
   workflowType: WorkflowType;
   cause: StartChildWorkflowExecutionFailedCause;
@@ -2526,8 +2399,8 @@ export const LambdaFunctionFailedEventAttributes = S.suspend(() =>
 ).annotations({
   identifier: "LambdaFunctionFailedEventAttributes",
 }) as any as S.Schema<LambdaFunctionFailedEventAttributes>;
-export type LambdaFunctionTimeoutType = "START_TO_CLOSE";
-export const LambdaFunctionTimeoutType = S.Literal("START_TO_CLOSE");
+export type LambdaFunctionTimeoutType = "START_TO_CLOSE" | (string & {});
+export const LambdaFunctionTimeoutType = S.String;
 export interface LambdaFunctionTimedOutEventAttributes {
   scheduledEventId: number;
   startedEventId: number;
@@ -2546,13 +2419,9 @@ export type ScheduleLambdaFunctionFailedCause =
   | "ID_ALREADY_IN_USE"
   | "OPEN_LAMBDA_FUNCTIONS_LIMIT_EXCEEDED"
   | "LAMBDA_FUNCTION_CREATION_RATE_EXCEEDED"
-  | "LAMBDA_SERVICE_NOT_AVAILABLE_IN_REGION";
-export const ScheduleLambdaFunctionFailedCause = S.Literal(
-  "ID_ALREADY_IN_USE",
-  "OPEN_LAMBDA_FUNCTIONS_LIMIT_EXCEEDED",
-  "LAMBDA_FUNCTION_CREATION_RATE_EXCEEDED",
-  "LAMBDA_SERVICE_NOT_AVAILABLE_IN_REGION",
-);
+  | "LAMBDA_SERVICE_NOT_AVAILABLE_IN_REGION"
+  | (string & {});
+export const ScheduleLambdaFunctionFailedCause = S.String;
 export interface ScheduleLambdaFunctionFailedEventAttributes {
   id: string;
   name: string;
@@ -2569,8 +2438,10 @@ export const ScheduleLambdaFunctionFailedEventAttributes = S.suspend(() =>
 ).annotations({
   identifier: "ScheduleLambdaFunctionFailedEventAttributes",
 }) as any as S.Schema<ScheduleLambdaFunctionFailedEventAttributes>;
-export type StartLambdaFunctionFailedCause = "ASSUME_ROLE_FAILED";
-export const StartLambdaFunctionFailedCause = S.Literal("ASSUME_ROLE_FAILED");
+export type StartLambdaFunctionFailedCause =
+  | "ASSUME_ROLE_FAILED"
+  | (string & {});
+export const StartLambdaFunctionFailedCause = S.String;
 export interface StartLambdaFunctionFailedEventAttributes {
   scheduledEventId?: number;
   cause?: StartLambdaFunctionFailedCause;
@@ -2873,8 +2744,8 @@ export interface Run {
 export const Run = S.suspend(() =>
   S.Struct({ runId: S.optional(S.String) }).pipe(ns),
 ).annotations({ identifier: "Run" }) as any as S.Schema<Run>;
-export type ExecutionStatus = "OPEN" | "CLOSED";
-export const ExecutionStatus = S.Literal("OPEN", "CLOSED");
+export type ExecutionStatus = "OPEN" | "CLOSED" | (string & {});
+export const ExecutionStatus = S.String;
 export interface ScheduleActivityTaskDecisionAttributes {
   activityType: ActivityType;
   activityId: string;

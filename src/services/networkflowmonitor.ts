@@ -84,25 +84,16 @@ export type MonitorStatus =
   | "ACTIVE"
   | "INACTIVE"
   | "ERROR"
-  | "DELETING";
-export const MonitorStatus = S.Literal(
-  "PENDING",
-  "ACTIVE",
-  "INACTIVE",
-  "ERROR",
-  "DELETING",
-);
+  | "DELETING"
+  | (string & {});
+export const MonitorStatus = S.String;
 export type MonitorMetric =
   | "ROUND_TRIP_TIME"
   | "TIMEOUTS"
   | "RETRANSMISSIONS"
-  | "DATA_TRANSFERRED";
-export const MonitorMetric = S.Literal(
-  "ROUND_TRIP_TIME",
-  "TIMEOUTS",
-  "RETRANSMISSIONS",
-  "DATA_TRANSFERRED",
-);
+  | "DATA_TRANSFERRED"
+  | (string & {});
+export const MonitorMetric = S.String;
 export type DestinationCategory =
   | "INTRA_AZ"
   | "INTER_AZ"
@@ -110,25 +101,15 @@ export type DestinationCategory =
   | "UNCLASSIFIED"
   | "AMAZON_S3"
   | "AMAZON_DYNAMODB"
-  | "INTER_REGION";
-export const DestinationCategory = S.Literal(
-  "INTRA_AZ",
-  "INTER_AZ",
-  "INTER_VPC",
-  "UNCLASSIFIED",
-  "AMAZON_S3",
-  "AMAZON_DYNAMODB",
-  "INTER_REGION",
-);
+  | "INTER_REGION"
+  | (string & {});
+export const DestinationCategory = S.String;
 export type WorkloadInsightsMetric =
   | "TIMEOUTS"
   | "RETRANSMISSIONS"
-  | "DATA_TRANSFERRED";
-export const WorkloadInsightsMetric = S.Literal(
-  "TIMEOUTS",
-  "RETRANSMISSIONS",
-  "DATA_TRANSFERRED",
-);
+  | "DATA_TRANSFERRED"
+  | (string & {});
+export const WorkloadInsightsMetric = S.String;
 export interface ListTagsForResourceInput {
   resourceArn: string;
 }
@@ -193,14 +174,9 @@ export type MonitorLocalResourceType =
   | "AWS::AvailabilityZone"
   | "AWS::EC2::Subnet"
   | "AWS::Region"
-  | "AWS::EKS::Cluster";
-export const MonitorLocalResourceType = S.Literal(
-  "AWS::EC2::VPC",
-  "AWS::AvailabilityZone",
-  "AWS::EC2::Subnet",
-  "AWS::Region",
-  "AWS::EKS::Cluster",
-);
+  | "AWS::EKS::Cluster"
+  | (string & {});
+export const MonitorLocalResourceType = S.String;
 export interface MonitorLocalResource {
   type: MonitorLocalResourceType;
   identifier: string;
@@ -217,14 +193,9 @@ export type MonitorRemoteResourceType =
   | "AWS::AvailabilityZone"
   | "AWS::EC2::Subnet"
   | "AWS::AWSService"
-  | "AWS::Region";
-export const MonitorRemoteResourceType = S.Literal(
-  "AWS::EC2::VPC",
-  "AWS::AvailabilityZone",
-  "AWS::EC2::Subnet",
-  "AWS::AWSService",
-  "AWS::Region",
-);
+  | "AWS::Region"
+  | (string & {});
+export const MonitorRemoteResourceType = S.String;
 export interface MonitorRemoteResource {
   type: MonitorRemoteResourceType;
   identifier: string;
@@ -442,8 +413,8 @@ export const GetScopeInput = S.suspend(() =>
 }) as any as S.Schema<GetScopeInput>;
 export type TargetId = { accountId: string };
 export const TargetId = S.Union(S.Struct({ accountId: S.String }));
-export type TargetType = "ACCOUNT";
-export const TargetType = S.Literal("ACCOUNT");
+export type TargetType = "ACCOUNT" | (string & {});
+export const TargetType = S.String;
 export interface TargetIdentifier {
   targetId: TargetId;
   targetType: TargetType;
@@ -792,62 +763,25 @@ export type MetricUnit =
   | "Gigabits/Second"
   | "Terabits/Second"
   | "Count/Second"
-  | "None";
-export const MetricUnit = S.Literal(
-  "Seconds",
-  "Microseconds",
-  "Milliseconds",
-  "Bytes",
-  "Kilobytes",
-  "Megabytes",
-  "Gigabytes",
-  "Terabytes",
-  "Bits",
-  "Kilobits",
-  "Megabits",
-  "Gigabits",
-  "Terabits",
-  "Percent",
-  "Count",
-  "Bytes/Second",
-  "Kilobytes/Second",
-  "Megabytes/Second",
-  "Gigabytes/Second",
-  "Terabytes/Second",
-  "Bits/Second",
-  "Kilobits/Second",
-  "Megabits/Second",
-  "Gigabits/Second",
-  "Terabits/Second",
-  "Count/Second",
-  "None",
-);
+  | "None"
+  | (string & {});
+export const MetricUnit = S.String;
 export type QueryStatus =
   | "QUEUED"
   | "RUNNING"
   | "SUCCEEDED"
   | "FAILED"
-  | "CANCELED";
-export const QueryStatus = S.Literal(
-  "QUEUED",
-  "RUNNING",
-  "SUCCEEDED",
-  "FAILED",
-  "CANCELED",
-);
+  | "CANCELED"
+  | (string & {});
+export const QueryStatus = S.String;
 export type ScopeStatus =
   | "SUCCEEDED"
   | "IN_PROGRESS"
   | "FAILED"
   | "DEACTIVATING"
-  | "DEACTIVATED";
-export const ScopeStatus = S.Literal(
-  "SUCCEEDED",
-  "IN_PROGRESS",
-  "FAILED",
-  "DEACTIVATING",
-  "DEACTIVATED",
-);
+  | "DEACTIVATED"
+  | (string & {});
+export const ScopeStatus = S.String;
 export interface ListTagsForResourceOutput {
   tags?: { [key: string]: string | undefined };
 }

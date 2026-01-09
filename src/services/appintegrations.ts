@@ -121,8 +121,12 @@ export type EventBridgeRuleName = string;
 //# Schemas
 export type PermissionList = string[];
 export const PermissionList = S.Array(S.String);
-export type ApplicationType = "STANDARD" | "SERVICE" | "MCP_SERVER";
-export const ApplicationType = S.Literal("STANDARD", "SERVICE", "MCP_SERVER");
+export type ApplicationType =
+  | "STANDARD"
+  | "SERVICE"
+  | "MCP_SERVER"
+  | (string & {});
+export const ApplicationType = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export interface DeleteApplicationRequest {
@@ -516,8 +520,11 @@ export const Publication = S.suspend(() =>
 ).annotations({ identifier: "Publication" }) as any as S.Schema<Publication>;
 export type PublicationList = Publication[];
 export const PublicationList = S.Array(Publication);
-export type ContactHandlingScope = "CROSS_CONTACTS" | "PER_CONTACT";
-export const ContactHandlingScope = S.Literal("CROSS_CONTACTS", "PER_CONTACT");
+export type ContactHandlingScope =
+  | "CROSS_CONTACTS"
+  | "PER_CONTACT"
+  | (string & {});
+export const ContactHandlingScope = S.String;
 export interface ContactHandling {
   Scope?: ContactHandlingScope;
 }
@@ -622,8 +629,8 @@ export const UpdateDataIntegrationResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateDataIntegrationResponse",
 }) as any as S.Schema<UpdateDataIntegrationResponse>;
-export type ExecutionMode = "ON_DEMAND" | "SCHEDULED";
-export const ExecutionMode = S.Literal("ON_DEMAND", "SCHEDULED");
+export type ExecutionMode = "ON_DEMAND" | "SCHEDULED" | (string & {});
+export const ExecutionMode = S.String;
 export interface OnDemandConfiguration {
   StartTime: string;
   EndTime?: string;
@@ -999,8 +1006,12 @@ export const EventIntegration = S.suspend(() =>
 }) as any as S.Schema<EventIntegration>;
 export type EventIntegrationsList = EventIntegration[];
 export const EventIntegrationsList = S.Array(EventIntegration);
-export type ExecutionStatus = "COMPLETED" | "IN_PROGRESS" | "FAILED";
-export const ExecutionStatus = S.Literal("COMPLETED", "IN_PROGRESS", "FAILED");
+export type ExecutionStatus =
+  | "COMPLETED"
+  | "IN_PROGRESS"
+  | "FAILED"
+  | (string & {});
+export const ExecutionStatus = S.String;
 export interface CreateApplicationRequest {
   Name: string;
   Namespace: string;

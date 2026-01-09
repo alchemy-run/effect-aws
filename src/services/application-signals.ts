@@ -158,19 +158,16 @@ export type ServiceLevelObjectiveIds = string[];
 export const ServiceLevelObjectiveIds = S.Array(S.String);
 export type Auditors = string[];
 export const Auditors = S.Array(S.String);
-export type DetailLevel = "BRIEF" | "DETAILED";
-export const DetailLevel = S.Literal("BRIEF", "DETAILED");
+export type DetailLevel = "BRIEF" | "DETAILED" | (string & {});
+export const DetailLevel = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export type MetricSourceType =
   | "ServiceOperation"
   | "CloudWatchMetric"
-  | "ServiceDependency";
-export const MetricSourceType = S.Literal(
-  "ServiceOperation",
-  "CloudWatchMetric",
-  "ServiceDependency",
-);
+  | "ServiceDependency"
+  | (string & {});
+export const MetricSourceType = S.String;
 export type MetricSourceTypes = MetricSourceType[];
 export const MetricSourceTypes = S.Array(MetricSourceType);
 export interface BatchGetServiceLevelObjectiveBudgetReportInput {
@@ -458,11 +455,11 @@ export const GetServiceLevelObjectiveInput = S.suspend(() =>
 ).annotations({
   identifier: "GetServiceLevelObjectiveInput",
 }) as any as S.Schema<GetServiceLevelObjectiveInput>;
-export type ServiceLevelIndicatorMetricType = "LATENCY" | "AVAILABILITY";
-export const ServiceLevelIndicatorMetricType = S.Literal(
-  "LATENCY",
-  "AVAILABILITY",
-);
+export type ServiceLevelIndicatorMetricType =
+  | "LATENCY"
+  | "AVAILABILITY"
+  | (string & {});
+export const ServiceLevelIndicatorMetricType = S.String;
 export interface Dimension {
   Name: string;
   Value: string;
@@ -511,36 +508,9 @@ export type StandardUnit =
   | "Gigabits/Second"
   | "Terabits/Second"
   | "Count/Second"
-  | "None";
-export const StandardUnit = S.Literal(
-  "Microseconds",
-  "Milliseconds",
-  "Seconds",
-  "Bytes",
-  "Kilobytes",
-  "Megabytes",
-  "Gigabytes",
-  "Terabytes",
-  "Bits",
-  "Kilobits",
-  "Megabits",
-  "Gigabits",
-  "Terabits",
-  "Percent",
-  "Count",
-  "Bytes/Second",
-  "Kilobytes/Second",
-  "Megabytes/Second",
-  "Gigabytes/Second",
-  "Terabytes/Second",
-  "Bits/Second",
-  "Kilobits/Second",
-  "Megabits/Second",
-  "Gigabits/Second",
-  "Terabits/Second",
-  "Count/Second",
-  "None",
-);
+  | "None"
+  | (string & {});
+export const StandardUnit = S.String;
 export interface MetricStat {
   Metric: Metric;
   Period: number;
@@ -619,13 +589,9 @@ export type ServiceLevelIndicatorComparisonOperator =
   | "GreaterThanOrEqualTo"
   | "GreaterThan"
   | "LessThan"
-  | "LessThanOrEqualTo";
-export const ServiceLevelIndicatorComparisonOperator = S.Literal(
-  "GreaterThanOrEqualTo",
-  "GreaterThan",
-  "LessThan",
-  "LessThanOrEqualTo",
-);
+  | "LessThanOrEqualTo"
+  | (string & {});
+export const ServiceLevelIndicatorComparisonOperator = S.String;
 export interface ServiceLevelIndicatorConfig {
   SliMetricConfig: ServiceLevelIndicatorMetricConfig;
   MetricThreshold: number;
@@ -683,8 +649,8 @@ export const RequestBasedServiceLevelIndicatorConfig = S.suspend(() =>
 ).annotations({
   identifier: "RequestBasedServiceLevelIndicatorConfig",
 }) as any as S.Schema<RequestBasedServiceLevelIndicatorConfig>;
-export type DurationUnit = "MINUTE" | "HOUR" | "DAY" | "MONTH";
-export const DurationUnit = S.Literal("MINUTE", "HOUR", "DAY", "MONTH");
+export type DurationUnit = "MINUTE" | "HOUR" | "DAY" | "MONTH" | (string & {});
+export const DurationUnit = S.String;
 export interface RollingInterval {
   DurationUnit: DurationUnit;
   Duration: number;
@@ -1064,8 +1030,8 @@ export const RequestBasedServiceLevelIndicator = S.suspend(() =>
 ).annotations({
   identifier: "RequestBasedServiceLevelIndicator",
 }) as any as S.Schema<RequestBasedServiceLevelIndicator>;
-export type EvaluationType = "PeriodBased" | "RequestBased";
-export const EvaluationType = S.Literal("PeriodBased", "RequestBased");
+export type EvaluationType = "PeriodBased" | "RequestBased" | (string & {});
+export const EvaluationType = S.String;
 export interface ServiceLevelObjective {
   Arn: string;
   Name: string;
@@ -1145,15 +1111,11 @@ export type ServiceLevelObjectiveBudgetStatus =
   | "OK"
   | "WARNING"
   | "BREACHED"
-  | "INSUFFICIENT_DATA";
-export const ServiceLevelObjectiveBudgetStatus = S.Literal(
-  "OK",
-  "WARNING",
-  "BREACHED",
-  "INSUFFICIENT_DATA",
-);
-export type ChangeEventType = "DEPLOYMENT" | "CONFIGURATION";
-export const ChangeEventType = S.Literal("DEPLOYMENT", "CONFIGURATION");
+  | "INSUFFICIENT_DATA"
+  | (string & {});
+export const ServiceLevelObjectiveBudgetStatus = S.String;
+export type ChangeEventType = "DEPLOYMENT" | "CONFIGURATION" | (string & {});
+export const ChangeEventType = S.String;
 export interface ServiceLevelObjectiveBudgetReportError {
   Name: string;
   Arn: string;
@@ -1742,8 +1704,14 @@ export const ListServiceDependenciesOutput = S.suspend(() =>
 ).annotations({
   identifier: "ListServiceDependenciesOutput",
 }) as any as S.Schema<ListServiceDependenciesOutput>;
-export type Severity = "CRITICAL" | "HIGH" | "MEDIUM" | "LOW" | "NONE";
-export const Severity = S.Literal("CRITICAL", "HIGH", "MEDIUM", "LOW", "NONE");
+export type Severity =
+  | "CRITICAL"
+  | "HIGH"
+  | "MEDIUM"
+  | "LOW"
+  | "NONE"
+  | (string & {});
+export const Severity = S.String;
 export interface CreateServiceLevelObjectiveInput {
   Name: string;
   Description?: string;
@@ -1787,8 +1755,8 @@ export const MetricGraph = S.suspend(() =>
     EndTime: S.optional(S.Date.pipe(T.TimestampFormat("epoch-seconds"))),
   }),
 ).annotations({ identifier: "MetricGraph" }) as any as S.Schema<MetricGraph>;
-export type ConnectionType = "INDIRECT" | "DIRECT";
-export const ConnectionType = S.Literal("INDIRECT", "DIRECT");
+export type ConnectionType = "INDIRECT" | "DIRECT" | (string & {});
+export const ConnectionType = S.String;
 export type DataMap = { [key: string]: string | undefined };
 export const DataMap = S.Record({
   key: S.String,

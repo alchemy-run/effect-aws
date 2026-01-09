@@ -143,36 +143,37 @@ export type LanguageCode =
   | "ja"
   | "ko"
   | "zh"
-  | "zh-TW";
-export const LanguageCode = S.Literal(
-  "en",
-  "es",
-  "fr",
-  "de",
-  "it",
-  "pt",
-  "ar",
-  "hi",
-  "ja",
-  "ko",
-  "zh",
-  "zh-TW",
-);
-export type SyntaxLanguageCode = "en" | "es" | "fr" | "de" | "it" | "pt";
-export const SyntaxLanguageCode = S.Literal("en", "es", "fr", "de", "it", "pt");
-export type DatasetType = "TRAIN" | "TEST";
-export const DatasetType = S.Literal("TRAIN", "TEST");
-export type DocumentClassifierMode = "MULTI_CLASS" | "MULTI_LABEL";
-export const DocumentClassifierMode = S.Literal("MULTI_CLASS", "MULTI_LABEL");
-export type ModelType = "DOCUMENT_CLASSIFIER" | "ENTITY_RECOGNIZER";
-export const ModelType = S.Literal("DOCUMENT_CLASSIFIER", "ENTITY_RECOGNIZER");
+  | "zh-TW"
+  | (string & {});
+export const LanguageCode = S.String;
+export type SyntaxLanguageCode =
+  | "en"
+  | "es"
+  | "fr"
+  | "de"
+  | "it"
+  | "pt"
+  | (string & {});
+export const SyntaxLanguageCode = S.String;
+export type DatasetType = "TRAIN" | "TEST" | (string & {});
+export const DatasetType = S.String;
+export type DocumentClassifierMode =
+  | "MULTI_CLASS"
+  | "MULTI_LABEL"
+  | (string & {});
+export const DocumentClassifierMode = S.String;
+export type ModelType =
+  | "DOCUMENT_CLASSIFIER"
+  | "ENTITY_RECOGNIZER"
+  | (string & {});
+export const ModelType = S.String;
 export type TargetEventTypes = string[];
 export const TargetEventTypes = S.Array(S.String);
-export type PiiEntitiesDetectionMode = "ONLY_REDACTION" | "ONLY_OFFSETS";
-export const PiiEntitiesDetectionMode = S.Literal(
-  "ONLY_REDACTION",
-  "ONLY_OFFSETS",
-);
+export type PiiEntitiesDetectionMode =
+  | "ONLY_REDACTION"
+  | "ONLY_OFFSETS"
+  | (string & {});
+export const PiiEntitiesDetectionMode = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export interface BatchDetectDominantLanguageRequest {
@@ -552,18 +553,16 @@ export const DetectDominantLanguageRequest = S.suspend(() =>
 }) as any as S.Schema<DetectDominantLanguageRequest>;
 export type DocumentReadAction =
   | "TEXTRACT_DETECT_DOCUMENT_TEXT"
-  | "TEXTRACT_ANALYZE_DOCUMENT";
-export const DocumentReadAction = S.Literal(
-  "TEXTRACT_DETECT_DOCUMENT_TEXT",
-  "TEXTRACT_ANALYZE_DOCUMENT",
-);
-export type DocumentReadMode = "SERVICE_DEFAULT" | "FORCE_DOCUMENT_READ_ACTION";
-export const DocumentReadMode = S.Literal(
-  "SERVICE_DEFAULT",
-  "FORCE_DOCUMENT_READ_ACTION",
-);
-export type DocumentReadFeatureTypes = "TABLES" | "FORMS";
-export const DocumentReadFeatureTypes = S.Literal("TABLES", "FORMS");
+  | "TEXTRACT_ANALYZE_DOCUMENT"
+  | (string & {});
+export const DocumentReadAction = S.String;
+export type DocumentReadMode =
+  | "SERVICE_DEFAULT"
+  | "FORCE_DOCUMENT_READ_ACTION"
+  | (string & {});
+export const DocumentReadMode = S.String;
+export type DocumentReadFeatureTypes = "TABLES" | "FORMS" | (string & {});
+export const DocumentReadFeatureTypes = S.String;
 export type ListOfDocumentReadFeatureTypes = DocumentReadFeatureTypes[];
 export const ListOfDocumentReadFeatureTypes = S.Array(DocumentReadFeatureTypes);
 export interface DocumentReaderConfig {
@@ -731,8 +730,11 @@ export const PutResourcePolicyRequest = S.suspend(() =>
 ).annotations({
   identifier: "PutResourcePolicyRequest",
 }) as any as S.Schema<PutResourcePolicyRequest>;
-export type InputFormat = "ONE_DOC_PER_FILE" | "ONE_DOC_PER_LINE";
-export const InputFormat = S.Literal("ONE_DOC_PER_FILE", "ONE_DOC_PER_LINE");
+export type InputFormat =
+  | "ONE_DOC_PER_FILE"
+  | "ONE_DOC_PER_LINE"
+  | (string & {});
+export const InputFormat = S.String;
 export interface InputDataConfig {
   S3Uri: string;
   InputFormat?: InputFormat;
@@ -1129,43 +1131,35 @@ export const UpdateEndpointRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateEndpointRequest",
 }) as any as S.Schema<UpdateEndpointRequest>;
-export type DatasetDataFormat = "COMPREHEND_CSV" | "AUGMENTED_MANIFEST";
-export const DatasetDataFormat = S.Literal(
-  "COMPREHEND_CSV",
-  "AUGMENTED_MANIFEST",
-);
+export type DatasetDataFormat =
+  | "COMPREHEND_CSV"
+  | "AUGMENTED_MANIFEST"
+  | (string & {});
+export const DatasetDataFormat = S.String;
 export type DocumentClassifierDataFormat =
   | "COMPREHEND_CSV"
-  | "AUGMENTED_MANIFEST";
-export const DocumentClassifierDataFormat = S.Literal(
-  "COMPREHEND_CSV",
-  "AUGMENTED_MANIFEST",
-);
+  | "AUGMENTED_MANIFEST"
+  | (string & {});
+export const DocumentClassifierDataFormat = S.String;
 export type DocumentClassifierDocumentTypeFormat =
   | "PLAIN_TEXT_DOCUMENT"
-  | "SEMI_STRUCTURED_DOCUMENT";
-export const DocumentClassifierDocumentTypeFormat = S.Literal(
-  "PLAIN_TEXT_DOCUMENT",
-  "SEMI_STRUCTURED_DOCUMENT",
-);
+  | "SEMI_STRUCTURED_DOCUMENT"
+  | (string & {});
+export const DocumentClassifierDocumentTypeFormat = S.String;
 export type EntityRecognizerDataFormat =
   | "COMPREHEND_CSV"
-  | "AUGMENTED_MANIFEST";
-export const EntityRecognizerDataFormat = S.Literal(
-  "COMPREHEND_CSV",
-  "AUGMENTED_MANIFEST",
-);
-export type Split = "TRAIN" | "TEST";
-export const Split = S.Literal("TRAIN", "TEST");
+  | "AUGMENTED_MANIFEST"
+  | (string & {});
+export const EntityRecognizerDataFormat = S.String;
+export type Split = "TRAIN" | "TEST" | (string & {});
+export const Split = S.String;
 export type AttributeNamesList = string[];
 export const AttributeNamesList = S.Array(S.String);
 export type AugmentedManifestsDocumentTypeFormat =
   | "PLAIN_TEXT_DOCUMENT"
-  | "SEMI_STRUCTURED_DOCUMENT";
-export const AugmentedManifestsDocumentTypeFormat = S.Literal(
-  "PLAIN_TEXT_DOCUMENT",
-  "SEMI_STRUCTURED_DOCUMENT",
-);
+  | "SEMI_STRUCTURED_DOCUMENT"
+  | (string & {});
+export const AugmentedManifestsDocumentTypeFormat = S.String;
 export interface AugmentedManifestsListItem {
   S3Uri: string;
   Split?: Split;
@@ -1191,23 +1185,17 @@ export type EntityRecognizerAugmentedManifestsList =
 export const EntityRecognizerAugmentedManifestsList = S.Array(
   AugmentedManifestsListItem,
 );
-export type DatasetStatus = "CREATING" | "COMPLETED" | "FAILED";
-export const DatasetStatus = S.Literal("CREATING", "COMPLETED", "FAILED");
+export type DatasetStatus = "CREATING" | "COMPLETED" | "FAILED" | (string & {});
+export const DatasetStatus = S.String;
 export type JobStatus =
   | "SUBMITTED"
   | "IN_PROGRESS"
   | "COMPLETED"
   | "FAILED"
   | "STOP_REQUESTED"
-  | "STOPPED";
-export const JobStatus = S.Literal(
-  "SUBMITTED",
-  "IN_PROGRESS",
-  "COMPLETED",
-  "FAILED",
-  "STOP_REQUESTED",
-  "STOPPED",
-);
+  | "STOPPED"
+  | (string & {});
+export const JobStatus = S.String;
 export type ModelStatus =
   | "SUBMITTED"
   | "TRAINING"
@@ -1216,43 +1204,25 @@ export type ModelStatus =
   | "STOPPED"
   | "IN_ERROR"
   | "TRAINED"
-  | "TRAINED_WITH_WARNING";
-export const ModelStatus = S.Literal(
-  "SUBMITTED",
-  "TRAINING",
-  "DELETING",
-  "STOP_REQUESTED",
-  "STOPPED",
-  "IN_ERROR",
-  "TRAINED",
-  "TRAINED_WITH_WARNING",
-);
+  | "TRAINED_WITH_WARNING"
+  | (string & {});
+export const ModelStatus = S.String;
 export type EndpointStatus =
   | "CREATING"
   | "DELETING"
   | "FAILED"
   | "IN_SERVICE"
-  | "UPDATING";
-export const EndpointStatus = S.Literal(
-  "CREATING",
-  "DELETING",
-  "FAILED",
-  "IN_SERVICE",
-  "UPDATING",
-);
+  | "UPDATING"
+  | (string & {});
+export const EndpointStatus = S.String;
 export type FlywheelStatus =
   | "CREATING"
   | "ACTIVE"
   | "UPDATING"
   | "DELETING"
-  | "FAILED";
-export const FlywheelStatus = S.Literal(
-  "CREATING",
-  "ACTIVE",
-  "UPDATING",
-  "DELETING",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const FlywheelStatus = S.String;
 export type PiiEntityType =
   | "BANK_ACCOUNT_NUMBER"
   | "BANK_ROUTING"
@@ -1290,55 +1260,16 @@ export type PiiEntityType =
   | "UK_NATIONAL_HEALTH_SERVICE_NUMBER"
   | "CA_HEALTH_NUMBER"
   | "IN_AADHAAR"
-  | "IN_VOTER_NUMBER";
-export const PiiEntityType = S.Literal(
-  "BANK_ACCOUNT_NUMBER",
-  "BANK_ROUTING",
-  "CREDIT_DEBIT_NUMBER",
-  "CREDIT_DEBIT_CVV",
-  "CREDIT_DEBIT_EXPIRY",
-  "PIN",
-  "EMAIL",
-  "ADDRESS",
-  "NAME",
-  "PHONE",
-  "SSN",
-  "DATE_TIME",
-  "PASSPORT_NUMBER",
-  "DRIVER_ID",
-  "URL",
-  "AGE",
-  "USERNAME",
-  "PASSWORD",
-  "AWS_ACCESS_KEY",
-  "AWS_SECRET_KEY",
-  "IP_ADDRESS",
-  "MAC_ADDRESS",
-  "ALL",
-  "LICENSE_PLATE",
-  "VEHICLE_IDENTIFICATION_NUMBER",
-  "UK_NATIONAL_INSURANCE_NUMBER",
-  "CA_SOCIAL_INSURANCE_NUMBER",
-  "US_INDIVIDUAL_TAX_IDENTIFICATION_NUMBER",
-  "UK_UNIQUE_TAXPAYER_REFERENCE_NUMBER",
-  "IN_PERMANENT_ACCOUNT_NUMBER",
-  "IN_NREGA",
-  "INTERNATIONAL_BANK_ACCOUNT_NUMBER",
-  "SWIFT_CODE",
-  "UK_NATIONAL_HEALTH_SERVICE_NUMBER",
-  "CA_HEALTH_NUMBER",
-  "IN_AADHAAR",
-  "IN_VOTER_NUMBER",
-);
+  | "IN_VOTER_NUMBER"
+  | (string & {});
+export const PiiEntityType = S.String;
 export type ListOfPiiEntityTypes = PiiEntityType[];
 export const ListOfPiiEntityTypes = S.Array(PiiEntityType);
 export type PiiEntitiesDetectionMaskMode =
   | "MASK"
-  | "REPLACE_WITH_PII_ENTITY_TYPE";
-export const PiiEntitiesDetectionMaskMode = S.Literal(
-  "MASK",
-  "REPLACE_WITH_PII_ENTITY_TYPE",
-);
+  | "REPLACE_WITH_PII_ENTITY_TYPE"
+  | (string & {});
+export const PiiEntitiesDetectionMaskMode = S.String;
 export interface DocumentClassifierOutputDataConfig {
   S3Uri?: string;
   KmsKeyId?: string;
@@ -1369,13 +1300,13 @@ export const DataSecurityConfig = S.suspend(() =>
 ).annotations({
   identifier: "DataSecurityConfig",
 }) as any as S.Schema<DataSecurityConfig>;
-export type SentimentType = "POSITIVE" | "NEGATIVE" | "NEUTRAL" | "MIXED";
-export const SentimentType = S.Literal(
-  "POSITIVE",
-  "NEGATIVE",
-  "NEUTRAL",
-  "MIXED",
-);
+export type SentimentType =
+  | "POSITIVE"
+  | "NEGATIVE"
+  | "NEUTRAL"
+  | "MIXED"
+  | (string & {});
+export const SentimentType = S.String;
 export interface TextSegment {
   Text: string | redacted.Redacted<string>;
 }
@@ -2407,15 +2338,9 @@ export type FlywheelIterationStatus =
   | "COMPLETED"
   | "FAILED"
   | "STOP_REQUESTED"
-  | "STOPPED";
-export const FlywheelIterationStatus = S.Literal(
-  "TRAINING",
-  "EVALUATING",
-  "COMPLETED",
-  "FAILED",
-  "STOP_REQUESTED",
-  "STOPPED",
-);
+  | "STOPPED"
+  | (string & {});
+export const FlywheelIterationStatus = S.String;
 export type EntityType =
   | "PERSON"
   | "LOCATION"
@@ -2425,18 +2350,9 @@ export type EntityType =
   | "DATE"
   | "QUANTITY"
   | "TITLE"
-  | "OTHER";
-export const EntityType = S.Literal(
-  "PERSON",
-  "LOCATION",
-  "ORGANIZATION",
-  "COMMERCIAL_ITEM",
-  "EVENT",
-  "DATE",
-  "QUANTITY",
-  "TITLE",
-  "OTHER",
-);
+  | "OTHER"
+  | (string & {});
+export const EntityType = S.String;
 export type DocumentType =
   | "NATIVE_PDF"
   | "SCANNED_PDF"
@@ -2444,31 +2360,19 @@ export type DocumentType =
   | "IMAGE"
   | "PLAIN_TEXT"
   | "TEXTRACT_DETECT_DOCUMENT_TEXT_JSON"
-  | "TEXTRACT_ANALYZE_DOCUMENT_JSON";
-export const DocumentType = S.Literal(
-  "NATIVE_PDF",
-  "SCANNED_PDF",
-  "MS_WORD",
-  "IMAGE",
-  "PLAIN_TEXT",
-  "TEXTRACT_DETECT_DOCUMENT_TEXT_JSON",
-  "TEXTRACT_ANALYZE_DOCUMENT_JSON",
-);
-export type BlockType = "LINE" | "WORD";
-export const BlockType = S.Literal("LINE", "WORD");
+  | "TEXTRACT_ANALYZE_DOCUMENT_JSON"
+  | (string & {});
+export const DocumentType = S.String;
+export type BlockType = "LINE" | "WORD" | (string & {});
+export const BlockType = S.String;
 export type PageBasedErrorCode =
   | "TEXTRACT_BAD_PAGE"
   | "TEXTRACT_PROVISIONED_THROUGHPUT_EXCEEDED"
   | "PAGE_CHARACTERS_EXCEEDED"
   | "PAGE_SIZE_EXCEEDED"
-  | "INTERNAL_SERVER_ERROR";
-export const PageBasedErrorCode = S.Literal(
-  "TEXTRACT_BAD_PAGE",
-  "TEXTRACT_PROVISIONED_THROUGHPUT_EXCEEDED",
-  "PAGE_CHARACTERS_EXCEEDED",
-  "PAGE_SIZE_EXCEEDED",
-  "INTERNAL_SERVER_ERROR",
-);
+  | "INTERNAL_SERVER_ERROR"
+  | (string & {});
+export const PageBasedErrorCode = S.String;
 export type ListOfDescriptiveMentionIndices = number[];
 export const ListOfDescriptiveMentionIndices = S.Array(S.Number);
 export interface DominantLanguage {
@@ -2667,27 +2571,9 @@ export type PartOfSpeechTagType =
   | "PUNCT"
   | "SCONJ"
   | "SYM"
-  | "VERB";
-export const PartOfSpeechTagType = S.Literal(
-  "ADJ",
-  "ADP",
-  "ADV",
-  "AUX",
-  "CONJ",
-  "CCONJ",
-  "DET",
-  "INTJ",
-  "NOUN",
-  "NUM",
-  "O",
-  "PART",
-  "PRON",
-  "PROPN",
-  "PUNCT",
-  "SCONJ",
-  "SYM",
-  "VERB",
-);
+  | "VERB"
+  | (string & {});
+export const PartOfSpeechTagType = S.String;
 export interface PartOfSpeechTag {
   Tag?: PartOfSpeechTagType;
   Score?: number;
@@ -2749,26 +2635,9 @@ export type TargetedSentimentEntityType =
   | "DATE"
   | "QUANTITY"
   | "ATTRIBUTE"
-  | "OTHER";
-export const TargetedSentimentEntityType = S.Literal(
-  "PERSON",
-  "LOCATION",
-  "ORGANIZATION",
-  "FACILITY",
-  "BRAND",
-  "COMMERCIAL_ITEM",
-  "MOVIE",
-  "MUSIC",
-  "BOOK",
-  "SOFTWARE",
-  "GAME",
-  "PERSONAL_TITLE",
-  "EVENT",
-  "DATE",
-  "QUANTITY",
-  "ATTRIBUTE",
-  "OTHER",
-);
+  | "OTHER"
+  | (string & {});
+export const TargetedSentimentEntityType = S.String;
 export interface MentionSentiment {
   Sentiment?: SentimentType;
   SentimentScore?: SentimentScore;
@@ -2901,8 +2770,8 @@ export const TaskConfig = S.suspend(() =>
     EntityRecognitionConfig: S.optional(EntityRecognitionConfig),
   }),
 ).annotations({ identifier: "TaskConfig" }) as any as S.Schema<TaskConfig>;
-export type InvalidRequestReason = "INVALID_DOCUMENT";
-export const InvalidRequestReason = S.Literal("INVALID_DOCUMENT");
+export type InvalidRequestReason = "INVALID_DOCUMENT" | (string & {});
+export const InvalidRequestReason = S.String;
 export interface DatasetProperties {
   DatasetArn?: string;
   DatasetName?: string;
@@ -3746,8 +3615,8 @@ export const DatasetEntityRecognizerEntityList = S.suspend(() =>
 }) as any as S.Schema<DatasetEntityRecognizerEntityList>;
 export type StringList = string[];
 export const StringList = S.Array(S.String);
-export type RelationshipType = "CHILD";
-export const RelationshipType = S.Literal("CHILD");
+export type RelationshipType = "CHILD" | (string & {});
+export const RelationshipType = S.String;
 export interface BatchDetectDominantLanguageResponse {
   ResultList: BatchDetectDominantLanguageItemResult[];
   ErrorList: BatchItemError[];
@@ -4330,11 +4199,9 @@ export const UpdateFlywheelResponse = S.suspend(() =>
 }) as any as S.Schema<UpdateFlywheelResponse>;
 export type PageBasedWarningCode =
   | "INFERENCING_PLAINTEXT_WITH_NATIVE_TRAINED_MODEL"
-  | "INFERENCING_NATIVE_DOCUMENT_WITH_PLAINTEXT_TRAINED_MODEL";
-export const PageBasedWarningCode = S.Literal(
-  "INFERENCING_PLAINTEXT_WITH_NATIVE_TRAINED_MODEL",
-  "INFERENCING_NATIVE_DOCUMENT_WITH_PLAINTEXT_TRAINED_MODEL",
-);
+  | "INFERENCING_NATIVE_DOCUMENT_WITH_PLAINTEXT_TRAINED_MODEL"
+  | (string & {});
+export const PageBasedWarningCode = S.String;
 export interface DatasetEntityRecognizerInputDataConfig {
   Annotations?: DatasetEntityRecognizerAnnotations;
   Documents: DatasetEntityRecognizerDocuments;
@@ -4353,13 +4220,9 @@ export type InvalidRequestDetailReason =
   | "DOCUMENT_SIZE_EXCEEDED"
   | "UNSUPPORTED_DOC_TYPE"
   | "PAGE_LIMIT_EXCEEDED"
-  | "TEXTRACT_ACCESS_DENIED";
-export const InvalidRequestDetailReason = S.Literal(
-  "DOCUMENT_SIZE_EXCEEDED",
-  "UNSUPPORTED_DOC_TYPE",
-  "PAGE_LIMIT_EXCEEDED",
-  "TEXTRACT_ACCESS_DENIED",
-);
+  | "TEXTRACT_ACCESS_DENIED"
+  | (string & {});
+export const InvalidRequestDetailReason = S.String;
 export interface ExtractedCharactersListItem {
   Page?: number;
   Count?: number;
@@ -4530,16 +4393,9 @@ export type ToxicContentType =
   | "INSULT"
   | "PROFANITY"
   | "SEXUAL"
-  | "VIOLENCE_OR_THREAT";
-export const ToxicContentType = S.Literal(
-  "GRAPHIC",
-  "HARASSMENT_OR_ABUSE",
-  "HATE_SPEECH",
-  "INSULT",
-  "PROFANITY",
-  "SEXUAL",
-  "VIOLENCE_OR_THREAT",
-);
+  | "VIOLENCE_OR_THREAT"
+  | (string & {});
+export const ToxicContentType = S.String;
 export interface ClassifyDocumentResponse {
   Classes?: DocumentClass[];
   Labels?: DocumentLabel[];

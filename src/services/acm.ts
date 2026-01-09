@@ -126,24 +126,17 @@ export type CertificateStatus =
   | "EXPIRED"
   | "VALIDATION_TIMED_OUT"
   | "REVOKED"
-  | "FAILED";
-export const CertificateStatus = S.Literal(
-  "PENDING_VALIDATION",
-  "ISSUED",
-  "INACTIVE",
-  "EXPIRED",
-  "VALIDATION_TIMED_OUT",
-  "REVOKED",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const CertificateStatus = S.String;
 export type CertificateStatuses = CertificateStatus[];
 export const CertificateStatuses = S.Array(CertificateStatus);
-export type SortBy = "CREATED_AT";
-export const SortBy = S.Literal("CREATED_AT");
-export type SortOrder = "ASCENDING" | "DESCENDING";
-export const SortOrder = S.Literal("ASCENDING", "DESCENDING");
-export type ValidationMethod = "EMAIL" | "DNS" | "HTTP";
-export const ValidationMethod = S.Literal("EMAIL", "DNS", "HTTP");
+export type SortBy = "CREATED_AT" | (string & {});
+export const SortBy = S.String;
+export type SortOrder = "ASCENDING" | "DESCENDING" | (string & {});
+export const SortOrder = S.String;
+export type ValidationMethod = "EMAIL" | "DNS" | "HTTP" | (string & {});
+export const ValidationMethod = S.String;
 export type DomainList = string[];
 export const DomainList = S.Array(S.String);
 export type KeyAlgorithm =
@@ -153,18 +146,11 @@ export type KeyAlgorithm =
   | "RSA_4096"
   | "EC_prime256v1"
   | "EC_secp384r1"
-  | "EC_secp521r1";
-export const KeyAlgorithm = S.Literal(
-  "RSA_1024",
-  "RSA_2048",
-  "RSA_3072",
-  "RSA_4096",
-  "EC_prime256v1",
-  "EC_secp384r1",
-  "EC_secp521r1",
-);
-export type CertificateManagedBy = "CLOUDFRONT";
-export const CertificateManagedBy = S.Literal("CLOUDFRONT");
+  | "EC_secp521r1"
+  | (string & {});
+export const KeyAlgorithm = S.String;
+export type CertificateManagedBy = "CLOUDFRONT" | (string & {});
+export const CertificateManagedBy = S.String;
 export type RevocationReason =
   | "UNSPECIFIED"
   | "KEY_COMPROMISE"
@@ -176,20 +162,9 @@ export type RevocationReason =
   | "CERTIFICATE_HOLD"
   | "REMOVE_FROM_CRL"
   | "PRIVILEGE_WITHDRAWN"
-  | "A_A_COMPROMISE";
-export const RevocationReason = S.Literal(
-  "UNSPECIFIED",
-  "KEY_COMPROMISE",
-  "CA_COMPROMISE",
-  "AFFILIATION_CHANGED",
-  "SUPERCEDED",
-  "SUPERSEDED",
-  "CESSATION_OF_OPERATION",
-  "CERTIFICATE_HOLD",
-  "REMOVE_FROM_CRL",
-  "PRIVILEGE_WITHDRAWN",
-  "A_A_COMPROMISE",
-);
+  | "A_A_COMPROMISE"
+  | (string & {});
+export const RevocationReason = S.String;
 export interface DeleteCertificateRequest {
   CertificateArn: string;
 }
@@ -373,13 +348,13 @@ export const RevokeCertificateRequest = S.suspend(() =>
 ).annotations({
   identifier: "RevokeCertificateRequest",
 }) as any as S.Schema<RevokeCertificateRequest>;
-export type CertificateTransparencyLoggingPreference = "ENABLED" | "DISABLED";
-export const CertificateTransparencyLoggingPreference = S.Literal(
-  "ENABLED",
-  "DISABLED",
-);
-export type CertificateExport = "ENABLED" | "DISABLED";
-export const CertificateExport = S.Literal("ENABLED", "DISABLED");
+export type CertificateTransparencyLoggingPreference =
+  | "ENABLED"
+  | "DISABLED"
+  | (string & {});
+export const CertificateTransparencyLoggingPreference = S.String;
+export type CertificateExport = "ENABLED" | "DISABLED" | (string & {});
+export const CertificateExport = S.String;
 export interface CertificateOptions {
   CertificateTransparencyLoggingPreference?: CertificateTransparencyLoggingPreference;
   Export?: CertificateExport;
@@ -423,21 +398,9 @@ export type ExtendedKeyUsageName =
   | "IPSEC_USER"
   | "ANY"
   | "NONE"
-  | "CUSTOM";
-export const ExtendedKeyUsageName = S.Literal(
-  "TLS_WEB_SERVER_AUTHENTICATION",
-  "TLS_WEB_CLIENT_AUTHENTICATION",
-  "CODE_SIGNING",
-  "EMAIL_PROTECTION",
-  "TIME_STAMPING",
-  "OCSP_SIGNING",
-  "IPSEC_END_SYSTEM",
-  "IPSEC_TUNNEL",
-  "IPSEC_USER",
-  "ANY",
-  "NONE",
-  "CUSTOM",
-);
+  | "CUSTOM"
+  | (string & {});
+export const ExtendedKeyUsageName = S.String;
 export type ExtendedKeyUsageFilterList = ExtendedKeyUsageName[];
 export const ExtendedKeyUsageFilterList = S.Array(ExtendedKeyUsageName);
 export type KeyUsageName =
@@ -451,20 +414,9 @@ export type KeyUsageName =
   | "ENCIPHER_ONLY"
   | "DECIPHER_ONLY"
   | "ANY"
-  | "CUSTOM";
-export const KeyUsageName = S.Literal(
-  "DIGITAL_SIGNATURE",
-  "NON_REPUDIATION",
-  "KEY_ENCIPHERMENT",
-  "DATA_ENCIPHERMENT",
-  "KEY_AGREEMENT",
-  "CERTIFICATE_SIGNING",
-  "CRL_SIGNING",
-  "ENCIPHER_ONLY",
-  "DECIPHER_ONLY",
-  "ANY",
-  "CUSTOM",
-);
+  | "CUSTOM"
+  | (string & {});
+export const KeyUsageName = S.String;
 export type KeyUsageFilterList = KeyUsageName[];
 export const KeyUsageFilterList = S.Array(KeyUsageName);
 export type KeyAlgorithmList = KeyAlgorithm[];
@@ -642,53 +594,32 @@ export type FailureReason =
   | "PCA_INVALID_DURATION"
   | "PCA_ACCESS_DENIED"
   | "SLR_NOT_FOUND"
-  | "OTHER";
-export const FailureReason = S.Literal(
-  "NO_AVAILABLE_CONTACTS",
-  "ADDITIONAL_VERIFICATION_REQUIRED",
-  "DOMAIN_NOT_ALLOWED",
-  "INVALID_PUBLIC_DOMAIN",
-  "DOMAIN_VALIDATION_DENIED",
-  "CAA_ERROR",
-  "PCA_LIMIT_EXCEEDED",
-  "PCA_INVALID_ARN",
-  "PCA_INVALID_STATE",
-  "PCA_REQUEST_FAILED",
-  "PCA_NAME_CONSTRAINTS_VALIDATION",
-  "PCA_RESOURCE_NOT_FOUND",
-  "PCA_INVALID_ARGS",
-  "PCA_INVALID_DURATION",
-  "PCA_ACCESS_DENIED",
-  "SLR_NOT_FOUND",
-  "OTHER",
-);
-export type CertificateType = "IMPORTED" | "AMAZON_ISSUED" | "PRIVATE";
-export const CertificateType = S.Literal(
-  "IMPORTED",
-  "AMAZON_ISSUED",
-  "PRIVATE",
-);
-export type RenewalEligibility = "ELIGIBLE" | "INELIGIBLE";
-export const RenewalEligibility = S.Literal("ELIGIBLE", "INELIGIBLE");
+  | "OTHER"
+  | (string & {});
+export const FailureReason = S.String;
+export type CertificateType =
+  | "IMPORTED"
+  | "AMAZON_ISSUED"
+  | "PRIVATE"
+  | (string & {});
+export const CertificateType = S.String;
+export type RenewalEligibility = "ELIGIBLE" | "INELIGIBLE" | (string & {});
+export const RenewalEligibility = S.String;
 export type ValidationEmailList = string[];
 export const ValidationEmailList = S.Array(S.String);
-export type DomainStatus = "PENDING_VALIDATION" | "SUCCESS" | "FAILED";
-export const DomainStatus = S.Literal(
-  "PENDING_VALIDATION",
-  "SUCCESS",
-  "FAILED",
-);
+export type DomainStatus =
+  | "PENDING_VALIDATION"
+  | "SUCCESS"
+  | "FAILED"
+  | (string & {});
+export const DomainStatus = S.String;
 export type RenewalStatus =
   | "PENDING_AUTO_RENEWAL"
   | "PENDING_VALIDATION"
   | "SUCCESS"
-  | "FAILED";
-export const RenewalStatus = S.Literal(
-  "PENDING_AUTO_RENEWAL",
-  "PENDING_VALIDATION",
-  "SUCCESS",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const RenewalStatus = S.String;
 export interface RequestCertificateResponse {
   CertificateArn?: string;
 }
@@ -697,8 +628,8 @@ export const RequestCertificateResponse = S.suspend(() =>
 ).annotations({
   identifier: "RequestCertificateResponse",
 }) as any as S.Schema<RequestCertificateResponse>;
-export type RecordType = "CNAME";
-export const RecordType = S.Literal("CNAME");
+export type RecordType = "CNAME" | (string & {});
+export const RecordType = S.String;
 export interface ResourceRecord {
   Name: string;
   Type: RecordType;

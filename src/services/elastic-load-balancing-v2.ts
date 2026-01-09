@@ -225,47 +225,43 @@ export type ProtocolEnum =
   | "TCP_UDP"
   | "GENEVE"
   | "QUIC"
-  | "TCP_QUIC";
-export const ProtocolEnum = S.Literal(
-  "HTTP",
-  "HTTPS",
-  "TCP",
-  "TLS",
-  "UDP",
-  "TCP_UDP",
-  "GENEVE",
-  "QUIC",
-  "TCP_QUIC",
-);
+  | "TCP_QUIC"
+  | (string & {});
+export const ProtocolEnum = S.String;
 export type AlpnPolicyName = string[];
 export const AlpnPolicyName = S.Array(S.String);
 export type Subnets = string[];
 export const Subnets = S.Array(S.String);
 export type SecurityGroups = string[];
 export const SecurityGroups = S.Array(S.String);
-export type LoadBalancerSchemeEnum = "internet-facing" | "internal";
-export const LoadBalancerSchemeEnum = S.Literal("internet-facing", "internal");
-export type LoadBalancerTypeEnum = "application" | "network" | "gateway";
-export const LoadBalancerTypeEnum = S.Literal(
-  "application",
-  "network",
-  "gateway",
-);
+export type LoadBalancerSchemeEnum =
+  | "internet-facing"
+  | "internal"
+  | (string & {});
+export const LoadBalancerSchemeEnum = S.String;
+export type LoadBalancerTypeEnum =
+  | "application"
+  | "network"
+  | "gateway"
+  | (string & {});
+export const LoadBalancerTypeEnum = S.String;
 export type IpAddressType =
   | "ipv4"
   | "dualstack"
-  | "dualstack-without-public-ipv4";
-export const IpAddressType = S.Literal(
-  "ipv4",
-  "dualstack",
-  "dualstack-without-public-ipv4",
-);
-export type EnablePrefixForIpv6SourceNatEnum = "on" | "off";
-export const EnablePrefixForIpv6SourceNatEnum = S.Literal("on", "off");
-export type TargetTypeEnum = "instance" | "ip" | "lambda" | "alb";
-export const TargetTypeEnum = S.Literal("instance", "ip", "lambda", "alb");
-export type TargetGroupIpAddressTypeEnum = "ipv4" | "ipv6";
-export const TargetGroupIpAddressTypeEnum = S.Literal("ipv4", "ipv6");
+  | "dualstack-without-public-ipv4"
+  | (string & {});
+export const IpAddressType = S.String;
+export type EnablePrefixForIpv6SourceNatEnum = "on" | "off" | (string & {});
+export const EnablePrefixForIpv6SourceNatEnum = S.String;
+export type TargetTypeEnum =
+  | "instance"
+  | "ip"
+  | "lambda"
+  | "alb"
+  | (string & {});
+export const TargetTypeEnum = S.String;
+export type TargetGroupIpAddressTypeEnum = "ipv4" | "ipv6" | (string & {});
+export const TargetGroupIpAddressTypeEnum = S.String;
 export type ListenerArns = string[];
 export const ListenerArns = S.Array(S.String);
 export type LoadBalancerArns = string[];
@@ -280,11 +276,11 @@ export type TargetGroupArns = string[];
 export const TargetGroupArns = S.Array(S.String);
 export type TargetGroupNames = string[];
 export const TargetGroupNames = S.Array(S.String);
-export type DescribeTargetHealthInputIncludeEnum = "AnomalyDetection" | "All";
-export const DescribeTargetHealthInputIncludeEnum = S.Literal(
-  "AnomalyDetection",
-  "All",
-);
+export type DescribeTargetHealthInputIncludeEnum =
+  | "AnomalyDetection"
+  | "All"
+  | (string & {});
+export const DescribeTargetHealthInputIncludeEnum = S.String;
 export type ListOfDescribeTargetHealthIncludeOptions =
   DescribeTargetHealthInputIncludeEnum[];
 export const ListOfDescribeTargetHealthIncludeOptions = S.Array(
@@ -296,17 +292,18 @@ export type TrustStoreArns = string[];
 export const TrustStoreArns = S.Array(S.String);
 export type TrustStoreNames = string[];
 export const TrustStoreNames = S.Array(S.String);
-export type RemoveIpamPoolEnum = "ipv4";
-export const RemoveIpamPoolEnum = S.Literal("ipv4");
+export type RemoveIpamPoolEnum = "ipv4" | (string & {});
+export const RemoveIpamPoolEnum = S.String;
 export type RemoveIpamPools = RemoveIpamPoolEnum[];
 export const RemoveIpamPools = S.Array(RemoveIpamPoolEnum);
 export type TagKeys = string[];
 export const TagKeys = S.Array(S.String);
 export type EnforceSecurityGroupInboundRulesOnPrivateLinkTrafficEnum =
   | "on"
-  | "off";
+  | "off"
+  | (string & {});
 export const EnforceSecurityGroupInboundRulesOnPrivateLinkTrafficEnum =
-  S.Literal("on", "off");
+  S.String;
 export interface Tag {
   Key?: string;
   Value?: string;
@@ -984,15 +981,9 @@ export type ActionTypeEnum =
   | "authenticate-cognito"
   | "redirect"
   | "fixed-response"
-  | "jwt-validation";
-export const ActionTypeEnum = S.Literal(
-  "forward",
-  "authenticate-oidc",
-  "authenticate-cognito",
-  "redirect",
-  "fixed-response",
-  "jwt-validation",
-);
+  | "jwt-validation"
+  | (string & {});
+export const ActionTypeEnum = S.String;
 export type AuthenticateOidcActionAuthenticationRequestExtraParams = {
   [key: string]: string | undefined;
 };
@@ -1003,12 +994,9 @@ export const AuthenticateOidcActionAuthenticationRequestExtraParams = S.Record({
 export type AuthenticateOidcActionConditionalBehaviorEnum =
   | "deny"
   | "allow"
-  | "authenticate";
-export const AuthenticateOidcActionConditionalBehaviorEnum = S.Literal(
-  "deny",
-  "allow",
-  "authenticate",
-);
+  | "authenticate"
+  | (string & {});
+export const AuthenticateOidcActionConditionalBehaviorEnum = S.String;
 export interface AuthenticateOidcActionConfig {
   Issuer?: string;
   AuthorizationEndpoint?: string;
@@ -1053,12 +1041,9 @@ export const AuthenticateCognitoActionAuthenticationRequestExtraParams =
 export type AuthenticateCognitoActionConditionalBehaviorEnum =
   | "deny"
   | "allow"
-  | "authenticate";
-export const AuthenticateCognitoActionConditionalBehaviorEnum = S.Literal(
-  "deny",
-  "allow",
-  "authenticate",
-);
+  | "authenticate"
+  | (string & {});
+export const AuthenticateCognitoActionConditionalBehaviorEnum = S.String;
 export interface AuthenticateCognitoActionConfig {
   UserPoolArn?: string;
   UserPoolClientId?: string;
@@ -1087,8 +1072,11 @@ export const AuthenticateCognitoActionConfig = S.suspend(() =>
 ).annotations({
   identifier: "AuthenticateCognitoActionConfig",
 }) as any as S.Schema<AuthenticateCognitoActionConfig>;
-export type RedirectActionStatusCodeEnum = "HTTP_301" | "HTTP_302";
-export const RedirectActionStatusCodeEnum = S.Literal("HTTP_301", "HTTP_302");
+export type RedirectActionStatusCodeEnum =
+  | "HTTP_301"
+  | "HTTP_302"
+  | (string & {});
+export const RedirectActionStatusCodeEnum = S.String;
 export interface RedirectActionConfig {
   Protocol?: string;
   Port?: string;
@@ -1164,12 +1152,9 @@ export const ForwardActionConfig = S.suspend(() =>
 export type JwtValidationActionAdditionalClaimFormatEnum =
   | "single-string"
   | "string-array"
-  | "space-separated-values";
-export const JwtValidationActionAdditionalClaimFormatEnum = S.Literal(
-  "single-string",
-  "string-array",
-  "space-separated-values",
-);
+  | "space-separated-values"
+  | (string & {});
+export const JwtValidationActionAdditionalClaimFormatEnum = S.String;
 export type JwtValidationActionAdditionalClaimValues = string[];
 export const JwtValidationActionAdditionalClaimValues = S.Array(S.String);
 export interface JwtValidationActionAdditionalClaim {
@@ -1231,10 +1216,13 @@ export const Action = S.suspend(() =>
 ).annotations({ identifier: "Action" }) as any as S.Schema<Action>;
 export type Actions = Action[];
 export const Actions = S.Array(Action);
-export type TrustStoreAssociationStatusEnum = "active" | "removed";
-export const TrustStoreAssociationStatusEnum = S.Literal("active", "removed");
-export type AdvertiseTrustStoreCaNamesEnum = "on" | "off";
-export const AdvertiseTrustStoreCaNamesEnum = S.Literal("on", "off");
+export type TrustStoreAssociationStatusEnum =
+  | "active"
+  | "removed"
+  | (string & {});
+export const TrustStoreAssociationStatusEnum = S.String;
+export type AdvertiseTrustStoreCaNamesEnum = "on" | "off" | (string & {});
+export const AdvertiseTrustStoreCaNamesEnum = S.String;
 export interface MutualAuthenticationAttributes {
   Mode?: string;
   TrustStoreArn?: string;
@@ -1390,11 +1378,11 @@ export const RuleCondition = S.suspend(() =>
 }) as any as S.Schema<RuleCondition>;
 export type RuleConditionList = RuleCondition[];
 export const RuleConditionList = S.Array(RuleCondition);
-export type TransformTypeEnum = "host-header-rewrite" | "url-rewrite";
-export const TransformTypeEnum = S.Literal(
-  "host-header-rewrite",
-  "url-rewrite",
-);
+export type TransformTypeEnum =
+  | "host-header-rewrite"
+  | "url-rewrite"
+  | (string & {});
+export const TransformTypeEnum = S.String;
 export interface RewriteConfig {
   Regex?: string;
   Replace?: string;
@@ -1745,8 +1733,8 @@ export const SetSubnetsInput = S.suspend(() =>
 ).annotations({
   identifier: "SetSubnetsInput",
 }) as any as S.Schema<SetSubnetsInput>;
-export type RevocationType = "CRL";
-export const RevocationType = S.Literal("CRL");
+export type RevocationType = "CRL" | (string & {});
+export const RevocationType = S.String;
 export interface RevocationContent {
   S3Bucket?: string;
   S3Key?: string;
@@ -2043,8 +2031,8 @@ export const DescribeTargetGroupAttributesOutput = S.suspend(() =>
 ).annotations({
   identifier: "DescribeTargetGroupAttributesOutput",
 }) as any as S.Schema<DescribeTargetGroupAttributesOutput>;
-export type TrustStoreStatus = "ACTIVE" | "CREATING";
-export const TrustStoreStatus = S.Literal("ACTIVE", "CREATING");
+export type TrustStoreStatus = "ACTIVE" | "CREATING" | (string & {});
+export const TrustStoreStatus = S.String;
 export interface TrustStore {
   Name?: string;
   TrustStoreArn?: string;
@@ -2497,24 +2485,16 @@ export type CapacityReservationStateEnum =
   | "provisioned"
   | "pending"
   | "rebalancing"
-  | "failed";
-export const CapacityReservationStateEnum = S.Literal(
-  "provisioned",
-  "pending",
-  "rebalancing",
-  "failed",
-);
+  | "failed"
+  | (string & {});
+export const CapacityReservationStateEnum = S.String;
 export type LoadBalancerStateEnum =
   | "active"
   | "provisioning"
   | "active_impaired"
-  | "failed";
-export const LoadBalancerStateEnum = S.Literal(
-  "active",
-  "provisioning",
-  "active_impaired",
-  "failed",
-);
+  | "failed"
+  | (string & {});
+export const LoadBalancerStateEnum = S.String;
 export type TargetHealthStateEnum =
   | "initial"
   | "healthy"
@@ -2522,16 +2502,9 @@ export type TargetHealthStateEnum =
   | "unhealthy.draining"
   | "unused"
   | "draining"
-  | "unavailable";
-export const TargetHealthStateEnum = S.Literal(
-  "initial",
-  "healthy",
-  "unhealthy",
-  "unhealthy.draining",
-  "unused",
-  "draining",
-  "unavailable",
-);
+  | "unavailable"
+  | (string & {});
+export const TargetHealthStateEnum = S.String;
 export type TargetHealthReasonEnum =
   | "Elb.RegistrationInProgress"
   | "Elb.InitialHealthChecking"
@@ -2544,47 +2517,27 @@ export type TargetHealthReasonEnum =
   | "Target.InvalidState"
   | "Target.IpUnusable"
   | "Target.HealthCheckDisabled"
-  | "Elb.InternalError";
-export const TargetHealthReasonEnum = S.Literal(
-  "Elb.RegistrationInProgress",
-  "Elb.InitialHealthChecking",
-  "Target.ResponseCodeMismatch",
-  "Target.Timeout",
-  "Target.FailedHealthChecks",
-  "Target.NotRegistered",
-  "Target.NotInUse",
-  "Target.DeregistrationInProgress",
-  "Target.InvalidState",
-  "Target.IpUnusable",
-  "Target.HealthCheckDisabled",
-  "Elb.InternalError",
-);
-export type AnomalyResultEnum = "anomalous" | "normal";
-export const AnomalyResultEnum = S.Literal("anomalous", "normal");
-export type MitigationInEffectEnum = "yes" | "no";
-export const MitigationInEffectEnum = S.Literal("yes", "no");
+  | "Elb.InternalError"
+  | (string & {});
+export const TargetHealthReasonEnum = S.String;
+export type AnomalyResultEnum = "anomalous" | "normal" | (string & {});
+export const AnomalyResultEnum = S.String;
+export type MitigationInEffectEnum = "yes" | "no" | (string & {});
+export const MitigationInEffectEnum = S.String;
 export type TargetAdministrativeOverrideStateEnum =
   | "unknown"
   | "no_override"
   | "zonal_shift_active"
-  | "zonal_shift_delegated_to_dns";
-export const TargetAdministrativeOverrideStateEnum = S.Literal(
-  "unknown",
-  "no_override",
-  "zonal_shift_active",
-  "zonal_shift_delegated_to_dns",
-);
+  | "zonal_shift_delegated_to_dns"
+  | (string & {});
+export const TargetAdministrativeOverrideStateEnum = S.String;
 export type TargetAdministrativeOverrideReasonEnum =
   | "AdministrativeOverride.Unknown"
   | "AdministrativeOverride.NoOverride"
   | "AdministrativeOverride.ZonalShiftActive"
-  | "AdministrativeOverride.ZonalShiftDelegatedToDns";
-export const TargetAdministrativeOverrideReasonEnum = S.Literal(
-  "AdministrativeOverride.Unknown",
-  "AdministrativeOverride.NoOverride",
-  "AdministrativeOverride.ZonalShiftActive",
-  "AdministrativeOverride.ZonalShiftDelegatedToDns",
-);
+  | "AdministrativeOverride.ZonalShiftDelegatedToDns"
+  | (string & {});
+export const TargetAdministrativeOverrideReasonEnum = S.String;
 export interface AddListenerCertificatesOutput {
   Certificates?: Certificate[];
 }

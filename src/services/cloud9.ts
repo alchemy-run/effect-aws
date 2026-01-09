@@ -102,20 +102,20 @@ export type TagKey = string | redacted.Redacted<string>;
 export type TagValue = string | redacted.Redacted<string>;
 
 //# Schemas
-export type ConnectionType = "CONNECT_SSH" | "CONNECT_SSM";
-export const ConnectionType = S.Literal("CONNECT_SSH", "CONNECT_SSM");
-export type MemberPermissions = "read-write" | "read-only";
-export const MemberPermissions = S.Literal("read-write", "read-only");
-export type Permissions = "owner" | "read-write" | "read-only";
-export const Permissions = S.Literal("owner", "read-write", "read-only");
+export type ConnectionType = "CONNECT_SSH" | "CONNECT_SSM" | (string & {});
+export const ConnectionType = S.String;
+export type MemberPermissions = "read-write" | "read-only" | (string & {});
+export const MemberPermissions = S.String;
+export type Permissions = "owner" | "read-write" | "read-only" | (string & {});
+export const Permissions = S.String;
 export type PermissionsList = Permissions[];
 export const PermissionsList = S.Array(Permissions);
 export type BoundedEnvironmentIdList = string[];
 export const BoundedEnvironmentIdList = S.Array(S.String);
 export type TagKeyList = string | redacted.Redacted<string>[];
 export const TagKeyList = S.Array(SensitiveString);
-export type ManagedCredentialsAction = "ENABLE" | "DISABLE";
-export const ManagedCredentialsAction = S.Literal("ENABLE", "DISABLE");
+export type ManagedCredentialsAction = "ENABLE" | "DISABLE" | (string & {});
+export const ManagedCredentialsAction = S.String;
 export interface CreateEnvironmentMembershipRequest {
   environmentId: string;
   userArn: string;
@@ -335,16 +335,9 @@ export type EnvironmentStatus =
   | "ready"
   | "stopping"
   | "stopped"
-  | "deleting";
-export const EnvironmentStatus = S.Literal(
-  "error",
-  "creating",
-  "connecting",
-  "ready",
-  "stopping",
-  "stopped",
-  "deleting",
-);
+  | "deleting"
+  | (string & {});
+export const EnvironmentStatus = S.String;
 export type EnvironmentIdList = string[];
 export const EnvironmentIdList = S.Array(S.String);
 export interface CreateEnvironmentEC2Request {
@@ -428,8 +421,8 @@ export const UpdateEnvironmentMembershipResult = S.suspend(() =>
 ).annotations({
   identifier: "UpdateEnvironmentMembershipResult",
 }) as any as S.Schema<UpdateEnvironmentMembershipResult>;
-export type EnvironmentType = "ssh" | "ec2";
-export const EnvironmentType = S.Literal("ssh", "ec2");
+export type EnvironmentType = "ssh" | "ec2" | (string & {});
+export const EnvironmentType = S.String;
 export type ManagedCredentialsStatus =
   | "ENABLED_ON_CREATE"
   | "ENABLED_BY_OWNER"
@@ -441,33 +434,17 @@ export type ManagedCredentialsStatus =
   | "PENDING_REMOVAL_BY_OWNER"
   | "PENDING_START_REMOVAL_BY_OWNER"
   | "FAILED_REMOVAL_BY_COLLABORATOR"
-  | "FAILED_REMOVAL_BY_OWNER";
-export const ManagedCredentialsStatus = S.Literal(
-  "ENABLED_ON_CREATE",
-  "ENABLED_BY_OWNER",
-  "DISABLED_BY_DEFAULT",
-  "DISABLED_BY_OWNER",
-  "DISABLED_BY_COLLABORATOR",
-  "PENDING_REMOVAL_BY_COLLABORATOR",
-  "PENDING_START_REMOVAL_BY_COLLABORATOR",
-  "PENDING_REMOVAL_BY_OWNER",
-  "PENDING_START_REMOVAL_BY_OWNER",
-  "FAILED_REMOVAL_BY_COLLABORATOR",
-  "FAILED_REMOVAL_BY_OWNER",
-);
+  | "FAILED_REMOVAL_BY_OWNER"
+  | (string & {});
+export const ManagedCredentialsStatus = S.String;
 export type EnvironmentLifecycleStatus =
   | "CREATING"
   | "CREATED"
   | "CREATE_FAILED"
   | "DELETING"
-  | "DELETE_FAILED";
-export const EnvironmentLifecycleStatus = S.Literal(
-  "CREATING",
-  "CREATED",
-  "CREATE_FAILED",
-  "DELETING",
-  "DELETE_FAILED",
-);
+  | "DELETE_FAILED"
+  | (string & {});
+export const EnvironmentLifecycleStatus = S.String;
 export interface CreateEnvironmentEC2Result {
   environmentId?: string;
 }

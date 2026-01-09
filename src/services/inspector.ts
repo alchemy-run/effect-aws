@@ -145,31 +145,26 @@ export type BatchDescribeArnList = string[];
 export const BatchDescribeArnList = S.Array(S.String);
 export type BatchDescribeExclusionsArnList = string[];
 export const BatchDescribeExclusionsArnList = S.Array(S.String);
-export type Locale = "EN_US";
-export const Locale = S.Literal("EN_US");
-export type ReportFileFormat = "HTML" | "PDF";
-export const ReportFileFormat = S.Literal("HTML", "PDF");
-export type ReportType = "FINDING" | "FULL";
-export const ReportType = S.Literal("FINDING", "FULL");
+export type Locale = "EN_US" | (string & {});
+export const Locale = S.String;
+export type ReportFileFormat = "HTML" | "PDF" | (string & {});
+export const ReportFileFormat = S.String;
+export type ReportType = "FINDING" | "FULL" | (string & {});
+export const ReportType = S.String;
 export type ListParentArnList = string[];
 export const ListParentArnList = S.Array(S.String);
 export type UserAttributeKeyList = string[];
 export const UserAttributeKeyList = S.Array(S.String);
-export type StopAction = "START_EVALUATION" | "SKIP_EVALUATION";
-export const StopAction = S.Literal("START_EVALUATION", "SKIP_EVALUATION");
+export type StopAction = "START_EVALUATION" | "SKIP_EVALUATION" | (string & {});
+export const StopAction = S.String;
 export type InspectorEvent =
   | "ASSESSMENT_RUN_STARTED"
   | "ASSESSMENT_RUN_COMPLETED"
   | "ASSESSMENT_RUN_STATE_CHANGED"
   | "FINDING_REPORTED"
-  | "OTHER";
-export const InspectorEvent = S.Literal(
-  "ASSESSMENT_RUN_STARTED",
-  "ASSESSMENT_RUN_COMPLETED",
-  "ASSESSMENT_RUN_STATE_CHANGED",
-  "FINDING_REPORTED",
-  "OTHER",
-);
+  | "OTHER"
+  | (string & {});
+export const InspectorEvent = S.String;
 export interface CreateAssessmentTargetRequest {
   assessmentTargetName: string;
   resourceGroupArn?: string;
@@ -615,8 +610,8 @@ export const UpdateAssessmentTargetResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateAssessmentTargetResponse",
 }) as any as S.Schema<UpdateAssessmentTargetResponse>;
-export type AgentHealth = "HEALTHY" | "UNHEALTHY" | "UNKNOWN";
-export const AgentHealth = S.Literal("HEALTHY", "UNHEALTHY", "UNKNOWN");
+export type AgentHealth = "HEALTHY" | "UNHEALTHY" | "UNKNOWN" | (string & {});
+export const AgentHealth = S.String;
 export type AgentHealthList = AgentHealth[];
 export const AgentHealthList = S.Array(AgentHealth);
 export type AgentHealthCode =
@@ -625,15 +620,9 @@ export type AgentHealthCode =
   | "SHUTDOWN"
   | "UNHEALTHY"
   | "THROTTLED"
-  | "UNKNOWN";
-export const AgentHealthCode = S.Literal(
-  "IDLE",
-  "RUNNING",
-  "SHUTDOWN",
-  "UNHEALTHY",
-  "THROTTLED",
-  "UNKNOWN",
-);
+  | "UNKNOWN"
+  | (string & {});
+export const AgentHealthCode = S.String;
 export type AgentHealthCodeList = AgentHealthCode[];
 export const AgentHealthCodeList = S.Array(AgentHealthCode);
 export type AssessmentRunState =
@@ -649,22 +638,9 @@ export type AssessmentRunState =
   | "ERROR"
   | "COMPLETED"
   | "COMPLETED_WITH_ERRORS"
-  | "CANCELED";
-export const AssessmentRunState = S.Literal(
-  "CREATED",
-  "START_DATA_COLLECTION_PENDING",
-  "START_DATA_COLLECTION_IN_PROGRESS",
-  "COLLECTING_DATA",
-  "STOP_DATA_COLLECTION_PENDING",
-  "DATA_COLLECTED",
-  "START_EVALUATING_RULES_PENDING",
-  "EVALUATING_RULES",
-  "FAILED",
-  "ERROR",
-  "COMPLETED",
-  "COMPLETED_WITH_ERRORS",
-  "CANCELED",
-);
+  | "CANCELED"
+  | (string & {});
+export const AssessmentRunState = S.String;
 export type AssessmentRunStateList = AssessmentRunState[];
 export const AssessmentRunStateList = S.Array(AssessmentRunState);
 export type FilterRulesPackageArnList = string[];
@@ -680,14 +656,9 @@ export type Severity =
   | "Medium"
   | "High"
   | "Informational"
-  | "Undefined";
-export const Severity = S.Literal(
-  "Low",
-  "Medium",
-  "High",
-  "Informational",
-  "Undefined",
-);
+  | "Undefined"
+  | (string & {});
+export const Severity = S.String;
 export type SeverityList = Severity[];
 export const SeverityList = S.Array(Severity);
 export type AttributeList = Attribute[];
@@ -711,25 +682,17 @@ export type AccessDeniedErrorCode =
   | "ACCESS_DENIED_TO_RESOURCE_GROUP"
   | "ACCESS_DENIED_TO_RULES_PACKAGE"
   | "ACCESS_DENIED_TO_SNS_TOPIC"
-  | "ACCESS_DENIED_TO_IAM_ROLE";
-export const AccessDeniedErrorCode = S.Literal(
-  "ACCESS_DENIED_TO_ASSESSMENT_TARGET",
-  "ACCESS_DENIED_TO_ASSESSMENT_TEMPLATE",
-  "ACCESS_DENIED_TO_ASSESSMENT_RUN",
-  "ACCESS_DENIED_TO_FINDING",
-  "ACCESS_DENIED_TO_RESOURCE_GROUP",
-  "ACCESS_DENIED_TO_RULES_PACKAGE",
-  "ACCESS_DENIED_TO_SNS_TOPIC",
-  "ACCESS_DENIED_TO_IAM_ROLE",
-);
-export type ReportStatus = "WORK_IN_PROGRESS" | "FAILED" | "COMPLETED";
-export const ReportStatus = S.Literal(
-  "WORK_IN_PROGRESS",
-  "FAILED",
-  "COMPLETED",
-);
-export type PreviewStatus = "WORK_IN_PROGRESS" | "COMPLETED";
-export const PreviewStatus = S.Literal("WORK_IN_PROGRESS", "COMPLETED");
+  | "ACCESS_DENIED_TO_IAM_ROLE"
+  | (string & {});
+export const AccessDeniedErrorCode = S.String;
+export type ReportStatus =
+  | "WORK_IN_PROGRESS"
+  | "FAILED"
+  | "COMPLETED"
+  | (string & {});
+export const ReportStatus = S.String;
+export type PreviewStatus = "WORK_IN_PROGRESS" | "COMPLETED" | (string & {});
+export const PreviewStatus = S.String;
 export interface AgentFilter {
   agentHealths: AgentHealth[];
   agentHealthCodes: AgentHealthCode[];
@@ -986,15 +949,9 @@ export type FailedItemErrorCode =
   | "ITEM_DOES_NOT_EXIST"
   | "ACCESS_DENIED"
   | "LIMIT_EXCEEDED"
-  | "INTERNAL_ERROR";
-export const FailedItemErrorCode = S.Literal(
-  "INVALID_ARN",
-  "DUPLICATE_ARN",
-  "ITEM_DOES_NOT_EXIST",
-  "ACCESS_DENIED",
-  "LIMIT_EXCEEDED",
-  "INTERNAL_ERROR",
-);
+  | "INTERNAL_ERROR"
+  | (string & {});
+export const FailedItemErrorCode = S.String;
 export interface FailedItemDetails {
   failureCode: FailedItemErrorCode;
   retryable: boolean;
@@ -1044,8 +1001,8 @@ export const StartAssessmentRunResponse = S.suspend(() =>
 }) as any as S.Schema<StartAssessmentRunResponse>;
 export type AssessmentRulesPackageArnList = string[];
 export const AssessmentRulesPackageArnList = S.Array(S.String);
-export type AssetType = "ec2-instance";
-export const AssetType = S.Literal("ec2-instance");
+export type AssetType = "ec2-instance" | (string & {});
+export const AssetType = S.String;
 export type AssessmentRunInProgressArnList = string[];
 export const AssessmentRunInProgressArnList = S.Array(S.String);
 export interface AssessmentTarget {
@@ -1222,63 +1179,9 @@ export type InvalidInputErrorCode =
   | "INVALID_NUMBER_OF_AGENT_IDS"
   | "INVALID_NUMBER_OF_AUTO_SCALING_GROUPS"
   | "INVALID_NUMBER_OF_RULE_NAMES"
-  | "INVALID_NUMBER_OF_SEVERITIES";
-export const InvalidInputErrorCode = S.Literal(
-  "INVALID_ASSESSMENT_TARGET_ARN",
-  "INVALID_ASSESSMENT_TEMPLATE_ARN",
-  "INVALID_ASSESSMENT_RUN_ARN",
-  "INVALID_FINDING_ARN",
-  "INVALID_RESOURCE_GROUP_ARN",
-  "INVALID_RULES_PACKAGE_ARN",
-  "INVALID_RESOURCE_ARN",
-  "INVALID_SNS_TOPIC_ARN",
-  "INVALID_IAM_ROLE_ARN",
-  "INVALID_ASSESSMENT_TARGET_NAME",
-  "INVALID_ASSESSMENT_TARGET_NAME_PATTERN",
-  "INVALID_ASSESSMENT_TEMPLATE_NAME",
-  "INVALID_ASSESSMENT_TEMPLATE_NAME_PATTERN",
-  "INVALID_ASSESSMENT_TEMPLATE_DURATION",
-  "INVALID_ASSESSMENT_TEMPLATE_DURATION_RANGE",
-  "INVALID_ASSESSMENT_RUN_DURATION_RANGE",
-  "INVALID_ASSESSMENT_RUN_START_TIME_RANGE",
-  "INVALID_ASSESSMENT_RUN_COMPLETION_TIME_RANGE",
-  "INVALID_ASSESSMENT_RUN_STATE_CHANGE_TIME_RANGE",
-  "INVALID_ASSESSMENT_RUN_STATE",
-  "INVALID_TAG",
-  "INVALID_TAG_KEY",
-  "INVALID_TAG_VALUE",
-  "INVALID_RESOURCE_GROUP_TAG_KEY",
-  "INVALID_RESOURCE_GROUP_TAG_VALUE",
-  "INVALID_ATTRIBUTE",
-  "INVALID_USER_ATTRIBUTE",
-  "INVALID_USER_ATTRIBUTE_KEY",
-  "INVALID_USER_ATTRIBUTE_VALUE",
-  "INVALID_PAGINATION_TOKEN",
-  "INVALID_MAX_RESULTS",
-  "INVALID_AGENT_ID",
-  "INVALID_AUTO_SCALING_GROUP",
-  "INVALID_RULE_NAME",
-  "INVALID_SEVERITY",
-  "INVALID_LOCALE",
-  "INVALID_EVENT",
-  "ASSESSMENT_TARGET_NAME_ALREADY_TAKEN",
-  "ASSESSMENT_TEMPLATE_NAME_ALREADY_TAKEN",
-  "INVALID_NUMBER_OF_ASSESSMENT_TARGET_ARNS",
-  "INVALID_NUMBER_OF_ASSESSMENT_TEMPLATE_ARNS",
-  "INVALID_NUMBER_OF_ASSESSMENT_RUN_ARNS",
-  "INVALID_NUMBER_OF_FINDING_ARNS",
-  "INVALID_NUMBER_OF_RESOURCE_GROUP_ARNS",
-  "INVALID_NUMBER_OF_RULES_PACKAGE_ARNS",
-  "INVALID_NUMBER_OF_ASSESSMENT_RUN_STATES",
-  "INVALID_NUMBER_OF_TAGS",
-  "INVALID_NUMBER_OF_RESOURCE_GROUP_TAGS",
-  "INVALID_NUMBER_OF_ATTRIBUTES",
-  "INVALID_NUMBER_OF_USER_ATTRIBUTES",
-  "INVALID_NUMBER_OF_AGENT_IDS",
-  "INVALID_NUMBER_OF_AUTO_SCALING_GROUPS",
-  "INVALID_NUMBER_OF_RULE_NAMES",
-  "INVALID_NUMBER_OF_SEVERITIES",
-);
+  | "INVALID_NUMBER_OF_SEVERITIES"
+  | (string & {});
+export const InvalidInputErrorCode = S.String;
 export interface AgentPreview {
   hostname?: string;
   agentId: string;
@@ -1305,28 +1208,22 @@ export type AgentPreviewList = AgentPreview[];
 export const AgentPreviewList = S.Array(AgentPreview);
 export type InvalidCrossAccountRoleErrorCode =
   | "ROLE_DOES_NOT_EXIST_OR_INVALID_TRUST_RELATIONSHIP"
-  | "ROLE_DOES_NOT_HAVE_CORRECT_POLICY";
-export const InvalidCrossAccountRoleErrorCode = S.Literal(
-  "ROLE_DOES_NOT_EXIST_OR_INVALID_TRUST_RELATIONSHIP",
-  "ROLE_DOES_NOT_HAVE_CORRECT_POLICY",
-);
+  | "ROLE_DOES_NOT_HAVE_CORRECT_POLICY"
+  | (string & {});
+export const InvalidCrossAccountRoleErrorCode = S.String;
 export type AssessmentRunNotificationSnsStatusCode =
   | "SUCCESS"
   | "TOPIC_DOES_NOT_EXIST"
   | "ACCESS_DENIED"
-  | "INTERNAL_ERROR";
-export const AssessmentRunNotificationSnsStatusCode = S.Literal(
-  "SUCCESS",
-  "TOPIC_DOES_NOT_EXIST",
-  "ACCESS_DENIED",
-  "INTERNAL_ERROR",
-);
+  | "INTERNAL_ERROR"
+  | (string & {});
+export const AssessmentRunNotificationSnsStatusCode = S.String;
 export type Ipv4AddressList = string[];
 export const Ipv4AddressList = S.Array(S.String);
 export type Tags = Tag[];
 export const Tags = S.Array(Tag);
-export type ScopeType = "INSTANCE_ID" | "RULES_PACKAGE_ARN";
-export const ScopeType = S.Literal("INSTANCE_ID", "RULES_PACKAGE_ARN");
+export type ScopeType = "INSTANCE_ID" | "RULES_PACKAGE_ARN" | (string & {});
+export const ScopeType = S.String;
 export interface AddAttributesToFindingsResponse {
   failedItems: { [key: string]: FailedItemDetails | undefined };
 }
@@ -1667,17 +1564,9 @@ export type NoSuchEntityErrorCode =
   | "RESOURCE_GROUP_DOES_NOT_EXIST"
   | "RULES_PACKAGE_DOES_NOT_EXIST"
   | "SNS_TOPIC_DOES_NOT_EXIST"
-  | "IAM_ROLE_DOES_NOT_EXIST";
-export const NoSuchEntityErrorCode = S.Literal(
-  "ASSESSMENT_TARGET_DOES_NOT_EXIST",
-  "ASSESSMENT_TEMPLATE_DOES_NOT_EXIST",
-  "ASSESSMENT_RUN_DOES_NOT_EXIST",
-  "FINDING_DOES_NOT_EXIST",
-  "RESOURCE_GROUP_DOES_NOT_EXIST",
-  "RULES_PACKAGE_DOES_NOT_EXIST",
-  "SNS_TOPIC_DOES_NOT_EXIST",
-  "IAM_ROLE_DOES_NOT_EXIST",
-);
+  | "IAM_ROLE_DOES_NOT_EXIST"
+  | (string & {});
+export const NoSuchEntityErrorCode = S.String;
 export interface AgentAlreadyRunningAssessment {
   agentId: string;
   assessmentRunArn: string;
@@ -1696,14 +1585,9 @@ export type LimitExceededErrorCode =
   | "ASSESSMENT_TEMPLATE_LIMIT_EXCEEDED"
   | "ASSESSMENT_RUN_LIMIT_EXCEEDED"
   | "RESOURCE_GROUP_LIMIT_EXCEEDED"
-  | "EVENT_SUBSCRIPTION_LIMIT_EXCEEDED";
-export const LimitExceededErrorCode = S.Literal(
-  "ASSESSMENT_TARGET_LIMIT_EXCEEDED",
-  "ASSESSMENT_TEMPLATE_LIMIT_EXCEEDED",
-  "ASSESSMENT_RUN_LIMIT_EXCEEDED",
-  "RESOURCE_GROUP_LIMIT_EXCEEDED",
-  "EVENT_SUBSCRIPTION_LIMIT_EXCEEDED",
-);
+  | "EVENT_SUBSCRIPTION_LIMIT_EXCEEDED"
+  | (string & {});
+export const LimitExceededErrorCode = S.String;
 export interface DescribeAssessmentRunsResponse {
   assessmentRuns: AssessmentRun[];
   failedItems: { [key: string]: FailedItemDetails | undefined };

@@ -130,17 +130,9 @@ export type PackageFormat =
   | "generic"
   | "ruby"
   | "swift"
-  | "cargo";
-export const PackageFormat = S.Literal(
-  "npm",
-  "pypi",
-  "maven",
-  "nuget",
-  "generic",
-  "ruby",
-  "swift",
-  "cargo",
-);
+  | "cargo"
+  | (string & {});
+export const PackageFormat = S.String;
 export type PackageVersionList = string[];
 export const PackageVersionList = S.Array(S.String);
 export type PackageVersionStatus =
@@ -149,38 +141,29 @@ export type PackageVersionStatus =
   | "Unlisted"
   | "Archived"
   | "Disposed"
-  | "Deleted";
-export const PackageVersionStatus = S.Literal(
-  "Published",
-  "Unfinished",
-  "Unlisted",
-  "Archived",
-  "Disposed",
-  "Deleted",
-);
-export type EndpointType = "dualstack" | "ipv4";
-export const EndpointType = S.Literal("dualstack", "ipv4");
+  | "Deleted"
+  | (string & {});
+export const PackageVersionStatus = S.String;
+export type EndpointType = "dualstack" | "ipv4" | (string & {});
+export const EndpointType = S.String;
 export type PackageGroupOriginRestrictionType =
   | "EXTERNAL_UPSTREAM"
   | "INTERNAL_UPSTREAM"
-  | "PUBLISH";
-export const PackageGroupOriginRestrictionType = S.Literal(
-  "EXTERNAL_UPSTREAM",
-  "INTERNAL_UPSTREAM",
-  "PUBLISH",
-);
-export type AllowPublish = "ALLOW" | "BLOCK";
-export const AllowPublish = S.Literal("ALLOW", "BLOCK");
-export type AllowUpstream = "ALLOW" | "BLOCK";
-export const AllowUpstream = S.Literal("ALLOW", "BLOCK");
-export type PackageVersionSortType = "PUBLISHED_TIME";
-export const PackageVersionSortType = S.Literal("PUBLISHED_TIME");
-export type PackageVersionOriginType = "INTERNAL" | "EXTERNAL" | "UNKNOWN";
-export const PackageVersionOriginType = S.Literal(
-  "INTERNAL",
-  "EXTERNAL",
-  "UNKNOWN",
-);
+  | "PUBLISH"
+  | (string & {});
+export const PackageGroupOriginRestrictionType = S.String;
+export type AllowPublish = "ALLOW" | "BLOCK" | (string & {});
+export const AllowPublish = S.String;
+export type AllowUpstream = "ALLOW" | "BLOCK" | (string & {});
+export const AllowUpstream = S.String;
+export type PackageVersionSortType = "PUBLISHED_TIME" | (string & {});
+export const PackageVersionSortType = S.String;
+export type PackageVersionOriginType =
+  | "INTERNAL"
+  | "EXTERNAL"
+  | "UNKNOWN"
+  | (string & {});
+export const PackageVersionOriginType = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export interface AssociateExternalConnectionRequest {
@@ -1404,15 +1387,11 @@ export type PackageGroupOriginRestrictionMode =
   | "ALLOW"
   | "ALLOW_SPECIFIC_REPOSITORIES"
   | "BLOCK"
-  | "INHERIT";
-export const PackageGroupOriginRestrictionMode = S.Literal(
-  "ALLOW",
-  "ALLOW_SPECIFIC_REPOSITORIES",
-  "BLOCK",
-  "INHERIT",
-);
-export type PackageGroupAssociationType = "STRONG" | "WEAK";
-export const PackageGroupAssociationType = S.Literal("STRONG", "WEAK");
+  | "INHERIT"
+  | (string & {});
+export const PackageGroupOriginRestrictionMode = S.String;
+export type PackageGroupAssociationType = "STRONG" | "WEAK" | (string & {});
+export const PackageGroupAssociationType = S.String;
 export type RepositoryNameList = string[];
 export const RepositoryNameList = S.Array(S.String);
 export interface PackageOriginRestrictions {
@@ -1652,8 +1631,8 @@ export const UpstreamRepositoryInfo = S.suspend(() =>
 }) as any as S.Schema<UpstreamRepositoryInfo>;
 export type UpstreamRepositoryInfoList = UpstreamRepositoryInfo[];
 export const UpstreamRepositoryInfoList = S.Array(UpstreamRepositoryInfo);
-export type ExternalConnectionStatus = "Available";
-export const ExternalConnectionStatus = S.Literal("Available");
+export type ExternalConnectionStatus = "Available" | (string & {});
+export const ExternalConnectionStatus = S.String;
 export interface RepositoryExternalConnectionInfo {
   externalConnectionName?: string;
   packageFormat?: PackageFormat;
@@ -1729,8 +1708,8 @@ export const DeleteRepositoryPermissionsPolicyResult = S.suspend(() =>
 ).annotations({
   identifier: "DeleteRepositoryPermissionsPolicyResult",
 }) as any as S.Schema<DeleteRepositoryPermissionsPolicyResult>;
-export type DomainStatus = "Active" | "Deleted";
-export const DomainStatus = S.Literal("Active", "Deleted");
+export type DomainStatus = "Active" | "Deleted" | (string & {});
+export const DomainStatus = S.String;
 export interface DomainDescription {
   name?: string;
   owner?: string;
@@ -1814,15 +1793,9 @@ export type PackageVersionErrorCode =
   | "MISMATCHED_STATUS"
   | "NOT_ALLOWED"
   | "NOT_FOUND"
-  | "SKIPPED";
-export const PackageVersionErrorCode = S.Literal(
-  "ALREADY_EXISTS",
-  "MISMATCHED_REVISION",
-  "MISMATCHED_STATUS",
-  "NOT_ALLOWED",
-  "NOT_FOUND",
-  "SKIPPED",
-);
+  | "SKIPPED"
+  | (string & {});
+export const PackageVersionErrorCode = S.String;
 export interface PackageVersionError {
   errorCode?: PackageVersionErrorCode;
   errorMessage?: string;
@@ -2050,8 +2023,13 @@ export const ListTagsForResourceResult = S.suspend(() =>
 ).annotations({
   identifier: "ListTagsForResourceResult",
 }) as any as S.Schema<ListTagsForResourceResult>;
-export type HashAlgorithm = "MD5" | "SHA-1" | "SHA-256" | "SHA-512";
-export const HashAlgorithm = S.Literal("MD5", "SHA-1", "SHA-256", "SHA-512");
+export type HashAlgorithm =
+  | "MD5"
+  | "SHA-1"
+  | "SHA-256"
+  | "SHA-512"
+  | (string & {});
+export const HashAlgorithm = S.String;
 export type AssetHashes = { [key in HashAlgorithm]?: string };
 export const AssetHashes = S.partial(
   S.Record({ key: HashAlgorithm, value: S.UndefinedOr(S.String) }),
@@ -2319,14 +2297,9 @@ export type ResourceType =
   | "repository"
   | "package"
   | "package-version"
-  | "asset";
-export const ResourceType = S.Literal(
-  "domain",
-  "repository",
-  "package",
-  "package-version",
-  "asset",
-);
+  | "asset"
+  | (string & {});
+export const ResourceType = S.String;
 export interface CopyPackageVersionsResult {
   successfulVersions?: {
     [key: string]: SuccessfulPackageVersionInfo | undefined;
@@ -2495,19 +2468,14 @@ export type ValidationExceptionReason =
   | "ENCRYPTION_KEY_ERROR"
   | "FIELD_VALIDATION_FAILED"
   | "UNKNOWN_OPERATION"
-  | "OTHER";
-export const ValidationExceptionReason = S.Literal(
-  "CANNOT_PARSE",
-  "ENCRYPTION_KEY_ERROR",
-  "FIELD_VALIDATION_FAILED",
-  "UNKNOWN_OPERATION",
-  "OTHER",
-);
-export type PackageGroupAllowedRepositoryUpdateType = "ADDED" | "REMOVED";
-export const PackageGroupAllowedRepositoryUpdateType = S.Literal(
-  "ADDED",
-  "REMOVED",
-);
+  | "OTHER"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
+export type PackageGroupAllowedRepositoryUpdateType =
+  | "ADDED"
+  | "REMOVED"
+  | (string & {});
+export const PackageGroupAllowedRepositoryUpdateType = S.String;
 export interface AssociateExternalConnectionResult {
   repository?: RepositoryDescription;
 }

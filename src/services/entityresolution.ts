@@ -123,24 +123,24 @@ export type CustomerProfilesObjectTypeArn = string;
 export type AwsAccountId = string;
 
 //# Schemas
-export type StatementEffect = "Allow" | "Deny";
-export const StatementEffect = S.Literal("Allow", "Deny");
+export type StatementEffect = "Allow" | "Deny" | (string & {});
+export const StatementEffect = S.String;
 export type StatementActionList = string[];
 export const StatementActionList = S.Array(S.String);
 export type StatementPrincipalList = string[];
 export const StatementPrincipalList = S.Array(S.String);
 export type UniqueIdList = string[];
 export const UniqueIdList = S.Array(S.String);
-export type IdNamespaceType = "SOURCE" | "TARGET";
-export const IdNamespaceType = S.Literal("SOURCE", "TARGET");
-export type ProcessingType = "CONSISTENT" | "EVENTUAL" | "EVENTUAL_NO_LOOKUP";
-export const ProcessingType = S.Literal(
-  "CONSISTENT",
-  "EVENTUAL",
-  "EVENTUAL_NO_LOOKUP",
-);
-export type JobType = "BATCH" | "INCREMENTAL" | "DELETE_ONLY";
-export const JobType = S.Literal("BATCH", "INCREMENTAL", "DELETE_ONLY");
+export type IdNamespaceType = "SOURCE" | "TARGET" | (string & {});
+export const IdNamespaceType = S.String;
+export type ProcessingType =
+  | "CONSISTENT"
+  | "EVENTUAL"
+  | "EVENTUAL_NO_LOOKUP"
+  | (string & {});
+export const ProcessingType = S.String;
+export type JobType = "BATCH" | "INCREMENTAL" | "DELETE_ONLY" | (string & {});
+export const JobType = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export interface AddPolicyStatementInput {
@@ -745,8 +745,8 @@ export type IdMappingWorkflowOutputSourceConfig =
 export const IdMappingWorkflowOutputSourceConfig = S.Array(
   IdMappingWorkflowOutputSource,
 );
-export type IdMappingType = "PROVIDER" | "RULE_BASED";
-export const IdMappingType = S.Literal("PROVIDER", "RULE_BASED");
+export type IdMappingType = "PROVIDER" | "RULE_BASED" | (string & {});
+export const IdMappingType = S.String;
 export type MatchingKeys = string[];
 export const MatchingKeys = S.Array(S.String);
 export interface Rule {
@@ -758,20 +758,21 @@ export const Rule = S.suspend(() =>
 ).annotations({ identifier: "Rule" }) as any as S.Schema<Rule>;
 export type RuleList = Rule[];
 export const RuleList = S.Array(Rule);
-export type IdMappingWorkflowRuleDefinitionType = "SOURCE" | "TARGET";
-export const IdMappingWorkflowRuleDefinitionType = S.Literal(
-  "SOURCE",
-  "TARGET",
-);
-export type AttributeMatchingModel = "ONE_TO_ONE" | "MANY_TO_MANY";
-export const AttributeMatchingModel = S.Literal("ONE_TO_ONE", "MANY_TO_MANY");
+export type IdMappingWorkflowRuleDefinitionType =
+  | "SOURCE"
+  | "TARGET"
+  | (string & {});
+export const IdMappingWorkflowRuleDefinitionType = S.String;
+export type AttributeMatchingModel =
+  | "ONE_TO_ONE"
+  | "MANY_TO_MANY"
+  | (string & {});
+export const AttributeMatchingModel = S.String;
 export type RecordMatchingModel =
   | "ONE_SOURCE_TO_ONE_TARGET"
-  | "MANY_SOURCE_TO_ONE_TARGET";
-export const RecordMatchingModel = S.Literal(
-  "ONE_SOURCE_TO_ONE_TARGET",
-  "MANY_SOURCE_TO_ONE_TARGET",
-);
+  | "MANY_SOURCE_TO_ONE_TARGET"
+  | (string & {});
+export const RecordMatchingModel = S.String;
 export interface IdMappingRuleBasedProperties {
   rules?: Rule[];
   ruleDefinitionType: IdMappingWorkflowRuleDefinitionType;
@@ -826,8 +827,8 @@ export const IdMappingTechniques = S.suspend(() =>
 ).annotations({
   identifier: "IdMappingTechniques",
 }) as any as S.Schema<IdMappingTechniques>;
-export type IdMappingIncrementalRunType = "ON_DEMAND";
-export const IdMappingIncrementalRunType = S.Literal("ON_DEMAND");
+export type IdMappingIncrementalRunType = "ON_DEMAND" | (string & {});
+export const IdMappingIncrementalRunType = S.String;
 export interface IdMappingIncrementalRunConfig {
   incrementalRunType?: IdMappingIncrementalRunType;
 }
@@ -1015,14 +1016,14 @@ export const OutputSource = S.suspend(() =>
 ).annotations({ identifier: "OutputSource" }) as any as S.Schema<OutputSource>;
 export type OutputSourceConfig = OutputSource[];
 export const OutputSourceConfig = S.Array(OutputSource);
-export type ResolutionType = "RULE_MATCHING" | "ML_MATCHING" | "PROVIDER";
-export const ResolutionType = S.Literal(
-  "RULE_MATCHING",
-  "ML_MATCHING",
-  "PROVIDER",
-);
-export type MatchPurpose = "IDENTIFIER_GENERATION" | "INDEXING";
-export const MatchPurpose = S.Literal("IDENTIFIER_GENERATION", "INDEXING");
+export type ResolutionType =
+  | "RULE_MATCHING"
+  | "ML_MATCHING"
+  | "PROVIDER"
+  | (string & {});
+export const ResolutionType = S.String;
+export type MatchPurpose = "IDENTIFIER_GENERATION" | "INDEXING" | (string & {});
+export const MatchPurpose = S.String;
 export interface RuleBasedProperties {
   rules: Rule[];
   attributeMatchingModel: AttributeMatchingModel;
@@ -1072,8 +1073,8 @@ export const ResolutionTechniques = S.suspend(() =>
 ).annotations({
   identifier: "ResolutionTechniques",
 }) as any as S.Schema<ResolutionTechniques>;
-export type IncrementalRunType = "IMMEDIATE";
-export const IncrementalRunType = S.Literal("IMMEDIATE");
+export type IncrementalRunType = "IMMEDIATE" | (string & {});
+export const IncrementalRunType = S.String;
 export interface IncrementalRunConfig {
   incrementalRunType?: IncrementalRunType;
 }
@@ -1136,32 +1137,9 @@ export type SchemaAttributeType =
   | "PROVIDER_ID"
   | "IPV4"
   | "IPV6"
-  | "MAID";
-export const SchemaAttributeType = S.Literal(
-  "NAME",
-  "NAME_FIRST",
-  "NAME_MIDDLE",
-  "NAME_LAST",
-  "ADDRESS",
-  "ADDRESS_STREET1",
-  "ADDRESS_STREET2",
-  "ADDRESS_STREET3",
-  "ADDRESS_CITY",
-  "ADDRESS_STATE",
-  "ADDRESS_COUNTRY",
-  "ADDRESS_POSTALCODE",
-  "PHONE",
-  "PHONE_NUMBER",
-  "PHONE_COUNTRYCODE",
-  "EMAIL_ADDRESS",
-  "UNIQUE_ID",
-  "DATE",
-  "STRING",
-  "PROVIDER_ID",
-  "IPV4",
-  "IPV6",
-  "MAID",
-);
+  | "MAID"
+  | (string & {});
+export const SchemaAttributeType = S.String;
 export interface SchemaInputAttribute {
   fieldName: string;
   type: SchemaAttributeType;
@@ -1207,19 +1185,24 @@ export const UpdateSchemaMappingInput = S.suspend(() =>
 ).annotations({
   identifier: "UpdateSchemaMappingInput",
 }) as any as S.Schema<UpdateSchemaMappingInput>;
-export type DeleteUniqueIdStatus = "COMPLETED" | "ACCEPTED";
-export const DeleteUniqueIdStatus = S.Literal("COMPLETED", "ACCEPTED");
+export type DeleteUniqueIdStatus = "COMPLETED" | "ACCEPTED" | (string & {});
+export const DeleteUniqueIdStatus = S.String;
 export type DisconnectedUniqueIdsList = string[];
 export const DisconnectedUniqueIdsList = S.Array(S.String);
-export type JobStatus = "RUNNING" | "SUCCEEDED" | "FAILED" | "QUEUED";
-export const JobStatus = S.Literal("RUNNING", "SUCCEEDED", "FAILED", "QUEUED");
+export type JobStatus =
+  | "RUNNING"
+  | "SUCCEEDED"
+  | "FAILED"
+  | "QUEUED"
+  | (string & {});
+export const JobStatus = S.String;
 export type RecordAttributeMap = { [key: string]: string | undefined };
 export const RecordAttributeMap = S.Record({
   key: S.String,
   value: S.UndefinedOr(S.String),
 });
-export type ServiceType = "ASSIGNMENT" | "ID_MAPPING";
-export const ServiceType = S.Literal("ASSIGNMENT", "ID_MAPPING");
+export type ServiceType = "ASSIGNMENT" | "ID_MAPPING" | (string & {});
+export const ServiceType = S.String;
 export interface IdMappingJobOutputSource {
   roleArn: string;
   outputS3Path: string;
@@ -1630,11 +1613,11 @@ export const UpdateSchemaMappingOutput = S.suspend(() =>
 ).annotations({
   identifier: "UpdateSchemaMappingOutput",
 }) as any as S.Schema<UpdateSchemaMappingOutput>;
-export type DeleteUniqueIdErrorType = "SERVICE_ERROR" | "VALIDATION_ERROR";
-export const DeleteUniqueIdErrorType = S.Literal(
-  "SERVICE_ERROR",
-  "VALIDATION_ERROR",
-);
+export type DeleteUniqueIdErrorType =
+  | "SERVICE_ERROR"
+  | "VALIDATION_ERROR"
+  | (string & {});
+export const DeleteUniqueIdErrorType = S.String;
 export type RecordAttributeMapString255 = { [key: string]: string | undefined };
 export const RecordAttributeMapString255 = S.Record({
   key: S.String,

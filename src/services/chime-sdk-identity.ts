@@ -109,14 +109,14 @@ export type LexIntentName = string;
 export type RetentionDays = number;
 
 //# Schemas
-export type AppInstanceUserEndpointType = "APNS" | "APNS_SANDBOX" | "GCM";
-export const AppInstanceUserEndpointType = S.Literal(
-  "APNS",
-  "APNS_SANDBOX",
-  "GCM",
-);
-export type AllowMessages = "ALL" | "NONE";
-export const AllowMessages = S.Literal("ALL", "NONE");
+export type AppInstanceUserEndpointType =
+  | "APNS"
+  | "APNS_SANDBOX"
+  | "GCM"
+  | (string & {});
+export const AppInstanceUserEndpointType = S.String;
+export type AllowMessages = "ALL" | "NONE" | (string & {});
+export const AllowMessages = S.String;
 export type TagKeyList = string | redacted.Redacted<string>[];
 export const TagKeyList = S.Array(SensitiveString);
 export interface CreateAppInstanceAdminRequest {
@@ -544,8 +544,8 @@ export const ListTagsForResourceRequest = S.suspend(() =>
 ).annotations({
   identifier: "ListTagsForResourceRequest",
 }) as any as S.Schema<ListTagsForResourceRequest>;
-export type ExpirationCriterion = "CREATED_TIMESTAMP";
-export const ExpirationCriterion = S.Literal("CREATED_TIMESTAMP");
+export type ExpirationCriterion = "CREATED_TIMESTAMP" | (string & {});
+export const ExpirationCriterion = S.String;
 export interface ExpirationSettings {
   ExpirationDays: number;
   ExpirationCriterion: ExpirationCriterion;
@@ -658,12 +658,17 @@ export const UpdateAppInstanceRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateAppInstanceRequest",
 }) as any as S.Schema<UpdateAppInstanceRequest>;
-export type RespondsTo = "STANDARD_MESSAGES";
-export const RespondsTo = S.Literal("STANDARD_MESSAGES");
-export type StandardMessages = "AUTO" | "ALL" | "MENTIONS" | "NONE";
-export const StandardMessages = S.Literal("AUTO", "ALL", "MENTIONS", "NONE");
-export type TargetedMessages = "ALL" | "NONE";
-export const TargetedMessages = S.Literal("ALL", "NONE");
+export type RespondsTo = "STANDARD_MESSAGES" | (string & {});
+export const RespondsTo = S.String;
+export type StandardMessages =
+  | "AUTO"
+  | "ALL"
+  | "MENTIONS"
+  | "NONE"
+  | (string & {});
+export const StandardMessages = S.String;
+export type TargetedMessages = "ALL" | "NONE" | (string & {});
+export const TargetedMessages = S.String;
 export interface InvokedBy {
   StandardMessages: StandardMessages;
   TargetedMessages: TargetedMessages;
@@ -794,24 +799,9 @@ export type ErrorCode =
   | "Unauthorized"
   | "Unprocessable"
   | "VoiceConnectorGroupAssociationsExist"
-  | "PhoneNumberAssociationsExist";
-export const ErrorCode = S.Literal(
-  "BadRequest",
-  "Conflict",
-  "Forbidden",
-  "NotFound",
-  "PreconditionFailed",
-  "ResourceLimitExceeded",
-  "ServiceFailure",
-  "AccessDenied",
-  "ServiceUnavailable",
-  "Throttled",
-  "Throttling",
-  "Unauthorized",
-  "Unprocessable",
-  "VoiceConnectorGroupAssociationsExist",
-  "PhoneNumberAssociationsExist",
-);
+  | "PhoneNumberAssociationsExist"
+  | (string & {});
+export const ErrorCode = S.String;
 export interface EndpointAttributes {
   DeviceToken: string | redacted.Redacted<string>;
   VoipDeviceToken?: string | redacted.Redacted<string>;
@@ -1133,15 +1123,13 @@ export const AppInstanceSummary = S.suspend(() =>
 }) as any as S.Schema<AppInstanceSummary>;
 export type AppInstanceList = AppInstanceSummary[];
 export const AppInstanceList = S.Array(AppInstanceSummary);
-export type EndpointStatus = "ACTIVE" | "INACTIVE";
-export const EndpointStatus = S.Literal("ACTIVE", "INACTIVE");
+export type EndpointStatus = "ACTIVE" | "INACTIVE" | (string & {});
+export const EndpointStatus = S.String;
 export type EndpointStatusReason =
   | "INVALID_DEVICE_TOKEN"
-  | "INVALID_PINPOINT_ARN";
-export const EndpointStatusReason = S.Literal(
-  "INVALID_DEVICE_TOKEN",
-  "INVALID_PINPOINT_ARN",
-);
+  | "INVALID_PINPOINT_ARN"
+  | (string & {});
+export const EndpointStatusReason = S.String;
 export interface EndpointState {
   Status: EndpointStatus;
   StatusReason?: EndpointStatusReason;

@@ -133,18 +133,16 @@ export type AWSAccountIdType = string;
 export type ArnType = string;
 
 //# Schemas
-export type CustomKeyStoreType = "AWS_CLOUDHSM" | "EXTERNAL_KEY_STORE";
-export const CustomKeyStoreType = S.Literal(
-  "AWS_CLOUDHSM",
-  "EXTERNAL_KEY_STORE",
-);
+export type CustomKeyStoreType =
+  | "AWS_CLOUDHSM"
+  | "EXTERNAL_KEY_STORE"
+  | (string & {});
+export const CustomKeyStoreType = S.String;
 export type XksProxyConnectivityType =
   | "PUBLIC_ENDPOINT"
-  | "VPC_ENDPOINT_SERVICE";
-export const XksProxyConnectivityType = S.Literal(
-  "PUBLIC_ENDPOINT",
-  "VPC_ENDPOINT_SERVICE",
-);
+  | "VPC_ENDPOINT_SERVICE"
+  | (string & {});
+export const XksProxyConnectivityType = S.String;
 export type GrantOperation =
   | "Decrypt"
   | "Encrypt"
@@ -162,26 +160,9 @@ export type GrantOperation =
   | "GenerateDataKeyPairWithoutPlaintext"
   | "GenerateMac"
   | "VerifyMac"
-  | "DeriveSharedSecret";
-export const GrantOperation = S.Literal(
-  "Decrypt",
-  "Encrypt",
-  "GenerateDataKey",
-  "GenerateDataKeyWithoutPlaintext",
-  "ReEncryptFrom",
-  "ReEncryptTo",
-  "Sign",
-  "Verify",
-  "GetPublicKey",
-  "CreateGrant",
-  "RetireGrant",
-  "DescribeKey",
-  "GenerateDataKeyPair",
-  "GenerateDataKeyPairWithoutPlaintext",
-  "GenerateMac",
-  "VerifyMac",
-  "DeriveSharedSecret",
-);
+  | "DeriveSharedSecret"
+  | (string & {});
+export const GrantOperation = S.String;
 export type GrantOperationList = GrantOperation[];
 export const GrantOperationList = S.Array(GrantOperation);
 export type GrantTokenList = string[];
@@ -190,13 +171,9 @@ export type KeyUsageType =
   | "SIGN_VERIFY"
   | "ENCRYPT_DECRYPT"
   | "GENERATE_VERIFY_MAC"
-  | "KEY_AGREEMENT";
-export const KeyUsageType = S.Literal(
-  "SIGN_VERIFY",
-  "ENCRYPT_DECRYPT",
-  "GENERATE_VERIFY_MAC",
-  "KEY_AGREEMENT",
-);
+  | "KEY_AGREEMENT"
+  | (string & {});
+export const KeyUsageType = S.String;
 export type CustomerMasterKeySpec =
   | "RSA_2048"
   | "RSA_3072"
@@ -210,22 +187,9 @@ export type CustomerMasterKeySpec =
   | "HMAC_256"
   | "HMAC_384"
   | "HMAC_512"
-  | "SM2";
-export const CustomerMasterKeySpec = S.Literal(
-  "RSA_2048",
-  "RSA_3072",
-  "RSA_4096",
-  "ECC_NIST_P256",
-  "ECC_NIST_P384",
-  "ECC_NIST_P521",
-  "ECC_SECG_P256K1",
-  "SYMMETRIC_DEFAULT",
-  "HMAC_224",
-  "HMAC_256",
-  "HMAC_384",
-  "HMAC_512",
-  "SM2",
-);
+  | "SM2"
+  | (string & {});
+export const CustomerMasterKeySpec = S.String;
 export type KeySpec =
   | "RSA_2048"
   | "RSA_3072"
@@ -243,52 +207,27 @@ export type KeySpec =
   | "ML_DSA_44"
   | "ML_DSA_65"
   | "ML_DSA_87"
-  | "ECC_NIST_EDWARDS25519";
-export const KeySpec = S.Literal(
-  "RSA_2048",
-  "RSA_3072",
-  "RSA_4096",
-  "ECC_NIST_P256",
-  "ECC_NIST_P384",
-  "ECC_NIST_P521",
-  "ECC_SECG_P256K1",
-  "SYMMETRIC_DEFAULT",
-  "HMAC_224",
-  "HMAC_256",
-  "HMAC_384",
-  "HMAC_512",
-  "SM2",
-  "ML_DSA_44",
-  "ML_DSA_65",
-  "ML_DSA_87",
-  "ECC_NIST_EDWARDS25519",
-);
+  | "ECC_NIST_EDWARDS25519"
+  | (string & {});
+export const KeySpec = S.String;
 export type OriginType =
   | "AWS_KMS"
   | "EXTERNAL"
   | "AWS_CLOUDHSM"
-  | "EXTERNAL_KEY_STORE";
-export const OriginType = S.Literal(
-  "AWS_KMS",
-  "EXTERNAL",
-  "AWS_CLOUDHSM",
-  "EXTERNAL_KEY_STORE",
-);
+  | "EXTERNAL_KEY_STORE"
+  | (string & {});
+export const OriginType = S.String;
 export type EncryptionAlgorithmSpec =
   | "SYMMETRIC_DEFAULT"
   | "RSAES_OAEP_SHA_1"
   | "RSAES_OAEP_SHA_256"
-  | "SM2PKE";
-export const EncryptionAlgorithmSpec = S.Literal(
-  "SYMMETRIC_DEFAULT",
-  "RSAES_OAEP_SHA_1",
-  "RSAES_OAEP_SHA_256",
-  "SM2PKE",
-);
-export type KeyAgreementAlgorithmSpec = "ECDH";
-export const KeyAgreementAlgorithmSpec = S.Literal("ECDH");
-export type DataKeySpec = "AES_256" | "AES_128";
-export const DataKeySpec = S.Literal("AES_256", "AES_128");
+  | "SM2PKE"
+  | (string & {});
+export const EncryptionAlgorithmSpec = S.String;
+export type KeyAgreementAlgorithmSpec = "ECDH" | (string & {});
+export const KeyAgreementAlgorithmSpec = S.String;
+export type DataKeySpec = "AES_256" | "AES_128" | (string & {});
+export const DataKeySpec = S.String;
 export type DataKeyPairSpec =
   | "RSA_2048"
   | "RSA_3072"
@@ -298,70 +237,49 @@ export type DataKeyPairSpec =
   | "ECC_NIST_P521"
   | "ECC_SECG_P256K1"
   | "SM2"
-  | "ECC_NIST_EDWARDS25519";
-export const DataKeyPairSpec = S.Literal(
-  "RSA_2048",
-  "RSA_3072",
-  "RSA_4096",
-  "ECC_NIST_P256",
-  "ECC_NIST_P384",
-  "ECC_NIST_P521",
-  "ECC_SECG_P256K1",
-  "SM2",
-  "ECC_NIST_EDWARDS25519",
-);
+  | "ECC_NIST_EDWARDS25519"
+  | (string & {});
+export const DataKeyPairSpec = S.String;
 export type MacAlgorithmSpec =
   | "HMAC_SHA_224"
   | "HMAC_SHA_256"
   | "HMAC_SHA_384"
-  | "HMAC_SHA_512";
-export const MacAlgorithmSpec = S.Literal(
-  "HMAC_SHA_224",
-  "HMAC_SHA_256",
-  "HMAC_SHA_384",
-  "HMAC_SHA_512",
-);
+  | "HMAC_SHA_512"
+  | (string & {});
+export const MacAlgorithmSpec = S.String;
 export type AlgorithmSpec =
   | "RSAES_PKCS1_V1_5"
   | "RSAES_OAEP_SHA_1"
   | "RSAES_OAEP_SHA_256"
   | "RSA_AES_KEY_WRAP_SHA_1"
   | "RSA_AES_KEY_WRAP_SHA_256"
-  | "SM2PKE";
-export const AlgorithmSpec = S.Literal(
-  "RSAES_PKCS1_V1_5",
-  "RSAES_OAEP_SHA_1",
-  "RSAES_OAEP_SHA_256",
-  "RSA_AES_KEY_WRAP_SHA_1",
-  "RSA_AES_KEY_WRAP_SHA_256",
-  "SM2PKE",
-);
-export type WrappingKeySpec = "RSA_2048" | "RSA_3072" | "RSA_4096" | "SM2";
-export const WrappingKeySpec = S.Literal(
-  "RSA_2048",
-  "RSA_3072",
-  "RSA_4096",
-  "SM2",
-);
+  | "SM2PKE"
+  | (string & {});
+export const AlgorithmSpec = S.String;
+export type WrappingKeySpec =
+  | "RSA_2048"
+  | "RSA_3072"
+  | "RSA_4096"
+  | "SM2"
+  | (string & {});
+export const WrappingKeySpec = S.String;
 export type ExpirationModelType =
   | "KEY_MATERIAL_EXPIRES"
-  | "KEY_MATERIAL_DOES_NOT_EXPIRE";
-export const ExpirationModelType = S.Literal(
-  "KEY_MATERIAL_EXPIRES",
-  "KEY_MATERIAL_DOES_NOT_EXPIRE",
-);
-export type ImportType = "NEW_KEY_MATERIAL" | "EXISTING_KEY_MATERIAL";
-export const ImportType = S.Literal(
-  "NEW_KEY_MATERIAL",
-  "EXISTING_KEY_MATERIAL",
-);
-export type IncludeKeyMaterial = "ALL_KEY_MATERIAL" | "ROTATIONS_ONLY";
-export const IncludeKeyMaterial = S.Literal(
-  "ALL_KEY_MATERIAL",
-  "ROTATIONS_ONLY",
-);
-export type MessageType = "RAW" | "DIGEST" | "EXTERNAL_MU";
-export const MessageType = S.Literal("RAW", "DIGEST", "EXTERNAL_MU");
+  | "KEY_MATERIAL_DOES_NOT_EXPIRE"
+  | (string & {});
+export const ExpirationModelType = S.String;
+export type ImportType =
+  | "NEW_KEY_MATERIAL"
+  | "EXISTING_KEY_MATERIAL"
+  | (string & {});
+export const ImportType = S.String;
+export type IncludeKeyMaterial =
+  | "ALL_KEY_MATERIAL"
+  | "ROTATIONS_ONLY"
+  | (string & {});
+export const IncludeKeyMaterial = S.String;
+export type MessageType = "RAW" | "DIGEST" | "EXTERNAL_MU" | (string & {});
+export const MessageType = S.String;
 export type SigningAlgorithmSpec =
   | "RSASSA_PSS_SHA_256"
   | "RSASSA_PSS_SHA_384"
@@ -375,22 +293,9 @@ export type SigningAlgorithmSpec =
   | "SM2DSA"
   | "ML_DSA_SHAKE_256"
   | "ED25519_SHA_512"
-  | "ED25519_PH_SHA_512";
-export const SigningAlgorithmSpec = S.Literal(
-  "RSASSA_PSS_SHA_256",
-  "RSASSA_PSS_SHA_384",
-  "RSASSA_PSS_SHA_512",
-  "RSASSA_PKCS1_V1_5_SHA_256",
-  "RSASSA_PKCS1_V1_5_SHA_384",
-  "RSASSA_PKCS1_V1_5_SHA_512",
-  "ECDSA_SHA_256",
-  "ECDSA_SHA_384",
-  "ECDSA_SHA_512",
-  "SM2DSA",
-  "ML_DSA_SHAKE_256",
-  "ED25519_SHA_512",
-  "ED25519_PH_SHA_512",
-);
+  | "ED25519_PH_SHA_512"
+  | (string & {});
+export const SigningAlgorithmSpec = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export interface CancelKeyDeletionRequest {
@@ -527,8 +432,8 @@ export const DeleteImportedKeyMaterialRequest = S.suspend(() =>
 ).annotations({
   identifier: "DeleteImportedKeyMaterialRequest",
 }) as any as S.Schema<DeleteImportedKeyMaterialRequest>;
-export type KeyEncryptionMechanism = "RSAES_OAEP_SHA_256";
-export const KeyEncryptionMechanism = S.Literal("RSAES_OAEP_SHA_256");
+export type KeyEncryptionMechanism = "RSAES_OAEP_SHA_256" | (string & {});
+export const KeyEncryptionMechanism = S.String;
 export interface RecipientInfo {
   KeyEncryptionAlgorithm?: KeyEncryptionMechanism;
   AttestationDocument?: Uint8Array;
@@ -1737,17 +1642,9 @@ export type KeyState =
   | "PendingImport"
   | "PendingReplicaDeletion"
   | "Unavailable"
-  | "Updating";
-export const KeyState = S.Literal(
-  "Creating",
-  "Enabled",
-  "Disabled",
-  "PendingDeletion",
-  "PendingImport",
-  "PendingReplicaDeletion",
-  "Unavailable",
-  "Updating",
-);
+  | "Updating"
+  | (string & {});
+export const KeyState = S.String;
 export interface CancelKeyDeletionResponse {
   KeyId?: string;
 }
@@ -2184,10 +2081,10 @@ export const ReEncryptResponse = S.suspend(() =>
 ).annotations({
   identifier: "ReEncryptResponse",
 }) as any as S.Schema<ReEncryptResponse>;
-export type KeyManagerType = "AWS" | "CUSTOMER";
-export const KeyManagerType = S.Literal("AWS", "CUSTOMER");
-export type MultiRegionKeyType = "PRIMARY" | "REPLICA";
-export const MultiRegionKeyType = S.Literal("PRIMARY", "REPLICA");
+export type KeyManagerType = "AWS" | "CUSTOMER" | (string & {});
+export const KeyManagerType = S.String;
+export type MultiRegionKeyType = "PRIMARY" | "REPLICA" | (string & {});
+export const MultiRegionKeyType = S.String;
 export interface MultiRegionKey {
   Arn?: string;
   Region?: string;
@@ -2364,14 +2261,9 @@ export type ConnectionStateType =
   | "CONNECTING"
   | "FAILED"
   | "DISCONNECTED"
-  | "DISCONNECTING";
-export const ConnectionStateType = S.Literal(
-  "CONNECTED",
-  "CONNECTING",
-  "FAILED",
-  "DISCONNECTED",
-  "DISCONNECTING",
-);
+  | "DISCONNECTING"
+  | (string & {});
+export const ConnectionStateType = S.String;
 export type ConnectionErrorCodeType =
   | "INVALID_CREDENTIALS"
   | "CLUSTER_NOT_FOUND"
@@ -2390,42 +2282,20 @@ export type ConnectionErrorCodeType =
   | "XKS_PROXY_INVALID_CONFIGURATION"
   | "XKS_VPC_ENDPOINT_SERVICE_INVALID_CONFIGURATION"
   | "XKS_PROXY_TIMED_OUT"
-  | "XKS_PROXY_INVALID_TLS_CONFIGURATION";
-export const ConnectionErrorCodeType = S.Literal(
-  "INVALID_CREDENTIALS",
-  "CLUSTER_NOT_FOUND",
-  "NETWORK_ERRORS",
-  "INTERNAL_ERROR",
-  "INSUFFICIENT_CLOUDHSM_HSMS",
-  "USER_LOCKED_OUT",
-  "USER_NOT_FOUND",
-  "USER_LOGGED_IN",
-  "SUBNET_NOT_FOUND",
-  "INSUFFICIENT_FREE_ADDRESSES_IN_SUBNET",
-  "XKS_PROXY_ACCESS_DENIED",
-  "XKS_PROXY_NOT_REACHABLE",
-  "XKS_VPC_ENDPOINT_SERVICE_NOT_FOUND",
-  "XKS_PROXY_INVALID_RESPONSE",
-  "XKS_PROXY_INVALID_CONFIGURATION",
-  "XKS_VPC_ENDPOINT_SERVICE_INVALID_CONFIGURATION",
-  "XKS_PROXY_TIMED_OUT",
-  "XKS_PROXY_INVALID_TLS_CONFIGURATION",
-);
-export type ImportState = "IMPORTED" | "PENDING_IMPORT";
-export const ImportState = S.Literal("IMPORTED", "PENDING_IMPORT");
+  | "XKS_PROXY_INVALID_TLS_CONFIGURATION"
+  | (string & {});
+export const ConnectionErrorCodeType = S.String;
+export type ImportState = "IMPORTED" | "PENDING_IMPORT" | (string & {});
+export const ImportState = S.String;
 export type KeyMaterialState =
   | "NON_CURRENT"
   | "CURRENT"
   | "PENDING_ROTATION"
-  | "PENDING_MULTI_REGION_IMPORT_AND_ROTATION";
-export const KeyMaterialState = S.Literal(
-  "NON_CURRENT",
-  "CURRENT",
-  "PENDING_ROTATION",
-  "PENDING_MULTI_REGION_IMPORT_AND_ROTATION",
-);
-export type RotationType = "AUTOMATIC" | "ON_DEMAND";
-export const RotationType = S.Literal("AUTOMATIC", "ON_DEMAND");
+  | "PENDING_MULTI_REGION_IMPORT_AND_ROTATION"
+  | (string & {});
+export const KeyMaterialState = S.String;
+export type RotationType = "AUTOMATIC" | "ON_DEMAND" | (string & {});
+export const RotationType = S.String;
 export interface AliasListEntry {
   AliasName?: string;
   AliasArn?: string;

@@ -118,20 +118,24 @@ export const GetAccountBalanceRequest = S.suspend(() =>
 ).annotations({
   identifier: "GetAccountBalanceRequest",
 }) as any as S.Schema<GetAccountBalanceRequest>;
-export type QualificationTypeStatus = "Active" | "Inactive";
-export const QualificationTypeStatus = S.Literal("Active", "Inactive");
-export type AssignmentStatus = "Submitted" | "Approved" | "Rejected";
-export const AssignmentStatus = S.Literal("Submitted", "Approved", "Rejected");
+export type QualificationTypeStatus = "Active" | "Inactive" | (string & {});
+export const QualificationTypeStatus = S.String;
+export type AssignmentStatus =
+  | "Submitted"
+  | "Approved"
+  | "Rejected"
+  | (string & {});
+export const AssignmentStatus = S.String;
 export type AssignmentStatusList = AssignmentStatus[];
 export const AssignmentStatusList = S.Array(AssignmentStatus);
-export type ReviewableHITStatus = "Reviewable" | "Reviewing";
-export const ReviewableHITStatus = S.Literal("Reviewable", "Reviewing");
-export type ReviewPolicyLevel = "Assignment" | "HIT";
-export const ReviewPolicyLevel = S.Literal("Assignment", "HIT");
+export type ReviewableHITStatus = "Reviewable" | "Reviewing" | (string & {});
+export const ReviewableHITStatus = S.String;
+export type ReviewPolicyLevel = "Assignment" | "HIT" | (string & {});
+export const ReviewPolicyLevel = S.String;
 export type ReviewPolicyLevelList = ReviewPolicyLevel[];
 export const ReviewPolicyLevelList = S.Array(ReviewPolicyLevel);
-export type QualificationStatus = "Granted" | "Revoked";
-export const QualificationStatus = S.Literal("Granted", "Revoked");
+export type QualificationStatus = "Granted" | "Revoked" | (string & {});
+export const QualificationStatus = S.String;
 export type CustomerIdList = string[];
 export const CustomerIdList = S.Array(S.String);
 export type EventType =
@@ -146,21 +150,9 @@ export type EventType =
   | "HITReviewable"
   | "HITExtended"
   | "HITDisposed"
-  | "Ping";
-export const EventType = S.Literal(
-  "AssignmentAccepted",
-  "AssignmentAbandoned",
-  "AssignmentReturned",
-  "AssignmentSubmitted",
-  "AssignmentRejected",
-  "AssignmentApproved",
-  "HITCreated",
-  "HITExpired",
-  "HITReviewable",
-  "HITExtended",
-  "HITDisposed",
-  "Ping",
-);
+  | "Ping"
+  | (string & {});
+export const EventType = S.String;
 export interface AcceptQualificationRequestRequest {
   QualificationRequestId: string;
   IntegerValue?: number;
@@ -291,19 +283,9 @@ export type Comparator =
   | "Exists"
   | "DoesNotExist"
   | "In"
-  | "NotIn";
-export const Comparator = S.Literal(
-  "LessThan",
-  "LessThanOrEqualTo",
-  "GreaterThan",
-  "GreaterThanOrEqualTo",
-  "EqualTo",
-  "NotEqualTo",
-  "Exists",
-  "DoesNotExist",
-  "In",
-  "NotIn",
-);
+  | "NotIn"
+  | (string & {});
+export const Comparator = S.String;
 export type IntegerList = number[];
 export const IntegerList = S.Array(S.Number);
 export interface Locale {
@@ -318,12 +300,9 @@ export const LocaleList = S.Array(Locale);
 export type HITAccessActions =
   | "Accept"
   | "PreviewAndAccept"
-  | "DiscoverPreviewAndAccept";
-export const HITAccessActions = S.Literal(
-  "Accept",
-  "PreviewAndAccept",
-  "DiscoverPreviewAndAccept",
-);
+  | "DiscoverPreviewAndAccept"
+  | (string & {});
+export const HITAccessActions = S.String;
 export interface QualificationRequirement {
   QualificationTypeId: string;
   Comparator: Comparator;
@@ -1179,8 +1158,8 @@ export const UpdateHITTypeOfHITResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateHITTypeOfHITResponse",
 }) as any as S.Schema<UpdateHITTypeOfHITResponse>;
-export type NotificationTransport = "Email" | "SQS" | "SNS";
-export const NotificationTransport = S.Literal("Email", "SQS", "SNS");
+export type NotificationTransport = "Email" | "SQS" | "SNS" | (string & {});
+export const NotificationTransport = S.String;
 export type EventTypeList = EventType[];
 export const EventTypeList = S.Array(EventType);
 export interface NotificationSpecification {
@@ -1304,25 +1283,16 @@ export type HITStatus =
   | "Unassignable"
   | "Reviewable"
   | "Reviewing"
-  | "Disposed";
-export const HITStatus = S.Literal(
-  "Assignable",
-  "Unassignable",
-  "Reviewable",
-  "Reviewing",
-  "Disposed",
-);
+  | "Disposed"
+  | (string & {});
+export const HITStatus = S.String;
 export type HITReviewStatus =
   | "NotReviewed"
   | "MarkedForReview"
   | "ReviewedAppropriate"
-  | "ReviewedInappropriate";
-export const HITReviewStatus = S.Literal(
-  "NotReviewed",
-  "MarkedForReview",
-  "ReviewedAppropriate",
-  "ReviewedInappropriate",
-);
+  | "ReviewedInappropriate"
+  | (string & {});
+export const HITReviewStatus = S.String;
 export interface HIT {
   HITId?: string;
   HITTypeId?: string;
@@ -1583,8 +1553,11 @@ export const UpdateQualificationTypeResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateQualificationTypeResponse",
 }) as any as S.Schema<UpdateQualificationTypeResponse>;
-export type NotifyWorkersFailureCode = "SoftFailure" | "HardFailure";
-export const NotifyWorkersFailureCode = S.Literal("SoftFailure", "HardFailure");
+export type NotifyWorkersFailureCode =
+  | "SoftFailure"
+  | "HardFailure"
+  | (string & {});
+export const NotifyWorkersFailureCode = S.String;
 export interface BonusPayment {
   WorkerId?: string;
   BonusAmount?: string;
@@ -1656,13 +1629,9 @@ export type ReviewActionStatus =
   | "Intended"
   | "Succeeded"
   | "Failed"
-  | "Cancelled";
-export const ReviewActionStatus = S.Literal(
-  "Intended",
-  "Succeeded",
-  "Failed",
-  "Cancelled",
-);
+  | "Cancelled"
+  | (string & {});
+export const ReviewActionStatus = S.String;
 export interface CreateHITWithHITTypeResponse {
   HIT?: HIT;
 }

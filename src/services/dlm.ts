@@ -128,28 +128,32 @@ export type ScriptExecutionTimeout = number;
 export type ScriptMaximumRetryCount = number;
 
 //# Schemas
-export type SettablePolicyStateValues = "ENABLED" | "DISABLED";
-export const SettablePolicyStateValues = S.Literal("ENABLED", "DISABLED");
-export type DefaultPolicyTypeValues = "VOLUME" | "INSTANCE";
-export const DefaultPolicyTypeValues = S.Literal("VOLUME", "INSTANCE");
+export type SettablePolicyStateValues = "ENABLED" | "DISABLED" | (string & {});
+export const SettablePolicyStateValues = S.String;
+export type DefaultPolicyTypeValues = "VOLUME" | "INSTANCE" | (string & {});
+export const DefaultPolicyTypeValues = S.String;
 export type PolicyIdList = string[];
 export const PolicyIdList = S.Array(S.String);
-export type GettablePolicyStateValues = "ENABLED" | "DISABLED" | "ERROR";
-export const GettablePolicyStateValues = S.Literal(
-  "ENABLED",
-  "DISABLED",
-  "ERROR",
-);
-export type ResourceTypeValues = "VOLUME" | "INSTANCE";
-export const ResourceTypeValues = S.Literal("VOLUME", "INSTANCE");
+export type GettablePolicyStateValues =
+  | "ENABLED"
+  | "DISABLED"
+  | "ERROR"
+  | (string & {});
+export const GettablePolicyStateValues = S.String;
+export type ResourceTypeValues = "VOLUME" | "INSTANCE" | (string & {});
+export const ResourceTypeValues = S.String;
 export type ResourceTypeValuesList = ResourceTypeValues[];
 export const ResourceTypeValuesList = S.Array(ResourceTypeValues);
 export type TargetTagsFilterList = string[];
 export const TargetTagsFilterList = S.Array(S.String);
 export type TagsToAddFilterList = string[];
 export const TagsToAddFilterList = S.Array(S.String);
-export type DefaultPoliciesTypeValues = "VOLUME" | "INSTANCE" | "ALL";
-export const DefaultPoliciesTypeValues = S.Literal("VOLUME", "INSTANCE", "ALL");
+export type DefaultPoliciesTypeValues =
+  | "VOLUME"
+  | "INSTANCE"
+  | "ALL"
+  | (string & {});
+export const DefaultPoliciesTypeValues = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export interface DeleteLifecyclePolicyRequest {
@@ -302,18 +306,15 @@ export const UntagResourceResponse = S.suspend(() => S.Struct({})).annotations({
 export type PolicyTypeValues =
   | "EBS_SNAPSHOT_MANAGEMENT"
   | "IMAGE_MANAGEMENT"
-  | "EVENT_BASED_POLICY";
-export const PolicyTypeValues = S.Literal(
-  "EBS_SNAPSHOT_MANAGEMENT",
-  "IMAGE_MANAGEMENT",
-  "EVENT_BASED_POLICY",
-);
-export type ResourceLocationValues = "CLOUD" | "OUTPOST" | "LOCAL_ZONE";
-export const ResourceLocationValues = S.Literal(
-  "CLOUD",
-  "OUTPOST",
-  "LOCAL_ZONE",
-);
+  | "EVENT_BASED_POLICY"
+  | (string & {});
+export const PolicyTypeValues = S.String;
+export type ResourceLocationValues =
+  | "CLOUD"
+  | "OUTPOST"
+  | "LOCAL_ZONE"
+  | (string & {});
+export const ResourceLocationValues = S.String;
 export type ResourceLocationList = ResourceLocationValues[];
 export const ResourceLocationList = S.Array(ResourceLocationValues);
 export interface Tag {
@@ -329,18 +330,24 @@ export type TagsToAddList = Tag[];
 export const TagsToAddList = S.Array(Tag);
 export type VariableTagsList = Tag[];
 export const VariableTagsList = S.Array(Tag);
-export type LocationValues = "CLOUD" | "OUTPOST_LOCAL" | "LOCAL_ZONE";
-export const LocationValues = S.Literal("CLOUD", "OUTPOST_LOCAL", "LOCAL_ZONE");
-export type IntervalUnitValues = "HOURS";
-export const IntervalUnitValues = S.Literal("HOURS");
+export type LocationValues =
+  | "CLOUD"
+  | "OUTPOST_LOCAL"
+  | "LOCAL_ZONE"
+  | (string & {});
+export const LocationValues = S.String;
+export type IntervalUnitValues = "HOURS" | (string & {});
+export const IntervalUnitValues = S.String;
 export type TimesList = string[];
 export const TimesList = S.Array(S.String);
-export type StageValues = "PRE" | "POST";
-export const StageValues = S.Literal("PRE", "POST");
+export type StageValues = "PRE" | "POST" | (string & {});
+export const StageValues = S.String;
 export type StagesList = StageValues[];
 export const StagesList = S.Array(StageValues);
-export type ExecutionHandlerServiceValues = "AWS_SYSTEMS_MANAGER";
-export const ExecutionHandlerServiceValues = S.Literal("AWS_SYSTEMS_MANAGER");
+export type ExecutionHandlerServiceValues =
+  | "AWS_SYSTEMS_MANAGER"
+  | (string & {});
+export const ExecutionHandlerServiceValues = S.String;
 export interface Script {
   Stages?: StageValues[];
   ExecutionHandlerService?: ExecutionHandlerServiceValues;
@@ -379,13 +386,13 @@ export const CreateRule = S.suspend(() =>
     Scripts: S.optional(ScriptsList),
   }),
 ).annotations({ identifier: "CreateRule" }) as any as S.Schema<CreateRule>;
-export type RetentionIntervalUnitValues = "DAYS" | "WEEKS" | "MONTHS" | "YEARS";
-export const RetentionIntervalUnitValues = S.Literal(
-  "DAYS",
-  "WEEKS",
-  "MONTHS",
-  "YEARS",
-);
+export type RetentionIntervalUnitValues =
+  | "DAYS"
+  | "WEEKS"
+  | "MONTHS"
+  | "YEARS"
+  | (string & {});
+export const RetentionIntervalUnitValues = S.String;
 export interface RetainRule {
   Count?: number;
   Interval?: number;
@@ -566,10 +573,10 @@ export const Parameters = S.suspend(() =>
     ExcludeDataVolumeTags: S.optional(ExcludeDataVolumeTagList),
   }),
 ).annotations({ identifier: "Parameters" }) as any as S.Schema<Parameters>;
-export type EventSourceValues = "MANAGED_CWE";
-export const EventSourceValues = S.Literal("MANAGED_CWE");
-export type EventTypeValues = "shareSnapshot";
-export const EventTypeValues = S.Literal("shareSnapshot");
+export type EventSourceValues = "MANAGED_CWE" | (string & {});
+export const EventSourceValues = S.String;
+export type EventTypeValues = "shareSnapshot" | (string & {});
+export const EventTypeValues = S.String;
 export type SnapshotOwnerList = string[];
 export const SnapshotOwnerList = S.Array(S.String);
 export interface EventParameters {
@@ -633,8 +640,8 @@ export const Action = S.suspend(() =>
 ).annotations({ identifier: "Action" }) as any as S.Schema<Action>;
 export type ActionList = Action[];
 export const ActionList = S.Array(Action);
-export type PolicyLanguageValues = "SIMPLIFIED" | "STANDARD";
-export const PolicyLanguageValues = S.Literal("SIMPLIFIED", "STANDARD");
+export type PolicyLanguageValues = "SIMPLIFIED" | "STANDARD" | (string & {});
+export const PolicyLanguageValues = S.String;
 export interface CrossRegionCopyTarget {
   TargetRegion?: string;
 }

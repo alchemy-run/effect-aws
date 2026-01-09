@@ -116,12 +116,12 @@ export const GetAccountConfigurationRequest = S.suspend(() =>
 ).annotations({
   identifier: "GetAccountConfigurationRequest",
 }) as any as S.Schema<GetAccountConfigurationRequest>;
-export type ScanType = "Standard" | "Express";
-export const ScanType = S.Literal("Standard", "Express");
-export type AnalysisType = "Security" | "All";
-export const AnalysisType = S.Literal("Security", "All");
-export type Status = "Closed" | "Open" | "All";
-export const Status = S.Literal("Closed", "Open", "All");
+export type ScanType = "Standard" | "Express" | (string & {});
+export const ScanType = S.String;
+export type AnalysisType = "Security" | "All" | (string & {});
+export const AnalysisType = S.String;
+export type Status = "Closed" | "Open" | "All" | (string & {});
+export const Status = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export interface CreateUploadUrlRequest {
@@ -368,8 +368,8 @@ export type FindingIdentifiers = FindingIdentifier[];
 export const FindingIdentifiers = S.Array(FindingIdentifier);
 export type ResourceId = { codeArtifactId: string };
 export const ResourceId = S.Union(S.Struct({ codeArtifactId: S.String }));
-export type ScanState = "InProgress" | "Successful" | "Failed";
-export const ScanState = S.Literal("InProgress", "Successful", "Failed");
+export type ScanState = "InProgress" | "Successful" | "Failed" | (string & {});
+export const ScanState = S.String;
 export interface BatchGetFindingsRequest {
   findingIdentifiers: FindingIdentifier[];
 }
@@ -466,8 +466,14 @@ export const UpdateAccountConfigurationResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateAccountConfigurationResponse",
 }) as any as S.Schema<UpdateAccountConfigurationResponse>;
-export type Severity = "Critical" | "High" | "Medium" | "Low" | "Info";
-export const Severity = S.Literal("Critical", "High", "Medium", "Low", "Info");
+export type Severity =
+  | "Critical"
+  | "High"
+  | "Medium"
+  | "Low"
+  | "Info"
+  | (string & {});
+export const Severity = S.String;
 export type DetectorTags = string[];
 export const DetectorTags = S.Array(S.String);
 export interface ScanNameWithFindingNum {
@@ -614,14 +620,9 @@ export type ErrorCode =
   | "ITEM_DOES_NOT_EXIST"
   | "INTERNAL_ERROR"
   | "INVALID_FINDING_ID"
-  | "INVALID_SCAN_NAME";
-export const ErrorCode = S.Literal(
-  "DUPLICATE_IDENTIFIER",
-  "ITEM_DOES_NOT_EXIST",
-  "INTERNAL_ERROR",
-  "INVALID_FINDING_ID",
-  "INVALID_SCAN_NAME",
-);
+  | "INVALID_SCAN_NAME"
+  | (string & {});
+export const ErrorCode = S.String;
 export interface Resource {
   id?: string;
   subResourceId?: string;
@@ -816,14 +817,9 @@ export type ValidationExceptionReason =
   | "cannotParse"
   | "fieldValidationFailed"
   | "other"
-  | "lambdaCodeShaMisMatch";
-export const ValidationExceptionReason = S.Literal(
-  "unknownOperation",
-  "cannotParse",
-  "fieldValidationFailed",
-  "other",
-  "lambdaCodeShaMisMatch",
-);
+  | "lambdaCodeShaMisMatch"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 export interface ValidationExceptionField {
   name: string;
   message: string;

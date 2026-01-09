@@ -399,11 +399,11 @@ export const ListWorkflowVersionsRequest = S.suspend(() =>
 ).annotations({
   identifier: "ListWorkflowVersionsRequest",
 }) as any as S.Schema<ListWorkflowVersionsRequest>;
-export type EncryptionType = "AWS_MANAGED_KEY" | "CUSTOMER_MANAGED_KEY";
-export const EncryptionType = S.Literal(
-  "AWS_MANAGED_KEY",
-  "CUSTOMER_MANAGED_KEY",
-);
+export type EncryptionType =
+  | "AWS_MANAGED_KEY"
+  | "CUSTOMER_MANAGED_KEY"
+  | (string & {});
+export const EncryptionType = S.String;
 export type Tags = { [key: string]: string | undefined };
 export const Tags = S.Record({ key: S.String, value: S.UndefinedOr(S.String) });
 export type TaskInstanceStatus =
@@ -420,23 +420,9 @@ export type TaskInstanceStatus =
   | "DEFERRED"
   | "NONE"
   | "CANCELLED"
-  | "TIMEOUT";
-export const TaskInstanceStatus = S.Literal(
-  "QUEUED",
-  "FAILED",
-  "SCHEDULED",
-  "RUNNING",
-  "SUCCESS",
-  "UP_FOR_RESCHEDULE",
-  "UP_FOR_RETRY",
-  "UPSTREAM_FAILED",
-  "REMOVED",
-  "RESTARTING",
-  "DEFERRED",
-  "NONE",
-  "CANCELLED",
-  "TIMEOUT",
-);
+  | "TIMEOUT"
+  | (string & {});
+export const TaskInstanceStatus = S.String;
 export interface EncryptionConfiguration {
   Type: EncryptionType;
   KmsKeyId?: string;
@@ -446,8 +432,8 @@ export const EncryptionConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "EncryptionConfiguration",
 }) as any as S.Schema<EncryptionConfiguration>;
-export type WorkflowStatus = "READY" | "DELETING";
-export const WorkflowStatus = S.Literal("READY", "DELETING");
+export type WorkflowStatus = "READY" | "DELETING" | (string & {});
+export const WorkflowStatus = S.String;
 export type WarningMessages = string[];
 export const WarningMessages = S.Array(S.String);
 export type ObjectMap = { [key: string]: any | undefined };
@@ -455,8 +441,8 @@ export const ObjectMap = S.Record({
   key: S.String,
   value: S.UndefinedOr(S.Any),
 });
-export type RunType = "ON_DEMAND" | "SCHEDULED";
-export const RunType = S.Literal("ON_DEMAND", "SCHEDULED");
+export type RunType = "ON_DEMAND" | "SCHEDULED" | (string & {});
+export const RunType = S.String;
 export type WorkflowRunStatus =
   | "STARTING"
   | "QUEUED"
@@ -465,17 +451,9 @@ export type WorkflowRunStatus =
   | "FAILED"
   | "TIMEOUT"
   | "STOPPING"
-  | "STOPPED";
-export const WorkflowRunStatus = S.Literal(
-  "STARTING",
-  "QUEUED",
-  "RUNNING",
-  "SUCCESS",
-  "FAILED",
-  "TIMEOUT",
-  "STOPPING",
-  "STOPPED",
-);
+  | "STOPPED"
+  | (string & {});
+export const WorkflowRunStatus = S.String;
 export interface ListTagsForResourceResponse {
   Tags?: { [key: string]: string | undefined };
 }
@@ -956,13 +934,9 @@ export type ValidationExceptionReason =
   | "unknownOperation"
   | "cannotParse"
   | "fieldValidationFailed"
-  | "other";
-export const ValidationExceptionReason = S.Literal(
-  "unknownOperation",
-  "cannotParse",
-  "fieldValidationFailed",
-  "other",
-);
+  | "other"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 export interface ValidationExceptionField {
   Name: string;
   Message: string;

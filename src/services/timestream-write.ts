@@ -140,19 +140,13 @@ export type BatchLoadStatus =
   | "FAILED"
   | "SUCCEEDED"
   | "PROGRESS_STOPPED"
-  | "PENDING_RESUME";
-export const BatchLoadStatus = S.Literal(
-  "CREATED",
-  "IN_PROGRESS",
-  "FAILED",
-  "SUCCEEDED",
-  "PROGRESS_STOPPED",
-  "PENDING_RESUME",
-);
+  | "PENDING_RESUME"
+  | (string & {});
+export const BatchLoadStatus = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
-export type DimensionValueType = "VARCHAR";
-export const DimensionValueType = S.Literal("VARCHAR");
+export type DimensionValueType = "VARCHAR" | (string & {});
+export const DimensionValueType = S.String;
 export interface Dimension {
   Name: string;
   Value: string;
@@ -173,26 +167,16 @@ export type MeasureValueType =
   | "VARCHAR"
   | "BOOLEAN"
   | "TIMESTAMP"
-  | "MULTI";
-export const MeasureValueType = S.Literal(
-  "DOUBLE",
-  "BIGINT",
-  "VARCHAR",
-  "BOOLEAN",
-  "TIMESTAMP",
-  "MULTI",
-);
+  | "MULTI"
+  | (string & {});
+export const MeasureValueType = S.String;
 export type TimeUnit =
   | "MILLISECONDS"
   | "SECONDS"
   | "MICROSECONDS"
-  | "NANOSECONDS";
-export const TimeUnit = S.Literal(
-  "MILLISECONDS",
-  "SECONDS",
-  "MICROSECONDS",
-  "NANOSECONDS",
-);
+  | "NANOSECONDS"
+  | (string & {});
+export const TimeUnit = S.String;
 export interface MeasureValue {
   Name: string;
   Value: string;
@@ -421,8 +405,8 @@ export const RetentionProperties = S.suspend(() =>
 ).annotations({
   identifier: "RetentionProperties",
 }) as any as S.Schema<RetentionProperties>;
-export type S3EncryptionOption = "SSE_S3" | "SSE_KMS";
-export const S3EncryptionOption = S.Literal("SSE_S3", "SSE_KMS");
+export type S3EncryptionOption = "SSE_S3" | "SSE_KMS" | (string & {});
+export const S3EncryptionOption = S.String;
 export interface S3Configuration {
   BucketName?: string;
   ObjectKeyPrefix?: string;
@@ -461,10 +445,13 @@ export const MagneticStoreWriteProperties = S.suspend(() =>
 ).annotations({
   identifier: "MagneticStoreWriteProperties",
 }) as any as S.Schema<MagneticStoreWriteProperties>;
-export type PartitionKeyType = "DIMENSION" | "MEASURE";
-export const PartitionKeyType = S.Literal("DIMENSION", "MEASURE");
-export type PartitionKeyEnforcementLevel = "REQUIRED" | "OPTIONAL";
-export const PartitionKeyEnforcementLevel = S.Literal("REQUIRED", "OPTIONAL");
+export type PartitionKeyType = "DIMENSION" | "MEASURE" | (string & {});
+export const PartitionKeyType = S.String;
+export type PartitionKeyEnforcementLevel =
+  | "REQUIRED"
+  | "OPTIONAL"
+  | (string & {});
+export const PartitionKeyEnforcementLevel = S.String;
 export interface PartitionKey {
   Type: PartitionKeyType;
   Name?: string;
@@ -505,8 +492,8 @@ export const UpdateTableRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateTableRequest",
 }) as any as S.Schema<UpdateTableRequest>;
-export type BatchLoadDataFormat = "CSV";
-export const BatchLoadDataFormat = S.Literal("CSV");
+export type BatchLoadDataFormat = "CSV" | (string & {});
+export const BatchLoadDataFormat = S.String;
 export interface Endpoint {
   Address: string;
   CachePeriodInMinutes: number;
@@ -538,8 +525,8 @@ export const Database = S.suspend(() =>
 ).annotations({ identifier: "Database" }) as any as S.Schema<Database>;
 export type DatabaseList = Database[];
 export const DatabaseList = S.Array(Database);
-export type TableStatus = "ACTIVE" | "DELETING" | "RESTORING";
-export const TableStatus = S.Literal("ACTIVE", "DELETING", "RESTORING");
+export type TableStatus = "ACTIVE" | "DELETING" | "RESTORING" | (string & {});
+export const TableStatus = S.String;
 export interface Table {
   Arn?: string;
   TableName?: string;
@@ -759,14 +746,9 @@ export type ScalarMeasureValueType =
   | "BIGINT"
   | "BOOLEAN"
   | "VARCHAR"
-  | "TIMESTAMP";
-export const ScalarMeasureValueType = S.Literal(
-  "DOUBLE",
-  "BIGINT",
-  "BOOLEAN",
-  "VARCHAR",
-  "TIMESTAMP",
-);
+  | "TIMESTAMP"
+  | (string & {});
+export const ScalarMeasureValueType = S.String;
 export interface MultiMeasureAttributeMapping {
   SourceColumn: string;
   TargetMultiMeasureAttributeName?: string;

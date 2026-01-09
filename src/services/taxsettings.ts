@@ -198,8 +198,8 @@ export const GetTaxInheritanceRequest = S.suspend(() =>
 }) as any as S.Schema<GetTaxInheritanceRequest>;
 export type AccountIds = string[];
 export const AccountIds = S.Array(S.String);
-export type HeritageStatus = "OptIn" | "OptOut";
-export const HeritageStatus = S.Literal("OptIn", "OptOut");
+export type HeritageStatus = "OptIn" | "OptOut" | (string & {});
+export const HeritageStatus = S.String;
 export interface BatchDeleteTaxRegistrationRequest {
   accountIds: string[];
 }
@@ -398,16 +398,9 @@ export type TaxRegistrationType =
   | "CNPJ"
   | "SST"
   | "TIN"
-  | "NRIC";
-export const TaxRegistrationType = S.Literal(
-  "VAT",
-  "GST",
-  "CPF",
-  "CNPJ",
-  "SST",
-  "TIN",
-  "NRIC",
-);
+  | "NRIC"
+  | (string & {});
+export const TaxRegistrationType = S.String;
 export interface Address {
   addressLine1: string;
   addressLine2?: string;
@@ -430,19 +423,15 @@ export const Address = S.suspend(() =>
     countryCode: S.String,
   }),
 ).annotations({ identifier: "Address" }) as any as S.Schema<Address>;
-export type Sector = "Business" | "Individual" | "Government";
-export const Sector = S.Literal("Business", "Individual", "Government");
+export type Sector = "Business" | "Individual" | "Government" | (string & {});
+export const Sector = S.String;
 export type MalaysiaServiceTaxCode =
   | "Consultancy"
   | "Digital Service And Electronic Medium"
   | "IT Services"
-  | "Training Or Coaching";
-export const MalaysiaServiceTaxCode = S.Literal(
-  "Consultancy",
-  "Digital Service And Electronic Medium",
-  "IT Services",
-  "Training Or Coaching",
-);
+  | "Training Or Coaching"
+  | (string & {});
+export const MalaysiaServiceTaxCode = S.String;
 export type MalaysiaServiceTaxCodesList = MalaysiaServiceTaxCode[];
 export const MalaysiaServiceTaxCodesList = S.Array(MalaysiaServiceTaxCode);
 export interface MalaysiaAdditionalInfo {
@@ -459,10 +448,10 @@ export const MalaysiaAdditionalInfo = S.suspend(() =>
 ).annotations({
   identifier: "MalaysiaAdditionalInfo",
 }) as any as S.Schema<MalaysiaAdditionalInfo>;
-export type IsraelDealerType = "Authorized" | "Non-authorized";
-export const IsraelDealerType = S.Literal("Authorized", "Non-authorized");
-export type IsraelCustomerType = "Business" | "Individual";
-export const IsraelCustomerType = S.Literal("Business", "Individual");
+export type IsraelDealerType = "Authorized" | "Non-authorized" | (string & {});
+export const IsraelDealerType = S.String;
+export type IsraelCustomerType = "Business" | "Individual" | (string & {});
+export const IsraelCustomerType = S.String;
 export interface IsraelAdditionalInfo {
   dealerType: IsraelDealerType;
   customerType: IsraelCustomerType;
@@ -496,8 +485,8 @@ export const CanadaAdditionalInfo = S.suspend(() =>
 ).annotations({
   identifier: "CanadaAdditionalInfo",
 }) as any as S.Schema<CanadaAdditionalInfo>;
-export type RegistrationType = "Intra-EU" | "Local";
-export const RegistrationType = S.Literal("Intra-EU", "Local");
+export type RegistrationType = "Intra-EU" | "Local" | (string & {});
+export const RegistrationType = S.String;
 export interface SpainAdditionalInfo {
   registrationType: RegistrationType;
 }
@@ -506,12 +495,12 @@ export const SpainAdditionalInfo = S.suspend(() =>
 ).annotations({
   identifier: "SpainAdditionalInfo",
 }) as any as S.Schema<SpainAdditionalInfo>;
-export type PersonType = "Legal Person" | "Physical Person" | "Business";
-export const PersonType = S.Literal(
-  "Legal Person",
-  "Physical Person",
-  "Business",
-);
+export type PersonType =
+  | "Legal Person"
+  | "Physical Person"
+  | "Business"
+  | (string & {});
+export const PersonType = S.String;
 export interface KenyaAdditionalInfo {
   personType: PersonType;
 }
@@ -540,15 +529,9 @@ export type Industries =
   | "Banks"
   | "Insurance"
   | "PensionAndBenefitFunds"
-  | "DevelopmentAgencies";
-export const Industries = S.Literal(
-  "CirculatingOrg",
-  "ProfessionalOrg",
-  "Banks",
-  "Insurance",
-  "PensionAndBenefitFunds",
-  "DevelopmentAgencies",
-);
+  | "DevelopmentAgencies"
+  | (string & {});
+export const Industries = S.String;
 export interface TurkeyAdditionalInfo {
   taxOffice?: string;
   kepEmailId?: string;
@@ -591,11 +574,9 @@ export const ItalyAdditionalInfo = S.suspend(() =>
 }) as any as S.Schema<ItalyAdditionalInfo>;
 export type TaxRegistrationNumberType =
   | "TaxRegistrationNumber"
-  | "LocalRegistrationNumber";
-export const TaxRegistrationNumberType = S.Literal(
-  "TaxRegistrationNumber",
-  "LocalRegistrationNumber",
-);
+  | "LocalRegistrationNumber"
+  | (string & {});
+export const TaxRegistrationNumberType = S.String;
 export interface RomaniaAdditionalInfo {
   taxRegistrationNumberType: TaxRegistrationNumberType;
 }
@@ -604,8 +585,8 @@ export const RomaniaAdditionalInfo = S.suspend(() =>
 ).annotations({
   identifier: "RomaniaAdditionalInfo",
 }) as any as S.Schema<RomaniaAdditionalInfo>;
-export type UkraineTrnType = "Business" | "Individual";
-export const UkraineTrnType = S.Literal("Business", "Individual");
+export type UkraineTrnType = "Business" | "Individual" | (string & {});
+export const UkraineTrnType = S.String;
 export interface UkraineAdditionalInfo {
   ukraineTrnType: UkraineTrnType;
 }
@@ -629,12 +610,9 @@ export const PolandAdditionalInfo = S.suspend(() =>
 export type SaudiArabiaTaxRegistrationNumberType =
   | "TaxRegistrationNumber"
   | "TaxIdentificationNumber"
-  | "CommercialRegistrationNumber";
-export const SaudiArabiaTaxRegistrationNumberType = S.Literal(
-  "TaxRegistrationNumber",
-  "TaxIdentificationNumber",
-  "CommercialRegistrationNumber",
-);
+  | "CommercialRegistrationNumber"
+  | (string & {});
+export const SaudiArabiaTaxRegistrationNumberType = S.String;
 export interface SaudiArabiaAdditionalInfo {
   taxRegistrationNumberType?: SaudiArabiaTaxRegistrationNumberType;
 }
@@ -649,13 +627,9 @@ export type IndonesiaTaxRegistrationNumberType =
   | "NIK"
   | "PassportNumber"
   | "NPWP"
-  | "NITKU";
-export const IndonesiaTaxRegistrationNumberType = S.Literal(
-  "NIK",
-  "PassportNumber",
-  "NPWP",
-  "NITKU",
-);
+  | "NITKU"
+  | (string & {});
+export const IndonesiaTaxRegistrationNumberType = S.String;
 export interface IndonesiaAdditionalInfo {
   taxRegistrationNumberType?: IndonesiaTaxRegistrationNumberType;
   ppnExceptionDesignationCode?: string;
@@ -706,11 +680,11 @@ export const GreeceAdditionalInfo = S.suspend(() =>
 ).annotations({
   identifier: "GreeceAdditionalInfo",
 }) as any as S.Schema<GreeceAdditionalInfo>;
-export type UzbekistanTaxRegistrationNumberType = "Business" | "Individual";
-export const UzbekistanTaxRegistrationNumberType = S.Literal(
-  "Business",
-  "Individual",
-);
+export type UzbekistanTaxRegistrationNumberType =
+  | "Business"
+  | "Individual"
+  | (string & {});
+export const UzbekistanTaxRegistrationNumberType = S.String;
 export interface UzbekistanAdditionalInfo {
   taxRegistrationNumberType?: UzbekistanTaxRegistrationNumberType;
   vatRegistrationNumber?: string;
@@ -867,8 +841,8 @@ export const Authority = S.suspend(() =>
 ).annotations({ identifier: "Authority" }) as any as S.Schema<Authority>;
 export type Authorities = Authority[];
 export const Authorities = S.Array(Authority);
-export type SupplementalTaxRegistrationType = "VAT";
-export const SupplementalTaxRegistrationType = S.Literal("VAT");
+export type SupplementalTaxRegistrationType = "VAT" | (string & {});
+export const SupplementalTaxRegistrationType = S.String;
 export interface TaxExemptionType {
   displayName?: string;
   description?: string;
@@ -932,13 +906,9 @@ export type TaxRegistrationStatus =
   | "Verified"
   | "Pending"
   | "Deleted"
-  | "Rejected";
-export const TaxRegistrationStatus = S.Literal(
-  "Verified",
-  "Pending",
-  "Deleted",
-  "Rejected",
-);
+  | "Rejected"
+  | (string & {});
+export const TaxRegistrationStatus = S.String;
 export interface GetTaxExemptionTypesResponse {
   taxExemptionTypes?: TaxExemptionType[];
 }
@@ -972,13 +942,9 @@ export type EntityExemptionAccountStatus =
   | "None"
   | "Valid"
   | "Expired"
-  | "Pending";
-export const EntityExemptionAccountStatus = S.Literal(
-  "None",
-  "Valid",
-  "Expired",
-  "Pending",
-);
+  | "Pending"
+  | (string & {});
+export const EntityExemptionAccountStatus = S.String;
 export interface TaxExemption {
   authority: Authority;
   taxExemptionType: TaxExemptionType;
@@ -1136,23 +1102,15 @@ export type ValidationExceptionErrorCode =
   | "ExpiredToken"
   | "InvalidToken"
   | "FieldValidationFailed"
-  | "MissingInput";
-export const ValidationExceptionErrorCode = S.Literal(
-  "MalformedToken",
-  "ExpiredToken",
-  "InvalidToken",
-  "FieldValidationFailed",
-  "MissingInput",
-);
+  | "MissingInput"
+  | (string & {});
+export const ValidationExceptionErrorCode = S.String;
 export type AddressRoleType =
   | "TaxAddress"
   | "BillingAddress"
-  | "ContactAddress";
-export const AddressRoleType = S.Literal(
-  "TaxAddress",
-  "BillingAddress",
-  "ContactAddress",
-);
+  | "ContactAddress"
+  | (string & {});
+export const AddressRoleType = S.String;
 export interface BatchDeleteTaxRegistrationResponse {
   errors: BatchDeleteTaxRegistrationError[];
 }

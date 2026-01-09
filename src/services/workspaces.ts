@@ -209,46 +209,37 @@ export const DescribeAccountRequest = S.suspend(() =>
 }) as any as S.Schema<DescribeAccountRequest>;
 export type IpGroupIdList = string[];
 export const IpGroupIdList = S.Array(S.String);
-export type PoolsRunningMode = "AUTO_STOP" | "ALWAYS_ON";
-export const PoolsRunningMode = S.Literal("AUTO_STOP", "ALWAYS_ON");
+export type PoolsRunningMode = "AUTO_STOP" | "ALWAYS_ON" | (string & {});
+export const PoolsRunningMode = S.String;
 export type ClientDeviceType =
   | "DeviceTypeWindows"
   | "DeviceTypeOsx"
   | "DeviceTypeAndroid"
   | "DeviceTypeIos"
   | "DeviceTypeLinux"
-  | "DeviceTypeWeb";
-export const ClientDeviceType = S.Literal(
-  "DeviceTypeWindows",
-  "DeviceTypeOsx",
-  "DeviceTypeAndroid",
-  "DeviceTypeIos",
-  "DeviceTypeLinux",
-  "DeviceTypeWeb",
-);
+  | "DeviceTypeWeb"
+  | (string & {});
+export const ClientDeviceType = S.String;
 export type ClientDeviceTypeList = ClientDeviceType[];
 export const ClientDeviceTypeList = S.Array(ClientDeviceType);
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
-export type DedicatedTenancySupportResultEnum = "ENABLED" | "DISABLED";
-export const DedicatedTenancySupportResultEnum = S.Literal(
-  "ENABLED",
-  "DISABLED",
-);
-export type DedicatedTenancyAccountType = "SOURCE_ACCOUNT" | "TARGET_ACCOUNT";
-export const DedicatedTenancyAccountType = S.Literal(
-  "SOURCE_ACCOUNT",
-  "TARGET_ACCOUNT",
-);
+export type DedicatedTenancySupportResultEnum =
+  | "ENABLED"
+  | "DISABLED"
+  | (string & {});
+export const DedicatedTenancySupportResultEnum = S.String;
+export type DedicatedTenancyAccountType =
+  | "SOURCE_ACCOUNT"
+  | "TARGET_ACCOUNT"
+  | (string & {});
+export const DedicatedTenancyAccountType = S.String;
 export type ApplicationAssociatedResourceType =
   | "WORKSPACE"
   | "BUNDLE"
-  | "IMAGE";
-export const ApplicationAssociatedResourceType = S.Literal(
-  "WORKSPACE",
-  "BUNDLE",
-  "IMAGE",
-);
+  | "IMAGE"
+  | (string & {});
+export const ApplicationAssociatedResourceType = S.String;
 export type ApplicationAssociatedResourceTypeList =
   ApplicationAssociatedResourceType[];
 export const ApplicationAssociatedResourceTypeList = S.Array(
@@ -267,27 +258,16 @@ export type Compute =
   | "GENERALPURPOSE_8XLARGE"
   | "GRAPHICSPRO"
   | "GRAPHICS_G4DN"
-  | "GRAPHICSPRO_G4DN";
-export const Compute = S.Literal(
-  "VALUE",
-  "STANDARD",
-  "PERFORMANCE",
-  "POWER",
-  "GRAPHICS",
-  "POWERPRO",
-  "GENERALPURPOSE_4XLARGE",
-  "GENERALPURPOSE_8XLARGE",
-  "GRAPHICSPRO",
-  "GRAPHICS_G4DN",
-  "GRAPHICSPRO_G4DN",
-);
+  | "GRAPHICSPRO_G4DN"
+  | (string & {});
+export const Compute = S.String;
 export type ComputeList = Compute[];
 export const ComputeList = S.Array(Compute);
-export type WorkSpaceApplicationLicenseType = "LICENSED" | "UNLICENSED";
-export const WorkSpaceApplicationLicenseType = S.Literal(
-  "LICENSED",
-  "UNLICENSED",
-);
+export type WorkSpaceApplicationLicenseType =
+  | "LICENSED"
+  | "UNLICENSED"
+  | (string & {});
+export const WorkSpaceApplicationLicenseType = S.String;
 export type OperatingSystemName =
   | "AMAZON_LINUX_2"
   | "UBUNTU_18_04"
@@ -301,26 +281,13 @@ export type OperatingSystemName =
   | "WINDOWS_SERVER_2019"
   | "WINDOWS_SERVER_2022"
   | "RHEL_8"
-  | "ROCKY_8";
-export const OperatingSystemName = S.Literal(
-  "AMAZON_LINUX_2",
-  "UBUNTU_18_04",
-  "UBUNTU_20_04",
-  "UBUNTU_22_04",
-  "UNKNOWN",
-  "WINDOWS_10",
-  "WINDOWS_11",
-  "WINDOWS_7",
-  "WINDOWS_SERVER_2016",
-  "WINDOWS_SERVER_2019",
-  "WINDOWS_SERVER_2022",
-  "RHEL_8",
-  "ROCKY_8",
-);
+  | "ROCKY_8"
+  | (string & {});
+export const OperatingSystemName = S.String;
 export type OperatingSystemNameList = OperatingSystemName[];
 export const OperatingSystemNameList = S.Array(OperatingSystemName);
-export type BundleAssociatedResourceType = "APPLICATION";
-export const BundleAssociatedResourceType = S.Literal("APPLICATION");
+export type BundleAssociatedResourceType = "APPLICATION" | (string & {});
+export const BundleAssociatedResourceType = S.String;
 export type BundleAssociatedResourceTypeList = BundleAssociatedResourceType[];
 export const BundleAssociatedResourceTypeList = S.Array(
   BundleAssociatedResourceType,
@@ -329,14 +296,14 @@ export type ResourceIdList = string[];
 export const ResourceIdList = S.Array(S.String);
 export type ConnectionAliasIdList = string[];
 export const ConnectionAliasIdList = S.Array(S.String);
-export type ImageAssociatedResourceType = "APPLICATION";
-export const ImageAssociatedResourceType = S.Literal("APPLICATION");
+export type ImageAssociatedResourceType = "APPLICATION" | (string & {});
+export const ImageAssociatedResourceType = S.String;
 export type ImageAssociatedResourceTypeList = ImageAssociatedResourceType[];
 export const ImageAssociatedResourceTypeList = S.Array(
   ImageAssociatedResourceType,
 );
-export type WorkSpaceAssociatedResourceType = "APPLICATION";
-export const WorkSpaceAssociatedResourceType = S.Literal("APPLICATION");
+export type WorkSpaceAssociatedResourceType = "APPLICATION" | (string & {});
+export const WorkSpaceAssociatedResourceType = S.String;
 export type WorkSpaceAssociatedResourceTypeList =
   WorkSpaceAssociatedResourceType[];
 export const WorkSpaceAssociatedResourceTypeList = S.Array(
@@ -350,20 +317,20 @@ export type WorkspaceDirectoryNameList = string[];
 export const WorkspaceDirectoryNameList = S.Array(S.String);
 export type WorkspaceImageIdList = string[];
 export const WorkspaceImageIdList = S.Array(S.String);
-export type ImageType = "OWNED" | "SHARED";
-export const ImageType = S.Literal("OWNED", "SHARED");
+export type ImageType = "OWNED" | "SHARED" | (string & {});
+export const ImageType = S.String;
 export type WorkspaceIdList = string[];
 export const WorkspaceIdList = S.Array(S.String);
 export type WorkspacesPoolIds = string[];
 export const WorkspacesPoolIds = S.Array(S.String);
-export type ImageComputeType = "BASE" | "GRAPHICS_G4DN";
-export const ImageComputeType = S.Literal("BASE", "GRAPHICS_G4DN");
-export type CustomImageProtocol = "PCOIP" | "DCV" | "BYOP";
-export const CustomImageProtocol = S.Literal("PCOIP", "DCV", "BYOP");
-export type Platform = "WINDOWS";
-export const Platform = S.Literal("WINDOWS");
-export type OSVersion = "Windows_10" | "Windows_11";
-export const OSVersion = S.Literal("Windows_10", "Windows_11");
+export type ImageComputeType = "BASE" | "GRAPHICS_G4DN" | (string & {});
+export const ImageComputeType = S.String;
+export type CustomImageProtocol = "PCOIP" | "DCV" | "BYOP" | (string & {});
+export const CustomImageProtocol = S.String;
+export type Platform = "WINDOWS" | (string & {});
+export const Platform = S.String;
+export type OSVersion = "Windows_10" | "Windows_11" | (string & {});
+export const OSVersion = S.String;
 export type WorkspaceImageIngestionProcess =
   | "BYOL_REGULAR"
   | "BYOL_GRAPHICS"
@@ -372,22 +339,14 @@ export type WorkspaceImageIngestionProcess =
   | "BYOL_REGULAR_WSP"
   | "BYOL_GRAPHICS_G4DN_WSP"
   | "BYOL_REGULAR_BYOP"
-  | "BYOL_GRAPHICS_G4DN_BYOP";
-export const WorkspaceImageIngestionProcess = S.Literal(
-  "BYOL_REGULAR",
-  "BYOL_GRAPHICS",
-  "BYOL_GRAPHICSPRO",
-  "BYOL_GRAPHICS_G4DN",
-  "BYOL_REGULAR_WSP",
-  "BYOL_GRAPHICS_G4DN_WSP",
-  "BYOL_REGULAR_BYOP",
-  "BYOL_GRAPHICS_G4DN_BYOP",
-);
-export type Application = "Microsoft_Office_2016" | "Microsoft_Office_2019";
-export const Application = S.Literal(
-  "Microsoft_Office_2016",
-  "Microsoft_Office_2019",
-);
+  | "BYOL_GRAPHICS_G4DN_BYOP"
+  | (string & {});
+export const WorkspaceImageIngestionProcess = S.String;
+export type Application =
+  | "Microsoft_Office_2016"
+  | "Microsoft_Office_2019"
+  | (string & {});
+export const Application = S.String;
 export type ApplicationList = Application[];
 export const ApplicationList = S.Array(Application);
 export type AccountLinkStatusEnum =
@@ -395,61 +354,56 @@ export type AccountLinkStatusEnum =
   | "LINKING_FAILED"
   | "LINK_NOT_FOUND"
   | "PENDING_ACCEPTANCE_BY_TARGET_ACCOUNT"
-  | "REJECTED";
-export const AccountLinkStatusEnum = S.Literal(
-  "LINKED",
-  "LINKING_FAILED",
-  "LINK_NOT_FOUND",
-  "PENDING_ACCEPTANCE_BY_TARGET_ACCOUNT",
-  "REJECTED",
-);
+  | "REJECTED"
+  | (string & {});
+export const AccountLinkStatusEnum = S.String;
 export type LinkStatusFilterList = AccountLinkStatusEnum[];
 export const LinkStatusFilterList = S.Array(AccountLinkStatusEnum);
-export type DedicatedTenancySupportEnum = "ENABLED";
-export const DedicatedTenancySupportEnum = S.Literal("ENABLED");
+export type DedicatedTenancySupportEnum = "ENABLED" | (string & {});
+export const DedicatedTenancySupportEnum = S.String;
 export type DeletableCertificateBasedAuthProperty =
-  "CERTIFICATE_BASED_AUTH_PROPERTIES_CERTIFICATE_AUTHORITY_ARN";
-export const DeletableCertificateBasedAuthProperty = S.Literal(
-  "CERTIFICATE_BASED_AUTH_PROPERTIES_CERTIFICATE_AUTHORITY_ARN",
-);
+  | "CERTIFICATE_BASED_AUTH_PROPERTIES_CERTIFICATE_AUTHORITY_ARN"
+  | (string & {});
+export const DeletableCertificateBasedAuthProperty = S.String;
 export type DeletableCertificateBasedAuthPropertiesList =
   DeletableCertificateBasedAuthProperty[];
 export const DeletableCertificateBasedAuthPropertiesList = S.Array(
   DeletableCertificateBasedAuthProperty,
 );
-export type EndpointEncryptionMode = "STANDARD_TLS" | "FIPS_VALIDATED";
-export const EndpointEncryptionMode = S.Literal(
-  "STANDARD_TLS",
-  "FIPS_VALIDATED",
-);
+export type EndpointEncryptionMode =
+  | "STANDARD_TLS"
+  | "FIPS_VALIDATED"
+  | (string & {});
+export const EndpointEncryptionMode = S.String;
 export type DeletableSamlProperty =
   | "SAML_PROPERTIES_USER_ACCESS_URL"
-  | "SAML_PROPERTIES_RELAY_STATE_PARAMETER_NAME";
-export const DeletableSamlProperty = S.Literal(
-  "SAML_PROPERTIES_USER_ACCESS_URL",
-  "SAML_PROPERTIES_RELAY_STATE_PARAMETER_NAME",
-);
+  | "SAML_PROPERTIES_RELAY_STATE_PARAMETER_NAME"
+  | (string & {});
+export const DeletableSamlProperty = S.String;
 export type DeletableSamlPropertiesList = DeletableSamlProperty[];
 export const DeletableSamlPropertiesList = S.Array(DeletableSamlProperty);
-export type DataReplication = "NO_REPLICATION" | "PRIMARY_AS_SOURCE";
-export const DataReplication = S.Literal("NO_REPLICATION", "PRIMARY_AS_SOURCE");
-export type TargetWorkspaceState = "AVAILABLE" | "ADMIN_MAINTENANCE";
-export const TargetWorkspaceState = S.Literal("AVAILABLE", "ADMIN_MAINTENANCE");
+export type DataReplication =
+  | "NO_REPLICATION"
+  | "PRIMARY_AS_SOURCE"
+  | (string & {});
+export const DataReplication = S.String;
+export type TargetWorkspaceState =
+  | "AVAILABLE"
+  | "ADMIN_MAINTENANCE"
+  | (string & {});
+export const TargetWorkspaceState = S.String;
 export type SubnetIds = string[];
 export const SubnetIds = S.Array(S.String);
-export type Tenancy = "DEDICATED" | "SHARED";
-export const Tenancy = S.Literal("DEDICATED", "SHARED");
+export type Tenancy = "DEDICATED" | "SHARED" | (string & {});
+export const Tenancy = S.String;
 export type UserIdentityType =
   | "CUSTOMER_MANAGED"
   | "AWS_DIRECTORY_SERVICE"
-  | "AWS_IAM_IDENTITY_CENTER";
-export const UserIdentityType = S.Literal(
-  "CUSTOMER_MANAGED",
-  "AWS_DIRECTORY_SERVICE",
-  "AWS_IAM_IDENTITY_CENTER",
-);
-export type WorkspaceType = "PERSONAL" | "POOLS";
-export const WorkspaceType = S.Literal("PERSONAL", "POOLS");
+  | "AWS_IAM_IDENTITY_CENTER"
+  | (string & {});
+export const UserIdentityType = S.String;
+export type WorkspaceType = "PERSONAL" | "POOLS" | (string & {});
+export const WorkspaceType = S.String;
 export type IpRevokedRuleList = string[];
 export const IpRevokedRuleList = S.Array(S.String);
 export interface AcceptAccountLinkInvitationRequest {
@@ -1999,8 +1953,11 @@ export interface Capacity {
 export const Capacity = S.suspend(() =>
   S.Struct({ DesiredUserSessions: S.Number }),
 ).annotations({ identifier: "Capacity" }) as any as S.Schema<Capacity>;
-export type ApplicationSettingsStatusEnum = "DISABLED" | "ENABLED";
-export const ApplicationSettingsStatusEnum = S.Literal("DISABLED", "ENABLED");
+export type ApplicationSettingsStatusEnum =
+  | "DISABLED"
+  | "ENABLED"
+  | (string & {});
+export const ApplicationSettingsStatusEnum = S.String;
 export interface ApplicationSettingsRequest {
   Status: ApplicationSettingsStatusEnum;
   SettingsGroup?: string;
@@ -2063,51 +2020,48 @@ export const UpdateWorkspacesPoolRequest = S.suspend(() =>
 }) as any as S.Schema<UpdateWorkspacesPoolRequest>;
 export type DescribeWorkspaceDirectoriesFilterName =
   | "USER_IDENTITY_TYPE"
-  | "WORKSPACE_TYPE";
-export const DescribeWorkspaceDirectoriesFilterName = S.Literal(
-  "USER_IDENTITY_TYPE",
-  "WORKSPACE_TYPE",
-);
+  | "WORKSPACE_TYPE"
+  | (string & {});
+export const DescribeWorkspaceDirectoriesFilterName = S.String;
 export type DescribeWorkspaceDirectoriesFilterValues = string[];
 export const DescribeWorkspaceDirectoriesFilterValues = S.Array(S.String);
-export type DescribeWorkspacesPoolsFilterName = "PoolName";
-export const DescribeWorkspacesPoolsFilterName = S.Literal("PoolName");
+export type DescribeWorkspacesPoolsFilterName = "PoolName" | (string & {});
+export const DescribeWorkspacesPoolsFilterName = S.String;
 export type DescribeWorkspacesPoolsFilterValues = string[];
 export const DescribeWorkspacesPoolsFilterValues = S.Array(S.String);
 export type DescribeWorkspacesPoolsFilterOperator =
   | "EQUALS"
   | "NOTEQUALS"
   | "CONTAINS"
-  | "NOTCONTAINS";
-export const DescribeWorkspacesPoolsFilterOperator = S.Literal(
-  "EQUALS",
-  "NOTEQUALS",
-  "CONTAINS",
-  "NOTCONTAINS",
-);
-export type CertificateBasedAuthStatusEnum = "DISABLED" | "ENABLED";
-export const CertificateBasedAuthStatusEnum = S.Literal("DISABLED", "ENABLED");
-export type ReconnectEnum = "ENABLED" | "DISABLED";
-export const ReconnectEnum = S.Literal("ENABLED", "DISABLED");
-export type LogUploadEnum = "ENABLED" | "DISABLED";
-export const LogUploadEnum = S.Literal("ENABLED", "DISABLED");
+  | "NOTCONTAINS"
+  | (string & {});
+export const DescribeWorkspacesPoolsFilterOperator = S.String;
+export type CertificateBasedAuthStatusEnum =
+  | "DISABLED"
+  | "ENABLED"
+  | (string & {});
+export const CertificateBasedAuthStatusEnum = S.String;
+export type ReconnectEnum = "ENABLED" | "DISABLED" | (string & {});
+export const ReconnectEnum = S.String;
+export type LogUploadEnum = "ENABLED" | "DISABLED" | (string & {});
+export const LogUploadEnum = S.String;
 export type SamlStatusEnum =
   | "DISABLED"
   | "ENABLED"
-  | "ENABLED_WITH_DIRECTORY_LOGIN_FALLBACK";
-export const SamlStatusEnum = S.Literal(
-  "DISABLED",
-  "ENABLED",
-  "ENABLED_WITH_DIRECTORY_LOGIN_FALLBACK",
-);
-export type StreamingExperiencePreferredProtocolEnum = "TCP" | "UDP";
-export const StreamingExperiencePreferredProtocolEnum = S.Literal("TCP", "UDP");
-export type AccessPropertyValue = "ALLOW" | "DENY";
-export const AccessPropertyValue = S.Literal("ALLOW", "DENY");
-export type RunningMode = "AUTO_STOP" | "ALWAYS_ON" | "MANUAL";
-export const RunningMode = S.Literal("AUTO_STOP", "ALWAYS_ON", "MANUAL");
-export type Protocol = "PCOIP" | "WSP";
-export const Protocol = S.Literal("PCOIP", "WSP");
+  | "ENABLED_WITH_DIRECTORY_LOGIN_FALLBACK"
+  | (string & {});
+export const SamlStatusEnum = S.String;
+export type StreamingExperiencePreferredProtocolEnum =
+  | "TCP"
+  | "UDP"
+  | (string & {});
+export const StreamingExperiencePreferredProtocolEnum = S.String;
+export type AccessPropertyValue = "ALLOW" | "DENY" | (string & {});
+export const AccessPropertyValue = S.String;
+export type RunningMode = "AUTO_STOP" | "ALWAYS_ON" | "MANUAL" | (string & {});
+export const RunningMode = S.String;
+export type Protocol = "PCOIP" | "WSP" | (string & {});
+export const Protocol = S.String;
 export type ProtocolList = Protocol[];
 export const ProtocolList = S.Array(Protocol);
 export interface StandbyWorkspace {
@@ -2148,22 +2102,29 @@ export interface RootStorage {
 export const RootStorage = S.suspend(() =>
   S.Struct({ Capacity: S.String }),
 ).annotations({ identifier: "RootStorage" }) as any as S.Schema<RootStorage>;
-export type WorkspaceImageState = "AVAILABLE" | "PENDING" | "ERROR";
-export const WorkspaceImageState = S.Literal("AVAILABLE", "PENDING", "ERROR");
-export type WorkspaceImageRequiredTenancy = "DEFAULT" | "DEDICATED";
-export const WorkspaceImageRequiredTenancy = S.Literal("DEFAULT", "DEDICATED");
-export type AGAModeForWorkSpaceEnum = "ENABLED_AUTO" | "DISABLED" | "INHERITED";
-export const AGAModeForWorkSpaceEnum = S.Literal(
-  "ENABLED_AUTO",
-  "DISABLED",
-  "INHERITED",
-);
-export type AGAPreferredProtocolForWorkSpace = "TCP" | "NONE" | "INHERITED";
-export const AGAPreferredProtocolForWorkSpace = S.Literal(
-  "TCP",
-  "NONE",
-  "INHERITED",
-);
+export type WorkspaceImageState =
+  | "AVAILABLE"
+  | "PENDING"
+  | "ERROR"
+  | (string & {});
+export const WorkspaceImageState = S.String;
+export type WorkspaceImageRequiredTenancy =
+  | "DEFAULT"
+  | "DEDICATED"
+  | (string & {});
+export const WorkspaceImageRequiredTenancy = S.String;
+export type AGAModeForWorkSpaceEnum =
+  | "ENABLED_AUTO"
+  | "DISABLED"
+  | "INHERITED"
+  | (string & {});
+export const AGAModeForWorkSpaceEnum = S.String;
+export type AGAPreferredProtocolForWorkSpace =
+  | "TCP"
+  | "NONE"
+  | "INHERITED"
+  | (string & {});
+export const AGAPreferredProtocolForWorkSpace = S.String;
 export interface GlobalAcceleratorForWorkSpace {
   Mode: AGAModeForWorkSpaceEnum;
   PreferredProtocol?: AGAPreferredProtocolForWorkSpace;
@@ -2255,23 +2216,9 @@ export type CustomWorkspaceImageImportState =
   | "VALIDATING"
   | "PUBLISHING"
   | "COMPLETED"
-  | "ERROR";
-export const CustomWorkspaceImageImportState = S.Literal(
-  "PENDING",
-  "IN_PROGRESS",
-  "PROCESSING_SOURCE_IMAGE",
-  "IMAGE_TESTING_START",
-  "UPDATING_OPERATING_SYSTEM",
-  "IMAGE_COMPATIBILITY_CHECKING",
-  "IMAGE_TESTING_GENERALIZATION",
-  "CREATING_TEST_INSTANCE",
-  "INSTALLING_COMPONENTS",
-  "GENERALIZING",
-  "VALIDATING",
-  "PUBLISHING",
-  "COMPLETED",
-  "ERROR",
-);
+  | "ERROR"
+  | (string & {});
+export const CustomWorkspaceImageImportState = S.String;
 export type AssociationState =
   | "PENDING_INSTALL"
   | "PENDING_INSTALL_DEPLOYMENT"
@@ -2281,33 +2228,18 @@ export type AssociationState =
   | "UNINSTALLING"
   | "ERROR"
   | "COMPLETED"
-  | "REMOVED";
-export const AssociationState = S.Literal(
-  "PENDING_INSTALL",
-  "PENDING_INSTALL_DEPLOYMENT",
-  "PENDING_UNINSTALL",
-  "PENDING_UNINSTALL_DEPLOYMENT",
-  "INSTALLING",
-  "UNINSTALLING",
-  "ERROR",
-  "COMPLETED",
-  "REMOVED",
-);
+  | "REMOVED"
+  | (string & {});
+export const AssociationState = S.String;
 export type AssociationErrorCode =
   | "ValidationError.InsufficientDiskSpace"
   | "ValidationError.InsufficientMemory"
   | "ValidationError.UnsupportedOperatingSystem"
   | "DeploymentError.InternalServerError"
   | "DeploymentError.WorkspaceUnreachable"
-  | "ValidationError.ApplicationOldVersionExists";
-export const AssociationErrorCode = S.Literal(
-  "ValidationError.InsufficientDiskSpace",
-  "ValidationError.InsufficientMemory",
-  "ValidationError.UnsupportedOperatingSystem",
-  "DeploymentError.InternalServerError",
-  "DeploymentError.WorkspaceUnreachable",
-  "ValidationError.ApplicationOldVersionExists",
-);
+  | "ValidationError.ApplicationOldVersionExists"
+  | (string & {});
+export const AssociationErrorCode = S.String;
 export interface AssociationStateReason {
   ErrorCode?: AssociationErrorCode;
   ErrorMessage?: string;
@@ -2596,25 +2528,24 @@ export type UserSettingActionEnum =
   | "CLIPBOARD_COPY_FROM_LOCAL_DEVICE"
   | "CLIPBOARD_COPY_TO_LOCAL_DEVICE"
   | "PRINTING_TO_LOCAL_DEVICE"
-  | "SMART_CARD";
-export const UserSettingActionEnum = S.Literal(
-  "CLIPBOARD_COPY_FROM_LOCAL_DEVICE",
-  "CLIPBOARD_COPY_TO_LOCAL_DEVICE",
-  "PRINTING_TO_LOCAL_DEVICE",
-  "SMART_CARD",
-);
-export type UserSettingPermissionEnum = "ENABLED" | "DISABLED";
-export const UserSettingPermissionEnum = S.Literal("ENABLED", "DISABLED");
-export type StorageConnectorTypeEnum = "HOME_FOLDER";
-export const StorageConnectorTypeEnum = S.Literal("HOME_FOLDER");
-export type StorageConnectorStatusEnum = "ENABLED" | "DISABLED";
-export const StorageConnectorStatusEnum = S.Literal("ENABLED", "DISABLED");
-export type AGAModeForDirectoryEnum = "ENABLED_AUTO" | "DISABLED";
-export const AGAModeForDirectoryEnum = S.Literal("ENABLED_AUTO", "DISABLED");
-export type AGAPreferredProtocolForDirectory = "TCP" | "NONE";
-export const AGAPreferredProtocolForDirectory = S.Literal("TCP", "NONE");
-export type InternetFallbackProtocol = "PCOIP";
-export const InternetFallbackProtocol = S.Literal("PCOIP");
+  | "SMART_CARD"
+  | (string & {});
+export const UserSettingActionEnum = S.String;
+export type UserSettingPermissionEnum = "ENABLED" | "DISABLED" | (string & {});
+export const UserSettingPermissionEnum = S.String;
+export type StorageConnectorTypeEnum = "HOME_FOLDER" | (string & {});
+export const StorageConnectorTypeEnum = S.String;
+export type StorageConnectorStatusEnum = "ENABLED" | "DISABLED" | (string & {});
+export const StorageConnectorStatusEnum = S.String;
+export type AGAModeForDirectoryEnum =
+  | "ENABLED_AUTO"
+  | "DISABLED"
+  | (string & {});
+export const AGAModeForDirectoryEnum = S.String;
+export type AGAPreferredProtocolForDirectory = "TCP" | "NONE" | (string & {});
+export const AGAPreferredProtocolForDirectory = S.String;
+export type InternetFallbackProtocol = "PCOIP" | (string & {});
+export const InternetFallbackProtocol = S.String;
 export type InternetFallbackProtocolList = InternetFallbackProtocol[];
 export const InternetFallbackProtocolList = S.Array(InternetFallbackProtocol);
 export interface AssociateConnectionAliasResult {
@@ -3333,38 +3264,35 @@ export const UpdateConnectionAliasPermissionResult = S.suspend(() =>
 ).annotations({
   identifier: "UpdateConnectionAliasPermissionResult",
 }) as any as S.Schema<UpdateConnectionAliasPermissionResult>;
-export type OperatingSystemType = "WINDOWS" | "LINUX";
-export const OperatingSystemType = S.Literal("WINDOWS", "LINUX");
+export type OperatingSystemType = "WINDOWS" | "LINUX" | (string & {});
+export const OperatingSystemType = S.String;
 export type DedicatedTenancyModificationStateEnum =
   | "PENDING"
   | "COMPLETED"
-  | "FAILED";
-export const DedicatedTenancyModificationStateEnum = S.Literal(
-  "PENDING",
-  "COMPLETED",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const DedicatedTenancyModificationStateEnum = S.String;
 export type WorkSpaceApplicationState =
   | "PENDING"
   | "ERROR"
   | "AVAILABLE"
-  | "UNINSTALL_ONLY";
-export const WorkSpaceApplicationState = S.Literal(
-  "PENDING",
-  "ERROR",
-  "AVAILABLE",
-  "UNINSTALL_ONLY",
-);
-export type ConnectionAliasState = "CREATING" | "CREATED" | "DELETING";
-export const ConnectionAliasState = S.Literal(
-  "CREATING",
-  "CREATED",
-  "DELETING",
-);
-export type WorkspaceBundleState = "AVAILABLE" | "PENDING" | "ERROR";
-export const WorkspaceBundleState = S.Literal("AVAILABLE", "PENDING", "ERROR");
-export type BundleType = "REGULAR" | "STANDBY";
-export const BundleType = S.Literal("REGULAR", "STANDBY");
+  | "UNINSTALL_ONLY"
+  | (string & {});
+export const WorkSpaceApplicationState = S.String;
+export type ConnectionAliasState =
+  | "CREATING"
+  | "CREATED"
+  | "DELETING"
+  | (string & {});
+export const ConnectionAliasState = S.String;
+export type WorkspaceBundleState =
+  | "AVAILABLE"
+  | "PENDING"
+  | "ERROR"
+  | (string & {});
+export const WorkspaceBundleState = S.String;
+export type BundleType = "REGULAR" | "STANDBY" | (string & {});
+export const BundleType = S.String;
 export type WorkspaceState =
   | "PENDING"
   | "AVAILABLE"
@@ -3382,36 +3310,22 @@ export type WorkspaceState =
   | "UPDATING"
   | "STOPPING"
   | "STOPPED"
-  | "ERROR";
-export const WorkspaceState = S.Literal(
-  "PENDING",
-  "AVAILABLE",
-  "IMPAIRED",
-  "UNHEALTHY",
-  "REBOOTING",
-  "STARTING",
-  "REBUILDING",
-  "RESTORING",
-  "MAINTENANCE",
-  "ADMIN_MAINTENANCE",
-  "TERMINATING",
-  "TERMINATED",
-  "SUSPENDED",
-  "UPDATING",
-  "STOPPING",
-  "STOPPED",
-  "ERROR",
-);
-export type ConnectionState = "CONNECTED" | "DISCONNECTED" | "UNKNOWN";
-export const ConnectionState = S.Literal(
-  "CONNECTED",
-  "DISCONNECTED",
-  "UNKNOWN",
-);
-export type AuthenticationType = "SAML";
-export const AuthenticationType = S.Literal("SAML");
-export type SessionConnectionState = "CONNECTED" | "NOT_CONNECTED";
-export const SessionConnectionState = S.Literal("CONNECTED", "NOT_CONNECTED");
+  | "ERROR"
+  | (string & {});
+export const WorkspaceState = S.String;
+export type ConnectionState =
+  | "CONNECTED"
+  | "DISCONNECTED"
+  | "UNKNOWN"
+  | (string & {});
+export const ConnectionState = S.String;
+export type AuthenticationType = "SAML" | (string & {});
+export const AuthenticationType = S.String;
+export type SessionConnectionState =
+  | "CONNECTED"
+  | "NOT_CONNECTED"
+  | (string & {});
+export const SessionConnectionState = S.String;
 export interface UserSetting {
   Action: UserSettingActionEnum;
   Permission: UserSettingPermissionEnum;
@@ -3459,18 +3373,11 @@ export type WorkspacesPoolState =
   | "STARTING"
   | "STOPPED"
   | "STOPPING"
-  | "UPDATING";
-export const WorkspacesPoolState = S.Literal(
-  "CREATING",
-  "DELETING",
-  "RUNNING",
-  "STARTING",
-  "STOPPED",
-  "STOPPING",
-  "UPDATING",
-);
-export type AccessEndpointType = "STREAMING_WSP";
-export const AccessEndpointType = S.Literal("STREAMING_WSP");
+  | "UPDATING"
+  | (string & {});
+export const WorkspacesPoolState = S.String;
+export type AccessEndpointType = "STREAMING_WSP" | (string & {});
+export const AccessEndpointType = S.String;
 export interface OperatingSystem {
   Type?: OperatingSystemType;
 }
@@ -3859,49 +3766,9 @@ export type WorkspacesPoolErrorCode =
   | "BUNDLE_NOT_FOUND"
   | "DIRECTORY_NOT_FOUND"
   | "INSUFFICIENT_PERMISSIONS_ERROR"
-  | "DEFAULT_OU_IS_MISSING";
-export const WorkspacesPoolErrorCode = S.Literal(
-  "IAM_SERVICE_ROLE_IS_MISSING",
-  "IAM_SERVICE_ROLE_MISSING_ENI_DESCRIBE_ACTION",
-  "IAM_SERVICE_ROLE_MISSING_ENI_CREATE_ACTION",
-  "IAM_SERVICE_ROLE_MISSING_ENI_DELETE_ACTION",
-  "NETWORK_INTERFACE_LIMIT_EXCEEDED",
-  "INTERNAL_SERVICE_ERROR",
-  "MACHINE_ROLE_IS_MISSING",
-  "STS_DISABLED_IN_REGION",
-  "SUBNET_HAS_INSUFFICIENT_IP_ADDRESSES",
-  "IAM_SERVICE_ROLE_MISSING_DESCRIBE_SUBNET_ACTION",
-  "SUBNET_NOT_FOUND",
-  "IMAGE_NOT_FOUND",
-  "INVALID_SUBNET_CONFIGURATION",
-  "SECURITY_GROUPS_NOT_FOUND",
-  "IGW_NOT_ATTACHED",
-  "IAM_SERVICE_ROLE_MISSING_DESCRIBE_SECURITY_GROUPS_ACTION",
-  "WORKSPACES_POOL_STOPPED",
-  "WORKSPACES_POOL_INSTANCE_PROVISIONING_FAILURE",
-  "DOMAIN_JOIN_ERROR_FILE_NOT_FOUND",
-  "DOMAIN_JOIN_ERROR_ACCESS_DENIED",
-  "DOMAIN_JOIN_ERROR_LOGON_FAILURE",
-  "DOMAIN_JOIN_ERROR_INVALID_PARAMETER",
-  "DOMAIN_JOIN_ERROR_MORE_DATA",
-  "DOMAIN_JOIN_ERROR_NO_SUCH_DOMAIN",
-  "DOMAIN_JOIN_ERROR_NOT_SUPPORTED",
-  "DOMAIN_JOIN_NERR_INVALID_WORKGROUP_NAME",
-  "DOMAIN_JOIN_NERR_WORKSTATION_NOT_STARTED",
-  "DOMAIN_JOIN_ERROR_DS_MACHINE_ACCOUNT_QUOTA_EXCEEDED",
-  "DOMAIN_JOIN_NERR_PASSWORD_EXPIRED",
-  "DOMAIN_JOIN_INTERNAL_SERVICE_ERROR",
-  "DOMAIN_JOIN_ERROR_SECRET_ACTION_PERMISSION_IS_MISSING",
-  "DOMAIN_JOIN_ERROR_SECRET_DECRYPTION_FAILURE",
-  "DOMAIN_JOIN_ERROR_SECRET_STATE_INVALID",
-  "DOMAIN_JOIN_ERROR_SECRET_NOT_FOUND",
-  "DOMAIN_JOIN_ERROR_SECRET_VALUE_KEY_NOT_FOUND",
-  "DOMAIN_JOIN_ERROR_SECRET_INVALID",
-  "BUNDLE_NOT_FOUND",
-  "DIRECTORY_NOT_FOUND",
-  "INSUFFICIENT_PERMISSIONS_ERROR",
-  "DEFAULT_OU_IS_MISSING",
-);
+  | "DEFAULT_OU_IS_MISSING"
+  | (string & {});
+export const WorkspacesPoolErrorCode = S.String;
 export interface WorkspacesPoolError {
   ErrorCode?: WorkspacesPoolErrorCode;
   ErrorMessage?: string;
@@ -4025,14 +3892,9 @@ export type WorkspaceDirectoryState =
   | "REGISTERED"
   | "DEREGISTERING"
   | "DEREGISTERED"
-  | "ERROR";
-export const WorkspaceDirectoryState = S.Literal(
-  "REGISTERING",
-  "REGISTERED",
-  "DEREGISTERING",
-  "DEREGISTERED",
-  "ERROR",
-);
+  | "ERROR"
+  | (string & {});
+export const WorkspaceDirectoryState = S.String;
 export type FailedStartWorkspaceRequests = FailedWorkspaceChangeRequest[];
 export const FailedStartWorkspaceRequests = S.Array(
   FailedWorkspaceChangeRequest,
@@ -4050,14 +3912,9 @@ export type AssociationStatus =
   | "ASSOCIATED_WITH_OWNER_ACCOUNT"
   | "ASSOCIATED_WITH_SHARED_ACCOUNT"
   | "PENDING_ASSOCIATION"
-  | "PENDING_DISASSOCIATION";
-export const AssociationStatus = S.Literal(
-  "NOT_ASSOCIATED",
-  "ASSOCIATED_WITH_OWNER_ACCOUNT",
-  "ASSOCIATED_WITH_SHARED_ACCOUNT",
-  "PENDING_ASSOCIATION",
-  "PENDING_DISASSOCIATION",
-);
+  | "PENDING_DISASSOCIATION"
+  | (string & {});
+export const AssociationStatus = S.String;
 export type WorkspaceImageErrorDetailCode =
   | "OutdatedPowershellVersion"
   | "OfficeInstalled"
@@ -4106,73 +3963,25 @@ export type WorkspaceImageErrorDetailCode =
   | "InsufficientRearmCount"
   | "ProtocolOSIncompatibility"
   | "MemoryIntegrityIncompatibility"
-  | "RestrictedDriveLetterInUse";
-export const WorkspaceImageErrorDetailCode = S.Literal(
-  "OutdatedPowershellVersion",
-  "OfficeInstalled",
-  "PCoIPAgentInstalled",
-  "WindowsUpdatesEnabled",
-  "AutoMountDisabled",
-  "WorkspacesBYOLAccountNotFound",
-  "WorkspacesBYOLAccountDisabled",
-  "DHCPDisabled",
-  "DiskFreeSpace",
-  "AdditionalDrivesAttached",
-  "OSNotSupported",
-  "DomainJoined",
-  "AzureDomainJoined",
-  "FirewallEnabled",
-  "VMWareToolsInstalled",
-  "DiskSizeExceeded",
-  "IncompatiblePartitioning",
-  "PendingReboot",
-  "AutoLogonEnabled",
-  "RealTimeUniversalDisabled",
-  "MultipleBootPartition",
-  "Requires64BitOS",
-  "ZeroRearmCount",
-  "InPlaceUpgrade",
-  "AntiVirusInstalled",
-  "UEFINotSupported",
-  "UnknownError",
-  "AppXPackagesInstalled",
-  "ReservedStorageInUse",
-  "AdditionalDrivesPresent",
-  "WindowsUpdatesRequired",
-  "SysPrepFileMissing",
-  "UserProfileMissing",
-  "InsufficientDiskSpace",
-  "EnvironmentVariablesPathMissingEntries",
-  "DomainAccountServicesFound",
-  "InvalidIp",
-  "RemoteDesktopServicesDisabled",
-  "WindowsModulesInstallerDisabled",
-  "AmazonSsmAgentEnabled",
-  "UnsupportedSecurityProtocol",
-  "MultipleUserProfiles",
-  "StagedAppxPackage",
-  "UnsupportedOsUpgrade",
-  "InsufficientRearmCount",
-  "ProtocolOSIncompatibility",
-  "MemoryIntegrityIncompatibility",
-  "RestrictedDriveLetterInUse",
-);
+  | "RestrictedDriveLetterInUse"
+  | (string & {});
+export const WorkspaceImageErrorDetailCode = S.String;
 export type ModificationResourceEnum =
   | "ROOT_VOLUME"
   | "USER_VOLUME"
-  | "COMPUTE_TYPE";
-export const ModificationResourceEnum = S.Literal(
-  "ROOT_VOLUME",
-  "USER_VOLUME",
-  "COMPUTE_TYPE",
-);
-export type ModificationStateEnum = "UPDATE_INITIATED" | "UPDATE_IN_PROGRESS";
-export const ModificationStateEnum = S.Literal(
-  "UPDATE_INITIATED",
-  "UPDATE_IN_PROGRESS",
-);
-export type StandbyWorkspaceRelationshipType = "PRIMARY" | "STANDBY";
-export const StandbyWorkspaceRelationshipType = S.Literal("PRIMARY", "STANDBY");
+  | "COMPUTE_TYPE"
+  | (string & {});
+export const ModificationResourceEnum = S.String;
+export type ModificationStateEnum =
+  | "UPDATE_INITIATED"
+  | "UPDATE_IN_PROGRESS"
+  | (string & {});
+export const ModificationStateEnum = S.String;
+export type StandbyWorkspaceRelationshipType =
+  | "PRIMARY"
+  | "STANDBY"
+  | (string & {});
+export const StandbyWorkspaceRelationshipType = S.String;
 export interface AccessEndpoint {
   AccessEndpointType?: AccessEndpointType;
   VpcEndpointId?: string;
@@ -4631,13 +4440,9 @@ export type WorkspaceDirectoryType =
   | "SIMPLE_AD"
   | "AD_CONNECTOR"
   | "CUSTOMER_MANAGED"
-  | "AWS_IAM_IDENTITY_CENTER";
-export const WorkspaceDirectoryType = S.Literal(
-  "SIMPLE_AD",
-  "AD_CONNECTOR",
-  "CUSTOMER_MANAGED",
-  "AWS_IAM_IDENTITY_CENTER",
-);
+  | "AWS_IAM_IDENTITY_CENTER"
+  | (string & {});
+export const WorkspaceDirectoryType = S.String;
 export interface UpdateResult {
   UpdateAvailable?: boolean;
   Description?: string;

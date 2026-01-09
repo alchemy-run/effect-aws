@@ -97,10 +97,10 @@ export type ErrorMessage = string;
 export type ImportId = string;
 
 //# Schemas
-export type ReportFrequency = "MONTHLY" | "DAILY" | "ALL";
-export const ReportFrequency = S.Literal("MONTHLY", "DAILY", "ALL");
-export type Format = "CSV" | "PARQUET";
-export const Format = S.Literal("CSV", "PARQUET");
+export type ReportFrequency = "MONTHLY" | "DAILY" | "ALL" | (string & {});
+export const ReportFrequency = S.String;
+export type Format = "CSV" | "PARQUET" | (string & {});
+export const Format = S.String;
 export interface DeleteReportDefinitionRequest {
   reportId: string;
 }
@@ -194,13 +194,9 @@ export type S3BucketRegion =
   | "ap-east-1"
   | "me-south-1"
   | "eu-south-1"
-  | "af-south-1";
-export const S3BucketRegion = S.Literal(
-  "ap-east-1",
-  "me-south-1",
-  "eu-south-1",
-  "af-south-1",
-);
+  | "af-south-1"
+  | (string & {});
+export const S3BucketRegion = S.String;
 export interface SourceS3Location {
   bucket: string;
   key: string;

@@ -255,14 +255,9 @@ export type RescoreExecutionPlanStatus =
   | "UPDATING"
   | "ACTIVE"
   | "DELETING"
-  | "FAILED";
-export const RescoreExecutionPlanStatus = S.Literal(
-  "CREATING",
-  "UPDATING",
-  "ACTIVE",
-  "DELETING",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const RescoreExecutionPlanStatus = S.String;
 export interface Document {
   Id: string;
   GroupId?: string;

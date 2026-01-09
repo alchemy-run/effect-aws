@@ -110,13 +110,13 @@ export type TaskStatusReason = string;
 export type OutputUri = string;
 
 //# Schemas
-export type Engine = "standard" | "neural" | "long-form" | "generative";
-export const Engine = S.Literal(
-  "standard",
-  "neural",
-  "long-form",
-  "generative",
-);
+export type Engine =
+  | "standard"
+  | "neural"
+  | "long-form"
+  | "generative"
+  | (string & {});
+export const Engine = S.String;
 export type LanguageCode =
   | "arb"
   | "cmn-CN"
@@ -159,74 +159,37 @@ export type LanguageCode =
   | "fr-BE"
   | "cs-CZ"
   | "de-CH"
-  | "en-SG";
-export const LanguageCode = S.Literal(
-  "arb",
-  "cmn-CN",
-  "cy-GB",
-  "da-DK",
-  "de-DE",
-  "en-AU",
-  "en-GB",
-  "en-GB-WLS",
-  "en-IN",
-  "en-US",
-  "es-ES",
-  "es-MX",
-  "es-US",
-  "fr-CA",
-  "fr-FR",
-  "is-IS",
-  "it-IT",
-  "ja-JP",
-  "hi-IN",
-  "ko-KR",
-  "nb-NO",
-  "nl-NL",
-  "pl-PL",
-  "pt-BR",
-  "pt-PT",
-  "ro-RO",
-  "ru-RU",
-  "sv-SE",
-  "tr-TR",
-  "en-NZ",
-  "en-ZA",
-  "ca-ES",
-  "de-AT",
-  "yue-CN",
-  "ar-AE",
-  "fi-FI",
-  "en-IE",
-  "nl-BE",
-  "fr-BE",
-  "cs-CZ",
-  "de-CH",
-  "en-SG",
-);
-export type TaskStatus = "scheduled" | "inProgress" | "completed" | "failed";
-export const TaskStatus = S.Literal(
-  "scheduled",
-  "inProgress",
-  "completed",
-  "failed",
-);
+  | "en-SG"
+  | (string & {});
+export const LanguageCode = S.String;
+export type TaskStatus =
+  | "scheduled"
+  | "inProgress"
+  | "completed"
+  | "failed"
+  | (string & {});
+export const TaskStatus = S.String;
 export type LexiconNameList = string[];
 export const LexiconNameList = S.Array(S.String);
-export type OutputFormat = "json" | "mp3" | "ogg_opus" | "ogg_vorbis" | "pcm";
-export const OutputFormat = S.Literal(
-  "json",
-  "mp3",
-  "ogg_opus",
-  "ogg_vorbis",
-  "pcm",
-);
-export type SpeechMarkType = "sentence" | "ssml" | "viseme" | "word";
-export const SpeechMarkType = S.Literal("sentence", "ssml", "viseme", "word");
+export type OutputFormat =
+  | "json"
+  | "mp3"
+  | "ogg_opus"
+  | "ogg_vorbis"
+  | "pcm"
+  | (string & {});
+export const OutputFormat = S.String;
+export type SpeechMarkType =
+  | "sentence"
+  | "ssml"
+  | "viseme"
+  | "word"
+  | (string & {});
+export const SpeechMarkType = S.String;
 export type SpeechMarkTypeList = SpeechMarkType[];
 export const SpeechMarkTypeList = S.Array(SpeechMarkType);
-export type TextType = "ssml" | "text";
-export const TextType = S.Literal("ssml", "text");
+export type TextType = "ssml" | "text" | (string & {});
+export const TextType = S.String;
 export type VoiceId =
   | "Aditi"
   | "Amy"
@@ -327,109 +290,9 @@ export type VoiceId =
   | "Jitka"
   | "Sabrina"
   | "Jasmine"
-  | "Jihye";
-export const VoiceId = S.Literal(
-  "Aditi",
-  "Amy",
-  "Astrid",
-  "Bianca",
-  "Brian",
-  "Camila",
-  "Carla",
-  "Carmen",
-  "Celine",
-  "Chantal",
-  "Conchita",
-  "Cristiano",
-  "Dora",
-  "Emma",
-  "Enrique",
-  "Ewa",
-  "Filiz",
-  "Gabrielle",
-  "Geraint",
-  "Giorgio",
-  "Gwyneth",
-  "Hans",
-  "Ines",
-  "Ivy",
-  "Jacek",
-  "Jan",
-  "Joanna",
-  "Joey",
-  "Justin",
-  "Karl",
-  "Kendra",
-  "Kevin",
-  "Kimberly",
-  "Lea",
-  "Liv",
-  "Lotte",
-  "Lucia",
-  "Lupe",
-  "Mads",
-  "Maja",
-  "Marlene",
-  "Mathieu",
-  "Matthew",
-  "Maxim",
-  "Mia",
-  "Miguel",
-  "Mizuki",
-  "Naja",
-  "Nicole",
-  "Olivia",
-  "Penelope",
-  "Raveena",
-  "Ricardo",
-  "Ruben",
-  "Russell",
-  "Salli",
-  "Seoyeon",
-  "Takumi",
-  "Tatyana",
-  "Vicki",
-  "Vitoria",
-  "Zeina",
-  "Zhiyu",
-  "Aria",
-  "Ayanda",
-  "Arlet",
-  "Hannah",
-  "Arthur",
-  "Daniel",
-  "Liam",
-  "Pedro",
-  "Kajal",
-  "Hiujin",
-  "Laura",
-  "Elin",
-  "Ida",
-  "Suvi",
-  "Ola",
-  "Hala",
-  "Andres",
-  "Sergio",
-  "Remi",
-  "Adriano",
-  "Thiago",
-  "Ruth",
-  "Stephen",
-  "Kazuha",
-  "Tomoko",
-  "Niamh",
-  "Sofie",
-  "Lisa",
-  "Isabelle",
-  "Zayd",
-  "Danielle",
-  "Gregory",
-  "Burcu",
-  "Jitka",
-  "Sabrina",
-  "Jasmine",
-  "Jihye",
-);
+  | "Jihye"
+  | (string & {});
+export const VoiceId = S.String;
 export interface DeleteLexiconInput {
   Name: string;
 }
@@ -744,8 +607,8 @@ export const SynthesizeSpeechOutput = S.suspend(() =>
 ).annotations({
   identifier: "SynthesizeSpeechOutput",
 }) as any as S.Schema<SynthesizeSpeechOutput>;
-export type Gender = "Female" | "Male";
-export const Gender = S.Literal("Female", "Male");
+export type Gender = "Female" | "Male" | (string & {});
+export const Gender = S.String;
 export type LanguageCodeList = LanguageCode[];
 export const LanguageCodeList = S.Array(LanguageCode);
 export type EngineList = Engine[];

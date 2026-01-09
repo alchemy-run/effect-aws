@@ -106,10 +106,10 @@ export type String64 = string;
 //# Schemas
 export type TaskIdList = string[];
 export const TaskIdList = S.Array(S.String);
-export type AuthType = "oauth2" | "apiKey";
-export const AuthType = S.Literal("oauth2", "apiKey");
-export type IngestionType = "auditLog";
-export const IngestionType = S.Literal("auditLog");
+export type AuthType = "oauth2" | "apiKey" | (string & {});
+export const AuthType = S.String;
+export type IngestionType = "auditLog" | (string & {});
+export const IngestionType = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export interface BatchGetUserAccessTasksRequest {
@@ -788,10 +788,10 @@ export interface AuthRequest {
 export const AuthRequest = S.suspend(() =>
   S.Struct({ redirectUri: S.String, code: SensitiveString }),
 ).annotations({ identifier: "AuthRequest" }) as any as S.Schema<AuthRequest>;
-export type Schema = "ocsf" | "raw";
-export const Schema = S.Literal("ocsf", "raw");
-export type Format = "json" | "parquet";
-export const Format = S.Literal("json", "parquet");
+export type Schema = "ocsf" | "raw" | (string & {});
+export const Schema = S.String;
+export type Format = "json" | "parquet" | (string & {});
+export const Format = S.String;
 export interface ConnectAppAuthorizationRequest {
   appBundleIdentifier: string;
   appAuthorizationIdentifier: string;
@@ -835,8 +835,8 @@ export const GetAppBundleResponse = S.suspend(() =>
 ).annotations({
   identifier: "GetAppBundleResponse",
 }) as any as S.Schema<GetAppBundleResponse>;
-export type IngestionState = "enabled" | "disabled";
-export const IngestionState = S.Literal("enabled", "disabled");
+export type IngestionState = "enabled" | "disabled" | (string & {});
+export const IngestionState = S.String;
 export interface Ingestion {
   arn: string;
   appBundleArn: string;
@@ -879,15 +879,11 @@ export type AppAuthorizationStatus =
   | "PendingConnect"
   | "Connected"
   | "ConnectionValidationFailed"
-  | "TokenAutoRotationFailed";
-export const AppAuthorizationStatus = S.Literal(
-  "PendingConnect",
-  "Connected",
-  "ConnectionValidationFailed",
-  "TokenAutoRotationFailed",
-);
-export type Persona = "admin" | "endUser";
-export const Persona = S.Literal("admin", "endUser");
+  | "TokenAutoRotationFailed"
+  | (string & {});
+export const AppAuthorizationStatus = S.String;
+export type Persona = "admin" | "endUser" | (string & {});
+export const Persona = S.String;
 export interface AppAuthorization {
   appAuthorizationArn: string;
   appBundleArn: string;
@@ -939,8 +935,8 @@ export type ProcessingConfiguration = {
 export const ProcessingConfiguration = S.Union(
   S.Struct({ auditLog: AuditLogProcessingConfiguration }),
 );
-export type IngestionDestinationStatus = "Active" | "Failed";
-export const IngestionDestinationStatus = S.Literal("Active", "Failed");
+export type IngestionDestinationStatus = "Active" | "Failed" | (string & {});
+export const IngestionDestinationStatus = S.String;
 export interface IngestionDestination {
   arn: string;
   ingestionArn: string;
@@ -973,13 +969,13 @@ export const UpdateIngestionDestinationResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateIngestionDestinationResponse",
 }) as any as S.Schema<UpdateIngestionDestinationResponse>;
-export type ResultStatus = "IN_PROGRESS" | "COMPLETED" | "FAILED" | "EXPIRED";
-export const ResultStatus = S.Literal(
-  "IN_PROGRESS",
-  "COMPLETED",
-  "FAILED",
-  "EXPIRED",
-);
+export type ResultStatus =
+  | "IN_PROGRESS"
+  | "COMPLETED"
+  | "FAILED"
+  | "EXPIRED"
+  | (string & {});
+export const ResultStatus = S.String;
 export interface AppAuthorizationSummary {
   appAuthorizationArn: string;
   appBundleArn: string;
@@ -1249,13 +1245,9 @@ export type ValidationExceptionReason =
   | "unknownOperation"
   | "cannotParse"
   | "fieldValidationFailed"
-  | "other";
-export const ValidationExceptionReason = S.Literal(
-  "unknownOperation",
-  "cannotParse",
-  "fieldValidationFailed",
-  "other",
-);
+  | "other"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 export interface CreateIngestionDestinationRequest {
   appBundleIdentifier: string;
   ingestionIdentifier: string;

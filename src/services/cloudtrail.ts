@@ -163,60 +163,50 @@ export type SampleQueryRelevance = number;
 //# Schemas
 export type BillingMode =
   | "EXTENDABLE_RETENTION_PRICING"
-  | "FIXED_RETENTION_PRICING";
-export const BillingMode = S.Literal(
-  "EXTENDABLE_RETENTION_PRICING",
-  "FIXED_RETENTION_PRICING",
-);
+  | "FIXED_RETENTION_PRICING"
+  | (string & {});
+export const BillingMode = S.String;
 export type TrailNameList = string[];
 export const TrailNameList = S.Array(S.String);
 export type EventDataStoreList = string[];
 export const EventDataStoreList = S.Array(S.String);
-export type DashboardType = "MANAGED" | "CUSTOM";
-export const DashboardType = S.Literal("MANAGED", "CUSTOM");
+export type DashboardType = "MANAGED" | "CUSTOM" | (string & {});
+export const DashboardType = S.String;
 export type ImportStatus =
   | "INITIALIZING"
   | "IN_PROGRESS"
   | "FAILED"
   | "STOPPED"
-  | "COMPLETED";
-export const ImportStatus = S.Literal(
-  "INITIALIZING",
-  "IN_PROGRESS",
-  "FAILED",
-  "STOPPED",
-  "COMPLETED",
-);
-export type ListInsightsDataType = "InsightsEvents";
-export const ListInsightsDataType = S.Literal("InsightsEvents");
-export type InsightType = "ApiCallRateInsight" | "ApiErrorRateInsight";
-export const InsightType = S.Literal(
-  "ApiCallRateInsight",
-  "ApiErrorRateInsight",
-);
-export type InsightsMetricDataType = "FillWithZeros" | "NonZeroData";
-export const InsightsMetricDataType = S.Literal("FillWithZeros", "NonZeroData");
+  | "COMPLETED"
+  | (string & {});
+export const ImportStatus = S.String;
+export type ListInsightsDataType = "InsightsEvents" | (string & {});
+export const ListInsightsDataType = S.String;
+export type InsightType =
+  | "ApiCallRateInsight"
+  | "ApiErrorRateInsight"
+  | (string & {});
+export const InsightType = S.String;
+export type InsightsMetricDataType =
+  | "FillWithZeros"
+  | "NonZeroData"
+  | (string & {});
+export const InsightsMetricDataType = S.String;
 export type QueryStatus =
   | "QUEUED"
   | "RUNNING"
   | "FINISHED"
   | "FAILED"
   | "CANCELLED"
-  | "TIMED_OUT";
-export const QueryStatus = S.Literal(
-  "QUEUED",
-  "RUNNING",
-  "FINISHED",
-  "FAILED",
-  "CANCELLED",
-  "TIMED_OUT",
-);
+  | "TIMED_OUT"
+  | (string & {});
+export const QueryStatus = S.String;
 export type ResourceIdList = string[];
 export const ResourceIdList = S.Array(S.String);
-export type EventCategory = "insight";
-export const EventCategory = S.Literal("insight");
-export type MaxEventSize = "Standard" | "Large";
-export const MaxEventSize = S.Literal("Standard", "Large");
+export type EventCategory = "insight" | (string & {});
+export const EventCategory = S.String;
+export type MaxEventSize = "Standard" | "Large" | (string & {});
+export const MaxEventSize = S.String;
 export type ImportDestinations = string[];
 export const ImportDestinations = S.Array(S.String);
 export type QueryParameters = string[];
@@ -1268,8 +1258,11 @@ export const StopLoggingResponse = S.suspend(() =>
 ).annotations({
   identifier: "StopLoggingResponse",
 }) as any as S.Schema<StopLoggingResponse>;
-export type DestinationType = "EVENT_DATA_STORE" | "AWS_SERVICE";
-export const DestinationType = S.Literal("EVENT_DATA_STORE", "AWS_SERVICE");
+export type DestinationType =
+  | "EVENT_DATA_STORE"
+  | "AWS_SERVICE"
+  | (string & {});
+export const DestinationType = S.String;
 export interface Destination {
   Type: DestinationType;
   Location: string;
@@ -1324,8 +1317,8 @@ export const RequestWidget = S.suspend(() =>
 }) as any as S.Schema<RequestWidget>;
 export type RequestWidgetList = RequestWidget[];
 export const RequestWidgetList = S.Array(RequestWidget);
-export type RefreshScheduleFrequencyUnit = "HOURS" | "DAYS";
-export const RefreshScheduleFrequencyUnit = S.Literal("HOURS", "DAYS");
+export type RefreshScheduleFrequencyUnit = "HOURS" | "DAYS" | (string & {});
+export const RefreshScheduleFrequencyUnit = S.String;
 export interface RefreshScheduleFrequency {
   Unit?: RefreshScheduleFrequencyUnit;
   Value?: number;
@@ -1338,8 +1331,8 @@ export const RefreshScheduleFrequency = S.suspend(() =>
 ).annotations({
   identifier: "RefreshScheduleFrequency",
 }) as any as S.Schema<RefreshScheduleFrequency>;
-export type RefreshScheduleStatus = "ENABLED" | "DISABLED";
-export const RefreshScheduleStatus = S.Literal("ENABLED", "DISABLED");
+export type RefreshScheduleStatus = "ENABLED" | "DISABLED" | (string & {});
+export const RefreshScheduleStatus = S.String;
 export interface RefreshSchedule {
   Frequency?: RefreshScheduleFrequency;
   Status?: RefreshScheduleStatus;
@@ -1499,12 +1492,9 @@ export const UpdateTrailRequest = S.suspend(() =>
 export type ListInsightsDataDimensionKey =
   | "EventId"
   | "EventName"
-  | "EventSource";
-export const ListInsightsDataDimensionKey = S.Literal(
-  "EventId",
-  "EventName",
-  "EventSource",
-);
+  | "EventSource"
+  | (string & {});
+export const ListInsightsDataDimensionKey = S.String;
 export type LookupAttributeKey =
   | "EventId"
   | "EventName"
@@ -1513,37 +1503,29 @@ export type LookupAttributeKey =
   | "ResourceType"
   | "ResourceName"
   | "EventSource"
-  | "AccessKeyId";
-export const LookupAttributeKey = S.Literal(
-  "EventId",
-  "EventName",
-  "ReadOnly",
-  "Username",
-  "ResourceType",
-  "ResourceName",
-  "EventSource",
-  "AccessKeyId",
-);
-export type Type = "TagContext" | "RequestContext";
-export const Type = S.Literal("TagContext", "RequestContext");
+  | "AccessKeyId"
+  | (string & {});
+export const LookupAttributeKey = S.String;
+export type Type = "TagContext" | "RequestContext" | (string & {});
+export const Type = S.String;
 export type OperatorTargetList = string[];
 export const OperatorTargetList = S.Array(S.String);
-export type Template = "API_ACTIVITY" | "RESOURCE_ACCESS" | "USER_ACTIONS";
-export const Template = S.Literal(
-  "API_ACTIVITY",
-  "RESOURCE_ACCESS",
-  "USER_ACTIONS",
-);
+export type Template =
+  | "API_ACTIVITY"
+  | "RESOURCE_ACCESS"
+  | "USER_ACTIONS"
+  | (string & {});
+export const Template = S.String;
 export type Templates = Template[];
 export const Templates = S.Array(Template);
-export type EventCategoryAggregation = "Data";
-export const EventCategoryAggregation = S.Literal("Data");
-export type ReadWriteType = "ReadOnly" | "WriteOnly" | "All";
-export const ReadWriteType = S.Literal("ReadOnly", "WriteOnly", "All");
+export type EventCategoryAggregation = "Data" | (string & {});
+export const EventCategoryAggregation = S.String;
+export type ReadWriteType = "ReadOnly" | "WriteOnly" | "All" | (string & {});
+export const ReadWriteType = S.String;
 export type ExcludeManagementEventSources = string[];
 export const ExcludeManagementEventSources = S.Array(S.String);
-export type SourceEventCategory = "Management" | "Data";
-export const SourceEventCategory = S.Literal("Management", "Data");
+export type SourceEventCategory = "Management" | "Data" | (string & {});
+export const SourceEventCategory = S.String;
 export type SourceEventCategories = SourceEventCategory[];
 export const SourceEventCategories = S.Array(SourceEventCategory);
 export type DeliveryStatus =
@@ -1555,57 +1537,33 @@ export type DeliveryStatus =
   | "ACCESS_DENIED"
   | "ACCESS_DENIED_SIGNING_FILE"
   | "CANCELLED"
-  | "UNKNOWN";
-export const DeliveryStatus = S.Literal(
-  "SUCCESS",
-  "FAILED",
-  "FAILED_SIGNING_FILE",
-  "PENDING",
-  "RESOURCE_NOT_FOUND",
-  "ACCESS_DENIED",
-  "ACCESS_DENIED_SIGNING_FILE",
-  "CANCELLED",
-  "UNKNOWN",
-);
+  | "UNKNOWN"
+  | (string & {});
+export const DeliveryStatus = S.String;
 export type FederationStatus =
   | "ENABLING"
   | "ENABLED"
   | "DISABLING"
-  | "DISABLED";
-export const FederationStatus = S.Literal(
-  "ENABLING",
-  "ENABLED",
-  "DISABLING",
-  "DISABLED",
-);
+  | "DISABLED"
+  | (string & {});
+export const FederationStatus = S.String;
 export type DashboardStatus =
   | "CREATING"
   | "CREATED"
   | "UPDATING"
   | "UPDATED"
-  | "DELETING";
-export const DashboardStatus = S.Literal(
-  "CREATING",
-  "CREATED",
-  "UPDATING",
-  "UPDATED",
-  "DELETING",
-);
+  | "DELETING"
+  | (string & {});
+export const DashboardStatus = S.String;
 export type EventDataStoreStatus =
   | "CREATED"
   | "ENABLED"
   | "PENDING_DELETION"
   | "STARTING_INGESTION"
   | "STOPPING_INGESTION"
-  | "STOPPED_INGESTION";
-export const EventDataStoreStatus = S.Literal(
-  "CREATED",
-  "ENABLED",
-  "PENDING_DELETION",
-  "STARTING_INGESTION",
-  "STOPPING_INGESTION",
-  "STOPPED_INGESTION",
-);
+  | "STOPPED_INGESTION"
+  | (string & {});
+export const EventDataStoreStatus = S.String;
 export type ListInsightsDataDimensions = {
   [key in ListInsightsDataDimensionKey]?: string;
 };
@@ -2432,8 +2390,12 @@ export const UpdateTrailResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateTrailResponse",
 }) as any as S.Schema<UpdateTrailResponse>;
-export type ImportFailureStatus = "FAILED" | "RETRY" | "SUCCEEDED";
-export const ImportFailureStatus = S.Literal("FAILED", "RETRY", "SUCCEEDED");
+export type ImportFailureStatus =
+  | "FAILED"
+  | "RETRY"
+  | "SUCCEEDED"
+  | (string & {});
+export const ImportFailureStatus = S.String;
 export interface QueryStatisticsForDescribeQuery {
   EventsMatched?: number;
   EventsScanned?: number;

@@ -192,8 +192,8 @@ export type OcsfEventClassList = string[];
 export const OcsfEventClassList = S.Array(S.String);
 export type AccountList = string[];
 export const AccountList = S.Array(S.String);
-export type AccessType = "LAKEFORMATION" | "S3";
-export const AccessType = S.Literal("LAKEFORMATION", "S3");
+export type AccessType = "LAKEFORMATION" | "S3" | (string & {});
+export const AccessType = S.String;
 export type AccessTypeList = AccessType[];
 export const AccessTypeList = S.Array(AccessType);
 export interface CreateDataLakeExceptionSubscriptionRequest {
@@ -364,17 +364,9 @@ export type AwsLogSourceName =
   | "LAMBDA_EXECUTION"
   | "S3_DATA"
   | "EKS_AUDIT"
-  | "WAF";
-export const AwsLogSourceName = S.Literal(
-  "ROUTE53",
-  "VPC_FLOW",
-  "SH_FINDINGS",
-  "CLOUD_TRAIL_MGMT",
-  "LAMBDA_EXECUTION",
-  "S3_DATA",
-  "EKS_AUDIT",
-  "WAF",
-);
+  | "WAF"
+  | (string & {});
+export const AwsLogSourceName = S.String;
 export interface AwsLogSourceConfiguration {
   accounts?: string[];
   regions: string[];
@@ -837,8 +829,8 @@ export const SqsNotificationConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "SqsNotificationConfiguration",
 }) as any as S.Schema<SqsNotificationConfiguration>;
-export type HttpMethod = "POST" | "PUT";
-export const HttpMethod = S.Literal("POST", "PUT");
+export type HttpMethod = "POST" | "PUT" | (string & {});
+export const HttpMethod = S.String;
 export interface HttpsNotificationConfiguration {
   endpoint: string;
   authorizationApiKeyName?: string;
@@ -903,13 +895,13 @@ export const Tag = S.suspend(() =>
 ).annotations({ identifier: "Tag" }) as any as S.Schema<Tag>;
 export type TagList = Tag[];
 export const TagList = S.Array(Tag);
-export type SubscriberStatus = "ACTIVE" | "DEACTIVATED" | "PENDING" | "READY";
-export const SubscriberStatus = S.Literal(
-  "ACTIVE",
-  "DEACTIVATED",
-  "PENDING",
-  "READY",
-);
+export type SubscriberStatus =
+  | "ACTIVE"
+  | "DEACTIVATED"
+  | "PENDING"
+  | "READY"
+  | (string & {});
+export const SubscriberStatus = S.String;
 export interface SubscriberResource {
   subscriberId: string;
   subscriberArn: string;
@@ -1008,13 +1000,13 @@ export const DeleteAwsLogSourceResponse = S.suspend(() =>
 ).annotations({
   identifier: "DeleteAwsLogSourceResponse",
 }) as any as S.Schema<DeleteAwsLogSourceResponse>;
-export type DataLakeStatus = "INITIALIZED" | "PENDING" | "COMPLETED" | "FAILED";
-export const DataLakeStatus = S.Literal(
-  "INITIALIZED",
-  "PENDING",
-  "COMPLETED",
-  "FAILED",
-);
+export type DataLakeStatus =
+  | "INITIALIZED"
+  | "PENDING"
+  | "COMPLETED"
+  | "FAILED"
+  | (string & {});
+export const DataLakeStatus = S.String;
 export interface DataLakeUpdateException {
   reason?: string;
   code?: string;
@@ -1170,12 +1162,9 @@ export const CustomLogSourceConfiguration = S.suspend(() =>
 export type SourceCollectionStatus =
   | "COLLECTING"
   | "MISCONFIGURED"
-  | "NOT_COLLECTING";
-export const SourceCollectionStatus = S.Literal(
-  "COLLECTING",
-  "MISCONFIGURED",
-  "NOT_COLLECTING",
-);
+  | "NOT_COLLECTING"
+  | (string & {});
+export const SourceCollectionStatus = S.String;
 export interface ListDataLakeExceptionsResponse {
   exceptions?: DataLakeException[];
   nextToken?: string;

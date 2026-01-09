@@ -121,12 +121,12 @@ export type DeleteCategoryInputList = string[];
 export const DeleteCategoryInputList = S.Array(S.String);
 export type CategoryIdList = string[];
 export const CategoryIdList = S.Array(S.String);
-export type DocumentScope = "APPLICATION" | "SESSION";
-export const DocumentScope = S.Literal("APPLICATION", "SESSION");
+export type DocumentScope = "APPLICATION" | "SESSION" | (string & {});
+export const DocumentScope = S.String;
 export type TagKeys = string[];
 export const TagKeys = S.Array(S.String);
-export type LibraryItemStatus = "PUBLISHED" | "DISABLED";
-export const LibraryItemStatus = S.Literal("PUBLISHED", "DISABLED");
+export type LibraryItemStatus = "PUBLISHED" | "DISABLED" | (string & {});
+export const LibraryItemStatus = S.String;
 export interface AssociateLibraryItemReviewInput {
   instanceId: string;
   libraryItemId: string;
@@ -743,14 +743,9 @@ export type CardType =
   | "q-query"
   | "file-upload"
   | "q-plugin"
-  | "form-input";
-export const CardType = S.Literal(
-  "text-input",
-  "q-query",
-  "file-upload",
-  "q-plugin",
-  "form-input",
-);
+  | "form-input"
+  | (string & {});
+export const CardType = S.String;
 export interface TextInputCardInput {
   title: string;
   id: string;
@@ -769,8 +764,8 @@ export const TextInputCardInput = S.suspend(() =>
 ).annotations({
   identifier: "TextInputCardInput",
 }) as any as S.Schema<TextInputCardInput>;
-export type CardOutputSource = "approved-sources" | "llm";
-export const CardOutputSource = S.Literal("approved-sources", "llm");
+export type CardOutputSource = "approved-sources" | "llm" | (string & {});
+export const CardOutputSource = S.String;
 export type DocumentAttributeStringListValue = string[];
 export const DocumentAttributeStringListValue = S.Array(S.String);
 export type DocumentAttributeValue =
@@ -921,8 +916,8 @@ export const FormInputCardMetadata = S.suspend(() =>
 ).annotations({
   identifier: "FormInputCardMetadata",
 }) as any as S.Schema<FormInputCardMetadata>;
-export type InputCardComputeMode = "append" | "replace";
-export const InputCardComputeMode = S.Literal("append", "replace");
+export type InputCardComputeMode = "append" | "replace" | (string & {});
+export const InputCardComputeMode = S.String;
 export interface FormInputCardInput {
   title: string;
   id: string;
@@ -1022,8 +1017,8 @@ export const UpdateQAppInput = S.suspend(() =>
 ).annotations({
   identifier: "UpdateQAppInput",
 }) as any as S.Schema<UpdateQAppInput>;
-export type SubmissionMutationKind = "edit" | "delete" | "add";
-export const SubmissionMutationKind = S.Literal("edit", "delete", "add");
+export type SubmissionMutationKind = "edit" | "delete" | "add" | (string & {});
+export const SubmissionMutationKind = S.String;
 export interface SubmissionMutation {
   submissionId: string;
   mutationType: SubmissionMutationKind;
@@ -1070,8 +1065,8 @@ export const UpdateQAppSessionInput = S.suspend(() =>
 ).annotations({
   identifier: "UpdateQAppSessionInput",
 }) as any as S.Schema<UpdateQAppSessionInput>;
-export type Action = "read" | "write";
-export const Action = S.Literal("read", "write");
+export type Action = "read" | "write" | (string & {});
+export const Action = S.String;
 export interface BatchCreateCategoryInputCategory {
   id?: string;
   title: string;
@@ -1108,28 +1103,24 @@ export const TagMap = S.Record({
   key: S.String,
   value: S.UndefinedOr(S.String),
 });
-export type AppStatus = "PUBLISHED" | "DRAFT" | "DELETED";
-export const AppStatus = S.Literal("PUBLISHED", "DRAFT", "DELETED");
+export type AppStatus = "PUBLISHED" | "DRAFT" | "DELETED" | (string & {});
+export const AppStatus = S.String;
 export type AppRequiredCapability =
   | "FileUpload"
   | "CreatorMode"
   | "RetrievalMode"
-  | "PluginMode";
-export const AppRequiredCapability = S.Literal(
-  "FileUpload",
-  "CreatorMode",
-  "RetrievalMode",
-  "PluginMode",
-);
+  | "PluginMode"
+  | (string & {});
+export const AppRequiredCapability = S.String;
 export type AppRequiredCapabilities = AppRequiredCapability[];
 export const AppRequiredCapabilities = S.Array(AppRequiredCapability);
-export type ExecutionStatus = "IN_PROGRESS" | "WAITING" | "COMPLETED" | "ERROR";
-export const ExecutionStatus = S.Literal(
-  "IN_PROGRESS",
-  "WAITING",
-  "COMPLETED",
-  "ERROR",
-);
+export type ExecutionStatus =
+  | "IN_PROGRESS"
+  | "WAITING"
+  | "COMPLETED"
+  | "ERROR"
+  | (string & {});
+export const ExecutionStatus = S.String;
 export interface Category {
   id: string;
   title: string;
@@ -1173,8 +1164,8 @@ export const SessionSharingConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "SessionSharingConfiguration",
 }) as any as S.Schema<SessionSharingConfiguration>;
-export type Sender = "USER" | "SYSTEM";
-export const Sender = S.Literal("USER", "SYSTEM");
+export type Sender = "USER" | "SYSTEM" | (string & {});
+export const Sender = S.String;
 export interface BatchCreateCategoryInput {
   instanceId: string;
   categories: BatchCreateCategoryInputCategory[];
@@ -1544,8 +1535,8 @@ export const PredictQAppInputOptions = S.Union(
   S.Struct({ conversation: MessageList }),
   S.Struct({ problemStatement: S.String }),
 );
-export type UserType = "owner" | "user";
-export const UserType = S.Literal("owner", "user");
+export type UserType = "owner" | "user" | (string & {});
+export const UserType = S.String;
 export interface CreatePresignedUrlOutput {
   fileId: string;
   presignedUrl: string;
@@ -1754,25 +1745,9 @@ export type PluginType =
   | "SALESFORCE_CRM"
   | "SERVICENOW_NOW_PLATFORM"
   | "SMARTSHEET"
-  | "ZENDESK_SUITE";
-export const PluginType = S.Literal(
-  "SERVICE_NOW",
-  "SALESFORCE",
-  "JIRA",
-  "ZENDESK",
-  "CUSTOM",
-  "ASANA",
-  "ATLASSIAN_CONFLUENCE",
-  "GOOGLE_CALENDAR",
-  "JIRA_CLOUD",
-  "MICROSOFT_EXCHANGE",
-  "MICROSOFT_TEAMS",
-  "PAGERDUTY_ADVANCE",
-  "SALESFORCE_CRM",
-  "SERVICENOW_NOW_PLATFORM",
-  "SMARTSHEET",
-  "ZENDESK_SUITE",
-);
+  | "ZENDESK_SUITE"
+  | (string & {});
+export const PluginType = S.String;
 export interface QAppSessionData {
   cardId: string;
   value?: any;

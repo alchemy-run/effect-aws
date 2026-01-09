@@ -227,33 +227,30 @@ export const DescribeVpcPeeringAuthorizationsInput = S.suspend(() =>
 }) as any as S.Schema<DescribeVpcPeeringAuthorizationsInput>;
 export type PlayerIdsForAcceptMatch = string | redacted.Redacted<string>[];
 export const PlayerIdsForAcceptMatch = S.Array(SensitiveString);
-export type AcceptanceType = "ACCEPT" | "REJECT";
-export const AcceptanceType = S.Literal("ACCEPT", "REJECT");
+export type AcceptanceType = "ACCEPT" | "REJECT" | (string & {});
+export const AcceptanceType = S.String;
 export type OperatingSystem =
   | "WINDOWS_2012"
   | "AMAZON_LINUX"
   | "AMAZON_LINUX_2"
   | "WINDOWS_2016"
   | "AMAZON_LINUX_2023"
-  | "WINDOWS_2022";
-export const OperatingSystem = S.Literal(
-  "WINDOWS_2012",
-  "AMAZON_LINUX",
-  "AMAZON_LINUX_2",
-  "WINDOWS_2016",
-  "AMAZON_LINUX_2023",
-  "WINDOWS_2022",
-);
-export type ContainerFleetBillingType = "ON_DEMAND" | "SPOT";
-export const ContainerFleetBillingType = S.Literal("ON_DEMAND", "SPOT");
+  | "WINDOWS_2022"
+  | (string & {});
+export const OperatingSystem = S.String;
+export type ContainerFleetBillingType = "ON_DEMAND" | "SPOT" | (string & {});
+export const ContainerFleetBillingType = S.String;
 export type MetricGroupList = string[];
 export const MetricGroupList = S.Array(S.String);
-export type ProtectionPolicy = "NoProtection" | "FullProtection";
-export const ProtectionPolicy = S.Literal("NoProtection", "FullProtection");
-export type ContainerGroupType = "GAME_SERVER" | "PER_INSTANCE";
-export const ContainerGroupType = S.Literal("GAME_SERVER", "PER_INSTANCE");
-export type ContainerOperatingSystem = "AMAZON_LINUX_2023";
-export const ContainerOperatingSystem = S.Literal("AMAZON_LINUX_2023");
+export type ProtectionPolicy =
+  | "NoProtection"
+  | "FullProtection"
+  | (string & {});
+export const ProtectionPolicy = S.String;
+export type ContainerGroupType = "GAME_SERVER" | "PER_INSTANCE" | (string & {});
+export const ContainerGroupType = S.String;
+export type ContainerOperatingSystem = "AMAZON_LINUX_2023" | (string & {});
+export const ContainerOperatingSystem = S.String;
 export type StringList = string[];
 export const StringList = S.Array(S.String);
 export type EC2InstanceType =
@@ -761,544 +758,36 @@ export type EC2InstanceType =
   | "m7i.48xlarge"
   | "r7a.24xlarge"
   | "r7a.32xlarge"
-  | "r7a.48xlarge";
-export const EC2InstanceType = S.Literal(
-  "t2.micro",
-  "t2.small",
-  "t2.medium",
-  "t2.large",
-  "c3.large",
-  "c3.xlarge",
-  "c3.2xlarge",
-  "c3.4xlarge",
-  "c3.8xlarge",
-  "c4.large",
-  "c4.xlarge",
-  "c4.2xlarge",
-  "c4.4xlarge",
-  "c4.8xlarge",
-  "c5.large",
-  "c5.xlarge",
-  "c5.2xlarge",
-  "c5.4xlarge",
-  "c5.9xlarge",
-  "c5.12xlarge",
-  "c5.18xlarge",
-  "c5.24xlarge",
-  "c5a.large",
-  "c5a.xlarge",
-  "c5a.2xlarge",
-  "c5a.4xlarge",
-  "c5a.8xlarge",
-  "c5a.12xlarge",
-  "c5a.16xlarge",
-  "c5a.24xlarge",
-  "r3.large",
-  "r3.xlarge",
-  "r3.2xlarge",
-  "r3.4xlarge",
-  "r3.8xlarge",
-  "r4.large",
-  "r4.xlarge",
-  "r4.2xlarge",
-  "r4.4xlarge",
-  "r4.8xlarge",
-  "r4.16xlarge",
-  "r5.large",
-  "r5.xlarge",
-  "r5.2xlarge",
-  "r5.4xlarge",
-  "r5.8xlarge",
-  "r5.12xlarge",
-  "r5.16xlarge",
-  "r5.24xlarge",
-  "r5a.large",
-  "r5a.xlarge",
-  "r5a.2xlarge",
-  "r5a.4xlarge",
-  "r5a.8xlarge",
-  "r5a.12xlarge",
-  "r5a.16xlarge",
-  "r5a.24xlarge",
-  "m3.medium",
-  "m3.large",
-  "m3.xlarge",
-  "m3.2xlarge",
-  "m4.large",
-  "m4.xlarge",
-  "m4.2xlarge",
-  "m4.4xlarge",
-  "m4.10xlarge",
-  "m5.large",
-  "m5.xlarge",
-  "m5.2xlarge",
-  "m5.4xlarge",
-  "m5.8xlarge",
-  "m5.12xlarge",
-  "m5.16xlarge",
-  "m5.24xlarge",
-  "m5a.large",
-  "m5a.xlarge",
-  "m5a.2xlarge",
-  "m5a.4xlarge",
-  "m5a.8xlarge",
-  "m5a.12xlarge",
-  "m5a.16xlarge",
-  "m5a.24xlarge",
-  "c5d.large",
-  "c5d.xlarge",
-  "c5d.2xlarge",
-  "c5d.4xlarge",
-  "c5d.9xlarge",
-  "c5d.12xlarge",
-  "c5d.18xlarge",
-  "c5d.24xlarge",
-  "c6a.large",
-  "c6a.xlarge",
-  "c6a.2xlarge",
-  "c6a.4xlarge",
-  "c6a.8xlarge",
-  "c6a.12xlarge",
-  "c6a.16xlarge",
-  "c6a.24xlarge",
-  "c6i.large",
-  "c6i.xlarge",
-  "c6i.2xlarge",
-  "c6i.4xlarge",
-  "c6i.8xlarge",
-  "c6i.12xlarge",
-  "c6i.16xlarge",
-  "c6i.24xlarge",
-  "r5d.large",
-  "r5d.xlarge",
-  "r5d.2xlarge",
-  "r5d.4xlarge",
-  "r5d.8xlarge",
-  "r5d.12xlarge",
-  "r5d.16xlarge",
-  "r5d.24xlarge",
-  "m6g.medium",
-  "m6g.large",
-  "m6g.xlarge",
-  "m6g.2xlarge",
-  "m6g.4xlarge",
-  "m6g.8xlarge",
-  "m6g.12xlarge",
-  "m6g.16xlarge",
-  "c6g.medium",
-  "c6g.large",
-  "c6g.xlarge",
-  "c6g.2xlarge",
-  "c6g.4xlarge",
-  "c6g.8xlarge",
-  "c6g.12xlarge",
-  "c6g.16xlarge",
-  "r6g.medium",
-  "r6g.large",
-  "r6g.xlarge",
-  "r6g.2xlarge",
-  "r6g.4xlarge",
-  "r6g.8xlarge",
-  "r6g.12xlarge",
-  "r6g.16xlarge",
-  "c6gn.medium",
-  "c6gn.large",
-  "c6gn.xlarge",
-  "c6gn.2xlarge",
-  "c6gn.4xlarge",
-  "c6gn.8xlarge",
-  "c6gn.12xlarge",
-  "c6gn.16xlarge",
-  "c7g.medium",
-  "c7g.large",
-  "c7g.xlarge",
-  "c7g.2xlarge",
-  "c7g.4xlarge",
-  "c7g.8xlarge",
-  "c7g.12xlarge",
-  "c7g.16xlarge",
-  "r7g.medium",
-  "r7g.large",
-  "r7g.xlarge",
-  "r7g.2xlarge",
-  "r7g.4xlarge",
-  "r7g.8xlarge",
-  "r7g.12xlarge",
-  "r7g.16xlarge",
-  "m7g.medium",
-  "m7g.large",
-  "m7g.xlarge",
-  "m7g.2xlarge",
-  "m7g.4xlarge",
-  "m7g.8xlarge",
-  "m7g.12xlarge",
-  "m7g.16xlarge",
-  "g5g.xlarge",
-  "g5g.2xlarge",
-  "g5g.4xlarge",
-  "g5g.8xlarge",
-  "g5g.16xlarge",
-  "r6i.large",
-  "r6i.xlarge",
-  "r6i.2xlarge",
-  "r6i.4xlarge",
-  "r6i.8xlarge",
-  "r6i.12xlarge",
-  "r6i.16xlarge",
-  "c6gd.medium",
-  "c6gd.large",
-  "c6gd.xlarge",
-  "c6gd.2xlarge",
-  "c6gd.4xlarge",
-  "c6gd.8xlarge",
-  "c6gd.12xlarge",
-  "c6gd.16xlarge",
-  "c6in.large",
-  "c6in.xlarge",
-  "c6in.2xlarge",
-  "c6in.4xlarge",
-  "c6in.8xlarge",
-  "c6in.12xlarge",
-  "c6in.16xlarge",
-  "c7a.medium",
-  "c7a.large",
-  "c7a.xlarge",
-  "c7a.2xlarge",
-  "c7a.4xlarge",
-  "c7a.8xlarge",
-  "c7a.12xlarge",
-  "c7a.16xlarge",
-  "c7gd.medium",
-  "c7gd.large",
-  "c7gd.xlarge",
-  "c7gd.2xlarge",
-  "c7gd.4xlarge",
-  "c7gd.8xlarge",
-  "c7gd.12xlarge",
-  "c7gd.16xlarge",
-  "c7gn.medium",
-  "c7gn.large",
-  "c7gn.xlarge",
-  "c7gn.2xlarge",
-  "c7gn.4xlarge",
-  "c7gn.8xlarge",
-  "c7gn.12xlarge",
-  "c7gn.16xlarge",
-  "c7i.large",
-  "c7i.xlarge",
-  "c7i.2xlarge",
-  "c7i.4xlarge",
-  "c7i.8xlarge",
-  "c7i.12xlarge",
-  "c7i.16xlarge",
-  "m6a.large",
-  "m6a.xlarge",
-  "m6a.2xlarge",
-  "m6a.4xlarge",
-  "m6a.8xlarge",
-  "m6a.12xlarge",
-  "m6a.16xlarge",
-  "m6gd.medium",
-  "m6gd.large",
-  "m6gd.xlarge",
-  "m6gd.2xlarge",
-  "m6gd.4xlarge",
-  "m6gd.8xlarge",
-  "m6gd.12xlarge",
-  "m6gd.16xlarge",
-  "m6i.large",
-  "m6i.xlarge",
-  "m6i.2xlarge",
-  "m6i.4xlarge",
-  "m6i.8xlarge",
-  "m6i.12xlarge",
-  "m6i.16xlarge",
-  "m7a.medium",
-  "m7a.large",
-  "m7a.xlarge",
-  "m7a.2xlarge",
-  "m7a.4xlarge",
-  "m7a.8xlarge",
-  "m7a.12xlarge",
-  "m7a.16xlarge",
-  "m7gd.medium",
-  "m7gd.large",
-  "m7gd.xlarge",
-  "m7gd.2xlarge",
-  "m7gd.4xlarge",
-  "m7gd.8xlarge",
-  "m7gd.12xlarge",
-  "m7gd.16xlarge",
-  "m7i.large",
-  "m7i.xlarge",
-  "m7i.2xlarge",
-  "m7i.4xlarge",
-  "m7i.8xlarge",
-  "m7i.12xlarge",
-  "m7i.16xlarge",
-  "r6gd.medium",
-  "r6gd.large",
-  "r6gd.xlarge",
-  "r6gd.2xlarge",
-  "r6gd.4xlarge",
-  "r6gd.8xlarge",
-  "r6gd.12xlarge",
-  "r6gd.16xlarge",
-  "r7a.medium",
-  "r7a.large",
-  "r7a.xlarge",
-  "r7a.2xlarge",
-  "r7a.4xlarge",
-  "r7a.8xlarge",
-  "r7a.12xlarge",
-  "r7a.16xlarge",
-  "r7gd.medium",
-  "r7gd.large",
-  "r7gd.xlarge",
-  "r7gd.2xlarge",
-  "r7gd.4xlarge",
-  "r7gd.8xlarge",
-  "r7gd.12xlarge",
-  "r7gd.16xlarge",
-  "r7i.large",
-  "r7i.xlarge",
-  "r7i.2xlarge",
-  "r7i.4xlarge",
-  "r7i.8xlarge",
-  "r7i.12xlarge",
-  "r7i.16xlarge",
-  "r7i.24xlarge",
-  "r7i.48xlarge",
-  "c5ad.large",
-  "c5ad.xlarge",
-  "c5ad.2xlarge",
-  "c5ad.4xlarge",
-  "c5ad.8xlarge",
-  "c5ad.12xlarge",
-  "c5ad.16xlarge",
-  "c5ad.24xlarge",
-  "c5n.large",
-  "c5n.xlarge",
-  "c5n.2xlarge",
-  "c5n.4xlarge",
-  "c5n.9xlarge",
-  "c5n.18xlarge",
-  "r5ad.large",
-  "r5ad.xlarge",
-  "r5ad.2xlarge",
-  "r5ad.4xlarge",
-  "r5ad.8xlarge",
-  "r5ad.12xlarge",
-  "r5ad.16xlarge",
-  "r5ad.24xlarge",
-  "c6id.large",
-  "c6id.xlarge",
-  "c6id.2xlarge",
-  "c6id.4xlarge",
-  "c6id.8xlarge",
-  "c6id.12xlarge",
-  "c6id.16xlarge",
-  "c6id.24xlarge",
-  "c6id.32xlarge",
-  "c8g.medium",
-  "c8g.large",
-  "c8g.xlarge",
-  "c8g.2xlarge",
-  "c8g.4xlarge",
-  "c8g.8xlarge",
-  "c8g.12xlarge",
-  "c8g.16xlarge",
-  "c8g.24xlarge",
-  "c8g.48xlarge",
-  "m5ad.large",
-  "m5ad.xlarge",
-  "m5ad.2xlarge",
-  "m5ad.4xlarge",
-  "m5ad.8xlarge",
-  "m5ad.12xlarge",
-  "m5ad.16xlarge",
-  "m5ad.24xlarge",
-  "m5d.large",
-  "m5d.xlarge",
-  "m5d.2xlarge",
-  "m5d.4xlarge",
-  "m5d.8xlarge",
-  "m5d.12xlarge",
-  "m5d.16xlarge",
-  "m5d.24xlarge",
-  "m5dn.large",
-  "m5dn.xlarge",
-  "m5dn.2xlarge",
-  "m5dn.4xlarge",
-  "m5dn.8xlarge",
-  "m5dn.12xlarge",
-  "m5dn.16xlarge",
-  "m5dn.24xlarge",
-  "m5n.large",
-  "m5n.xlarge",
-  "m5n.2xlarge",
-  "m5n.4xlarge",
-  "m5n.8xlarge",
-  "m5n.12xlarge",
-  "m5n.16xlarge",
-  "m5n.24xlarge",
-  "m6id.large",
-  "m6id.xlarge",
-  "m6id.2xlarge",
-  "m6id.4xlarge",
-  "m6id.8xlarge",
-  "m6id.12xlarge",
-  "m6id.16xlarge",
-  "m6id.24xlarge",
-  "m6id.32xlarge",
-  "m6idn.large",
-  "m6idn.xlarge",
-  "m6idn.2xlarge",
-  "m6idn.4xlarge",
-  "m6idn.8xlarge",
-  "m6idn.12xlarge",
-  "m6idn.16xlarge",
-  "m6idn.24xlarge",
-  "m6idn.32xlarge",
-  "m6in.large",
-  "m6in.xlarge",
-  "m6in.2xlarge",
-  "m6in.4xlarge",
-  "m6in.8xlarge",
-  "m6in.12xlarge",
-  "m6in.16xlarge",
-  "m6in.24xlarge",
-  "m6in.32xlarge",
-  "m8g.medium",
-  "m8g.large",
-  "m8g.xlarge",
-  "m8g.2xlarge",
-  "m8g.4xlarge",
-  "m8g.8xlarge",
-  "m8g.12xlarge",
-  "m8g.16xlarge",
-  "m8g.24xlarge",
-  "m8g.48xlarge",
-  "r5dn.large",
-  "r5dn.xlarge",
-  "r5dn.2xlarge",
-  "r5dn.4xlarge",
-  "r5dn.8xlarge",
-  "r5dn.12xlarge",
-  "r5dn.16xlarge",
-  "r5dn.24xlarge",
-  "r5n.large",
-  "r5n.xlarge",
-  "r5n.2xlarge",
-  "r5n.4xlarge",
-  "r5n.8xlarge",
-  "r5n.12xlarge",
-  "r5n.16xlarge",
-  "r5n.24xlarge",
-  "r6a.large",
-  "r6a.xlarge",
-  "r6a.2xlarge",
-  "r6a.4xlarge",
-  "r6a.8xlarge",
-  "r6a.12xlarge",
-  "r6a.16xlarge",
-  "r6a.24xlarge",
-  "r6a.32xlarge",
-  "r6a.48xlarge",
-  "r6id.large",
-  "r6id.xlarge",
-  "r6id.2xlarge",
-  "r6id.4xlarge",
-  "r6id.8xlarge",
-  "r6id.12xlarge",
-  "r6id.16xlarge",
-  "r6id.24xlarge",
-  "r6id.32xlarge",
-  "r6idn.large",
-  "r6idn.xlarge",
-  "r6idn.2xlarge",
-  "r6idn.4xlarge",
-  "r6idn.8xlarge",
-  "r6idn.12xlarge",
-  "r6idn.16xlarge",
-  "r6idn.24xlarge",
-  "r6idn.32xlarge",
-  "r6in.large",
-  "r6in.xlarge",
-  "r6in.2xlarge",
-  "r6in.4xlarge",
-  "r6in.8xlarge",
-  "r6in.12xlarge",
-  "r6in.16xlarge",
-  "r6in.24xlarge",
-  "r6in.32xlarge",
-  "r8g.medium",
-  "r8g.large",
-  "r8g.xlarge",
-  "r8g.2xlarge",
-  "r8g.4xlarge",
-  "r8g.8xlarge",
-  "r8g.12xlarge",
-  "r8g.16xlarge",
-  "r8g.24xlarge",
-  "r8g.48xlarge",
-  "m4.16xlarge",
-  "c6a.32xlarge",
-  "c6a.48xlarge",
-  "c6i.32xlarge",
-  "r6i.24xlarge",
-  "r6i.32xlarge",
-  "c6in.24xlarge",
-  "c6in.32xlarge",
-  "c7a.24xlarge",
-  "c7a.32xlarge",
-  "c7a.48xlarge",
-  "c7i.24xlarge",
-  "c7i.48xlarge",
-  "m6a.24xlarge",
-  "m6a.32xlarge",
-  "m6a.48xlarge",
-  "m6i.24xlarge",
-  "m6i.32xlarge",
-  "m7a.24xlarge",
-  "m7a.32xlarge",
-  "m7a.48xlarge",
-  "m7i.24xlarge",
-  "m7i.48xlarge",
-  "r7a.24xlarge",
-  "r7a.32xlarge",
-  "r7a.48xlarge",
-);
-export type FleetType = "ON_DEMAND" | "SPOT";
-export const FleetType = S.Literal("ON_DEMAND", "SPOT");
-export type ComputeType = "EC2" | "ANYWHERE";
-export const ComputeType = S.Literal("EC2", "ANYWHERE");
-export type InstanceRoleCredentialsProvider = "SHARED_CREDENTIAL_FILE";
-export const InstanceRoleCredentialsProvider = S.Literal(
-  "SHARED_CREDENTIAL_FILE",
-);
+  | "r7a.48xlarge"
+  | (string & {});
+export const EC2InstanceType = S.String;
+export type FleetType = "ON_DEMAND" | "SPOT" | (string & {});
+export const FleetType = S.String;
+export type ComputeType = "EC2" | "ANYWHERE" | (string & {});
+export const ComputeType = S.String;
+export type InstanceRoleCredentialsProvider =
+  | "SHARED_CREDENTIAL_FILE"
+  | (string & {});
+export const InstanceRoleCredentialsProvider = S.String;
 export type BalancingStrategy =
   | "SPOT_ONLY"
   | "SPOT_PREFERRED"
-  | "ON_DEMAND_ONLY";
-export const BalancingStrategy = S.Literal(
-  "SPOT_ONLY",
-  "SPOT_PREFERRED",
-  "ON_DEMAND_ONLY",
-);
-export type GameServerProtectionPolicy = "NO_PROTECTION" | "FULL_PROTECTION";
-export const GameServerProtectionPolicy = S.Literal(
-  "NO_PROTECTION",
-  "FULL_PROTECTION",
-);
+  | "ON_DEMAND_ONLY"
+  | (string & {});
+export const BalancingStrategy = S.String;
+export type GameServerProtectionPolicy =
+  | "NO_PROTECTION"
+  | "FULL_PROTECTION"
+  | (string & {});
+export const GameServerProtectionPolicy = S.String;
 export type VpcSubnets = string[];
 export const VpcSubnets = S.Array(S.String);
 export type QueueArnsList = string[];
 export const QueueArnsList = S.Array(S.String);
-export type BackfillMode = "AUTOMATIC" | "MANUAL";
-export const BackfillMode = S.Literal("AUTOMATIC", "MANUAL");
-export type FlexMatchMode = "STANDALONE" | "WITH_QUEUE";
-export const FlexMatchMode = S.Literal("STANDALONE", "WITH_QUEUE");
+export type BackfillMode = "AUTOMATIC" | "MANUAL" | (string & {});
+export const BackfillMode = S.String;
+export type FlexMatchMode = "STANDALONE" | "WITH_QUEUE" | (string & {});
+export const FlexMatchMode = S.String;
 export type PlayerIdList = string | redacted.Redacted<string>[];
 export const PlayerIdList = S.Array(SensitiveString);
 export type LocationList = string[];
@@ -1306,12 +795,9 @@ export const LocationList = S.Array(S.String);
 export type GameServerGroupDeleteOption =
   | "SAFE_DELETE"
   | "FORCE_DELETE"
-  | "RETAIN";
-export const GameServerGroupDeleteOption = S.Literal(
-  "SAFE_DELETE",
-  "FORCE_DELETE",
-  "RETAIN",
-);
+  | "RETAIN"
+  | (string & {});
+export const GameServerGroupDeleteOption = S.String;
 export type FleetIdOrArnList = string[];
 export const FleetIdOrArnList = S.Array(S.String);
 export type GameServerInstanceIds = string[];
@@ -1331,48 +817,34 @@ export type ScalingStatusType =
   | "DELETE_REQUESTED"
   | "DELETING"
   | "DELETED"
-  | "ERROR";
-export const ScalingStatusType = S.Literal(
-  "ACTIVE",
-  "UPDATE_REQUESTED",
-  "UPDATING",
-  "DELETE_REQUESTED",
-  "DELETING",
-  "DELETED",
-  "ERROR",
-);
-export type RoutingStrategyType = "SIMPLE" | "TERMINAL";
-export const RoutingStrategyType = S.Literal("SIMPLE", "TERMINAL");
-export type BuildStatus = "INITIALIZED" | "READY" | "FAILED";
-export const BuildStatus = S.Literal("INITIALIZED", "READY", "FAILED");
-export type ListComputeInputStatus = "ACTIVE" | "IMPAIRED";
-export const ListComputeInputStatus = S.Literal("ACTIVE", "IMPAIRED");
-export type SortOrder = "ASCENDING" | "DESCENDING";
-export const SortOrder = S.Literal("ASCENDING", "DESCENDING");
-export type LocationFilter = "AWS" | "CUSTOM";
-export const LocationFilter = S.Literal("AWS", "CUSTOM");
+  | "ERROR"
+  | (string & {});
+export const ScalingStatusType = S.String;
+export type RoutingStrategyType = "SIMPLE" | "TERMINAL" | (string & {});
+export const RoutingStrategyType = S.String;
+export type BuildStatus = "INITIALIZED" | "READY" | "FAILED" | (string & {});
+export const BuildStatus = S.String;
+export type ListComputeInputStatus = "ACTIVE" | "IMPAIRED" | (string & {});
+export const ListComputeInputStatus = S.String;
+export type SortOrder = "ASCENDING" | "DESCENDING" | (string & {});
+export const SortOrder = S.String;
+export type LocationFilter = "AWS" | "CUSTOM" | (string & {});
+export const LocationFilter = S.String;
 export type LocationFilterList = LocationFilter[];
 export const LocationFilterList = S.Array(LocationFilter);
 export type ScalingAdjustmentType =
   | "ChangeInCapacity"
   | "ExactCapacity"
-  | "PercentChangeInCapacity";
-export const ScalingAdjustmentType = S.Literal(
-  "ChangeInCapacity",
-  "ExactCapacity",
-  "PercentChangeInCapacity",
-);
+  | "PercentChangeInCapacity"
+  | (string & {});
+export const ScalingAdjustmentType = S.String;
 export type ComparisonOperatorType =
   | "GreaterThanOrEqualToThreshold"
   | "GreaterThanThreshold"
   | "LessThanThreshold"
-  | "LessThanOrEqualToThreshold";
-export const ComparisonOperatorType = S.Literal(
-  "GreaterThanOrEqualToThreshold",
-  "GreaterThanThreshold",
-  "LessThanThreshold",
-  "LessThanOrEqualToThreshold",
-);
+  | "LessThanOrEqualToThreshold"
+  | (string & {});
+export const ComparisonOperatorType = S.String;
 export type MetricName =
   | "ActivatingGameSessions"
   | "ActiveGameSessions"
@@ -1385,55 +857,46 @@ export type MetricName =
   | "PercentIdleInstances"
   | "QueueDepth"
   | "WaitTime"
-  | "ConcurrentActivatableGameSessions";
-export const MetricName = S.Literal(
-  "ActivatingGameSessions",
-  "ActiveGameSessions",
-  "ActiveInstances",
-  "AvailableGameSessions",
-  "AvailablePlayerSessions",
-  "CurrentPlayerSessions",
-  "IdleInstances",
-  "PercentAvailableGameSessions",
-  "PercentIdleInstances",
-  "QueueDepth",
-  "WaitTime",
-  "ConcurrentActivatableGameSessions",
-);
-export type PolicyType = "RuleBased" | "TargetBased";
-export const PolicyType = S.Literal("RuleBased", "TargetBased");
-export type GameServerGroupAction = "REPLACE_INSTANCE_TYPES";
-export const GameServerGroupAction = S.Literal("REPLACE_INSTANCE_TYPES");
+  | "ConcurrentActivatableGameSessions"
+  | (string & {});
+export const MetricName = S.String;
+export type PolicyType = "RuleBased" | "TargetBased" | (string & {});
+export const PolicyType = S.String;
+export type GameServerGroupAction = "REPLACE_INSTANCE_TYPES" | (string & {});
+export const GameServerGroupAction = S.String;
 export type GameServerGroupActions = GameServerGroupAction[];
 export const GameServerGroupActions = S.Array(GameServerGroupAction);
-export type FleetAction = "AUTO_SCALING";
-export const FleetAction = S.Literal("AUTO_SCALING");
+export type FleetAction = "AUTO_SCALING" | (string & {});
+export const FleetAction = S.String;
 export type FleetActionList = FleetAction[];
 export const FleetActionList = S.Array(FleetAction);
 export type TerminationMode =
   | "TRIGGER_ON_PROCESS_TERMINATE"
-  | "FORCE_TERMINATE";
-export const TerminationMode = S.Literal(
-  "TRIGGER_ON_PROCESS_TERMINATE",
-  "FORCE_TERMINATE",
-);
+  | "FORCE_TERMINATE"
+  | (string & {});
+export const TerminationMode = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export type ContainerFleetRemoveAttribute =
-  "PER_INSTANCE_CONTAINER_GROUP_DEFINITION";
-export const ContainerFleetRemoveAttribute = S.Literal(
-  "PER_INSTANCE_CONTAINER_GROUP_DEFINITION",
-);
+  | "PER_INSTANCE_CONTAINER_GROUP_DEFINITION"
+  | (string & {});
+export const ContainerFleetRemoveAttribute = S.String;
 export type ContainerFleetRemoveAttributeList = ContainerFleetRemoveAttribute[];
 export const ContainerFleetRemoveAttributeList = S.Array(
   ContainerFleetRemoveAttribute,
 );
-export type GameServerUtilizationStatus = "AVAILABLE" | "UTILIZED";
-export const GameServerUtilizationStatus = S.Literal("AVAILABLE", "UTILIZED");
-export type GameServerHealthCheck = "HEALTHY";
-export const GameServerHealthCheck = S.Literal("HEALTHY");
-export type PlayerSessionCreationPolicy = "ACCEPT_ALL" | "DENY_ALL";
-export const PlayerSessionCreationPolicy = S.Literal("ACCEPT_ALL", "DENY_ALL");
+export type GameServerUtilizationStatus =
+  | "AVAILABLE"
+  | "UTILIZED"
+  | (string & {});
+export const GameServerUtilizationStatus = S.String;
+export type GameServerHealthCheck = "HEALTHY" | (string & {});
+export const GameServerHealthCheck = S.String;
+export type PlayerSessionCreationPolicy =
+  | "ACCEPT_ALL"
+  | "DENY_ALL"
+  | (string & {});
+export const PlayerSessionCreationPolicy = S.String;
 export interface AcceptMatchInput {
   TicketId?: string;
   PlayerIds?: string | redacted.Redacted<string>[];
@@ -3746,13 +3209,9 @@ export type ContainerDependencyCondition =
   | "START"
   | "COMPLETE"
   | "SUCCESS"
-  | "HEALTHY";
-export const ContainerDependencyCondition = S.Literal(
-  "START",
-  "COMPLETE",
-  "SUCCESS",
-  "HEALTHY",
-);
+  | "HEALTHY"
+  | (string & {});
+export const ContainerDependencyCondition = S.String;
 export interface ContainerDependency {
   ContainerName?: string;
   Condition?: ContainerDependencyCondition;
@@ -3767,11 +3226,11 @@ export const ContainerDependency = S.suspend(() =>
 }) as any as S.Schema<ContainerDependency>;
 export type ContainerDependencyList = ContainerDependency[];
 export const ContainerDependencyList = S.Array(ContainerDependency);
-export type ContainerMountPointAccessLevel = "READ_ONLY" | "READ_AND_WRITE";
-export const ContainerMountPointAccessLevel = S.Literal(
-  "READ_ONLY",
-  "READ_AND_WRITE",
-);
+export type ContainerMountPointAccessLevel =
+  | "READ_ONLY"
+  | "READ_AND_WRITE"
+  | (string & {});
+export const ContainerMountPointAccessLevel = S.String;
 export interface ContainerMountPoint {
   InstancePath?: string;
   ContainerPath?: string;
@@ -3799,8 +3258,8 @@ export const ContainerEnvironment = S.suspend(() =>
 }) as any as S.Schema<ContainerEnvironment>;
 export type ContainerEnvironmentList = ContainerEnvironment[];
 export const ContainerEnvironmentList = S.Array(ContainerEnvironment);
-export type IpProtocol = "TCP" | "UDP";
-export const IpProtocol = S.Literal("TCP", "UDP");
+export type IpProtocol = "TCP" | "UDP" | (string & {});
+export const IpProtocol = S.String;
 export interface ContainerPortRange {
   FromPort?: number;
   ToPort?: number;
@@ -4174,97 +3633,9 @@ export type GameServerGroupInstanceType =
   | "m6g.4xlarge"
   | "m6g.8xlarge"
   | "m6g.12xlarge"
-  | "m6g.16xlarge";
-export const GameServerGroupInstanceType = S.Literal(
-  "c4.large",
-  "c4.xlarge",
-  "c4.2xlarge",
-  "c4.4xlarge",
-  "c4.8xlarge",
-  "c5.large",
-  "c5.xlarge",
-  "c5.2xlarge",
-  "c5.4xlarge",
-  "c5.9xlarge",
-  "c5.12xlarge",
-  "c5.18xlarge",
-  "c5.24xlarge",
-  "c5a.large",
-  "c5a.xlarge",
-  "c5a.2xlarge",
-  "c5a.4xlarge",
-  "c5a.8xlarge",
-  "c5a.12xlarge",
-  "c5a.16xlarge",
-  "c5a.24xlarge",
-  "c6g.medium",
-  "c6g.large",
-  "c6g.xlarge",
-  "c6g.2xlarge",
-  "c6g.4xlarge",
-  "c6g.8xlarge",
-  "c6g.12xlarge",
-  "c6g.16xlarge",
-  "r4.large",
-  "r4.xlarge",
-  "r4.2xlarge",
-  "r4.4xlarge",
-  "r4.8xlarge",
-  "r4.16xlarge",
-  "r5.large",
-  "r5.xlarge",
-  "r5.2xlarge",
-  "r5.4xlarge",
-  "r5.8xlarge",
-  "r5.12xlarge",
-  "r5.16xlarge",
-  "r5.24xlarge",
-  "r5a.large",
-  "r5a.xlarge",
-  "r5a.2xlarge",
-  "r5a.4xlarge",
-  "r5a.8xlarge",
-  "r5a.12xlarge",
-  "r5a.16xlarge",
-  "r5a.24xlarge",
-  "r6g.medium",
-  "r6g.large",
-  "r6g.xlarge",
-  "r6g.2xlarge",
-  "r6g.4xlarge",
-  "r6g.8xlarge",
-  "r6g.12xlarge",
-  "r6g.16xlarge",
-  "m4.large",
-  "m4.xlarge",
-  "m4.2xlarge",
-  "m4.4xlarge",
-  "m4.10xlarge",
-  "m5.large",
-  "m5.xlarge",
-  "m5.2xlarge",
-  "m5.4xlarge",
-  "m5.8xlarge",
-  "m5.12xlarge",
-  "m5.16xlarge",
-  "m5.24xlarge",
-  "m5a.large",
-  "m5a.xlarge",
-  "m5a.2xlarge",
-  "m5a.4xlarge",
-  "m5a.8xlarge",
-  "m5a.12xlarge",
-  "m5a.16xlarge",
-  "m5a.24xlarge",
-  "m6g.medium",
-  "m6g.large",
-  "m6g.xlarge",
-  "m6g.2xlarge",
-  "m6g.4xlarge",
-  "m6g.8xlarge",
-  "m6g.12xlarge",
-  "m6g.16xlarge",
-);
+  | "m6g.16xlarge"
+  | (string & {});
+export const GameServerGroupInstanceType = S.String;
 export interface InstanceDefinition {
   InstanceType?: GameServerGroupInstanceType;
   WeightedCapacity?: string;
@@ -4371,13 +3742,13 @@ export const FilterConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "FilterConfiguration",
 }) as any as S.Schema<FilterConfiguration>;
-export type PriorityType = "LATENCY" | "COST" | "DESTINATION" | "LOCATION";
-export const PriorityType = S.Literal(
-  "LATENCY",
-  "COST",
-  "DESTINATION",
-  "LOCATION",
-);
+export type PriorityType =
+  | "LATENCY"
+  | "COST"
+  | "DESTINATION"
+  | "LOCATION"
+  | (string & {});
+export const PriorityType = S.String;
 export type PriorityTypeList = PriorityType[];
 export const PriorityTypeList = S.Array(PriorityType);
 export interface PriorityConfiguration {
@@ -4570,30 +3941,31 @@ export const ValidateMatchmakingRuleSetInput = S.suspend(() =>
 ).annotations({
   identifier: "ValidateMatchmakingRuleSetInput",
 }) as any as S.Schema<ValidateMatchmakingRuleSetInput>;
-export type FilterInstanceStatus = "ACTIVE" | "DRAINING";
-export const FilterInstanceStatus = S.Literal("ACTIVE", "DRAINING");
+export type FilterInstanceStatus = "ACTIVE" | "DRAINING" | (string & {});
+export const FilterInstanceStatus = S.String;
 export type FilterInstanceStatuses = FilterInstanceStatus[];
 export const FilterInstanceStatuses = S.Array(FilterInstanceStatus);
-export type LogDestination = "NONE" | "CLOUDWATCH" | "S3";
-export const LogDestination = S.Literal("NONE", "CLOUDWATCH", "S3");
-export type CertificateType = "DISABLED" | "GENERATED";
-export const CertificateType = S.Literal("DISABLED", "GENERATED");
-export type PlacementFallbackStrategy = "DEFAULT_AFTER_SINGLE_PASS" | "NONE";
-export const PlacementFallbackStrategy = S.Literal(
-  "DEFAULT_AFTER_SINGLE_PASS",
-  "NONE",
-);
+export type LogDestination = "NONE" | "CLOUDWATCH" | "S3" | (string & {});
+export const LogDestination = S.String;
+export type CertificateType = "DISABLED" | "GENERATED" | (string & {});
+export const CertificateType = S.String;
+export type PlacementFallbackStrategy =
+  | "DEFAULT_AFTER_SINGLE_PASS"
+  | "NONE"
+  | (string & {});
+export const PlacementFallbackStrategy = S.String;
 export type LocationOrderOverrideList = string[];
 export const LocationOrderOverrideList = S.Array(S.String);
 export type DeploymentProtectionStrategy =
   | "WITH_PROTECTION"
-  | "IGNORE_PROTECTION";
-export const DeploymentProtectionStrategy = S.Literal(
-  "WITH_PROTECTION",
-  "IGNORE_PROTECTION",
-);
-export type DeploymentImpairmentStrategy = "MAINTAIN" | "ROLLBACK";
-export const DeploymentImpairmentStrategy = S.Literal("MAINTAIN", "ROLLBACK");
+  | "IGNORE_PROTECTION"
+  | (string & {});
+export const DeploymentProtectionStrategy = S.String;
+export type DeploymentImpairmentStrategy =
+  | "MAINTAIN"
+  | "ROLLBACK"
+  | (string & {});
+export const DeploymentImpairmentStrategy = S.String;
 export interface ClaimFilterOption {
   InstanceStatuses?: FilterInstanceStatus[];
 }
@@ -4664,8 +4036,8 @@ export const PlayerDataMap = S.Record({
   key: S.String,
   value: S.UndefinedOr(S.String),
 });
-export type LocationUpdateStatus = "PENDING_UPDATE";
-export const LocationUpdateStatus = S.Literal("PENDING_UPDATE");
+export type LocationUpdateStatus = "PENDING_UPDATE" | (string & {});
+export const LocationUpdateStatus = S.String;
 export interface FleetUtilization {
   FleetId?: string;
   FleetArn?: string;
@@ -4756,13 +4128,9 @@ export type PlayerSessionStatus =
   | "RESERVED"
   | "ACTIVE"
   | "COMPLETED"
-  | "TIMEDOUT";
-export const PlayerSessionStatus = S.Literal(
-  "RESERVED",
-  "ACTIVE",
-  "COMPLETED",
-  "TIMEDOUT",
-);
+  | "TIMEDOUT"
+  | (string & {});
+export const PlayerSessionStatus = S.String;
 export interface PlayerSession {
   PlayerSessionId?: string;
   PlayerId?: string | redacted.Redacted<string>;
@@ -4869,13 +4237,13 @@ export const Build = S.suspend(() =>
 ).annotations({ identifier: "Build" }) as any as S.Schema<Build>;
 export type BuildList = Build[];
 export const BuildList = S.Array(Build);
-export type ComputeStatus = "PENDING" | "ACTIVE" | "TERMINATING" | "IMPAIRED";
-export const ComputeStatus = S.Literal(
-  "PENDING",
-  "ACTIVE",
-  "TERMINATING",
-  "IMPAIRED",
-);
+export type ComputeStatus =
+  | "PENDING"
+  | "ACTIVE"
+  | "TERMINATING"
+  | "IMPAIRED"
+  | (string & {});
+export const ComputeStatus = S.String;
 export interface ContainerAttribute {
   ContainerName?: string;
   ContainerRuntimeId?: string;
@@ -4937,16 +4305,9 @@ export type ContainerFleetStatus =
   | "ACTIVATING"
   | "ACTIVE"
   | "UPDATING"
-  | "DELETING";
-export const ContainerFleetStatus = S.Literal(
-  "PENDING",
-  "CREATING",
-  "CREATED",
-  "ACTIVATING",
-  "ACTIVE",
-  "UPDATING",
-  "DELETING",
-);
+  | "DELETING"
+  | (string & {});
+export const ContainerFleetStatus = S.String;
 export interface DeploymentDetails {
   LatestDeploymentId?: string;
 }
@@ -4962,16 +4323,9 @@ export type ContainerFleetLocationStatus =
   | "ACTIVATING"
   | "ACTIVE"
   | "UPDATING"
-  | "DELETING";
-export const ContainerFleetLocationStatus = S.Literal(
-  "PENDING",
-  "CREATING",
-  "CREATED",
-  "ACTIVATING",
-  "ACTIVE",
-  "UPDATING",
-  "DELETING",
-);
+  | "DELETING"
+  | (string & {});
+export const ContainerFleetLocationStatus = S.String;
 export interface ContainerFleetLocationAttributes {
   Location?: string;
   Status?: ContainerFleetLocationStatus;
@@ -5101,12 +4455,12 @@ export type SupportContainerDefinitionList = SupportContainerDefinition[];
 export const SupportContainerDefinitionList = S.Array(
   SupportContainerDefinition,
 );
-export type ContainerGroupDefinitionStatus = "READY" | "COPYING" | "FAILED";
-export const ContainerGroupDefinitionStatus = S.Literal(
-  "READY",
-  "COPYING",
-  "FAILED",
-);
+export type ContainerGroupDefinitionStatus =
+  | "READY"
+  | "COPYING"
+  | "FAILED"
+  | (string & {});
+export const ContainerGroupDefinitionStatus = S.String;
 export interface ContainerGroupDefinition {
   ContainerGroupDefinitionArn?: string;
   CreationTime?: Date;
@@ -5150,16 +4504,9 @@ export type DeploymentStatus =
   | "ROLLBACK_IN_PROGRESS"
   | "ROLLBACK_COMPLETE"
   | "CANCELLED"
-  | "PENDING";
-export const DeploymentStatus = S.Literal(
-  "IN_PROGRESS",
-  "IMPAIRED",
-  "COMPLETE",
-  "ROLLBACK_IN_PROGRESS",
-  "ROLLBACK_COMPLETE",
-  "CANCELLED",
-  "PENDING",
-);
+  | "PENDING"
+  | (string & {});
+export const DeploymentStatus = S.String;
 export interface DeploymentConfiguration {
   ProtectionStrategy?: DeploymentProtectionStrategy;
   MinimumHealthyPercentage?: number;
@@ -5211,16 +4558,9 @@ export type GameServerGroupStatus =
   | "DELETE_SCHEDULED"
   | "DELETING"
   | "DELETED"
-  | "ERROR";
-export const GameServerGroupStatus = S.Literal(
-  "NEW",
-  "ACTIVATING",
-  "ACTIVE",
-  "DELETE_SCHEDULED",
-  "DELETING",
-  "DELETED",
-  "ERROR",
-);
+  | "ERROR"
+  | (string & {});
+export const GameServerGroupStatus = S.String;
 export interface GameServerGroup {
   GameServerGroupName?: string;
   GameServerGroupArn?: string;
@@ -5257,8 +4597,8 @@ export const GameServerGroup = S.suspend(() =>
 }) as any as S.Schema<GameServerGroup>;
 export type GameServerGroups = GameServerGroup[];
 export const GameServerGroups = S.Array(GameServerGroup);
-export type GameServerClaimStatus = "CLAIMED";
-export const GameServerClaimStatus = S.Literal("CLAIMED");
+export type GameServerClaimStatus = "CLAIMED" | (string & {});
+export const GameServerClaimStatus = S.String;
 export interface GameServer {
   GameServerGroupName?: string;
   GameServerGroupArn?: string;
@@ -5642,19 +4982,9 @@ export type FleetStatus =
   | "DELETING"
   | "ERROR"
   | "TERMINATED"
-  | "NOT_FOUND";
-export const FleetStatus = S.Literal(
-  "NEW",
-  "DOWNLOADING",
-  "VALIDATING",
-  "BUILDING",
-  "ACTIVATING",
-  "ACTIVE",
-  "DELETING",
-  "ERROR",
-  "TERMINATED",
-  "NOT_FOUND",
-);
+  | "NOT_FOUND"
+  | (string & {});
+export const FleetStatus = S.String;
 export interface LocationState {
   Location?: string;
   Status?: FleetStatus;
@@ -6261,23 +5591,15 @@ export type GameSessionStatus =
   | "ACTIVATING"
   | "TERMINATED"
   | "TERMINATING"
-  | "ERROR";
-export const GameSessionStatus = S.Literal(
-  "ACTIVE",
-  "ACTIVATING",
-  "TERMINATED",
-  "TERMINATING",
-  "ERROR",
-);
+  | "ERROR"
+  | (string & {});
+export const GameSessionStatus = S.String;
 export type GameSessionStatusReason =
   | "INTERRUPTED"
   | "TRIGGERED_ON_PROCESS_TERMINATE"
-  | "FORCE_TERMINATED";
-export const GameSessionStatusReason = S.Literal(
-  "INTERRUPTED",
-  "TRIGGERED_ON_PROCESS_TERMINATE",
-  "FORCE_TERMINATED",
-);
+  | "FORCE_TERMINATED"
+  | (string & {});
+export const GameSessionStatusReason = S.String;
 export interface GameSession {
   GameSessionId?: string;
   Name?: string;
@@ -6399,17 +5721,9 @@ export type MatchmakingConfigurationStatus =
   | "QUEUED"
   | "REQUIRES_ACCEPTANCE"
   | "SEARCHING"
-  | "TIMED_OUT";
-export const MatchmakingConfigurationStatus = S.Literal(
-  "CANCELLED",
-  "COMPLETED",
-  "FAILED",
-  "PLACING",
-  "QUEUED",
-  "REQUIRES_ACCEPTANCE",
-  "SEARCHING",
-  "TIMED_OUT",
-);
+  | "TIMED_OUT"
+  | (string & {});
+export const MatchmakingConfigurationStatus = S.String;
 export interface MatchedPlayerSession {
   PlayerId?: string | redacted.Redacted<string>;
   PlayerSessionId?: string;
@@ -6497,14 +5811,9 @@ export type GameSessionPlacementState =
   | "FULFILLED"
   | "CANCELLED"
   | "TIMED_OUT"
-  | "FAILED";
-export const GameSessionPlacementState = S.Literal(
-  "PENDING",
-  "FULFILLED",
-  "CANCELLED",
-  "TIMED_OUT",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const GameSessionPlacementState = S.String;
 export interface PlacedPlayerSession {
   PlayerId?: string | redacted.Redacted<string>;
   PlayerSessionId?: string;
@@ -6934,76 +6243,21 @@ export type EventCode =
   | "LOCATION_STATE_UPDATING"
   | "LOCATION_STATE_ERROR"
   | "LOCATION_STATE_DELETING"
-  | "LOCATION_STATE_DELETED";
-export const EventCode = S.Literal(
-  "GENERIC_EVENT",
-  "FLEET_CREATED",
-  "FLEET_DELETED",
-  "FLEET_SCALING_EVENT",
-  "FLEET_STATE_DOWNLOADING",
-  "FLEET_STATE_VALIDATING",
-  "FLEET_STATE_BUILDING",
-  "FLEET_STATE_ACTIVATING",
-  "FLEET_STATE_ACTIVE",
-  "FLEET_STATE_ERROR",
-  "FLEET_STATE_PENDING",
-  "FLEET_STATE_CREATING",
-  "FLEET_STATE_CREATED",
-  "FLEET_STATE_UPDATING",
-  "FLEET_INITIALIZATION_FAILED",
-  "FLEET_BINARY_DOWNLOAD_FAILED",
-  "FLEET_VALIDATION_LAUNCH_PATH_NOT_FOUND",
-  "FLEET_VALIDATION_EXECUTABLE_RUNTIME_FAILURE",
-  "FLEET_VALIDATION_TIMED_OUT",
-  "FLEET_ACTIVATION_FAILED",
-  "FLEET_ACTIVATION_FAILED_NO_INSTANCES",
-  "FLEET_NEW_GAME_SESSION_PROTECTION_POLICY_UPDATED",
-  "SERVER_PROCESS_INVALID_PATH",
-  "SERVER_PROCESS_SDK_INITIALIZATION_TIMEOUT",
-  "SERVER_PROCESS_PROCESS_READY_TIMEOUT",
-  "SERVER_PROCESS_CRASHED",
-  "SERVER_PROCESS_TERMINATED_UNHEALTHY",
-  "SERVER_PROCESS_FORCE_TERMINATED",
-  "SERVER_PROCESS_PROCESS_EXIT_TIMEOUT",
-  "SERVER_PROCESS_SDK_INITIALIZATION_FAILED",
-  "SERVER_PROCESS_MISCONFIGURED_CONTAINER_PORT",
-  "GAME_SESSION_ACTIVATION_TIMEOUT",
-  "FLEET_CREATION_EXTRACTING_BUILD",
-  "FLEET_CREATION_RUNNING_INSTALLER",
-  "FLEET_CREATION_VALIDATING_RUNTIME_CONFIG",
-  "FLEET_VPC_PEERING_SUCCEEDED",
-  "FLEET_VPC_PEERING_FAILED",
-  "FLEET_VPC_PEERING_DELETED",
-  "INSTANCE_INTERRUPTED",
-  "INSTANCE_RECYCLED",
-  "INSTANCE_REPLACED_UNHEALTHY",
-  "FLEET_CREATION_COMPLETED_INSTALLER",
-  "FLEET_CREATION_FAILED_INSTALLER",
-  "COMPUTE_LOG_UPLOAD_FAILED",
-  "GAME_SERVER_CONTAINER_GROUP_CRASHED",
-  "PER_INSTANCE_CONTAINER_GROUP_CRASHED",
-  "GAME_SERVER_CONTAINER_GROUP_REPLACED_UNHEALTHY",
-  "LOCATION_STATE_PENDING",
-  "LOCATION_STATE_CREATING",
-  "LOCATION_STATE_CREATED",
-  "LOCATION_STATE_ACTIVATING",
-  "LOCATION_STATE_ACTIVE",
-  "LOCATION_STATE_UPDATING",
-  "LOCATION_STATE_ERROR",
-  "LOCATION_STATE_DELETING",
-  "LOCATION_STATE_DELETED",
-);
+  | "LOCATION_STATE_DELETED"
+  | (string & {});
+export const EventCode = S.String;
 export type GameServerInstanceStatus =
   | "ACTIVE"
   | "DRAINING"
-  | "SPOT_TERMINATING";
-export const GameServerInstanceStatus = S.Literal(
-  "ACTIVE",
-  "DRAINING",
-  "SPOT_TERMINATING",
-);
-export type InstanceStatus = "PENDING" | "ACTIVE" | "TERMINATING";
-export const InstanceStatus = S.Literal("PENDING", "ACTIVE", "TERMINATING");
+  | "SPOT_TERMINATING"
+  | (string & {});
+export const GameServerInstanceStatus = S.String;
+export type InstanceStatus =
+  | "PENDING"
+  | "ACTIVE"
+  | "TERMINATING"
+  | (string & {});
+export const InstanceStatus = S.String;
 export interface GameServerGroupAutoScalingPolicy {
   EstimatedInstanceWarmup?: number;
   TargetTrackingConfiguration?: TargetTrackingConfiguration;

@@ -140,8 +140,8 @@ export type __stringMin1Max128PatternAZaZ09 = string;
 export type __stringMin1Max32PatternS = string;
 
 //# Schemas
-export type NetworkType = "IPV4" | "DUALSTACK";
-export const NetworkType = S.Literal("IPV4", "DUALSTACK");
+export type NetworkType = "IPV4" | "DUALSTACK" | (string & {});
+export const NetworkType = S.String;
 export type __listOf__string = string[];
 export const __listOf__string = S.Array(S.String);
 export type __mapOf__stringMin0Max256PatternS = {
@@ -638,8 +638,8 @@ export const UpdateRoutingControlRequest = S.suspend(() =>
 }) as any as S.Schema<UpdateRoutingControlRequest>;
 export type __listOf__stringMin1Max256PatternAZaZ09 = string[];
 export const __listOf__stringMin1Max256PatternAZaZ09 = S.Array(S.String);
-export type RuleType = "ATLEAST" | "AND" | "OR";
-export const RuleType = S.Literal("ATLEAST", "AND", "OR");
+export type RuleType = "ATLEAST" | "AND" | "OR" | (string & {});
+export const RuleType = S.String;
 export interface RuleConfig {
   Inverted?: boolean;
   Threshold?: number;
@@ -685,8 +685,12 @@ export const ClusterEndpoint = S.suspend(() =>
 }) as any as S.Schema<ClusterEndpoint>;
 export type __listOfClusterEndpoint = ClusterEndpoint[];
 export const __listOfClusterEndpoint = S.Array(ClusterEndpoint);
-export type Status = "PENDING" | "DEPLOYED" | "PENDING_DELETION";
-export const Status = S.Literal("PENDING", "DEPLOYED", "PENDING_DELETION");
+export type Status =
+  | "PENDING"
+  | "DEPLOYED"
+  | "PENDING_DELETION"
+  | (string & {});
+export const Status = S.String;
 export interface Cluster {
   ClusterArn?: string;
   ClusterEndpoints?: ClusterEndpoint[];

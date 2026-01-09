@@ -283,80 +283,52 @@ export type RegionName =
   | "ap-northeast-1"
   | "ap-northeast-2"
   | "eu-north-1"
-  | "ap-southeast-3";
-export const RegionName = S.Literal(
-  "us-east-1",
-  "us-east-2",
-  "us-west-1",
-  "us-west-2",
-  "eu-west-1",
-  "eu-west-2",
-  "eu-west-3",
-  "eu-central-1",
-  "ca-central-1",
-  "ap-south-1",
-  "ap-southeast-1",
-  "ap-southeast-2",
-  "ap-northeast-1",
-  "ap-northeast-2",
-  "eu-north-1",
-  "ap-southeast-3",
-);
+  | "ap-southeast-3"
+  | (string & {});
+export const RegionName = S.String;
 export type SubjectAlternativeNameList = string[];
 export const SubjectAlternativeNameList = S.Array(S.String);
-export type ContactProtocol = "Email" | "SMS";
-export const ContactProtocol = S.Literal("Email", "SMS");
+export type ContactProtocol = "Email" | "SMS" | (string & {});
+export const ContactProtocol = S.String;
 export type ContainerServicePowerName =
   | "nano"
   | "micro"
   | "small"
   | "medium"
   | "large"
-  | "xlarge";
-export const ContainerServicePowerName = S.Literal(
-  "nano",
-  "micro",
-  "small",
-  "medium",
-  "large",
-  "xlarge",
-);
-export type IpAddressType = "dualstack" | "ipv4" | "ipv6";
-export const IpAddressType = S.Literal("dualstack", "ipv4", "ipv6");
+  | "xlarge"
+  | (string & {});
+export const ContainerServicePowerName = S.String;
+export type IpAddressType = "dualstack" | "ipv4" | "ipv6" | (string & {});
+export const IpAddressType = S.String;
 export type ViewerMinimumTlsProtocolVersionEnum =
   | "TLSv1.1_2016"
   | "TLSv1.2_2018"
   | "TLSv1.2_2019"
-  | "TLSv1.2_2021";
-export const ViewerMinimumTlsProtocolVersionEnum = S.Literal(
-  "TLSv1.1_2016",
-  "TLSv1.2_2018",
-  "TLSv1.2_2019",
-  "TLSv1.2_2021",
-);
+  | "TLSv1.2_2021"
+  | (string & {});
+export const ViewerMinimumTlsProtocolVersionEnum = S.String;
 export type StringList = string[];
 export const StringList = S.Array(S.String);
 export type DomainNameList = string[];
 export const DomainNameList = S.Array(S.String);
-export type AddOnType = "AutoSnapshot" | "StopInstanceOnIdle";
-export const AddOnType = S.Literal("AutoSnapshot", "StopInstanceOnIdle");
-export type AppCategory = "LfR";
-export const AppCategory = S.Literal("LfR");
-export type BucketMetricName = "BucketSizeBytes" | "NumberOfObjects";
-export const BucketMetricName = S.Literal("BucketSizeBytes", "NumberOfObjects");
+export type AddOnType = "AutoSnapshot" | "StopInstanceOnIdle" | (string & {});
+export const AddOnType = S.String;
+export type AppCategory = "LfR" | (string & {});
+export const AppCategory = S.String;
+export type BucketMetricName =
+  | "BucketSizeBytes"
+  | "NumberOfObjects"
+  | (string & {});
+export const BucketMetricName = S.String;
 export type MetricStatistic =
   | "Minimum"
   | "Maximum"
   | "Sum"
   | "Average"
-  | "SampleCount";
-export const MetricStatistic = S.Literal(
-  "Minimum",
-  "Maximum",
-  "Sum",
-  "Average",
-  "SampleCount",
-);
+  | "SampleCount"
+  | (string & {});
+export const MetricStatistic = S.String;
 export type MetricStatisticList = MetricStatistic[];
 export const MetricStatisticList = S.Array(MetricStatistic);
 export type MetricUnit =
@@ -386,36 +358,9 @@ export type MetricUnit =
   | "Gigabits/Second"
   | "Terabits/Second"
   | "Count/Second"
-  | "None";
-export const MetricUnit = S.Literal(
-  "Seconds",
-  "Microseconds",
-  "Milliseconds",
-  "Bytes",
-  "Kilobytes",
-  "Megabytes",
-  "Gigabytes",
-  "Terabytes",
-  "Bits",
-  "Kilobits",
-  "Megabits",
-  "Gigabits",
-  "Terabits",
-  "Percent",
-  "Count",
-  "Bytes/Second",
-  "Kilobytes/Second",
-  "Megabytes/Second",
-  "Gigabytes/Second",
-  "Terabytes/Second",
-  "Bits/Second",
-  "Kilobits/Second",
-  "Megabits/Second",
-  "Gigabits/Second",
-  "Terabits/Second",
-  "Count/Second",
-  "None",
-);
+  | "None"
+  | (string & {});
+export const MetricUnit = S.String;
 export type CertificateStatus =
   | "PENDING_VALIDATION"
   | "ISSUED"
@@ -423,42 +368,29 @@ export type CertificateStatus =
   | "EXPIRED"
   | "VALIDATION_TIMED_OUT"
   | "REVOKED"
-  | "FAILED";
-export const CertificateStatus = S.Literal(
-  "PENDING_VALIDATION",
-  "ISSUED",
-  "INACTIVE",
-  "EXPIRED",
-  "VALIDATION_TIMED_OUT",
-  "REVOKED",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const CertificateStatus = S.String;
 export type CertificateStatusList = CertificateStatus[];
 export const CertificateStatusList = S.Array(CertificateStatus);
 export type ContactProtocolsList = ContactProtocol[];
 export const ContactProtocolsList = S.Array(ContactProtocol);
-export type ContainerServiceMetricName = "CPUUtilization" | "MemoryUtilization";
-export const ContainerServiceMetricName = S.Literal(
-  "CPUUtilization",
-  "MemoryUtilization",
-);
+export type ContainerServiceMetricName =
+  | "CPUUtilization"
+  | "MemoryUtilization"
+  | (string & {});
+export const ContainerServiceMetricName = S.String;
 export type DistributionMetricName =
   | "Requests"
   | "BytesDownloaded"
   | "BytesUploaded"
   | "TotalErrorRate"
   | "Http4xxErrorRate"
-  | "Http5xxErrorRate";
-export const DistributionMetricName = S.Literal(
-  "Requests",
-  "BytesDownloaded",
-  "BytesUploaded",
-  "TotalErrorRate",
-  "Http4xxErrorRate",
-  "Http5xxErrorRate",
-);
-export type InstanceAccessProtocol = "ssh" | "rdp";
-export const InstanceAccessProtocol = S.Literal("ssh", "rdp");
+  | "Http5xxErrorRate"
+  | (string & {});
+export const DistributionMetricName = S.String;
+export type InstanceAccessProtocol = "ssh" | "rdp" | (string & {});
+export const InstanceAccessProtocol = S.String;
 export type InstanceMetricName =
   | "CPUUtilization"
   | "NetworkIn"
@@ -468,18 +400,9 @@ export type InstanceMetricName =
   | "StatusCheckFailed_System"
   | "BurstCapacityTime"
   | "BurstCapacityPercentage"
-  | "MetadataNoToken";
-export const InstanceMetricName = S.Literal(
-  "CPUUtilization",
-  "NetworkIn",
-  "NetworkOut",
-  "StatusCheckFailed",
-  "StatusCheckFailed_Instance",
-  "StatusCheckFailed_System",
-  "BurstCapacityTime",
-  "BurstCapacityPercentage",
-  "MetadataNoToken",
-);
+  | "MetadataNoToken"
+  | (string & {});
+export const InstanceMetricName = S.String;
 export type LoadBalancerMetricName =
   | "ClientTLSNegotiationErrorCount"
   | "HealthyHostCount"
@@ -492,45 +415,24 @@ export type LoadBalancerMetricName =
   | "HTTPCode_Instance_5XX_Count"
   | "InstanceResponseTime"
   | "RejectedConnectionCount"
-  | "RequestCount";
-export const LoadBalancerMetricName = S.Literal(
-  "ClientTLSNegotiationErrorCount",
-  "HealthyHostCount",
-  "UnhealthyHostCount",
-  "HTTPCode_LB_4XX_Count",
-  "HTTPCode_LB_5XX_Count",
-  "HTTPCode_Instance_2XX_Count",
-  "HTTPCode_Instance_3XX_Count",
-  "HTTPCode_Instance_4XX_Count",
-  "HTTPCode_Instance_5XX_Count",
-  "InstanceResponseTime",
-  "RejectedConnectionCount",
-  "RequestCount",
-);
+  | "RequestCount"
+  | (string & {});
+export const LoadBalancerMetricName = S.String;
 export type RelationalDatabasePasswordVersion =
   | "CURRENT"
   | "PREVIOUS"
-  | "PENDING";
-export const RelationalDatabasePasswordVersion = S.Literal(
-  "CURRENT",
-  "PREVIOUS",
-  "PENDING",
-);
+  | "PENDING"
+  | (string & {});
+export const RelationalDatabasePasswordVersion = S.String;
 export type RelationalDatabaseMetricName =
   | "CPUUtilization"
   | "DatabaseConnections"
   | "DiskQueueDepth"
   | "FreeStorageSpace"
   | "NetworkReceiveThroughput"
-  | "NetworkTransmitThroughput";
-export const RelationalDatabaseMetricName = S.Literal(
-  "CPUUtilization",
-  "DatabaseConnections",
-  "DiskQueueDepth",
-  "FreeStorageSpace",
-  "NetworkReceiveThroughput",
-  "NetworkTransmitThroughput",
-);
+  | "NetworkTransmitThroughput"
+  | (string & {});
+export const RelationalDatabaseMetricName = S.String;
 export type MetricName =
   | "CPUUtilization"
   | "NetworkIn"
@@ -556,62 +458,35 @@ export type MetricName =
   | "NetworkReceiveThroughput"
   | "NetworkTransmitThroughput"
   | "BurstCapacityTime"
-  | "BurstCapacityPercentage";
-export const MetricName = S.Literal(
-  "CPUUtilization",
-  "NetworkIn",
-  "NetworkOut",
-  "StatusCheckFailed",
-  "StatusCheckFailed_Instance",
-  "StatusCheckFailed_System",
-  "ClientTLSNegotiationErrorCount",
-  "HealthyHostCount",
-  "UnhealthyHostCount",
-  "HTTPCode_LB_4XX_Count",
-  "HTTPCode_LB_5XX_Count",
-  "HTTPCode_Instance_2XX_Count",
-  "HTTPCode_Instance_3XX_Count",
-  "HTTPCode_Instance_4XX_Count",
-  "HTTPCode_Instance_5XX_Count",
-  "InstanceResponseTime",
-  "RejectedConnectionCount",
-  "RequestCount",
-  "DatabaseConnections",
-  "DiskQueueDepth",
-  "FreeStorageSpace",
-  "NetworkReceiveThroughput",
-  "NetworkTransmitThroughput",
-  "BurstCapacityTime",
-  "BurstCapacityPercentage",
-);
+  | "BurstCapacityPercentage"
+  | (string & {});
+export const MetricName = S.String;
 export type ComparisonOperator =
   | "GreaterThanOrEqualToThreshold"
   | "GreaterThanThreshold"
   | "LessThanThreshold"
-  | "LessThanOrEqualToThreshold";
-export const ComparisonOperator = S.Literal(
-  "GreaterThanOrEqualToThreshold",
-  "GreaterThanThreshold",
-  "LessThanThreshold",
-  "LessThanOrEqualToThreshold",
-);
+  | "LessThanOrEqualToThreshold"
+  | (string & {});
+export const ComparisonOperator = S.String;
 export type TreatMissingData =
   | "breaching"
   | "notBreaching"
   | "ignore"
-  | "missing";
-export const TreatMissingData = S.Literal(
-  "breaching",
-  "notBreaching",
-  "ignore",
-  "missing",
-);
-export type AlarmState = "OK" | "ALARM" | "INSUFFICIENT_DATA";
-export const AlarmState = S.Literal("OK", "ALARM", "INSUFFICIENT_DATA");
+  | "missing"
+  | (string & {});
+export const TreatMissingData = S.String;
+export type AlarmState = "OK" | "ALARM" | "INSUFFICIENT_DATA" | (string & {});
+export const AlarmState = S.String;
 export type NotificationTriggerList = AlarmState[];
 export const NotificationTriggerList = S.Array(AlarmState);
-export type NetworkProtocol = "tcp" | "all" | "udp" | "icmp" | "icmpv6";
-export const NetworkProtocol = S.Literal("tcp", "all", "udp", "icmp", "icmpv6");
+export type NetworkProtocol =
+  | "tcp"
+  | "all"
+  | "udp"
+  | "icmp"
+  | "icmpv6"
+  | (string & {});
+export const NetworkProtocol = S.String;
 export interface PortInfo {
   fromPort?: number;
   toPort?: number;
@@ -632,8 +507,8 @@ export const PortInfo = S.suspend(() =>
 ).annotations({ identifier: "PortInfo" }) as any as S.Schema<PortInfo>;
 export type PortInfoList = PortInfo[];
 export const PortInfoList = S.Array(PortInfo);
-export type ContactMethodVerificationProtocol = "Email";
-export const ContactMethodVerificationProtocol = S.Literal("Email");
+export type ContactMethodVerificationProtocol = "Email" | (string & {});
+export const ContactMethodVerificationProtocol = S.String;
 export type ResourceType =
   | "ContainerService"
   | "Instance"
@@ -654,58 +529,33 @@ export type ResourceType =
   | "ContactMethod"
   | "Distribution"
   | "Certificate"
-  | "Bucket";
-export const ResourceType = S.Literal(
-  "ContainerService",
-  "Instance",
-  "StaticIp",
-  "KeyPair",
-  "InstanceSnapshot",
-  "Domain",
-  "PeeredVpc",
-  "LoadBalancer",
-  "LoadBalancerTlsCertificate",
-  "Disk",
-  "DiskSnapshot",
-  "RelationalDatabase",
-  "RelationalDatabaseSnapshot",
-  "ExportSnapshotRecord",
-  "CloudFormationStackRecord",
-  "Alarm",
-  "ContactMethod",
-  "Distribution",
-  "Certificate",
-  "Bucket",
-);
-export type ResourceBucketAccess = "allow" | "deny";
-export const ResourceBucketAccess = S.Literal("allow", "deny");
+  | "Bucket"
+  | (string & {});
+export const ResourceType = S.String;
+export type ResourceBucketAccess = "allow" | "deny" | (string & {});
+export const ResourceBucketAccess = S.String;
 export type SetupDomainNameList = string[];
 export const SetupDomainNameList = S.Array(S.String);
-export type CertificateProvider = "LetsEncrypt";
-export const CertificateProvider = S.Literal("LetsEncrypt");
+export type CertificateProvider = "LetsEncrypt" | (string & {});
+export const CertificateProvider = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export type PartnerIdList = string[];
 export const PartnerIdList = S.Array(S.String);
-export type HttpTokens = "optional" | "required";
-export const HttpTokens = S.Literal("optional", "required");
-export type HttpEndpoint = "disabled" | "enabled";
-export const HttpEndpoint = S.Literal("disabled", "enabled");
-export type HttpProtocolIpv6 = "disabled" | "enabled";
-export const HttpProtocolIpv6 = S.Literal("disabled", "enabled");
+export type HttpTokens = "optional" | "required" | (string & {});
+export const HttpTokens = S.String;
+export type HttpEndpoint = "disabled" | "enabled" | (string & {});
+export const HttpEndpoint = S.String;
+export type HttpProtocolIpv6 = "disabled" | "enabled" | (string & {});
+export const HttpProtocolIpv6 = S.String;
 export type LoadBalancerAttributeName =
   | "HealthCheckPath"
   | "SessionStickinessEnabled"
   | "SessionStickiness_LB_CookieDurationSeconds"
   | "HttpsRedirectionEnabled"
-  | "TlsPolicyName";
-export const LoadBalancerAttributeName = S.Literal(
-  "HealthCheckPath",
-  "SessionStickinessEnabled",
-  "SessionStickiness_LB_CookieDurationSeconds",
-  "HttpsRedirectionEnabled",
-  "TlsPolicyName",
-);
+  | "TlsPolicyName"
+  | (string & {});
+export const LoadBalancerAttributeName = S.String;
 export interface AllocateStaticIpRequest {
   staticIpName: string;
 }
@@ -3805,105 +3655,17 @@ export type OperationType =
   | "UpdateInstanceMetadataOptions"
   | "StartGUISession"
   | "StopGUISession"
-  | "SetupInstanceHttps";
-export const OperationType = S.Literal(
-  "DeleteKnownHostKeys",
-  "DeleteInstance",
-  "CreateInstance",
-  "StopInstance",
-  "StartInstance",
-  "RebootInstance",
-  "OpenInstancePublicPorts",
-  "PutInstancePublicPorts",
-  "CloseInstancePublicPorts",
-  "AllocateStaticIp",
-  "ReleaseStaticIp",
-  "AttachStaticIp",
-  "DetachStaticIp",
-  "UpdateDomainEntry",
-  "DeleteDomainEntry",
-  "CreateDomain",
-  "DeleteDomain",
-  "CreateInstanceSnapshot",
-  "DeleteInstanceSnapshot",
-  "CreateInstancesFromSnapshot",
-  "CreateLoadBalancer",
-  "DeleteLoadBalancer",
-  "AttachInstancesToLoadBalancer",
-  "DetachInstancesFromLoadBalancer",
-  "UpdateLoadBalancerAttribute",
-  "CreateLoadBalancerTlsCertificate",
-  "DeleteLoadBalancerTlsCertificate",
-  "AttachLoadBalancerTlsCertificate",
-  "CreateDisk",
-  "DeleteDisk",
-  "AttachDisk",
-  "DetachDisk",
-  "CreateDiskSnapshot",
-  "DeleteDiskSnapshot",
-  "CreateDiskFromSnapshot",
-  "CreateRelationalDatabase",
-  "UpdateRelationalDatabase",
-  "DeleteRelationalDatabase",
-  "CreateRelationalDatabaseFromSnapshot",
-  "CreateRelationalDatabaseSnapshot",
-  "DeleteRelationalDatabaseSnapshot",
-  "UpdateRelationalDatabaseParameters",
-  "StartRelationalDatabase",
-  "RebootRelationalDatabase",
-  "StopRelationalDatabase",
-  "EnableAddOn",
-  "DisableAddOn",
-  "PutAlarm",
-  "GetAlarms",
-  "DeleteAlarm",
-  "TestAlarm",
-  "CreateContactMethod",
-  "GetContactMethods",
-  "SendContactMethodVerification",
-  "DeleteContactMethod",
-  "CreateDistribution",
-  "UpdateDistribution",
-  "DeleteDistribution",
-  "ResetDistributionCache",
-  "AttachCertificateToDistribution",
-  "DetachCertificateFromDistribution",
-  "UpdateDistributionBundle",
-  "SetIpAddressType",
-  "CreateCertificate",
-  "DeleteCertificate",
-  "CreateContainerService",
-  "UpdateContainerService",
-  "DeleteContainerService",
-  "CreateContainerServiceDeployment",
-  "CreateContainerServiceRegistryLogin",
-  "RegisterContainerImage",
-  "DeleteContainerImage",
-  "CreateBucket",
-  "DeleteBucket",
-  "CreateBucketAccessKey",
-  "DeleteBucketAccessKey",
-  "UpdateBucketBundle",
-  "UpdateBucket",
-  "SetResourceAccessForBucket",
-  "UpdateInstanceMetadataOptions",
-  "StartGUISession",
-  "StopGUISession",
-  "SetupInstanceHttps",
-);
+  | "SetupInstanceHttps"
+  | (string & {});
+export const OperationType = S.String;
 export type OperationStatus =
   | "NotStarted"
   | "Started"
   | "Failed"
   | "Completed"
-  | "Succeeded";
-export const OperationStatus = S.Literal(
-  "NotStarted",
-  "Started",
-  "Failed",
-  "Completed",
-  "Succeeded",
-);
+  | "Succeeded"
+  | (string & {});
+export const OperationStatus = S.String;
 export interface Operation {
   id?: string;
   resourceName?: string;
@@ -4044,8 +3806,11 @@ export const UpdateContainerServiceRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateContainerServiceRequest",
 }) as any as S.Schema<UpdateContainerServiceRequest>;
-export type OriginProtocolPolicyEnum = "http-only" | "https-only";
-export const OriginProtocolPolicyEnum = S.Literal("http-only", "https-only");
+export type OriginProtocolPolicyEnum =
+  | "http-only"
+  | "https-only"
+  | (string & {});
+export const OriginProtocolPolicyEnum = S.String;
 export interface InputOrigin {
   name?: string;
   regionName?: RegionName;
@@ -4060,8 +3825,8 @@ export const InputOrigin = S.suspend(() =>
     responseTimeout: S.optional(S.Number),
   }),
 ).annotations({ identifier: "InputOrigin" }) as any as S.Schema<InputOrigin>;
-export type BehaviorEnum = "dont-cache" | "cache";
-export const BehaviorEnum = S.Literal("dont-cache", "cache");
+export type BehaviorEnum = "dont-cache" | "cache" | (string & {});
+export const BehaviorEnum = S.String;
 export interface CacheBehavior {
   behavior?: BehaviorEnum;
 }
@@ -4070,8 +3835,8 @@ export const CacheBehavior = S.suspend(() =>
 ).annotations({
   identifier: "CacheBehavior",
 }) as any as S.Schema<CacheBehavior>;
-export type ForwardValues = "none" | "allow-list" | "all";
-export const ForwardValues = S.Literal("none", "allow-list", "all");
+export type ForwardValues = "none" | "allow-list" | "all" | (string & {});
+export const ForwardValues = S.String;
 export interface CookieObject {
   option?: ForwardValues;
   cookiesAllowList?: string[];
@@ -4097,24 +3862,9 @@ export type HeaderEnum =
   | "CloudFront-Viewer-Country"
   | "Host"
   | "Origin"
-  | "Referer";
-export const HeaderEnum = S.Literal(
-  "Accept",
-  "Accept-Charset",
-  "Accept-Datetime",
-  "Accept-Encoding",
-  "Accept-Language",
-  "Authorization",
-  "CloudFront-Forwarded-Proto",
-  "CloudFront-Is-Desktop-Viewer",
-  "CloudFront-Is-Mobile-Viewer",
-  "CloudFront-Is-SmartTV-Viewer",
-  "CloudFront-Is-Tablet-Viewer",
-  "CloudFront-Viewer-Country",
-  "Host",
-  "Origin",
-  "Referer",
-);
+  | "Referer"
+  | (string & {});
+export const HeaderEnum = S.String;
 export type HeaderForwardList = HeaderEnum[];
 export const HeaderForwardList = S.Array(HeaderEnum);
 export interface HeaderObject {
@@ -4351,15 +4101,15 @@ export const UpdateRelationalDatabaseRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateRelationalDatabaseRequest",
 }) as any as S.Schema<UpdateRelationalDatabaseRequest>;
-export type PortInfoSourceType = "DEFAULT" | "INSTANCE" | "NONE" | "CLOSED";
-export const PortInfoSourceType = S.Literal(
-  "DEFAULT",
-  "INSTANCE",
-  "NONE",
-  "CLOSED",
-);
-export type AccessType = "public" | "private";
-export const AccessType = S.Literal("public", "private");
+export type PortInfoSourceType =
+  | "DEFAULT"
+  | "INSTANCE"
+  | "NONE"
+  | "CLOSED"
+  | (string & {});
+export const PortInfoSourceType = S.String;
+export type AccessType = "public" | "private" | (string & {});
+export const AccessType = S.String;
 export type OperationList = Operation[];
 export const OperationList = S.Array(Operation);
 export interface InstanceEntry {
@@ -4387,13 +4137,13 @@ export const Environment = S.Record({
   key: S.String,
   value: S.UndefinedOr(S.String),
 });
-export type ContainerServiceProtocol = "HTTP" | "HTTPS" | "TCP" | "UDP";
-export const ContainerServiceProtocol = S.Literal(
-  "HTTP",
-  "HTTPS",
-  "TCP",
-  "UDP",
-);
+export type ContainerServiceProtocol =
+  | "HTTP"
+  | "HTTPS"
+  | "TCP"
+  | "UDP"
+  | (string & {});
+export const ContainerServiceProtocol = S.String;
 export type PortMap = { [key: string]: ContainerServiceProtocol | undefined };
 export const PortMap = S.Record({
   key: S.String,
@@ -4490,21 +4240,11 @@ export type Status =
   | "settingUpInstance"
   | "failedInstanceCreation"
   | "failedStartingGUISession"
-  | "failedStoppingGUISession";
-export const Status = S.Literal(
-  "startExpired",
-  "notStarted",
-  "started",
-  "starting",
-  "stopped",
-  "stopping",
-  "settingUpInstance",
-  "failedInstanceCreation",
-  "failedStartingGUISession",
-  "failedStoppingGUISession",
-);
-export type StatusType = "Active" | "Inactive";
-export const StatusType = S.Literal("Active", "Inactive");
+  | "failedStoppingGUISession"
+  | (string & {});
+export const Status = S.String;
+export type StatusType = "Active" | "Inactive" | (string & {});
+export const StatusType = S.String;
 export interface AccessKeyLastUsed {
   lastUsedDate?: Date;
   region?: string;
@@ -4551,12 +4291,12 @@ export const ResourceRecord = S.suspend(() =>
 ).annotations({
   identifier: "ResourceRecord",
 }) as any as S.Schema<ResourceRecord>;
-export type DnsRecordCreationStateCode = "SUCCEEDED" | "STARTED" | "FAILED";
-export const DnsRecordCreationStateCode = S.Literal(
-  "SUCCEEDED",
-  "STARTED",
-  "FAILED",
-);
+export type DnsRecordCreationStateCode =
+  | "SUCCEEDED"
+  | "STARTED"
+  | "FAILED"
+  | (string & {});
+export const DnsRecordCreationStateCode = S.String;
 export interface DnsRecordCreationState {
   code?: DnsRecordCreationStateCode;
   message?: string;
@@ -4572,12 +4312,9 @@ export const DnsRecordCreationState = S.suspend(() =>
 export type CertificateDomainValidationStatus =
   | "PENDING_VALIDATION"
   | "FAILED"
-  | "SUCCESS";
-export const CertificateDomainValidationStatus = S.Literal(
-  "PENDING_VALIDATION",
-  "FAILED",
-  "SUCCESS",
-);
+  | "SUCCESS"
+  | (string & {});
+export const CertificateDomainValidationStatus = S.String;
 export interface DomainValidationRecord {
   domainName?: string;
   resourceRecord?: ResourceRecord;
@@ -4600,13 +4337,9 @@ export type RenewalStatus =
   | "PendingAutoRenewal"
   | "PendingValidation"
   | "Success"
-  | "Failed";
-export const RenewalStatus = S.Literal(
-  "PendingAutoRenewal",
-  "PendingValidation",
-  "Success",
-  "Failed",
-);
+  | "Failed"
+  | (string & {});
+export const RenewalStatus = S.String;
 export interface RenewalSummary {
   domainValidationRecords?: DomainValidationRecord[];
   renewalStatus?: RenewalStatus;
@@ -4751,21 +4484,16 @@ export type DiskState =
   | "error"
   | "available"
   | "in-use"
-  | "unknown";
-export const DiskState = S.Literal(
-  "pending",
-  "error",
-  "available",
-  "in-use",
-  "unknown",
-);
-export type AutoMountStatus = "Failed" | "Pending" | "Mounted" | "NotMounted";
-export const AutoMountStatus = S.Literal(
-  "Failed",
-  "Pending",
-  "Mounted",
-  "NotMounted",
-);
+  | "unknown"
+  | (string & {});
+export const DiskState = S.String;
+export type AutoMountStatus =
+  | "Failed"
+  | "Pending"
+  | "Mounted"
+  | "NotMounted"
+  | (string & {});
+export const AutoMountStatus = S.String;
 export interface Disk {
   name?: string;
   arn?: string;
@@ -4810,13 +4538,13 @@ export const Disk = S.suspend(() =>
 ).annotations({ identifier: "Disk" }) as any as S.Schema<Disk>;
 export type DiskList = Disk[];
 export const DiskList = S.Array(Disk);
-export type DiskSnapshotState = "pending" | "completed" | "error" | "unknown";
-export const DiskSnapshotState = S.Literal(
-  "pending",
-  "completed",
-  "error",
-  "unknown",
-);
+export type DiskSnapshotState =
+  | "pending"
+  | "completed"
+  | "error"
+  | "unknown"
+  | (string & {});
+export const DiskSnapshotState = S.String;
 export interface DiskSnapshot {
   name?: string;
   arn?: string;
@@ -4881,13 +4609,9 @@ export type NameServersUpdateStateCode =
   | "SUCCEEDED"
   | "PENDING"
   | "FAILED"
-  | "STARTED";
-export const NameServersUpdateStateCode = S.Literal(
-  "SUCCEEDED",
-  "PENDING",
-  "FAILED",
-  "STARTED",
-);
+  | "STARTED"
+  | (string & {});
+export const NameServersUpdateStateCode = S.String;
 export interface NameServersUpdateState {
   code?: NameServersUpdateStateCode;
   message?: string;
@@ -4904,13 +4628,9 @@ export type R53HostedZoneDeletionStateCode =
   | "SUCCEEDED"
   | "PENDING"
   | "FAILED"
-  | "STARTED";
-export const R53HostedZoneDeletionStateCode = S.Literal(
-  "SUCCEEDED",
-  "PENDING",
-  "FAILED",
-  "STARTED",
-);
+  | "STARTED"
+  | (string & {});
+export const R53HostedZoneDeletionStateCode = S.String;
 export interface R53HostedZoneDeletionState {
   code?: R53HostedZoneDeletionStateCode;
   message?: string;
@@ -4985,10 +4705,10 @@ export const MonthlyTransfer = S.suspend(() =>
 ).annotations({
   identifier: "MonthlyTransfer",
 }) as any as S.Schema<MonthlyTransfer>;
-export type PortAccessType = "Public" | "Private";
-export const PortAccessType = S.Literal("Public", "Private");
-export type AccessDirection = "inbound" | "outbound";
-export const AccessDirection = S.Literal("inbound", "outbound");
+export type PortAccessType = "Public" | "Private" | (string & {});
+export const PortAccessType = S.String;
+export type AccessDirection = "inbound" | "outbound" | (string & {});
+export const AccessDirection = S.String;
 export interface InstancePortInfo {
   fromPort?: number;
   toPort?: number;
@@ -5040,8 +4760,8 @@ export const InstanceState = S.suspend(() =>
 ).annotations({
   identifier: "InstanceState",
 }) as any as S.Schema<InstanceState>;
-export type InstanceMetadataState = "pending" | "applied";
-export const InstanceMetadataState = S.Literal("pending", "applied");
+export type InstanceMetadataState = "pending" | "applied" | (string & {});
+export const InstanceMetadataState = S.String;
 export interface InstanceMetadataOptions {
   state?: InstanceMetadataState;
   httpTokens?: HttpTokens;
@@ -5112,8 +4832,12 @@ export const Instance = S.suspend(() =>
 ).annotations({ identifier: "Instance" }) as any as S.Schema<Instance>;
 export type InstanceList = Instance[];
 export const InstanceList = S.Array(Instance);
-export type InstanceSnapshotState = "pending" | "error" | "available";
-export const InstanceSnapshotState = S.Literal("pending", "error", "available");
+export type InstanceSnapshotState =
+  | "pending"
+  | "error"
+  | "available"
+  | (string & {});
+export const InstanceSnapshotState = S.String;
 export interface InstanceSnapshot {
   name?: string;
   arn?: string;
@@ -5185,16 +4909,11 @@ export type LoadBalancerState =
   | "provisioning"
   | "active_impaired"
   | "failed"
-  | "unknown";
-export const LoadBalancerState = S.Literal(
-  "active",
-  "provisioning",
-  "active_impaired",
-  "failed",
-  "unknown",
-);
-export type LoadBalancerProtocol = "HTTP_HTTPS" | "HTTP";
-export const LoadBalancerProtocol = S.Literal("HTTP_HTTPS", "HTTP");
+  | "unknown"
+  | (string & {});
+export const LoadBalancerState = S.String;
+export type LoadBalancerProtocol = "HTTP_HTTPS" | "HTTP" | (string & {});
+export const LoadBalancerProtocol = S.String;
 export type PortList = number[];
 export const PortList = S.Array(S.Number);
 export type InstanceHealthState =
@@ -5203,15 +4922,9 @@ export type InstanceHealthState =
   | "unhealthy"
   | "unused"
   | "draining"
-  | "unavailable";
-export const InstanceHealthState = S.Literal(
-  "initial",
-  "healthy",
-  "unhealthy",
-  "unused",
-  "draining",
-  "unavailable",
-);
+  | "unavailable"
+  | (string & {});
+export const InstanceHealthState = S.String;
 export type InstanceHealthReason =
   | "Lb.RegistrationInProgress"
   | "Lb.InitialHealthChecking"
@@ -5223,20 +4936,9 @@ export type InstanceHealthReason =
   | "Instance.NotInUse"
   | "Instance.DeregistrationInProgress"
   | "Instance.InvalidState"
-  | "Instance.IpUnusable";
-export const InstanceHealthReason = S.Literal(
-  "Lb.RegistrationInProgress",
-  "Lb.InitialHealthChecking",
-  "Lb.InternalError",
-  "Instance.ResponseCodeMismatch",
-  "Instance.Timeout",
-  "Instance.FailedHealthChecks",
-  "Instance.NotRegistered",
-  "Instance.NotInUse",
-  "Instance.DeregistrationInProgress",
-  "Instance.InvalidState",
-  "Instance.IpUnusable",
-);
+  | "Instance.IpUnusable"
+  | (string & {});
+export const InstanceHealthReason = S.String;
 export interface InstanceHealthSummary {
   instanceName?: string;
   instanceHealth?: InstanceHealthState;
@@ -6549,16 +6251,9 @@ export type ContainerServiceState =
   | "UPDATING"
   | "DELETING"
   | "DISABLED"
-  | "DEPLOYING";
-export const ContainerServiceState = S.Literal(
-  "PENDING",
-  "READY",
-  "RUNNING",
-  "UPDATING",
-  "DELETING",
-  "DISABLED",
-  "DEPLOYING",
-);
+  | "DEPLOYING"
+  | (string & {});
+export const ContainerServiceState = S.String;
 export type ContainerServiceStateDetailCode =
   | "CREATING_SYSTEM_RESOURCES"
   | "CREATING_NETWORK_INFRASTRUCTURE"
@@ -6568,18 +6263,9 @@ export type ContainerServiceStateDetailCode =
   | "EVALUATING_HEALTH_CHECK"
   | "ACTIVATING_DEPLOYMENT"
   | "CERTIFICATE_LIMIT_EXCEEDED"
-  | "UNKNOWN_ERROR";
-export const ContainerServiceStateDetailCode = S.Literal(
-  "CREATING_SYSTEM_RESOURCES",
-  "CREATING_NETWORK_INFRASTRUCTURE",
-  "PROVISIONING_CERTIFICATE",
-  "PROVISIONING_SERVICE",
-  "CREATING_DEPLOYMENT",
-  "EVALUATING_HEALTH_CHECK",
-  "ACTIVATING_DEPLOYMENT",
-  "CERTIFICATE_LIMIT_EXCEEDED",
-  "UNKNOWN_ERROR",
-);
+  | "UNKNOWN_ERROR"
+  | (string & {});
+export const ContainerServiceStateDetailCode = S.String;
 export interface ContainerServiceStateDetail {
   code?: ContainerServiceStateDetailCode;
   message?: string;
@@ -6596,13 +6282,9 @@ export type ContainerServiceDeploymentState =
   | "ACTIVATING"
   | "ACTIVE"
   | "INACTIVE"
-  | "FAILED";
-export const ContainerServiceDeploymentState = S.Literal(
-  "ACTIVATING",
-  "ACTIVE",
-  "INACTIVE",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const ContainerServiceDeploymentState = S.String;
 export interface ContainerServiceEndpoint {
   containerName?: string;
   containerPort?: number;
@@ -6799,53 +6481,41 @@ export type AutoSnapshotStatus =
   | "Success"
   | "Failed"
   | "InProgress"
-  | "NotFound";
-export const AutoSnapshotStatus = S.Literal(
-  "Success",
-  "Failed",
-  "InProgress",
-  "NotFound",
-);
-export type BlueprintType = "os" | "app";
-export const BlueprintType = S.Literal("os", "app");
-export type InstancePlatform = "LINUX_UNIX" | "WINDOWS";
-export const InstancePlatform = S.Literal("LINUX_UNIX", "WINDOWS");
+  | "NotFound"
+  | (string & {});
+export const AutoSnapshotStatus = S.String;
+export type BlueprintType = "os" | "app" | (string & {});
+export const BlueprintType = S.String;
+export type InstancePlatform = "LINUX_UNIX" | "WINDOWS" | (string & {});
+export const InstancePlatform = S.String;
 export type AccountLevelBpaSyncStatus =
   | "InSync"
   | "Failed"
   | "NeverSynced"
-  | "Defaulted";
-export const AccountLevelBpaSyncStatus = S.Literal(
-  "InSync",
-  "Failed",
-  "NeverSynced",
-  "Defaulted",
-);
+  | "Defaulted"
+  | (string & {});
+export const AccountLevelBpaSyncStatus = S.String;
 export type BPAStatusMessage =
   | "DEFAULTED_FOR_SLR_MISSING"
   | "SYNC_ON_HOLD"
   | "DEFAULTED_FOR_SLR_MISSING_ON_HOLD"
-  | "Unknown";
-export const BPAStatusMessage = S.Literal(
-  "DEFAULTED_FOR_SLR_MISSING",
-  "SYNC_ON_HOLD",
-  "DEFAULTED_FOR_SLR_MISSING_ON_HOLD",
-  "Unknown",
-);
+  | "Unknown"
+  | (string & {});
+export const BPAStatusMessage = S.String;
 export type InstancePlatformList = InstancePlatform[];
 export const InstancePlatformList = S.Array(InstancePlatform);
 export type AppCategoryList = AppCategory[];
 export const AppCategoryList = S.Array(AppCategory);
-export type RecordState = "Started" | "Succeeded" | "Failed";
-export const RecordState = S.Literal("Started", "Succeeded", "Failed");
-export type ContactMethodStatus = "PendingVerification" | "Valid" | "Invalid";
-export const ContactMethodStatus = S.Literal(
-  "PendingVerification",
-  "Valid",
-  "Invalid",
-);
-export type PortState = "open" | "closed";
-export const PortState = S.Literal("open", "closed");
+export type RecordState = "Started" | "Succeeded" | "Failed" | (string & {});
+export const RecordState = S.String;
+export type ContactMethodStatus =
+  | "PendingVerification"
+  | "Valid"
+  | "Invalid"
+  | (string & {});
+export const ContactMethodStatus = S.String;
+export type PortState = "open" | "closed" | (string & {});
+export const PortState = S.String;
 export type LoadBalancerTlsCertificateStatus =
   | "PENDING_VALIDATION"
   | "ISSUED"
@@ -6854,30 +6524,17 @@ export type LoadBalancerTlsCertificateStatus =
   | "VALIDATION_TIMED_OUT"
   | "REVOKED"
   | "FAILED"
-  | "UNKNOWN";
-export const LoadBalancerTlsCertificateStatus = S.Literal(
-  "PENDING_VALIDATION",
-  "ISSUED",
-  "INACTIVE",
-  "EXPIRED",
-  "VALIDATION_TIMED_OUT",
-  "REVOKED",
-  "FAILED",
-  "UNKNOWN",
-);
+  | "UNKNOWN"
+  | (string & {});
+export const LoadBalancerTlsCertificateStatus = S.String;
 export type LoadBalancerTlsCertificateFailureReason =
   | "NO_AVAILABLE_CONTACTS"
   | "ADDITIONAL_VERIFICATION_REQUIRED"
   | "DOMAIN_NOT_ALLOWED"
   | "INVALID_PUBLIC_DOMAIN"
-  | "OTHER";
-export const LoadBalancerTlsCertificateFailureReason = S.Literal(
-  "NO_AVAILABLE_CONTACTS",
-  "ADDITIONAL_VERIFICATION_REQUIRED",
-  "DOMAIN_NOT_ALLOWED",
-  "INVALID_PUBLIC_DOMAIN",
-  "OTHER",
-);
+  | "OTHER"
+  | (string & {});
+export const LoadBalancerTlsCertificateFailureReason = S.String;
 export type LoadBalancerTlsCertificateRevocationReason =
   | "UNSPECIFIED"
   | "KEY_COMPROMISE"
@@ -6888,23 +6545,13 @@ export type LoadBalancerTlsCertificateRevocationReason =
   | "CERTIFICATE_HOLD"
   | "REMOVE_FROM_CRL"
   | "PRIVILEGE_WITHDRAWN"
-  | "A_A_COMPROMISE";
-export const LoadBalancerTlsCertificateRevocationReason = S.Literal(
-  "UNSPECIFIED",
-  "KEY_COMPROMISE",
-  "CA_COMPROMISE",
-  "AFFILIATION_CHANGED",
-  "SUPERCEDED",
-  "CESSATION_OF_OPERATION",
-  "CERTIFICATE_HOLD",
-  "REMOVE_FROM_CRL",
-  "PRIVILEGE_WITHDRAWN",
-  "A_A_COMPROMISE",
-);
-export type RelationalDatabaseEngine = "mysql";
-export const RelationalDatabaseEngine = S.Literal("mysql");
-export type SetupStatus = "succeeded" | "failed" | "inProgress";
-export const SetupStatus = S.Literal("succeeded", "failed", "inProgress");
+  | "A_A_COMPROMISE"
+  | (string & {});
+export const LoadBalancerTlsCertificateRevocationReason = S.String;
+export type RelationalDatabaseEngine = "mysql" | (string & {});
+export const RelationalDatabaseEngine = S.String;
+export type SetupStatus = "succeeded" | "failed" | "inProgress" | (string & {});
+export const SetupStatus = S.String;
 export interface BucketCorsRule {
   id?: string;
   allowedMethods: string[];
@@ -7228,37 +6875,28 @@ export const BucketCorsConfig = S.suspend(() =>
 ).annotations({
   identifier: "BucketCorsConfig",
 }) as any as S.Schema<BucketCorsConfig>;
-export type CloudFormationStackRecordSourceType = "ExportSnapshotRecord";
-export const CloudFormationStackRecordSourceType = S.Literal(
-  "ExportSnapshotRecord",
-);
+export type CloudFormationStackRecordSourceType =
+  | "ExportSnapshotRecord"
+  | (string & {});
+export const CloudFormationStackRecordSourceType = S.String;
 export type ExportSnapshotRecordSourceType =
   | "InstanceSnapshot"
-  | "DiskSnapshot";
-export const ExportSnapshotRecordSourceType = S.Literal(
-  "InstanceSnapshot",
-  "DiskSnapshot",
-);
+  | "DiskSnapshot"
+  | (string & {});
+export const ExportSnapshotRecordSourceType = S.String;
 export type LoadBalancerTlsCertificateDomainStatus =
   | "PENDING_VALIDATION"
   | "FAILED"
-  | "SUCCESS";
-export const LoadBalancerTlsCertificateDomainStatus = S.Literal(
-  "PENDING_VALIDATION",
-  "FAILED",
-  "SUCCESS",
-);
+  | "SUCCESS"
+  | (string & {});
+export const LoadBalancerTlsCertificateDomainStatus = S.String;
 export type LoadBalancerTlsCertificateRenewalStatus =
   | "PENDING_AUTO_RENEWAL"
   | "PENDING_VALIDATION"
   | "SUCCESS"
-  | "FAILED";
-export const LoadBalancerTlsCertificateRenewalStatus = S.Literal(
-  "PENDING_AUTO_RENEWAL",
-  "PENDING_VALIDATION",
-  "SUCCESS",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const LoadBalancerTlsCertificateRenewalStatus = S.String;
 export interface CloseInstancePublicPortsResult {
   operation?: Operation;
 }
@@ -7935,25 +7573,22 @@ export const SetupExecutionDetails = S.suspend(() =>
 }) as any as S.Schema<SetupExecutionDetails>;
 export type SetupExecutionDetailsList = SetupExecutionDetails[];
 export const SetupExecutionDetailsList = S.Array(SetupExecutionDetails);
-export type PricingUnit = "GB" | "Hrs" | "GB-Mo" | "Bundles" | "Queries";
-export const PricingUnit = S.Literal(
-  "GB",
-  "Hrs",
-  "GB-Mo",
-  "Bundles",
-  "Queries",
-);
-export type Currency = "USD";
-export const Currency = S.Literal("USD");
+export type PricingUnit =
+  | "GB"
+  | "Hrs"
+  | "GB-Mo"
+  | "Bundles"
+  | "Queries"
+  | (string & {});
+export const PricingUnit = S.String;
+export type Currency = "USD" | (string & {});
+export const Currency = S.String;
 export type LoadBalancerTlsCertificateDnsRecordCreationStateCode =
   | "SUCCEEDED"
   | "STARTED"
-  | "FAILED";
-export const LoadBalancerTlsCertificateDnsRecordCreationStateCode = S.Literal(
-  "SUCCEEDED",
-  "STARTED",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const LoadBalancerTlsCertificateDnsRecordCreationStateCode = S.String;
 export interface Alarm {
   name?: string;
   arn?: string;

@@ -122,15 +122,9 @@ export type SourceType =
   | "db-security-group"
   | "db-snapshot"
   | "db-cluster"
-  | "db-cluster-snapshot";
-export const SourceType = S.Literal(
-  "db-instance",
-  "db-parameter-group",
-  "db-security-group",
-  "db-snapshot",
-  "db-cluster",
-  "db-cluster-snapshot",
-);
+  | "db-cluster-snapshot"
+  | (string & {});
+export const SourceType = S.String;
 export type AttributeValueList = string[];
 export const AttributeValueList = S.Array(
   S.String.pipe(T.XmlName("AttributeValue")),
@@ -1315,8 +1309,8 @@ export const RemoveTagsFromResourceResponse = S.suspend(() =>
 ).annotations({
   identifier: "RemoveTagsFromResourceResponse",
 }) as any as S.Schema<RemoveTagsFromResourceResponse>;
-export type ApplyMethod = "immediate" | "pending-reboot";
-export const ApplyMethod = S.Literal("immediate", "pending-reboot");
+export type ApplyMethod = "immediate" | "pending-reboot" | (string & {});
+export const ApplyMethod = S.String;
 export interface Parameter {
   ParameterName?: string;
   ParameterValue?: string;
@@ -2056,11 +2050,9 @@ export type ReadersArnList = string[];
 export const ReadersArnList = S.Array(S.String);
 export type GlobalClusterMemberSynchronizationStatus =
   | "connected"
-  | "pending-resync";
-export const GlobalClusterMemberSynchronizationStatus = S.Literal(
-  "connected",
-  "pending-resync",
-);
+  | "pending-resync"
+  | (string & {});
+export const GlobalClusterMemberSynchronizationStatus = S.String;
 export interface GlobalClusterMember {
   DBClusterArn?: string;
   Readers?: string[];
@@ -2083,12 +2075,12 @@ export const GlobalClusterMemberList = S.Array(
     identifier: "GlobalClusterMember",
   }),
 );
-export type FailoverStatus = "pending" | "failing-over" | "cancelling";
-export const FailoverStatus = S.Literal(
-  "pending",
-  "failing-over",
-  "cancelling",
-);
+export type FailoverStatus =
+  | "pending"
+  | "failing-over"
+  | "cancelling"
+  | (string & {});
+export const FailoverStatus = S.String;
 export interface FailoverState {
   Status?: FailoverStatus;
   FromDbClusterArn?: string;

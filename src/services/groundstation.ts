@@ -137,16 +137,9 @@ export type ConfigCapabilityType =
   | "dataflow-endpoint"
   | "antenna-uplink"
   | "uplink-echo"
-  | "s3-recording";
-export const ConfigCapabilityType = S.Literal(
-  "antenna-downlink",
-  "antenna-downlink-demod-decode",
-  "tracking",
-  "dataflow-endpoint",
-  "antenna-uplink",
-  "uplink-echo",
-  "s3-recording",
-);
+  | "s3-recording"
+  | (string & {});
+export const ConfigCapabilityType = S.String;
 export type ContactStatus =
   | "SCHEDULING"
   | "FAILED_TO_SCHEDULE"
@@ -160,46 +153,27 @@ export type ContactStatus =
   | "FAILED"
   | "AVAILABLE"
   | "CANCELLING"
-  | "AWS_FAILED";
-export const ContactStatus = S.Literal(
-  "SCHEDULING",
-  "FAILED_TO_SCHEDULE",
-  "SCHEDULED",
-  "CANCELLED",
-  "AWS_CANCELLED",
-  "PREPASS",
-  "PASS",
-  "POSTPASS",
-  "COMPLETED",
-  "FAILED",
-  "AVAILABLE",
-  "CANCELLING",
-  "AWS_FAILED",
-);
+  | "AWS_FAILED"
+  | (string & {});
+export const ContactStatus = S.String;
 export type StatusList = ContactStatus[];
 export const StatusList = S.Array(ContactStatus);
-export type EphemerisType = "TLE" | "OEM" | "AZ_EL" | "SERVICE_MANAGED";
-export const EphemerisType = S.Literal(
-  "TLE",
-  "OEM",
-  "AZ_EL",
-  "SERVICE_MANAGED",
-);
+export type EphemerisType =
+  | "TLE"
+  | "OEM"
+  | "AZ_EL"
+  | "SERVICE_MANAGED"
+  | (string & {});
+export const EphemerisType = S.String;
 export type EphemerisStatus =
   | "VALIDATING"
   | "INVALID"
   | "ERROR"
   | "ENABLED"
   | "DISABLED"
-  | "EXPIRED";
-export const EphemerisStatus = S.Literal(
-  "VALIDATING",
-  "INVALID",
-  "ERROR",
-  "ENABLED",
-  "DISABLED",
-  "EXPIRED",
-);
+  | "EXPIRED"
+  | (string & {});
+export const EphemerisStatus = S.String;
 export type EphemerisStatusList = EphemerisStatus[];
 export const EphemerisStatusList = S.Array(EphemerisStatus);
 export type DataflowEdge = string[];
@@ -325,8 +299,8 @@ export const GetConfigRequest = S.suspend(() =>
 ).annotations({
   identifier: "GetConfigRequest",
 }) as any as S.Schema<GetConfigRequest>;
-export type FrequencyUnits = "GHz" | "MHz" | "kHz";
-export const FrequencyUnits = S.Literal("GHz", "MHz", "kHz");
+export type FrequencyUnits = "GHz" | "MHz" | "kHz" | (string & {});
+export const FrequencyUnits = S.String;
 export interface Frequency {
   value: number;
   units: FrequencyUnits;
@@ -334,8 +308,8 @@ export interface Frequency {
 export const Frequency = S.suspend(() =>
   S.Struct({ value: S.Number, units: FrequencyUnits }),
 ).annotations({ identifier: "Frequency" }) as any as S.Schema<Frequency>;
-export type BandwidthUnits = "GHz" | "MHz" | "kHz";
-export const BandwidthUnits = S.Literal("GHz", "MHz", "kHz");
+export type BandwidthUnits = "GHz" | "MHz" | "kHz" | (string & {});
+export const BandwidthUnits = S.String;
 export interface FrequencyBandwidth {
   value: number;
   units: BandwidthUnits;
@@ -345,8 +319,8 @@ export const FrequencyBandwidth = S.suspend(() =>
 ).annotations({
   identifier: "FrequencyBandwidth",
 }) as any as S.Schema<FrequencyBandwidth>;
-export type Polarization = "RIGHT_HAND" | "LEFT_HAND" | "NONE";
-export const Polarization = S.Literal("RIGHT_HAND", "LEFT_HAND", "NONE");
+export type Polarization = "RIGHT_HAND" | "LEFT_HAND" | "NONE" | (string & {});
+export const Polarization = S.String;
 export interface SpectrumConfig {
   centerFrequency: Frequency;
   bandwidth: FrequencyBandwidth;
@@ -369,8 +343,8 @@ export const AntennaDownlinkConfig = S.suspend(() =>
 ).annotations({
   identifier: "AntennaDownlinkConfig",
 }) as any as S.Schema<AntennaDownlinkConfig>;
-export type Criticality = "REQUIRED" | "PREFERRED" | "REMOVED";
-export const Criticality = S.Literal("REQUIRED", "PREFERRED", "REMOVED");
+export type Criticality = "REQUIRED" | "PREFERRED" | "REMOVED" | (string & {});
+export const Criticality = S.String;
 export interface TrackingConfig {
   autotrack: Criticality;
 }
@@ -431,8 +405,8 @@ export const UplinkSpectrumConfig = S.suspend(() =>
 ).annotations({
   identifier: "UplinkSpectrumConfig",
 }) as any as S.Schema<UplinkSpectrumConfig>;
-export type EirpUnits = "dBW";
-export const EirpUnits = S.Literal("dBW");
+export type EirpUnits = "dBW" | (string & {});
+export const EirpUnits = S.String;
 export interface Eirp {
   value: number;
   units: EirpUnits;
@@ -982,10 +956,15 @@ export type CapabilityArnList = string[];
 export const CapabilityArnList = S.Array(S.String);
 export type AgentCpuCoresList = number[];
 export const AgentCpuCoresList = S.Array(S.Number);
-export type AgentStatus = "SUCCESS" | "FAILED" | "ACTIVE" | "INACTIVE";
-export const AgentStatus = S.Literal("SUCCESS", "FAILED", "ACTIVE", "INACTIVE");
-export type CapabilityHealth = "HEALTHY" | "UNHEALTHY";
-export const CapabilityHealth = S.Literal("HEALTHY", "UNHEALTHY");
+export type AgentStatus =
+  | "SUCCESS"
+  | "FAILED"
+  | "ACTIVE"
+  | "INACTIVE"
+  | (string & {});
+export const AgentStatus = S.String;
+export type CapabilityHealth = "HEALTHY" | "UNHEALTHY" | (string & {});
+export const CapabilityHealth = S.String;
 export type CapabilityHealthReason =
   | "NO_REGISTERED_AGENT"
   | "INVALID_IP_OWNERSHIP"
@@ -993,16 +972,9 @@ export type CapabilityHealthReason =
   | "UNVERIFIED_IP_OWNERSHIP"
   | "INITIALIZING_DATAPLANE"
   | "DATAPLANE_FAILURE"
-  | "HEALTHY";
-export const CapabilityHealthReason = S.Literal(
-  "NO_REGISTERED_AGENT",
-  "INVALID_IP_OWNERSHIP",
-  "NOT_AUTHORIZED_TO_CREATE_SLR",
-  "UNVERIFIED_IP_OWNERSHIP",
-  "INITIALIZING_DATAPLANE",
-  "DATAPLANE_FAILURE",
-  "HEALTHY",
-);
+  | "HEALTHY"
+  | (string & {});
+export const CapabilityHealthReason = S.String;
 export type CapabilityHealthReasonList = CapabilityHealthReason[];
 export const CapabilityHealthReasonList = S.Array(CapabilityHealthReason);
 export type TagsMap = { [key: string]: string | undefined };
@@ -1053,14 +1025,9 @@ export type EphemerisInvalidReason =
   | "TIME_RANGE_INVALID"
   | "TRAJECTORY_INVALID"
   | "KMS_KEY_INVALID"
-  | "VALIDATION_ERROR";
-export const EphemerisInvalidReason = S.Literal(
-  "METADATA_INVALID",
-  "TIME_RANGE_INVALID",
-  "TRAJECTORY_INVALID",
-  "KMS_KEY_INVALID",
-  "VALIDATION_ERROR",
-);
+  | "VALIDATION_ERROR"
+  | (string & {});
+export const EphemerisInvalidReason = S.String;
 export type GroundStationIdList = string[];
 export const GroundStationIdList = S.Array(S.String);
 export type VersionStringList = string[];
@@ -1074,16 +1041,11 @@ export type EndpointStatus =
   | "creating"
   | "deleted"
   | "deleting"
-  | "failed";
-export const EndpointStatus = S.Literal(
-  "created",
-  "creating",
-  "deleted",
-  "deleting",
-  "failed",
-);
-export type AuditResults = "HEALTHY" | "UNHEALTHY";
-export const AuditResults = S.Literal("HEALTHY", "UNHEALTHY");
+  | "failed"
+  | (string & {});
+export const EndpointStatus = S.String;
+export type AuditResults = "HEALTHY" | "UNHEALTHY" | (string & {});
+export const AuditResults = S.String;
 export interface GetAgentTaskResponseUrlResponse {
   agentId: string;
   taskId: string;
@@ -1513,8 +1475,8 @@ export const SignatureMap = S.Record({
   key: S.String,
   value: S.UndefinedOr(S.Boolean),
 });
-export type AngleUnits = "DEGREE_ANGLE" | "RADIAN";
-export const AngleUnits = S.Literal("DEGREE_ANGLE", "RADIAN");
+export type AngleUnits = "DEGREE_ANGLE" | "RADIAN" | (string & {});
+export const AngleUnits = S.String;
 export interface AzElEphemerisFilter {
   id: string;
 }
@@ -1598,49 +1560,14 @@ export type EphemerisErrorCode =
   | "AZ_EL_SEGMENT_END_TIME_INVALID"
   | "AZ_EL_SEGMENT_VALID_TIME_RANGE_INVALID"
   | "AZ_EL_SEGMENT_END_TIME_TOO_LATE"
-  | "AZ_EL_TOTAL_DURATION_EXCEEDED";
-export const EphemerisErrorCode = S.Literal(
-  "INTERNAL_ERROR",
-  "MISMATCHED_SATCAT_ID",
-  "OEM_VERSION_UNSUPPORTED",
-  "ORIGINATOR_MISSING",
-  "CREATION_DATE_MISSING",
-  "OBJECT_NAME_MISSING",
-  "OBJECT_ID_MISSING",
-  "REF_FRAME_UNSUPPORTED",
-  "REF_FRAME_EPOCH_UNSUPPORTED",
-  "TIME_SYSTEM_UNSUPPORTED",
-  "CENTER_BODY_UNSUPPORTED",
-  "INTERPOLATION_MISSING",
-  "INTERPOLATION_DEGREE_INVALID",
-  "AZ_EL_SEGMENT_LIST_MISSING",
-  "INSUFFICIENT_TIME_AZ_EL",
-  "START_TIME_IN_FUTURE",
-  "END_TIME_IN_PAST",
-  "EXPIRATION_TIME_TOO_EARLY",
-  "START_TIME_METADATA_TOO_EARLY",
-  "STOP_TIME_METADATA_TOO_LATE",
-  "AZ_EL_SEGMENT_END_TIME_BEFORE_START_TIME",
-  "AZ_EL_SEGMENT_TIMES_OVERLAP",
-  "AZ_EL_SEGMENTS_OUT_OF_ORDER",
-  "TIME_AZ_EL_ITEMS_OUT_OF_ORDER",
-  "MEAN_MOTION_INVALID",
-  "TIME_AZ_EL_AZ_RADIAN_RANGE_INVALID",
-  "TIME_AZ_EL_EL_RADIAN_RANGE_INVALID",
-  "TIME_AZ_EL_AZ_DEGREE_RANGE_INVALID",
-  "TIME_AZ_EL_EL_DEGREE_RANGE_INVALID",
-  "TIME_AZ_EL_ANGLE_UNITS_INVALID",
-  "INSUFFICIENT_KMS_PERMISSIONS",
-  "FILE_FORMAT_INVALID",
-  "AZ_EL_SEGMENT_REFERENCE_EPOCH_INVALID",
-  "AZ_EL_SEGMENT_START_TIME_INVALID",
-  "AZ_EL_SEGMENT_END_TIME_INVALID",
-  "AZ_EL_SEGMENT_VALID_TIME_RANGE_INVALID",
-  "AZ_EL_SEGMENT_END_TIME_TOO_LATE",
-  "AZ_EL_TOTAL_DURATION_EXCEEDED",
-);
-export type EphemerisSource = "CUSTOMER_PROVIDED" | "SPACE_TRACK";
-export const EphemerisSource = S.Literal("CUSTOMER_PROVIDED", "SPACE_TRACK");
+  | "AZ_EL_TOTAL_DURATION_EXCEEDED"
+  | (string & {});
+export const EphemerisErrorCode = S.String;
+export type EphemerisSource =
+  | "CUSTOMER_PROVIDED"
+  | "SPACE_TRACK"
+  | (string & {});
+export const EphemerisSource = S.String;
 export interface AgentDetails {
   agentVersion: string;
   instanceId: string;

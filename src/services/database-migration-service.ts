@@ -139,21 +139,21 @@ export const RunFleetAdvisorLsaAnalysisRequest = S.suspend(() =>
 ).annotations({
   identifier: "RunFleetAdvisorLsaAnalysisRequest",
 }) as any as S.Schema<RunFleetAdvisorLsaAnalysisRequest>;
-export type MigrationTypeValue = "full-load" | "cdc" | "full-load-and-cdc";
-export const MigrationTypeValue = S.Literal(
-  "full-load",
-  "cdc",
-  "full-load-and-cdc",
-);
-export type ReplicationEndpointTypeValue = "source" | "target";
-export const ReplicationEndpointTypeValue = S.Literal("source", "target");
-export type DmsSslModeValue = "none" | "require" | "verify-ca" | "verify-full";
-export const DmsSslModeValue = S.Literal(
-  "none",
-  "require",
-  "verify-ca",
-  "verify-full",
-);
+export type MigrationTypeValue =
+  | "full-load"
+  | "cdc"
+  | "full-load-and-cdc"
+  | (string & {});
+export const MigrationTypeValue = S.String;
+export type ReplicationEndpointTypeValue = "source" | "target" | (string & {});
+export const ReplicationEndpointTypeValue = S.String;
+export type DmsSslModeValue =
+  | "none"
+  | "require"
+  | "verify-ca"
+  | "verify-full"
+  | (string & {});
+export const DmsSslModeValue = S.String;
 export type EventCategoriesList = string[];
 export const EventCategoriesList = S.Array(
   S.String.pipe(T.XmlName("EventCategory")),
@@ -170,38 +170,32 @@ export type SubnetIdentifierList = string[];
 export const SubnetIdentifierList = S.Array(
   S.String.pipe(T.XmlName("SubnetIdentifier")),
 );
-export type SourceType = "replication-instance";
-export const SourceType = S.Literal("replication-instance");
-export type OriginTypeValue = "SOURCE" | "TARGET";
-export const OriginTypeValue = S.Literal("SOURCE", "TARGET");
-export type AssessmentReportType = "pdf" | "csv";
-export const AssessmentReportType = S.Literal("pdf", "csv");
+export type SourceType = "replication-instance" | (string & {});
+export const SourceType = S.String;
+export type OriginTypeValue = "SOURCE" | "TARGET" | (string & {});
+export const OriginTypeValue = S.String;
+export type AssessmentReportType = "pdf" | "csv" | (string & {});
+export const AssessmentReportType = S.String;
 export type AssessmentReportTypesList = AssessmentReportType[];
 export const AssessmentReportTypesList = S.Array(AssessmentReportType);
 export type ArnList = string[];
 export const ArnList = S.Array(S.String);
-export type ReloadOptionValue = "data-reload" | "validate-only";
-export const ReloadOptionValue = S.Literal("data-reload", "validate-only");
+export type ReloadOptionValue = "data-reload" | "validate-only" | (string & {});
+export const ReloadOptionValue = S.String;
 export type KeyList = string[];
 export const KeyList = S.Array(S.String);
 export type StartReplicationMigrationTypeValue =
   | "reload-target"
   | "resume-processing"
-  | "start-replication";
-export const StartReplicationMigrationTypeValue = S.Literal(
-  "reload-target",
-  "resume-processing",
-  "start-replication",
-);
+  | "start-replication"
+  | (string & {});
+export const StartReplicationMigrationTypeValue = S.String;
 export type StartReplicationTaskTypeValue =
   | "start-replication"
   | "resume-processing"
-  | "reload-target";
-export const StartReplicationTaskTypeValue = S.Literal(
-  "start-replication",
-  "resume-processing",
-  "reload-target",
-);
+  | "reload-target"
+  | (string & {});
+export const StartReplicationTaskTypeValue = S.String;
 export type IncludeTestList = string[];
 export const IncludeTestList = S.Array(S.String);
 export type ExcludeTestList = string[];
@@ -2024,12 +2018,9 @@ export const SourceDataSettings = S.Array(SourceDataSetting);
 export type TablePreparationMode =
   | "do-nothing"
   | "truncate"
-  | "drop-tables-on-target";
-export const TablePreparationMode = S.Literal(
-  "do-nothing",
-  "truncate",
-  "drop-tables-on-target",
-);
+  | "drop-tables-on-target"
+  | (string & {});
+export const TablePreparationMode = S.String;
 export interface TargetDataSetting {
   TablePreparationMode?: TablePreparationMode;
 }
@@ -2292,14 +2283,14 @@ export const IbmDb2zOsDataProviderSettings = S.suspend(() =>
 ).annotations({
   identifier: "IbmDb2zOsDataProviderSettings",
 }) as any as S.Schema<IbmDb2zOsDataProviderSettings>;
-export type AuthTypeValue = "no" | "password";
-export const AuthTypeValue = S.Literal("no", "password");
-export type AuthMechanismValue = "default" | "mongodb_cr" | "scram_sha_1";
-export const AuthMechanismValue = S.Literal(
-  "default",
-  "mongodb_cr",
-  "scram_sha_1",
-);
+export type AuthTypeValue = "no" | "password" | (string & {});
+export const AuthTypeValue = S.String;
+export type AuthMechanismValue =
+  | "default"
+  | "mongodb_cr"
+  | "scram_sha_1"
+  | (string & {});
+export const AuthMechanismValue = S.String;
 export interface MongoDbDataProviderSettings {
   ServerName?: string;
   Port?: number;
@@ -2523,44 +2514,35 @@ export const DynamoDbSettings = S.suspend(() =>
 ).annotations({
   identifier: "DynamoDbSettings",
 }) as any as S.Schema<DynamoDbSettings>;
-export type CompressionTypeValue = "none" | "gzip";
-export const CompressionTypeValue = S.Literal("none", "gzip");
-export type EncryptionModeValue = "sse-s3" | "sse-kms";
-export const EncryptionModeValue = S.Literal("sse-s3", "sse-kms");
-export type DataFormatValue = "csv" | "parquet";
-export const DataFormatValue = S.Literal("csv", "parquet");
-export type EncodingTypeValue = "plain" | "plain-dictionary" | "rle-dictionary";
-export const EncodingTypeValue = S.Literal(
-  "plain",
-  "plain-dictionary",
-  "rle-dictionary",
-);
-export type ParquetVersionValue = "parquet-1-0" | "parquet-2-0";
-export const ParquetVersionValue = S.Literal("parquet-1-0", "parquet-2-0");
+export type CompressionTypeValue = "none" | "gzip" | (string & {});
+export const CompressionTypeValue = S.String;
+export type EncryptionModeValue = "sse-s3" | "sse-kms" | (string & {});
+export const EncryptionModeValue = S.String;
+export type DataFormatValue = "csv" | "parquet" | (string & {});
+export const DataFormatValue = S.String;
+export type EncodingTypeValue =
+  | "plain"
+  | "plain-dictionary"
+  | "rle-dictionary"
+  | (string & {});
+export const EncodingTypeValue = S.String;
+export type ParquetVersionValue = "parquet-1-0" | "parquet-2-0" | (string & {});
+export const ParquetVersionValue = S.String;
 export type DatePartitionSequenceValue =
   | "YYYYMMDD"
   | "YYYYMMDDHH"
   | "YYYYMM"
   | "MMYYYYDD"
-  | "DDMMYYYY";
-export const DatePartitionSequenceValue = S.Literal(
-  "YYYYMMDD",
-  "YYYYMMDDHH",
-  "YYYYMM",
-  "MMYYYYDD",
-  "DDMMYYYY",
-);
+  | "DDMMYYYY"
+  | (string & {});
+export const DatePartitionSequenceValue = S.String;
 export type DatePartitionDelimiterValue =
   | "SLASH"
   | "UNDERSCORE"
   | "DASH"
-  | "NONE";
-export const DatePartitionDelimiterValue = S.Literal(
-  "SLASH",
-  "UNDERSCORE",
-  "DASH",
-  "NONE",
-);
+  | "NONE"
+  | (string & {});
+export const DatePartitionDelimiterValue = S.String;
 export type CannedAclForObjectsValue =
   | "none"
   | "private"
@@ -2569,17 +2551,9 @@ export type CannedAclForObjectsValue =
   | "authenticated-read"
   | "aws-exec-read"
   | "bucket-owner-read"
-  | "bucket-owner-full-control";
-export const CannedAclForObjectsValue = S.Literal(
-  "none",
-  "private",
-  "public-read",
-  "public-read-write",
-  "authenticated-read",
-  "aws-exec-read",
-  "bucket-owner-read",
-  "bucket-owner-full-control",
-);
+  | "bucket-owner-full-control"
+  | (string & {});
+export const CannedAclForObjectsValue = S.String;
 export interface S3Settings {
   ServiceAccessRoleArn?: string;
   ExternalTableDefinition?: string;
@@ -2680,8 +2654,8 @@ export const DmsTransferSettings = S.suspend(() =>
 ).annotations({
   identifier: "DmsTransferSettings",
 }) as any as S.Schema<DmsTransferSettings>;
-export type NestingLevelValue = "none" | "one";
-export const NestingLevelValue = S.Literal("none", "one");
+export type NestingLevelValue = "none" | "one" | (string & {});
+export const NestingLevelValue = S.String;
 export interface MongoDbSettings {
   Username?: string;
   Password?: string | redacted.Redacted<string>;
@@ -2722,8 +2696,8 @@ export const MongoDbSettings = S.suspend(() =>
 ).annotations({
   identifier: "MongoDbSettings",
 }) as any as S.Schema<MongoDbSettings>;
-export type MessageFormatValue = "json" | "json-unformatted";
-export const MessageFormatValue = S.Literal("json", "json-unformatted");
+export type MessageFormatValue = "json" | "json-unformatted" | (string & {});
+export const MessageFormatValue = S.String;
 export interface KinesisSettings {
   StreamArn?: string;
   MessageFormat?: MessageFormatValue;
@@ -2758,20 +2732,16 @@ export type KafkaSecurityProtocol =
   | "plaintext"
   | "ssl-authentication"
   | "ssl-encryption"
-  | "sasl-ssl";
-export const KafkaSecurityProtocol = S.Literal(
-  "plaintext",
-  "ssl-authentication",
-  "ssl-encryption",
-  "sasl-ssl",
-);
-export type KafkaSaslMechanism = "scram-sha-512" | "plain";
-export const KafkaSaslMechanism = S.Literal("scram-sha-512", "plain");
-export type KafkaSslEndpointIdentificationAlgorithm = "none" | "https";
-export const KafkaSslEndpointIdentificationAlgorithm = S.Literal(
-  "none",
-  "https",
-);
+  | "sasl-ssl"
+  | (string & {});
+export const KafkaSecurityProtocol = S.String;
+export type KafkaSaslMechanism = "scram-sha-512" | "plain" | (string & {});
+export const KafkaSaslMechanism = S.String;
+export type KafkaSslEndpointIdentificationAlgorithm =
+  | "none"
+  | "https"
+  | (string & {});
+export const KafkaSslEndpointIdentificationAlgorithm = S.String;
 export interface KafkaSettings {
   Broker?: string;
   Topic?: string;
@@ -2934,18 +2904,22 @@ export const RedshiftSettings = S.suspend(() =>
 ).annotations({
   identifier: "RedshiftSettings",
 }) as any as S.Schema<RedshiftSettings>;
-export type PluginNameValue = "no-preference" | "test-decoding" | "pglogical";
-export const PluginNameValue = S.Literal(
-  "no-preference",
-  "test-decoding",
-  "pglogical",
-);
-export type LongVarcharMappingType = "wstring" | "clob" | "nclob";
-export const LongVarcharMappingType = S.Literal("wstring", "clob", "nclob");
-export type DatabaseMode = "default" | "babelfish";
-export const DatabaseMode = S.Literal("default", "babelfish");
-export type PostgreSQLAuthenticationMethod = "password" | "iam";
-export const PostgreSQLAuthenticationMethod = S.Literal("password", "iam");
+export type PluginNameValue =
+  | "no-preference"
+  | "test-decoding"
+  | "pglogical"
+  | (string & {});
+export const PluginNameValue = S.String;
+export type LongVarcharMappingType =
+  | "wstring"
+  | "clob"
+  | "nclob"
+  | (string & {});
+export const LongVarcharMappingType = S.String;
+export type DatabaseMode = "default" | "babelfish" | (string & {});
+export const DatabaseMode = S.String;
+export type PostgreSQLAuthenticationMethod = "password" | "iam" | (string & {});
+export const PostgreSQLAuthenticationMethod = S.String;
 export interface PostgreSQLSettings {
   AfterConnectScript?: string;
   CaptureDdls?: boolean;
@@ -3008,13 +2982,13 @@ export const PostgreSQLSettings = S.suspend(() =>
 ).annotations({
   identifier: "PostgreSQLSettings",
 }) as any as S.Schema<PostgreSQLSettings>;
-export type TargetDbType = "specific-database" | "multiple-databases";
-export const TargetDbType = S.Literal(
-  "specific-database",
-  "multiple-databases",
-);
-export type MySQLAuthenticationMethod = "password" | "iam";
-export const MySQLAuthenticationMethod = S.Literal("password", "iam");
+export type TargetDbType =
+  | "specific-database"
+  | "multiple-databases"
+  | (string & {});
+export const TargetDbType = S.String;
+export type MySQLAuthenticationMethod = "password" | "iam" | (string & {});
+export const MySQLAuthenticationMethod = S.String;
 export interface MySQLSettings {
   AfterConnectScript?: string;
   CleanSourceMetadataOnMismatch?: boolean;
@@ -3059,10 +3033,13 @@ export const MySQLSettings = S.suspend(() =>
 }) as any as S.Schema<MySQLSettings>;
 export type IntegerList = number[];
 export const IntegerList = S.Array(S.Number);
-export type CharLengthSemantics = "default" | "char" | "byte";
-export const CharLengthSemantics = S.Literal("default", "char", "byte");
-export type OracleAuthenticationMethod = "password" | "kerberos";
-export const OracleAuthenticationMethod = S.Literal("password", "kerberos");
+export type CharLengthSemantics = "default" | "char" | "byte" | (string & {});
+export const CharLengthSemantics = S.String;
+export type OracleAuthenticationMethod =
+  | "password"
+  | "kerberos"
+  | (string & {});
+export const OracleAuthenticationMethod = S.String;
 export interface OracleSettings {
   AddSupplementalLogging?: boolean;
   ArchivedLogDestId?: number;
@@ -3184,25 +3161,21 @@ export const SybaseSettings = S.suspend(() =>
 export type SafeguardPolicy =
   | "rely-on-sql-server-replication-agent"
   | "exclusive-automatic-truncation"
-  | "shared-automatic-truncation";
-export const SafeguardPolicy = S.Literal(
-  "rely-on-sql-server-replication-agent",
-  "exclusive-automatic-truncation",
-  "shared-automatic-truncation",
-);
+  | "shared-automatic-truncation"
+  | (string & {});
+export const SafeguardPolicy = S.String;
 export type TlogAccessMode =
   | "BackupOnly"
   | "PreferBackup"
   | "PreferTlog"
-  | "TlogOnly";
-export const TlogAccessMode = S.Literal(
-  "BackupOnly",
-  "PreferBackup",
-  "PreferTlog",
-  "TlogOnly",
-);
-export type SqlServerAuthenticationMethod = "password" | "kerberos";
-export const SqlServerAuthenticationMethod = S.Literal("password", "kerberos");
+  | "TlogOnly"
+  | (string & {});
+export const TlogAccessMode = S.String;
+export type SqlServerAuthenticationMethod =
+  | "password"
+  | "kerberos"
+  | (string & {});
+export const SqlServerAuthenticationMethod = S.String;
 export interface MicrosoftSQLServerSettings {
   Port?: number;
   BcpPacketSize?: number;
@@ -3317,13 +3290,17 @@ export const DocDbSettings = S.suspend(() =>
 ).annotations({
   identifier: "DocDbSettings",
 }) as any as S.Schema<DocDbSettings>;
-export type SslSecurityProtocolValue = "plaintext" | "ssl-encryption";
-export const SslSecurityProtocolValue = S.Literal(
-  "plaintext",
-  "ssl-encryption",
-);
-export type RedisAuthTypeValue = "none" | "auth-role" | "auth-token";
-export const RedisAuthTypeValue = S.Literal("none", "auth-role", "auth-token");
+export type SslSecurityProtocolValue =
+  | "plaintext"
+  | "ssl-encryption"
+  | (string & {});
+export const SslSecurityProtocolValue = S.String;
+export type RedisAuthTypeValue =
+  | "none"
+  | "auth-role"
+  | "auth-token"
+  | (string & {});
+export const RedisAuthTypeValue = S.String;
 export interface RedisSettings {
   ServerName: string;
   Port: number;
@@ -6154,12 +6131,9 @@ export const RebootReplicationInstanceResponse = S.suspend(() =>
 export type RefreshSchemasStatusTypeValue =
   | "successful"
   | "failed"
-  | "refreshing";
-export const RefreshSchemasStatusTypeValue = S.Literal(
-  "successful",
-  "failed",
-  "refreshing",
-);
+  | "refreshing"
+  | (string & {});
+export const RefreshSchemasStatusTypeValue = S.String;
 export interface RefreshSchemasStatus {
   EndpointArn?: string;
   ReplicationInstanceArn?: string;
@@ -6531,21 +6505,21 @@ export type EndpointSettingTypeValue =
   | "string"
   | "boolean"
   | "integer"
-  | "enum";
-export const EndpointSettingTypeValue = S.Literal(
-  "string",
-  "boolean",
-  "integer",
-  "enum",
-);
+  | "enum"
+  | (string & {});
+export const EndpointSettingTypeValue = S.String;
 export type EndpointSettingEnumValues = string[];
 export const EndpointSettingEnumValues = S.Array(S.String);
-export type ReleaseStatusValues = "beta" | "prod";
-export const ReleaseStatusValues = S.Literal("beta", "prod");
+export type ReleaseStatusValues = "beta" | "prod" | (string & {});
+export const ReleaseStatusValues = S.String;
 export type AvailableUpgradesList = string[];
 export const AvailableUpgradesList = S.Array(S.String);
-export type VersionStatus = "UP_TO_DATE" | "OUTDATED" | "UNSUPPORTED";
-export const VersionStatus = S.Literal("UP_TO_DATE", "OUTDATED", "UNSUPPORTED");
+export type VersionStatus =
+  | "UP_TO_DATE"
+  | "OUTDATED"
+  | "UNSUPPORTED"
+  | (string & {});
+export const VersionStatus = S.String;
 export type AvailabilityZonesList = string[];
 export const AvailabilityZonesList = S.Array(S.String);
 export interface StatementProperties {
@@ -6873,8 +6847,8 @@ export type MetadataModelProperties = {
 export const MetadataModelProperties = S.Union(
   S.Struct({ StatementProperties: StatementProperties }),
 );
-export type CollectorStatus = "UNREGISTERED" | "ACTIVE";
-export const CollectorStatus = S.Literal("UNREGISTERED", "ACTIVE");
+export type CollectorStatus = "UNREGISTERED" | "ACTIVE" | (string & {});
+export const CollectorStatus = S.String;
 export interface CreateDataMigrationResponse {
   DataMigration?: DataMigration;
 }

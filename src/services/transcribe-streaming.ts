@@ -120,32 +120,27 @@ export type CallAnalyticsLanguageCode =
   | "en-AU"
   | "it-IT"
   | "de-DE"
-  | "pt-BR";
-export const CallAnalyticsLanguageCode = S.Literal(
-  "en-US",
-  "en-GB",
-  "es-US",
-  "fr-CA",
-  "fr-FR",
-  "en-AU",
-  "it-IT",
-  "de-DE",
-  "pt-BR",
-);
-export type MediaEncoding = "pcm" | "ogg-opus" | "flac";
-export const MediaEncoding = S.Literal("pcm", "ogg-opus", "flac");
-export type VocabularyFilterMethod = "remove" | "mask" | "tag";
-export const VocabularyFilterMethod = S.Literal("remove", "mask", "tag");
-export type PartialResultsStability = "high" | "medium" | "low";
-export const PartialResultsStability = S.Literal("high", "medium", "low");
-export type ContentIdentificationType = "PII";
-export const ContentIdentificationType = S.Literal("PII");
-export type ContentRedactionType = "PII";
-export const ContentRedactionType = S.Literal("PII");
-export type MedicalScribeLanguageCode = "en-US";
-export const MedicalScribeLanguageCode = S.Literal("en-US");
-export type MedicalScribeMediaEncoding = "pcm" | "ogg-opus" | "flac";
-export const MedicalScribeMediaEncoding = S.Literal("pcm", "ogg-opus", "flac");
+  | "pt-BR"
+  | (string & {});
+export const CallAnalyticsLanguageCode = S.String;
+export type MediaEncoding = "pcm" | "ogg-opus" | "flac" | (string & {});
+export const MediaEncoding = S.String;
+export type VocabularyFilterMethod = "remove" | "mask" | "tag" | (string & {});
+export const VocabularyFilterMethod = S.String;
+export type PartialResultsStability = "high" | "medium" | "low" | (string & {});
+export const PartialResultsStability = S.String;
+export type ContentIdentificationType = "PII" | (string & {});
+export const ContentIdentificationType = S.String;
+export type ContentRedactionType = "PII" | (string & {});
+export const ContentRedactionType = S.String;
+export type MedicalScribeLanguageCode = "en-US" | (string & {});
+export const MedicalScribeLanguageCode = S.String;
+export type MedicalScribeMediaEncoding =
+  | "pcm"
+  | "ogg-opus"
+  | "flac"
+  | (string & {});
+export const MedicalScribeMediaEncoding = S.String;
 export type LanguageCode =
   | "en-US"
   | "en-GB"
@@ -245,127 +240,22 @@ export type LanguageCode =
   | "ta-IN"
   | "te-IN"
   | "tr-TR"
-  | "uz-UZ";
-export const LanguageCode = S.Literal(
-  "en-US",
-  "en-GB",
-  "es-US",
-  "fr-CA",
-  "fr-FR",
-  "en-AU",
-  "it-IT",
-  "de-DE",
-  "pt-BR",
-  "ja-JP",
-  "ko-KR",
-  "zh-CN",
-  "th-TH",
-  "es-ES",
-  "ar-SA",
-  "pt-PT",
-  "ca-ES",
-  "ar-AE",
-  "hi-IN",
-  "zh-HK",
-  "nl-NL",
-  "no-NO",
-  "sv-SE",
-  "pl-PL",
-  "fi-FI",
-  "zh-TW",
-  "en-IN",
-  "en-IE",
-  "en-NZ",
-  "en-AB",
-  "en-ZA",
-  "en-WL",
-  "de-CH",
-  "af-ZA",
-  "eu-ES",
-  "hr-HR",
-  "cs-CZ",
-  "da-DK",
-  "fa-IR",
-  "gl-ES",
-  "el-GR",
-  "he-IL",
-  "id-ID",
-  "lv-LV",
-  "ms-MY",
-  "ro-RO",
-  "ru-RU",
-  "sr-RS",
-  "sk-SK",
-  "so-SO",
-  "tl-PH",
-  "uk-UA",
-  "vi-VN",
-  "zu-ZA",
-  "am-ET",
-  "be-BY",
-  "bg-BG",
-  "bn-IN",
-  "bs-BA",
-  "ckb-IQ",
-  "ckb-IR",
-  "cy-WL",
-  "es-MX",
-  "et-ET",
-  "fa-AF",
-  "gu-IN",
-  "ht-HT",
-  "hu-HU",
-  "hy-AM",
-  "is-IS",
-  "jv-ID",
-  "ka-GE",
-  "kab-DZ",
-  "kk-KZ",
-  "km-KH",
-  "kn-IN",
-  "lg-IN",
-  "lt-LT",
-  "mk-MK",
-  "ml-IN",
-  "mr-IN",
-  "my-MM",
-  "ne-NP",
-  "or-IN",
-  "pa-IN",
-  "ps-AF",
-  "si-LK",
-  "sl-SI",
-  "sq-AL",
-  "su-ID",
-  "sw-BI",
-  "sw-KE",
-  "sw-RW",
-  "sw-TZ",
-  "sw-UG",
-  "ta-IN",
-  "te-IN",
-  "tr-TR",
-  "uz-UZ",
-);
+  | "uz-UZ"
+  | (string & {});
+export const LanguageCode = S.String;
 export type Specialty =
   | "PRIMARYCARE"
   | "CARDIOLOGY"
   | "NEUROLOGY"
   | "ONCOLOGY"
   | "RADIOLOGY"
-  | "UROLOGY";
-export const Specialty = S.Literal(
-  "PRIMARYCARE",
-  "CARDIOLOGY",
-  "NEUROLOGY",
-  "ONCOLOGY",
-  "RADIOLOGY",
-  "UROLOGY",
-);
-export type Type = "CONVERSATION" | "DICTATION";
-export const Type = S.Literal("CONVERSATION", "DICTATION");
-export type MedicalContentIdentificationType = "PHI";
-export const MedicalContentIdentificationType = S.Literal("PHI");
+  | "UROLOGY"
+  | (string & {});
+export const Specialty = S.String;
+export type Type = "CONVERSATION" | "DICTATION" | (string & {});
+export const Type = S.String;
+export type MedicalContentIdentificationType = "PHI" | (string & {});
+export const MedicalContentIdentificationType = S.String;
 export interface GetMedicalScribeStreamRequest {
   SessionId: string;
 }
@@ -389,8 +279,8 @@ export interface AudioEvent {
 export const AudioEvent = S.suspend(() =>
   S.Struct({ AudioChunk: S.optional(T.Blob).pipe(T.EventPayload()) }),
 ).annotations({ identifier: "AudioEvent" }) as any as S.Schema<AudioEvent>;
-export type ParticipantRole = "AGENT" | "CUSTOMER";
-export const ParticipantRole = S.Literal("AGENT", "CUSTOMER");
+export type ParticipantRole = "AGENT" | "CUSTOMER" | (string & {});
+export const ParticipantRole = S.String;
 export interface ChannelDefinition {
   ChannelId: number;
   ParticipantRole: ParticipantRole;
@@ -402,11 +292,11 @@ export const ChannelDefinition = S.suspend(() =>
 }) as any as S.Schema<ChannelDefinition>;
 export type ChannelDefinitions = ChannelDefinition[];
 export const ChannelDefinitions = S.Array(ChannelDefinition);
-export type ContentRedactionOutput = "redacted" | "redacted_and_unredacted";
-export const ContentRedactionOutput = S.Literal(
-  "redacted",
-  "redacted_and_unredacted",
-);
+export type ContentRedactionOutput =
+  | "redacted"
+  | "redacted_and_unredacted"
+  | (string & {});
+export const ContentRedactionOutput = S.String;
 export interface PostCallAnalyticsSettings {
   OutputLocation: string;
   DataAccessRoleArn: string;
@@ -610,25 +500,23 @@ export const StartStreamTranscriptionRequest = S.suspend(() =>
 ).annotations({
   identifier: "StartStreamTranscriptionRequest",
 }) as any as S.Schema<StartStreamTranscriptionRequest>;
-export type MedicalScribeSessionControlEventType = "END_OF_SESSION";
-export const MedicalScribeSessionControlEventType = S.Literal("END_OF_SESSION");
-export type MedicalScribeVocabularyFilterMethod = "remove" | "mask" | "tag";
-export const MedicalScribeVocabularyFilterMethod = S.Literal(
-  "remove",
-  "mask",
-  "tag",
-);
+export type MedicalScribeSessionControlEventType =
+  | "END_OF_SESSION"
+  | (string & {});
+export const MedicalScribeSessionControlEventType = S.String;
+export type MedicalScribeVocabularyFilterMethod =
+  | "remove"
+  | "mask"
+  | "tag"
+  | (string & {});
+export const MedicalScribeVocabularyFilterMethod = S.String;
 export type MedicalScribeStreamStatus =
   | "IN_PROGRESS"
   | "PAUSED"
   | "FAILED"
-  | "COMPLETED";
-export const MedicalScribeStreamStatus = S.Literal(
-  "IN_PROGRESS",
-  "PAUSED",
-  "FAILED",
-  "COMPLETED",
-);
+  | "COMPLETED"
+  | (string & {});
+export const MedicalScribeStreamStatus = S.String;
 export interface MedicalScribeAudioEvent {
   AudioChunk: Uint8Array;
 }
@@ -645,8 +533,11 @@ export const MedicalScribeSessionControlEvent = S.suspend(() =>
 ).annotations({
   identifier: "MedicalScribeSessionControlEvent",
 }) as any as S.Schema<MedicalScribeSessionControlEvent>;
-export type MedicalScribeParticipantRole = "PATIENT" | "CLINICIAN";
-export const MedicalScribeParticipantRole = S.Literal("PATIENT", "CLINICIAN");
+export type MedicalScribeParticipantRole =
+  | "PATIENT"
+  | "CLINICIAN"
+  | (string & {});
+export const MedicalScribeParticipantRole = S.String;
 export interface MedicalScribeChannelDefinition {
   ChannelId: number;
   ParticipantRole: MedicalScribeParticipantRole;
@@ -670,27 +561,17 @@ export type MedicalScribeNoteTemplate =
   | "SIRP"
   | "BIRP"
   | "BEHAVIORAL_SOAP"
-  | "PHYSICAL_SOAP";
-export const MedicalScribeNoteTemplate = S.Literal(
-  "HISTORY_AND_PHYSICAL",
-  "GIRPP",
-  "DAP",
-  "SIRP",
-  "BIRP",
-  "BEHAVIORAL_SOAP",
-  "PHYSICAL_SOAP",
-);
-export type Pronouns = "HE_HIM" | "SHE_HER" | "THEY_THEM";
-export const Pronouns = S.Literal("HE_HIM", "SHE_HER", "THEY_THEM");
+  | "PHYSICAL_SOAP"
+  | (string & {});
+export const MedicalScribeNoteTemplate = S.String;
+export type Pronouns = "HE_HIM" | "SHE_HER" | "THEY_THEM" | (string & {});
+export const Pronouns = S.String;
 export type ClinicalNoteGenerationStatus =
   | "IN_PROGRESS"
   | "FAILED"
-  | "COMPLETED";
-export const ClinicalNoteGenerationStatus = S.Literal(
-  "IN_PROGRESS",
-  "FAILED",
-  "COMPLETED",
-);
+  | "COMPLETED"
+  | (string & {});
+export const ClinicalNoteGenerationStatus = S.String;
 export type KMSEncryptionContextMap = { [key: string]: string | undefined };
 export const KMSEncryptionContextMap = S.Record({
   key: S.String,
@@ -1013,8 +894,8 @@ export const LanguageWithScore = S.suspend(() =>
 }) as any as S.Schema<LanguageWithScore>;
 export type LanguageIdentification = LanguageWithScore[];
 export const LanguageIdentification = S.Array(LanguageWithScore);
-export type ItemType = "pronunciation" | "punctuation";
-export const ItemType = S.Literal("pronunciation", "punctuation");
+export type ItemType = "pronunciation" | "punctuation" | (string & {});
+export const ItemType = S.String;
 export interface MedicalItem {
   StartTime?: number;
   EndTime?: number;
@@ -1099,8 +980,13 @@ export const Entity = S.suspend(() =>
 ).annotations({ identifier: "Entity" }) as any as S.Schema<Entity>;
 export type EntityList = Entity[];
 export const EntityList = S.Array(Entity);
-export type Sentiment = "POSITIVE" | "NEGATIVE" | "MIXED" | "NEUTRAL";
-export const Sentiment = S.Literal("POSITIVE", "NEGATIVE", "MIXED", "NEUTRAL");
+export type Sentiment =
+  | "POSITIVE"
+  | "NEGATIVE"
+  | "MIXED"
+  | "NEUTRAL"
+  | (string & {});
+export const Sentiment = S.String;
 export type StringList = string[];
 export const StringList = S.Array(S.String);
 export interface MedicalAlternative {
@@ -1465,11 +1351,11 @@ export const TimestampRange = S.suspend(() =>
 }) as any as S.Schema<TimestampRange>;
 export type TimestampRanges = TimestampRange[];
 export const TimestampRanges = S.Array(TimestampRange);
-export type MedicalScribeTranscriptItemType = "pronunciation" | "punctuation";
-export const MedicalScribeTranscriptItemType = S.Literal(
-  "pronunciation",
-  "punctuation",
-);
+export type MedicalScribeTranscriptItemType =
+  | "pronunciation"
+  | "punctuation"
+  | (string & {});
+export const MedicalScribeTranscriptItemType = S.String;
 export interface StartMedicalStreamTranscriptionResponse {
   RequestId?: string;
   LanguageCode?: LanguageCode;

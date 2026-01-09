@@ -709,8 +709,8 @@ export const WabaSetupFinalization = S.suspend(() =>
 ).annotations({
   identifier: "WabaSetupFinalization",
 }) as any as S.Schema<WabaSetupFinalization>;
-export type RegistrationStatus = "COMPLETE" | "INCOMPLETE";
-export const RegistrationStatus = S.Literal("COMPLETE", "INCOMPLETE");
+export type RegistrationStatus = "COMPLETE" | "INCOMPLETE" | (string & {});
+export const RegistrationStatus = S.String;
 export interface TemplateSummary {
   templateName?: string;
   metaTemplateId?: string;

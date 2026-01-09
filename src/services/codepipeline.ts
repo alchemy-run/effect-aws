@@ -209,26 +209,19 @@ export type ActionCategory =
   | "Test"
   | "Invoke"
   | "Approval"
-  | "Compute";
-export const ActionCategory = S.Literal(
-  "Source",
-  "Build",
-  "Deploy",
-  "Test",
-  "Invoke",
-  "Approval",
-  "Compute",
-);
-export type StageTransitionType = "Inbound" | "Outbound";
-export const StageTransitionType = S.Literal("Inbound", "Outbound");
-export type ActionOwner = "AWS" | "ThirdParty" | "Custom";
-export const ActionOwner = S.Literal("AWS", "ThirdParty", "Custom");
-export type RuleOwner = "AWS";
-export const RuleOwner = S.Literal("AWS");
-export type ConditionType = "BEFORE_ENTRY" | "ON_SUCCESS";
-export const ConditionType = S.Literal("BEFORE_ENTRY", "ON_SUCCESS");
-export type StageRetryMode = "FAILED_ACTIONS" | "ALL_ACTIONS";
-export const StageRetryMode = S.Literal("FAILED_ACTIONS", "ALL_ACTIONS");
+  | "Compute"
+  | (string & {});
+export const ActionCategory = S.String;
+export type StageTransitionType = "Inbound" | "Outbound" | (string & {});
+export const StageTransitionType = S.String;
+export type ActionOwner = "AWS" | "ThirdParty" | "Custom" | (string & {});
+export const ActionOwner = S.String;
+export type RuleOwner = "AWS" | (string & {});
+export const RuleOwner = S.String;
+export type ConditionType = "BEFORE_ENTRY" | "ON_SUCCESS" | (string & {});
+export const ConditionType = S.String;
+export type StageRetryMode = "FAILED_ACTIONS" | "ALL_ACTIONS" | (string & {});
+export const StageRetryMode = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export interface AcknowledgeJobInput {
@@ -741,15 +734,9 @@ export type FailureType =
   | "PermissionError"
   | "RevisionOutOfSync"
   | "RevisionUnavailable"
-  | "SystemUnavailable";
-export const FailureType = S.Literal(
-  "JobFailed",
-  "ConfigurationError",
-  "PermissionError",
-  "RevisionOutOfSync",
-  "RevisionUnavailable",
-  "SystemUnavailable",
-);
+  | "SystemUnavailable"
+  | (string & {});
+export const FailureType = S.String;
 export interface FailureDetails {
   type: FailureType;
   message: string;
@@ -1017,10 +1004,10 @@ export const UntagResourceOutput = S.suspend(() =>
 ).annotations({
   identifier: "UntagResourceOutput",
 }) as any as S.Schema<UntagResourceOutput>;
-export type ArtifactStoreType = "S3";
-export const ArtifactStoreType = S.Literal("S3");
-export type EncryptionKeyType = "KMS";
-export const EncryptionKeyType = S.Literal("KMS");
+export type ArtifactStoreType = "S3" | (string & {});
+export const ArtifactStoreType = S.String;
+export type EncryptionKeyType = "KMS" | (string & {});
+export const EncryptionKeyType = S.String;
 export interface EncryptionKey {
   id: string;
   type: EncryptionKeyType;
@@ -1049,8 +1036,8 @@ export const ArtifactStoreMap = S.Record({
   key: S.String,
   value: S.UndefinedOr(ArtifactStore),
 });
-export type BlockerType = "Schedule";
-export const BlockerType = S.Literal("Schedule");
+export type BlockerType = "Schedule" | (string & {});
+export const BlockerType = S.String;
 export interface BlockerDeclaration {
   name: string;
   type: BlockerType;
@@ -1094,11 +1081,11 @@ export type InputArtifactList = InputArtifact[];
 export const InputArtifactList = S.Array(InputArtifact);
 export type OutputVariableList = string[];
 export const OutputVariableList = S.Array(S.String);
-export type EnvironmentVariableType = "PLAINTEXT" | "SECRETS_MANAGER";
-export const EnvironmentVariableType = S.Literal(
-  "PLAINTEXT",
-  "SECRETS_MANAGER",
-);
+export type EnvironmentVariableType =
+  | "PLAINTEXT"
+  | "SECRETS_MANAGER"
+  | (string & {});
+export const EnvironmentVariableType = S.String;
 export interface EnvironmentVariable {
   name: string;
   value: string;
@@ -1151,8 +1138,8 @@ export const ActionDeclaration = S.suspend(() =>
 }) as any as S.Schema<ActionDeclaration>;
 export type StageActionDeclarationList = ActionDeclaration[];
 export const StageActionDeclarationList = S.Array(ActionDeclaration);
-export type Result = "ROLLBACK" | "FAIL" | "RETRY" | "SKIP";
-export const Result = S.Literal("ROLLBACK", "FAIL", "RETRY", "SKIP");
+export type Result = "ROLLBACK" | "FAIL" | "RETRY" | "SKIP" | (string & {});
+export const Result = S.String;
 export interface RetryConfiguration {
   retryMode?: StageRetryMode;
 }
@@ -1161,8 +1148,8 @@ export const RetryConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "RetryConfiguration",
 }) as any as S.Schema<RetryConfiguration>;
-export type RuleCategory = "Rule";
-export const RuleCategory = S.Literal("Rule");
+export type RuleCategory = "Rule" | (string & {});
+export const RuleCategory = S.String;
 export interface RuleTypeId {
   category: RuleCategory;
   owner?: RuleOwner;
@@ -1272,10 +1259,14 @@ export const StageDeclaration = S.suspend(() =>
 }) as any as S.Schema<StageDeclaration>;
 export type PipelineStageDeclarationList = StageDeclaration[];
 export const PipelineStageDeclarationList = S.Array(StageDeclaration);
-export type ExecutionMode = "QUEUED" | "SUPERSEDED" | "PARALLEL";
-export const ExecutionMode = S.Literal("QUEUED", "SUPERSEDED", "PARALLEL");
-export type PipelineType = "V1" | "V2";
-export const PipelineType = S.Literal("V1", "V2");
+export type ExecutionMode =
+  | "QUEUED"
+  | "SUPERSEDED"
+  | "PARALLEL"
+  | (string & {});
+export const ExecutionMode = S.String;
+export type PipelineType = "V1" | "V2" | (string & {});
+export const PipelineType = S.String;
 export interface PipelineVariableDeclaration {
   name: string;
   defaultValue?: string;
@@ -1294,10 +1285,10 @@ export type PipelineVariableDeclarationList = PipelineVariableDeclaration[];
 export const PipelineVariableDeclarationList = S.Array(
   PipelineVariableDeclaration,
 );
-export type PipelineTriggerProviderType = "CodeStarSourceConnection";
-export const PipelineTriggerProviderType = S.Literal(
-  "CodeStarSourceConnection",
-);
+export type PipelineTriggerProviderType =
+  | "CodeStarSourceConnection"
+  | (string & {});
+export const PipelineTriggerProviderType = S.String;
 export type GitTagPatternList = string[];
 export const GitTagPatternList = S.Array(S.String);
 export interface GitTagFilterCriteria {
@@ -1356,8 +1347,12 @@ export const GitPushFilter = S.suspend(() =>
 }) as any as S.Schema<GitPushFilter>;
 export type GitPushFilterList = GitPushFilter[];
 export const GitPushFilterList = S.Array(GitPushFilter);
-export type GitPullRequestEventType = "OPEN" | "UPDATED" | "CLOSED";
-export const GitPullRequestEventType = S.Literal("OPEN", "UPDATED", "CLOSED");
+export type GitPullRequestEventType =
+  | "OPEN"
+  | "UPDATED"
+  | "CLOSED"
+  | (string & {});
+export const GitPullRequestEventType = S.String;
 export type GitPullRequestEventTypeList = GitPullRequestEventType[];
 export const GitPullRequestEventTypeList = S.Array(GitPullRequestEventType);
 export interface GitPullRequestFilter {
@@ -1452,38 +1447,31 @@ export const UpdatePipelineInput = S.suspend(() =>
 ).annotations({
   identifier: "UpdatePipelineInput",
 }) as any as S.Schema<UpdatePipelineInput>;
-export type ActionConfigurationPropertyType = "String" | "Number" | "Boolean";
-export const ActionConfigurationPropertyType = S.Literal(
-  "String",
-  "Number",
-  "Boolean",
-);
-export type TargetFilterName = "TARGET_STATUS";
-export const TargetFilterName = S.Literal("TARGET_STATUS");
+export type ActionConfigurationPropertyType =
+  | "String"
+  | "Number"
+  | "Boolean"
+  | (string & {});
+export const ActionConfigurationPropertyType = S.String;
+export type TargetFilterName = "TARGET_STATUS" | (string & {});
+export const TargetFilterName = S.String;
 export type TargetFilterValueList = string[];
 export const TargetFilterValueList = S.Array(S.String);
-export type ApprovalStatus = "Approved" | "Rejected";
-export const ApprovalStatus = S.Literal("Approved", "Rejected");
+export type ApprovalStatus = "Approved" | "Rejected" | (string & {});
+export const ApprovalStatus = S.String;
 export type WebhookAuthenticationType =
   | "GITHUB_HMAC"
   | "IP"
-  | "UNAUTHENTICATED";
-export const WebhookAuthenticationType = S.Literal(
-  "GITHUB_HMAC",
-  "IP",
-  "UNAUTHENTICATED",
-);
+  | "UNAUTHENTICATED"
+  | (string & {});
+export const WebhookAuthenticationType = S.String;
 export type SourceRevisionType =
   | "COMMIT_ID"
   | "IMAGE_DIGEST"
   | "S3_OBJECT_VERSION_ID"
-  | "S3_OBJECT_KEY";
-export const SourceRevisionType = S.Literal(
-  "COMMIT_ID",
-  "IMAGE_DIGEST",
-  "S3_OBJECT_VERSION_ID",
-  "S3_OBJECT_KEY",
-);
+  | "S3_OBJECT_KEY"
+  | (string & {});
+export const SourceRevisionType = S.String;
 export type JobStatus =
   | "Created"
   | "Queued"
@@ -1491,16 +1479,9 @@ export type JobStatus =
   | "InProgress"
   | "TimedOut"
   | "Succeeded"
-  | "Failed";
-export const JobStatus = S.Literal(
-  "Created",
-  "Queued",
-  "Dispatched",
-  "InProgress",
-  "TimedOut",
-  "Succeeded",
-  "Failed",
-);
+  | "Failed"
+  | (string & {});
+export const JobStatus = S.String;
 export interface ActionTypeSettings {
   thirdPartyConfigurationUrl?: string;
   entityUrlTemplate?: string;
@@ -1564,8 +1545,8 @@ export const TargetFilter = S.suspend(() =>
 ).annotations({ identifier: "TargetFilter" }) as any as S.Schema<TargetFilter>;
 export type TargetFilterList = TargetFilter[];
 export const TargetFilterList = S.Array(TargetFilter);
-export type StartTimeRange = "Latest" | "All";
-export const StartTimeRange = S.Literal("Latest", "All");
+export type StartTimeRange = "Latest" | "All" | (string & {});
+export const StartTimeRange = S.String;
 export interface LatestInPipelineExecutionFilter {
   pipelineExecutionId: string;
   startTimeRange: StartTimeRange;
@@ -1647,8 +1628,8 @@ export const SourceRevisionOverride = S.suspend(() =>
 }) as any as S.Schema<SourceRevisionOverride>;
 export type SourceRevisionOverrideList = SourceRevisionOverride[];
 export const SourceRevisionOverrideList = S.Array(SourceRevisionOverride);
-export type ExecutorType = "JobWorker" | "Lambda";
-export const ExecutorType = S.Literal("JobWorker", "Lambda");
+export type ExecutorType = "JobWorker" | "Lambda" | (string & {});
+export const ExecutorType = S.String;
 export type AllowedAccounts = string[];
 export const AllowedAccounts = S.Array(S.String);
 export interface AcknowledgeJobOutput {
@@ -2123,18 +2104,11 @@ export type PipelineExecutionStatus =
   | "Stopping"
   | "Succeeded"
   | "Superseded"
-  | "Failed";
-export const PipelineExecutionStatus = S.Literal(
-  "Cancelled",
-  "InProgress",
-  "Stopped",
-  "Stopping",
-  "Succeeded",
-  "Superseded",
-  "Failed",
-);
-export type ExecutionType = "STANDARD" | "ROLLBACK";
-export const ExecutionType = S.Literal("STANDARD", "ROLLBACK");
+  | "Failed"
+  | (string & {});
+export const PipelineExecutionStatus = S.String;
+export type ExecutionType = "STANDARD" | "ROLLBACK" | (string & {});
+export const ExecutionType = S.String;
 export type StageExecutionStatus =
   | "Cancelled"
   | "InProgress"
@@ -2142,16 +2116,9 @@ export type StageExecutionStatus =
   | "Stopped"
   | "Stopping"
   | "Succeeded"
-  | "Skipped";
-export const StageExecutionStatus = S.Literal(
-  "Cancelled",
-  "InProgress",
-  "Failed",
-  "Stopped",
-  "Stopping",
-  "Succeeded",
-  "Skipped",
-);
+  | "Skipped"
+  | (string & {});
+export const StageExecutionStatus = S.String;
 export interface StageExecution {
   pipelineExecutionId: string;
   status: StageExecutionStatus;
@@ -2341,29 +2308,20 @@ export type TriggerType =
   | "PutActionRevision"
   | "WebhookV2"
   | "ManualRollback"
-  | "AutomatedRollback";
-export const TriggerType = S.Literal(
-  "CreatePipeline",
-  "StartPipelineExecution",
-  "PollForSourceChanges",
-  "Webhook",
-  "CloudWatchEvent",
-  "PutActionRevision",
-  "WebhookV2",
-  "ManualRollback",
-  "AutomatedRollback",
-);
-export type RetryTrigger = "AutomatedStageRetry" | "ManualStageRetry";
-export const RetryTrigger = S.Literal(
-  "AutomatedStageRetry",
-  "ManualStageRetry",
-);
-export type RuleConfigurationPropertyType = "String" | "Number" | "Boolean";
-export const RuleConfigurationPropertyType = S.Literal(
-  "String",
-  "Number",
-  "Boolean",
-);
+  | "AutomatedRollback"
+  | (string & {});
+export const TriggerType = S.String;
+export type RetryTrigger =
+  | "AutomatedStageRetry"
+  | "ManualStageRetry"
+  | (string & {});
+export const RetryTrigger = S.String;
+export type RuleConfigurationPropertyType =
+  | "String"
+  | "Number"
+  | "Boolean"
+  | (string & {});
+export const RuleConfigurationPropertyType = S.String;
 export interface CreateCustomActionTypeOutput {
   actionType: ActionType;
   tags?: Tag[];
@@ -2657,8 +2615,8 @@ export const PipelineContext = S.suspend(() =>
 ).annotations({
   identifier: "PipelineContext",
 }) as any as S.Schema<PipelineContext>;
-export type ArtifactLocationType = "S3";
-export const ArtifactLocationType = S.Literal("S3");
+export type ArtifactLocationType = "S3" | (string & {});
+export const ArtifactLocationType = S.String;
 export interface S3ArtifactLocation {
   bucketName: string;
   objectKey: string;
@@ -2736,13 +2694,9 @@ export type RuleExecutionStatus =
   | "InProgress"
   | "Abandoned"
   | "Succeeded"
-  | "Failed";
-export const RuleExecutionStatus = S.Literal(
-  "InProgress",
-  "Abandoned",
-  "Succeeded",
-  "Failed",
-);
+  | "Failed"
+  | (string & {});
+export const RuleExecutionStatus = S.String;
 export interface RuleTypeSettings {
   thirdPartyConfigurationUrl?: string;
   entityUrlTemplate?: string;
@@ -2787,13 +2741,9 @@ export type ActionExecutionStatus =
   | "InProgress"
   | "Abandoned"
   | "Succeeded"
-  | "Failed";
-export const ActionExecutionStatus = S.Literal(
-  "InProgress",
-  "Abandoned",
-  "Succeeded",
-  "Failed",
-);
+  | "Failed"
+  | (string & {});
+export const ActionExecutionStatus = S.String;
 export type ConditionExecutionStatus =
   | "InProgress"
   | "Failed"
@@ -2801,16 +2751,9 @@ export type ConditionExecutionStatus =
   | "Succeeded"
   | "Cancelled"
   | "Abandoned"
-  | "Overridden";
-export const ConditionExecutionStatus = S.Literal(
-  "InProgress",
-  "Failed",
-  "Errored",
-  "Succeeded",
-  "Cancelled",
-  "Abandoned",
-  "Overridden",
-);
+  | "Overridden"
+  | (string & {});
+export const ConditionExecutionStatus = S.String;
 export interface PipelineExecution {
   pipelineName?: string;
   pipelineVersion?: number;

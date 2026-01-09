@@ -198,13 +198,9 @@ export type DeliveryStreamType =
   | "DirectPut"
   | "KinesisStreamAsSource"
   | "MSKAsSource"
-  | "DatabaseAsSource";
-export const DeliveryStreamType = S.Literal(
-  "DirectPut",
-  "KinesisStreamAsSource",
-  "MSKAsSource",
-  "DatabaseAsSource",
-);
+  | "DatabaseAsSource"
+  | (string & {});
+export const DeliveryStreamType = S.String;
 export interface Record {
   Data: Uint8Array;
 }
@@ -337,8 +333,8 @@ export const PutRecordBatchInput = S.suspend(() =>
 ).annotations({
   identifier: "PutRecordBatchInput",
 }) as any as S.Schema<PutRecordBatchInput>;
-export type KeyType = "AWS_OWNED_CMK" | "CUSTOMER_MANAGED_CMK";
-export const KeyType = S.Literal("AWS_OWNED_CMK", "CUSTOMER_MANAGED_CMK");
+export type KeyType = "AWS_OWNED_CMK" | "CUSTOMER_MANAGED_CMK" | (string & {});
+export const KeyType = S.String;
 export interface DeliveryStreamEncryptionConfigurationInput {
   KeyARN?: string;
   KeyType: KeyType;
@@ -469,86 +465,73 @@ export type CompressionFormat =
   | "GZIP"
   | "ZIP"
   | "Snappy"
-  | "HADOOP_SNAPPY";
-export const CompressionFormat = S.Literal(
-  "UNCOMPRESSED",
-  "GZIP",
-  "ZIP",
-  "Snappy",
-  "HADOOP_SNAPPY",
-);
-export type S3BackupMode = "Disabled" | "Enabled";
-export const S3BackupMode = S.Literal("Disabled", "Enabled");
-export type RedshiftS3BackupMode = "Disabled" | "Enabled";
-export const RedshiftS3BackupMode = S.Literal("Disabled", "Enabled");
+  | "HADOOP_SNAPPY"
+  | (string & {});
+export const CompressionFormat = S.String;
+export type S3BackupMode = "Disabled" | "Enabled" | (string & {});
+export const S3BackupMode = S.String;
+export type RedshiftS3BackupMode = "Disabled" | "Enabled" | (string & {});
+export const RedshiftS3BackupMode = S.String;
 export type ElasticsearchIndexRotationPeriod =
   | "NoRotation"
   | "OneHour"
   | "OneDay"
   | "OneWeek"
-  | "OneMonth";
-export const ElasticsearchIndexRotationPeriod = S.Literal(
-  "NoRotation",
-  "OneHour",
-  "OneDay",
-  "OneWeek",
-  "OneMonth",
-);
-export type ElasticsearchS3BackupMode = "FailedDocumentsOnly" | "AllDocuments";
-export const ElasticsearchS3BackupMode = S.Literal(
-  "FailedDocumentsOnly",
-  "AllDocuments",
-);
+  | "OneMonth"
+  | (string & {});
+export const ElasticsearchIndexRotationPeriod = S.String;
+export type ElasticsearchS3BackupMode =
+  | "FailedDocumentsOnly"
+  | "AllDocuments"
+  | (string & {});
+export const ElasticsearchS3BackupMode = S.String;
 export type AmazonopensearchserviceIndexRotationPeriod =
   | "NoRotation"
   | "OneHour"
   | "OneDay"
   | "OneWeek"
-  | "OneMonth";
-export const AmazonopensearchserviceIndexRotationPeriod = S.Literal(
-  "NoRotation",
-  "OneHour",
-  "OneDay",
-  "OneWeek",
-  "OneMonth",
-);
+  | "OneMonth"
+  | (string & {});
+export const AmazonopensearchserviceIndexRotationPeriod = S.String;
 export type AmazonopensearchserviceS3BackupMode =
   | "FailedDocumentsOnly"
-  | "AllDocuments";
-export const AmazonopensearchserviceS3BackupMode = S.Literal(
-  "FailedDocumentsOnly",
-  "AllDocuments",
-);
-export type HECEndpointType = "Raw" | "Event";
-export const HECEndpointType = S.Literal("Raw", "Event");
-export type SplunkS3BackupMode = "FailedEventsOnly" | "AllEvents";
-export const SplunkS3BackupMode = S.Literal("FailedEventsOnly", "AllEvents");
-export type HttpEndpointS3BackupMode = "FailedDataOnly" | "AllData";
-export const HttpEndpointS3BackupMode = S.Literal("FailedDataOnly", "AllData");
+  | "AllDocuments"
+  | (string & {});
+export const AmazonopensearchserviceS3BackupMode = S.String;
+export type HECEndpointType = "Raw" | "Event" | (string & {});
+export const HECEndpointType = S.String;
+export type SplunkS3BackupMode =
+  | "FailedEventsOnly"
+  | "AllEvents"
+  | (string & {});
+export const SplunkS3BackupMode = S.String;
+export type HttpEndpointS3BackupMode =
+  | "FailedDataOnly"
+  | "AllData"
+  | (string & {});
+export const HttpEndpointS3BackupMode = S.String;
 export type AmazonOpenSearchServerlessS3BackupMode =
   | "FailedDocumentsOnly"
-  | "AllDocuments";
-export const AmazonOpenSearchServerlessS3BackupMode = S.Literal(
-  "FailedDocumentsOnly",
-  "AllDocuments",
-);
+  | "AllDocuments"
+  | (string & {});
+export const AmazonOpenSearchServerlessS3BackupMode = S.String;
 export type SnowflakeDataLoadingOption =
   | "JSON_MAPPING"
   | "VARIANT_CONTENT_MAPPING"
-  | "VARIANT_CONTENT_AND_METADATA_MAPPING";
-export const SnowflakeDataLoadingOption = S.Literal(
-  "JSON_MAPPING",
-  "VARIANT_CONTENT_MAPPING",
-  "VARIANT_CONTENT_AND_METADATA_MAPPING",
-);
-export type SnowflakeS3BackupMode = "FailedDataOnly" | "AllData";
-export const SnowflakeS3BackupMode = S.Literal("FailedDataOnly", "AllData");
-export type IcebergS3BackupMode = "FailedDataOnly" | "AllData";
-export const IcebergS3BackupMode = S.Literal("FailedDataOnly", "AllData");
-export type DatabaseType = "MySQL" | "PostgreSQL";
-export const DatabaseType = S.Literal("MySQL", "PostgreSQL");
-export type SSLMode = "Disabled" | "Enabled";
-export const SSLMode = S.Literal("Disabled", "Enabled");
+  | "VARIANT_CONTENT_AND_METADATA_MAPPING"
+  | (string & {});
+export const SnowflakeDataLoadingOption = S.String;
+export type SnowflakeS3BackupMode =
+  | "FailedDataOnly"
+  | "AllData"
+  | (string & {});
+export const SnowflakeS3BackupMode = S.String;
+export type IcebergS3BackupMode = "FailedDataOnly" | "AllData" | (string & {});
+export const IcebergS3BackupMode = S.String;
+export type DatabaseType = "MySQL" | "PostgreSQL" | (string & {});
+export const DatabaseType = S.String;
+export type SSLMode = "Disabled" | "Enabled" | (string & {});
+export const SSLMode = S.String;
 export type DatabaseSurrogateKeyList = string[];
 export const DatabaseSurrogateKeyList = S.Array(S.String);
 export interface DirectPutSourceConfiguration {
@@ -584,8 +567,8 @@ export const BufferingHints = S.suspend(() =>
 ).annotations({
   identifier: "BufferingHints",
 }) as any as S.Schema<BufferingHints>;
-export type NoEncryptionConfig = "NoEncryption";
-export const NoEncryptionConfig = S.Literal("NoEncryption");
+export type NoEncryptionConfig = "NoEncryption" | (string & {});
+export const NoEncryptionConfig = S.String;
 export interface KMSEncryptionConfig {
   AWSKMSKeyARN: string;
 }
@@ -650,15 +633,9 @@ export type ProcessorType =
   | "CloudWatchLogProcessing"
   | "Lambda"
   | "MetadataExtraction"
-  | "AppendDelimiterToRecord";
-export const ProcessorType = S.Literal(
-  "RecordDeAggregation",
-  "Decompression",
-  "CloudWatchLogProcessing",
-  "Lambda",
-  "MetadataExtraction",
-  "AppendDelimiterToRecord",
-);
+  | "AppendDelimiterToRecord"
+  | (string & {});
+export const ProcessorType = S.String;
 export type ProcessorParameterName =
   | "LambdaArn"
   | "NumberOfRetries"
@@ -670,20 +647,9 @@ export type ProcessorParameterName =
   | "SubRecordType"
   | "Delimiter"
   | "CompressionFormat"
-  | "DataMessageExtraction";
-export const ProcessorParameterName = S.Literal(
-  "LambdaArn",
-  "NumberOfRetries",
-  "MetadataExtractionQuery",
-  "JsonParsingEngine",
-  "RoleArn",
-  "BufferSizeInMBs",
-  "BufferIntervalInSeconds",
-  "SubRecordType",
-  "Delimiter",
-  "CompressionFormat",
-  "DataMessageExtraction",
-);
+  | "DataMessageExtraction"
+  | (string & {});
+export const ProcessorParameterName = S.String;
 export interface ProcessorParameter {
   ParameterName: ProcessorParameterName;
   ParameterValue: string;
@@ -786,10 +752,14 @@ export const InputFormatConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "InputFormatConfiguration",
 }) as any as S.Schema<InputFormatConfiguration>;
-export type ParquetCompression = "UNCOMPRESSED" | "GZIP" | "SNAPPY";
-export const ParquetCompression = S.Literal("UNCOMPRESSED", "GZIP", "SNAPPY");
-export type ParquetWriterVersion = "V1" | "V2";
-export const ParquetWriterVersion = S.Literal("V1", "V2");
+export type ParquetCompression =
+  | "UNCOMPRESSED"
+  | "GZIP"
+  | "SNAPPY"
+  | (string & {});
+export const ParquetCompression = S.String;
+export type ParquetWriterVersion = "V1" | "V2" | (string & {});
+export const ParquetWriterVersion = S.String;
 export interface ParquetSerDe {
   BlockSizeBytes?: number;
   PageSizeBytes?: number;
@@ -808,12 +778,12 @@ export const ParquetSerDe = S.suspend(() =>
     WriterVersion: S.optional(ParquetWriterVersion),
   }),
 ).annotations({ identifier: "ParquetSerDe" }) as any as S.Schema<ParquetSerDe>;
-export type OrcCompression = "NONE" | "ZLIB" | "SNAPPY";
-export const OrcCompression = S.Literal("NONE", "ZLIB", "SNAPPY");
+export type OrcCompression = "NONE" | "ZLIB" | "SNAPPY" | (string & {});
+export const OrcCompression = S.String;
 export type ListOfNonEmptyStringsWithoutWhitespace = string[];
 export const ListOfNonEmptyStringsWithoutWhitespace = S.Array(S.String);
-export type OrcFormatVersion = "V0_11" | "V0_12";
-export const OrcFormatVersion = S.Literal("V0_11", "V0_12");
+export type OrcFormatVersion = "V0_11" | "V0_12" | (string & {});
+export const OrcFormatVersion = S.String;
 export interface OrcSerDe {
   StripeSizeBytes?: number;
   BlockSizeBytes?: number;
@@ -1020,11 +990,11 @@ export const ElasticsearchRetryOptions = S.suspend(() =>
 ).annotations({
   identifier: "ElasticsearchRetryOptions",
 }) as any as S.Schema<ElasticsearchRetryOptions>;
-export type DefaultDocumentIdFormat = "FIREHOSE_DEFAULT" | "NO_DOCUMENT_ID";
-export const DefaultDocumentIdFormat = S.Literal(
-  "FIREHOSE_DEFAULT",
-  "NO_DOCUMENT_ID",
-);
+export type DefaultDocumentIdFormat =
+  | "FIREHOSE_DEFAULT"
+  | "NO_DOCUMENT_ID"
+  | (string & {});
+export const DefaultDocumentIdFormat = S.String;
 export interface DocumentIdOptions {
   DefaultDocumentIdFormat: DefaultDocumentIdFormat;
 }
@@ -1193,8 +1163,8 @@ export const HttpEndpointBufferingHints = S.suspend(() =>
 ).annotations({
   identifier: "HttpEndpointBufferingHints",
 }) as any as S.Schema<HttpEndpointBufferingHints>;
-export type ContentEncoding = "NONE" | "GZIP";
-export const ContentEncoding = S.Literal("NONE", "GZIP");
+export type ContentEncoding = "NONE" | "GZIP" | (string & {});
+export const ContentEncoding = S.String;
 export interface HttpEndpointCommonAttribute {
   AttributeName: string | redacted.Redacted<string>;
   AttributeValue: string | redacted.Redacted<string>;
@@ -1508,8 +1478,8 @@ export type SubnetIdList = string[];
 export const SubnetIdList = S.Array(S.String);
 export type SecurityGroupIdList = string[];
 export const SecurityGroupIdList = S.Array(S.String);
-export type Connectivity = "PUBLIC" | "PRIVATE";
-export const Connectivity = S.Literal("PUBLIC", "PRIVATE");
+export type Connectivity = "PUBLIC" | "PRIVATE" | (string & {});
+export const Connectivity = S.String;
 export type DatabaseIncludeOrExcludeList = string[];
 export const DatabaseIncludeOrExcludeList = S.Array(S.String);
 export type DatabaseTableIncludeOrExcludeList = string[];
@@ -1699,14 +1669,9 @@ export type DeliveryStreamStatus =
   | "CREATING_FAILED"
   | "DELETING"
   | "DELETING_FAILED"
-  | "ACTIVE";
-export const DeliveryStreamStatus = S.Literal(
-  "CREATING",
-  "CREATING_FAILED",
-  "DELETING",
-  "DELETING_FAILED",
-  "ACTIVE",
-);
+  | "ACTIVE"
+  | (string & {});
+export const DeliveryStreamStatus = S.String;
 export interface RedshiftDestinationConfiguration {
   RoleARN: string;
   ClusterJDBCURL: string;
@@ -2002,41 +1967,18 @@ export type DeliveryStreamFailureType =
   | "ENI_ACCESS_DENIED"
   | "SUBNET_ACCESS_DENIED"
   | "SECURITY_GROUP_ACCESS_DENIED"
-  | "UNKNOWN_ERROR";
-export const DeliveryStreamFailureType = S.Literal(
-  "VPC_ENDPOINT_SERVICE_NAME_NOT_FOUND",
-  "VPC_INTERFACE_ENDPOINT_SERVICE_ACCESS_DENIED",
-  "RETIRE_KMS_GRANT_FAILED",
-  "CREATE_KMS_GRANT_FAILED",
-  "KMS_ACCESS_DENIED",
-  "DISABLED_KMS_KEY",
-  "INVALID_KMS_KEY",
-  "KMS_KEY_NOT_FOUND",
-  "KMS_OPT_IN_REQUIRED",
-  "CREATE_ENI_FAILED",
-  "DELETE_ENI_FAILED",
-  "SUBNET_NOT_FOUND",
-  "SECURITY_GROUP_NOT_FOUND",
-  "ENI_ACCESS_DENIED",
-  "SUBNET_ACCESS_DENIED",
-  "SECURITY_GROUP_ACCESS_DENIED",
-  "UNKNOWN_ERROR",
-);
+  | "UNKNOWN_ERROR"
+  | (string & {});
+export const DeliveryStreamFailureType = S.String;
 export type DeliveryStreamEncryptionStatus =
   | "ENABLED"
   | "ENABLING"
   | "ENABLING_FAILED"
   | "DISABLED"
   | "DISABLING"
-  | "DISABLING_FAILED";
-export const DeliveryStreamEncryptionStatus = S.Literal(
-  "ENABLED",
-  "ENABLING",
-  "ENABLING_FAILED",
-  "DISABLED",
-  "DISABLING",
-  "DISABLING_FAILED",
-);
+  | "DISABLING_FAILED"
+  | (string & {});
+export const DeliveryStreamEncryptionStatus = S.String;
 export interface PutRecordOutput {
   RecordId: string;
   Encrypted?: boolean;
@@ -2443,10 +2385,14 @@ export const IcebergDestinationDescription = S.suspend(() =>
 ).annotations({
   identifier: "IcebergDestinationDescription",
 }) as any as S.Schema<IcebergDestinationDescription>;
-export type SnapshotRequestedBy = "USER" | "FIREHOSE";
-export const SnapshotRequestedBy = S.Literal("USER", "FIREHOSE");
-export type SnapshotStatus = "IN_PROGRESS" | "COMPLETE" | "SUSPENDED";
-export const SnapshotStatus = S.Literal("IN_PROGRESS", "COMPLETE", "SUSPENDED");
+export type SnapshotRequestedBy = "USER" | "FIREHOSE" | (string & {});
+export const SnapshotRequestedBy = S.String;
+export type SnapshotStatus =
+  | "IN_PROGRESS"
+  | "COMPLETE"
+  | "SUSPENDED"
+  | (string & {});
+export const SnapshotStatus = S.String;
 export interface DatabaseSnapshotInfo {
   Id: string;
   Table: string;

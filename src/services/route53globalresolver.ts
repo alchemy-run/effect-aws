@@ -78,32 +78,32 @@ export type IPv4Address = string;
 //# Schemas
 export type TagKeys = string[];
 export const TagKeys = S.Array(S.String);
-export type IpAddressType = "IPV4" | "IPV6";
-export const IpAddressType = S.Literal("IPV4", "IPV6");
-export type DnsProtocol = "DO53" | "DOH" | "DOT";
-export const DnsProtocol = S.Literal("DO53", "DOH", "DOT");
-export type DnsSecValidationType = "ENABLED" | "DISABLED";
-export const DnsSecValidationType = S.Literal("ENABLED", "DISABLED");
-export type EdnsClientSubnetType = "ENABLED" | "DISABLED";
-export const EdnsClientSubnetType = S.Literal("ENABLED", "DISABLED");
-export type FirewallRulesFailOpenType = "ENABLED" | "DISABLED";
-export const FirewallRulesFailOpenType = S.Literal("ENABLED", "DISABLED");
+export type IpAddressType = "IPV4" | "IPV6" | (string & {});
+export const IpAddressType = S.String;
+export type DnsProtocol = "DO53" | "DOH" | "DOT" | (string & {});
+export const DnsProtocol = S.String;
+export type DnsSecValidationType = "ENABLED" | "DISABLED" | (string & {});
+export const DnsSecValidationType = S.String;
+export type EdnsClientSubnetType = "ENABLED" | "DISABLED" | (string & {});
+export const EdnsClientSubnetType = S.String;
+export type FirewallRulesFailOpenType = "ENABLED" | "DISABLED" | (string & {});
+export const FirewallRulesFailOpenType = S.String;
 export type Domains = string[];
 export const Domains = S.Array(S.String);
-export type FirewallRuleAction = "ALLOW" | "ALERT" | "BLOCK";
-export const FirewallRuleAction = S.Literal("ALLOW", "ALERT", "BLOCK");
-export type BlockOverrideDnsQueryType = "CNAME";
-export const BlockOverrideDnsQueryType = S.Literal("CNAME");
-export type FirewallBlockResponse = "NODATA" | "NXDOMAIN" | "OVERRIDE";
-export const FirewallBlockResponse = S.Literal(
-  "NODATA",
-  "NXDOMAIN",
-  "OVERRIDE",
-);
-export type ConfidenceThreshold = "LOW" | "MEDIUM" | "HIGH";
-export const ConfidenceThreshold = S.Literal("LOW", "MEDIUM", "HIGH");
-export type DnsAdvancedProtection = "DGA" | "DNS_TUNNELING";
-export const DnsAdvancedProtection = S.Literal("DGA", "DNS_TUNNELING");
+export type FirewallRuleAction = "ALLOW" | "ALERT" | "BLOCK" | (string & {});
+export const FirewallRuleAction = S.String;
+export type BlockOverrideDnsQueryType = "CNAME" | (string & {});
+export const BlockOverrideDnsQueryType = S.String;
+export type FirewallBlockResponse =
+  | "NODATA"
+  | "NXDOMAIN"
+  | "OVERRIDE"
+  | (string & {});
+export const FirewallBlockResponse = S.String;
+export type ConfidenceThreshold = "LOW" | "MEDIUM" | "HIGH" | (string & {});
+export const ConfidenceThreshold = S.String;
+export type DnsAdvancedProtection = "DGA" | "DNS_TUNNELING" | (string & {});
+export const DnsAdvancedProtection = S.String;
 export type Regions = string[];
 export const Regions = S.Array(S.String);
 export interface DisassociateHostedZoneInput {
@@ -1130,25 +1130,22 @@ export const ListManagedFirewallDomainListsInput = S.suspend(() =>
 export type HostedZoneAssociationStatus =
   | "CREATING"
   | "OPERATIONAL"
-  | "DELETING";
-export const HostedZoneAssociationStatus = S.Literal(
-  "CREATING",
-  "OPERATIONAL",
-  "DELETING",
-);
+  | "DELETING"
+  | (string & {});
+export const HostedZoneAssociationStatus = S.String;
 export type CRResourceStatus =
   | "CREATING"
   | "OPERATIONAL"
   | "UPDATING"
-  | "DELETING";
-export const CRResourceStatus = S.Literal(
-  "CREATING",
-  "OPERATIONAL",
-  "UPDATING",
-  "DELETING",
-);
-export type TokenStatus = "CREATING" | "OPERATIONAL" | "DELETING";
-export const TokenStatus = S.Literal("CREATING", "OPERATIONAL", "DELETING");
+  | "DELETING"
+  | (string & {});
+export const CRResourceStatus = S.String;
+export type TokenStatus =
+  | "CREATING"
+  | "OPERATIONAL"
+  | "DELETING"
+  | (string & {});
+export const TokenStatus = S.String;
 export type ProfileResourceStatus =
   | "CREATING"
   | "OPERATIONAL"
@@ -1156,16 +1153,9 @@ export type ProfileResourceStatus =
   | "ENABLING"
   | "DISABLING"
   | "DISABLED"
-  | "DELETING";
-export const ProfileResourceStatus = S.Literal(
-  "CREATING",
-  "OPERATIONAL",
-  "UPDATING",
-  "ENABLING",
-  "DISABLING",
-  "DISABLED",
-  "DELETING",
-);
+  | "DELETING"
+  | (string & {});
+export const ProfileResourceStatus = S.String;
 export interface BatchCreateFirewallRuleInputItem {
   action: FirewallRuleAction;
   blockOverrideDnsType?: BlockOverrideDnsQueryType;
@@ -2257,13 +2247,9 @@ export type ValidationExceptionReason =
   | "UNKNOWN_OPERATION"
   | "CANNOT_PARSE"
   | "FIELD_VALIDATION_FAILED"
-  | "OTHER";
-export const ValidationExceptionReason = S.Literal(
-  "UNKNOWN_OPERATION",
-  "CANNOT_PARSE",
-  "FIELD_VALIDATION_FAILED",
-  "OTHER",
-);
+  | "OTHER"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 export interface AccessTokenItem {
   id: string;
   arn: string;

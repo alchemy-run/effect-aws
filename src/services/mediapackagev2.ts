@@ -104,23 +104,18 @@ export type S3DestinationPath = string;
 //# Schemas
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
-export type InputType = "HLS" | "CMAF";
-export const InputType = S.Literal("HLS", "CMAF");
-export type ContainerType = "TS" | "CMAF" | "ISM";
-export const ContainerType = S.Literal("TS", "CMAF", "ISM");
+export type InputType = "HLS" | "CMAF" | (string & {});
+export const InputType = S.String;
+export type ContainerType = "TS" | "CMAF" | "ISM" | (string & {});
+export const ContainerType = S.String;
 export type HarvestJobStatus =
   | "QUEUED"
   | "IN_PROGRESS"
   | "CANCELLED"
   | "COMPLETED"
-  | "FAILED";
-export const HarvestJobStatus = S.Literal(
-  "QUEUED",
-  "IN_PROGRESS",
-  "CANCELLED",
-  "COMPLETED",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const HarvestJobStatus = S.String;
 export interface ListTagsForResourceRequest {
   ResourceArn: string;
 }
@@ -559,22 +554,13 @@ export type ScteFilter =
   | "DISTRIBUTOR_PLACEMENT_OPPORTUNITY"
   | "PROVIDER_OVERLAY_PLACEMENT_OPPORTUNITY"
   | "DISTRIBUTOR_OVERLAY_PLACEMENT_OPPORTUNITY"
-  | "PROGRAM";
-export const ScteFilter = S.Literal(
-  "SPLICE_INSERT",
-  "BREAK",
-  "PROVIDER_ADVERTISEMENT",
-  "DISTRIBUTOR_ADVERTISEMENT",
-  "PROVIDER_PLACEMENT_OPPORTUNITY",
-  "DISTRIBUTOR_PLACEMENT_OPPORTUNITY",
-  "PROVIDER_OVERLAY_PLACEMENT_OPPORTUNITY",
-  "DISTRIBUTOR_OVERLAY_PLACEMENT_OPPORTUNITY",
-  "PROGRAM",
-);
+  | "PROGRAM"
+  | (string & {});
+export const ScteFilter = S.String;
 export type ScteFilterList = ScteFilter[];
 export const ScteFilterList = S.Array(ScteFilter);
-export type ScteInSegments = "NONE" | "ALL";
-export const ScteInSegments = S.Literal("NONE", "ALL");
+export type ScteInSegments = "NONE" | "ALL" | (string & {});
+export const ScteInSegments = S.String;
 export interface Scte {
   ScteFilter?: ScteFilter[];
   ScteInSegments?: ScteInSegments;
@@ -585,12 +571,12 @@ export const Scte = S.suspend(() =>
     ScteInSegments: S.optional(ScteInSegments),
   }),
 ).annotations({ identifier: "Scte" }) as any as S.Schema<Scte>;
-export type TsEncryptionMethod = "AES_128" | "SAMPLE_AES";
-export const TsEncryptionMethod = S.Literal("AES_128", "SAMPLE_AES");
-export type CmafEncryptionMethod = "CENC" | "CBCS";
-export const CmafEncryptionMethod = S.Literal("CENC", "CBCS");
-export type IsmEncryptionMethod = "CENC";
-export const IsmEncryptionMethod = S.Literal("CENC");
+export type TsEncryptionMethod = "AES_128" | "SAMPLE_AES" | (string & {});
+export const TsEncryptionMethod = S.String;
+export type CmafEncryptionMethod = "CENC" | "CBCS" | (string & {});
+export const CmafEncryptionMethod = S.String;
+export type IsmEncryptionMethod = "CENC" | (string & {});
+export const IsmEncryptionMethod = S.String;
 export interface EncryptionMethod {
   TsEncryptionMethod?: TsEncryptionMethod;
   CmafEncryptionMethod?: CmafEncryptionMethod;
@@ -610,14 +596,9 @@ export type PresetSpeke20Audio =
   | "PRESET_AUDIO_2"
   | "PRESET_AUDIO_3"
   | "SHARED"
-  | "UNENCRYPTED";
-export const PresetSpeke20Audio = S.Literal(
-  "PRESET_AUDIO_1",
-  "PRESET_AUDIO_2",
-  "PRESET_AUDIO_3",
-  "SHARED",
-  "UNENCRYPTED",
-);
+  | "UNENCRYPTED"
+  | (string & {});
+export const PresetSpeke20Audio = S.String;
 export type PresetSpeke20Video =
   | "PRESET_VIDEO_1"
   | "PRESET_VIDEO_2"
@@ -628,19 +609,9 @@ export type PresetSpeke20Video =
   | "PRESET_VIDEO_7"
   | "PRESET_VIDEO_8"
   | "SHARED"
-  | "UNENCRYPTED";
-export const PresetSpeke20Video = S.Literal(
-  "PRESET_VIDEO_1",
-  "PRESET_VIDEO_2",
-  "PRESET_VIDEO_3",
-  "PRESET_VIDEO_4",
-  "PRESET_VIDEO_5",
-  "PRESET_VIDEO_6",
-  "PRESET_VIDEO_7",
-  "PRESET_VIDEO_8",
-  "SHARED",
-  "UNENCRYPTED",
-);
+  | "UNENCRYPTED"
+  | (string & {});
+export const PresetSpeke20Video = S.String;
 export interface EncryptionContractConfiguration {
   PresetSpeke20Audio: PresetSpeke20Audio;
   PresetSpeke20Video: PresetSpeke20Video;
@@ -658,14 +629,9 @@ export type DrmSystem =
   | "FAIRPLAY"
   | "PLAYREADY"
   | "WIDEVINE"
-  | "IRDETO";
-export const DrmSystem = S.Literal(
-  "CLEAR_KEY_AES_128",
-  "FAIRPLAY",
-  "PLAYREADY",
-  "WIDEVINE",
-  "IRDETO",
-);
+  | "IRDETO"
+  | (string & {});
+export const DrmSystem = S.String;
 export type DrmSystems = DrmSystem[];
 export const DrmSystems = S.Array(DrmSystem);
 export interface SpekeKeyProvider {
@@ -724,8 +690,8 @@ export const Segment = S.suspend(() =>
     Encryption: S.optional(Encryption),
   }),
 ).annotations({ identifier: "Segment" }) as any as S.Schema<Segment>;
-export type AdMarkerHls = "DATERANGE" | "SCTE35_ENHANCED";
-export const AdMarkerHls = S.Literal("DATERANGE", "SCTE35_ENHANCED");
+export type AdMarkerHls = "DATERANGE" | "SCTE35_ENHANCED" | (string & {});
+export const AdMarkerHls = S.String;
 export interface ScteHls {
   AdMarkerHls?: AdMarkerHls;
 }
@@ -814,44 +780,35 @@ export type CreateLowLatencyHlsManifests =
 export const CreateLowLatencyHlsManifests = S.Array(
   CreateLowLatencyHlsManifestConfiguration,
 );
-export type DashSegmentTemplateFormat = "NUMBER_WITH_TIMELINE";
-export const DashSegmentTemplateFormat = S.Literal("NUMBER_WITH_TIMELINE");
+export type DashSegmentTemplateFormat = "NUMBER_WITH_TIMELINE" | (string & {});
+export const DashSegmentTemplateFormat = S.String;
 export type DashPeriodTrigger =
   | "AVAILS"
   | "DRM_KEY_ROTATION"
   | "SOURCE_CHANGES"
   | "SOURCE_DISRUPTIONS"
-  | "NONE";
-export const DashPeriodTrigger = S.Literal(
-  "AVAILS",
-  "DRM_KEY_ROTATION",
-  "SOURCE_CHANGES",
-  "SOURCE_DISRUPTIONS",
-  "NONE",
-);
+  | "NONE"
+  | (string & {});
+export const DashPeriodTrigger = S.String;
 export type DashPeriodTriggers = DashPeriodTrigger[];
 export const DashPeriodTriggers = S.Array(DashPeriodTrigger);
-export type AdMarkerDash = "BINARY" | "XML";
-export const AdMarkerDash = S.Literal("BINARY", "XML");
+export type AdMarkerDash = "BINARY" | "XML" | (string & {});
+export const AdMarkerDash = S.String;
 export interface ScteDash {
   AdMarkerDash?: AdMarkerDash;
 }
 export const ScteDash = S.suspend(() =>
   S.Struct({ AdMarkerDash: S.optional(AdMarkerDash) }),
 ).annotations({ identifier: "ScteDash" }) as any as S.Schema<ScteDash>;
-export type DashDrmSignaling = "INDIVIDUAL" | "REFERENCED";
-export const DashDrmSignaling = S.Literal("INDIVIDUAL", "REFERENCED");
+export type DashDrmSignaling = "INDIVIDUAL" | "REFERENCED" | (string & {});
+export const DashDrmSignaling = S.String;
 export type DashUtcTimingMode =
   | "HTTP_HEAD"
   | "HTTP_ISO"
   | "HTTP_XSDATE"
-  | "UTC_DIRECT";
-export const DashUtcTimingMode = S.Literal(
-  "HTTP_HEAD",
-  "HTTP_ISO",
-  "HTTP_XSDATE",
-  "UTC_DIRECT",
-);
+  | "UTC_DIRECT"
+  | (string & {});
+export const DashUtcTimingMode = S.String;
 export interface DashUtcTiming {
   TimingMode?: DashUtcTimingMode;
   TimingSource?: string;
@@ -864,8 +821,8 @@ export const DashUtcTiming = S.suspend(() =>
 ).annotations({
   identifier: "DashUtcTiming",
 }) as any as S.Schema<DashUtcTiming>;
-export type DashProfile = "DVB_DASH";
-export const DashProfile = S.Literal("DVB_DASH");
+export type DashProfile = "DVB_DASH" | (string & {});
+export const DashProfile = S.String;
 export type DashProfiles = DashProfile[];
 export const DashProfiles = S.Array(DashProfile);
 export interface DashBaseUrl {
@@ -939,10 +896,10 @@ export const DashDvbSettings = S.suspend(() =>
 ).annotations({
   identifier: "DashDvbSettings",
 }) as any as S.Schema<DashDvbSettings>;
-export type DashCompactness = "STANDARD" | "NONE";
-export const DashCompactness = S.Literal("STANDARD", "NONE");
-export type DashTtmlProfile = "IMSC_1" | "EBU_TT_D_101";
-export const DashTtmlProfile = S.Literal("IMSC_1", "EBU_TT_D_101");
+export type DashCompactness = "STANDARD" | "NONE" | (string & {});
+export const DashCompactness = S.String;
+export type DashTtmlProfile = "IMSC_1" | "EBU_TT_D_101" | (string & {});
+export const DashTtmlProfile = S.String;
 export interface DashTtmlConfiguration {
   TtmlProfile: DashTtmlProfile;
 }
@@ -1003,8 +960,8 @@ export const CreateDashManifestConfiguration = S.suspend(() =>
 }) as any as S.Schema<CreateDashManifestConfiguration>;
 export type CreateDashManifests = CreateDashManifestConfiguration[];
 export const CreateDashManifests = S.Array(CreateDashManifestConfiguration);
-export type MssManifestLayout = "FULL" | "COMPACT";
-export const MssManifestLayout = S.Literal("FULL", "COMPACT");
+export type MssManifestLayout = "FULL" | "COMPACT" | (string & {});
+export const MssManifestLayout = S.String;
 export interface CreateMssManifestConfiguration {
   ManifestName: string;
   ManifestWindowSeconds?: number;
@@ -1027,13 +984,9 @@ export type EndpointErrorCondition =
   | "STALE_MANIFEST"
   | "INCOMPLETE_MANIFEST"
   | "MISSING_DRM_KEY"
-  | "SLATE_INPUT";
-export const EndpointErrorCondition = S.Literal(
-  "STALE_MANIFEST",
-  "INCOMPLETE_MANIFEST",
-  "MISSING_DRM_KEY",
-  "SLATE_INPUT",
-);
+  | "SLATE_INPUT"
+  | (string & {});
+export const EndpointErrorCondition = S.String;
 export type EndpointErrorConditions = EndpointErrorCondition[];
 export const EndpointErrorConditions = S.Array(EndpointErrorCondition);
 export interface ForceEndpointErrorConfiguration {
@@ -1434,107 +1387,9 @@ export type ValidationExceptionType =
   | "INVALID_CERTIFICATE_KEY_ALGORITHM"
   | "INVALID_CERTIFICATE_SIGNATURE_ALGORITHM"
   | "MISSING_CERTIFICATE_DOMAIN_NAME"
-  | "INVALID_ARN";
-export const ValidationExceptionType = S.Literal(
-  "CONTAINER_TYPE_IMMUTABLE",
-  "INVALID_PAGINATION_TOKEN",
-  "INVALID_PAGINATION_MAX_RESULTS",
-  "INVALID_POLICY",
-  "INVALID_ROLE_ARN",
-  "MANIFEST_NAME_COLLISION",
-  "ENCRYPTION_METHOD_CONTAINER_TYPE_MISMATCH",
-  "CENC_IV_INCOMPATIBLE",
-  "ENCRYPTION_CONTRACT_WITHOUT_AUDIO_RENDITION_INCOMPATIBLE",
-  "ENCRYPTION_CONTRACT_WITH_ISM_CONTAINER_INCOMPATIBLE",
-  "ENCRYPTION_CONTRACT_UNENCRYPTED",
-  "ENCRYPTION_CONTRACT_SHARED",
-  "NUM_MANIFESTS_LOW",
-  "NUM_MANIFESTS_HIGH",
-  "MANIFEST_DRM_SYSTEMS_INCOMPATIBLE",
-  "DRM_SYSTEMS_ENCRYPTION_METHOD_INCOMPATIBLE",
-  "ROLE_ARN_NOT_ASSUMABLE",
-  "ROLE_ARN_LENGTH_OUT_OF_RANGE",
-  "ROLE_ARN_INVALID_FORMAT",
-  "URL_INVALID",
-  "URL_SCHEME",
-  "URL_USER_INFO",
-  "URL_PORT",
-  "URL_UNKNOWN_HOST",
-  "URL_LOCAL_ADDRESS",
-  "URL_LOOPBACK_ADDRESS",
-  "URL_LINK_LOCAL_ADDRESS",
-  "URL_MULTICAST_ADDRESS",
-  "MEMBER_INVALID",
-  "MEMBER_MISSING",
-  "MEMBER_MIN_VALUE",
-  "MEMBER_MAX_VALUE",
-  "MEMBER_MIN_LENGTH",
-  "MEMBER_MAX_LENGTH",
-  "MEMBER_INVALID_ENUM_VALUE",
-  "MEMBER_DOES_NOT_MATCH_PATTERN",
-  "INVALID_MANIFEST_FILTER",
-  "INVALID_DRM_SETTINGS",
-  "INVALID_TIME_DELAY_SECONDS",
-  "END_TIME_EARLIER_THAN_START_TIME",
-  "TS_CONTAINER_TYPE_WITH_DASH_MANIFEST",
-  "DIRECT_MODE_WITH_TIMING_SOURCE",
-  "NONE_MODE_WITH_TIMING_SOURCE",
-  "TIMING_SOURCE_MISSING",
-  "UPDATE_PERIOD_SMALLER_THAN_SEGMENT_DURATION",
-  "PERIOD_TRIGGERS_NONE_SPECIFIED_WITH_ADDITIONAL_VALUES",
-  "DRM_SIGNALING_MISMATCH_SEGMENT_ENCRYPTION_STATUS",
-  "ONLY_CMAF_INPUT_TYPE_ALLOW_FORCE_ENDPOINT_ERROR_CONFIGURATION",
-  "SOURCE_DISRUPTIONS_ENABLED_INCORRECTLY",
-  "HARVESTED_MANIFEST_HAS_START_END_FILTER_CONFIGURATION",
-  "HARVESTED_MANIFEST_NOT_FOUND_ON_ENDPOINT",
-  "TOO_MANY_IN_PROGRESS_HARVEST_JOBS",
-  "HARVEST_JOB_INELIGIBLE_FOR_CANCELLATION",
-  "INVALID_HARVEST_JOB_DURATION",
-  "HARVEST_JOB_S3_DESTINATION_MISSING_OR_INCOMPLETE",
-  "HARVEST_JOB_UNABLE_TO_WRITE_TO_S3_DESTINATION",
-  "HARVEST_JOB_CUSTOMER_ENDPOINT_READ_ACCESS_DENIED",
-  "CLIP_START_TIME_WITH_START_OR_END",
-  "START_TAG_TIME_OFFSET_INVALID",
-  "INCOMPATIBLE_DASH_PROFILE_DVB_DASH_CONFIGURATION",
-  "DASH_DVB_ATTRIBUTES_WITHOUT_DVB_DASH_PROFILE",
-  "INCOMPATIBLE_DASH_COMPACTNESS_CONFIGURATION",
-  "INCOMPATIBLE_XML_ENCODING",
-  "CMAF_EXCLUDE_SEGMENT_DRM_METADATA_INCOMPATIBLE_CONTAINER_TYPE",
-  "ONLY_CMAF_INPUT_TYPE_ALLOW_MQCS_INPUT_SWITCHING",
-  "ONLY_CMAF_INPUT_TYPE_ALLOW_MQCS_OUTPUT_CONFIGURATION",
-  "ONLY_CMAF_INPUT_TYPE_ALLOW_PREFERRED_INPUT_CONFIGURATION",
-  "TS_CONTAINER_TYPE_WITH_MSS_MANIFEST",
-  "CMAF_CONTAINER_TYPE_WITH_MSS_MANIFEST",
-  "ISM_CONTAINER_TYPE_WITH_HLS_MANIFEST",
-  "ISM_CONTAINER_TYPE_WITH_LL_HLS_MANIFEST",
-  "ISM_CONTAINER_TYPE_WITH_DASH_MANIFEST",
-  "ISM_CONTAINER_TYPE_WITH_SCTE",
-  "ISM_CONTAINER_WITH_KEY_ROTATION",
-  "BATCH_GET_SECRET_VALUE_DENIED",
-  "GET_SECRET_VALUE_DENIED",
-  "DESCRIBE_SECRET_DENIED",
-  "INVALID_SECRET_FORMAT",
-  "SECRET_IS_NOT_ONE_KEY_VALUE_PAIR",
-  "INVALID_SECRET_KEY",
-  "INVALID_SECRET_VALUE",
-  "SECRET_ARN_RESOURCE_NOT_FOUND",
-  "DECRYPT_SECRET_FAILED",
-  "TOO_MANY_SECRETS",
-  "DUPLICATED_SECRET",
-  "MALFORMED_SECRET_ARN",
-  "SECRET_FROM_DIFFERENT_ACCOUNT",
-  "SECRET_FROM_DIFFERENT_REGION",
-  "INVALID_SECRET",
-  "RESOURCE_NOT_IN_SAME_REGION",
-  "CERTIFICATE_RESOURCE_NOT_FOUND",
-  "CERTIFICATE_ACCESS_DENIED",
-  "DESCRIBE_CERTIFICATE_FAILED",
-  "INVALID_CERTIFICATE_STATUS",
-  "INVALID_CERTIFICATE_KEY_ALGORITHM",
-  "INVALID_CERTIFICATE_SIGNATURE_ALGORITHM",
-  "MISSING_CERTIFICATE_DOMAIN_NAME",
-  "INVALID_ARN",
-);
+  | "INVALID_ARN"
+  | (string & {});
+export const ValidationExceptionType = S.String;
 export interface CdnAuthConfiguration {
   CdnIdentifierSecretArns: string[];
   SecretsRoleArn: string;
@@ -2120,13 +1975,9 @@ export type ConflictExceptionType =
   | "RESOURCE_IN_USE"
   | "RESOURCE_ALREADY_EXISTS"
   | "IDEMPOTENT_PARAMETER_MISMATCH"
-  | "CONFLICTING_OPERATION";
-export const ConflictExceptionType = S.Literal(
-  "RESOURCE_IN_USE",
-  "RESOURCE_ALREADY_EXISTS",
-  "IDEMPOTENT_PARAMETER_MISMATCH",
-  "CONFLICTING_OPERATION",
-);
+  | "CONFLICTING_OPERATION"
+  | (string & {});
+export const ConflictExceptionType = S.String;
 export interface ChannelGroupListConfiguration {
   ChannelGroupName: string;
   Arn: string;
@@ -2456,13 +2307,9 @@ export type ResourceTypeNotFound =
   | "CHANNEL_GROUP"
   | "CHANNEL"
   | "ORIGIN_ENDPOINT"
-  | "HARVEST_JOB";
-export const ResourceTypeNotFound = S.Literal(
-  "CHANNEL_GROUP",
-  "CHANNEL",
-  "ORIGIN_ENDPOINT",
-  "HARVEST_JOB",
-);
+  | "HARVEST_JOB"
+  | (string & {});
+export const ResourceTypeNotFound = S.String;
 export interface OriginEndpointListConfiguration {
   Arn: string;
   ChannelGroupName: string;

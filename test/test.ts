@@ -83,6 +83,23 @@ export function test(
   );
 }
 
+test.skip = function (
+  name: string,
+  ...args:
+    | [
+        {
+          timeout?: number;
+        },
+        Effect.Effect<void, any, Provided>,
+      ]
+    | [Effect.Effect<void, any, Provided>]
+) {
+  const [options = {}, testCase] =
+    args.length === 1 ? [undefined, args[0]] : args;
+
+  return it.skip(name, () => {}, options.timeout ?? 120_000);
+};
+
 /** Run an Effect for use in beforeAll/beforeEach hooks */
 export async function run<E>(
   effect: Effect.Effect<void, E, Provided>,

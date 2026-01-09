@@ -146,8 +146,8 @@ export type EvaluationErrorCode = string;
 //# Schemas
 export type ScopesListType = string[];
 export const ScopesListType = S.Array(S.String);
-export type Oauth2FlowType = "USER_FEDERATION" | "M2M";
-export const Oauth2FlowType = S.Literal("USER_FEDERATION", "M2M");
+export type Oauth2FlowType = "USER_FEDERATION" | "M2M" | (string & {});
+export const Oauth2FlowType = S.String;
 export type ToolName =
   | "executeCode"
   | "executeCommand"
@@ -157,22 +157,16 @@ export type ToolName =
   | "writeFiles"
   | "startCommandExecution"
   | "getTask"
-  | "stopTask";
-export const ToolName = S.Literal(
-  "executeCode",
-  "executeCommand",
-  "readFiles",
-  "listFiles",
-  "removeFiles",
-  "writeFiles",
-  "startCommandExecution",
-  "getTask",
-  "stopTask",
-);
-export type BrowserSessionStatus = "READY" | "TERMINATED";
-export const BrowserSessionStatus = S.Literal("READY", "TERMINATED");
-export type CodeInterpreterSessionStatus = "READY" | "TERMINATED";
-export const CodeInterpreterSessionStatus = S.Literal("READY", "TERMINATED");
+  | "stopTask"
+  | (string & {});
+export const ToolName = S.String;
+export type BrowserSessionStatus = "READY" | "TERMINATED" | (string & {});
+export const BrowserSessionStatus = S.String;
+export type CodeInterpreterSessionStatus =
+  | "READY"
+  | "TERMINATED"
+  | (string & {});
+export const CodeInterpreterSessionStatus = S.String;
 export interface GetResourceApiKeyRequest {
   workloadIdentityToken: string | redacted.Redacted<string>;
   resourceCredentialProviderName: string;
@@ -753,12 +747,12 @@ export const ListSessionsInput = S.suspend(() =>
 ).annotations({
   identifier: "ListSessionsInput",
 }) as any as S.Schema<ListSessionsInput>;
-export type ProgrammingLanguage = "python" | "javascript" | "typescript";
-export const ProgrammingLanguage = S.Literal(
-  "python",
-  "javascript",
-  "typescript",
-);
+export type ProgrammingLanguage =
+  | "python"
+  | "javascript"
+  | "typescript"
+  | (string & {});
+export const ProgrammingLanguage = S.String;
 export type StringList = string[];
 export const StringList = S.Array(S.String);
 export type Spans = any[];
@@ -769,8 +763,8 @@ export type TraceIds = string[];
 export const TraceIds = S.Array(S.String);
 export type NamespacesList = string[];
 export const NamespacesList = S.Array(S.String);
-export type ExtractionJobStatus = "FAILED";
-export const ExtractionJobStatus = S.Literal("FAILED");
+export type ExtractionJobStatus = "FAILED" | (string & {});
+export const ExtractionJobStatus = S.String;
 export type UserIdentifier =
   | { userToken: string | redacted.Redacted<string>; userId?: never }
   | { userToken?: never; userId: string };
@@ -864,12 +858,16 @@ export const ExtractionJob = S.suspend(() =>
 ).annotations({
   identifier: "ExtractionJob",
 }) as any as S.Schema<ExtractionJob>;
-export type AutomationStreamStatus = "ENABLED" | "DISABLED";
-export const AutomationStreamStatus = S.Literal("ENABLED", "DISABLED");
-export type Role = "ASSISTANT" | "USER" | "TOOL" | "OTHER";
-export const Role = S.Literal("ASSISTANT", "USER", "TOOL", "OTHER");
-export type OperatorType = "EQUALS_TO" | "EXISTS" | "NOT_EXISTS";
-export const OperatorType = S.Literal("EQUALS_TO", "EXISTS", "NOT_EXISTS");
+export type AutomationStreamStatus = "ENABLED" | "DISABLED" | (string & {});
+export const AutomationStreamStatus = S.String;
+export type Role = "ASSISTANT" | "USER" | "TOOL" | "OTHER" | (string & {});
+export const Role = S.String;
+export type OperatorType =
+  | "EQUALS_TO"
+  | "EXISTS"
+  | "NOT_EXISTS"
+  | (string & {});
+export const OperatorType = S.String;
 export interface CompleteResourceTokenAuthRequest {
   userIdentifier: UserIdentifier;
   sessionUri: string;
@@ -1314,8 +1312,8 @@ export const MemoryMetadataFilterExpression = S.suspend(() =>
 }) as any as S.Schema<MemoryMetadataFilterExpression>;
 export type MemoryMetadataFilterList = MemoryMetadataFilterExpression[];
 export const MemoryMetadataFilterList = S.Array(MemoryMetadataFilterExpression);
-export type SessionStatus = "IN_PROGRESS" | "FAILED";
-export const SessionStatus = S.Literal("IN_PROGRESS", "FAILED");
+export type SessionStatus = "IN_PROGRESS" | "FAILED" | (string & {});
+export const SessionStatus = S.String;
 export interface ToolArguments {
   code?: string;
   language?: ProgrammingLanguage;
@@ -1713,8 +1711,8 @@ export const BatchCreateMemoryRecordsInput = S.suspend(() =>
 ).annotations({
   identifier: "BatchCreateMemoryRecordsInput",
 }) as any as S.Schema<BatchCreateMemoryRecordsInput>;
-export type MemoryRecordStatus = "SUCCEEDED" | "FAILED";
-export const MemoryRecordStatus = S.Literal("SUCCEEDED", "FAILED");
+export type MemoryRecordStatus = "SUCCEEDED" | "FAILED" | (string & {});
+export const MemoryRecordStatus = S.String;
 export interface MemoryRecordOutput {
   memoryRecordId: string;
   status: MemoryRecordStatus;
@@ -2026,14 +2024,9 @@ export type ValidationExceptionReason =
   | "FieldValidationFailed"
   | "IdempotentParameterMismatchException"
   | "EventInOtherSession"
-  | "ResourceConflict";
-export const ValidationExceptionReason = S.Literal(
-  "CannotParse",
-  "FieldValidationFailed",
-  "IdempotentParameterMismatchException",
-  "EventInOtherSession",
-  "ResourceConflict",
-);
+  | "ResourceConflict"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 export interface SpanContext {
   sessionId: string;
   traceId?: string;
@@ -2080,26 +2073,21 @@ export type ExtractionJobMessages = { messagesList: MessageMetadata[] };
 export const ExtractionJobMessages = S.Union(
   S.Struct({ messagesList: MessagesList }),
 );
-export type ContentBlockType = "text" | "image" | "resource" | "resource_link";
-export const ContentBlockType = S.Literal(
-  "text",
-  "image",
-  "resource",
-  "resource_link",
-);
+export type ContentBlockType =
+  | "text"
+  | "image"
+  | "resource"
+  | "resource_link"
+  | (string & {});
+export const ContentBlockType = S.String;
 export type TaskStatus =
   | "submitted"
   | "working"
   | "completed"
   | "canceled"
-  | "failed";
-export const TaskStatus = S.Literal(
-  "submitted",
-  "working",
-  "completed",
-  "canceled",
-  "failed",
-);
+  | "failed"
+  | (string & {});
+export const TaskStatus = S.String;
 export interface EvaluationResultContent {
   evaluatorArn: string;
   evaluatorId: string;
@@ -2185,8 +2173,8 @@ export const ValidationExceptionField = S.suspend(() =>
 }) as any as S.Schema<ValidationExceptionField>;
 export type ValidationExceptionFieldList = ValidationExceptionField[];
 export const ValidationExceptionFieldList = S.Array(ValidationExceptionField);
-export type ResourceContentType = "text" | "blob";
-export const ResourceContentType = S.Literal("text", "blob");
+export type ResourceContentType = "text" | "blob" | (string & {});
+export const ResourceContentType = S.String;
 export interface EvaluateResponse {
   evaluationResults: EvaluationResultContent[];
 }

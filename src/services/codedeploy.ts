@@ -166,29 +166,37 @@ export type DeploymentsList = string[];
 export const DeploymentsList = S.Array(S.String);
 export type TargetIdList = string[];
 export const TargetIdList = S.Array(S.String);
-export type DeploymentWaitType = "READY_WAIT" | "TERMINATION_WAIT";
-export const DeploymentWaitType = S.Literal("READY_WAIT", "TERMINATION_WAIT");
-export type ComputePlatform = "Server" | "Lambda" | "ECS";
-export const ComputePlatform = S.Literal("Server", "Lambda", "ECS");
-export type FileExistsBehavior = "DISALLOW" | "OVERWRITE" | "RETAIN";
-export const FileExistsBehavior = S.Literal("DISALLOW", "OVERWRITE", "RETAIN");
+export type DeploymentWaitType =
+  | "READY_WAIT"
+  | "TERMINATION_WAIT"
+  | (string & {});
+export const DeploymentWaitType = S.String;
+export type ComputePlatform = "Server" | "Lambda" | "ECS" | (string & {});
+export const ComputePlatform = S.String;
+export type FileExistsBehavior =
+  | "DISALLOW"
+  | "OVERWRITE"
+  | "RETAIN"
+  | (string & {});
+export const FileExistsBehavior = S.String;
 export type AutoScalingGroupNameList = string[];
 export const AutoScalingGroupNameList = S.Array(S.String);
-export type OutdatedInstancesStrategy = "UPDATE" | "IGNORE";
-export const OutdatedInstancesStrategy = S.Literal("UPDATE", "IGNORE");
+export type OutdatedInstancesStrategy = "UPDATE" | "IGNORE" | (string & {});
+export const OutdatedInstancesStrategy = S.String;
 export type ApplicationRevisionSortBy =
   | "registerTime"
   | "firstUsedTime"
-  | "lastUsedTime";
-export const ApplicationRevisionSortBy = S.Literal(
-  "registerTime",
-  "firstUsedTime",
-  "lastUsedTime",
-);
-export type SortOrder = "ascending" | "descending";
-export const SortOrder = S.Literal("ascending", "descending");
-export type ListStateFilterAction = "include" | "exclude" | "ignore";
-export const ListStateFilterAction = S.Literal("include", "exclude", "ignore");
+  | "lastUsedTime"
+  | (string & {});
+export const ApplicationRevisionSortBy = S.String;
+export type SortOrder = "ascending" | "descending" | (string & {});
+export const SortOrder = S.String;
+export type ListStateFilterAction =
+  | "include"
+  | "exclude"
+  | "ignore"
+  | (string & {});
+export const ListStateFilterAction = S.String;
 export type InstanceStatus =
   | "Pending"
   | "InProgress"
@@ -196,20 +204,13 @@ export type InstanceStatus =
   | "Failed"
   | "Skipped"
   | "Unknown"
-  | "Ready";
-export const InstanceStatus = S.Literal(
-  "Pending",
-  "InProgress",
-  "Succeeded",
-  "Failed",
-  "Skipped",
-  "Unknown",
-  "Ready",
-);
+  | "Ready"
+  | (string & {});
+export const InstanceStatus = S.String;
 export type InstanceStatusList = InstanceStatus[];
 export const InstanceStatusList = S.Array(InstanceStatus);
-export type InstanceType = "Blue" | "Green";
-export const InstanceType = S.Literal("Blue", "Green");
+export type InstanceType = "Blue" | "Green" | (string & {});
+export const InstanceType = S.String;
 export type InstanceTypeList = InstanceType[];
 export const InstanceTypeList = S.Array(InstanceType);
 export type DeploymentStatus =
@@ -220,36 +221,22 @@ export type DeploymentStatus =
   | "Succeeded"
   | "Failed"
   | "Stopped"
-  | "Ready";
-export const DeploymentStatus = S.Literal(
-  "Created",
-  "Queued",
-  "InProgress",
-  "Baking",
-  "Succeeded",
-  "Failed",
-  "Stopped",
-  "Ready",
-);
+  | "Ready"
+  | (string & {});
+export const DeploymentStatus = S.String;
 export type DeploymentStatusList = DeploymentStatus[];
 export const DeploymentStatusList = S.Array(DeploymentStatus);
-export type RegistrationStatus = "Registered" | "Deregistered";
-export const RegistrationStatus = S.Literal("Registered", "Deregistered");
+export type RegistrationStatus = "Registered" | "Deregistered" | (string & {});
+export const RegistrationStatus = S.String;
 export type LifecycleEventStatus =
   | "Pending"
   | "InProgress"
   | "Succeeded"
   | "Failed"
   | "Skipped"
-  | "Unknown";
-export const LifecycleEventStatus = S.Literal(
-  "Pending",
-  "InProgress",
-  "Succeeded",
-  "Failed",
-  "Skipped",
-  "Unknown",
-);
+  | "Unknown"
+  | (string & {});
+export const LifecycleEventStatus = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export interface BatchGetApplicationsInput {
@@ -582,15 +569,17 @@ export type RevisionLocationType =
   | "S3"
   | "GitHub"
   | "String"
-  | "AppSpecContent";
-export const RevisionLocationType = S.Literal(
-  "S3",
-  "GitHub",
-  "String",
-  "AppSpecContent",
-);
-export type BundleType = "tar" | "tgz" | "zip" | "YAML" | "JSON";
-export const BundleType = S.Literal("tar", "tgz", "zip", "YAML", "JSON");
+  | "AppSpecContent"
+  | (string & {});
+export const RevisionLocationType = S.String;
+export type BundleType =
+  | "tar"
+  | "tgz"
+  | "zip"
+  | "YAML"
+  | "JSON"
+  | (string & {});
+export const BundleType = S.String;
 export interface S3Location {
   bucket?: string;
   key?: string;
@@ -914,12 +903,12 @@ export const ListGitHubAccountTokenNamesInput = S.suspend(() =>
 ).annotations({
   identifier: "ListGitHubAccountTokenNamesInput",
 }) as any as S.Schema<ListGitHubAccountTokenNamesInput>;
-export type TagFilterType = "KEY_ONLY" | "VALUE_ONLY" | "KEY_AND_VALUE";
-export const TagFilterType = S.Literal(
-  "KEY_ONLY",
-  "VALUE_ONLY",
-  "KEY_AND_VALUE",
-);
+export type TagFilterType =
+  | "KEY_ONLY"
+  | "VALUE_ONLY"
+  | "KEY_AND_VALUE"
+  | (string & {});
+export const TagFilterType = S.String;
 export interface TagFilter {
   Key?: string;
   Value?: string;
@@ -1210,12 +1199,12 @@ export const UpdateApplicationResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateApplicationResponse",
 }) as any as S.Schema<UpdateApplicationResponse>;
-export type EC2TagFilterType = "KEY_ONLY" | "VALUE_ONLY" | "KEY_AND_VALUE";
-export const EC2TagFilterType = S.Literal(
-  "KEY_ONLY",
-  "VALUE_ONLY",
-  "KEY_AND_VALUE",
-);
+export type EC2TagFilterType =
+  | "KEY_ONLY"
+  | "VALUE_ONLY"
+  | "KEY_AND_VALUE"
+  | (string & {});
+export const EC2TagFilterType = S.String;
 export interface EC2TagFilter {
   Key?: string;
   Value?: string;
@@ -1240,19 +1229,9 @@ export type TriggerEventType =
   | "InstanceStart"
   | "InstanceSuccess"
   | "InstanceFailure"
-  | "InstanceReady";
-export const TriggerEventType = S.Literal(
-  "DeploymentStart",
-  "DeploymentSuccess",
-  "DeploymentFailure",
-  "DeploymentStop",
-  "DeploymentRollback",
-  "DeploymentReady",
-  "InstanceStart",
-  "InstanceSuccess",
-  "InstanceFailure",
-  "InstanceReady",
-);
+  | "InstanceReady"
+  | (string & {});
+export const TriggerEventType = S.String;
 export type TriggerEventTypeList = TriggerEventType[];
 export const TriggerEventTypeList = S.Array(TriggerEventType);
 export interface TriggerConfig {
@@ -1296,12 +1275,9 @@ export const AlarmConfiguration = S.suspend(() =>
 export type AutoRollbackEvent =
   | "DEPLOYMENT_FAILURE"
   | "DEPLOYMENT_STOP_ON_ALARM"
-  | "DEPLOYMENT_STOP_ON_REQUEST";
-export const AutoRollbackEvent = S.Literal(
-  "DEPLOYMENT_FAILURE",
-  "DEPLOYMENT_STOP_ON_ALARM",
-  "DEPLOYMENT_STOP_ON_REQUEST",
-);
+  | "DEPLOYMENT_STOP_ON_REQUEST"
+  | (string & {});
+export const AutoRollbackEvent = S.String;
 export type AutoRollbackEventsList = AutoRollbackEvent[];
 export const AutoRollbackEventsList = S.Array(AutoRollbackEvent);
 export interface AutoRollbackConfiguration {
@@ -1316,15 +1292,13 @@ export const AutoRollbackConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "AutoRollbackConfiguration",
 }) as any as S.Schema<AutoRollbackConfiguration>;
-export type DeploymentType = "IN_PLACE" | "BLUE_GREEN";
-export const DeploymentType = S.Literal("IN_PLACE", "BLUE_GREEN");
+export type DeploymentType = "IN_PLACE" | "BLUE_GREEN" | (string & {});
+export const DeploymentType = S.String;
 export type DeploymentOption =
   | "WITH_TRAFFIC_CONTROL"
-  | "WITHOUT_TRAFFIC_CONTROL";
-export const DeploymentOption = S.Literal(
-  "WITH_TRAFFIC_CONTROL",
-  "WITHOUT_TRAFFIC_CONTROL",
-);
+  | "WITHOUT_TRAFFIC_CONTROL"
+  | (string & {});
+export const DeploymentOption = S.String;
 export interface DeploymentStyle {
   deploymentType?: DeploymentType;
   deploymentOption?: DeploymentOption;
@@ -1337,8 +1311,8 @@ export const DeploymentStyle = S.suspend(() =>
 ).annotations({
   identifier: "DeploymentStyle",
 }) as any as S.Schema<DeploymentStyle>;
-export type InstanceAction = "TERMINATE" | "KEEP_ALIVE";
-export const InstanceAction = S.Literal("TERMINATE", "KEEP_ALIVE");
+export type InstanceAction = "TERMINATE" | "KEEP_ALIVE" | (string & {});
+export const InstanceAction = S.String;
 export interface BlueInstanceTerminationOption {
   action?: InstanceAction;
   terminationWaitTimeInMinutes?: number;
@@ -1351,11 +1325,11 @@ export const BlueInstanceTerminationOption = S.suspend(() =>
 ).annotations({
   identifier: "BlueInstanceTerminationOption",
 }) as any as S.Schema<BlueInstanceTerminationOption>;
-export type DeploymentReadyAction = "CONTINUE_DEPLOYMENT" | "STOP_DEPLOYMENT";
-export const DeploymentReadyAction = S.Literal(
-  "CONTINUE_DEPLOYMENT",
-  "STOP_DEPLOYMENT",
-);
+export type DeploymentReadyAction =
+  | "CONTINUE_DEPLOYMENT"
+  | "STOP_DEPLOYMENT"
+  | (string & {});
+export const DeploymentReadyAction = S.String;
 export interface DeploymentReadyOption {
   actionOnTimeout?: DeploymentReadyAction;
   waitTimeInMinutes?: number;
@@ -1370,11 +1344,9 @@ export const DeploymentReadyOption = S.suspend(() =>
 }) as any as S.Schema<DeploymentReadyOption>;
 export type GreenFleetProvisioningAction =
   | "DISCOVER_EXISTING"
-  | "COPY_AUTO_SCALING_GROUP";
-export const GreenFleetProvisioningAction = S.Literal(
-  "DISCOVER_EXISTING",
-  "COPY_AUTO_SCALING_GROUP",
-);
+  | "COPY_AUTO_SCALING_GROUP"
+  | (string & {});
+export const GreenFleetProvisioningAction = S.String;
 export interface GreenFleetProvisioningOption {
   action?: GreenFleetProvisioningAction;
 }
@@ -1543,22 +1515,22 @@ export const UpdateDeploymentGroupInput = S.suspend(() =>
 ).annotations({
   identifier: "UpdateDeploymentGroupInput",
 }) as any as S.Schema<UpdateDeploymentGroupInput>;
-export type MinimumHealthyHostsType = "HOST_COUNT" | "FLEET_PERCENT";
-export const MinimumHealthyHostsType = S.Literal("HOST_COUNT", "FLEET_PERCENT");
+export type MinimumHealthyHostsType =
+  | "HOST_COUNT"
+  | "FLEET_PERCENT"
+  | (string & {});
+export const MinimumHealthyHostsType = S.String;
 export type TrafficRoutingType =
   | "TimeBasedCanary"
   | "TimeBasedLinear"
-  | "AllAtOnce";
-export const TrafficRoutingType = S.Literal(
-  "TimeBasedCanary",
-  "TimeBasedLinear",
-  "AllAtOnce",
-);
-export type TargetFilterName = "TargetStatus" | "ServerInstanceLabel";
-export const TargetFilterName = S.Literal(
-  "TargetStatus",
-  "ServerInstanceLabel",
-);
+  | "AllAtOnce"
+  | (string & {});
+export const TrafficRoutingType = S.String;
+export type TargetFilterName =
+  | "TargetStatus"
+  | "ServerInstanceLabel"
+  | (string & {});
+export const TargetFilterName = S.String;
 export type FilterValueList = string[];
 export const FilterValueList = S.Array(S.String);
 export interface TargetInstances {
@@ -1605,13 +1577,13 @@ export const TargetFilters = S.partial(
 );
 export type GitHubAccountTokenNameList = string[];
 export const GitHubAccountTokenNameList = S.Array(S.String);
-export type StopStatus = "Pending" | "Succeeded";
-export const StopStatus = S.Literal("Pending", "Succeeded");
-export type MinimumHealthyHostsPerZoneType = "HOST_COUNT" | "FLEET_PERCENT";
-export const MinimumHealthyHostsPerZoneType = S.Literal(
-  "HOST_COUNT",
-  "FLEET_PERCENT",
-);
+export type StopStatus = "Pending" | "Succeeded" | (string & {});
+export const StopStatus = S.String;
+export type MinimumHealthyHostsPerZoneType =
+  | "HOST_COUNT"
+  | "FLEET_PERCENT"
+  | (string & {});
+export const MinimumHealthyHostsPerZoneType = S.String;
 export interface AddTagsToOnPremisesInstancesInput {
   tags: Tag[];
   instanceNames: string[];
@@ -1715,43 +1687,9 @@ export type ErrorCode =
   | "REVISION_MISSING"
   | "THROTTLED"
   | "TIMEOUT"
-  | "CLOUDFORMATION_STACK_FAILURE";
-export const ErrorCode = S.Literal(
-  "AGENT_ISSUE",
-  "ALARM_ACTIVE",
-  "APPLICATION_MISSING",
-  "AUTOSCALING_VALIDATION_ERROR",
-  "AUTO_SCALING_CONFIGURATION",
-  "AUTO_SCALING_IAM_ROLE_PERMISSIONS",
-  "CODEDEPLOY_RESOURCE_CANNOT_BE_FOUND",
-  "CUSTOMER_APPLICATION_UNHEALTHY",
-  "DEPLOYMENT_GROUP_MISSING",
-  "ECS_UPDATE_ERROR",
-  "ELASTIC_LOAD_BALANCING_INVALID",
-  "ELB_INVALID_INSTANCE",
-  "HEALTH_CONSTRAINTS",
-  "HEALTH_CONSTRAINTS_INVALID",
-  "HOOK_EXECUTION_FAILURE",
-  "IAM_ROLE_MISSING",
-  "IAM_ROLE_PERMISSIONS",
-  "INTERNAL_ERROR",
-  "INVALID_ECS_SERVICE",
-  "INVALID_LAMBDA_CONFIGURATION",
-  "INVALID_LAMBDA_FUNCTION",
-  "INVALID_REVISION",
-  "MANUAL_STOP",
-  "MISSING_BLUE_GREEN_DEPLOYMENT_CONFIGURATION",
-  "MISSING_ELB_INFORMATION",
-  "MISSING_GITHUB_TOKEN",
-  "NO_EC2_SUBSCRIPTION",
-  "NO_INSTANCES",
-  "OVER_MAX_INSTANCES",
-  "RESOURCE_LIMIT_EXCEEDED",
-  "REVISION_MISSING",
-  "THROTTLED",
-  "TIMEOUT",
-  "CLOUDFORMATION_STACK_FAILURE",
-);
+  | "CLOUDFORMATION_STACK_FAILURE"
+  | (string & {});
+export const ErrorCode = S.String;
 export interface ErrorInformation {
   code?: ErrorCode;
   message?: string;
@@ -1789,17 +1727,9 @@ export type DeploymentCreator =
   | "CodeDeployAutoUpdate"
   | "CloudFormation"
   | "CloudFormationRollback"
-  | "autoscalingTermination";
-export const DeploymentCreator = S.Literal(
-  "user",
-  "autoscaling",
-  "codeDeployRollback",
-  "CodeDeploy",
-  "CodeDeployAutoUpdate",
-  "CloudFormation",
-  "CloudFormationRollback",
-  "autoscalingTermination",
-);
+  | "autoscalingTermination"
+  | (string & {});
+export const DeploymentCreator = S.String;
 export interface RollbackInfo {
   rollbackDeploymentId?: string;
   rollbackTriggeringDeploymentId?: string;
@@ -2006,15 +1936,9 @@ export type LifecycleErrorCode =
   | "ScriptNotExecutable"
   | "ScriptTimedOut"
   | "ScriptFailed"
-  | "UnknownError";
-export const LifecycleErrorCode = S.Literal(
-  "Success",
-  "ScriptMissing",
-  "ScriptNotExecutable",
-  "ScriptTimedOut",
-  "ScriptFailed",
-  "UnknownError",
-);
+  | "UnknownError"
+  | (string & {});
+export const LifecycleErrorCode = S.String;
 export interface Diagnostics {
   errorCode?: LifecycleErrorCode;
   scriptName?: string;
@@ -2081,13 +2005,9 @@ export type DeploymentTargetType =
   | "InstanceTarget"
   | "LambdaTarget"
   | "ECSTarget"
-  | "CloudFormationTarget";
-export const DeploymentTargetType = S.Literal(
-  "InstanceTarget",
-  "LambdaTarget",
-  "ECSTarget",
-  "CloudFormationTarget",
-);
+  | "CloudFormationTarget"
+  | (string & {});
+export const DeploymentTargetType = S.String;
 export type TargetStatus =
   | "Pending"
   | "InProgress"
@@ -2095,18 +2015,11 @@ export type TargetStatus =
   | "Failed"
   | "Skipped"
   | "Unknown"
-  | "Ready";
-export const TargetStatus = S.Literal(
-  "Pending",
-  "InProgress",
-  "Succeeded",
-  "Failed",
-  "Skipped",
-  "Unknown",
-  "Ready",
-);
-export type TargetLabel = "Blue" | "Green";
-export const TargetLabel = S.Literal("Blue", "Green");
+  | "Ready"
+  | (string & {});
+export const TargetStatus = S.String;
+export type TargetLabel = "Blue" | "Green" | (string & {});
+export const TargetLabel = S.String;
 export interface InstanceTarget {
   deploymentId?: string;
   targetId?: string;

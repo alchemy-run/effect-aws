@@ -105,10 +105,10 @@ export type ErrorMessage = string;
 export type OwnerId = string;
 
 //# Schemas
-export type ChecksumAlgorithm = "SHA256";
-export const ChecksumAlgorithm = S.Literal("SHA256");
-export type ChecksumAggregationMethod = "LINEAR";
-export const ChecksumAggregationMethod = S.Literal("LINEAR");
+export type ChecksumAlgorithm = "SHA256" | (string & {});
+export const ChecksumAlgorithm = S.String;
+export type ChecksumAggregationMethod = "LINEAR" | (string & {});
+export const ChecksumAggregationMethod = S.String;
 export interface CompleteSnapshotRequest {
   SnapshotId: string;
   ChangedBlocksCount: number;
@@ -261,8 +261,8 @@ export const PutSnapshotBlockRequest = S.suspend(() =>
 ).annotations({
   identifier: "PutSnapshotBlockRequest",
 }) as any as S.Schema<PutSnapshotBlockRequest>;
-export type Status = "completed" | "pending" | "error";
-export const Status = S.Literal("completed", "pending", "error");
+export type Status = "completed" | "pending" | "error" | (string & {});
+export const Status = S.String;
 export interface Tag {
   Key?: string;
   Value?: string;
@@ -347,11 +347,9 @@ export const StartSnapshotRequest = S.suspend(() =>
 }) as any as S.Schema<StartSnapshotRequest>;
 export type AccessDeniedExceptionReason =
   | "UNAUTHORIZED_ACCOUNT"
-  | "DEPENDENCY_ACCESS_DENIED";
-export const AccessDeniedExceptionReason = S.Literal(
-  "UNAUTHORIZED_ACCOUNT",
-  "DEPENDENCY_ACCESS_DENIED",
-);
+  | "DEPENDENCY_ACCESS_DENIED"
+  | (string & {});
+export const AccessDeniedExceptionReason = S.String;
 export interface ChangedBlock {
   BlockIndex?: number;
   FirstBlockToken?: string;
@@ -378,8 +376,8 @@ export const Block = S.suspend(() =>
 ).annotations({ identifier: "Block" }) as any as S.Schema<Block>;
 export type Blocks = Block[];
 export const Blocks = S.Array(Block);
-export type SSEType = "sse-ebs" | "sse-kms" | "none";
-export const SSEType = S.Literal("sse-ebs", "sse-kms", "none");
+export type SSEType = "sse-ebs" | "sse-kms" | "none" | (string & {});
+export const SSEType = S.String;
 export interface ListChangedBlocksResponse {
   ChangedBlocks?: ChangedBlock[];
   ExpiryTime?: Date;
@@ -449,28 +447,20 @@ export const StartSnapshotResponse = S.suspend(() =>
 export type RequestThrottledExceptionReason =
   | "ACCOUNT_THROTTLED"
   | "DEPENDENCY_REQUEST_THROTTLED"
-  | "RESOURCE_LEVEL_THROTTLE";
-export const RequestThrottledExceptionReason = S.Literal(
-  "ACCOUNT_THROTTLED",
-  "DEPENDENCY_REQUEST_THROTTLED",
-  "RESOURCE_LEVEL_THROTTLE",
-);
+  | "RESOURCE_LEVEL_THROTTLE"
+  | (string & {});
+export const RequestThrottledExceptionReason = S.String;
 export type ResourceNotFoundExceptionReason =
   | "SNAPSHOT_NOT_FOUND"
   | "GRANT_NOT_FOUND"
   | "DEPENDENCY_RESOURCE_NOT_FOUND"
-  | "IMAGE_NOT_FOUND";
-export const ResourceNotFoundExceptionReason = S.Literal(
-  "SNAPSHOT_NOT_FOUND",
-  "GRANT_NOT_FOUND",
-  "DEPENDENCY_RESOURCE_NOT_FOUND",
-  "IMAGE_NOT_FOUND",
-);
+  | "IMAGE_NOT_FOUND"
+  | (string & {});
+export const ResourceNotFoundExceptionReason = S.String;
 export type ServiceQuotaExceededExceptionReason =
-  "DEPENDENCY_SERVICE_QUOTA_EXCEEDED";
-export const ServiceQuotaExceededExceptionReason = S.Literal(
-  "DEPENDENCY_SERVICE_QUOTA_EXCEEDED",
-);
+  | "DEPENDENCY_SERVICE_QUOTA_EXCEEDED"
+  | (string & {});
+export const ServiceQuotaExceededExceptionReason = S.String;
 export type ValidationExceptionReason =
   | "INVALID_CUSTOMER_KEY"
   | "INVALID_PAGE_TOKEN"
@@ -486,24 +476,9 @@ export type ValidationExceptionReason =
   | "INVALID_VOLUME_SIZE"
   | "CONFLICTING_BLOCK_UPDATE"
   | "INVALID_IMAGE_ID"
-  | "WRITE_REQUEST_TIMEOUT";
-export const ValidationExceptionReason = S.Literal(
-  "INVALID_CUSTOMER_KEY",
-  "INVALID_PAGE_TOKEN",
-  "INVALID_BLOCK_TOKEN",
-  "INVALID_GRANT_TOKEN",
-  "INVALID_SNAPSHOT_ID",
-  "UNRELATED_SNAPSHOTS",
-  "INVALID_BLOCK",
-  "INVALID_CONTENT_ENCODING",
-  "INVALID_TAG",
-  "INVALID_DEPENDENCY_REQUEST",
-  "INVALID_PARAMETER_VALUE",
-  "INVALID_VOLUME_SIZE",
-  "CONFLICTING_BLOCK_UPDATE",
-  "INVALID_IMAGE_ID",
-  "WRITE_REQUEST_TIMEOUT",
-);
+  | "WRITE_REQUEST_TIMEOUT"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 
 //# Errors
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(

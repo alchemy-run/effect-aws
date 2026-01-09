@@ -664,14 +664,17 @@ export const UpdateTargetAccountConfigurationRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateTargetAccountConfigurationRequest",
 }) as any as S.Schema<UpdateTargetAccountConfigurationRequest>;
-export type AccountTargeting = "single-account" | "multi-account";
-export const AccountTargeting = S.Literal("single-account", "multi-account");
-export type EmptyTargetResolutionMode = "fail" | "skip";
-export const EmptyTargetResolutionMode = S.Literal("fail", "skip");
-export type ActionsMode = "skip-all" | "run-all";
-export const ActionsMode = S.Literal("skip-all", "run-all");
-export type SafetyLeverStatusInput = "disengaged" | "engaged";
-export const SafetyLeverStatusInput = S.Literal("disengaged", "engaged");
+export type AccountTargeting =
+  | "single-account"
+  | "multi-account"
+  | (string & {});
+export const AccountTargeting = S.String;
+export type EmptyTargetResolutionMode = "fail" | "skip" | (string & {});
+export const EmptyTargetResolutionMode = S.String;
+export type ActionsMode = "skip-all" | "run-all" | (string & {});
+export const ActionsMode = S.String;
+export type SafetyLeverStatusInput = "disengaged" | "engaged" | (string & {});
+export const SafetyLeverStatusInput = S.String;
 export interface CreateExperimentTemplateStopConditionInput {
   source: string;
   value?: string;
@@ -1167,17 +1170,9 @@ export type ExperimentStatus =
   | "stopping"
   | "stopped"
   | "failed"
-  | "cancelled";
-export const ExperimentStatus = S.Literal(
-  "pending",
-  "initiating",
-  "running",
-  "completed",
-  "stopping",
-  "stopped",
-  "failed",
-  "cancelled",
-);
+  | "cancelled"
+  | (string & {});
+export const ExperimentStatus = S.String;
 export interface ExperimentError {
   accountId?: string;
   code?: string;
@@ -1279,18 +1274,9 @@ export type ExperimentActionStatus =
   | "stopping"
   | "stopped"
   | "failed"
-  | "skipped";
-export const ExperimentActionStatus = S.Literal(
-  "pending",
-  "initiating",
-  "running",
-  "completed",
-  "cancelled",
-  "stopping",
-  "stopped",
-  "failed",
-  "skipped",
-);
+  | "skipped"
+  | (string & {});
+export const ExperimentActionStatus = S.String;
 export interface ExperimentActionState {
   status?: ExperimentActionStatus;
   reason?: string;
@@ -1463,14 +1449,9 @@ export type ExperimentReportStatus =
   | "running"
   | "completed"
   | "cancelled"
-  | "failed";
-export const ExperimentReportStatus = S.Literal(
-  "pending",
-  "running",
-  "completed",
-  "cancelled",
-  "failed",
-);
+  | "failed"
+  | (string & {});
+export const ExperimentReportStatus = S.String;
 export interface ExperimentReportError {
   code?: string;
 }
@@ -1820,8 +1801,12 @@ export const UpdateExperimentTemplateActionInputMap = S.Record({
   key: S.String,
   value: S.UndefinedOr(UpdateExperimentTemplateActionInputItem),
 });
-export type SafetyLeverStatus = "disengaged" | "engaged" | "engaging";
-export const SafetyLeverStatus = S.Literal("disengaged", "engaged", "engaging");
+export type SafetyLeverStatus =
+  | "disengaged"
+  | "engaged"
+  | "engaging"
+  | (string & {});
+export const SafetyLeverStatus = S.String;
 export interface CreateTargetAccountConfigurationResponse {
   targetAccountConfiguration?: TargetAccountConfiguration;
 }

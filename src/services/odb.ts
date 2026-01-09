@@ -106,8 +106,8 @@ export const GetOciOnboardingStatusInput = S.suspend(() =>
 ).annotations({
   identifier: "GetOciOnboardingStatusInput",
 }) as any as S.Schema<GetOciOnboardingStatusInput>;
-export type SupportedAwsIntegration = "KmsTde";
-export const SupportedAwsIntegration = S.Literal("KmsTde");
+export type SupportedAwsIntegration = "KmsTde" | (string & {});
+export const SupportedAwsIntegration = S.String;
 export type OciOnboardingStatus =
   | "NOT_STARTED"
   | "PENDING_LINK_GENERATION"
@@ -120,32 +120,20 @@ export type OciOnboardingStatus =
   | "FAILED"
   | "PUBLIC_OFFER_UNSUPPORTED"
   | "SUSPENDED"
-  | "CANCELED";
-export const OciOnboardingStatus = S.Literal(
-  "NOT_STARTED",
-  "PENDING_LINK_GENERATION",
-  "PENDING_CUSTOMER_ACTION",
-  "PENDING_INITIALIZATION",
-  "ACTIVATING",
-  "ACTIVE_IN_HOME_REGION",
-  "ACTIVE",
-  "ACTIVE_LIMITED",
-  "FAILED",
-  "PUBLIC_OFFER_UNSUPPORTED",
-  "SUSPENDED",
-  "CANCELED",
-);
+  | "CANCELED"
+  | (string & {});
+export const OciOnboardingStatus = S.String;
 export type TagKeys = string[];
 export const TagKeys = S.Array(S.String);
 export type StringList = string[];
 export const StringList = S.Array(S.String);
-export type LicenseModel = "BRING_YOUR_OWN_LICENSE" | "LICENSE_INCLUDED";
-export const LicenseModel = S.Literal(
-  "BRING_YOUR_OWN_LICENSE",
-  "LICENSE_INCLUDED",
-);
-export type Access = "ENABLED" | "DISABLED";
-export const Access = S.Literal("ENABLED", "DISABLED");
+export type LicenseModel =
+  | "BRING_YOUR_OWN_LICENSE"
+  | "LICENSE_INCLUDED"
+  | (string & {});
+export const LicenseModel = S.String;
+export type Access = "ENABLED" | "DISABLED" | (string & {});
+export const Access = S.String;
 export type PeeredCidrList = string[];
 export const PeeredCidrList = S.Array(S.String);
 export interface AcceptMarketplaceRegistrationInput {
@@ -393,16 +381,9 @@ export type DayOfWeekName =
   | "THURSDAY"
   | "FRIDAY"
   | "SATURDAY"
-  | "SUNDAY";
-export const DayOfWeekName = S.Literal(
-  "MONDAY",
-  "TUESDAY",
-  "WEDNESDAY",
-  "THURSDAY",
-  "FRIDAY",
-  "SATURDAY",
-  "SUNDAY",
-);
+  | "SUNDAY"
+  | (string & {});
+export const DayOfWeekName = S.String;
 export interface DayOfWeek {
   name?: DayOfWeekName;
 }
@@ -425,21 +406,9 @@ export type MonthName =
   | "SEPTEMBER"
   | "OCTOBER"
   | "NOVEMBER"
-  | "DECEMBER";
-export const MonthName = S.Literal(
-  "JANUARY",
-  "FEBRUARY",
-  "MARCH",
-  "APRIL",
-  "MAY",
-  "JUNE",
-  "JULY",
-  "AUGUST",
-  "SEPTEMBER",
-  "OCTOBER",
-  "NOVEMBER",
-  "DECEMBER",
-);
+  | "DECEMBER"
+  | (string & {});
+export const MonthName = S.String;
 export interface Month {
   name?: MonthName;
 }
@@ -448,10 +417,13 @@ export const Month = S.suspend(() =>
 ).annotations({ identifier: "Month" }) as any as S.Schema<Month>;
 export type Months = Month[];
 export const Months = S.Array(Month);
-export type PatchingModeType = "ROLLING" | "NONROLLING";
-export const PatchingModeType = S.Literal("ROLLING", "NONROLLING");
-export type PreferenceType = "NO_PREFERENCE" | "CUSTOM_PREFERENCE";
-export const PreferenceType = S.Literal("NO_PREFERENCE", "CUSTOM_PREFERENCE");
+export type PatchingModeType = "ROLLING" | "NONROLLING" | (string & {});
+export const PatchingModeType = S.String;
+export type PreferenceType =
+  | "NO_PREFERENCE"
+  | "CUSTOM_PREFERENCE"
+  | (string & {});
+export const PreferenceType = S.String;
 export type WeeksOfMonth = number[];
 export const WeeksOfMonth = S.Array(S.Number);
 export interface MaintenanceWindow {
@@ -927,16 +899,9 @@ export type ResourceStatus =
   | "TERMINATED"
   | "TERMINATING"
   | "UPDATING"
-  | "MAINTENANCE_IN_PROGRESS";
-export const ResourceStatus = S.Literal(
-  "AVAILABLE",
-  "FAILED",
-  "PROVISIONING",
-  "TERMINATED",
-  "TERMINATING",
-  "UPDATING",
-  "MAINTENANCE_IN_PROGRESS",
-);
+  | "MAINTENANCE_IN_PROGRESS"
+  | (string & {});
+export const ResourceStatus = S.String;
 export interface OciIdentityDomain {
   ociIdentityDomainId?: string;
   ociIdentityDomainResourceUrl?: string;
@@ -990,18 +955,9 @@ export type DbNodeResourceStatus =
   | "UPDATING"
   | "STOPPING"
   | "STOPPED"
-  | "STARTING";
-export const DbNodeResourceStatus = S.Literal(
-  "AVAILABLE",
-  "FAILED",
-  "PROVISIONING",
-  "TERMINATED",
-  "TERMINATING",
-  "UPDATING",
-  "STOPPING",
-  "STOPPED",
-  "STARTING",
-);
+  | "STARTING"
+  | (string & {});
+export const DbNodeResourceStatus = S.String;
 export interface GetOciOnboardingStatusOutput {
   status?: OciOnboardingStatus;
   existingTenancyActivationLink?: string;
@@ -1241,21 +1197,21 @@ export const UpdateOdbPeeringConnectionOutput = S.suspend(() =>
 ).annotations({
   identifier: "UpdateOdbPeeringConnectionOutput",
 }) as any as S.Schema<UpdateOdbPeeringConnectionOutput>;
-export type ShapeType = "AMD" | "INTEL" | "INTEL_FLEX_X9" | "AMPERE_FLEX_A1";
-export const ShapeType = S.Literal(
-  "AMD",
-  "INTEL",
-  "INTEL_FLEX_X9",
-  "AMPERE_FLEX_A1",
-);
-export type ComputeModel = "ECPU" | "OCPU";
-export const ComputeModel = S.Literal("ECPU", "OCPU");
-export type DiskRedundancy = "HIGH" | "NORMAL";
-export const DiskRedundancy = S.Literal("HIGH", "NORMAL");
+export type ShapeType =
+  | "AMD"
+  | "INTEL"
+  | "INTEL_FLEX_X9"
+  | "AMPERE_FLEX_A1"
+  | (string & {});
+export const ShapeType = S.String;
+export type ComputeModel = "ECPU" | "OCPU" | (string & {});
+export const ComputeModel = S.String;
+export type DiskRedundancy = "HIGH" | "NORMAL" | (string & {});
+export const DiskRedundancy = S.String;
 export type SensitiveStringList = string | redacted.Redacted<string>[];
 export const SensitiveStringList = S.Array(SensitiveString);
-export type DbNodeMaintenanceType = "VMDB_REBOOT_MIGRATION";
-export const DbNodeMaintenanceType = S.Literal("VMDB_REBOOT_MIGRATION");
+export type DbNodeMaintenanceType = "VMDB_REBOOT_MIGRATION" | (string & {});
+export const DbNodeMaintenanceType = S.String;
 export interface DbSystemShapeSummary {
   availableCoreCount?: number;
   availableCoreCountPerNode?: number;
@@ -1792,13 +1748,9 @@ export type DbServerPatchingStatus =
   | "COMPLETE"
   | "FAILED"
   | "MAINTENANCE_IN_PROGRESS"
-  | "SCHEDULED";
-export const DbServerPatchingStatus = S.Literal(
-  "COMPLETE",
-  "FAILED",
-  "MAINTENANCE_IN_PROGRESS",
-  "SCHEDULED",
-);
+  | "SCHEDULED"
+  | (string & {});
+export const DbServerPatchingStatus = S.String;
 export interface DbServerPatchingDetails {
   estimatedPatchDuration?: number;
   patchingStatus?: DbServerPatchingStatus;
@@ -1884,27 +1836,17 @@ export type IormLifecycleState =
   | "DISABLED"
   | "ENABLED"
   | "FAILED"
-  | "UPDATING";
-export const IormLifecycleState = S.Literal(
-  "BOOTSTRAPPING",
-  "DISABLED",
-  "ENABLED",
-  "FAILED",
-  "UPDATING",
-);
+  | "UPDATING"
+  | (string & {});
+export const IormLifecycleState = S.String;
 export type Objective =
   | "AUTO"
   | "BALANCED"
   | "BASIC"
   | "HIGH_THROUGHPUT"
-  | "LOW_LATENCY";
-export const Objective = S.Literal(
-  "AUTO",
-  "BALANCED",
-  "BASIC",
-  "HIGH_THROUGHPUT",
-  "LOW_LATENCY",
-);
+  | "LOW_LATENCY"
+  | (string & {});
+export const Objective = S.String;
 export interface ExadataIormConfig {
   dbPlans?: DbIormConfig[];
   lifecycleDetails?: string;
@@ -1928,16 +1870,9 @@ export type IamRoleStatus =
   | "CONNECTED"
   | "DISCONNECTED"
   | "PARTIALLY_CONNECTED"
-  | "UNKNOWN";
-export const IamRoleStatus = S.Literal(
-  "ASSOCIATING",
-  "DISASSOCIATING",
-  "FAILED",
-  "CONNECTED",
-  "DISCONNECTED",
-  "PARTIALLY_CONNECTED",
-  "UNKNOWN",
-);
+  | "UNKNOWN"
+  | (string & {});
+export const IamRoleStatus = S.String;
 export interface IamRole {
   iamRoleArn?: string;
   status?: IamRoleStatus;
@@ -2188,8 +2123,8 @@ export const OciDnsForwardingConfig = S.suspend(() =>
 }) as any as S.Schema<OciDnsForwardingConfig>;
 export type OciDnsForwardingConfigList = OciDnsForwardingConfig[];
 export const OciDnsForwardingConfigList = S.Array(OciDnsForwardingConfig);
-export type VpcEndpointType = "SERVICENETWORK";
-export const VpcEndpointType = S.Literal("SERVICENETWORK");
+export type VpcEndpointType = "SERVICENETWORK" | (string & {});
+export const VpcEndpointType = S.String;
 export interface ServiceNetworkEndpoint {
   vpcEndpointId?: string;
   vpcEndpointType?: VpcEndpointType;
@@ -2206,13 +2141,9 @@ export type ManagedResourceStatus =
   | "ENABLED"
   | "ENABLING"
   | "DISABLED"
-  | "DISABLING";
-export const ManagedResourceStatus = S.Literal(
-  "ENABLED",
-  "ENABLING",
-  "DISABLED",
-  "DISABLING",
-);
+  | "DISABLING"
+  | (string & {});
+export const ManagedResourceStatus = S.String;
 export interface ManagedS3BackupAccess {
   status?: ManagedResourceStatus;
   ipv4Addresses?: string[];
@@ -2771,13 +2702,9 @@ export type ValidationExceptionReason =
   | "unknownOperation"
   | "cannotParse"
   | "fieldValidationFailed"
-  | "other";
-export const ValidationExceptionReason = S.Literal(
-  "unknownOperation",
-  "cannotParse",
-  "fieldValidationFailed",
-  "other",
-);
+  | "other"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 export interface CreateCloudAutonomousVmClusterOutput {
   displayName?: string;
   status?: ResourceStatus;

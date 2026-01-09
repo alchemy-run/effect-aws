@@ -212,12 +212,12 @@ export const StopTelemetryEvaluationForOrganizationResponse = S.suspend(() =>
 ).annotations({
   identifier: "StopTelemetryEvaluationForOrganizationResponse",
 }) as any as S.Schema<StopTelemetryEvaluationForOrganizationResponse>;
-export type TelemetryEnrichmentStatus = "Running" | "Stopped" | "Impaired";
-export const TelemetryEnrichmentStatus = S.Literal(
-  "Running",
-  "Stopped",
-  "Impaired",
-);
+export type TelemetryEnrichmentStatus =
+  | "Running"
+  | "Stopped"
+  | "Impaired"
+  | (string & {});
+export const TelemetryEnrichmentStatus = S.String;
 export type Status =
   | "NOT_STARTED"
   | "STARTING"
@@ -225,16 +225,9 @@ export type Status =
   | "RUNNING"
   | "STOPPING"
   | "FAILED_STOP"
-  | "STOPPED";
-export const Status = S.Literal(
-  "NOT_STARTED",
-  "STARTING",
-  "FAILED_START",
-  "RUNNING",
-  "STOPPING",
-  "FAILED_STOP",
-  "STOPPED",
-);
+  | "STOPPED"
+  | (string & {});
+export const Status = S.String;
 export type ResourceType =
   | "AWS::EC2::Instance"
   | "AWS::EC2::VPC"
@@ -246,20 +239,9 @@ export type ResourceType =
   | "AWS::Route53Resolver::ResolverEndpoint"
   | "AWS::BedrockAgentCore::Runtime"
   | "AWS::BedrockAgentCore::Browser"
-  | "AWS::BedrockAgentCore::CodeInterpreter";
-export const ResourceType = S.Literal(
-  "AWS::EC2::Instance",
-  "AWS::EC2::VPC",
-  "AWS::Lambda::Function",
-  "AWS::CloudTrail",
-  "AWS::EKS::Cluster",
-  "AWS::WAFv2::WebACL",
-  "AWS::ElasticLoadBalancingV2::LoadBalancer",
-  "AWS::Route53Resolver::ResolverEndpoint",
-  "AWS::BedrockAgentCore::Runtime",
-  "AWS::BedrockAgentCore::Browser",
-  "AWS::BedrockAgentCore::CodeInterpreter",
-);
+  | "AWS::BedrockAgentCore::CodeInterpreter"
+  | (string & {});
+export const ResourceType = S.String;
 export type ResourceTypes = ResourceType[];
 export const ResourceTypes = S.Array(ResourceType);
 export type AccountIdentifiers = string[];
@@ -268,8 +250,8 @@ export type OrganizationUnitIdentifiers = string[];
 export const OrganizationUnitIdentifiers = S.Array(S.String);
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
-export type TelemetryType = "Logs" | "Metrics" | "Traces";
-export const TelemetryType = S.Literal("Logs", "Metrics", "Traces");
+export type TelemetryType = "Logs" | "Metrics" | "Traces" | (string & {});
+export const TelemetryType = S.String;
 export type TelemetrySourceType =
   | "VPC_FLOW_LOGS"
   | "ROUTE53_RESOLVER_QUERY_LOGS"
@@ -277,20 +259,13 @@ export type TelemetrySourceType =
   | "EKS_AUTHENTICATOR_LOGS"
   | "EKS_CONTROLLER_MANAGER_LOGS"
   | "EKS_SCHEDULER_LOGS"
-  | "EKS_API_LOGS";
-export const TelemetrySourceType = S.Literal(
-  "VPC_FLOW_LOGS",
-  "ROUTE53_RESOLVER_QUERY_LOGS",
-  "EKS_AUDIT_LOGS",
-  "EKS_AUTHENTICATOR_LOGS",
-  "EKS_CONTROLLER_MANAGER_LOGS",
-  "EKS_SCHEDULER_LOGS",
-  "EKS_API_LOGS",
-);
+  | "EKS_API_LOGS"
+  | (string & {});
+export const TelemetrySourceType = S.String;
 export type TelemetrySourceTypes = TelemetrySourceType[];
 export const TelemetrySourceTypes = S.Array(TelemetrySourceType);
-export type DestinationType = "cloud-watch-logs";
-export const DestinationType = S.Literal("cloud-watch-logs");
+export type DestinationType = "cloud-watch-logs" | (string & {});
+export const DestinationType = S.String;
 export interface VPCFlowLogParameters {
   LogFormat?: string;
   TrafficType?: string;
@@ -350,8 +325,8 @@ export const CloudtrailParameters = S.suspend(() =>
 ).annotations({
   identifier: "CloudtrailParameters",
 }) as any as S.Schema<CloudtrailParameters>;
-export type OutputFormat = "plain" | "json";
-export const OutputFormat = S.Literal("plain", "json");
+export type OutputFormat = "plain" | "json" | (string & {});
+export const OutputFormat = S.String;
 export interface ELBLoadBalancerLoggingParameters {
   OutputFormat?: OutputFormat;
   FieldDelimiter?: string;
@@ -386,25 +361,19 @@ export const FieldToMatch = S.suspend(() =>
 ).annotations({ identifier: "FieldToMatch" }) as any as S.Schema<FieldToMatch>;
 export type RedactedFields = FieldToMatch[];
 export const RedactedFields = S.Array(FieldToMatch);
-export type FilterBehavior = "KEEP" | "DROP";
-export const FilterBehavior = S.Literal("KEEP", "DROP");
-export type FilterRequirement = "MEETS_ALL" | "MEETS_ANY";
-export const FilterRequirement = S.Literal("MEETS_ALL", "MEETS_ANY");
+export type FilterBehavior = "KEEP" | "DROP" | (string & {});
+export const FilterBehavior = S.String;
+export type FilterRequirement = "MEETS_ALL" | "MEETS_ANY" | (string & {});
+export const FilterRequirement = S.String;
 export type Action =
   | "ALLOW"
   | "BLOCK"
   | "COUNT"
   | "CAPTCHA"
   | "CHALLENGE"
-  | "EXCLUDED_AS_COUNT";
-export const Action = S.Literal(
-  "ALLOW",
-  "BLOCK",
-  "COUNT",
-  "CAPTCHA",
-  "CHALLENGE",
-  "EXCLUDED_AS_COUNT",
-);
+  | "EXCLUDED_AS_COUNT"
+  | (string & {});
+export const Action = S.String;
 export interface ActionCondition {
   Action?: Action;
 }
@@ -459,8 +428,8 @@ export const LoggingFilter = S.suspend(() =>
 ).annotations({
   identifier: "LoggingFilter",
 }) as any as S.Schema<LoggingFilter>;
-export type WAFLogType = "WAF_LOGS";
-export const WAFLogType = S.Literal("WAF_LOGS");
+export type WAFLogType = "WAF_LOGS" | (string & {});
+export const WAFLogType = S.String;
 export interface WAFLoggingParameters {
   RedactedFields?: FieldToMatch[];
   LoggingFilter?: LoggingFilter;
@@ -475,8 +444,8 @@ export const WAFLoggingParameters = S.suspend(() =>
 ).annotations({
   identifier: "WAFLoggingParameters",
 }) as any as S.Schema<WAFLoggingParameters>;
-export type LogType = "APPLICATION_LOGS" | "USAGE_LOGS";
-export const LogType = S.Literal("APPLICATION_LOGS", "USAGE_LOGS");
+export type LogType = "APPLICATION_LOGS" | "USAGE_LOGS" | (string & {});
+export const LogType = S.String;
 export type LogTypes = LogType[];
 export const LogTypes = S.Array(LogType);
 export interface LogDeliveryParameters {
@@ -782,8 +751,12 @@ export const ListCentralizationRulesForOrganizationInput = S.suspend(() =>
 ).annotations({
   identifier: "ListCentralizationRulesForOrganizationInput",
 }) as any as S.Schema<ListCentralizationRulesForOrganizationInput>;
-export type TelemetryState = "Enabled" | "Disabled" | "NotApplicable";
-export const TelemetryState = S.Literal("Enabled", "Disabled", "NotApplicable");
+export type TelemetryState =
+  | "Enabled"
+  | "Disabled"
+  | "NotApplicable"
+  | (string & {});
+export const TelemetryState = S.String;
 export type TelemetryConfigurationState = {
   [key in TelemetryType]?: TelemetryState;
 };
@@ -975,8 +948,8 @@ export const UntagResourceResponse = S.suspend(() => S.Struct({})).annotations({
 }) as any as S.Schema<UntagResourceResponse>;
 export type Regions = string[];
 export const Regions = S.Array(S.String);
-export type EncryptedLogGroupStrategy = "ALLOW" | "SKIP";
-export const EncryptedLogGroupStrategy = S.Literal("ALLOW", "SKIP");
+export type EncryptedLogGroupStrategy = "ALLOW" | "SKIP" | (string & {});
+export const EncryptedLogGroupStrategy = S.String;
 export interface SourceLogsConfiguration {
   LogGroupSelectionCriteria: string;
   EncryptedLogGroupStrategy: EncryptedLogGroupStrategy;
@@ -1003,10 +976,16 @@ export const CentralizationRuleSource = S.suspend(() =>
 ).annotations({
   identifier: "CentralizationRuleSource",
 }) as any as S.Schema<CentralizationRuleSource>;
-export type EncryptionStrategy = "CUSTOMER_MANAGED" | "AWS_OWNED";
-export const EncryptionStrategy = S.Literal("CUSTOMER_MANAGED", "AWS_OWNED");
-export type EncryptionConflictResolutionStrategy = "ALLOW" | "SKIP";
-export const EncryptionConflictResolutionStrategy = S.Literal("ALLOW", "SKIP");
+export type EncryptionStrategy =
+  | "CUSTOMER_MANAGED"
+  | "AWS_OWNED"
+  | (string & {});
+export const EncryptionStrategy = S.String;
+export type EncryptionConflictResolutionStrategy =
+  | "ALLOW"
+  | "SKIP"
+  | (string & {});
+export const EncryptionConflictResolutionStrategy = S.String;
 export interface LogsEncryptionConfiguration {
   EncryptionStrategy: EncryptionStrategy;
   KmsKeyArn?: string;
@@ -1266,10 +1245,10 @@ export const ListTelemetryPipelinesInput = S.suspend(() =>
 ).annotations({
   identifier: "ListTelemetryPipelinesInput",
 }) as any as S.Schema<ListTelemetryPipelinesInput>;
-export type SSEAlgorithm = "aws:kms" | "AES256";
-export const SSEAlgorithm = S.Literal("aws:kms", "AES256");
-export type RecordFormat = "STRING" | "JSON";
-export const RecordFormat = S.Literal("STRING", "JSON");
+export type SSEAlgorithm = "aws:kms" | "AES256" | (string & {});
+export const SSEAlgorithm = S.String;
+export type RecordFormat = "STRING" | "JSON" | (string & {});
+export const RecordFormat = S.String;
 export interface Encryption {
   SseAlgorithm: SSEAlgorithm;
   KmsKeyArn?: string;
@@ -1277,19 +1256,20 @@ export interface Encryption {
 export const Encryption = S.suspend(() =>
   S.Struct({ SseAlgorithm: SSEAlgorithm, KmsKeyArn: S.optional(S.String) }),
 ).annotations({ identifier: "Encryption" }) as any as S.Schema<Encryption>;
-export type RuleHealth = "Healthy" | "Unhealthy" | "Provisioning";
-export const RuleHealth = S.Literal("Healthy", "Unhealthy", "Provisioning");
+export type RuleHealth =
+  | "Healthy"
+  | "Unhealthy"
+  | "Provisioning"
+  | (string & {});
+export const RuleHealth = S.String;
 export type CentralizationFailureReason =
   | "TRUSTED_ACCESS_NOT_ENABLED"
   | "DESTINATION_ACCOUNT_NOT_IN_ORGANIZATION"
-  | "INTERNAL_SERVER_ERROR";
-export const CentralizationFailureReason = S.Literal(
-  "TRUSTED_ACCESS_NOT_ENABLED",
-  "DESTINATION_ACCOUNT_NOT_IN_ORGANIZATION",
-  "INTERNAL_SERVER_ERROR",
-);
-export type IntegrationStatus = "ACTIVE" | "DELETING";
-export const IntegrationStatus = S.Literal("ACTIVE", "DELETING");
+  | "INTERNAL_SERVER_ERROR"
+  | (string & {});
+export const CentralizationFailureReason = S.String;
+export type IntegrationStatus = "ACTIVE" | "DELETING" | (string & {});
+export const IntegrationStatus = S.String;
 export interface Record {
   Data?: string;
   Type?: RecordFormat;
@@ -1536,15 +1516,9 @@ export type TelemetryPipelineStatus =
   | "UPDATING"
   | "DELETING"
   | "CREATE_FAILED"
-  | "UPDATE_FAILED";
-export const TelemetryPipelineStatus = S.Literal(
-  "CREATING",
-  "ACTIVE",
-  "UPDATING",
-  "DELETING",
-  "CREATE_FAILED",
-  "UPDATE_FAILED",
-);
+  | "UPDATE_FAILED"
+  | (string & {});
+export const TelemetryPipelineStatus = S.String;
 export interface CentralizationRuleSummary {
   RuleName?: string;
   RuleArn?: string;

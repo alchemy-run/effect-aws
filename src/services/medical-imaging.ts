@@ -125,30 +125,28 @@ export type DICOMSeriesBodyPart = string | redacted.Redacted<string>;
 export type DICOMSeriesNumber = number;
 
 //# Schemas
-export type JobStatus = "SUBMITTED" | "IN_PROGRESS" | "COMPLETED" | "FAILED";
-export const JobStatus = S.Literal(
-  "SUBMITTED",
-  "IN_PROGRESS",
-  "COMPLETED",
-  "FAILED",
-);
+export type JobStatus =
+  | "SUBMITTED"
+  | "IN_PROGRESS"
+  | "COMPLETED"
+  | "FAILED"
+  | (string & {});
+export const JobStatus = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
-export type LosslessStorageFormat = "HTJ2K" | "JPEG_2000_LOSSLESS";
-export const LosslessStorageFormat = S.Literal("HTJ2K", "JPEG_2000_LOSSLESS");
+export type LosslessStorageFormat =
+  | "HTJ2K"
+  | "JPEG_2000_LOSSLESS"
+  | (string & {});
+export const LosslessStorageFormat = S.String;
 export type DatastoreStatus =
   | "CREATING"
   | "CREATE_FAILED"
   | "ACTIVE"
   | "DELETING"
-  | "DELETED";
-export const DatastoreStatus = S.Literal(
-  "CREATING",
-  "CREATE_FAILED",
-  "ACTIVE",
-  "DELETING",
-  "DELETED",
-);
+  | "DELETED"
+  | (string & {});
+export const DatastoreStatus = S.String;
 export interface DeleteImageSetRequest {
   datastoreId: string;
   imageSetId: string;
@@ -474,8 +472,8 @@ export const ListDatastoresRequest = S.suspend(() =>
 ).annotations({
   identifier: "ListDatastoresRequest",
 }) as any as S.Schema<ListDatastoresRequest>;
-export type ImageSetState = "ACTIVE" | "LOCKED" | "DELETED";
-export const ImageSetState = S.Literal("ACTIVE", "LOCKED", "DELETED");
+export type ImageSetState = "ACTIVE" | "LOCKED" | "DELETED" | (string & {});
+export const ImageSetState = S.String;
 export type ImageSetWorkflowStatus =
   | "CREATED"
   | "COPIED"
@@ -489,22 +487,9 @@ export type ImageSetWorkflowStatus =
   | "DELETED"
   | "IMPORTING"
   | "IMPORTED"
-  | "IMPORT_FAILED";
-export const ImageSetWorkflowStatus = S.Literal(
-  "CREATED",
-  "COPIED",
-  "COPYING",
-  "COPYING_WITH_READ_ONLY_ACCESS",
-  "COPY_FAILED",
-  "UPDATING",
-  "UPDATED",
-  "UPDATE_FAILED",
-  "DELETING",
-  "DELETED",
-  "IMPORTING",
-  "IMPORTED",
-  "IMPORT_FAILED",
-);
+  | "IMPORT_FAILED"
+  | (string & {});
+export const ImageSetWorkflowStatus = S.String;
 export interface ImageFrameInformation {
   imageFrameId: string;
 }
@@ -513,21 +498,21 @@ export const ImageFrameInformation = S.suspend(() =>
 ).annotations({
   identifier: "ImageFrameInformation",
 }) as any as S.Schema<ImageFrameInformation>;
-export type StorageTier = "FREQUENT_ACCESS" | "ARCHIVE_INSTANT_ACCESS";
-export const StorageTier = S.Literal(
-  "FREQUENT_ACCESS",
-  "ARCHIVE_INSTANT_ACCESS",
-);
-export type Operator = "EQUAL" | "BETWEEN";
-export const Operator = S.Literal("EQUAL", "BETWEEN");
-export type SortOrder = "ASC" | "DESC";
-export const SortOrder = S.Literal("ASC", "DESC");
-export type SortField = "updatedAt" | "createdAt" | "DICOMStudyDateAndTime";
-export const SortField = S.Literal(
-  "updatedAt",
-  "createdAt",
-  "DICOMStudyDateAndTime",
-);
+export type StorageTier =
+  | "FREQUENT_ACCESS"
+  | "ARCHIVE_INSTANT_ACCESS"
+  | (string & {});
+export const StorageTier = S.String;
+export type Operator = "EQUAL" | "BETWEEN" | (string & {});
+export const Operator = S.String;
+export type SortOrder = "ASC" | "DESC" | (string & {});
+export const SortOrder = S.String;
+export type SortField =
+  | "updatedAt"
+  | "createdAt"
+  | "DICOMStudyDateAndTime"
+  | (string & {});
+export const SortField = S.String;
 export interface DeleteImageSetResponse {
   datastoreId: string;
   imageSetId: string;

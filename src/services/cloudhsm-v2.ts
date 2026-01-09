@@ -125,10 +125,10 @@ export type VpcId = string;
 //# Schemas
 export type SubnetIds = string[];
 export const SubnetIds = S.Array(S.String);
-export type NetworkType = "IPV4" | "DUALSTACK";
-export const NetworkType = S.Literal("IPV4", "DUALSTACK");
-export type ClusterMode = "FIPS" | "NON_FIPS";
-export const ClusterMode = S.Literal("FIPS", "NON_FIPS");
+export type NetworkType = "IPV4" | "DUALSTACK" | (string & {});
+export const NetworkType = S.String;
+export type ClusterMode = "FIPS" | "NON_FIPS" | (string & {});
+export const ClusterMode = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export interface CreateHsmRequest {
@@ -271,8 +271,8 @@ export const ModifyBackupAttributesRequest = S.suspend(() =>
 ).annotations({
   identifier: "ModifyBackupAttributesRequest",
 }) as any as S.Schema<ModifyBackupAttributesRequest>;
-export type BackupRetentionType = "DAYS";
-export const BackupRetentionType = S.Literal("DAYS");
+export type BackupRetentionType = "DAYS" | (string & {});
+export const BackupRetentionType = S.String;
 export interface BackupRetentionPolicy {
   Type?: BackupRetentionType;
   Value?: string;
@@ -364,21 +364,16 @@ export interface UntagResourceResponse {}
 export const UntagResourceResponse = S.suspend(() => S.Struct({})).annotations({
   identifier: "UntagResourceResponse",
 }) as any as S.Schema<UntagResourceResponse>;
-export type BackupPolicy = "DEFAULT";
-export const BackupPolicy = S.Literal("DEFAULT");
+export type BackupPolicy = "DEFAULT" | (string & {});
+export const BackupPolicy = S.String;
 export type HsmState =
   | "CREATE_IN_PROGRESS"
   | "ACTIVE"
   | "DEGRADED"
   | "DELETE_IN_PROGRESS"
-  | "DELETED";
-export const HsmState = S.Literal(
-  "CREATE_IN_PROGRESS",
-  "ACTIVE",
-  "DEGRADED",
-  "DELETE_IN_PROGRESS",
-  "DELETED",
-);
+  | "DELETED"
+  | (string & {});
+export const HsmState = S.String;
 export interface Hsm {
   AvailabilityZone?: string;
   ClusterId?: string;
@@ -418,20 +413,9 @@ export type ClusterState =
   | "ROLLBACK_IN_PROGRESS"
   | "DELETE_IN_PROGRESS"
   | "DELETED"
-  | "DEGRADED";
-export const ClusterState = S.Literal(
-  "CREATE_IN_PROGRESS",
-  "UNINITIALIZED",
-  "INITIALIZE_IN_PROGRESS",
-  "INITIALIZED",
-  "ACTIVE",
-  "UPDATE_IN_PROGRESS",
-  "MODIFY_IN_PROGRESS",
-  "ROLLBACK_IN_PROGRESS",
-  "DELETE_IN_PROGRESS",
-  "DELETED",
-  "DEGRADED",
-);
+  | "DEGRADED"
+  | (string & {});
+export const ClusterState = S.String;
 export type ExternalSubnetMapping = { [key: string]: string | undefined };
 export const ExternalSubnetMapping = S.Record({
   key: S.String,
@@ -620,13 +604,9 @@ export type BackupState =
   | "CREATE_IN_PROGRESS"
   | "READY"
   | "DELETED"
-  | "PENDING_DELETION";
-export const BackupState = S.Literal(
-  "CREATE_IN_PROGRESS",
-  "READY",
-  "DELETED",
-  "PENDING_DELETION",
-);
+  | "PENDING_DELETION"
+  | (string & {});
+export const BackupState = S.String;
 export interface Backup {
   BackupId: string;
   BackupArn?: string;

@@ -121,29 +121,29 @@ export type MembershipCount = number;
 export type LambdaFunctionArn = string;
 
 //# Schemas
-export type ChannelMembershipType = "DEFAULT" | "HIDDEN";
-export const ChannelMembershipType = S.Literal("DEFAULT", "HIDDEN");
+export type ChannelMembershipType = "DEFAULT" | "HIDDEN" | (string & {});
+export const ChannelMembershipType = S.String;
 export type MemberArns = string[];
 export const MemberArns = S.Array(S.String);
-export type ChannelMode = "UNRESTRICTED" | "RESTRICTED";
-export const ChannelMode = S.Literal("UNRESTRICTED", "RESTRICTED");
-export type ChannelPrivacy = "PUBLIC" | "PRIVATE";
-export const ChannelPrivacy = S.Literal("PUBLIC", "PRIVATE");
+export type ChannelMode = "UNRESTRICTED" | "RESTRICTED" | (string & {});
+export const ChannelMode = S.String;
+export type ChannelPrivacy = "PUBLIC" | "PRIVATE" | (string & {});
+export const ChannelPrivacy = S.String;
 export type ChannelMemberArns = string[];
 export const ChannelMemberArns = S.Array(S.String);
 export type ChannelModeratorArns = string[];
 export const ChannelModeratorArns = S.Array(S.String);
-export type NetworkType = "IPV4_ONLY" | "DUAL_STACK";
-export const NetworkType = S.Literal("IPV4_ONLY", "DUAL_STACK");
-export type SortOrder = "ASCENDING" | "DESCENDING";
-export const SortOrder = S.Literal("ASCENDING", "DESCENDING");
-export type ChannelMessageType = "STANDARD" | "CONTROL";
-export const ChannelMessageType = S.Literal("STANDARD", "CONTROL");
-export type ChannelMessagePersistenceType = "PERSISTENT" | "NON_PERSISTENT";
-export const ChannelMessagePersistenceType = S.Literal(
-  "PERSISTENT",
-  "NON_PERSISTENT",
-);
+export type NetworkType = "IPV4_ONLY" | "DUAL_STACK" | (string & {});
+export const NetworkType = S.String;
+export type SortOrder = "ASCENDING" | "DESCENDING" | (string & {});
+export const SortOrder = S.String;
+export type ChannelMessageType = "STANDARD" | "CONTROL" | (string & {});
+export const ChannelMessageType = S.String;
+export type ChannelMessagePersistenceType =
+  | "PERSISTENT"
+  | "NON_PERSISTENT"
+  | (string & {});
+export const ChannelMessagePersistenceType = S.String;
 export type TagKeyList = string | redacted.Redacted<string>[];
 export const TagKeyList = S.Array(SensitiveString);
 export interface AssociateChannelFlowRequest {
@@ -1109,11 +1109,9 @@ export const ListTagsForResourceRequest = S.suspend(() =>
 }) as any as S.Schema<ListTagsForResourceRequest>;
 export type ExpirationCriterion =
   | "CREATED_TIMESTAMP"
-  | "LAST_MESSAGE_TIMESTAMP";
-export const ExpirationCriterion = S.Literal(
-  "CREATED_TIMESTAMP",
-  "LAST_MESSAGE_TIMESTAMP",
-);
+  | "LAST_MESSAGE_TIMESTAMP"
+  | (string & {});
+export const ExpirationCriterion = S.String;
 export interface ExpirationSettings {
   ExpirationDays: number;
   ExpirationCriterion: ExpirationCriterion;
@@ -1260,8 +1258,8 @@ export const UpdateChannelRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateChannelRequest",
 }) as any as S.Schema<UpdateChannelRequest>;
-export type InvocationType = "ASYNC";
-export const InvocationType = S.Literal("ASYNC");
+export type InvocationType = "ASYNC" | (string & {});
+export const InvocationType = S.String;
 export interface LambdaConfiguration {
   ResourceArn: string;
   InvocationType: InvocationType;
@@ -1279,8 +1277,8 @@ export const ProcessorConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "ProcessorConfiguration",
 }) as any as S.Schema<ProcessorConfiguration>;
-export type FallbackAction = "CONTINUE" | "ABORT";
-export const FallbackAction = S.Literal("CONTINUE", "ABORT");
+export type FallbackAction = "CONTINUE" | "ABORT" | (string & {});
+export const FallbackAction = S.String;
 export interface Processor {
   Name: string | redacted.Redacted<string>;
   Configuration: ProcessorConfiguration;
@@ -1375,16 +1373,16 @@ export const UpdateChannelReadMarkerRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateChannelReadMarkerRequest",
 }) as any as S.Schema<UpdateChannelReadMarkerRequest>;
-export type MessagingDataType = "Channel" | "ChannelMessage";
-export const MessagingDataType = S.Literal("Channel", "ChannelMessage");
-export type SearchFieldKey = "MEMBERS";
-export const SearchFieldKey = S.Literal("MEMBERS");
+export type MessagingDataType = "Channel" | "ChannelMessage" | (string & {});
+export const MessagingDataType = S.String;
+export type SearchFieldKey = "MEMBERS" | (string & {});
+export const SearchFieldKey = S.String;
 export type SearchFieldValues = string[];
 export const SearchFieldValues = S.Array(S.String);
-export type SearchFieldOperator = "EQUALS" | "INCLUDES";
-export const SearchFieldOperator = S.Literal("EQUALS", "INCLUDES");
-export type PushNotificationType = "DEFAULT" | "VOIP";
-export const PushNotificationType = S.Literal("DEFAULT", "VOIP");
+export type SearchFieldOperator = "EQUALS" | "INCLUDES" | (string & {});
+export const SearchFieldOperator = S.String;
+export type PushNotificationType = "DEFAULT" | "VOIP" | (string & {});
+export const PushNotificationType = S.String;
 export type ErrorCode =
   | "BadRequest"
   | "Conflict"
@@ -1400,24 +1398,9 @@ export type ErrorCode =
   | "Unauthorized"
   | "Unprocessable"
   | "VoiceConnectorGroupAssociationsExist"
-  | "PhoneNumberAssociationsExist";
-export const ErrorCode = S.Literal(
-  "BadRequest",
-  "Conflict",
-  "Forbidden",
-  "NotFound",
-  "PreconditionFailed",
-  "ResourceLimitExceeded",
-  "ServiceFailure",
-  "AccessDenied",
-  "ServiceUnavailable",
-  "Throttled",
-  "Throttling",
-  "Unauthorized",
-  "Unprocessable",
-  "VoiceConnectorGroupAssociationsExist",
-  "PhoneNumberAssociationsExist",
-);
+  | "PhoneNumberAssociationsExist"
+  | (string & {});
+export const ErrorCode = S.String;
 export interface PushNotificationConfiguration {
   Title?: string | redacted.Redacted<string>;
   Body?: string | redacted.Redacted<string>;
@@ -1588,8 +1571,8 @@ export const Target = S.suspend(() =>
 ).annotations({ identifier: "Target" }) as any as S.Schema<Target>;
 export type TargetList = Target[];
 export const TargetList = S.Array(Target);
-export type AllowNotifications = "ALL" | "NONE" | "FILTERED";
-export const AllowNotifications = S.Literal("ALL", "NONE", "FILTERED");
+export type AllowNotifications = "ALL" | "NONE" | "FILTERED" | (string & {});
+export const AllowNotifications = S.String;
 export interface ChannelFlowCallbackRequest {
   CallbackId: string;
   ChannelArn: string;
@@ -1861,13 +1844,13 @@ export const UpdateChannelFlowResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateChannelFlowResponse",
 }) as any as S.Schema<UpdateChannelFlowResponse>;
-export type ChannelMessageStatus = "SENT" | "PENDING" | "FAILED" | "DENIED";
-export const ChannelMessageStatus = S.Literal(
-  "SENT",
-  "PENDING",
-  "FAILED",
-  "DENIED",
-);
+export type ChannelMessageStatus =
+  | "SENT"
+  | "PENDING"
+  | "FAILED"
+  | "DENIED"
+  | (string & {});
+export const ChannelMessageStatus = S.String;
 export interface ChannelMessageStatusStructure {
   Value?: ChannelMessageStatus;
   Detail?: string;

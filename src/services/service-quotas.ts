@@ -201,17 +201,15 @@ export const StopAutoManagementResponse = S.suspend(() =>
 }) as any as S.Schema<StopAutoManagementResponse>;
 export type ServiceQuotaTemplateAssociationStatus =
   | "ASSOCIATED"
-  | "DISASSOCIATED";
-export const ServiceQuotaTemplateAssociationStatus = S.Literal(
-  "ASSOCIATED",
-  "DISASSOCIATED",
-);
-export type OptInLevel = "ACCOUNT";
-export const OptInLevel = S.Literal("ACCOUNT");
-export type OptInType = "NotifyOnly" | "NotifyAndAdjust";
-export const OptInType = S.Literal("NotifyOnly", "NotifyAndAdjust");
-export type OptInStatus = "ENABLED" | "DISABLED";
-export const OptInStatus = S.Literal("ENABLED", "DISABLED");
+  | "DISASSOCIATED"
+  | (string & {});
+export const ServiceQuotaTemplateAssociationStatus = S.String;
+export type OptInLevel = "ACCOUNT" | (string & {});
+export const OptInLevel = S.String;
+export type OptInType = "NotifyOnly" | "NotifyAndAdjust" | (string & {});
+export const OptInType = S.String;
+export type OptInStatus = "ENABLED" | "DISABLED" | (string & {});
+export const OptInStatus = S.String;
 export type RequestStatus =
   | "PENDING"
   | "CASE_OPENED"
@@ -219,25 +217,18 @@ export type RequestStatus =
   | "DENIED"
   | "CASE_CLOSED"
   | "NOT_APPROVED"
-  | "INVALID_REQUEST";
-export const RequestStatus = S.Literal(
-  "PENDING",
-  "CASE_OPENED",
-  "APPROVED",
-  "DENIED",
-  "CASE_CLOSED",
-  "NOT_APPROVED",
-  "INVALID_REQUEST",
-);
-export type AppliedLevelEnum = "ACCOUNT" | "RESOURCE" | "ALL";
-export const AppliedLevelEnum = S.Literal("ACCOUNT", "RESOURCE", "ALL");
-export type ReportStatus = "PENDING" | "IN_PROGRESS" | "COMPLETED" | "FAILED";
-export const ReportStatus = S.Literal(
-  "PENDING",
-  "IN_PROGRESS",
-  "COMPLETED",
-  "FAILED",
-);
+  | "INVALID_REQUEST"
+  | (string & {});
+export const RequestStatus = S.String;
+export type AppliedLevelEnum = "ACCOUNT" | "RESOURCE" | "ALL" | (string & {});
+export const AppliedLevelEnum = S.String;
+export type ReportStatus =
+  | "PENDING"
+  | "IN_PROGRESS"
+  | "COMPLETED"
+  | "FAILED"
+  | (string & {});
+export const ReportStatus = S.String;
 export type InputTagKeys = string[];
 export const InputTagKeys = S.Array(S.String);
 export interface CreateSupportCaseRequest {
@@ -605,16 +596,9 @@ export type PeriodUnit =
   | "MINUTE"
   | "HOUR"
   | "DAY"
-  | "WEEK";
-export const PeriodUnit = S.Literal(
-  "MICROSECOND",
-  "MILLISECOND",
-  "SECOND",
-  "MINUTE",
-  "HOUR",
-  "DAY",
-  "WEEK",
-);
+  | "WEEK"
+  | (string & {});
+export const PeriodUnit = S.String;
 export interface QuotaPeriod {
   PeriodValue?: number;
   PeriodUnit?: PeriodUnit;
@@ -629,13 +613,9 @@ export type ErrorCode =
   | "DEPENDENCY_ACCESS_DENIED_ERROR"
   | "DEPENDENCY_THROTTLING_ERROR"
   | "DEPENDENCY_SERVICE_ERROR"
-  | "SERVICE_QUOTA_NOT_AVAILABLE_ERROR";
-export const ErrorCode = S.Literal(
-  "DEPENDENCY_ACCESS_DENIED_ERROR",
-  "DEPENDENCY_THROTTLING_ERROR",
-  "DEPENDENCY_SERVICE_ERROR",
-  "SERVICE_QUOTA_NOT_AVAILABLE_ERROR",
-);
+  | "SERVICE_QUOTA_NOT_AVAILABLE_ERROR"
+  | (string & {});
+export const ErrorCode = S.String;
 export interface ErrorReason {
   ErrorCode?: ErrorCode;
   ErrorMessage?: string;
@@ -646,8 +626,8 @@ export const ErrorReason = S.suspend(() =>
     ErrorMessage: S.optional(S.String),
   }),
 ).annotations({ identifier: "ErrorReason" }) as any as S.Schema<ErrorReason>;
-export type QuotaContextScope = "RESOURCE" | "ACCOUNT";
-export const QuotaContextScope = S.Literal("RESOURCE", "ACCOUNT");
+export type QuotaContextScope = "RESOURCE" | "ACCOUNT" | (string & {});
+export const QuotaContextScope = S.String;
 export interface QuotaContextInfo {
   ContextScope?: QuotaContextScope;
   ContextScopeType?: string;
@@ -700,8 +680,8 @@ export const ServiceQuota = S.suspend(() =>
 ).annotations({ identifier: "ServiceQuota" }) as any as S.Schema<ServiceQuota>;
 export type ServiceQuotaListDefinition = ServiceQuota[];
 export const ServiceQuotaListDefinition = S.Array(ServiceQuota);
-export type RequestType = "AutomaticManagement";
-export const RequestType = S.Literal("AutomaticManagement");
+export type RequestType = "AutomaticManagement" | (string & {});
+export const RequestType = S.String;
 export interface RequestedServiceQuotaChange {
   Id?: string;
   RequestType?: RequestType;

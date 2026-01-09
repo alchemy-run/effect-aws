@@ -120,8 +120,11 @@ export type SourceArnOrAccountList = string[];
 export const SourceArnOrAccountList = S.Array(S.String.pipe(T.XmlName("item")));
 export type PermissionArnList = string[];
 export const PermissionArnList = S.Array(S.String.pipe(T.XmlName("item")));
-export type ResourceShareAssociationType = "PRINCIPAL" | "RESOURCE";
-export const ResourceShareAssociationType = S.Literal("PRINCIPAL", "RESOURCE");
+export type ResourceShareAssociationType =
+  | "PRINCIPAL"
+  | "RESOURCE"
+  | (string & {});
+export const ResourceShareAssociationType = S.String;
 export type ResourceShareArnList = string[];
 export const ResourceShareArnList = S.Array(S.String.pipe(T.XmlName("item")));
 export type ResourceShareAssociationStatus =
@@ -129,14 +132,9 @@ export type ResourceShareAssociationStatus =
   | "ASSOCIATED"
   | "FAILED"
   | "DISASSOCIATING"
-  | "DISASSOCIATED";
-export const ResourceShareAssociationStatus = S.Literal(
-  "ASSOCIATING",
-  "ASSOCIATED",
-  "FAILED",
-  "DISASSOCIATING",
-  "DISASSOCIATED",
-);
+  | "DISASSOCIATED"
+  | (string & {});
+export const ResourceShareAssociationStatus = S.String;
 export type ResourceShareInvitationArnList = string[];
 export const ResourceShareInvitationArnList = S.Array(
   S.String.pipe(T.XmlName("item")),
@@ -146,33 +144,29 @@ export type ResourceShareStatus =
   | "ACTIVE"
   | "FAILED"
   | "DELETING"
-  | "DELETED";
-export const ResourceShareStatus = S.Literal(
-  "PENDING",
-  "ACTIVE",
-  "FAILED",
-  "DELETING",
-  "DELETED",
-);
-export type ResourceOwner = "SELF" | "OTHER-ACCOUNTS";
-export const ResourceOwner = S.Literal("SELF", "OTHER-ACCOUNTS");
-export type ResourceRegionScopeFilter = "ALL" | "REGIONAL" | "GLOBAL";
-export const ResourceRegionScopeFilter = S.Literal("ALL", "REGIONAL", "GLOBAL");
+  | "DELETED"
+  | (string & {});
+export const ResourceShareStatus = S.String;
+export type ResourceOwner = "SELF" | "OTHER-ACCOUNTS" | (string & {});
+export const ResourceOwner = S.String;
+export type ResourceRegionScopeFilter =
+  | "ALL"
+  | "REGIONAL"
+  | "GLOBAL"
+  | (string & {});
+export const ResourceRegionScopeFilter = S.String;
 export type PermissionFeatureSet =
   | "CREATED_FROM_POLICY"
   | "PROMOTING_TO_STANDARD"
-  | "STANDARD";
-export const PermissionFeatureSet = S.Literal(
-  "CREATED_FROM_POLICY",
-  "PROMOTING_TO_STANDARD",
-  "STANDARD",
-);
-export type PermissionTypeFilter = "ALL" | "AWS_MANAGED" | "CUSTOMER_MANAGED";
-export const PermissionTypeFilter = S.Literal(
-  "ALL",
-  "AWS_MANAGED",
-  "CUSTOMER_MANAGED",
-);
+  | "STANDARD"
+  | (string & {});
+export const PermissionFeatureSet = S.String;
+export type PermissionTypeFilter =
+  | "ALL"
+  | "AWS_MANAGED"
+  | "CUSTOMER_MANAGED"
+  | (string & {});
+export const PermissionTypeFilter = S.String;
 export type ReplacePermissionAssociationsWorkIdList = string[];
 export const ReplacePermissionAssociationsWorkIdList = S.Array(
   S.String.pipe(T.XmlName("item")),
@@ -180,12 +174,9 @@ export const ReplacePermissionAssociationsWorkIdList = S.Array(
 export type ReplacePermissionAssociationsWorkStatus =
   | "IN_PROGRESS"
   | "COMPLETED"
-  | "FAILED";
-export const ReplacePermissionAssociationsWorkStatus = S.Literal(
-  "IN_PROGRESS",
-  "COMPLETED",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const ReplacePermissionAssociationsWorkStatus = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export interface AcceptResourceShareInvitationRequest {
@@ -990,26 +981,18 @@ export type PermissionStatus =
   | "ATTACHABLE"
   | "UNATTACHABLE"
   | "DELETING"
-  | "DELETED";
-export const PermissionStatus = S.Literal(
-  "ATTACHABLE",
-  "UNATTACHABLE",
-  "DELETING",
-  "DELETED",
-);
+  | "DELETED"
+  | (string & {});
+export const PermissionStatus = S.String;
 export type PolicyList = string[];
 export const PolicyList = S.Array(S.String.pipe(T.XmlName("item")));
 export type ResourceShareInvitationStatus =
   | "PENDING"
   | "ACCEPTED"
   | "REJECTED"
-  | "EXPIRED";
-export const ResourceShareInvitationStatus = S.Literal(
-  "PENDING",
-  "ACCEPTED",
-  "REJECTED",
-  "EXPIRED",
-);
+  | "EXPIRED"
+  | (string & {});
+export const ResourceShareInvitationStatus = S.String;
 export interface ResourceShareAssociation {
   resourceShareArn?: string;
   resourceShareName?: string;
@@ -1193,8 +1176,8 @@ export const DisassociateResourceSharePermissionResponse = S.suspend(() =>
 ).annotations({
   identifier: "DisassociateResourceSharePermissionResponse",
 }) as any as S.Schema<DisassociateResourceSharePermissionResponse>;
-export type PermissionType = "CUSTOMER_MANAGED" | "AWS_MANAGED";
-export const PermissionType = S.Literal("CUSTOMER_MANAGED", "AWS_MANAGED");
+export type PermissionType = "CUSTOMER_MANAGED" | "AWS_MANAGED" | (string & {});
+export const PermissionType = S.String;
 export interface ResourceSharePermissionDetail {
   arn?: string;
   version?: string;
@@ -1367,16 +1350,11 @@ export type ResourceStatus =
   | "ZONAL_RESOURCE_INACCESSIBLE"
   | "LIMIT_EXCEEDED"
   | "UNAVAILABLE"
-  | "PENDING";
-export const ResourceStatus = S.Literal(
-  "AVAILABLE",
-  "ZONAL_RESOURCE_INACCESSIBLE",
-  "LIMIT_EXCEEDED",
-  "UNAVAILABLE",
-  "PENDING",
-);
-export type ResourceRegionScope = "REGIONAL" | "GLOBAL";
-export const ResourceRegionScope = S.Literal("REGIONAL", "GLOBAL");
+  | "PENDING"
+  | (string & {});
+export const ResourceStatus = S.String;
+export type ResourceRegionScope = "REGIONAL" | "GLOBAL" | (string & {});
+export const ResourceRegionScope = S.String;
 export interface Resource {
   arn?: string;
   type?: string;
@@ -1520,12 +1498,9 @@ export const SetDefaultPermissionVersionResponse = S.suspend(() =>
 export type ResourceShareFeatureSet =
   | "CREATED_FROM_POLICY"
   | "PROMOTING_TO_STANDARD"
-  | "STANDARD";
-export const ResourceShareFeatureSet = S.Literal(
-  "CREATED_FROM_POLICY",
-  "PROMOTING_TO_STANDARD",
-  "STANDARD",
-);
+  | "STANDARD"
+  | (string & {});
+export const ResourceShareFeatureSet = S.String;
 export interface ResourceShare {
   resourceShareArn?: string;
   name?: string;

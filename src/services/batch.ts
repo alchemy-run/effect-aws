@@ -104,23 +104,23 @@ export type KubernetesVersion = string;
 export type Quantity = string;
 
 //# Schemas
-export type CEType = "MANAGED" | "UNMANAGED";
-export const CEType = S.Literal("MANAGED", "UNMANAGED");
-export type CEState = "ENABLED" | "DISABLED";
-export const CEState = S.Literal("ENABLED", "DISABLED");
-export type JQState = "ENABLED" | "DISABLED";
-export const JQState = S.Literal("ENABLED", "DISABLED");
-export type JobQueueType = "EKS" | "ECS" | "ECS_FARGATE" | "SAGEMAKER_TRAINING";
-export const JobQueueType = S.Literal(
-  "EKS",
-  "ECS",
-  "ECS_FARGATE",
-  "SAGEMAKER_TRAINING",
-);
-export type ServiceEnvironmentType = "SAGEMAKER_TRAINING";
-export const ServiceEnvironmentType = S.Literal("SAGEMAKER_TRAINING");
-export type ServiceEnvironmentState = "ENABLED" | "DISABLED";
-export const ServiceEnvironmentState = S.Literal("ENABLED", "DISABLED");
+export type CEType = "MANAGED" | "UNMANAGED" | (string & {});
+export const CEType = S.String;
+export type CEState = "ENABLED" | "DISABLED" | (string & {});
+export const CEState = S.String;
+export type JQState = "ENABLED" | "DISABLED" | (string & {});
+export const JQState = S.String;
+export type JobQueueType =
+  | "EKS"
+  | "ECS"
+  | "ECS_FARGATE"
+  | "SAGEMAKER_TRAINING"
+  | (string & {});
+export const JobQueueType = S.String;
+export type ServiceEnvironmentType = "SAGEMAKER_TRAINING" | (string & {});
+export const ServiceEnvironmentType = S.String;
+export type ServiceEnvironmentState = "ENABLED" | "DISABLED" | (string & {});
+export const ServiceEnvironmentState = S.String;
 export type StringList = string[];
 export const StringList = S.Array(S.String);
 export type JobStatus =
@@ -130,16 +130,9 @@ export type JobStatus =
   | "STARTING"
   | "RUNNING"
   | "SUCCEEDED"
-  | "FAILED";
-export const JobStatus = S.Literal(
-  "SUBMITTED",
-  "PENDING",
-  "RUNNABLE",
-  "STARTING",
-  "RUNNING",
-  "SUCCEEDED",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const JobStatus = S.String;
 export interface KeyValuesPair {
   name?: string;
   values?: string[];
@@ -161,25 +154,17 @@ export type ServiceJobStatus =
   | "STARTING"
   | "RUNNING"
   | "SUCCEEDED"
-  | "FAILED";
-export const ServiceJobStatus = S.Literal(
-  "SUBMITTED",
-  "PENDING",
-  "RUNNABLE",
-  "SCHEDULED",
-  "STARTING",
-  "RUNNING",
-  "SUCCEEDED",
-  "FAILED",
-);
-export type JobDefinitionType = "container" | "multinode";
-export const JobDefinitionType = S.Literal("container", "multinode");
-export type PlatformCapability = "EC2" | "FARGATE";
-export const PlatformCapability = S.Literal("EC2", "FARGATE");
+  | "FAILED"
+  | (string & {});
+export const ServiceJobStatus = S.String;
+export type JobDefinitionType = "container" | "multinode" | (string & {});
+export const JobDefinitionType = S.String;
+export type PlatformCapability = "EC2" | "FARGATE" | (string & {});
+export const PlatformCapability = S.String;
 export type PlatformCapabilityList = PlatformCapability[];
 export const PlatformCapabilityList = S.Array(PlatformCapability);
-export type ServiceJobType = "SAGEMAKER_TRAINING";
-export const ServiceJobType = S.Literal("SAGEMAKER_TRAINING");
+export type ServiceJobType = "SAGEMAKER_TRAINING" | (string & {});
+export const ServiceJobType = S.String;
 export type TagKeysList = string[];
 export const TagKeysList = S.Array(S.String);
 export interface CancelJobRequest {
@@ -858,10 +843,13 @@ export const ServiceEnvironmentOrder = S.suspend(() =>
 }) as any as S.Schema<ServiceEnvironmentOrder>;
 export type ServiceEnvironmentOrders = ServiceEnvironmentOrder[];
 export const ServiceEnvironmentOrders = S.Array(ServiceEnvironmentOrder);
-export type JobStateTimeLimitActionsState = "RUNNABLE";
-export const JobStateTimeLimitActionsState = S.Literal("RUNNABLE");
-export type JobStateTimeLimitActionsAction = "CANCEL" | "TERMINATE";
-export const JobStateTimeLimitActionsAction = S.Literal("CANCEL", "TERMINATE");
+export type JobStateTimeLimitActionsState = "RUNNABLE" | (string & {});
+export const JobStateTimeLimitActionsState = S.String;
+export type JobStateTimeLimitActionsAction =
+  | "CANCEL"
+  | "TERMINATE"
+  | (string & {});
+export const JobStateTimeLimitActionsAction = S.String;
 export interface JobStateTimeLimitAction {
   reason?: string;
   state?: JobStateTimeLimitActionsState;
@@ -1006,30 +994,28 @@ export const UpdateServiceEnvironmentRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateServiceEnvironmentRequest",
 }) as any as S.Schema<UpdateServiceEnvironmentRequest>;
-export type CRType = "EC2" | "SPOT" | "FARGATE" | "FARGATE_SPOT";
-export const CRType = S.Literal("EC2", "SPOT", "FARGATE", "FARGATE_SPOT");
+export type CRType =
+  | "EC2"
+  | "SPOT"
+  | "FARGATE"
+  | "FARGATE_SPOT"
+  | (string & {});
+export const CRType = S.String;
 export type CRAllocationStrategy =
   | "BEST_FIT"
   | "BEST_FIT_PROGRESSIVE"
   | "SPOT_CAPACITY_OPTIMIZED"
-  | "SPOT_PRICE_CAPACITY_OPTIMIZED";
-export const CRAllocationStrategy = S.Literal(
-  "BEST_FIT",
-  "BEST_FIT_PROGRESSIVE",
-  "SPOT_CAPACITY_OPTIMIZED",
-  "SPOT_PRICE_CAPACITY_OPTIMIZED",
-);
-export type ArrayJobDependency = "N_TO_N" | "SEQUENTIAL";
-export const ArrayJobDependency = S.Literal("N_TO_N", "SEQUENTIAL");
+  | "SPOT_PRICE_CAPACITY_OPTIMIZED"
+  | (string & {});
+export const CRAllocationStrategy = S.String;
+export type ArrayJobDependency = "N_TO_N" | "SEQUENTIAL" | (string & {});
+export const ArrayJobDependency = S.String;
 export type CRUpdateAllocationStrategy =
   | "BEST_FIT_PROGRESSIVE"
   | "SPOT_CAPACITY_OPTIMIZED"
-  | "SPOT_PRICE_CAPACITY_OPTIMIZED";
-export const CRUpdateAllocationStrategy = S.Literal(
-  "BEST_FIT_PROGRESSIVE",
-  "SPOT_CAPACITY_OPTIMIZED",
-  "SPOT_PRICE_CAPACITY_OPTIMIZED",
-);
+  | "SPOT_PRICE_CAPACITY_OPTIMIZED"
+  | (string & {});
+export const CRUpdateAllocationStrategy = S.String;
 export interface EksConfiguration {
   eksClusterArn?: string;
   kubernetesNamespace?: string;
@@ -1086,8 +1072,8 @@ export const KeyValuePair = S.suspend(() =>
 ).annotations({ identifier: "KeyValuePair" }) as any as S.Schema<KeyValuePair>;
 export type EnvironmentVariables = KeyValuePair[];
 export const EnvironmentVariables = S.Array(KeyValuePair);
-export type ResourceType = "GPU" | "VCPU" | "MEMORY";
-export const ResourceType = S.Literal("GPU", "VCPU", "MEMORY");
+export type ResourceType = "GPU" | "VCPU" | "MEMORY" | (string & {});
+export const ResourceType = S.String;
 export interface ResourceRequirement {
   value?: string;
   type?: ResourceType;
@@ -1132,8 +1118,8 @@ export const TagsMap = S.Record({
   key: S.String,
   value: S.UndefinedOr(S.String),
 });
-export type UserdataType = "EKS_BOOTSTRAP_SH" | "EKS_NODEADM";
-export const UserdataType = S.Literal("EKS_BOOTSTRAP_SH", "EKS_NODEADM");
+export type UserdataType = "EKS_BOOTSTRAP_SH" | "EKS_NODEADM" | (string & {});
+export const UserdataType = S.String;
 export interface LaunchTemplateSpecificationOverride {
   launchTemplateId?: string;
   launchTemplateName?: string;
@@ -1251,23 +1237,15 @@ export type LogDriver =
   | "fluentd"
   | "awslogs"
   | "splunk"
-  | "awsfirelens";
-export const LogDriver = S.Literal(
-  "json-file",
-  "syslog",
-  "journald",
-  "gelf",
-  "fluentd",
-  "awslogs",
-  "splunk",
-  "awsfirelens",
-);
-export type AssignPublicIp = "ENABLED" | "DISABLED";
-export const AssignPublicIp = S.Literal("ENABLED", "DISABLED");
-export type RetryAction = "RETRY" | "EXIT";
-export const RetryAction = S.Literal("RETRY", "EXIT");
-export type ServiceJobRetryAction = "RETRY" | "EXIT";
-export const ServiceJobRetryAction = S.Literal("RETRY", "EXIT");
+  | "awsfirelens"
+  | (string & {});
+export const LogDriver = S.String;
+export type AssignPublicIp = "ENABLED" | "DISABLED" | (string & {});
+export const AssignPublicIp = S.String;
+export type RetryAction = "RETRY" | "EXIT" | (string & {});
+export const RetryAction = S.String;
+export type ServiceJobRetryAction = "RETRY" | "EXIT" | (string & {});
+export const ServiceJobRetryAction = S.String;
 export interface CreateConsumableResourceResponse {
   consumableResourceName: string;
   consumableResourceArn: string;
@@ -1476,47 +1454,29 @@ export type CEStatus =
   | "DELETING"
   | "DELETED"
   | "VALID"
-  | "INVALID";
-export const CEStatus = S.Literal(
-  "CREATING",
-  "UPDATING",
-  "DELETING",
-  "DELETED",
-  "VALID",
-  "INVALID",
-);
-export type OrchestrationType = "ECS" | "EKS";
-export const OrchestrationType = S.Literal("ECS", "EKS");
+  | "INVALID"
+  | (string & {});
+export const CEStatus = S.String;
+export type OrchestrationType = "ECS" | "EKS" | (string & {});
+export const OrchestrationType = S.String;
 export type JQStatus =
   | "CREATING"
   | "UPDATING"
   | "DELETING"
   | "DELETED"
   | "VALID"
-  | "INVALID";
-export const JQStatus = S.Literal(
-  "CREATING",
-  "UPDATING",
-  "DELETING",
-  "DELETED",
-  "VALID",
-  "INVALID",
-);
+  | "INVALID"
+  | (string & {});
+export const JQStatus = S.String;
 export type ServiceEnvironmentStatus =
   | "CREATING"
   | "UPDATING"
   | "DELETING"
   | "DELETED"
   | "VALID"
-  | "INVALID";
-export const ServiceEnvironmentStatus = S.Literal(
-  "CREATING",
-  "UPDATING",
-  "DELETING",
-  "DELETED",
-  "VALID",
-  "INVALID",
-);
+  | "INVALID"
+  | (string & {});
+export const ServiceEnvironmentStatus = S.String;
 export interface MountPoint {
   containerPath?: string;
   readOnly?: boolean;
@@ -1604,10 +1564,10 @@ export interface Host {
 export const Host = S.suspend(() =>
   S.Struct({ sourcePath: S.optional(S.String) }),
 ).annotations({ identifier: "Host" }) as any as S.Schema<Host>;
-export type EFSTransitEncryption = "ENABLED" | "DISABLED";
-export const EFSTransitEncryption = S.Literal("ENABLED", "DISABLED");
-export type EFSAuthorizationConfigIAM = "ENABLED" | "DISABLED";
-export const EFSAuthorizationConfigIAM = S.Literal("ENABLED", "DISABLED");
+export type EFSTransitEncryption = "ENABLED" | "DISABLED" | (string & {});
+export const EFSTransitEncryption = S.String;
+export type EFSAuthorizationConfigIAM = "ENABLED" | "DISABLED" | (string & {});
+export const EFSAuthorizationConfigIAM = S.String;
 export interface EFSAuthorizationConfig {
   accessPointId?: string;
   iam?: EFSAuthorizationConfigIAM;
@@ -1652,8 +1612,8 @@ export const Volume = S.suspend(() =>
 ).annotations({ identifier: "Volume" }) as any as S.Schema<Volume>;
 export type Volumes = Volume[];
 export const Volumes = S.Array(Volume);
-export type DeviceCgroupPermission = "READ" | "WRITE" | "MKNOD";
-export const DeviceCgroupPermission = S.Literal("READ", "WRITE", "MKNOD");
+export type DeviceCgroupPermission = "READ" | "WRITE" | "MKNOD" | (string & {});
+export const DeviceCgroupPermission = S.String;
 export type DeviceCgroupPermissions = DeviceCgroupPermission[];
 export const DeviceCgroupPermissions = S.Array(DeviceCgroupPermission);
 export interface Device {
@@ -1793,8 +1753,8 @@ export const TaskContainerDependency = S.suspend(() =>
 }) as any as S.Schema<TaskContainerDependency>;
 export type TaskContainerDependencyList = TaskContainerDependency[];
 export const TaskContainerDependencyList = S.Array(TaskContainerDependency);
-export type FirelensConfigurationType = "fluentd" | "fluentbit";
-export const FirelensConfigurationType = S.Literal("fluentd", "fluentbit");
+export type FirelensConfigurationType = "fluentd" | "fluentbit" | (string & {});
+export const FirelensConfigurationType = S.String;
 export type FirelensConfigurationOptionsMap = {
   [key: string]: string | undefined;
 };
@@ -2529,8 +2489,8 @@ export const ServiceEnvironmentDetail = S.suspend(() =>
 }) as any as S.Schema<ServiceEnvironmentDetail>;
 export type ServiceEnvironmentDetailList = ServiceEnvironmentDetail[];
 export const ServiceEnvironmentDetailList = S.Array(ServiceEnvironmentDetail);
-export type ServiceResourceIdName = "TrainingJobArn";
-export const ServiceResourceIdName = S.Literal("TrainingJobArn");
+export type ServiceResourceIdName = "TrainingJobArn" | (string & {});
+export const ServiceResourceIdName = S.String;
 export interface ServiceResourceId {
   name?: ServiceResourceIdName;
   value?: string;

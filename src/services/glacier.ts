@@ -849,14 +849,14 @@ export const TagMap = S.Record({
   key: S.String,
   value: S.UndefinedOr(S.String),
 });
-export type ActionCode = "ArchiveRetrieval" | "InventoryRetrieval" | "Select";
-export const ActionCode = S.Literal(
-  "ArchiveRetrieval",
-  "InventoryRetrieval",
-  "Select",
-);
-export type StatusCode = "InProgress" | "Succeeded" | "Failed";
-export const StatusCode = S.Literal("InProgress", "Succeeded", "Failed");
+export type ActionCode =
+  | "ArchiveRetrieval"
+  | "InventoryRetrieval"
+  | "Select"
+  | (string & {});
+export const ActionCode = S.String;
+export type StatusCode = "InProgress" | "Succeeded" | "Failed" | (string & {});
+export const StatusCode = S.String;
 export interface VaultLockPolicy {
   Policy?: string;
 }
@@ -883,8 +883,8 @@ export const InventoryRetrievalJobDescription = S.suspend(() =>
 ).annotations({
   identifier: "InventoryRetrievalJobDescription",
 }) as any as S.Schema<InventoryRetrievalJobDescription>;
-export type FileHeaderInfo = "USE" | "IGNORE" | "NONE";
-export const FileHeaderInfo = S.Literal("USE", "IGNORE", "NONE");
+export type FileHeaderInfo = "USE" | "IGNORE" | "NONE" | (string & {});
+export const FileHeaderInfo = S.String;
 export interface CSVInput {
   FileHeaderInfo?: FileHeaderInfo;
   Comments?: string;
@@ -911,10 +911,10 @@ export const InputSerialization = S.suspend(() =>
 ).annotations({
   identifier: "InputSerialization",
 }) as any as S.Schema<InputSerialization>;
-export type ExpressionType = "SQL";
-export const ExpressionType = S.Literal("SQL");
-export type QuoteFields = "ALWAYS" | "ASNEEDED";
-export const QuoteFields = S.Literal("ALWAYS", "ASNEEDED");
+export type ExpressionType = "SQL" | (string & {});
+export const ExpressionType = S.String;
+export type QuoteFields = "ALWAYS" | "ASNEEDED" | (string & {});
+export const QuoteFields = S.String;
 export interface CSVOutput {
   QuoteFields?: QuoteFields;
   QuoteEscapeCharacter?: string;
@@ -955,8 +955,8 @@ export const SelectParameters = S.suspend(() =>
 ).annotations({
   identifier: "SelectParameters",
 }) as any as S.Schema<SelectParameters>;
-export type EncryptionType = "aws:kms" | "AES256";
-export const EncryptionType = S.Literal("aws:kms", "AES256");
+export type EncryptionType = "aws:kms" | "AES256" | (string & {});
+export const EncryptionType = S.String;
 export interface Encryption {
   EncryptionType?: EncryptionType;
   KMSKeyId?: string;
@@ -976,22 +976,15 @@ export type CannedACL =
   | "aws-exec-read"
   | "authenticated-read"
   | "bucket-owner-read"
-  | "bucket-owner-full-control";
-export const CannedACL = S.Literal(
-  "private",
-  "public-read",
-  "public-read-write",
-  "aws-exec-read",
-  "authenticated-read",
-  "bucket-owner-read",
-  "bucket-owner-full-control",
-);
-export type Type = "AmazonCustomerByEmail" | "CanonicalUser" | "Group";
-export const Type = S.Literal(
-  "AmazonCustomerByEmail",
-  "CanonicalUser",
-  "Group",
-);
+  | "bucket-owner-full-control"
+  | (string & {});
+export const CannedACL = S.String;
+export type Type =
+  | "AmazonCustomerByEmail"
+  | "CanonicalUser"
+  | "Group"
+  | (string & {});
+export const Type = S.String;
 export interface Grantee {
   Type: Type;
   DisplayName?: string;
@@ -1013,14 +1006,9 @@ export type Permission =
   | "WRITE"
   | "WRITE_ACP"
   | "READ"
-  | "READ_ACP";
-export const Permission = S.Literal(
-  "FULL_CONTROL",
-  "WRITE",
-  "WRITE_ACP",
-  "READ",
-  "READ_ACP",
-);
+  | "READ_ACP"
+  | (string & {});
+export const Permission = S.String;
 export interface Grant {
   Grantee?: Grantee;
   Permission?: Permission;
@@ -1038,12 +1026,12 @@ export const Hashmap = S.Record({
   key: S.String,
   value: S.UndefinedOr(S.String),
 });
-export type StorageClass = "STANDARD" | "REDUCED_REDUNDANCY" | "STANDARD_IA";
-export const StorageClass = S.Literal(
-  "STANDARD",
-  "REDUCED_REDUNDANCY",
-  "STANDARD_IA",
-);
+export type StorageClass =
+  | "STANDARD"
+  | "REDUCED_REDUNDANCY"
+  | "STANDARD_IA"
+  | (string & {});
+export const StorageClass = S.String;
 export interface S3Location {
   BucketName?: string;
   Prefix?: string;

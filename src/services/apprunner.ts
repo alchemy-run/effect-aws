@@ -138,8 +138,8 @@ export type RuntimeEnvironmentSecretsName = string | redacted.Redacted<string>;
 export type RuntimeEnvironmentSecretsValue = string | redacted.Redacted<string>;
 
 //# Schemas
-export type ProviderType = "GITHUB" | "BITBUCKET";
-export const ProviderType = S.Literal("GITHUB", "BITBUCKET");
+export type ProviderType = "GITHUB" | "BITBUCKET" | (string & {});
+export const ProviderType = S.String;
 export type StringList = string[];
 export const StringList = S.Array(S.String);
 export type TagKeyList = string[];
@@ -780,8 +780,8 @@ export const UpdateDefaultAutoScalingConfigurationRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateDefaultAutoScalingConfigurationRequest",
 }) as any as S.Schema<UpdateDefaultAutoScalingConfigurationRequest>;
-export type SourceCodeVersionType = "BRANCH";
-export const SourceCodeVersionType = S.Literal("BRANCH");
+export type SourceCodeVersionType = "BRANCH" | (string & {});
+export const SourceCodeVersionType = S.String;
 export interface SourceCodeVersion {
   Type: SourceCodeVersionType;
   Value: string;
@@ -791,8 +791,8 @@ export const SourceCodeVersion = S.suspend(() =>
 ).annotations({
   identifier: "SourceCodeVersion",
 }) as any as S.Schema<SourceCodeVersion>;
-export type ConfigurationSource = "REPOSITORY" | "API";
-export const ConfigurationSource = S.Literal("REPOSITORY", "API");
+export type ConfigurationSource = "REPOSITORY" | "API" | (string & {});
+export const ConfigurationSource = S.String;
 export type Runtime =
   | "PYTHON_3"
   | "NODEJS_12"
@@ -806,22 +806,9 @@ export type Runtime =
   | "RUBY_31"
   | "PYTHON_311"
   | "NODEJS_18"
-  | "NODEJS_22";
-export const Runtime = S.Literal(
-  "PYTHON_3",
-  "NODEJS_12",
-  "NODEJS_14",
-  "CORRETTO_8",
-  "CORRETTO_11",
-  "NODEJS_16",
-  "GO_1",
-  "DOTNET_6",
-  "PHP_81",
-  "RUBY_31",
-  "PYTHON_311",
-  "NODEJS_18",
-  "NODEJS_22",
-);
+  | "NODEJS_22"
+  | (string & {});
+export const Runtime = S.String;
 export type RuntimeEnvironmentVariables = {
   [key: string]: string | redacted.Redacted<string> | undefined;
 };
@@ -908,8 +895,8 @@ export const ImageConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "ImageConfiguration",
 }) as any as S.Schema<ImageConfiguration>;
-export type ImageRepositoryType = "ECR" | "ECR_PUBLIC";
-export const ImageRepositoryType = S.Literal("ECR", "ECR_PUBLIC");
+export type ImageRepositoryType = "ECR" | "ECR_PUBLIC" | (string & {});
+export const ImageRepositoryType = S.String;
 export interface ImageRepository {
   ImageIdentifier: string;
   ImageConfiguration?: ImageConfiguration;
@@ -966,8 +953,8 @@ export const InstanceConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "InstanceConfiguration",
 }) as any as S.Schema<InstanceConfiguration>;
-export type HealthCheckProtocol = "TCP" | "HTTP";
-export const HealthCheckProtocol = S.Literal("TCP", "HTTP");
+export type HealthCheckProtocol = "TCP" | "HTTP" | (string & {});
+export const HealthCheckProtocol = S.String;
 export interface HealthCheckConfiguration {
   Protocol?: HealthCheckProtocol;
   Path?: string;
@@ -988,8 +975,8 @@ export const HealthCheckConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "HealthCheckConfiguration",
 }) as any as S.Schema<HealthCheckConfiguration>;
-export type EgressType = "DEFAULT" | "VPC";
-export const EgressType = S.Literal("DEFAULT", "VPC");
+export type EgressType = "DEFAULT" | "VPC" | (string & {});
+export const EgressType = S.String;
 export interface EgressConfiguration {
   EgressType?: EgressType;
   VpcConnectorArn?: string;
@@ -1010,8 +997,8 @@ export const IngressConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "IngressConfiguration",
 }) as any as S.Schema<IngressConfiguration>;
-export type IpAddressType = "IPV4" | "DUAL_STACK";
-export const IpAddressType = S.Literal("IPV4", "DUAL_STACK");
+export type IpAddressType = "IPV4" | "DUAL_STACK" | (string & {});
+export const IpAddressType = S.String;
 export interface NetworkConfiguration {
   EgressConfiguration?: EgressConfiguration;
   IngressConfiguration?: IngressConfiguration;
@@ -1104,8 +1091,8 @@ export const UpdateVpcIngressConnectionRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateVpcIngressConnectionRequest",
 }) as any as S.Schema<UpdateVpcIngressConnectionRequest>;
-export type TracingVendor = "AWSXRAY";
-export const TracingVendor = S.Literal("AWSXRAY");
+export type TracingVendor = "AWSXRAY" | (string & {});
+export const TracingVendor = S.String;
 export interface TraceConfiguration {
   Vendor: TracingVendor;
 }
@@ -1125,12 +1112,9 @@ export const EncryptionConfiguration = S.suspend(() =>
 export type CertificateValidationRecordStatus =
   | "PENDING_VALIDATION"
   | "SUCCESS"
-  | "FAILED";
-export const CertificateValidationRecordStatus = S.Literal(
-  "PENDING_VALIDATION",
-  "SUCCESS",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const CertificateValidationRecordStatus = S.String;
 export interface CertificateValidationRecord {
   Name?: string;
   Type?: string;
@@ -1158,16 +1142,9 @@ export type CustomDomainAssociationStatus =
   | "DELETING"
   | "DELETE_FAILED"
   | "PENDING_CERTIFICATE_DNS_VALIDATION"
-  | "BINDING_CERTIFICATE";
-export const CustomDomainAssociationStatus = S.Literal(
-  "CREATING",
-  "CREATE_FAILED",
-  "ACTIVE",
-  "DELETING",
-  "DELETE_FAILED",
-  "PENDING_CERTIFICATE_DNS_VALIDATION",
-  "BINDING_CERTIFICATE",
-);
+  | "BINDING_CERTIFICATE"
+  | (string & {});
+export const CustomDomainAssociationStatus = S.String;
 export interface CustomDomain {
   DomainName: string;
   EnableWWWSubdomain: boolean;
@@ -1186,8 +1163,8 @@ export type CustomDomainList = CustomDomain[];
 export const CustomDomainList = S.Array(CustomDomain);
 export type ServiceArnList = string[];
 export const ServiceArnList = S.Array(S.String);
-export type VpcConnectorStatus = "ACTIVE" | "INACTIVE";
-export const VpcConnectorStatus = S.Literal("ACTIVE", "INACTIVE");
+export type VpcConnectorStatus = "ACTIVE" | "INACTIVE" | (string & {});
+export const VpcConnectorStatus = S.String;
 export interface VpcConnector {
   VpcConnectorName?: string;
   VpcConnectorArn?: string;
@@ -1306,13 +1283,9 @@ export type ConnectionStatus =
   | "PENDING_HANDSHAKE"
   | "AVAILABLE"
   | "ERROR"
-  | "DELETED";
-export const ConnectionStatus = S.Literal(
-  "PENDING_HANDSHAKE",
-  "AVAILABLE",
-  "ERROR",
-  "DELETED",
-);
+  | "DELETED"
+  | (string & {});
+export const ConnectionStatus = S.String;
 export interface Connection {
   ConnectionName?: string;
   ConnectionArn?: string;
@@ -1345,8 +1318,11 @@ export const DeleteVpcConnectorResponse = S.suspend(() =>
 ).annotations({
   identifier: "DeleteVpcConnectorResponse",
 }) as any as S.Schema<DeleteVpcConnectorResponse>;
-export type AutoScalingConfigurationStatus = "ACTIVE" | "INACTIVE";
-export const AutoScalingConfigurationStatus = S.Literal("ACTIVE", "INACTIVE");
+export type AutoScalingConfigurationStatus =
+  | "ACTIVE"
+  | "INACTIVE"
+  | (string & {});
+export const AutoScalingConfigurationStatus = S.String;
 export interface AutoScalingConfiguration {
   AutoScalingConfigurationArn?: string;
   AutoScalingConfigurationName?: string;
@@ -1419,8 +1395,11 @@ export const DescribeCustomDomainsResponse = S.suspend(() =>
 ).annotations({
   identifier: "DescribeCustomDomainsResponse",
 }) as any as S.Schema<DescribeCustomDomainsResponse>;
-export type ObservabilityConfigurationStatus = "ACTIVE" | "INACTIVE";
-export const ObservabilityConfigurationStatus = S.Literal("ACTIVE", "INACTIVE");
+export type ObservabilityConfigurationStatus =
+  | "ACTIVE"
+  | "INACTIVE"
+  | (string & {});
+export const ObservabilityConfigurationStatus = S.String;
 export interface ObservabilityConfiguration {
   ObservabilityConfigurationArn?: string;
   ObservabilityConfigurationName?: string;
@@ -1459,15 +1438,9 @@ export type ServiceStatus =
   | "DELETED"
   | "DELETE_FAILED"
   | "PAUSED"
-  | "OPERATION_IN_PROGRESS";
-export const ServiceStatus = S.Literal(
-  "CREATE_FAILED",
-  "RUNNING",
-  "DELETED",
-  "DELETE_FAILED",
-  "PAUSED",
-  "OPERATION_IN_PROGRESS",
-);
+  | "OPERATION_IN_PROGRESS"
+  | (string & {});
+export const ServiceStatus = S.String;
 export interface AutoScalingConfigurationSummary {
   AutoScalingConfigurationArn?: string;
   AutoScalingConfigurationName?: string;
@@ -1550,17 +1523,9 @@ export type VpcIngressConnectionStatus =
   | "FAILED_CREATION"
   | "FAILED_UPDATE"
   | "FAILED_DELETION"
-  | "DELETED";
-export const VpcIngressConnectionStatus = S.Literal(
-  "AVAILABLE",
-  "PENDING_CREATION",
-  "PENDING_UPDATE",
-  "PENDING_DELETION",
-  "FAILED_CREATION",
-  "FAILED_UPDATE",
-  "FAILED_DELETION",
-  "DELETED",
-);
+  | "DELETED"
+  | (string & {});
+export const VpcIngressConnectionStatus = S.String;
 export interface VpcIngressConnection {
   VpcIngressConnectionArn?: string;
   VpcIngressConnectionName?: string;
@@ -1724,15 +1689,9 @@ export type OperationType =
   | "PAUSE_SERVICE"
   | "RESUME_SERVICE"
   | "DELETE_SERVICE"
-  | "UPDATE_SERVICE";
-export const OperationType = S.Literal(
-  "START_DEPLOYMENT",
-  "CREATE_SERVICE",
-  "PAUSE_SERVICE",
-  "RESUME_SERVICE",
-  "DELETE_SERVICE",
-  "UPDATE_SERVICE",
-);
+  | "UPDATE_SERVICE"
+  | (string & {});
+export const OperationType = S.String;
 export type OperationStatus =
   | "PENDING"
   | "IN_PROGRESS"
@@ -1740,16 +1699,9 @@ export type OperationStatus =
   | "SUCCEEDED"
   | "ROLLBACK_IN_PROGRESS"
   | "ROLLBACK_FAILED"
-  | "ROLLBACK_SUCCEEDED";
-export const OperationStatus = S.Literal(
-  "PENDING",
-  "IN_PROGRESS",
-  "FAILED",
-  "SUCCEEDED",
-  "ROLLBACK_IN_PROGRESS",
-  "ROLLBACK_FAILED",
-  "ROLLBACK_SUCCEEDED",
-);
+  | "ROLLBACK_SUCCEEDED"
+  | (string & {});
+export const OperationStatus = S.String;
 export type AutoScalingConfigurationSummaryList =
   AutoScalingConfigurationSummary[];
 export const AutoScalingConfigurationSummaryList = S.Array(

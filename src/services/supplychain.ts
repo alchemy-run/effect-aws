@@ -146,25 +146,9 @@ export type DataIntegrationEventType =
   | "scn.data.shipmentstop"
   | "scn.data.shipmentstoporder"
   | "scn.data.supplyplan"
-  | "scn.data.dataset";
-export const DataIntegrationEventType = S.Literal(
-  "scn.data.forecast",
-  "scn.data.inventorylevel",
-  "scn.data.inboundorder",
-  "scn.data.inboundorderline",
-  "scn.data.inboundorderlineschedule",
-  "scn.data.outboundorderline",
-  "scn.data.outboundshipment",
-  "scn.data.processheader",
-  "scn.data.processoperation",
-  "scn.data.processproduct",
-  "scn.data.reservation",
-  "scn.data.shipment",
-  "scn.data.shipmentstop",
-  "scn.data.shipmentstoporder",
-  "scn.data.supplyplan",
-  "scn.data.dataset",
-);
+  | "scn.data.dataset"
+  | (string & {});
+export const DataIntegrationEventType = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export type InstanceNameList = string[];
@@ -175,15 +159,9 @@ export type InstanceState =
   | "CreateFailed"
   | "DeleteFailed"
   | "Deleting"
-  | "Deleted";
-export const InstanceState = S.Literal(
-  "Initializing",
-  "Active",
-  "CreateFailed",
-  "DeleteFailed",
-  "Deleting",
-  "Deleted",
-);
+  | "Deleted"
+  | (string & {});
+export const InstanceState = S.String;
 export type InstanceStateList = InstanceState[];
 export const InstanceStateList = S.Array(InstanceState);
 export interface GetDataIntegrationEventRequest {
@@ -410,10 +388,14 @@ export const GetDataIntegrationFlowRequest = S.suspend(() =>
 ).annotations({
   identifier: "GetDataIntegrationFlowRequest",
 }) as any as S.Schema<GetDataIntegrationFlowRequest>;
-export type DataIntegrationFlowSourceType = "S3" | "DATASET";
-export const DataIntegrationFlowSourceType = S.Literal("S3", "DATASET");
-export type DataIntegrationFlowFileType = "CSV" | "PARQUET" | "JSON";
-export const DataIntegrationFlowFileType = S.Literal("CSV", "PARQUET", "JSON");
+export type DataIntegrationFlowSourceType = "S3" | "DATASET" | (string & {});
+export const DataIntegrationFlowSourceType = S.String;
+export type DataIntegrationFlowFileType =
+  | "CSV"
+  | "PARQUET"
+  | "JSON"
+  | (string & {});
+export const DataIntegrationFlowFileType = S.String;
 export interface DataIntegrationFlowS3Options {
   fileType?: DataIntegrationFlowFileType;
 }
@@ -436,16 +418,20 @@ export const DataIntegrationFlowS3SourceConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "DataIntegrationFlowS3SourceConfiguration",
 }) as any as S.Schema<DataIntegrationFlowS3SourceConfiguration>;
-export type DataIntegrationFlowLoadType = "INCREMENTAL" | "REPLACE";
-export const DataIntegrationFlowLoadType = S.Literal("INCREMENTAL", "REPLACE");
-export type DataIntegrationFlowDedupeStrategyType = "FIELD_PRIORITY";
-export const DataIntegrationFlowDedupeStrategyType =
-  S.Literal("FIELD_PRIORITY");
-export type DataIntegrationFlowFieldPriorityDedupeSortOrder = "ASC" | "DESC";
-export const DataIntegrationFlowFieldPriorityDedupeSortOrder = S.Literal(
-  "ASC",
-  "DESC",
-);
+export type DataIntegrationFlowLoadType =
+  | "INCREMENTAL"
+  | "REPLACE"
+  | (string & {});
+export const DataIntegrationFlowLoadType = S.String;
+export type DataIntegrationFlowDedupeStrategyType =
+  | "FIELD_PRIORITY"
+  | (string & {});
+export const DataIntegrationFlowDedupeStrategyType = S.String;
+export type DataIntegrationFlowFieldPriorityDedupeSortOrder =
+  | "ASC"
+  | "DESC"
+  | (string & {});
+export const DataIntegrationFlowFieldPriorityDedupeSortOrder = S.String;
 export interface DataIntegrationFlowFieldPriorityDedupeField {
   name: string;
   sortOrder: DataIntegrationFlowFieldPriorityDedupeSortOrder;
@@ -530,8 +516,11 @@ export const DataIntegrationFlowSource = S.suspend(() =>
 }) as any as S.Schema<DataIntegrationFlowSource>;
 export type DataIntegrationFlowSourceList = DataIntegrationFlowSource[];
 export const DataIntegrationFlowSourceList = S.Array(DataIntegrationFlowSource);
-export type DataIntegrationFlowTransformationType = "SQL" | "NONE";
-export const DataIntegrationFlowTransformationType = S.Literal("SQL", "NONE");
+export type DataIntegrationFlowTransformationType =
+  | "SQL"
+  | "NONE"
+  | (string & {});
+export const DataIntegrationFlowTransformationType = S.String;
 export interface DataIntegrationFlowSQLTransformationConfiguration {
   query: string | redacted.Redacted<string>;
 }
@@ -554,8 +543,8 @@ export const DataIntegrationFlowTransformation = S.suspend(() =>
 ).annotations({
   identifier: "DataIntegrationFlowTransformation",
 }) as any as S.Schema<DataIntegrationFlowTransformation>;
-export type DataIntegrationFlowTargetType = "S3" | "DATASET";
-export const DataIntegrationFlowTargetType = S.Literal("S3", "DATASET");
+export type DataIntegrationFlowTargetType = "S3" | "DATASET" | (string & {});
+export const DataIntegrationFlowTargetType = S.String;
 export interface DataIntegrationFlowS3TargetConfiguration {
   bucketName: string;
   prefix: string;
@@ -1035,21 +1024,15 @@ export const ListInstancesRequest = S.suspend(() =>
 export type DataIntegrationEventDatasetOperationType =
   | "APPEND"
   | "UPSERT"
-  | "DELETE";
-export const DataIntegrationEventDatasetOperationType = S.Literal(
-  "APPEND",
-  "UPSERT",
-  "DELETE",
-);
+  | "DELETE"
+  | (string & {});
+export const DataIntegrationEventDatasetOperationType = S.String;
 export type DataIntegrationEventDatasetLoadStatus =
   | "SUCCEEDED"
   | "IN_PROGRESS"
-  | "FAILED";
-export const DataIntegrationEventDatasetLoadStatus = S.Literal(
-  "SUCCEEDED",
-  "IN_PROGRESS",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const DataIntegrationEventDatasetLoadStatus = S.String;
 export interface DataIntegrationEventDatasetLoadExecutionDetails {
   status: DataIntegrationEventDatasetLoadStatus;
   message?: string;
@@ -1101,12 +1084,9 @@ export const DataIntegrationEventList = S.Array(DataIntegrationEvent);
 export type DataIntegrationFlowExecutionStatus =
   | "SUCCEEDED"
   | "IN_PROGRESS"
-  | "FAILED";
-export const DataIntegrationFlowExecutionStatus = S.Literal(
-  "SUCCEEDED",
-  "IN_PROGRESS",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const DataIntegrationFlowExecutionStatus = S.String;
 export interface DataIntegrationFlowS3Source {
   bucketName: string;
   key: string;
@@ -1217,14 +1197,9 @@ export type DataLakeDatasetSchemaFieldType =
   | "DOUBLE"
   | "STRING"
   | "TIMESTAMP"
-  | "LONG";
-export const DataLakeDatasetSchemaFieldType = S.Literal(
-  "INT",
-  "DOUBLE",
-  "STRING",
-  "TIMESTAMP",
-  "LONG",
-);
+  | "LONG"
+  | (string & {});
+export const DataLakeDatasetSchemaFieldType = S.String;
 export interface DataLakeDatasetSchemaField {
   name: string;
   type: DataLakeDatasetSchemaFieldType;
@@ -1275,14 +1250,9 @@ export type DataLakeDatasetPartitionTransformType =
   | "MONTH"
   | "DAY"
   | "HOUR"
-  | "IDENTITY";
-export const DataLakeDatasetPartitionTransformType = S.Literal(
-  "YEAR",
-  "MONTH",
-  "DAY",
-  "HOUR",
-  "IDENTITY",
-);
+  | "IDENTITY"
+  | (string & {});
+export const DataLakeDatasetPartitionTransformType = S.String;
 export interface DataLakeDatasetPartitionFieldTransform {
   type: DataLakeDatasetPartitionTransformType;
 }
@@ -1624,14 +1594,9 @@ export type ConfigurationJobStatus =
   | "FAILED"
   | "IN_PROGRESS"
   | "QUEUED"
-  | "SUCCESS";
-export const ConfigurationJobStatus = S.Literal(
-  "NEW",
-  "FAILED",
-  "IN_PROGRESS",
-  "QUEUED",
-  "SUCCESS",
-);
+  | "SUCCESS"
+  | (string & {});
+export const ConfigurationJobStatus = S.String;
 export interface BillOfMaterialsImportJob {
   instanceId: string;
   jobId: string;

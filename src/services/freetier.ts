@@ -148,37 +148,24 @@ export type LanguageCode =
   | "ko-KR"
   | "zh-CN"
   | "zh-TW"
-  | "tr-TR";
-export const LanguageCode = S.Literal(
-  "en-US",
-  "en-GB",
-  "id-ID",
-  "de-DE",
-  "es-ES",
-  "fr-FR",
-  "ja-JP",
-  "it-IT",
-  "pt-PT",
-  "ko-KR",
-  "zh-CN",
-  "zh-TW",
-  "tr-TR",
-);
-export type AccountPlanType = "FREE" | "PAID";
-export const AccountPlanType = S.Literal("FREE", "PAID");
-export type AccountPlanStatus = "NOT_STARTED" | "ACTIVE" | "EXPIRED";
-export const AccountPlanStatus = S.Literal("NOT_STARTED", "ACTIVE", "EXPIRED");
+  | "tr-TR"
+  | (string & {});
+export const LanguageCode = S.String;
+export type AccountPlanType = "FREE" | "PAID" | (string & {});
+export const AccountPlanType = S.String;
+export type AccountPlanStatus =
+  | "NOT_STARTED"
+  | "ACTIVE"
+  | "EXPIRED"
+  | (string & {});
+export const AccountPlanStatus = S.String;
 export type ActivityStatus =
   | "NOT_STARTED"
   | "IN_PROGRESS"
   | "COMPLETED"
-  | "EXPIRING";
-export const ActivityStatus = S.Literal(
-  "NOT_STARTED",
-  "IN_PROGRESS",
-  "COMPLETED",
-  "EXPIRING",
-);
+  | "EXPIRING"
+  | (string & {});
+export const ActivityStatus = S.String;
 export type FilterActivityStatuses = ActivityStatus[];
 export const FilterActivityStatuses = S.Array(ActivityStatus);
 export interface GetAccountActivityRequest {
@@ -223,8 +210,8 @@ export const UpgradeAccountPlanRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpgradeAccountPlanRequest",
 }) as any as S.Schema<UpgradeAccountPlanRequest>;
-export type CurrencyCode = "USD";
-export const CurrencyCode = S.Literal("USD");
+export type CurrencyCode = "USD" | (string & {});
+export const CurrencyCode = S.String;
 export type Expressions = Expression[];
 export const Expressions = S.Array(
   S.suspend((): S.Schema<Expression, any> => Expression).annotations({
@@ -247,16 +234,9 @@ export type Dimension =
   | "REGION"
   | "FREE_TIER_TYPE"
   | "DESCRIPTION"
-  | "USAGE_PERCENTAGE";
-export const Dimension = S.Literal(
-  "SERVICE",
-  "OPERATION",
-  "USAGE_TYPE",
-  "REGION",
-  "FREE_TIER_TYPE",
-  "DESCRIPTION",
-  "USAGE_PERCENTAGE",
-);
+  | "USAGE_PERCENTAGE"
+  | (string & {});
+export const Dimension = S.String;
 export type Values = string[];
 export const Values = S.Array(S.String);
 export type MatchOption =
@@ -264,14 +244,9 @@ export type MatchOption =
   | "STARTS_WITH"
   | "ENDS_WITH"
   | "CONTAINS"
-  | "GREATER_THAN_OR_EQUAL";
-export const MatchOption = S.Literal(
-  "EQUALS",
-  "STARTS_WITH",
-  "ENDS_WITH",
-  "CONTAINS",
-  "GREATER_THAN_OR_EQUAL",
-);
+  | "GREATER_THAN_OR_EQUAL"
+  | (string & {});
+export const MatchOption = S.String;
 export type MatchOptions = MatchOption[];
 export const MatchOptions = S.Array(MatchOption);
 export interface GetAccountPlanStateResponse {

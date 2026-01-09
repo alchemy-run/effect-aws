@@ -116,11 +116,9 @@ export type SystemMessage = string;
 //# Schemas
 export type AuthenticationMethod =
   | "X509ClientCertificate"
-  | "SignatureVersion4";
-export const AuthenticationMethod = S.Literal(
-  "X509ClientCertificate",
-  "SignatureVersion4",
-);
+  | "SignatureVersion4"
+  | (string & {});
+export const AuthenticationMethod = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export interface DeleteSuiteDefinitionRequest {
@@ -419,13 +417,9 @@ export type Protocol =
   | "MqttV3_1_1"
   | "MqttV5"
   | "MqttV3_1_1_OverWebSocket"
-  | "MqttV5_OverWebSocket";
-export const Protocol = S.Literal(
-  "MqttV3_1_1",
-  "MqttV5",
-  "MqttV3_1_1_OverWebSocket",
-  "MqttV5_OverWebSocket",
-);
+  | "MqttV5_OverWebSocket"
+  | (string & {});
+export const Protocol = S.String;
 export interface SuiteDefinitionConfiguration {
   suiteDefinitionName?: string;
   devices?: DeviceUnderTest[];
@@ -480,18 +474,9 @@ export type SuiteRunStatus =
   | "STOPPING"
   | "STOPPED"
   | "PASS_WITH_WARNINGS"
-  | "ERROR";
-export const SuiteRunStatus = S.Literal(
-  "PASS",
-  "FAIL",
-  "CANCELED",
-  "PENDING",
-  "RUNNING",
-  "STOPPING",
-  "STOPPED",
-  "PASS_WITH_WARNINGS",
-  "ERROR",
-);
+  | "ERROR"
+  | (string & {});
+export const SuiteRunStatus = S.String;
 export interface SuiteRunConfiguration {
   primaryDevice?: DeviceUnderTest;
   selectedTestList?: string[];
@@ -734,18 +719,9 @@ export type Status =
   | "STOPPING"
   | "STOPPED"
   | "PASS_WITH_WARNINGS"
-  | "ERROR";
-export const Status = S.Literal(
-  "PASS",
-  "FAIL",
-  "CANCELED",
-  "PENDING",
-  "RUNNING",
-  "STOPPING",
-  "STOPPED",
-  "PASS_WITH_WARNINGS",
-  "ERROR",
-);
+  | "ERROR"
+  | (string & {});
+export const Status = S.String;
 export interface CreateSuiteDefinitionResponse {
   suiteDefinitionId?: string;
   suiteDefinitionArn?: string;
@@ -762,8 +738,8 @@ export const CreateSuiteDefinitionResponse = S.suspend(() =>
 ).annotations({
   identifier: "CreateSuiteDefinitionResponse",
 }) as any as S.Schema<CreateSuiteDefinitionResponse>;
-export type TestCaseScenarioType = "Advanced" | "Basic";
-export const TestCaseScenarioType = S.Literal("Advanced", "Basic");
+export type TestCaseScenarioType = "Advanced" | "Basic" | (string & {});
+export const TestCaseScenarioType = S.String;
 export type TestCaseScenarioStatus =
   | "PASS"
   | "FAIL"
@@ -773,18 +749,9 @@ export type TestCaseScenarioStatus =
   | "STOPPING"
   | "STOPPED"
   | "PASS_WITH_WARNINGS"
-  | "ERROR";
-export const TestCaseScenarioStatus = S.Literal(
-  "PASS",
-  "FAIL",
-  "CANCELED",
-  "PENDING",
-  "RUNNING",
-  "STOPPING",
-  "STOPPED",
-  "PASS_WITH_WARNINGS",
-  "ERROR",
-);
+  | "ERROR"
+  | (string & {});
+export const TestCaseScenarioStatus = S.String;
 export interface TestCaseScenario {
   testCaseScenarioId?: string;
   testCaseScenarioType?: TestCaseScenarioType;

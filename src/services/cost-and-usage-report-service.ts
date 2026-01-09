@@ -175,21 +175,18 @@ export interface UntagResourceResponse {}
 export const UntagResourceResponse = S.suspend(() => S.Struct({})).annotations({
   identifier: "UntagResourceResponse",
 }) as any as S.Schema<UntagResourceResponse>;
-export type TimeUnit = "HOURLY" | "DAILY" | "MONTHLY";
-export const TimeUnit = S.Literal("HOURLY", "DAILY", "MONTHLY");
-export type ReportFormat = "textORcsv" | "Parquet";
-export const ReportFormat = S.Literal("textORcsv", "Parquet");
-export type CompressionFormat = "ZIP" | "GZIP" | "Parquet";
-export const CompressionFormat = S.Literal("ZIP", "GZIP", "Parquet");
+export type TimeUnit = "HOURLY" | "DAILY" | "MONTHLY" | (string & {});
+export const TimeUnit = S.String;
+export type ReportFormat = "textORcsv" | "Parquet" | (string & {});
+export const ReportFormat = S.String;
+export type CompressionFormat = "ZIP" | "GZIP" | "Parquet" | (string & {});
+export const CompressionFormat = S.String;
 export type SchemaElement =
   | "RESOURCES"
   | "SPLIT_COST_ALLOCATION_DATA"
-  | "MANUAL_DISCOUNT_COMPATIBILITY";
-export const SchemaElement = S.Literal(
-  "RESOURCES",
-  "SPLIT_COST_ALLOCATION_DATA",
-  "MANUAL_DISCOUNT_COMPATIBILITY",
-);
+  | "MANUAL_DISCOUNT_COMPATIBILITY"
+  | (string & {});
+export const SchemaElement = S.String;
 export type SchemaElementList = SchemaElement[];
 export const SchemaElementList = S.Array(SchemaElement);
 export type AWSRegion =
@@ -220,52 +217,28 @@ export type AWSRegion =
   | "us-west-1"
   | "us-west-2"
   | "cn-north-1"
-  | "cn-northwest-1";
-export const AWSRegion = S.Literal(
-  "af-south-1",
-  "ap-east-1",
-  "ap-south-1",
-  "ap-south-2",
-  "ap-southeast-1",
-  "ap-southeast-2",
-  "ap-southeast-3",
-  "ap-northeast-1",
-  "ap-northeast-2",
-  "ap-northeast-3",
-  "ca-central-1",
-  "eu-central-1",
-  "eu-central-2",
-  "eu-west-1",
-  "eu-west-2",
-  "eu-west-3",
-  "eu-north-1",
-  "eu-south-1",
-  "eu-south-2",
-  "me-central-1",
-  "me-south-1",
-  "sa-east-1",
-  "us-east-1",
-  "us-east-2",
-  "us-west-1",
-  "us-west-2",
-  "cn-north-1",
-  "cn-northwest-1",
-);
-export type AdditionalArtifact = "REDSHIFT" | "QUICKSIGHT" | "ATHENA";
-export const AdditionalArtifact = S.Literal("REDSHIFT", "QUICKSIGHT", "ATHENA");
+  | "cn-northwest-1"
+  | (string & {});
+export const AWSRegion = S.String;
+export type AdditionalArtifact =
+  | "REDSHIFT"
+  | "QUICKSIGHT"
+  | "ATHENA"
+  | (string & {});
+export const AdditionalArtifact = S.String;
 export type AdditionalArtifactList = AdditionalArtifact[];
 export const AdditionalArtifactList = S.Array(AdditionalArtifact);
-export type ReportVersioning = "CREATE_NEW_REPORT" | "OVERWRITE_REPORT";
-export const ReportVersioning = S.Literal(
-  "CREATE_NEW_REPORT",
-  "OVERWRITE_REPORT",
-);
-export type LastStatus = "SUCCESS" | "ERROR_PERMISSIONS" | "ERROR_NO_BUCKET";
-export const LastStatus = S.Literal(
-  "SUCCESS",
-  "ERROR_PERMISSIONS",
-  "ERROR_NO_BUCKET",
-);
+export type ReportVersioning =
+  | "CREATE_NEW_REPORT"
+  | "OVERWRITE_REPORT"
+  | (string & {});
+export const ReportVersioning = S.String;
+export type LastStatus =
+  | "SUCCESS"
+  | "ERROR_PERMISSIONS"
+  | "ERROR_NO_BUCKET"
+  | (string & {});
+export const LastStatus = S.String;
 export interface ReportStatus {
   lastDelivery?: string;
   lastStatus?: LastStatus;

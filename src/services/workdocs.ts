@@ -132,58 +132,48 @@ export type HeaderValueType = string;
 export type ResponseItemWebUrl = string | redacted.Redacted<string>;
 
 //# Schemas
-export type CommentVisibilityType = "PUBLIC" | "PRIVATE";
-export const CommentVisibilityType = S.Literal("PUBLIC", "PRIVATE");
+export type CommentVisibilityType = "PUBLIC" | "PRIVATE" | (string & {});
+export const CommentVisibilityType = S.String;
 export type SharedLabels = string[];
 export const SharedLabels = S.Array(S.String);
-export type SubscriptionProtocolType = "HTTPS" | "SQS";
-export const SubscriptionProtocolType = S.Literal("HTTPS", "SQS");
-export type SubscriptionType = "ALL";
-export const SubscriptionType = S.Literal("ALL");
+export type SubscriptionProtocolType = "HTTPS" | "SQS" | (string & {});
+export const SubscriptionProtocolType = S.String;
+export type SubscriptionType = "ALL" | (string & {});
+export const SubscriptionType = S.String;
 export type CustomMetadataKeyList = string[];
 export const CustomMetadataKeyList = S.Array(S.String);
-export type ResourceSortType = "DATE" | "NAME";
-export const ResourceSortType = S.Literal("DATE", "NAME");
-export type OrderType = "ASCENDING" | "DESCENDING";
-export const OrderType = S.Literal("ASCENDING", "DESCENDING");
-export type FolderContentType = "ALL" | "DOCUMENT" | "FOLDER";
-export const FolderContentType = S.Literal("ALL", "DOCUMENT", "FOLDER");
-export type UserFilterType = "ALL" | "ACTIVE_PENDING";
-export const UserFilterType = S.Literal("ALL", "ACTIVE_PENDING");
+export type ResourceSortType = "DATE" | "NAME" | (string & {});
+export const ResourceSortType = S.String;
+export type OrderType = "ASCENDING" | "DESCENDING" | (string & {});
+export const OrderType = S.String;
+export type FolderContentType = "ALL" | "DOCUMENT" | "FOLDER" | (string & {});
+export const FolderContentType = S.String;
+export type UserFilterType = "ALL" | "ACTIVE_PENDING" | (string & {});
+export const UserFilterType = S.String;
 export type UserSortType =
   | "USER_NAME"
   | "FULL_NAME"
   | "STORAGE_LIMIT"
   | "USER_STATUS"
-  | "STORAGE_USED";
-export const UserSortType = S.Literal(
-  "USER_NAME",
-  "FULL_NAME",
-  "STORAGE_LIMIT",
-  "USER_STATUS",
-  "STORAGE_USED",
-);
-export type ResourceCollectionType = "SHARED_WITH_ME";
-export const ResourceCollectionType = S.Literal("SHARED_WITH_ME");
+  | "STORAGE_USED"
+  | (string & {});
+export const UserSortType = S.String;
+export type ResourceCollectionType = "SHARED_WITH_ME" | (string & {});
+export const ResourceCollectionType = S.String;
 export type PrincipalType =
   | "USER"
   | "GROUP"
   | "INVITE"
   | "ANONYMOUS"
-  | "ORGANIZATION";
-export const PrincipalType = S.Literal(
-  "USER",
-  "GROUP",
-  "INVITE",
-  "ANONYMOUS",
-  "ORGANIZATION",
-);
-export type SearchQueryScopeType = "NAME" | "CONTENT";
-export const SearchQueryScopeType = S.Literal("NAME", "CONTENT");
+  | "ORGANIZATION"
+  | (string & {});
+export const PrincipalType = S.String;
+export type SearchQueryScopeType = "NAME" | "CONTENT" | (string & {});
+export const SearchQueryScopeType = S.String;
 export type SearchQueryScopeTypeList = SearchQueryScopeType[];
 export const SearchQueryScopeTypeList = S.Array(SearchQueryScopeType);
-export type AdditionalResponseFieldType = "WEBURL";
-export const AdditionalResponseFieldType = S.Literal("WEBURL");
+export type AdditionalResponseFieldType = "WEBURL" | (string & {});
+export const AdditionalResponseFieldType = S.String;
 export type AdditionalResponseFieldsList = AdditionalResponseFieldType[];
 export const AdditionalResponseFieldsList = S.Array(
   AdditionalResponseFieldType,
@@ -192,28 +182,19 @@ export type ResourceStateType =
   | "ACTIVE"
   | "RESTORING"
   | "RECYCLING"
-  | "RECYCLED";
-export const ResourceStateType = S.Literal(
-  "ACTIVE",
-  "RESTORING",
-  "RECYCLING",
-  "RECYCLED",
-);
-export type DocumentVersionStatus = "ACTIVE";
-export const DocumentVersionStatus = S.Literal("ACTIVE");
+  | "RECYCLED"
+  | (string & {});
+export const ResourceStateType = S.String;
+export type DocumentVersionStatus = "ACTIVE" | (string & {});
+export const DocumentVersionStatus = S.String;
 export type UserType =
   | "USER"
   | "ADMIN"
   | "POWERUSER"
   | "MINIMALUSER"
-  | "WORKSPACESUSER";
-export const UserType = S.Literal(
-  "USER",
-  "ADMIN",
-  "POWERUSER",
-  "MINIMALUSER",
-  "WORKSPACESUSER",
-);
+  | "WORKSPACESUSER"
+  | (string & {});
+export const UserType = S.String;
 export type LocaleType =
   | "en"
   | "fr"
@@ -225,22 +206,11 @@ export type LocaleType =
   | "zh_CN"
   | "zh_TW"
   | "pt_BR"
-  | "default";
-export const LocaleType = S.Literal(
-  "en",
-  "fr",
-  "ko",
-  "de",
-  "es",
-  "ja",
-  "ru",
-  "zh_CN",
-  "zh_TW",
-  "pt_BR",
-  "default",
-);
-export type BooleanEnumType = "TRUE" | "FALSE";
-export const BooleanEnumType = S.Literal("TRUE", "FALSE");
+  | "default"
+  | (string & {});
+export const LocaleType = S.String;
+export type BooleanEnumType = "TRUE" | "FALSE" | (string & {});
+export const BooleanEnumType = S.String;
 export interface AbortDocumentVersionUploadRequest {
   AuthenticationToken?: string | redacted.Redacted<string>;
   DocumentId: string;
@@ -1513,8 +1483,8 @@ export const UpdateFolderResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateFolderResponse",
 }) as any as S.Schema<UpdateFolderResponse>;
-export type StorageType = "UNLIMITED" | "QUOTA";
-export const StorageType = S.Literal("UNLIMITED", "QUOTA");
+export type StorageType = "UNLIMITED" | "QUOTA" | (string & {});
+export const StorageType = S.String;
 export interface StorageRuleType {
   StorageAllocatedInBytes?: number;
   StorageType?: StorageType;
@@ -1565,8 +1535,13 @@ export const UpdateUserRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateUserRequest",
 }) as any as S.Schema<UpdateUserRequest>;
-export type RoleType = "VIEWER" | "CONTRIBUTOR" | "OWNER" | "COOWNER";
-export const RoleType = S.Literal("VIEWER", "CONTRIBUTOR", "OWNER", "COOWNER");
+export type RoleType =
+  | "VIEWER"
+  | "CONTRIBUTOR"
+  | "OWNER"
+  | "COOWNER"
+  | (string & {});
+export const RoleType = S.String;
 export type LanguageCodeType =
   | "AR"
   | "BG"
@@ -1598,40 +1573,9 @@ export type LanguageCodeType =
   | "TH"
   | "TR"
   | "ZH"
-  | "DEFAULT";
-export const LanguageCodeType = S.Literal(
-  "AR",
-  "BG",
-  "BN",
-  "DA",
-  "DE",
-  "CS",
-  "EL",
-  "EN",
-  "ES",
-  "FA",
-  "FI",
-  "FR",
-  "HI",
-  "HU",
-  "ID",
-  "IT",
-  "JA",
-  "KO",
-  "LT",
-  "LV",
-  "NL",
-  "NO",
-  "PT",
-  "RO",
-  "RU",
-  "SV",
-  "SW",
-  "TH",
-  "TR",
-  "ZH",
-  "DEFAULT",
-);
+  | "DEFAULT"
+  | (string & {});
+export const LanguageCodeType = S.String;
 export type TextLocaleTypeList = LanguageCodeType[];
 export const TextLocaleTypeList = S.Array(LanguageCodeType);
 export type ContentCategoryType =
@@ -1643,39 +1587,26 @@ export type ContentCategoryType =
   | "AUDIO"
   | "VIDEO"
   | "SOURCE_CODE"
-  | "OTHER";
-export const ContentCategoryType = S.Literal(
-  "IMAGE",
-  "DOCUMENT",
-  "PDF",
-  "SPREADSHEET",
-  "PRESENTATION",
-  "AUDIO",
-  "VIDEO",
-  "SOURCE_CODE",
-  "OTHER",
-);
+  | "OTHER"
+  | (string & {});
+export const ContentCategoryType = S.String;
 export type SearchContentCategoryTypeList = ContentCategoryType[];
 export const SearchContentCategoryTypeList = S.Array(ContentCategoryType);
 export type SearchResourceType =
   | "FOLDER"
   | "DOCUMENT"
   | "COMMENT"
-  | "DOCUMENT_VERSION";
-export const SearchResourceType = S.Literal(
-  "FOLDER",
-  "DOCUMENT",
-  "COMMENT",
-  "DOCUMENT_VERSION",
-);
+  | "DOCUMENT_VERSION"
+  | (string & {});
+export const SearchResourceType = S.String;
 export type SearchResourceTypeList = SearchResourceType[];
 export const SearchResourceTypeList = S.Array(SearchResourceType);
 export type SearchLabelList = string[];
 export const SearchLabelList = S.Array(S.String);
 export type SearchAncestorIdList = string[];
 export const SearchAncestorIdList = S.Array(S.String);
-export type SearchCollectionType = "OWNED" | "SHARED_WITH_ME";
-export const SearchCollectionType = S.Literal("OWNED", "SHARED_WITH_ME");
+export type SearchCollectionType = "OWNED" | "SHARED_WITH_ME" | (string & {});
+export const SearchCollectionType = S.String;
 export type SearchCollectionTypeList = SearchCollectionType[];
 export const SearchCollectionTypeList = S.Array(SearchCollectionType);
 export type OrderByFieldType =
@@ -1683,16 +1614,11 @@ export type OrderByFieldType =
   | "NAME"
   | "SIZE"
   | "CREATED_TIMESTAMP"
-  | "MODIFIED_TIMESTAMP";
-export const OrderByFieldType = S.Literal(
-  "RELEVANCE",
-  "NAME",
-  "SIZE",
-  "CREATED_TIMESTAMP",
-  "MODIFIED_TIMESTAMP",
-);
-export type SortOrder = "ASC" | "DESC";
-export const SortOrder = S.Literal("ASC", "DESC");
+  | "MODIFIED_TIMESTAMP"
+  | (string & {});
+export const OrderByFieldType = S.String;
+export type SortOrder = "ASC" | "DESC" | (string & {});
+export const SortOrder = S.String;
 export interface SharePrincipal {
   Id: string;
   Type: PrincipalType;
@@ -1724,8 +1650,8 @@ export const CustomMetadataMap = S.Record({
 });
 export type EntityIdList = string[];
 export const EntityIdList = S.Array(S.String);
-export type UserStatusType = "ACTIVE" | "INACTIVE" | "PENDING";
-export const UserStatusType = S.Literal("ACTIVE", "INACTIVE", "PENDING");
+export type UserStatusType = "ACTIVE" | "INACTIVE" | "PENDING" | (string & {});
+export const UserStatusType = S.String;
 export interface UserStorageMetadata {
   StorageUtilizedInBytes?: number;
   StorageRule?: StorageRuleType;
@@ -1778,8 +1704,12 @@ export const User = S.suspend(() =>
     Storage: S.optional(UserStorageMetadata),
   }),
 ).annotations({ identifier: "User" }) as any as S.Schema<User>;
-export type CommentStatusType = "DRAFT" | "PUBLISHED" | "DELETED";
-export const CommentStatusType = S.Literal("DRAFT", "PUBLISHED", "DELETED");
+export type CommentStatusType =
+  | "DRAFT"
+  | "PUBLISHED"
+  | "DELETED"
+  | (string & {});
+export const CommentStatusType = S.String;
 export interface Comment {
   CommentId: string;
   ParentId?: string;
@@ -1874,13 +1804,13 @@ export const SearchSortResult = S.suspend(() =>
 }) as any as S.Schema<SearchSortResult>;
 export type SearchResultSortList = SearchSortResult[];
 export const SearchResultSortList = S.Array(SearchSortResult);
-export type PrincipalRoleType = "VIEWER" | "CONTRIBUTOR" | "OWNER" | "COOWNER";
-export const PrincipalRoleType = S.Literal(
-  "VIEWER",
-  "CONTRIBUTOR",
-  "OWNER",
-  "COOWNER",
-);
+export type PrincipalRoleType =
+  | "VIEWER"
+  | "CONTRIBUTOR"
+  | "OWNER"
+  | "COOWNER"
+  | (string & {});
+export const PrincipalRoleType = S.String;
 export type SearchPrincipalRoleList = PrincipalRoleType[];
 export const SearchPrincipalRoleList = S.Array(PrincipalRoleType);
 export interface AddResourcePermissionsRequest {
@@ -2047,10 +1977,14 @@ export const GetCurrentUserResponse = S.suspend(() =>
 ).annotations({
   identifier: "GetCurrentUserResponse",
 }) as any as S.Schema<GetCurrentUserResponse>;
-export type DocumentStatusType = "INITIALIZED" | "ACTIVE";
-export const DocumentStatusType = S.Literal("INITIALIZED", "ACTIVE");
-export type DocumentThumbnailType = "SMALL" | "SMALL_HQ" | "LARGE";
-export const DocumentThumbnailType = S.Literal("SMALL", "SMALL_HQ", "LARGE");
+export type DocumentStatusType = "INITIALIZED" | "ACTIVE" | (string & {});
+export const DocumentStatusType = S.String;
+export type DocumentThumbnailType =
+  | "SMALL"
+  | "SMALL_HQ"
+  | "LARGE"
+  | (string & {});
+export const DocumentThumbnailType = S.String;
 export type DocumentThumbnailUrlMap = {
   [key in DocumentThumbnailType]?: string | redacted.Redacted<string>;
 };
@@ -2060,8 +1994,8 @@ export const DocumentThumbnailUrlMap = S.partial(
     value: S.UndefinedOr(SensitiveString),
   }),
 );
-export type DocumentSourceType = "ORIGINAL" | "WITH_COMMENTS";
-export const DocumentSourceType = S.Literal("ORIGINAL", "WITH_COMMENTS");
+export type DocumentSourceType = "ORIGINAL" | "WITH_COMMENTS" | (string & {});
+export const DocumentSourceType = S.String;
 export type DocumentSourceUrlMap = {
   [key in DocumentSourceType]?: string | redacted.Redacted<string>;
 };
@@ -2256,42 +2190,9 @@ export type ActivityType =
   | "FOLDER_SHAREABLE_LINK_CREATED"
   | "FOLDER_SHAREABLE_LINK_REMOVED"
   | "FOLDER_SHAREABLE_LINK_PERMISSION_CHANGED"
-  | "FOLDER_MOVED";
-export const ActivityType = S.Literal(
-  "DOCUMENT_CHECKED_IN",
-  "DOCUMENT_CHECKED_OUT",
-  "DOCUMENT_RENAMED",
-  "DOCUMENT_VERSION_UPLOADED",
-  "DOCUMENT_VERSION_DELETED",
-  "DOCUMENT_VERSION_VIEWED",
-  "DOCUMENT_VERSION_DOWNLOADED",
-  "DOCUMENT_RECYCLED",
-  "DOCUMENT_RESTORED",
-  "DOCUMENT_REVERTED",
-  "DOCUMENT_SHARED",
-  "DOCUMENT_UNSHARED",
-  "DOCUMENT_SHARE_PERMISSION_CHANGED",
-  "DOCUMENT_SHAREABLE_LINK_CREATED",
-  "DOCUMENT_SHAREABLE_LINK_REMOVED",
-  "DOCUMENT_SHAREABLE_LINK_PERMISSION_CHANGED",
-  "DOCUMENT_MOVED",
-  "DOCUMENT_COMMENT_ADDED",
-  "DOCUMENT_COMMENT_DELETED",
-  "DOCUMENT_ANNOTATION_ADDED",
-  "DOCUMENT_ANNOTATION_DELETED",
-  "FOLDER_CREATED",
-  "FOLDER_DELETED",
-  "FOLDER_RENAMED",
-  "FOLDER_RECYCLED",
-  "FOLDER_RESTORED",
-  "FOLDER_SHARED",
-  "FOLDER_UNSHARED",
-  "FOLDER_SHARE_PERMISSION_CHANGED",
-  "FOLDER_SHAREABLE_LINK_CREATED",
-  "FOLDER_SHAREABLE_LINK_REMOVED",
-  "FOLDER_SHAREABLE_LINK_PERMISSION_CHANGED",
-  "FOLDER_MOVED",
-);
+  | "FOLDER_MOVED"
+  | (string & {});
+export const ActivityType = S.String;
 export interface SearchPrincipalType {
   Id: string;
   Roles?: PrincipalRoleType[];
@@ -2382,10 +2283,10 @@ export const UserMetadata = S.suspend(() =>
 ).annotations({ identifier: "UserMetadata" }) as any as S.Schema<UserMetadata>;
 export type UserMetadataList = UserMetadata[];
 export const UserMetadataList = S.Array(UserMetadata);
-export type ResourceType = "FOLDER" | "DOCUMENT";
-export const ResourceType = S.Literal("FOLDER", "DOCUMENT");
-export type RolePermissionType = "DIRECT" | "INHERITED";
-export const RolePermissionType = S.Literal("DIRECT", "INHERITED");
+export type ResourceType = "FOLDER" | "DOCUMENT" | (string & {});
+export const ResourceType = S.String;
+export type RolePermissionType = "DIRECT" | "INHERITED" | (string & {});
+export const RolePermissionType = S.String;
 export interface CreateCommentResponse {
   Comment?: Comment;
 }
@@ -2482,8 +2383,8 @@ export const SearchResourcesRequest = S.suspend(() =>
 ).annotations({
   identifier: "SearchResourcesRequest",
 }) as any as S.Schema<SearchResourcesRequest>;
-export type ShareStatusType = "SUCCESS" | "FAILURE";
-export const ShareStatusType = S.Literal("SUCCESS", "FAILURE");
+export type ShareStatusType = "SUCCESS" | "FAILURE" | (string & {});
+export const ShareStatusType = S.String;
 export interface Participants {
   Users?: UserMetadata[];
   Groups?: GroupMetadata[];
@@ -2707,13 +2608,9 @@ export type ResponseItemType =
   | "DOCUMENT"
   | "FOLDER"
   | "COMMENT"
-  | "DOCUMENT_VERSION";
-export const ResponseItemType = S.Literal(
-  "DOCUMENT",
-  "FOLDER",
-  "COMMENT",
-  "DOCUMENT_VERSION",
-);
+  | "DOCUMENT_VERSION"
+  | (string & {});
+export const ResponseItemType = S.String;
 export interface ResponseItem {
   ResourceType?: ResponseItemType;
   WebUrl?: string | redacted.Redacted<string>;

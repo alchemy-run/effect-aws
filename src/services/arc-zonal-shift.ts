@@ -119,23 +119,23 @@ export const GetAutoshiftObserverNotificationStatusRequest = S.suspend(() =>
 ).annotations({
   identifier: "GetAutoshiftObserverNotificationStatusRequest",
 }) as any as S.Schema<GetAutoshiftObserverNotificationStatusRequest>;
-export type AutoshiftExecutionStatus = "ACTIVE" | "COMPLETED";
-export const AutoshiftExecutionStatus = S.Literal("ACTIVE", "COMPLETED");
-export type AutoshiftObserverNotificationStatus = "ENABLED" | "DISABLED";
-export const AutoshiftObserverNotificationStatus = S.Literal(
-  "ENABLED",
-  "DISABLED",
-);
-export type ZonalAutoshiftStatus = "ENABLED" | "DISABLED";
-export const ZonalAutoshiftStatus = S.Literal("ENABLED", "DISABLED");
+export type AutoshiftExecutionStatus = "ACTIVE" | "COMPLETED" | (string & {});
+export const AutoshiftExecutionStatus = S.String;
+export type AutoshiftObserverNotificationStatus =
+  | "ENABLED"
+  | "DISABLED"
+  | (string & {});
+export const AutoshiftObserverNotificationStatus = S.String;
+export type ZonalAutoshiftStatus = "ENABLED" | "DISABLED" | (string & {});
+export const ZonalAutoshiftStatus = S.String;
 export type BlockedWindows = string[];
 export const BlockedWindows = S.Array(S.String);
 export type BlockedDates = string[];
 export const BlockedDates = S.Array(S.String);
 export type AllowedWindows = string[];
 export const AllowedWindows = S.Array(S.String);
-export type ControlConditionType = "CLOUDWATCH";
-export const ControlConditionType = S.Literal("CLOUDWATCH");
+export type ControlConditionType = "CLOUDWATCH" | (string & {});
+export const ControlConditionType = S.String;
 export interface ControlCondition {
   type: ControlConditionType;
   alarmIdentifier: string;
@@ -147,8 +147,12 @@ export const ControlCondition = S.suspend(() =>
 }) as any as S.Schema<ControlCondition>;
 export type OutcomeAlarms = ControlCondition[];
 export const OutcomeAlarms = S.Array(ControlCondition);
-export type ZonalShiftStatus = "ACTIVE" | "EXPIRED" | "CANCELED";
-export const ZonalShiftStatus = S.Literal("ACTIVE", "EXPIRED", "CANCELED");
+export type ZonalShiftStatus =
+  | "ACTIVE"
+  | "EXPIRED"
+  | "CANCELED"
+  | (string & {});
+export const ZonalShiftStatus = S.String;
 export interface ListAutoshiftsRequest {
   nextToken?: string;
   status?: AutoshiftExecutionStatus;
@@ -601,34 +605,25 @@ export const StartPracticeRunResponse = S.suspend(() =>
 ).annotations({
   identifier: "StartPracticeRunResponse",
 }) as any as S.Schema<StartPracticeRunResponse>;
-export type AppliedStatus = "APPLIED" | "NOT_APPLIED";
-export const AppliedStatus = S.Literal("APPLIED", "NOT_APPLIED");
+export type AppliedStatus = "APPLIED" | "NOT_APPLIED" | (string & {});
+export const AppliedStatus = S.String;
 export type ShiftType =
   | "ZONAL_SHIFT"
   | "PRACTICE_RUN"
   | "FIS_EXPERIMENT"
-  | "ZONAL_AUTOSHIFT";
-export const ShiftType = S.Literal(
-  "ZONAL_SHIFT",
-  "PRACTICE_RUN",
-  "FIS_EXPERIMENT",
-  "ZONAL_AUTOSHIFT",
-);
+  | "ZONAL_AUTOSHIFT"
+  | (string & {});
+export const ShiftType = S.String;
 export type PracticeRunOutcome =
   | "FAILED"
   | "INTERRUPTED"
   | "PENDING"
   | "SUCCEEDED"
-  | "CAPACITY_CHECK_FAILED";
-export const PracticeRunOutcome = S.Literal(
-  "FAILED",
-  "INTERRUPTED",
-  "PENDING",
-  "SUCCEEDED",
-  "CAPACITY_CHECK_FAILED",
-);
-export type AutoshiftAppliedStatus = "APPLIED" | "NOT_APPLIED";
-export const AutoshiftAppliedStatus = S.Literal("APPLIED", "NOT_APPLIED");
+  | "CAPACITY_CHECK_FAILED"
+  | (string & {});
+export const PracticeRunOutcome = S.String;
+export type AutoshiftAppliedStatus = "APPLIED" | "NOT_APPLIED" | (string & {});
+export const AutoshiftAppliedStatus = S.String;
 export type AvailabilityZones = string[];
 export const AvailabilityZones = S.Array(S.String);
 export interface AutoshiftSummary {
@@ -736,21 +731,9 @@ export type ConflictExceptionReason =
   | "PracticeBlockingAlarmsRed"
   | "PracticeInBlockedDates"
   | "PracticeInBlockedWindows"
-  | "PracticeOutsideAllowedWindows";
-export const ConflictExceptionReason = S.Literal(
-  "ZonalShiftAlreadyExists",
-  "ZonalShiftStatusNotActive",
-  "SimultaneousZonalShiftsConflict",
-  "PracticeConfigurationAlreadyExists",
-  "AutoShiftEnabled",
-  "PracticeConfigurationDoesNotExist",
-  "ZonalAutoshiftActive",
-  "PracticeOutcomeAlarmsRed",
-  "PracticeBlockingAlarmsRed",
-  "PracticeInBlockedDates",
-  "PracticeInBlockedWindows",
-  "PracticeOutsideAllowedWindows",
-);
+  | "PracticeOutsideAllowedWindows"
+  | (string & {});
+export const ConflictExceptionReason = S.String;
 export interface ZonalShiftSummary {
   zonalShiftId: string;
   resourceIdentifier: string;
@@ -868,24 +851,9 @@ export type ValidationExceptionReason =
   | "AutoshiftUpdateNotAllowed"
   | "UnsupportedPracticeCancelShiftType"
   | "InvalidPracticeAllowedWindow"
-  | "InvalidPracticeWindows";
-export const ValidationExceptionReason = S.Literal(
-  "InvalidExpiresIn",
-  "InvalidStatus",
-  "MissingValue",
-  "InvalidToken",
-  "InvalidResourceIdentifier",
-  "InvalidAz",
-  "UnsupportedAz",
-  "InvalidAlarmCondition",
-  "InvalidConditionType",
-  "InvalidPracticeBlocker",
-  "FISExperimentUpdateNotAllowed",
-  "AutoshiftUpdateNotAllowed",
-  "UnsupportedPracticeCancelShiftType",
-  "InvalidPracticeAllowedWindow",
-  "InvalidPracticeWindows",
-);
+  | "InvalidPracticeWindows"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 
 //# Errors
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(

@@ -2144,8 +2144,8 @@ export type StatusList = string[];
 export const StatusList = S.Array(S.String);
 export type TypeList = string[];
 export const TypeList = S.Array(S.String);
-export type StoreType = "SEQUENCE_STORE" | "REFERENCE_STORE";
-export const StoreType = S.Literal("SEQUENCE_STORE", "REFERENCE_STORE");
+export type StoreType = "SEQUENCE_STORE" | "REFERENCE_STORE" | (string & {});
+export const StoreType = S.String;
 export interface AnnotationImportItemSource {
   source: string;
 }

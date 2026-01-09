@@ -157,22 +157,9 @@ export type LanguageCodeString =
   | "pt-BR"
   | "kr-KR"
   | "zh-CN"
-  | "zh-TW";
-export const LanguageCodeString = S.Literal(
-  "en-US",
-  "en-GB",
-  "es-419",
-  "es-ES",
-  "de-DE",
-  "fr-CA",
-  "fr-FR",
-  "it-IT",
-  "ja-JP",
-  "pt-BR",
-  "kr-KR",
-  "zh-CN",
-  "zh-TW",
-);
+  | "zh-TW"
+  | (string & {});
+export const LanguageCodeString = S.String;
 export type ListString = string[];
 export const ListString = S.Array(S.String);
 export type TagKeyList = string[];
@@ -1299,17 +1286,21 @@ export const SubscribeInput = S.suspend(() =>
 ).annotations({
   identifier: "SubscribeInput",
 }) as any as S.Schema<SubscribeInput>;
-export type RouteType = "Transactional" | "Promotional" | "Premium";
-export const RouteType = S.Literal("Transactional", "Promotional", "Premium");
-export type NumberCapability = "SMS" | "MMS" | "VOICE";
-export const NumberCapability = S.Literal("SMS", "MMS", "VOICE");
+export type RouteType =
+  | "Transactional"
+  | "Promotional"
+  | "Premium"
+  | (string & {});
+export const RouteType = S.String;
+export type NumberCapability = "SMS" | "MMS" | "VOICE" | (string & {});
+export const NumberCapability = S.String;
 export type NumberCapabilityList = NumberCapability[];
 export const NumberCapabilityList = S.Array(NumberCapability);
-export type SMSSandboxPhoneNumberVerificationStatus = "Pending" | "Verified";
-export const SMSSandboxPhoneNumberVerificationStatus = S.Literal(
-  "Pending",
-  "Verified",
-);
+export type SMSSandboxPhoneNumberVerificationStatus =
+  | "Pending"
+  | "Verified"
+  | (string & {});
+export const SMSSandboxPhoneNumberVerificationStatus = S.String;
 export interface Endpoint {
   EndpointArn?: string;
   Attributes?: { [key: string]: string | undefined };

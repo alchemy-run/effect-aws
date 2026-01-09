@@ -1377,16 +1377,9 @@ export type AnomalyDetectorStatusCode =
   | "DELETING"
   | "CREATION_FAILED"
   | "UPDATE_FAILED"
-  | "DELETION_FAILED";
-export const AnomalyDetectorStatusCode = S.Literal(
-  "CREATING",
-  "ACTIVE",
-  "UPDATING",
-  "DELETING",
-  "CREATION_FAILED",
-  "UPDATE_FAILED",
-  "DELETION_FAILED",
-);
+  | "DELETION_FAILED"
+  | (string & {});
+export const AnomalyDetectorStatusCode = S.String;
 export interface LimitsPerLabelSetEntry {
   maxSeries?: number;
 }

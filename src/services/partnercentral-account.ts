@@ -93,44 +93,34 @@ export type SellerProfileId = string;
 //# Schemas
 export type VerificationType =
   | "BUSINESS_VERIFICATION"
-  | "REGISTRANT_VERIFICATION";
-export const VerificationType = S.Literal(
-  "BUSINESS_VERIFICATION",
-  "REGISTRANT_VERIFICATION",
-);
+  | "REGISTRANT_VERIFICATION"
+  | (string & {});
+export const VerificationType = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
-export type ConnectionType = "OPPORTUNITY_COLLABORATION" | "SUBSIDIARY";
-export const ConnectionType = S.Literal(
-  "OPPORTUNITY_COLLABORATION",
-  "SUBSIDIARY",
-);
+export type ConnectionType =
+  | "OPPORTUNITY_COLLABORATION"
+  | "SUBSIDIARY"
+  | (string & {});
+export const ConnectionType = S.String;
 export type ParticipantIdentifierList = string[];
 export const ParticipantIdentifierList = S.Array(S.String);
-export type ParticipantType = "SENDER" | "RECEIVER";
-export const ParticipantType = S.Literal("SENDER", "RECEIVER");
+export type ParticipantType = "SENDER" | "RECEIVER" | (string & {});
+export const ParticipantType = S.String;
 export type InvitationStatus =
   | "PENDING"
   | "ACCEPTED"
   | "REJECTED"
   | "CANCELED"
-  | "EXPIRED";
-export const InvitationStatus = S.Literal(
-  "PENDING",
-  "ACCEPTED",
-  "REJECTED",
-  "CANCELED",
-  "EXPIRED",
-);
+  | "EXPIRED"
+  | (string & {});
+export const InvitationStatus = S.String;
 export type AccessType =
   | "ALLOW_ALL"
   | "DENY_ALL"
-  | "ALLOW_BY_DEFAULT_DENY_SOME";
-export const AccessType = S.Literal(
-  "ALLOW_ALL",
-  "DENY_ALL",
-  "ALLOW_BY_DEFAULT_DENY_SOME",
-);
+  | "ALLOW_BY_DEFAULT_DENY_SOME"
+  | (string & {});
+export const AccessType = S.String;
 export type PrimarySolutionType =
   | "SOFTWARE_PRODUCTS"
   | "CONSULTING_SERVICES"
@@ -139,19 +129,11 @@ export type PrimarySolutionType =
   | "HARDWARE_PRODUCTS"
   | "COMMUNICATION_SERVICES"
   | "VALUE_ADDED_RESALE_AWS_SERVICES"
-  | "TRAINING_SERVICES";
-export const PrimarySolutionType = S.Literal(
-  "SOFTWARE_PRODUCTS",
-  "CONSULTING_SERVICES",
-  "PROFESSIONAL_SERVICES",
-  "MANAGED_SERVICES",
-  "HARDWARE_PRODUCTS",
-  "COMMUNICATION_SERVICES",
-  "VALUE_ADDED_RESALE_AWS_SERVICES",
-  "TRAINING_SERVICES",
-);
-export type ProfileVisibility = "PRIVATE" | "PUBLIC";
-export const ProfileVisibility = S.Literal("PRIVATE", "PUBLIC");
+  | "TRAINING_SERVICES"
+  | (string & {});
+export const PrimarySolutionType = S.String;
+export type ProfileVisibility = "PRIVATE" | "PUBLIC" | (string & {});
+export const ProfileVisibility = S.String;
 export interface GetVerificationRequest {
   VerificationType: VerificationType;
 }
@@ -609,46 +591,9 @@ export type IndustrySegment =
   | "TELECOMMUNICATIONS"
   | "TRANSPORTATION_LOGISTICS"
   | "TRAVEL_HOSPITALITY"
-  | "WHOLESALE_DISTRIBUTION";
-export const IndustrySegment = S.Literal(
-  "AGRICULTURE_MINING",
-  "BIOTECHNOLOGY",
-  "BUSINESS_CONSUMER_SERVICES",
-  "BUSINESS_SERV",
-  "COMMUNICATIONS",
-  "COMPUTER_HARDWARE",
-  "COMPUTERS_ELECTRONICS",
-  "COMPUTER_SOFTWARE",
-  "CONSUMER_GOODS",
-  "CONSUMER_RELATED",
-  "EDUCATION",
-  "ENERGY_UTILITIES",
-  "FINANCIAL_SERVICES",
-  "GAMING",
-  "GOVERNMENT",
-  "GOVERNMENT_EDUCATION_PUBLIC_SERVICES",
-  "HEALTHCARE",
-  "HEALTHCARE_PHARMACEUTICALS_BIOTECH",
-  "INDUSTRIAL_ENERGY",
-  "INTERNET_SPECIFIC",
-  "LIFE_SCIENCES",
-  "MANUFACTURING",
-  "MEDIA_ENTERTAINMENT_LEISURE",
-  "MEDIA_ENTERTAINMENT",
-  "MEDICAL_HEALTH",
-  "NON_PROFIT_ORGANIZATION",
-  "OTHER",
-  "PROFESSIONAL_SERVICES",
-  "REAL_ESTATE_CONSTRUCTION",
-  "RETAIL",
-  "RETAIL_WHOLESALE_DISTRIBUTION",
-  "SEMICONDUCTOR_ELECTR",
-  "SOFTWARE_INTERNET",
-  "TELECOMMUNICATIONS",
-  "TRANSPORTATION_LOGISTICS",
-  "TRAVEL_HOSPITALITY",
-  "WHOLESALE_DISTRIBUTION",
-);
+  | "WHOLESALE_DISTRIBUTION"
+  | (string & {});
+export const IndustrySegment = S.String;
 export type IndustrySegmentList = IndustrySegment[];
 export const IndustrySegmentList = S.Array(IndustrySegment);
 export type VerificationStatus =
@@ -656,21 +601,14 @@ export type VerificationStatus =
   | "IN_PROGRESS"
   | "FAILED"
   | "SUCCEEDED"
-  | "REJECTED";
-export const VerificationStatus = S.Literal(
-  "PENDING_CUSTOMER_ACTION",
-  "IN_PROGRESS",
-  "FAILED",
-  "SUCCEEDED",
-  "REJECTED",
-);
+  | "REJECTED"
+  | (string & {});
+export const VerificationStatus = S.String;
 export type AccessDeniedExceptionReason =
   | "ACCESS_DENIED"
-  | "INCOMPATIBLE_BENEFIT_AWS_PARTNER_STATE";
-export const AccessDeniedExceptionReason = S.Literal(
-  "ACCESS_DENIED",
-  "INCOMPATIBLE_BENEFIT_AWS_PARTNER_STATE",
-);
+  | "INCOMPATIBLE_BENEFIT_AWS_PARTNER_STATE"
+  | (string & {});
+export const AccessDeniedExceptionReason = S.String;
 export interface Tag {
   Key: string;
   Value: string;
@@ -684,13 +622,9 @@ export type ProfileTaskStatus =
   | "IN_PROGRESS"
   | "CANCELED"
   | "SUCCEEDED"
-  | "FAILED";
-export const ProfileTaskStatus = S.Literal(
-  "IN_PROGRESS",
-  "CANCELED",
-  "SUCCEEDED",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const ProfileTaskStatus = S.String;
 export interface ListTagsForResourceResponse {
   ResourceArn: string;
   Tags?: Tag[];
@@ -899,8 +833,8 @@ export const UpdateConnectionPreferencesResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateConnectionPreferencesResponse",
 }) as any as S.Schema<UpdateConnectionPreferencesResponse>;
-export type ConnectionTypeStatus = "ACTIVE" | "CANCELED";
-export const ConnectionTypeStatus = S.Literal("ACTIVE", "CANCELED");
+export type ConnectionTypeStatus = "ACTIVE" | "CANCELED" | (string & {});
+export const ConnectionTypeStatus = S.String;
 export interface PartnerProfileSummary {
   Id: string;
   Name: string;
@@ -1081,16 +1015,9 @@ export type ProfileValidationErrorReason =
   | "INVALID_LOGO_URL"
   | "INVALID_LOGO_FILE"
   | "INVALID_LOGO_SIZE"
-  | "INVALID_WEBSITE_URL";
-export const ProfileValidationErrorReason = S.Literal(
-  "INVALID_CONTENT",
-  "DUPLICATE_PROFILE",
-  "INVALID_LOGO",
-  "INVALID_LOGO_URL",
-  "INVALID_LOGO_FILE",
-  "INVALID_LOGO_SIZE",
-  "INVALID_WEBSITE_URL",
-);
+  | "INVALID_WEBSITE_URL"
+  | (string & {});
+export const ProfileValidationErrorReason = S.String;
 export interface ErrorDetail {
   Locale: string;
   Message: string;
@@ -1224,21 +1151,9 @@ export type ConflictExceptionReason =
   | "INCOMPATIBLE_CONNECTION_STATE"
   | "INCOMPATIBLE_CONNECTION_PREFERENCES_REVISION"
   | "ACCOUNT_ALREADY_VERIFIED"
-  | "VERIFICATION_ALREADY_IN_PROGRESS";
-export const ConflictExceptionReason = S.Literal(
-  "CONFLICT_CLIENT_TOKEN",
-  "DUPLICATE_PARTNER",
-  "INCOMPATIBLE_PROFILE_STATE",
-  "INCOMPATIBLE_PARTNER_PROFILE_TASK_STATE",
-  "DUPLICATE_CONNECTION_INVITATION",
-  "INCOMPATIBLE_CONNECTION_INVITATION_STATE",
-  "INCOMPATIBLE_CONNECTION_INVITATION_RECEIVER",
-  "DUPLICATE_CONNECTION",
-  "INCOMPATIBLE_CONNECTION_STATE",
-  "INCOMPATIBLE_CONNECTION_PREFERENCES_REVISION",
-  "ACCOUNT_ALREADY_VERIFIED",
-  "VERIFICATION_ALREADY_IN_PROGRESS",
-);
+  | "VERIFICATION_ALREADY_IN_PROGRESS"
+  | (string & {});
+export const ConflictExceptionReason = S.String;
 export interface ConnectionInvitationSummary {
   Catalog: string;
   Id: string;
@@ -1522,11 +1437,9 @@ export const VerificationResponseDetails = S.Union(
 );
 export type ServiceQuotaExceededExceptionReason =
   | "LIMIT_EXCEEDED_NUMBER_OF_EMAIL"
-  | "LIMIT_EXCEEDED_NUMBER_OF_DOMAIN";
-export const ServiceQuotaExceededExceptionReason = S.Literal(
-  "LIMIT_EXCEEDED_NUMBER_OF_EMAIL",
-  "LIMIT_EXCEEDED_NUMBER_OF_DOMAIN",
-);
+  | "LIMIT_EXCEEDED_NUMBER_OF_DOMAIN"
+  | (string & {});
+export const ServiceQuotaExceededExceptionReason = S.String;
 export type ResourceNotFoundExceptionReason =
   | "PARTNER_NOT_FOUND"
   | "PARTNER_PROFILE_NOT_FOUND"
@@ -1536,18 +1449,9 @@ export type ResourceNotFoundExceptionReason =
   | "RECEIVER_PROFILE_NOT_FOUND"
   | "CONNECTION_INVITATION_NOT_FOUND"
   | "CONNECTION_NOT_FOUND"
-  | "VERIFICATION_NOT_FOUND";
-export const ResourceNotFoundExceptionReason = S.Literal(
-  "PARTNER_NOT_FOUND",
-  "PARTNER_PROFILE_NOT_FOUND",
-  "PARTNER_PROFILE_TASK_NOT_FOUND",
-  "PARTNER_DOMAIN_NOT_FOUND",
-  "SENDER_PROFILE_NOT_FOUND",
-  "RECEIVER_PROFILE_NOT_FOUND",
-  "CONNECTION_INVITATION_NOT_FOUND",
-  "CONNECTION_NOT_FOUND",
-  "VERIFICATION_NOT_FOUND",
-);
+  | "VERIFICATION_NOT_FOUND"
+  | (string & {});
+export const ResourceNotFoundExceptionReason = S.String;
 export interface ConnectionTypeSummary {
   Status: ConnectionTypeStatus;
   OtherParticipant: Participant;
@@ -1634,11 +1538,9 @@ export const ConnectionTypeSummaryMap = S.partial(
 );
 export type ValidationExceptionReason =
   | "REQUEST_VALIDATION_FAILED"
-  | "BUSINESS_VALIDATION_FAILED";
-export const ValidationExceptionReason = S.Literal(
-  "REQUEST_VALIDATION_FAILED",
-  "BUSINESS_VALIDATION_FAILED",
-);
+  | "BUSINESS_VALIDATION_FAILED"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 export interface ConnectionSummary {
   Catalog: string;
   Id: string;
@@ -1680,16 +1582,9 @@ export type FieldValidationCode =
   | "INVALID_STRING_FORMAT"
   | "TOO_MANY_VALUES"
   | "ACTION_NOT_PERMITTED"
-  | "INVALID_ENUM_VALUE";
-export const FieldValidationCode = S.Literal(
-  "REQUIRED_FIELD_MISSING",
-  "DUPLICATE_VALUE",
-  "INVALID_VALUE",
-  "INVALID_STRING_FORMAT",
-  "TOO_MANY_VALUES",
-  "ACTION_NOT_PERMITTED",
-  "INVALID_ENUM_VALUE",
-);
+  | "INVALID_ENUM_VALUE"
+  | (string & {});
+export const FieldValidationCode = S.String;
 export type BusinessValidationCode =
   | "INCOMPATIBLE_CONNECTION_INVITATION_REQUEST"
   | "INCOMPATIBLE_LEGAL_NAME"
@@ -1697,16 +1592,9 @@ export type BusinessValidationCode =
   | "INCOMPATIBLE_IDENTITY_VERIFICATION_STATUS"
   | "INVALID_ACCOUNT_LINKING_STATUS"
   | "INVALID_ACCOUNT_STATE"
-  | "INCOMPATIBLE_DOMAIN";
-export const BusinessValidationCode = S.Literal(
-  "INCOMPATIBLE_CONNECTION_INVITATION_REQUEST",
-  "INCOMPATIBLE_LEGAL_NAME",
-  "INCOMPATIBLE_KNOW_YOUR_BUSINESS_STATUS",
-  "INCOMPATIBLE_IDENTITY_VERIFICATION_STATUS",
-  "INVALID_ACCOUNT_LINKING_STATUS",
-  "INVALID_ACCOUNT_STATE",
-  "INCOMPATIBLE_DOMAIN",
-);
+  | "INCOMPATIBLE_DOMAIN"
+  | (string & {});
+export const BusinessValidationCode = S.String;
 export interface GetConnectionResponse {
   Catalog: string;
   Id: string;

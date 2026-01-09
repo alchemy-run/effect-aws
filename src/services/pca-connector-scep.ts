@@ -358,26 +358,22 @@ export const IntuneConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "IntuneConfiguration",
 }) as any as S.Schema<IntuneConfiguration>;
-export type ConnectorType = "GENERAL_PURPOSE" | "INTUNE";
-export const ConnectorType = S.Literal("GENERAL_PURPOSE", "INTUNE");
-export type ConnectorStatus = "CREATING" | "ACTIVE" | "DELETING" | "FAILED";
-export const ConnectorStatus = S.Literal(
-  "CREATING",
-  "ACTIVE",
-  "DELETING",
-  "FAILED",
-);
+export type ConnectorType = "GENERAL_PURPOSE" | "INTUNE" | (string & {});
+export const ConnectorType = S.String;
+export type ConnectorStatus =
+  | "CREATING"
+  | "ACTIVE"
+  | "DELETING"
+  | "FAILED"
+  | (string & {});
+export const ConnectorStatus = S.String;
 export type ConnectorStatusReason =
   | "INTERNAL_FAILURE"
   | "PRIVATECA_ACCESS_DENIED"
   | "PRIVATECA_INVALID_STATE"
-  | "PRIVATECA_RESOURCE_NOT_FOUND";
-export const ConnectorStatusReason = S.Literal(
-  "INTERNAL_FAILURE",
-  "PRIVATECA_ACCESS_DENIED",
-  "PRIVATECA_INVALID_STATE",
-  "PRIVATECA_RESOURCE_NOT_FOUND",
-);
+  | "PRIVATECA_RESOURCE_NOT_FOUND"
+  | (string & {});
+export const ConnectorStatusReason = S.String;
 export interface Challenge {
   Arn?: string;
   ConnectorArn?: string;
@@ -590,16 +586,9 @@ export type ValidationExceptionReason =
   | "INVALID_STATE"
   | "NO_CLIENT_TOKEN"
   | "UNKNOWN_OPERATION"
-  | "OTHER";
-export const ValidationExceptionReason = S.Literal(
-  "CA_CERT_VALIDITY_TOO_SHORT",
-  "INVALID_CA_USAGE_MODE",
-  "INVALID_CONNECTOR_TYPE",
-  "INVALID_STATE",
-  "NO_CLIENT_TOKEN",
-  "UNKNOWN_OPERATION",
-  "OTHER",
-);
+  | "OTHER"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 
 //# Errors
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(

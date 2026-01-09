@@ -114,8 +114,8 @@ export type SubnetIdList = string[];
 export const SubnetIdList = S.Array(S.String);
 export type SecurityGroupIdList = string[];
 export const SecurityGroupIdList = S.Array(S.String);
-export type Protocol = "HTTP" | "HTTPS";
-export const Protocol = S.Literal("HTTP", "HTTPS");
+export type Protocol = "HTTP" | "HTTPS" | (string & {});
+export const Protocol = S.String;
 export interface ListRequesterGatewaysRequest {
   maxResults?: number;
   nextToken?: string;
@@ -265,14 +265,17 @@ export const ListLinksRequest = S.suspend(() =>
 ).annotations({
   identifier: "ListLinksRequest",
 }) as any as S.Schema<ListLinksRequest>;
-export type ResponderErrorMaskingAction = "NO_BID" | "PASSTHROUGH";
-export const ResponderErrorMaskingAction = S.Literal("NO_BID", "PASSTHROUGH");
-export type ResponderErrorMaskingLoggingType = "NONE" | "METRIC" | "RESPONSE";
-export const ResponderErrorMaskingLoggingType = S.Literal(
-  "NONE",
-  "METRIC",
-  "RESPONSE",
-);
+export type ResponderErrorMaskingAction =
+  | "NO_BID"
+  | "PASSTHROUGH"
+  | (string & {});
+export const ResponderErrorMaskingAction = S.String;
+export type ResponderErrorMaskingLoggingType =
+  | "NONE"
+  | "METRIC"
+  | "RESPONSE"
+  | (string & {});
+export const ResponderErrorMaskingLoggingType = S.String;
 export type ResponderErrorMaskingLoggingTypes =
   ResponderErrorMaskingLoggingType[];
 export const ResponderErrorMaskingLoggingTypes = S.Array(
@@ -796,24 +799,11 @@ export type LinkStatus =
   | "PENDING_UPDATE"
   | "PENDING_ISOLATION"
   | "ISOLATED"
-  | "PENDING_RESTORATION";
-export const LinkStatus = S.Literal(
-  "PENDING_CREATION",
-  "PENDING_REQUEST",
-  "REQUESTED",
-  "ACCEPTED",
-  "ACTIVE",
-  "REJECTED",
-  "FAILED",
-  "PENDING_DELETION",
-  "DELETED",
-  "PENDING_UPDATE",
-  "PENDING_ISOLATION",
-  "ISOLATED",
-  "PENDING_RESTORATION",
-);
-export type LinkDirection = "RESPONSE" | "REQUEST";
-export const LinkDirection = S.Literal("RESPONSE", "REQUEST");
+  | "PENDING_RESTORATION"
+  | (string & {});
+export const LinkStatus = S.String;
+export type LinkDirection = "RESPONSE" | "REQUEST" | (string & {});
+export const LinkDirection = S.String;
 export type RequesterGatewayStatus =
   | "PENDING_CREATION"
   | "ACTIVE"
@@ -823,18 +813,9 @@ export type RequesterGatewayStatus =
   | "PENDING_UPDATE"
   | "ISOLATED"
   | "PENDING_ISOLATION"
-  | "PENDING_RESTORATION";
-export const RequesterGatewayStatus = S.Literal(
-  "PENDING_CREATION",
-  "ACTIVE",
-  "PENDING_DELETION",
-  "DELETED",
-  "ERROR",
-  "PENDING_UPDATE",
-  "ISOLATED",
-  "PENDING_ISOLATION",
-  "PENDING_RESTORATION",
-);
+  | "PENDING_RESTORATION"
+  | (string & {});
+export const RequesterGatewayStatus = S.String;
 export type ResponderGatewayStatus =
   | "PENDING_CREATION"
   | "ACTIVE"
@@ -844,18 +825,9 @@ export type ResponderGatewayStatus =
   | "PENDING_UPDATE"
   | "ISOLATED"
   | "PENDING_ISOLATION"
-  | "PENDING_RESTORATION";
-export const ResponderGatewayStatus = S.Literal(
-  "PENDING_CREATION",
-  "ACTIVE",
-  "PENDING_DELETION",
-  "DELETED",
-  "ERROR",
-  "PENDING_UPDATE",
-  "ISOLATED",
-  "PENDING_ISOLATION",
-  "PENDING_RESTORATION",
-);
+  | "PENDING_RESTORATION"
+  | (string & {});
+export const ResponderGatewayStatus = S.String;
 export interface ListRequesterGatewaysResponse {
   gatewayIds?: string[];
   nextToken?: string;
@@ -927,8 +899,8 @@ export const NoBidModuleParameters = S.suspend(() =>
 ).annotations({
   identifier: "NoBidModuleParameters",
 }) as any as S.Schema<NoBidModuleParameters>;
-export type FilterType = "INCLUDE" | "EXCLUDE";
-export const FilterType = S.Literal("INCLUDE", "EXCLUDE");
+export type FilterType = "INCLUDE" | "EXCLUDE" | (string & {});
+export const FilterType = S.String;
 export type ValueList = string[];
 export const ValueList = S.Array(S.String);
 export interface FilterCriterion {

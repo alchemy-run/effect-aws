@@ -123,8 +123,8 @@ export type MonetaryAmount = string | redacted.Redacted<string>;
 export type EngagementInvitationArn = string;
 
 //# Schemas
-export type EngagementContextType = "CustomerProject" | "Lead";
-export const EngagementContextType = S.Literal("CustomerProject", "Lead");
+export type EngagementContextType = "CustomerProject" | "Lead" | (string & {});
+export const EngagementContextType = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export type AwsAccountList = string | redacted.Redacted<string>[];
@@ -133,8 +133,8 @@ export type EngagementContextTypeList = EngagementContextType[];
 export const EngagementContextTypeList = S.Array(EngagementContextType);
 export type EngagementIdentifiers = string[];
 export const EngagementIdentifiers = S.Array(S.String);
-export type TaskStatus = "IN_PROGRESS" | "COMPLETE" | "FAILED";
-export const TaskStatus = S.Literal("IN_PROGRESS", "COMPLETE", "FAILED");
+export type TaskStatus = "IN_PROGRESS" | "COMPLETE" | "FAILED" | (string & {});
+export const TaskStatus = S.String;
 export type TaskStatuses = TaskStatus[];
 export const TaskStatuses = S.Array(TaskStatus);
 export type OpportunityIdentifiers = string[];
@@ -145,25 +145,23 @@ export type TaskIdentifiers = string[];
 export const TaskIdentifiers = S.Array(S.String);
 export type EngagementInvitationPayloadType =
   | "OpportunityInvitation"
-  | "LeadInvitation";
-export const EngagementInvitationPayloadType = S.Literal(
-  "OpportunityInvitation",
-  "LeadInvitation",
-);
+  | "LeadInvitation"
+  | (string & {});
+export const EngagementInvitationPayloadType = S.String;
 export type EngagementInvitationsPayloadType =
   EngagementInvitationPayloadType[];
 export const EngagementInvitationsPayloadType = S.Array(
   EngagementInvitationPayloadType,
 );
-export type ParticipantType = "SENDER" | "RECEIVER";
-export const ParticipantType = S.Literal("SENDER", "RECEIVER");
-export type InvitationStatus = "ACCEPTED" | "PENDING" | "REJECTED" | "EXPIRED";
-export const InvitationStatus = S.Literal(
-  "ACCEPTED",
-  "PENDING",
-  "REJECTED",
-  "EXPIRED",
-);
+export type ParticipantType = "SENDER" | "RECEIVER" | (string & {});
+export const ParticipantType = S.String;
+export type InvitationStatus =
+  | "ACCEPTED"
+  | "PENDING"
+  | "REJECTED"
+  | "EXPIRED"
+  | (string & {});
+export const InvitationStatus = S.String;
 export type InvitationStatusList = InvitationStatus[];
 export const InvitationStatusList = S.Array(InvitationStatus);
 export type AwsAccountIdOrAliasList = string | redacted.Redacted<string>[];
@@ -176,29 +174,24 @@ export type PrimaryNeedFromAws =
   | "Co-Sell - Technical Consultation"
   | "Co-Sell - Total Cost of Ownership Evaluation"
   | "Co-Sell - Deal Support"
-  | "Co-Sell - Support for Public Tender / RFx";
-export const PrimaryNeedFromAws = S.Literal(
-  "Co-Sell - Architectural Validation",
-  "Co-Sell - Business Presentation",
-  "Co-Sell - Competitive Information",
-  "Co-Sell - Pricing Assistance",
-  "Co-Sell - Technical Consultation",
-  "Co-Sell - Total Cost of Ownership Evaluation",
-  "Co-Sell - Deal Support",
-  "Co-Sell - Support for Public Tender / RFx",
-);
+  | "Co-Sell - Support for Public Tender / RFx"
+  | (string & {});
+export const PrimaryNeedFromAws = S.String;
 export type PrimaryNeedsFromAws = PrimaryNeedFromAws[];
 export const PrimaryNeedsFromAws = S.Array(PrimaryNeedFromAws);
-export type NationalSecurity = "Yes" | "No";
-export const NationalSecurity = S.Literal("Yes", "No");
-export type OpportunityType = "Net New Business" | "Flat Renewal" | "Expansion";
-export const OpportunityType = S.Literal(
-  "Net New Business",
-  "Flat Renewal",
-  "Expansion",
-);
-export type OpportunityOrigin = "AWS Referral" | "Partner Referral";
-export const OpportunityOrigin = S.Literal("AWS Referral", "Partner Referral");
+export type NationalSecurity = "Yes" | "No" | (string & {});
+export const NationalSecurity = S.String;
+export type OpportunityType =
+  | "Net New Business"
+  | "Flat Renewal"
+  | "Expansion"
+  | (string & {});
+export const OpportunityType = S.String;
+export type OpportunityOrigin =
+  | "AWS Referral"
+  | "Partner Referral"
+  | (string & {});
+export const OpportunityOrigin = S.String;
 export type FilterIdentifier = string[];
 export const FilterIdentifier = S.Array(S.String);
 export type Stage =
@@ -208,16 +201,9 @@ export type Stage =
   | "Business Validation"
   | "Committed"
   | "Launched"
-  | "Closed Lost";
-export const Stage = S.Literal(
-  "Prospect",
-  "Qualified",
-  "Technical Validation",
-  "Business Validation",
-  "Committed",
-  "Launched",
-  "Closed Lost",
-);
+  | "Closed Lost"
+  | (string & {});
+export const Stage = S.String;
 export type FilterLifeCycleStage = Stage[];
 export const FilterLifeCycleStage = S.Array(Stage);
 export type ReviewStatus =
@@ -226,15 +212,9 @@ export type ReviewStatus =
   | "In review"
   | "Approved"
   | "Rejected"
-  | "Action Required";
-export const ReviewStatus = S.Literal(
-  "Pending Submission",
-  "Submitted",
-  "In review",
-  "Approved",
-  "Rejected",
-  "Action Required",
-);
+  | "Action Required"
+  | (string & {});
+export const ReviewStatus = S.String;
 export type FilterLifeCycleReviewStatus = ReviewStatus[];
 export const FilterLifeCycleReviewStatus = S.Array(ReviewStatus);
 export type StringList = string[];
@@ -243,25 +223,24 @@ export type RelatedEntityType =
   | "Solutions"
   | "AwsProducts"
   | "AwsMarketplaceOffers"
-  | "AwsMarketplaceOfferSets";
-export const RelatedEntityType = S.Literal(
-  "Solutions",
-  "AwsProducts",
-  "AwsMarketplaceOffers",
-  "AwsMarketplaceOfferSets",
-);
-export type SalesInvolvementType = "For Visibility Only" | "Co-Sell";
-export const SalesInvolvementType = S.Literal("For Visibility Only", "Co-Sell");
-export type Visibility = "Full" | "Limited";
-export const Visibility = S.Literal("Full", "Limited");
+  | "AwsMarketplaceOfferSets"
+  | (string & {});
+export const RelatedEntityType = S.String;
+export type SalesInvolvementType =
+  | "For Visibility Only"
+  | "Co-Sell"
+  | (string & {});
+export const SalesInvolvementType = S.String;
+export type Visibility = "Full" | "Limited" | (string & {});
+export const Visibility = S.String;
 export type ContextIdentifiers = string[];
 export const ContextIdentifiers = S.Array(S.String);
-export type ResourceType = "Opportunity";
-export const ResourceType = S.Literal("Opportunity");
-export type ResourceSnapshotJobStatus = "Running" | "Stopped";
-export const ResourceSnapshotJobStatus = S.Literal("Running", "Stopped");
-export type SolutionStatus = "Active" | "Inactive" | "Draft";
-export const SolutionStatus = S.Literal("Active", "Inactive", "Draft");
+export type ResourceType = "Opportunity" | (string & {});
+export const ResourceType = S.String;
+export type ResourceSnapshotJobStatus = "Running" | "Stopped" | (string & {});
+export const ResourceSnapshotJobStatus = S.String;
+export type SolutionStatus = "Active" | "Inactive" | "Draft" | (string & {});
+export const SolutionStatus = S.String;
 export type FilterStatus = SolutionStatus[];
 export const FilterStatus = S.Array(SolutionStatus);
 export type SolutionIdentifiers = string[];
@@ -423,10 +402,10 @@ export const StartEngagementByAcceptingInvitationTaskRequest = S.suspend(() =>
 ).annotations({
   identifier: "StartEngagementByAcceptingInvitationTaskRequest",
 }) as any as S.Schema<StartEngagementByAcceptingInvitationTaskRequest>;
-export type SortOrder = "ASCENDING" | "DESCENDING";
-export const SortOrder = S.Literal("ASCENDING", "DESCENDING");
-export type ListTasksSortName = "StartTime";
-export const ListTasksSortName = S.Literal("StartTime");
+export type SortOrder = "ASCENDING" | "DESCENDING" | (string & {});
+export const SortOrder = S.String;
+export type ListTasksSortName = "StartTime" | (string & {});
+export const ListTasksSortName = S.String;
 export interface ListTasksSortBase {
   SortOrder: SortOrder;
   SortBy: ListTasksSortName;
@@ -586,37 +565,9 @@ export type Industry =
   | "Transportation and Logistics"
   | "Travel"
   | "Wholesale and Distribution"
-  | "Other";
-export const Industry = S.Literal(
-  "Aerospace",
-  "Agriculture",
-  "Automotive",
-  "Computers and Electronics",
-  "Consumer Goods",
-  "Education",
-  "Energy - Oil and Gas",
-  "Energy - Power and Utilities",
-  "Financial Services",
-  "Gaming",
-  "Government",
-  "Healthcare",
-  "Hospitality",
-  "Life Sciences",
-  "Manufacturing",
-  "Marketing and Advertising",
-  "Media and Entertainment",
-  "Mining",
-  "Non-Profit Organization",
-  "Professional Services",
-  "Real Estate and Construction",
-  "Retail",
-  "Software and Internet",
-  "Telecommunications",
-  "Transportation and Logistics",
-  "Travel",
-  "Wholesale and Distribution",
-  "Other",
-);
+  | "Other"
+  | (string & {});
+export const Industry = S.String;
 export type CountryCode =
   | "US"
   | "AF"
@@ -866,258 +817,9 @@ export type CountryCode =
   | "EH"
   | "YE"
   | "ZM"
-  | "ZW";
-export const CountryCode = S.Literal(
-  "US",
-  "AF",
-  "AX",
-  "AL",
-  "DZ",
-  "AS",
-  "AD",
-  "AO",
-  "AI",
-  "AQ",
-  "AG",
-  "AR",
-  "AM",
-  "AW",
-  "AU",
-  "AT",
-  "AZ",
-  "BS",
-  "BH",
-  "BD",
-  "BB",
-  "BY",
-  "BE",
-  "BZ",
-  "BJ",
-  "BM",
-  "BT",
-  "BO",
-  "BQ",
-  "BA",
-  "BW",
-  "BV",
-  "BR",
-  "IO",
-  "BN",
-  "BG",
-  "BF",
-  "BI",
-  "KH",
-  "CM",
-  "CA",
-  "CV",
-  "KY",
-  "CF",
-  "TD",
-  "CL",
-  "CN",
-  "CX",
-  "CC",
-  "CO",
-  "KM",
-  "CG",
-  "CK",
-  "CR",
-  "CI",
-  "HR",
-  "CU",
-  "CW",
-  "CY",
-  "CZ",
-  "CD",
-  "DK",
-  "DJ",
-  "DM",
-  "DO",
-  "EC",
-  "EG",
-  "SV",
-  "GQ",
-  "ER",
-  "EE",
-  "ET",
-  "FK",
-  "FO",
-  "FJ",
-  "FI",
-  "FR",
-  "GF",
-  "PF",
-  "TF",
-  "GA",
-  "GM",
-  "GE",
-  "DE",
-  "GH",
-  "GI",
-  "GR",
-  "GL",
-  "GD",
-  "GP",
-  "GU",
-  "GT",
-  "GG",
-  "GN",
-  "GW",
-  "GY",
-  "HT",
-  "HM",
-  "VA",
-  "HN",
-  "HK",
-  "HU",
-  "IS",
-  "IN",
-  "ID",
-  "IR",
-  "IQ",
-  "IE",
-  "IM",
-  "IL",
-  "IT",
-  "JM",
-  "JP",
-  "JE",
-  "JO",
-  "KZ",
-  "KE",
-  "KI",
-  "KR",
-  "KW",
-  "KG",
-  "LA",
-  "LV",
-  "LB",
-  "LS",
-  "LR",
-  "LY",
-  "LI",
-  "LT",
-  "LU",
-  "MO",
-  "MK",
-  "MG",
-  "MW",
-  "MY",
-  "MV",
-  "ML",
-  "MT",
-  "MH",
-  "MQ",
-  "MR",
-  "MU",
-  "YT",
-  "MX",
-  "FM",
-  "MD",
-  "MC",
-  "MN",
-  "ME",
-  "MS",
-  "MA",
-  "MZ",
-  "MM",
-  "NA",
-  "NR",
-  "NP",
-  "NL",
-  "AN",
-  "NC",
-  "NZ",
-  "NI",
-  "NE",
-  "NG",
-  "NU",
-  "NF",
-  "MP",
-  "NO",
-  "OM",
-  "PK",
-  "PW",
-  "PS",
-  "PA",
-  "PG",
-  "PY",
-  "PE",
-  "PH",
-  "PN",
-  "PL",
-  "PT",
-  "PR",
-  "QA",
-  "RE",
-  "RO",
-  "RU",
-  "RW",
-  "BL",
-  "SH",
-  "KN",
-  "LC",
-  "MF",
-  "PM",
-  "VC",
-  "WS",
-  "SM",
-  "ST",
-  "SA",
-  "SN",
-  "RS",
-  "SC",
-  "SL",
-  "SG",
-  "SX",
-  "SK",
-  "SI",
-  "SB",
-  "SO",
-  "ZA",
-  "GS",
-  "SS",
-  "ES",
-  "LK",
-  "SD",
-  "SR",
-  "SJ",
-  "SZ",
-  "SE",
-  "CH",
-  "SY",
-  "TW",
-  "TJ",
-  "TZ",
-  "TH",
-  "TL",
-  "TG",
-  "TK",
-  "TO",
-  "TT",
-  "TN",
-  "TR",
-  "TM",
-  "TC",
-  "TV",
-  "UG",
-  "UA",
-  "AE",
-  "GB",
-  "UM",
-  "UY",
-  "UZ",
-  "VU",
-  "VE",
-  "VN",
-  "VG",
-  "VI",
-  "WF",
-  "EH",
-  "YE",
-  "ZM",
-  "ZW",
-);
+  | "ZW"
+  | (string & {});
+export const CountryCode = S.String;
 export interface Address {
   City?: string | redacted.Redacted<string>;
   PostalCode?: string | redacted.Redacted<string>;
@@ -1188,15 +890,9 @@ export type DeliveryModel =
   | "Managed Services"
   | "Professional Services"
   | "Resell"
-  | "Other";
-export const DeliveryModel = S.Literal(
-  "SaaS or PaaS",
-  "BYOL or AMI",
-  "Managed Services",
-  "Professional Services",
-  "Resell",
-  "Other",
-);
+  | "Other"
+  | (string & {});
+export const DeliveryModel = S.String;
 export type DeliveryModels = DeliveryModel[];
 export const DeliveryModels = S.Array(DeliveryModel);
 export type CurrencyCode =
@@ -1367,179 +1063,11 @@ export type CurrencyCode =
   | "YER"
   | "ZAR"
   | "ZMW"
-  | "ZWL";
-export const CurrencyCode = S.Literal(
-  "USD",
-  "EUR",
-  "GBP",
-  "AUD",
-  "CAD",
-  "CNY",
-  "NZD",
-  "INR",
-  "JPY",
-  "CHF",
-  "SEK",
-  "AED",
-  "AFN",
-  "ALL",
-  "AMD",
-  "ANG",
-  "AOA",
-  "ARS",
-  "AWG",
-  "AZN",
-  "BAM",
-  "BBD",
-  "BDT",
-  "BGN",
-  "BHD",
-  "BIF",
-  "BMD",
-  "BND",
-  "BOB",
-  "BOV",
-  "BRL",
-  "BSD",
-  "BTN",
-  "BWP",
-  "BYN",
-  "BZD",
-  "CDF",
-  "CHE",
-  "CHW",
-  "CLF",
-  "CLP",
-  "COP",
-  "COU",
-  "CRC",
-  "CUC",
-  "CUP",
-  "CVE",
-  "CZK",
-  "DJF",
-  "DKK",
-  "DOP",
-  "DZD",
-  "EGP",
-  "ERN",
-  "ETB",
-  "FJD",
-  "FKP",
-  "GEL",
-  "GHS",
-  "GIP",
-  "GMD",
-  "GNF",
-  "GTQ",
-  "GYD",
-  "HKD",
-  "HNL",
-  "HRK",
-  "HTG",
-  "HUF",
-  "IDR",
-  "ILS",
-  "IQD",
-  "IRR",
-  "ISK",
-  "JMD",
-  "JOD",
-  "KES",
-  "KGS",
-  "KHR",
-  "KMF",
-  "KPW",
-  "KRW",
-  "KWD",
-  "KYD",
-  "KZT",
-  "LAK",
-  "LBP",
-  "LKR",
-  "LRD",
-  "LSL",
-  "LYD",
-  "MAD",
-  "MDL",
-  "MGA",
-  "MKD",
-  "MMK",
-  "MNT",
-  "MOP",
-  "MRU",
-  "MUR",
-  "MVR",
-  "MWK",
-  "MXN",
-  "MXV",
-  "MYR",
-  "MZN",
-  "NAD",
-  "NGN",
-  "NIO",
-  "NOK",
-  "NPR",
-  "OMR",
-  "PAB",
-  "PEN",
-  "PGK",
-  "PHP",
-  "PKR",
-  "PLN",
-  "PYG",
-  "QAR",
-  "RON",
-  "RSD",
-  "RUB",
-  "RWF",
-  "SAR",
-  "SBD",
-  "SCR",
-  "SDG",
-  "SGD",
-  "SHP",
-  "SLL",
-  "SOS",
-  "SRD",
-  "SSP",
-  "STN",
-  "SVC",
-  "SYP",
-  "SZL",
-  "THB",
-  "TJS",
-  "TMT",
-  "TND",
-  "TOP",
-  "TRY",
-  "TTD",
-  "TWD",
-  "TZS",
-  "UAH",
-  "UGX",
-  "USN",
-  "UYI",
-  "UYU",
-  "UZS",
-  "VEF",
-  "VND",
-  "VUV",
-  "WST",
-  "XAF",
-  "XCD",
-  "XDR",
-  "XOF",
-  "XPF",
-  "XSU",
-  "XUA",
-  "YER",
-  "ZAR",
-  "ZMW",
-  "ZWL",
-);
-export type PaymentFrequency = "Monthly";
-export const PaymentFrequency = S.Literal("Monthly");
+  | "ZWL"
+  | (string & {});
+export const CurrencyCode = S.String;
+export type PaymentFrequency = "Monthly" | (string & {});
+export const PaymentFrequency = S.String;
 export interface ExpectedCustomerSpend {
   Amount?: string | redacted.Redacted<string>;
   CurrencyCode: CurrencyCode;
@@ -1570,17 +1098,9 @@ export type SalesActivity =
   | "Agreed on solution to Business Problem"
   | "Completed Action Plan"
   | "Finalized Deployment Need"
-  | "SOW Signed";
-export const SalesActivity = S.Literal(
-  "Initialized discussions with customer",
-  "Customer has shown interest in solution",
-  "Conducted POC / Demo",
-  "In evaluation / planning stage",
-  "Agreed on solution to Business Problem",
-  "Completed Action Plan",
-  "Finalized Deployment Need",
-  "SOW Signed",
-);
+  | "SOW Signed"
+  | (string & {});
+export const SalesActivity = S.String;
 export type SalesActivities = SalesActivity[];
 export const SalesActivities = S.Array(SalesActivity);
 export type CompetitorName =
@@ -1594,22 +1114,11 @@ export type CompetitorName =
   | "Microsoft Azure"
   | "Other- Cost Optimization"
   | "No Competition"
-  | "*Other";
-export const CompetitorName = S.Literal(
-  "Oracle Cloud",
-  "On-Prem",
-  "Co-location",
-  "Akamai",
-  "AliCloud",
-  "Google Cloud Platform",
-  "IBM Softlayer",
-  "Microsoft Azure",
-  "Other- Cost Optimization",
-  "No Competition",
-  "*Other",
-);
-export type AwsPartition = "aws-eusc";
-export const AwsPartition = S.Literal("aws-eusc");
+  | "*Other"
+  | (string & {});
+export const CompetitorName = S.String;
+export type AwsPartition = "aws-eusc" | (string & {});
+export const AwsPartition = S.String;
 export interface Project {
   DeliveryModels?: DeliveryModel[];
   ExpectedCustomerSpend?: ExpectedCustomerSpend[];
@@ -1642,8 +1151,8 @@ export const Project = S.suspend(() =>
     AwsPartition: S.optional(AwsPartition),
   }),
 ).annotations({ identifier: "Project" }) as any as S.Schema<Project>;
-export type MarketingSource = "Marketing Activity" | "None";
-export const MarketingSource = S.Literal("Marketing Activity", "None");
+export type MarketingSource = "Marketing Activity" | "None" | (string & {});
+export const MarketingSource = S.String;
 export type UseCases = string[];
 export const UseCases = S.Array(S.String);
 export type Channel =
@@ -1659,26 +1168,13 @@ export type Channel =
   | "Telemarketing"
   | "TV"
   | "Video"
-  | "Virtual Event";
-export const Channel = S.Literal(
-  "AWS Marketing Central",
-  "Content Syndication",
-  "Display",
-  "Email",
-  "Live Event",
-  "Out Of Home (OOH)",
-  "Print",
-  "Search",
-  "Social",
-  "Telemarketing",
-  "TV",
-  "Video",
-  "Virtual Event",
-);
+  | "Virtual Event"
+  | (string & {});
+export const Channel = S.String;
 export type Channels = Channel[];
 export const Channels = S.Array(Channel);
-export type AwsFundingUsed = "Yes" | "No";
-export const AwsFundingUsed = S.Literal("Yes", "No");
+export type AwsFundingUsed = "Yes" | "No" | (string & {});
+export const AwsFundingUsed = S.String;
 export interface Marketing {
   CampaignName?: string;
   Source?: MarketingSource;
@@ -1695,12 +1191,12 @@ export const Marketing = S.suspend(() =>
     AwsFundingUsed: S.optional(AwsFundingUsed),
   }),
 ).annotations({ identifier: "Marketing" }) as any as S.Schema<Marketing>;
-export type RevenueModel = "Contract" | "Pay-as-you-go" | "Subscription";
-export const RevenueModel = S.Literal(
-  "Contract",
-  "Pay-as-you-go",
-  "Subscription",
-);
+export type RevenueModel =
+  | "Contract"
+  | "Pay-as-you-go"
+  | "Subscription"
+  | (string & {});
+export const RevenueModel = S.String;
 export interface MonetaryValue {
   Amount: string;
   CurrencyCode: CurrencyCode;
@@ -1745,28 +1241,9 @@ export type ClosedLostReason =
   | "Other"
   | "People/Relationship/Governance"
   | "Product/Technology"
-  | "Financial/Commercial";
-export const ClosedLostReason = S.Literal(
-  "Customer Deficiency",
-  "Delay / Cancellation of Project",
-  "Legal / Tax / Regulatory",
-  "Lost to Competitor - Google",
-  "Lost to Competitor - Microsoft",
-  "Lost to Competitor - SoftLayer",
-  "Lost to Competitor - VMWare",
-  "Lost to Competitor - Other",
-  "No Opportunity",
-  "On Premises Deployment",
-  "Partner Gap",
-  "Price",
-  "Security / Compliance",
-  "Technical Limitations",
-  "Customer Experience",
-  "Other",
-  "People/Relationship/Governance",
-  "Product/Technology",
-  "Financial/Commercial",
-);
+  | "Financial/Commercial"
+  | (string & {});
+export const ClosedLostReason = S.String;
 export interface NextStepsHistory {
   Value: string;
   Time: Date;
@@ -2260,40 +1737,32 @@ export const StopResourceSnapshotJobResponse = S.suspend(() =>
 ).annotations({
   identifier: "StopResourceSnapshotJobResponse",
 }) as any as S.Schema<StopResourceSnapshotJobResponse>;
-export type EngagementSortName = "CreatedDate";
-export const EngagementSortName = S.Literal("CreatedDate");
-export type OpportunityEngagementInvitationSortName = "InvitationDate";
-export const OpportunityEngagementInvitationSortName =
-  S.Literal("InvitationDate");
+export type EngagementSortName = "CreatedDate" | (string & {});
+export const EngagementSortName = S.String;
+export type OpportunityEngagementInvitationSortName =
+  | "InvitationDate"
+  | (string & {});
+export const OpportunityEngagementInvitationSortName = S.String;
 export type OpportunitySortName =
   | "LastModifiedDate"
   | "Identifier"
-  | "CustomerCompanyName";
-export const OpportunitySortName = S.Literal(
-  "LastModifiedDate",
-  "Identifier",
-  "CustomerCompanyName",
-);
-export type SortBy = "CreatedDate";
-export const SortBy = S.Literal("CreatedDate");
+  | "CustomerCompanyName"
+  | (string & {});
+export const OpportunitySortName = S.String;
+export type SortBy = "CreatedDate" | (string & {});
+export const SortBy = S.String;
 export type SolutionSortName =
   | "Identifier"
   | "Name"
   | "Status"
   | "Category"
-  | "CreatedDate";
-export const SolutionSortName = S.Literal(
-  "Identifier",
-  "Name",
-  "Status",
-  "Category",
-  "CreatedDate",
-);
+  | "CreatedDate"
+  | (string & {});
+export const SolutionSortName = S.String;
 export type AccessDeniedExceptionErrorCode =
-  "INCOMPATIBLE_BENEFIT_AWS_PARTNER_STATE";
-export const AccessDeniedExceptionErrorCode = S.Literal(
-  "INCOMPATIBLE_BENEFIT_AWS_PARTNER_STATE",
-);
+  | "INCOMPATIBLE_BENEFIT_AWS_PARTNER_STATE"
+  | (string & {});
+export const AccessDeniedExceptionErrorCode = S.String;
 export interface EngagementCustomer {
   Industry: Industry;
   CompanyName: string | redacted.Redacted<string>;
@@ -2357,14 +1826,9 @@ export type MarketSegment =
   | "Large"
   | "Medium"
   | "Small"
-  | "Micro";
-export const MarketSegment = S.Literal(
-  "Enterprise",
-  "Large",
-  "Medium",
-  "Small",
-  "Micro",
-);
+  | "Micro"
+  | (string & {});
+export const MarketSegment = S.String;
 export interface LeadCustomer {
   Industry?: Industry;
   CompanyName: string | redacted.Redacted<string>;
@@ -2491,31 +1955,9 @@ export type ReasonCode =
   | "RequestThrottled"
   | "ContextNotFound"
   | "CustomerProjectContextNotPermitted"
-  | "DisqualifiedLeadNotPermitted";
-export const ReasonCode = S.Literal(
-  "InvitationAccessDenied",
-  "InvitationValidationFailed",
-  "EngagementAccessDenied",
-  "OpportunityAccessDenied",
-  "ResourceSnapshotJobAccessDenied",
-  "ResourceSnapshotJobValidationFailed",
-  "ResourceSnapshotJobConflict",
-  "EngagementValidationFailed",
-  "EngagementConflict",
-  "OpportunitySubmissionFailed",
-  "EngagementInvitationConflict",
-  "InternalError",
-  "OpportunityValidationFailed",
-  "OpportunityConflict",
-  "ResourceSnapshotAccessDenied",
-  "ResourceSnapshotValidationFailed",
-  "ResourceSnapshotConflict",
-  "ServiceQuotaExceeded",
-  "RequestThrottled",
-  "ContextNotFound",
-  "CustomerProjectContextNotPermitted",
-  "DisqualifiedLeadNotPermitted",
-);
+  | "DisqualifiedLeadNotPermitted"
+  | (string & {});
+export const ReasonCode = S.String;
 export interface AwsSubmission {
   InvolvementType: SalesInvolvementType;
   Visibility?: Visibility;
@@ -2590,14 +2032,9 @@ export type InvolvementTypeChangeReason =
   | "Change in Deal Information"
   | "Customer Requested"
   | "Technical Complexity"
-  | "Risk Mitigation";
-export const InvolvementTypeChangeReason = S.Literal(
-  "Expansion Opportunity",
-  "Change in Deal Information",
-  "Customer Requested",
-  "Technical Complexity",
-  "Risk Mitigation",
-);
+  | "Risk Mitigation"
+  | (string & {});
+export const InvolvementTypeChangeReason = S.String;
 export interface SortObject {
   SortBy?: SortBy;
   SortOrder?: SortOrder;
@@ -3164,57 +2601,9 @@ export type AwsClosedLostReason =
   | "Security / Compliance"
   | "Self-Service"
   | "Technical Limitations"
-  | "Term Sheet Impasse";
-export const AwsClosedLostReason = S.Literal(
-  "Administrative",
-  "Business Associate Agreement",
-  "Company Acquired/Dissolved",
-  "Competitive Offering",
-  "Customer Data Requirement",
-  "Customer Deficiency",
-  "Customer Experience",
-  "Delay / Cancellation of Project",
-  "Duplicate",
-  "Duplicate Opportunity",
-  "Executive Blocker",
-  "Failed Vetting",
-  "Feature Limitation",
-  "Financial/Commercial",
-  "Insufficient Amazon Value",
-  "Insufficient AWS Value",
-  "International Constraints",
-  "Legal / Tax / Regulatory",
-  "Legal Terms and Conditions",
-  "Lost to Competitor",
-  "Lost to Competitor - Google",
-  "Lost to Competitor - Microsoft",
-  "Lost to Competitor - Other",
-  "Lost to Competitor - Rackspace",
-  "Lost to Competitor - SoftLayer",
-  "Lost to Competitor - VMWare",
-  "No Customer Reference",
-  "No Integration Resources",
-  "No Opportunity",
-  "No Perceived Value of MP",
-  "No Response",
-  "Not Committed to AWS",
-  "No Update",
-  "On Premises Deployment",
-  "Other",
-  "Other (Details in Description)",
-  "Partner Gap",
-  "Past Due",
-  "People/Relationship/Governance",
-  "Platform Technology Limitation",
-  "Preference for Competitor",
-  "Price",
-  "Product/Technology",
-  "Product Not on AWS",
-  "Security / Compliance",
-  "Self-Service",
-  "Technical Limitations",
-  "Term Sheet Impasse",
-);
+  | "Term Sheet Impasse"
+  | (string & {});
+export const AwsClosedLostReason = S.String;
 export type AwsOpportunityStage =
   | "Not Started"
   | "In Progress"
@@ -3239,50 +2628,20 @@ export type AwsOpportunityStage =
   | "Deferred to Partner"
   | "Closed Lost"
   | "Completed"
-  | "Closed Incomplete";
-export const AwsOpportunityStage = S.Literal(
-  "Not Started",
-  "In Progress",
-  "Prospect",
-  "Engaged",
-  "Identified",
-  "Qualify",
-  "Research",
-  "Seller Engaged",
-  "Evaluating",
-  "Seller Registered",
-  "Term Sheet Negotiation",
-  "Contract Negotiation",
-  "Onboarding",
-  "Building Integration",
-  "Qualified",
-  "On-hold",
-  "Technical Validation",
-  "Business Validation",
-  "Committed",
-  "Launched",
-  "Deferred to Partner",
-  "Closed Lost",
-  "Completed",
-  "Closed Incomplete",
-);
+  | "Closed Incomplete"
+  | (string & {});
+export const AwsOpportunityStage = S.String;
 export type AwsMemberBusinessTitle =
   | "AWSSalesRep"
   | "AWSAccountOwner"
   | "WWPSPDM"
   | "PDM"
   | "PSM"
-  | "ISVSM";
-export const AwsMemberBusinessTitle = S.Literal(
-  "AWSSalesRep",
-  "AWSAccountOwner",
-  "WWPSPDM",
-  "PDM",
-  "PSM",
-  "ISVSM",
-);
-export type EngagementScore = "High" | "Medium" | "Low";
-export const EngagementScore = S.Literal("High", "Medium", "Low");
+  | "ISVSM"
+  | (string & {});
+export const AwsMemberBusinessTitle = S.String;
+export type EngagementScore = "High" | "Medium" | "Low" | (string & {});
+export const EngagementScore = S.String;
 export type ReceiverResponsibility =
   | "Distributor"
   | "Reseller"
@@ -3292,18 +2651,9 @@ export type ReceiverResponsibility =
   | "Services Partner"
   | "Training Partner"
   | "Co-Sell Facilitator"
-  | "Facilitator";
-export const ReceiverResponsibility = S.Literal(
-  "Distributor",
-  "Reseller",
-  "Hardware Partner",
-  "Managed Service Provider",
-  "Software Partner",
-  "Services Partner",
-  "Training Partner",
-  "Co-Sell Facilitator",
-  "Facilitator",
-);
+  | "Facilitator"
+  | (string & {});
+export const ReceiverResponsibility = S.String;
 export type ReceiverResponsibilityList = ReceiverResponsibility[];
 export const ReceiverResponsibilityList = S.Array(ReceiverResponsibility);
 export type UpdateEngagementContextPayload =
@@ -4418,11 +3768,9 @@ export type AwsProductsList = AwsProductDetails[];
 export const AwsProductsList = S.Array(AwsProductDetails);
 export type ValidationExceptionReason =
   | "REQUEST_VALIDATION_FAILED"
-  | "BUSINESS_VALIDATION_FAILED";
-export const ValidationExceptionReason = S.Literal(
-  "REQUEST_VALIDATION_FAILED",
-  "BUSINESS_VALIDATION_FAILED",
-);
+  | "BUSINESS_VALIDATION_FAILED"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 export interface OpportunitySummary {
   Catalog: string;
   Id?: string;
@@ -4526,19 +3874,9 @@ export type ValidationExceptionErrorCode =
   | "INVALID_RESOURCE_STATE"
   | "DUPLICATE_KEY_VALUE"
   | "VALUE_OUT_OF_RANGE"
-  | "ACTION_NOT_PERMITTED";
-export const ValidationExceptionErrorCode = S.Literal(
-  "REQUIRED_FIELD_MISSING",
-  "INVALID_ENUM_VALUE",
-  "INVALID_STRING_FORMAT",
-  "INVALID_VALUE",
-  "NOT_ENOUGH_VALUES",
-  "TOO_MANY_VALUES",
-  "INVALID_RESOURCE_STATE",
-  "DUPLICATE_KEY_VALUE",
-  "VALUE_OUT_OF_RANGE",
-  "ACTION_NOT_PERMITTED",
-);
+  | "ACTION_NOT_PERMITTED"
+  | (string & {});
+export const ValidationExceptionErrorCode = S.String;
 export interface AwsProductsSpendInsightsBySource {
   Partner?: AwsProductInsights;
   AWS?: AwsProductInsights;

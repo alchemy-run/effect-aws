@@ -268,12 +268,9 @@ export const MeterUsageRequest = S.suspend(() =>
 export type UsageRecordResultStatus =
   | "Success"
   | "CustomerNotSubscribed"
-  | "DuplicateRecord";
-export const UsageRecordResultStatus = S.Literal(
-  "Success",
-  "CustomerNotSubscribed",
-  "DuplicateRecord",
-);
+  | "DuplicateRecord"
+  | (string & {});
+export const UsageRecordResultStatus = S.String;
 export interface UsageRecordResult {
   UsageRecord?: UsageRecord;
   MeteringRecordId?: string;

@@ -102,20 +102,20 @@ export type Unames = string[];
 export const Unames = S.Array(S.String);
 export type AppIds = string[];
 export const AppIds = S.Array(S.String);
-export type AccessLevel = "STANDARD" | "PREMIUM";
-export const AccessLevel = S.Literal("STANDARD", "PREMIUM");
-export type SortDirection = "ASC" | "DESC";
-export const SortDirection = S.Literal("ASC", "DESC");
+export type AccessLevel = "STANDARD" | "PREMIUM" | (string & {});
+export const AccessLevel = S.String;
+export type SortDirection = "ASC" | "DESC" | (string & {});
+export const SortDirection = S.String;
 export type BotStatus = 1 | 2;
 export const BotStatus = S.Literal(1, 2);
 export type UserStatus = 1 | 2;
 export const UserStatus = S.Literal(1, 2);
-export type DataRetentionActionType = "ENABLE" | "DISABLE" | "PUBKEY_MSG_ACK";
-export const DataRetentionActionType = S.Literal(
-  "ENABLE",
-  "DISABLE",
-  "PUBKEY_MSG_ACK",
-);
+export type DataRetentionActionType =
+  | "ENABLE"
+  | "DISABLE"
+  | "PUBKEY_MSG_ACK"
+  | (string & {});
+export const DataRetentionActionType = S.String;
 export interface BatchDeleteUserRequest {
   networkId: string;
   userIds: string[];
@@ -1308,8 +1308,8 @@ export const UpdateUserDetails = S.suspend(() =>
 ).annotations({
   identifier: "UpdateUserDetails",
 }) as any as S.Schema<UpdateUserDetails>;
-export type Status = "DISABLED" | "ENABLED" | "FORCE_ENABLED";
-export const Status = S.Literal("DISABLED", "ENABLED", "FORCE_ENABLED");
+export type Status = "DISABLED" | "ENABLED" | "FORCE_ENABLED" | (string & {});
+export const Status = S.String;
 export interface BatchCreateUserRequest {
   networkId: string;
   users: BatchCreateUserRequestItem[];

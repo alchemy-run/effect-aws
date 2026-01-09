@@ -130,52 +130,43 @@ export const GetSparqlStatisticsRequest = S.suspend(() =>
 ).annotations({
   identifier: "GetSparqlStatisticsRequest",
 }) as any as S.Schema<GetSparqlStatisticsRequest>;
-export type Action = "initiateDatabaseReset" | "performDatabaseReset";
-export const Action = S.Literal(
-  "initiateDatabaseReset",
-  "performDatabaseReset",
-);
-export type OpenCypherExplainMode = "static" | "dynamic" | "details";
-export const OpenCypherExplainMode = S.Literal("static", "dynamic", "details");
+export type Action =
+  | "initiateDatabaseReset"
+  | "performDatabaseReset"
+  | (string & {});
+export const Action = S.String;
+export type OpenCypherExplainMode =
+  | "static"
+  | "dynamic"
+  | "details"
+  | (string & {});
+export const OpenCypherExplainMode = S.String;
 export type IteratorType =
   | "AT_SEQUENCE_NUMBER"
   | "AFTER_SEQUENCE_NUMBER"
   | "TRIM_HORIZON"
-  | "LATEST";
-export const IteratorType = S.Literal(
-  "AT_SEQUENCE_NUMBER",
-  "AFTER_SEQUENCE_NUMBER",
-  "TRIM_HORIZON",
-  "LATEST",
-);
-export type Encoding = "gzip";
-export const Encoding = S.Literal("gzip");
-export type GraphSummaryType = "basic" | "detailed";
-export const GraphSummaryType = S.Literal("basic", "detailed");
+  | "LATEST"
+  | (string & {});
+export const IteratorType = S.String;
+export type Encoding = "gzip" | (string & {});
+export const Encoding = S.String;
+export type GraphSummaryType = "basic" | "detailed" | (string & {});
+export const GraphSummaryType = S.String;
 export type StatisticsAutoGenerationMode =
   | "disableAutoCompute"
   | "enableAutoCompute"
-  | "refresh";
-export const StatisticsAutoGenerationMode = S.Literal(
-  "disableAutoCompute",
-  "enableAutoCompute",
-  "refresh",
-);
+  | "refresh"
+  | (string & {});
+export const StatisticsAutoGenerationMode = S.String;
 export type Format =
   | "csv"
   | "opencypher"
   | "ntriples"
   | "nquads"
   | "rdfxml"
-  | "turtle";
-export const Format = S.Literal(
-  "csv",
-  "opencypher",
-  "ntriples",
-  "nquads",
-  "rdfxml",
-  "turtle",
-);
+  | "turtle"
+  | (string & {});
+export const Format = S.String;
 export type S3BucketRegion =
   | "us-east-1"
   | "us-east-2"
@@ -212,49 +203,18 @@ export type S3BucketRegion =
   | "mx-central-1"
   | "ap-east-2"
   | "ap-south-2"
-  | "eu-central-2";
-export const S3BucketRegion = S.Literal(
-  "us-east-1",
-  "us-east-2",
-  "us-west-1",
-  "us-west-2",
-  "ca-central-1",
-  "sa-east-1",
-  "eu-north-1",
-  "eu-west-1",
-  "eu-west-2",
-  "eu-west-3",
-  "eu-central-1",
-  "me-south-1",
-  "af-south-1",
-  "ap-east-1",
-  "ap-northeast-1",
-  "ap-northeast-2",
-  "ap-southeast-1",
-  "ap-southeast-2",
-  "ap-south-1",
-  "cn-north-1",
-  "cn-northwest-1",
-  "us-gov-west-1",
-  "us-gov-east-1",
-  "ca-west-1",
-  "eu-south-2",
-  "il-central-1",
-  "me-central-1",
-  "ap-northeast-3",
-  "ap-southeast-3",
-  "ap-southeast-4",
-  "ap-southeast-5",
-  "ap-southeast-7",
-  "mx-central-1",
-  "ap-east-2",
-  "ap-south-2",
-  "eu-central-2",
-);
-export type Mode = "RESUME" | "NEW" | "AUTO";
-export const Mode = S.Literal("RESUME", "NEW", "AUTO");
-export type Parallelism = "LOW" | "MEDIUM" | "HIGH" | "OVERSUBSCRIBE";
-export const Parallelism = S.Literal("LOW", "MEDIUM", "HIGH", "OVERSUBSCRIBE");
+  | "eu-central-2"
+  | (string & {});
+export const S3BucketRegion = S.String;
+export type Mode = "RESUME" | "NEW" | "AUTO" | (string & {});
+export const Mode = S.String;
+export type Parallelism =
+  | "LOW"
+  | "MEDIUM"
+  | "HIGH"
+  | "OVERSUBSCRIBE"
+  | (string & {});
+export const Parallelism = S.String;
 export type StringList = string[];
 export const StringList = S.Array(S.String);
 export interface CancelGremlinQueryInput {

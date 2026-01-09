@@ -137,23 +137,21 @@ export type CustomDataIdentifier = string;
 //# Schemas
 export type TagKeys = string[];
 export const TagKeys = S.Array(S.String);
-export type SharedAudienceMetrics = "ALL" | "NONE";
-export const SharedAudienceMetrics = S.Literal("ALL", "NONE");
+export type SharedAudienceMetrics = "ALL" | "NONE" | (string & {});
+export const SharedAudienceMetrics = S.String;
 export type MetricsList = SharedAudienceMetrics[];
 export const MetricsList = S.Array(SharedAudienceMetrics);
-export type TagOnCreatePolicy = "FROM_PARENT_RESOURCE" | "NONE";
-export const TagOnCreatePolicy = S.Literal("FROM_PARENT_RESOURCE", "NONE");
+export type TagOnCreatePolicy = "FROM_PARENT_RESOURCE" | "NONE" | (string & {});
+export const TagOnCreatePolicy = S.String;
 export type PolicyExistenceCondition =
   | "POLICY_MUST_EXIST"
-  | "POLICY_MUST_NOT_EXIST";
-export const PolicyExistenceCondition = S.Literal(
-  "POLICY_MUST_EXIST",
-  "POLICY_MUST_NOT_EXIST",
-);
+  | "POLICY_MUST_NOT_EXIST"
+  | (string & {});
+export const PolicyExistenceCondition = S.String;
 export type ConfiguredModelAlgorithmAssociationArnList = string[];
 export const ConfiguredModelAlgorithmAssociationArnList = S.Array(S.String);
-export type TrainingInputMode = "File" | "FastFile" | "Pipe";
-export const TrainingInputMode = S.Literal("File", "FastFile", "Pipe");
+export type TrainingInputMode = "File" | "FastFile" | "Pipe" | (string & {});
+export const TrainingInputMode = S.String;
 export type TrainedModelStatus =
   | "CREATE_PENDING"
   | "CREATE_IN_PROGRESS"
@@ -165,20 +163,9 @@ export type TrainedModelStatus =
   | "INACTIVE"
   | "CANCEL_PENDING"
   | "CANCEL_IN_PROGRESS"
-  | "CANCEL_FAILED";
-export const TrainedModelStatus = S.Literal(
-  "CREATE_PENDING",
-  "CREATE_IN_PROGRESS",
-  "CREATE_FAILED",
-  "ACTIVE",
-  "DELETE_PENDING",
-  "DELETE_IN_PROGRESS",
-  "DELETE_FAILED",
-  "INACTIVE",
-  "CANCEL_PENDING",
-  "CANCEL_IN_PROGRESS",
-  "CANCEL_FAILED",
-);
+  | "CANCEL_FAILED"
+  | (string & {});
+export const TrainedModelStatus = S.String;
 export interface ListCollaborationConfiguredModelAlgorithmAssociationsRequest {
   nextToken?: string;
   maxResults?: number;
@@ -632,8 +619,8 @@ export const ConfiguredAudienceModelOutputConfig = S.suspend(() =>
 ).annotations({
   identifier: "ConfiguredAudienceModelOutputConfig",
 }) as any as S.Schema<ConfiguredAudienceModelOutputConfig>;
-export type AudienceSizeType = "ABSOLUTE" | "PERCENTAGE";
-export const AudienceSizeType = S.Literal("ABSOLUTE", "PERCENTAGE");
+export type AudienceSizeType = "ABSOLUTE" | "PERCENTAGE" | (string & {});
+export const AudienceSizeType = S.String;
 export type AudienceSizeBins = number[];
 export const AudienceSizeBins = S.Array(S.Number);
 export interface AudienceSizeConfig {
@@ -1640,147 +1627,14 @@ export type InstanceType =
   | "ml.p3.2xlarge"
   | "ml.p3.8xlarge"
   | "ml.p3.16xlarge"
-  | "ml.p3dn.24xlarge";
-export const InstanceType = S.Literal(
-  "ml.m4.xlarge",
-  "ml.m4.2xlarge",
-  "ml.m4.4xlarge",
-  "ml.m4.10xlarge",
-  "ml.m4.16xlarge",
-  "ml.g4dn.xlarge",
-  "ml.g4dn.2xlarge",
-  "ml.g4dn.4xlarge",
-  "ml.g4dn.8xlarge",
-  "ml.g4dn.12xlarge",
-  "ml.g4dn.16xlarge",
-  "ml.m5.large",
-  "ml.m5.xlarge",
-  "ml.m5.2xlarge",
-  "ml.m5.4xlarge",
-  "ml.m5.12xlarge",
-  "ml.m5.24xlarge",
-  "ml.c4.xlarge",
-  "ml.c4.2xlarge",
-  "ml.c4.4xlarge",
-  "ml.c4.8xlarge",
-  "ml.p2.xlarge",
-  "ml.p2.8xlarge",
-  "ml.p2.16xlarge",
-  "ml.p4d.24xlarge",
-  "ml.p4de.24xlarge",
-  "ml.p5.48xlarge",
-  "ml.c5.xlarge",
-  "ml.c5.2xlarge",
-  "ml.c5.4xlarge",
-  "ml.c5.9xlarge",
-  "ml.c5.18xlarge",
-  "ml.c5n.xlarge",
-  "ml.c5n.2xlarge",
-  "ml.c5n.4xlarge",
-  "ml.c5n.9xlarge",
-  "ml.c5n.18xlarge",
-  "ml.g5.xlarge",
-  "ml.g5.2xlarge",
-  "ml.g5.4xlarge",
-  "ml.g5.8xlarge",
-  "ml.g5.16xlarge",
-  "ml.g5.12xlarge",
-  "ml.g5.24xlarge",
-  "ml.g5.48xlarge",
-  "ml.trn1.2xlarge",
-  "ml.trn1.32xlarge",
-  "ml.trn1n.32xlarge",
-  "ml.m6i.large",
-  "ml.m6i.xlarge",
-  "ml.m6i.2xlarge",
-  "ml.m6i.4xlarge",
-  "ml.m6i.8xlarge",
-  "ml.m6i.12xlarge",
-  "ml.m6i.16xlarge",
-  "ml.m6i.24xlarge",
-  "ml.m6i.32xlarge",
-  "ml.c6i.xlarge",
-  "ml.c6i.2xlarge",
-  "ml.c6i.8xlarge",
-  "ml.c6i.4xlarge",
-  "ml.c6i.12xlarge",
-  "ml.c6i.16xlarge",
-  "ml.c6i.24xlarge",
-  "ml.c6i.32xlarge",
-  "ml.r5d.large",
-  "ml.r5d.xlarge",
-  "ml.r5d.2xlarge",
-  "ml.r5d.4xlarge",
-  "ml.r5d.8xlarge",
-  "ml.r5d.12xlarge",
-  "ml.r5d.16xlarge",
-  "ml.r5d.24xlarge",
-  "ml.t3.medium",
-  "ml.t3.large",
-  "ml.t3.xlarge",
-  "ml.t3.2xlarge",
-  "ml.r5.large",
-  "ml.r5.xlarge",
-  "ml.r5.2xlarge",
-  "ml.r5.4xlarge",
-  "ml.r5.8xlarge",
-  "ml.r5.12xlarge",
-  "ml.r5.16xlarge",
-  "ml.r5.24xlarge",
-  "ml.c7i.large",
-  "ml.c7i.xlarge",
-  "ml.c7i.2xlarge",
-  "ml.c7i.4xlarge",
-  "ml.c7i.8xlarge",
-  "ml.c7i.12xlarge",
-  "ml.c7i.16xlarge",
-  "ml.c7i.24xlarge",
-  "ml.c7i.48xlarge",
-  "ml.m7i.large",
-  "ml.m7i.xlarge",
-  "ml.m7i.2xlarge",
-  "ml.m7i.4xlarge",
-  "ml.m7i.8xlarge",
-  "ml.m7i.12xlarge",
-  "ml.m7i.16xlarge",
-  "ml.m7i.24xlarge",
-  "ml.m7i.48xlarge",
-  "ml.r7i.large",
-  "ml.r7i.xlarge",
-  "ml.r7i.2xlarge",
-  "ml.r7i.4xlarge",
-  "ml.r7i.8xlarge",
-  "ml.r7i.12xlarge",
-  "ml.r7i.16xlarge",
-  "ml.r7i.24xlarge",
-  "ml.r7i.48xlarge",
-  "ml.g6.xlarge",
-  "ml.g6.2xlarge",
-  "ml.g6.4xlarge",
-  "ml.g6.8xlarge",
-  "ml.g6.12xlarge",
-  "ml.g6.16xlarge",
-  "ml.g6.24xlarge",
-  "ml.g6.48xlarge",
-  "ml.g6e.xlarge",
-  "ml.g6e.2xlarge",
-  "ml.g6e.4xlarge",
-  "ml.g6e.8xlarge",
-  "ml.g6e.12xlarge",
-  "ml.g6e.16xlarge",
-  "ml.g6e.24xlarge",
-  "ml.g6e.48xlarge",
-  "ml.p5en.48xlarge",
-  "ml.p3.2xlarge",
-  "ml.p3.8xlarge",
-  "ml.p3.16xlarge",
-  "ml.p3dn.24xlarge",
-);
-export type S3DataDistributionType = "FullyReplicated" | "ShardedByS3Key";
-export const S3DataDistributionType = S.Literal(
-  "FullyReplicated",
-  "ShardedByS3Key",
-);
+  | "ml.p3dn.24xlarge"
+  | (string & {});
+export const InstanceType = S.String;
+export type S3DataDistributionType =
+  | "FullyReplicated"
+  | "ShardedByS3Key"
+  | (string & {});
+export const S3DataDistributionType = S.String;
 export type InferenceInstanceType =
   | "ml.r7i.48xlarge"
   | "ml.r6i.16xlarge"
@@ -1875,105 +1729,11 @@ export type InferenceInstanceType =
   | "ml.m4.4xlarge"
   | "ml.p3.16xlarge"
   | "ml.p3.2xlarge"
-  | "ml.p3.8xlarge";
-export const InferenceInstanceType = S.Literal(
-  "ml.r7i.48xlarge",
-  "ml.r6i.16xlarge",
-  "ml.m6i.xlarge",
-  "ml.m5.4xlarge",
-  "ml.p2.xlarge",
-  "ml.m4.16xlarge",
-  "ml.r7i.16xlarge",
-  "ml.m7i.xlarge",
-  "ml.m6i.12xlarge",
-  "ml.r7i.8xlarge",
-  "ml.r7i.large",
-  "ml.m7i.12xlarge",
-  "ml.m6i.24xlarge",
-  "ml.m7i.24xlarge",
-  "ml.r6i.8xlarge",
-  "ml.r6i.large",
-  "ml.g5.2xlarge",
-  "ml.m5.large",
-  "ml.m7i.48xlarge",
-  "ml.m6i.16xlarge",
-  "ml.p2.16xlarge",
-  "ml.g5.4xlarge",
-  "ml.m7i.16xlarge",
-  "ml.c4.2xlarge",
-  "ml.c5.2xlarge",
-  "ml.c6i.32xlarge",
-  "ml.c4.4xlarge",
-  "ml.g5.8xlarge",
-  "ml.c6i.xlarge",
-  "ml.c5.4xlarge",
-  "ml.g4dn.xlarge",
-  "ml.c7i.xlarge",
-  "ml.c6i.12xlarge",
-  "ml.g4dn.12xlarge",
-  "ml.c7i.12xlarge",
-  "ml.c6i.24xlarge",
-  "ml.g4dn.2xlarge",
-  "ml.c7i.24xlarge",
-  "ml.c7i.2xlarge",
-  "ml.c4.8xlarge",
-  "ml.c6i.2xlarge",
-  "ml.g4dn.4xlarge",
-  "ml.c7i.48xlarge",
-  "ml.c7i.4xlarge",
-  "ml.c6i.16xlarge",
-  "ml.c5.9xlarge",
-  "ml.g4dn.16xlarge",
-  "ml.c7i.16xlarge",
-  "ml.c6i.4xlarge",
-  "ml.c5.xlarge",
-  "ml.c4.xlarge",
-  "ml.g4dn.8xlarge",
-  "ml.c7i.8xlarge",
-  "ml.c7i.large",
-  "ml.g5.xlarge",
-  "ml.c6i.8xlarge",
-  "ml.c6i.large",
-  "ml.g5.12xlarge",
-  "ml.g5.24xlarge",
-  "ml.m7i.2xlarge",
-  "ml.c5.18xlarge",
-  "ml.g5.48xlarge",
-  "ml.m6i.2xlarge",
-  "ml.g5.16xlarge",
-  "ml.m7i.4xlarge",
-  "ml.r6i.32xlarge",
-  "ml.m6i.4xlarge",
-  "ml.m5.xlarge",
-  "ml.m4.10xlarge",
-  "ml.r6i.xlarge",
-  "ml.m5.12xlarge",
-  "ml.m4.xlarge",
-  "ml.r7i.2xlarge",
-  "ml.r7i.xlarge",
-  "ml.r6i.12xlarge",
-  "ml.m5.24xlarge",
-  "ml.r7i.12xlarge",
-  "ml.m7i.8xlarge",
-  "ml.m7i.large",
-  "ml.r6i.24xlarge",
-  "ml.r6i.2xlarge",
-  "ml.m4.2xlarge",
-  "ml.r7i.24xlarge",
-  "ml.r7i.4xlarge",
-  "ml.m6i.8xlarge",
-  "ml.m6i.large",
-  "ml.m5.2xlarge",
-  "ml.p2.8xlarge",
-  "ml.r6i.4xlarge",
-  "ml.m6i.32xlarge",
-  "ml.m4.4xlarge",
-  "ml.p3.16xlarge",
-  "ml.p3.2xlarge",
-  "ml.p3.8xlarge",
-);
-export type DatasetType = "INTERACTIONS";
-export const DatasetType = S.Literal("INTERACTIONS");
+  | "ml.p3.8xlarge"
+  | (string & {});
+export const InferenceInstanceType = S.String;
+export type DatasetType = "INTERACTIONS" | (string & {});
+export const DatasetType = S.String;
 export interface AudienceSize {
   type: AudienceSizeType;
   value: number;
@@ -1988,16 +1748,9 @@ export type AudienceGenerationJobStatus =
   | "ACTIVE"
   | "DELETE_PENDING"
   | "DELETE_IN_PROGRESS"
-  | "DELETE_FAILED";
-export const AudienceGenerationJobStatus = S.Literal(
-  "CREATE_PENDING",
-  "CREATE_IN_PROGRESS",
-  "CREATE_FAILED",
-  "ACTIVE",
-  "DELETE_PENDING",
-  "DELETE_IN_PROGRESS",
-  "DELETE_FAILED",
-);
+  | "DELETE_FAILED"
+  | (string & {});
+export const AudienceGenerationJobStatus = S.String;
 export type AudienceModelStatus =
   | "CREATE_PENDING"
   | "CREATE_IN_PROGRESS"
@@ -2005,18 +1758,11 @@ export type AudienceModelStatus =
   | "ACTIVE"
   | "DELETE_PENDING"
   | "DELETE_IN_PROGRESS"
-  | "DELETE_FAILED";
-export const AudienceModelStatus = S.Literal(
-  "CREATE_PENDING",
-  "CREATE_IN_PROGRESS",
-  "CREATE_FAILED",
-  "ACTIVE",
-  "DELETE_PENDING",
-  "DELETE_IN_PROGRESS",
-  "DELETE_FAILED",
-);
-export type ConfiguredAudienceModelStatus = "ACTIVE";
-export const ConfiguredAudienceModelStatus = S.Literal("ACTIVE");
+  | "DELETE_FAILED"
+  | (string & {});
+export const AudienceModelStatus = S.String;
+export type ConfiguredAudienceModelStatus = "ACTIVE" | (string & {});
+export const ConfiguredAudienceModelStatus = S.String;
 export interface InferenceContainerConfig {
   imageUri: string;
 }
@@ -2033,17 +1779,9 @@ export type MLInputChannelStatus =
   | "DELETE_PENDING"
   | "DELETE_IN_PROGRESS"
   | "DELETE_FAILED"
-  | "INACTIVE";
-export const MLInputChannelStatus = S.Literal(
-  "CREATE_PENDING",
-  "CREATE_IN_PROGRESS",
-  "CREATE_FAILED",
-  "ACTIVE",
-  "DELETE_PENDING",
-  "DELETE_IN_PROGRESS",
-  "DELETE_FAILED",
-  "INACTIVE",
-);
+  | "INACTIVE"
+  | (string & {});
+export const MLInputChannelStatus = S.String;
 export type HyperParameters = { [key: string]: string | undefined };
 export const HyperParameters = S.Record({
   key: S.String,
@@ -2110,10 +1848,13 @@ export const ModelTrainingDataChannel = S.suspend(() =>
 }) as any as S.Schema<ModelTrainingDataChannel>;
 export type ModelTrainingDataChannels = ModelTrainingDataChannel[];
 export const ModelTrainingDataChannels = S.Array(ModelTrainingDataChannel);
-export type MetricsStatus = "PUBLISH_SUCCEEDED" | "PUBLISH_FAILED";
-export const MetricsStatus = S.Literal("PUBLISH_SUCCEEDED", "PUBLISH_FAILED");
-export type LogsStatus = "PUBLISH_SUCCEEDED" | "PUBLISH_FAILED";
-export const LogsStatus = S.Literal("PUBLISH_SUCCEEDED", "PUBLISH_FAILED");
+export type MetricsStatus =
+  | "PUBLISH_SUCCEEDED"
+  | "PUBLISH_FAILED"
+  | (string & {});
+export const MetricsStatus = S.String;
+export type LogsStatus = "PUBLISH_SUCCEEDED" | "PUBLISH_FAILED" | (string & {});
+export const LogsStatus = S.String;
 export interface InferenceResourceConfig {
   instanceType: InferenceInstanceType;
   instanceCount?: number;
@@ -2155,19 +1896,11 @@ export type TrainedModelInferenceJobStatus =
   | "CANCEL_PENDING"
   | "CANCEL_IN_PROGRESS"
   | "CANCEL_FAILED"
-  | "INACTIVE";
-export const TrainedModelInferenceJobStatus = S.Literal(
-  "CREATE_PENDING",
-  "CREATE_IN_PROGRESS",
-  "CREATE_FAILED",
-  "ACTIVE",
-  "CANCEL_PENDING",
-  "CANCEL_IN_PROGRESS",
-  "CANCEL_FAILED",
-  "INACTIVE",
-);
-export type TrainingDatasetStatus = "ACTIVE";
-export const TrainingDatasetStatus = S.Literal("ACTIVE");
+  | "INACTIVE"
+  | (string & {});
+export const TrainedModelInferenceJobStatus = S.String;
+export type TrainingDatasetStatus = "ACTIVE" | (string & {});
+export const TrainingDatasetStatus = S.String;
 export interface ListTagsForResourceResponse {
   tags: { [key: string]: string | undefined };
 }
@@ -2407,17 +2140,14 @@ export const GetConfiguredModelAlgorithmResponse = S.suspend(() =>
 }) as any as S.Schema<GetConfiguredModelAlgorithmResponse>;
 export type AccountIdList = string[];
 export const AccountIdList = S.Array(S.String);
-export type LogType = "ALL" | "ERROR_SUMMARY";
-export const LogType = S.Literal("ALL", "ERROR_SUMMARY");
+export type LogType = "ALL" | "ERROR_SUMMARY" | (string & {});
+export const LogType = S.String;
 export type EntityType =
   | "ALL_PERSONALLY_IDENTIFIABLE_INFORMATION"
   | "NUMBERS"
-  | "CUSTOM";
-export const EntityType = S.Literal(
-  "ALL_PERSONALLY_IDENTIFIABLE_INFORMATION",
-  "NUMBERS",
-  "CUSTOM",
-);
+  | "CUSTOM"
+  | (string & {});
+export const EntityType = S.String;
 export type EntityTypeList = EntityType[];
 export const EntityTypeList = S.Array(EntityType);
 export type CustomDataIdentifierList = string[];
@@ -2460,8 +2190,8 @@ export const LogsConfigurationPolicy = S.suspend(() =>
 }) as any as S.Schema<LogsConfigurationPolicy>;
 export type LogsConfigurationPolicyList = LogsConfigurationPolicy[];
 export const LogsConfigurationPolicyList = S.Array(LogsConfigurationPolicy);
-export type NoiseLevelType = "HIGH" | "MEDIUM" | "LOW" | "NONE";
-export const NoiseLevelType = S.Literal("HIGH", "MEDIUM", "LOW", "NONE");
+export type NoiseLevelType = "HIGH" | "MEDIUM" | "LOW" | "NONE" | (string & {});
+export const NoiseLevelType = S.String;
 export interface MetricsConfigurationPolicy {
   noiseLevel: NoiseLevelType;
 }
@@ -2470,8 +2200,8 @@ export const MetricsConfigurationPolicy = S.suspend(() =>
 ).annotations({
   identifier: "MetricsConfigurationPolicy",
 }) as any as S.Schema<MetricsConfigurationPolicy>;
-export type TrainedModelArtifactMaxSizeUnitType = "GB";
-export const TrainedModelArtifactMaxSizeUnitType = S.Literal("GB");
+export type TrainedModelArtifactMaxSizeUnitType = "GB" | (string & {});
+export const TrainedModelArtifactMaxSizeUnitType = S.String;
 export interface TrainedModelArtifactMaxSize {
   unit: TrainedModelArtifactMaxSizeUnitType;
   value: number;
@@ -2495,8 +2225,8 @@ export const TrainedModelsConfigurationPolicy = S.suspend(() =>
 ).annotations({
   identifier: "TrainedModelsConfigurationPolicy",
 }) as any as S.Schema<TrainedModelsConfigurationPolicy>;
-export type TrainedModelExportsMaxSizeUnitType = "GB";
-export const TrainedModelExportsMaxSizeUnitType = S.Literal("GB");
+export type TrainedModelExportsMaxSizeUnitType = "GB" | (string & {});
+export const TrainedModelExportsMaxSizeUnitType = S.String;
 export interface TrainedModelExportsMaxSize {
   unit: TrainedModelExportsMaxSizeUnitType;
   value: number;
@@ -2506,8 +2236,8 @@ export const TrainedModelExportsMaxSize = S.suspend(() =>
 ).annotations({
   identifier: "TrainedModelExportsMaxSize",
 }) as any as S.Schema<TrainedModelExportsMaxSize>;
-export type TrainedModelExportFileType = "MODEL" | "OUTPUT";
-export const TrainedModelExportFileType = S.Literal("MODEL", "OUTPUT");
+export type TrainedModelExportFileType = "MODEL" | "OUTPUT" | (string & {});
+export const TrainedModelExportFileType = S.String;
 export type TrainedModelExportFileTypeList = TrainedModelExportFileType[];
 export const TrainedModelExportFileTypeList = S.Array(
   TrainedModelExportFileType,
@@ -2524,8 +2254,8 @@ export const TrainedModelExportsConfigurationPolicy = S.suspend(() =>
 ).annotations({
   identifier: "TrainedModelExportsConfigurationPolicy",
 }) as any as S.Schema<TrainedModelExportsConfigurationPolicy>;
-export type TrainedModelInferenceMaxOutputSizeUnitType = "GB";
-export const TrainedModelInferenceMaxOutputSizeUnitType = S.Literal("GB");
+export type TrainedModelInferenceMaxOutputSizeUnitType = "GB" | (string & {});
+export const TrainedModelInferenceMaxOutputSizeUnitType = S.String;
 export interface TrainedModelInferenceMaxOutputSize {
   unit: TrainedModelInferenceMaxOutputSizeUnitType;
   value: number;
@@ -2666,15 +2396,11 @@ export type AccessBudgetType =
   | "CALENDAR_DAY"
   | "CALENDAR_MONTH"
   | "CALENDAR_WEEK"
-  | "LIFETIME";
-export const AccessBudgetType = S.Literal(
-  "CALENDAR_DAY",
-  "CALENDAR_MONTH",
-  "CALENDAR_WEEK",
-  "LIFETIME",
-);
-export type AutoRefreshMode = "ENABLED" | "DISABLED";
-export const AutoRefreshMode = S.Literal("ENABLED", "DISABLED");
+  | "LIFETIME"
+  | (string & {});
+export const AccessBudgetType = S.String;
+export type AutoRefreshMode = "ENABLED" | "DISABLED" | (string & {});
+export const AutoRefreshMode = S.String;
 export interface AccessBudgetDetails {
   startTime: Date;
   endTime?: Date;
@@ -2715,8 +2441,11 @@ export type PrivacyBudgets = { accessBudgets: AccessBudget[] };
 export const PrivacyBudgets = S.Union(
   S.Struct({ accessBudgets: AccessBudgets }),
 );
-export type SyntheticDataColumnType = "CATEGORICAL" | "NUMERICAL";
-export const SyntheticDataColumnType = S.Literal("CATEGORICAL", "NUMERICAL");
+export type SyntheticDataColumnType =
+  | "CATEGORICAL"
+  | "NUMERICAL"
+  | (string & {});
+export const SyntheticDataColumnType = S.String;
 export interface SyntheticDataColumnProperties {
   columnName: string;
   columnType: SyntheticDataColumnType;
@@ -2755,10 +2484,10 @@ export const MLSyntheticDataParameters = S.suspend(() =>
 ).annotations({
   identifier: "MLSyntheticDataParameters",
 }) as any as S.Schema<MLSyntheticDataParameters>;
-export type MembershipInferenceAttackVersion = "DISTANCE_TO_CLOSEST_RECORD_V1";
-export const MembershipInferenceAttackVersion = S.Literal(
-  "DISTANCE_TO_CLOSEST_RECORD_V1",
-);
+export type MembershipInferenceAttackVersion =
+  | "DISTANCE_TO_CLOSEST_RECORD_V1"
+  | (string & {});
+export const MembershipInferenceAttackVersion = S.String;
 export interface MembershipInferenceAttackScore {
   attackVersion: MembershipInferenceAttackVersion;
   score: number;
@@ -3090,14 +2819,9 @@ export type ColumnType =
   | "ITEM_ID"
   | "TIMESTAMP"
   | "CATEGORICAL_FEATURE"
-  | "NUMERICAL_FEATURE";
-export const ColumnType = S.Literal(
-  "USER_ID",
-  "ITEM_ID",
-  "TIMESTAMP",
-  "CATEGORICAL_FEATURE",
-  "NUMERICAL_FEATURE",
-);
+  | "NUMERICAL_FEATURE"
+  | (string & {});
+export const ColumnType = S.String;
 export type ColumnTypeList = ColumnType[];
 export const ColumnTypeList = S.Array(ColumnType);
 export interface ColumnSchema {
@@ -3177,24 +2901,16 @@ export type TrainedModelExportJobStatus =
   | "CREATE_PENDING"
   | "CREATE_IN_PROGRESS"
   | "CREATE_FAILED"
-  | "ACTIVE";
-export const TrainedModelExportJobStatus = S.Literal(
-  "CREATE_PENDING",
-  "CREATE_IN_PROGRESS",
-  "CREATE_FAILED",
-  "ACTIVE",
-);
+  | "ACTIVE"
+  | (string & {});
+export const TrainedModelExportJobStatus = S.String;
 export type AudienceExportJobStatus =
   | "CREATE_PENDING"
   | "CREATE_IN_PROGRESS"
   | "CREATE_FAILED"
-  | "ACTIVE";
-export const AudienceExportJobStatus = S.Literal(
-  "CREATE_PENDING",
-  "CREATE_IN_PROGRESS",
-  "CREATE_FAILED",
-  "ACTIVE",
-);
+  | "ACTIVE"
+  | (string & {});
+export const AudienceExportJobStatus = S.String;
 export interface TrainedModelExportReceiverMember {
   accountId: string;
 }
@@ -3208,10 +2924,10 @@ export type TrainedModelExportReceiverMembers =
 export const TrainedModelExportReceiverMembers = S.Array(
   TrainedModelExportReceiverMember,
 );
-export type WorkerComputeType = "CR.1X" | "CR.4X";
-export const WorkerComputeType = S.Literal("CR.1X", "CR.4X");
-export type ResultFormat = "CSV" | "PARQUET";
-export const ResultFormat = S.Literal("CSV", "PARQUET");
+export type WorkerComputeType = "CR.1X" | "CR.4X" | (string & {});
+export const WorkerComputeType = S.String;
+export type ResultFormat = "CSV" | "PARQUET" | (string & {});
+export const ResultFormat = S.String;
 export interface CollaborationConfiguredModelAlgorithmAssociationSummary {
   createTime: Date;
   updateTime: Date;

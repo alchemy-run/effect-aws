@@ -660,13 +660,13 @@ export const RolesMap = S.Record({
   key: S.String,
   value: S.UndefinedOr(S.String),
 });
-export type RoleMappingType = "Token" | "Rules";
-export const RoleMappingType = S.Literal("Token", "Rules");
-export type AmbiguousRoleResolutionType = "AuthenticatedRole" | "Deny";
-export const AmbiguousRoleResolutionType = S.Literal(
-  "AuthenticatedRole",
-  "Deny",
-);
+export type RoleMappingType = "Token" | "Rules" | (string & {});
+export const RoleMappingType = S.String;
+export type AmbiguousRoleResolutionType =
+  | "AuthenticatedRole"
+  | "Deny"
+  | (string & {});
+export const AmbiguousRoleResolutionType = S.String;
 export interface CreateIdentityPoolInput {
   IdentityPoolName: string;
   AllowUnauthenticatedIdentities: boolean;
@@ -739,13 +739,9 @@ export type MappingRuleMatchType =
   | "Equals"
   | "Contains"
   | "StartsWith"
-  | "NotEqual";
-export const MappingRuleMatchType = S.Literal(
-  "Equals",
-  "Contains",
-  "StartsWith",
-  "NotEqual",
-);
+  | "NotEqual"
+  | (string & {});
+export const MappingRuleMatchType = S.String;
 export interface MappingRule {
   Claim: string;
   MatchType: MappingRuleMatchType;
@@ -917,8 +913,8 @@ export const SetPrincipalTagAttributeMapResponse = S.suspend(() =>
 ).annotations({
   identifier: "SetPrincipalTagAttributeMapResponse",
 }) as any as S.Schema<SetPrincipalTagAttributeMapResponse>;
-export type ErrorCode = "AccessDenied" | "InternalServerError";
-export const ErrorCode = S.Literal("AccessDenied", "InternalServerError");
+export type ErrorCode = "AccessDenied" | "InternalServerError" | (string & {});
+export const ErrorCode = S.String;
 export interface UnprocessedIdentityId {
   IdentityId?: string;
   ErrorCode?: ErrorCode;

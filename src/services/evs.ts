@@ -117,21 +117,16 @@ export type NetworkInterfaceId = string;
 //# Schemas
 export type TagKeys = string[];
 export const TagKeys = S.Array(S.String);
-export type VcfVersion = "VCF-5.2.1";
-export const VcfVersion = S.Literal("VCF-5.2.1");
+export type VcfVersion = "VCF-5.2.1" | (string & {});
+export const VcfVersion = S.String;
 export type EnvironmentState =
   | "CREATING"
   | "CREATED"
   | "DELETING"
   | "DELETED"
-  | "CREATE_FAILED";
-export const EnvironmentState = S.Literal(
-  "CREATING",
-  "CREATED",
-  "DELETING",
-  "DELETED",
-  "CREATE_FAILED",
-);
+  | "CREATE_FAILED"
+  | (string & {});
+export const EnvironmentState = S.String;
 export type EnvironmentStateList = EnvironmentState[];
 export const EnvironmentStateList = S.Array(EnvironmentState);
 export interface ListTagsForResourceRequest {
@@ -217,8 +212,8 @@ export const AssociateEipToVlanRequest = S.suspend(() =>
 ).annotations({
   identifier: "AssociateEipToVlanRequest",
 }) as any as S.Schema<AssociateEipToVlanRequest>;
-export type InstanceType = "i4i.metal";
-export const InstanceType = S.Literal("i4i.metal");
+export type InstanceType = "i4i.metal" | (string & {});
+export const InstanceType = S.String;
 export interface HostInfoForCreate {
   hostName: string;
   keyName: string;
@@ -386,16 +381,9 @@ export type HostState =
   | "DELETING"
   | "DELETED"
   | "CREATE_FAILED"
-  | "UPDATE_FAILED";
-export const HostState = S.Literal(
-  "CREATING",
-  "CREATED",
-  "UPDATING",
-  "DELETING",
-  "DELETED",
-  "CREATE_FAILED",
-  "UPDATE_FAILED",
-);
+  | "UPDATE_FAILED"
+  | (string & {});
+export const HostState = S.String;
 export interface NetworkInterface {
   networkInterfaceId?: string;
 }
@@ -443,14 +431,9 @@ export type VlanState =
   | "CREATED"
   | "DELETING"
   | "DELETED"
-  | "CREATE_FAILED";
-export const VlanState = S.Literal(
-  "CREATING",
-  "CREATED",
-  "DELETING",
-  "DELETED",
-  "CREATE_FAILED",
-);
+  | "CREATE_FAILED"
+  | (string & {});
+export const VlanState = S.String;
 export interface EipAssociation {
   associationId?: string;
   allocationId?: string;
@@ -514,19 +497,15 @@ export interface TagResourceResponse {}
 export const TagResourceResponse = S.suspend(() => S.Struct({})).annotations({
   identifier: "TagResourceResponse",
 }) as any as S.Schema<TagResourceResponse>;
-export type CheckResult = "PASSED" | "FAILED" | "UNKNOWN";
-export const CheckResult = S.Literal("PASSED", "FAILED", "UNKNOWN");
+export type CheckResult = "PASSED" | "FAILED" | "UNKNOWN" | (string & {});
+export const CheckResult = S.String;
 export type CheckType =
   | "KEY_REUSE"
   | "KEY_COVERAGE"
   | "REACHABILITY"
-  | "HOST_COUNT";
-export const CheckType = S.Literal(
-  "KEY_REUSE",
-  "KEY_COVERAGE",
-  "REACHABILITY",
-  "HOST_COUNT",
-);
+  | "HOST_COUNT"
+  | (string & {});
+export const CheckType = S.String;
 export interface Check {
   type?: CheckType;
   result?: CheckResult;
@@ -718,13 +697,9 @@ export type ValidationExceptionReason =
   | "unknownOperation"
   | "cannotParse"
   | "fieldValidationFailed"
-  | "other";
-export const ValidationExceptionReason = S.Literal(
-  "unknownOperation",
-  "cannotParse",
-  "fieldValidationFailed",
-  "other",
-);
+  | "other"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 export type EnvironmentSummaryList = EnvironmentSummary[];
 export const EnvironmentSummaryList = S.Array(EnvironmentSummary);
 export interface ListTagsForResourceResponse {

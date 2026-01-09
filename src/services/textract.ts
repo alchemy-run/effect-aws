@@ -129,14 +129,9 @@ export type FeatureType =
   | "FORMS"
   | "QUERIES"
   | "SIGNATURES"
-  | "LAYOUT";
-export const FeatureType = S.Literal(
-  "TABLES",
-  "FORMS",
-  "QUERIES",
-  "SIGNATURES",
-  "LAYOUT",
-);
+  | "LAYOUT"
+  | (string & {});
+export const FeatureType = S.String;
 export type FeatureTypes = FeatureType[];
 export const FeatureTypes = S.Array(FeatureType);
 export interface S3Object {
@@ -160,8 +155,8 @@ export const Document = S.suspend(() =>
 ).annotations({ identifier: "Document" }) as any as S.Schema<Document>;
 export type DocumentPages = Document[];
 export const DocumentPages = S.Array(Document);
-export type AutoUpdate = "ENABLED" | "DISABLED";
-export const AutoUpdate = S.Literal("ENABLED", "DISABLED");
+export type AutoUpdate = "ENABLED" | "DISABLED" | (string & {});
+export const AutoUpdate = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export interface AnalyzeExpenseRequest {
@@ -532,32 +527,21 @@ export type AdapterVersionStatus =
   | "AT_RISK"
   | "DEPRECATED"
   | "CREATION_ERROR"
-  | "CREATION_IN_PROGRESS";
-export const AdapterVersionStatus = S.Literal(
-  "ACTIVE",
-  "AT_RISK",
-  "DEPRECATED",
-  "CREATION_ERROR",
-  "CREATION_IN_PROGRESS",
-);
+  | "CREATION_IN_PROGRESS"
+  | (string & {});
+export const AdapterVersionStatus = S.String;
 export type JobStatus =
   | "IN_PROGRESS"
   | "SUCCEEDED"
   | "FAILED"
-  | "PARTIAL_SUCCESS";
-export const JobStatus = S.Literal(
-  "IN_PROGRESS",
-  "SUCCEEDED",
-  "FAILED",
-  "PARTIAL_SUCCESS",
-);
+  | "PARTIAL_SUCCESS"
+  | (string & {});
+export const JobStatus = S.String;
 export type ContentClassifier =
   | "FreeOfPersonallyIdentifiableInformation"
-  | "FreeOfAdultContent";
-export const ContentClassifier = S.Literal(
-  "FreeOfPersonallyIdentifiableInformation",
-  "FreeOfAdultContent",
-);
+  | "FreeOfAdultContent"
+  | (string & {});
+export const ContentClassifier = S.String;
 export type ContentClassifiers = ContentClassifier[];
 export const ContentClassifiers = S.Array(ContentClassifier);
 export type QueryPages = string[];
@@ -662,35 +646,11 @@ export type BlockType =
   | "LAYOUT_LIST"
   | "LAYOUT_FIGURE"
   | "LAYOUT_TABLE"
-  | "LAYOUT_KEY_VALUE";
-export const BlockType = S.Literal(
-  "KEY_VALUE_SET",
-  "PAGE",
-  "LINE",
-  "WORD",
-  "TABLE",
-  "CELL",
-  "SELECTION_ELEMENT",
-  "MERGED_CELL",
-  "TITLE",
-  "QUERY",
-  "QUERY_RESULT",
-  "SIGNATURE",
-  "TABLE_TITLE",
-  "TABLE_FOOTER",
-  "LAYOUT_TEXT",
-  "LAYOUT_TITLE",
-  "LAYOUT_HEADER",
-  "LAYOUT_FOOTER",
-  "LAYOUT_SECTION_HEADER",
-  "LAYOUT_PAGE_NUMBER",
-  "LAYOUT_LIST",
-  "LAYOUT_FIGURE",
-  "LAYOUT_TABLE",
-  "LAYOUT_KEY_VALUE",
-);
-export type TextType = "HANDWRITING" | "PRINTED";
-export const TextType = S.Literal("HANDWRITING", "PRINTED");
+  | "LAYOUT_KEY_VALUE"
+  | (string & {});
+export const BlockType = S.String;
+export type TextType = "HANDWRITING" | "PRINTED" | (string & {});
+export const TextType = S.String;
 export interface BoundingBox {
   Width?: number;
   Height?: number;
@@ -735,18 +695,9 @@ export type RelationshipType =
   | "ANSWER"
   | "TABLE"
   | "TABLE_TITLE"
-  | "TABLE_FOOTER";
-export const RelationshipType = S.Literal(
-  "VALUE",
-  "CHILD",
-  "COMPLEX_FEATURES",
-  "MERGED_CELL",
-  "TITLE",
-  "ANSWER",
-  "TABLE",
-  "TABLE_TITLE",
-  "TABLE_FOOTER",
-);
+  | "TABLE_FOOTER"
+  | (string & {});
+export const RelationshipType = S.String;
 export type IdList = string[];
 export const IdList = S.Array(S.String);
 export interface Relationship {
@@ -767,22 +718,13 @@ export type EntityType =
   | "TABLE_SECTION_TITLE"
   | "TABLE_SUMMARY"
   | "STRUCTURED_TABLE"
-  | "SEMI_STRUCTURED_TABLE";
-export const EntityType = S.Literal(
-  "KEY",
-  "VALUE",
-  "COLUMN_HEADER",
-  "TABLE_TITLE",
-  "TABLE_FOOTER",
-  "TABLE_SECTION_TITLE",
-  "TABLE_SUMMARY",
-  "STRUCTURED_TABLE",
-  "SEMI_STRUCTURED_TABLE",
-);
+  | "SEMI_STRUCTURED_TABLE"
+  | (string & {});
+export const EntityType = S.String;
 export type EntityTypes = EntityType[];
 export const EntityTypes = S.Array(EntityType);
-export type SelectionStatus = "SELECTED" | "NOT_SELECTED";
-export const SelectionStatus = S.Literal("SELECTED", "NOT_SELECTED");
+export type SelectionStatus = "SELECTED" | "NOT_SELECTED" | (string & {});
+export const SelectionStatus = S.String;
 export interface Query {
   Text: string;
   Alias?: string;
@@ -1337,8 +1279,8 @@ export const UndetectedSignature = S.suspend(() =>
 }) as any as S.Schema<UndetectedSignature>;
 export type UndetectedSignatureList = UndetectedSignature[];
 export const UndetectedSignatureList = S.Array(UndetectedSignature);
-export type ValueType = "DATE";
-export const ValueType = S.Literal("DATE");
+export type ValueType = "DATE" | (string & {});
+export const ValueType = S.String;
 export interface GetAdapterVersionResponse {
   AdapterId?: string;
   AdapterVersion?: string;

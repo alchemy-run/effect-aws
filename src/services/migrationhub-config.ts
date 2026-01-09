@@ -122,8 +122,8 @@ export const DeleteHomeRegionControlResult = S.suspend(() =>
 ).annotations({
   identifier: "DeleteHomeRegionControlResult",
 }) as any as S.Schema<DeleteHomeRegionControlResult>;
-export type TargetType = "ACCOUNT";
-export const TargetType = S.Literal("ACCOUNT");
+export type TargetType = "ACCOUNT" | (string & {});
+export const TargetType = S.String;
 export interface Target {
   Type: TargetType;
   Id?: string;

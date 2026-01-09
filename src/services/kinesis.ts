@@ -511,17 +511,9 @@ export type MetricsName =
   | "WriteProvisionedThroughputExceeded"
   | "ReadProvisionedThroughputExceeded"
   | "IteratorAgeMilliseconds"
-  | "ALL";
-export const MetricsName = S.Literal(
-  "IncomingBytes",
-  "IncomingRecords",
-  "OutgoingBytes",
-  "OutgoingRecords",
-  "WriteProvisionedThroughputExceeded",
-  "ReadProvisionedThroughputExceeded",
-  "IteratorAgeMilliseconds",
-  "ALL",
-);
+  | "ALL"
+  | (string & {});
+export const MetricsName = S.String;
 export type MetricsNameList = MetricsName[];
 export const MetricsNameList = S.Array(MetricsName);
 export type ShardIteratorType =
@@ -529,20 +521,15 @@ export type ShardIteratorType =
   | "AFTER_SEQUENCE_NUMBER"
   | "TRIM_HORIZON"
   | "LATEST"
-  | "AT_TIMESTAMP";
-export const ShardIteratorType = S.Literal(
-  "AT_SEQUENCE_NUMBER",
-  "AFTER_SEQUENCE_NUMBER",
-  "TRIM_HORIZON",
-  "LATEST",
-  "AT_TIMESTAMP",
-);
+  | "AT_TIMESTAMP"
+  | (string & {});
+export const ShardIteratorType = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
-export type EncryptionType = "NONE" | "KMS";
-export const EncryptionType = S.Literal("NONE", "KMS");
-export type ScalingType = "UNIFORM_SCALING";
-export const ScalingType = S.Literal("UNIFORM_SCALING");
+export type EncryptionType = "NONE" | "KMS" | (string & {});
+export const EncryptionType = S.String;
+export type ScalingType = "UNIFORM_SCALING" | (string & {});
+export const ScalingType = S.String;
 export interface DecreaseStreamRetentionPeriodInput {
   StreamName?: string;
   RetentionPeriodHours: number;
@@ -1374,8 +1361,8 @@ export const UpdateShardCountInput = S.suspend(() =>
 ).annotations({
   identifier: "UpdateShardCountInput",
 }) as any as S.Schema<UpdateShardCountInput>;
-export type StreamMode = "PROVISIONED" | "ON_DEMAND";
-export const StreamMode = S.Literal("PROVISIONED", "ON_DEMAND");
+export type StreamMode = "PROVISIONED" | "ON_DEMAND" | (string & {});
+export const StreamMode = S.String;
 export interface StreamModeDetails {
   StreamMode: StreamMode;
 }
@@ -1443,34 +1430,23 @@ export const UpdateStreamWarmThroughputInput = S.suspend(() =>
 export type MinimumThroughputBillingCommitmentOutputStatus =
   | "ENABLED"
   | "DISABLED"
-  | "ENABLED_UNTIL_EARLIEST_ALLOWED_END";
-export const MinimumThroughputBillingCommitmentOutputStatus = S.Literal(
-  "ENABLED",
-  "DISABLED",
-  "ENABLED_UNTIL_EARLIEST_ALLOWED_END",
-);
+  | "ENABLED_UNTIL_EARLIEST_ALLOWED_END"
+  | (string & {});
+export const MinimumThroughputBillingCommitmentOutputStatus = S.String;
 export type ShardFilterType =
   | "AFTER_SHARD_ID"
   | "AT_TRIM_HORIZON"
   | "FROM_TRIM_HORIZON"
   | "AT_LATEST"
   | "AT_TIMESTAMP"
-  | "FROM_TIMESTAMP";
-export const ShardFilterType = S.Literal(
-  "AFTER_SHARD_ID",
-  "AT_TRIM_HORIZON",
-  "FROM_TRIM_HORIZON",
-  "AT_LATEST",
-  "AT_TIMESTAMP",
-  "FROM_TIMESTAMP",
-);
+  | "FROM_TIMESTAMP"
+  | (string & {});
+export const ShardFilterType = S.String;
 export type MinimumThroughputBillingCommitmentInputStatus =
   | "ENABLED"
-  | "DISABLED";
-export const MinimumThroughputBillingCommitmentInputStatus = S.Literal(
-  "ENABLED",
-  "DISABLED",
-);
+  | "DISABLED"
+  | (string & {});
+export const MinimumThroughputBillingCommitmentInputStatus = S.String;
 export interface MinimumThroughputBillingCommitmentOutput {
   Status: MinimumThroughputBillingCommitmentOutputStatus;
   StartedAt?: Date;
@@ -1744,8 +1720,8 @@ export const PutRecordsInput = S.suspend(() =>
 ).annotations({
   identifier: "PutRecordsInput",
 }) as any as S.Schema<PutRecordsInput>;
-export type ConsumerStatus = "CREATING" | "DELETING" | "ACTIVE";
-export const ConsumerStatus = S.Literal("CREATING", "DELETING", "ACTIVE");
+export type ConsumerStatus = "CREATING" | "DELETING" | "ACTIVE" | (string & {});
+export const ConsumerStatus = S.String;
 export interface Consumer {
   ConsumerName: string;
   ConsumerARN: string;
@@ -1829,13 +1805,13 @@ export const UpdateShardCountOutput = S.suspend(() =>
 ).annotations({
   identifier: "UpdateShardCountOutput",
 }) as any as S.Schema<UpdateShardCountOutput>;
-export type StreamStatus = "CREATING" | "DELETING" | "ACTIVE" | "UPDATING";
-export const StreamStatus = S.Literal(
-  "CREATING",
-  "DELETING",
-  "ACTIVE",
-  "UPDATING",
-);
+export type StreamStatus =
+  | "CREATING"
+  | "DELETING"
+  | "ACTIVE"
+  | "UPDATING"
+  | (string & {});
+export const StreamStatus = S.String;
 export type ShardIdList = string[];
 export const ShardIdList = S.Array(S.String);
 export interface ConsumerDescription {

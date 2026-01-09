@@ -139,18 +139,15 @@ export const AttachmentIdList = S.Array(S.String);
 export type ConnectionType =
   | "WEBSOCKET"
   | "CONNECTION_CREDENTIALS"
-  | "WEBRTC_CONNECTION";
-export const ConnectionType = S.Literal(
-  "WEBSOCKET",
-  "CONNECTION_CREDENTIALS",
-  "WEBRTC_CONNECTION",
-);
+  | "WEBRTC_CONNECTION"
+  | (string & {});
+export const ConnectionType = S.String;
 export type ConnectionTypeList = ConnectionType[];
 export const ConnectionTypeList = S.Array(ConnectionType);
-export type ScanDirection = "FORWARD" | "BACKWARD";
-export const ScanDirection = S.Literal("FORWARD", "BACKWARD");
-export type SortKey = "DESCENDING" | "ASCENDING";
-export const SortKey = S.Literal("DESCENDING", "ASCENDING");
+export type ScanDirection = "FORWARD" | "BACKWARD" | (string & {});
+export const ScanDirection = S.String;
+export type SortKey = "DESCENDING" | "ASCENDING" | (string & {});
+export const SortKey = S.String;
 export interface CancelParticipantAuthenticationRequest {
   SessionId: string;
   ConnectionToken: string;
@@ -480,12 +477,12 @@ export const SendEventResponse = S.suspend(() =>
 ).annotations({
   identifier: "SendEventResponse",
 }) as any as S.Schema<SendEventResponse>;
-export type MessageProcessingStatus = "PROCESSING" | "FAILED" | "REJECTED";
-export const MessageProcessingStatus = S.Literal(
-  "PROCESSING",
-  "FAILED",
-  "REJECTED",
-);
+export type MessageProcessingStatus =
+  | "PROCESSING"
+  | "FAILED"
+  | "REJECTED"
+  | (string & {});
+export const MessageProcessingStatus = S.String;
 export interface Websocket {
   Url?: string;
   ConnectionExpiry?: string;
@@ -566,34 +563,17 @@ export type ChatItemType =
   | "ATTACHMENT"
   | "CONNECTION_ACK"
   | "MESSAGE_DELIVERED"
-  | "MESSAGE_READ";
-export const ChatItemType = S.Literal(
-  "TYPING",
-  "PARTICIPANT_JOINED",
-  "PARTICIPANT_LEFT",
-  "CHAT_ENDED",
-  "TRANSFER_SUCCEEDED",
-  "TRANSFER_FAILED",
-  "MESSAGE",
-  "EVENT",
-  "ATTACHMENT",
-  "CONNECTION_ACK",
-  "MESSAGE_DELIVERED",
-  "MESSAGE_READ",
-);
+  | "MESSAGE_READ"
+  | (string & {});
+export const ChatItemType = S.String;
 export type ParticipantRole =
   | "AGENT"
   | "CUSTOMER"
   | "SYSTEM"
   | "CUSTOM_BOT"
-  | "SUPERVISOR";
-export const ParticipantRole = S.Literal(
-  "AGENT",
-  "CUSTOMER",
-  "SYSTEM",
-  "CUSTOM_BOT",
-  "SUPERVISOR",
-);
+  | "SUPERVISOR"
+  | (string & {});
+export const ParticipantRole = S.String;
 export type UploadMetadataSignedHeaders = { [key: string]: string | undefined };
 export const UploadMetadataSignedHeaders = S.Record({
   key: S.String,
@@ -645,10 +625,14 @@ export const WebRTCMediaPlacement = S.suspend(() =>
 ).annotations({
   identifier: "WebRTCMediaPlacement",
 }) as any as S.Schema<WebRTCMediaPlacement>;
-export type ArtifactStatus = "APPROVED" | "REJECTED" | "IN_PROGRESS";
-export const ArtifactStatus = S.Literal("APPROVED", "REJECTED", "IN_PROGRESS");
-export type MeetingFeatureStatus = "AVAILABLE" | "UNAVAILABLE";
-export const MeetingFeatureStatus = S.Literal("AVAILABLE", "UNAVAILABLE");
+export type ArtifactStatus =
+  | "APPROVED"
+  | "REJECTED"
+  | "IN_PROGRESS"
+  | (string & {});
+export const ArtifactStatus = S.String;
+export type MeetingFeatureStatus = "AVAILABLE" | "UNAVAILABLE" | (string & {});
+export const MeetingFeatureStatus = S.String;
 export interface DescribeViewResponse {
   View?: View;
 }
@@ -703,17 +687,9 @@ export type ResourceType =
   | "HIERARCHY_LEVEL"
   | "HIERARCHY_GROUP"
   | "USER"
-  | "PHONE_NUMBER";
-export const ResourceType = S.Literal(
-  "CONTACT",
-  "CONTACT_FLOW",
-  "INSTANCE",
-  "PARTICIPANT",
-  "HIERARCHY_LEVEL",
-  "HIERARCHY_GROUP",
-  "USER",
-  "PHONE_NUMBER",
-);
+  | "PHONE_NUMBER"
+  | (string & {});
+export const ResourceType = S.String;
 export interface MeetingFeaturesConfiguration {
   Audio?: AudioFeatures;
 }

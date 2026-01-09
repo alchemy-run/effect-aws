@@ -78,8 +78,8 @@ export type StatusReasonCode = string;
 export type BenefitAllocationName = string;
 
 //# Schemas
-export type FulfillmentType = "CREDITS" | "CASH" | "ACCESS";
-export const FulfillmentType = S.Literal("CREDITS", "CASH", "ACCESS");
+export type FulfillmentType = "CREDITS" | "CASH" | "ACCESS" | (string & {});
+export const FulfillmentType = S.String;
 export type FulfillmentTypes = FulfillmentType[];
 export const FulfillmentTypes = S.Array(FulfillmentType);
 export type Arns = string[];
@@ -88,12 +88,12 @@ export type BenefitIdentifiers = string[];
 export const BenefitIdentifiers = S.Array(S.String);
 export type BenefitApplicationIdentifierList = string[];
 export const BenefitApplicationIdentifierList = S.Array(S.String);
-export type BenefitAllocationStatus = "ACTIVE" | "INACTIVE" | "FULFILLED";
-export const BenefitAllocationStatus = S.Literal(
-  "ACTIVE",
-  "INACTIVE",
-  "FULFILLED",
-);
+export type BenefitAllocationStatus =
+  | "ACTIVE"
+  | "INACTIVE"
+  | "FULFILLED"
+  | (string & {});
+export const BenefitAllocationStatus = S.String;
 export type BenefitAllocationStatusList = BenefitAllocationStatus[];
 export const BenefitAllocationStatusList = S.Array(BenefitAllocationStatus);
 export type Programs = string[];
@@ -104,21 +104,15 @@ export type BenefitApplicationStatus =
   | "ACTION_REQUIRED"
   | "APPROVED"
   | "REJECTED"
-  | "CANCELED";
-export const BenefitApplicationStatus = S.Literal(
-  "PENDING_SUBMISSION",
-  "IN_REVIEW",
-  "ACTION_REQUIRED",
-  "APPROVED",
-  "REJECTED",
-  "CANCELED",
-);
+  | "CANCELED"
+  | (string & {});
+export const BenefitApplicationStatus = S.String;
 export type Statuses = BenefitApplicationStatus[];
 export const Statuses = S.Array(BenefitApplicationStatus);
 export type Stages = string[];
 export const Stages = S.Array(S.String);
-export type BenefitStatus = "ACTIVE" | "INACTIVE";
-export const BenefitStatus = S.Literal("ACTIVE", "INACTIVE");
+export type BenefitStatus = "ACTIVE" | "INACTIVE" | (string & {});
+export const BenefitStatus = S.String;
 export type BenefitStatuses = BenefitStatus[];
 export const BenefitStatuses = S.Array(BenefitStatus);
 export type TagKeyList = string[];
@@ -504,8 +498,8 @@ export const UpdateBenefitApplicationInput = S.suspend(() =>
 ).annotations({
   identifier: "UpdateBenefitApplicationInput",
 }) as any as S.Schema<UpdateBenefitApplicationInput>;
-export type ResourceType = "OPPORTUNITY" | "BENEFIT_ALLOCATION";
-export const ResourceType = S.Literal("OPPORTUNITY", "BENEFIT_ALLOCATION");
+export type ResourceType = "OPPORTUNITY" | "BENEFIT_ALLOCATION" | (string & {});
+export const ResourceType = S.String;
 export interface Amendment {
   FieldPath: string;
   NewValue: string;
@@ -729,18 +723,9 @@ export type FileType =
   | "image/png"
   | "image/jpeg"
   | "image/svg+xml"
-  | "text/csv";
-export const FileType = S.Literal(
-  "application/msword",
-  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-  "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-  "application/pdf",
-  "image/png",
-  "image/jpeg",
-  "image/svg+xml",
-  "text/csv",
-);
+  | "text/csv"
+  | (string & {});
+export const FileType = S.String;
 export type BenefitIds = string[];
 export const BenefitIds = S.Array(S.String);
 export interface FileDetail {
@@ -1008,104 +993,9 @@ export type CurrencyCode =
   | "XCD"
   | "XOF"
   | "XPF"
-  | "ZAR";
-export const CurrencyCode = S.Literal(
-  "AED",
-  "AMD",
-  "ARS",
-  "AUD",
-  "AWG",
-  "AZN",
-  "BBD",
-  "BDT",
-  "BGN",
-  "BMD",
-  "BND",
-  "BOB",
-  "BRL",
-  "BSD",
-  "BYR",
-  "BZD",
-  "CAD",
-  "CHF",
-  "CLP",
-  "CNY",
-  "COP",
-  "CRC",
-  "CZK",
-  "DKK",
-  "DOP",
-  "EEK",
-  "EGP",
-  "EUR",
-  "GBP",
-  "GEL",
-  "GHS",
-  "GTQ",
-  "GYD",
-  "HKD",
-  "HNL",
-  "HRK",
-  "HTG",
-  "HUF",
-  "IDR",
-  "ILS",
-  "INR",
-  "ISK",
-  "JMD",
-  "JPY",
-  "KES",
-  "KHR",
-  "KRW",
-  "KYD",
-  "KZT",
-  "LBP",
-  "LKR",
-  "LTL",
-  "LVL",
-  "MAD",
-  "MNT",
-  "MOP",
-  "MUR",
-  "MVR",
-  "MXN",
-  "MYR",
-  "NAD",
-  "NGN",
-  "NIO",
-  "NOK",
-  "NZD",
-  "PAB",
-  "PEN",
-  "PHP",
-  "PKR",
-  "PLN",
-  "PYG",
-  "QAR",
-  "RON",
-  "RUB",
-  "SAR",
-  "SEK",
-  "SGD",
-  "SIT",
-  "SKK",
-  "THB",
-  "TND",
-  "TRY",
-  "TTD",
-  "TWD",
-  "TZS",
-  "UAH",
-  "USD",
-  "UYU",
-  "UZS",
-  "VND",
-  "XAF",
-  "XCD",
-  "XOF",
-  "XPF",
-  "ZAR",
-);
+  | "ZAR"
+  | (string & {});
+export const CurrencyCode = S.String;
 export interface MonetaryValue {
   Amount: string;
   CurrencyCode: CurrencyCode;
@@ -1328,14 +1218,9 @@ export type ValidationExceptionReason =
   | "cannotParse"
   | "fieldValidationFailed"
   | "other"
-  | "BUSINESS_VALIDATION_FAILED";
-export const ValidationExceptionReason = S.Literal(
-  "unknownOperation",
-  "cannotParse",
-  "fieldValidationFailed",
-  "other",
-  "BUSINESS_VALIDATION_FAILED",
-);
+  | "BUSINESS_VALIDATION_FAILED"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 export type ValidationExceptionErrorCode =
   | "REQUIRED_FIELD_MISSING"
   | "INVALID_ENUM_VALUE"
@@ -1346,19 +1231,9 @@ export type ValidationExceptionErrorCode =
   | "INVALID_RESOURCE_STATE"
   | "DUPLICATE_KEY_VALUE"
   | "VALUE_OUT_OF_RANGE"
-  | "ACTION_NOT_PERMITTED";
-export const ValidationExceptionErrorCode = S.Literal(
-  "REQUIRED_FIELD_MISSING",
-  "INVALID_ENUM_VALUE",
-  "INVALID_STRING_FORMAT",
-  "INVALID_VALUE",
-  "NOT_ENOUGH_VALUES",
-  "TOO_MANY_VALUES",
-  "INVALID_RESOURCE_STATE",
-  "DUPLICATE_KEY_VALUE",
-  "VALUE_OUT_OF_RANGE",
-  "ACTION_NOT_PERMITTED",
-);
+  | "ACTION_NOT_PERMITTED"
+  | (string & {});
+export const ValidationExceptionErrorCode = S.String;
 export interface ValidationExceptionField {
   Name: string;
   Message: string;

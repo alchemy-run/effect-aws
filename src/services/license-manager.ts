@@ -129,10 +129,10 @@ export const GetServiceSettingsRequest = S.suspend(() =>
 ).annotations({
   identifier: "GetServiceSettingsRequest",
 }) as any as S.Schema<GetServiceSettingsRequest>;
-export type DigitalSignatureMethod = "JWT_PS384";
-export const DigitalSignatureMethod = S.Literal("JWT_PS384");
-export type CheckoutType = "PROVISIONAL" | "PERPETUAL";
-export const CheckoutType = S.Literal("PROVISIONAL", "PERPETUAL");
+export type DigitalSignatureMethod = "JWT_PS384" | (string & {});
+export const DigitalSignatureMethod = S.String;
+export type CheckoutType = "PROVISIONAL" | "PERPETUAL" | (string & {});
+export const CheckoutType = S.String;
 export type PrincipalArnList = string[];
 export const PrincipalArnList = S.Array(S.String);
 export type AllowedOperation =
@@ -142,16 +142,9 @@ export type AllowedOperation =
   | "CheckInLicense"
   | "ExtendConsumptionLicense"
   | "ListPurchasedLicenses"
-  | "CreateToken";
-export const AllowedOperation = S.Literal(
-  "CreateGrant",
-  "CheckoutLicense",
-  "CheckoutBorrowLicense",
-  "CheckInLicense",
-  "ExtendConsumptionLicense",
-  "ListPurchasedLicenses",
-  "CreateToken",
-);
+  | "CreateToken"
+  | (string & {});
+export const AllowedOperation = S.String;
 export type AllowedOperationList = AllowedOperation[];
 export const AllowedOperationList = S.Array(AllowedOperation);
 export type GrantStatus =
@@ -163,38 +156,26 @@ export type GrantStatus =
   | "DELETED"
   | "PENDING_DELETE"
   | "DISABLED"
-  | "WORKFLOW_COMPLETED";
-export const GrantStatus = S.Literal(
-  "PENDING_WORKFLOW",
-  "PENDING_ACCEPT",
-  "REJECTED",
-  "ACTIVE",
-  "FAILED_WORKFLOW",
-  "DELETED",
-  "PENDING_DELETE",
-  "DISABLED",
-  "WORKFLOW_COMPLETED",
-);
+  | "WORKFLOW_COMPLETED"
+  | (string & {});
+export const GrantStatus = S.String;
 export type LicenseAssetRulesetArnList = string[];
 export const LicenseAssetRulesetArnList = S.Array(S.String);
-export type LicenseCountingType = "vCPU" | "Instance" | "Core" | "Socket";
-export const LicenseCountingType = S.Literal(
-  "vCPU",
-  "Instance",
-  "Core",
-  "Socket",
-);
+export type LicenseCountingType =
+  | "vCPU"
+  | "Instance"
+  | "Core"
+  | "Socket"
+  | (string & {});
+export const LicenseCountingType = S.String;
 export type StringList = string[];
 export const StringList = S.Array(S.String);
 export type ReportType =
   | "LicenseConfigurationSummaryReport"
   | "LicenseConfigurationUsageReport"
-  | "LicenseAssetGroupUsageReport";
-export const ReportType = S.Literal(
-  "LicenseConfigurationSummaryReport",
-  "LicenseConfigurationUsageReport",
-  "LicenseAssetGroupUsageReport",
-);
+  | "LicenseAssetGroupUsageReport"
+  | (string & {});
+export const ReportType = S.String;
 export type ReportTypeList = ReportType[];
 export const ReportTypeList = S.Array(ReportType);
 export type LicenseStatus =
@@ -204,16 +185,9 @@ export type LicenseStatus =
   | "SUSPENDED"
   | "EXPIRED"
   | "PENDING_DELETE"
-  | "DELETED";
-export const LicenseStatus = S.Literal(
-  "AVAILABLE",
-  "PENDING_AVAILABLE",
-  "DEACTIVATED",
-  "SUSPENDED",
-  "EXPIRED",
-  "PENDING_DELETE",
-  "DELETED",
-);
+  | "DELETED"
+  | (string & {});
+export const LicenseStatus = S.String;
 export type ArnList = string[];
 export const ArnList = S.Array(S.String);
 export type MaxSize3StringList = string[];
@@ -233,14 +207,17 @@ export const Filters = S.Array(
 );
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
-export type LicenseAssetGroupStatus = "ACTIVE" | "DISABLED" | "DELETED";
-export const LicenseAssetGroupStatus = S.Literal(
-  "ACTIVE",
-  "DISABLED",
-  "DELETED",
-);
-export type LicenseConfigurationStatus = "AVAILABLE" | "DISABLED";
-export const LicenseConfigurationStatus = S.Literal("AVAILABLE", "DISABLED");
+export type LicenseAssetGroupStatus =
+  | "ACTIVE"
+  | "DISABLED"
+  | "DELETED"
+  | (string & {});
+export const LicenseAssetGroupStatus = S.String;
+export type LicenseConfigurationStatus =
+  | "AVAILABLE"
+  | "DISABLED"
+  | (string & {});
+export const LicenseConfigurationStatus = S.String;
 export interface AcceptGrantRequest {
   GrantArn: string;
 }
@@ -314,36 +291,9 @@ export type EntitlementDataUnit =
   | "Megabits/Second"
   | "Gigabits/Second"
   | "Terabits/Second"
-  | "Count/Second";
-export const EntitlementDataUnit = S.Literal(
-  "Count",
-  "None",
-  "Seconds",
-  "Microseconds",
-  "Milliseconds",
-  "Bytes",
-  "Kilobytes",
-  "Megabytes",
-  "Gigabytes",
-  "Terabytes",
-  "Bits",
-  "Kilobits",
-  "Megabits",
-  "Gigabits",
-  "Terabits",
-  "Percent",
-  "Bytes/Second",
-  "Kilobytes/Second",
-  "Megabytes/Second",
-  "Gigabytes/Second",
-  "Terabytes/Second",
-  "Bits/Second",
-  "Kilobits/Second",
-  "Megabits/Second",
-  "Gigabits/Second",
-  "Terabits/Second",
-  "Count/Second",
-);
+  | "Count/Second"
+  | (string & {});
+export const EntitlementDataUnit = S.String;
 export interface EntitlementData {
   Name: string;
   Value?: string;
@@ -444,36 +394,9 @@ export type EntitlementUnit =
   | "Megabits/Second"
   | "Gigabits/Second"
   | "Terabits/Second"
-  | "Count/Second";
-export const EntitlementUnit = S.Literal(
-  "Count",
-  "None",
-  "Seconds",
-  "Microseconds",
-  "Milliseconds",
-  "Bytes",
-  "Kilobytes",
-  "Megabytes",
-  "Gigabytes",
-  "Terabytes",
-  "Bits",
-  "Kilobits",
-  "Megabits",
-  "Gigabits",
-  "Terabits",
-  "Percent",
-  "Bytes/Second",
-  "Kilobytes/Second",
-  "Megabytes/Second",
-  "Gigabytes/Second",
-  "Terabytes/Second",
-  "Bits/Second",
-  "Kilobits/Second",
-  "Megabits/Second",
-  "Gigabits/Second",
-  "Terabits/Second",
-  "Count/Second",
-);
+  | "Count/Second"
+  | (string & {});
+export const EntitlementUnit = S.String;
 export interface Entitlement {
   Name: string;
   Value?: string;
@@ -494,8 +417,8 @@ export const Entitlement = S.suspend(() =>
 ).annotations({ identifier: "Entitlement" }) as any as S.Schema<Entitlement>;
 export type EntitlementList = Entitlement[];
 export const EntitlementList = S.Array(Entitlement);
-export type RenewType = "None" | "Weekly" | "Monthly";
-export const RenewType = S.Literal("None", "Weekly", "Monthly");
+export type RenewType = "None" | "Weekly" | "Monthly" | (string & {});
+export const RenewType = S.String;
 export interface ProvisionalConfiguration {
   MaxTimeToLiveInMinutes: number;
 }
@@ -1795,13 +1718,13 @@ export const ReportContext = S.suspend(() =>
 ).annotations({
   identifier: "ReportContext",
 }) as any as S.Schema<ReportContext>;
-export type ReportFrequencyType = "DAY" | "WEEK" | "MONTH" | "ONE_TIME";
-export const ReportFrequencyType = S.Literal(
-  "DAY",
-  "WEEK",
-  "MONTH",
-  "ONE_TIME",
-);
+export type ReportFrequencyType =
+  | "DAY"
+  | "WEEK"
+  | "MONTH"
+  | "ONE_TIME"
+  | (string & {});
+export const ReportFrequencyType = S.String;
 export interface ReportFrequency {
   value?: number;
   period?: ReportFrequencyType;
@@ -1896,22 +1819,16 @@ export const UpdateServiceSettingsResponse = S.suspend(() =>
 }) as any as S.Schema<UpdateServiceSettingsResponse>;
 export type ActivationOverrideBehavior =
   | "DISTRIBUTED_GRANTS_ONLY"
-  | "ALL_GRANTS_PERMITTED_BY_ISSUER";
-export const ActivationOverrideBehavior = S.Literal(
-  "DISTRIBUTED_GRANTS_ONLY",
-  "ALL_GRANTS_PERMITTED_BY_ISSUER",
-);
+  | "ALL_GRANTS_PERMITTED_BY_ISSUER"
+  | (string & {});
+export const ActivationOverrideBehavior = S.String;
 export type InventoryFilterCondition =
   | "EQUALS"
   | "NOT_EQUALS"
   | "BEGINS_WITH"
-  | "CONTAINS";
-export const InventoryFilterCondition = S.Literal(
-  "EQUALS",
-  "NOT_EQUALS",
-  "BEGINS_WITH",
-  "CONTAINS",
-);
+  | "CONTAINS"
+  | (string & {});
+export const InventoryFilterCondition = S.String;
 export interface Options {
   ActivationOverrideBehavior?: ActivationOverrideBehavior;
 }
@@ -1920,19 +1837,19 @@ export const Options = S.suspend(() =>
     ActivationOverrideBehavior: S.optional(ActivationOverrideBehavior),
   }),
 ).annotations({ identifier: "Options" }) as any as S.Schema<Options>;
-export type TokenType = "REFRESH_TOKEN";
-export const TokenType = S.Literal("REFRESH_TOKEN");
-export type LicenseDeletionStatus = "PENDING_DELETE" | "DELETED";
-export const LicenseDeletionStatus = S.Literal("PENDING_DELETE", "DELETED");
+export type TokenType = "REFRESH_TOKEN" | (string & {});
+export const TokenType = S.String;
+export type LicenseDeletionStatus =
+  | "PENDING_DELETE"
+  | "DELETED"
+  | (string & {});
+export const LicenseDeletionStatus = S.String;
 export type LicenseConversionTaskStatus =
   | "IN_PROGRESS"
   | "SUCCEEDED"
-  | "FAILED";
-export const LicenseConversionTaskStatus = S.Literal(
-  "IN_PROGRESS",
-  "SUCCEEDED",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const LicenseConversionTaskStatus = S.String;
 export interface LicenseAssetGroup {
   Name: string;
   Description?: string;
@@ -2140,8 +2057,8 @@ export const LicenseSpecification = S.suspend(() =>
 }) as any as S.Schema<LicenseSpecification>;
 export type LicenseSpecifications = LicenseSpecification[];
 export const LicenseSpecifications = S.Array(LicenseSpecification);
-export type ProductCodeType = "marketplace";
-export const ProductCodeType = S.Literal("marketplace");
+export type ProductCodeType = "marketplace" | (string & {});
+export const ProductCodeType = S.String;
 export interface AcceptGrantResponse {
   GrantArn?: string;
   Status?: GrantStatus;
@@ -2528,14 +2445,9 @@ export type ResourceType =
   | "EC2_HOST"
   | "EC2_AMI"
   | "RDS"
-  | "SYSTEMS_MANAGER_MANAGED_INSTANCE";
-export const ResourceType = S.Literal(
-  "EC2_INSTANCE",
-  "EC2_HOST",
-  "EC2_AMI",
-  "RDS",
-  "SYSTEMS_MANAGER_MANAGED_INSTANCE",
-);
+  | "SYSTEMS_MANAGER_MANAGED_INSTANCE"
+  | (string & {});
+export const ResourceType = S.String;
 export interface ConsumedLicenseSummary {
   ResourceType?: ResourceType;
   ConsumedLicenses?: number;
@@ -2710,17 +2622,9 @@ export type ReceivedStatus =
   | "FAILED_WORKFLOW"
   | "DELETED"
   | "DISABLED"
-  | "WORKFLOW_COMPLETED";
-export const ReceivedStatus = S.Literal(
-  "PENDING_WORKFLOW",
-  "PENDING_ACCEPT",
-  "REJECTED",
-  "ACTIVE",
-  "FAILED_WORKFLOW",
-  "DELETED",
-  "DISABLED",
-  "WORKFLOW_COMPLETED",
-);
+  | "WORKFLOW_COMPLETED"
+  | (string & {});
+export const ReceivedStatus = S.String;
 export interface ReceivedMetadata {
   ReceivedStatus?: ReceivedStatus;
   ReceivedStatusReason?: string;

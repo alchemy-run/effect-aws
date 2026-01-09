@@ -165,17 +165,9 @@ export type SavingsPlanState =
   | "queued"
   | "queued-deleted"
   | "pending-return"
-  | "returned";
-export const SavingsPlanState = S.Literal(
-  "payment-pending",
-  "payment-failed",
-  "active",
-  "retired",
-  "queued",
-  "queued-deleted",
-  "pending-return",
-  "returned",
-);
+  | "returned"
+  | (string & {});
+export const SavingsPlanState = S.String;
 export type SavingsPlanStateList = SavingsPlanState[];
 export const SavingsPlanStateList = S.Array(SavingsPlanState);
 export type UUIDs = string[];
@@ -183,25 +175,18 @@ export const UUIDs = S.Array(S.String);
 export type SavingsPlanPaymentOption =
   | "All Upfront"
   | "Partial Upfront"
-  | "No Upfront";
-export const SavingsPlanPaymentOption = S.Literal(
-  "All Upfront",
-  "Partial Upfront",
-  "No Upfront",
-);
+  | "No Upfront"
+  | (string & {});
+export const SavingsPlanPaymentOption = S.String;
 export type SavingsPlanPaymentOptionList = SavingsPlanPaymentOption[];
 export const SavingsPlanPaymentOptionList = S.Array(SavingsPlanPaymentOption);
 export type SavingsPlanType =
   | "Compute"
   | "EC2Instance"
   | "SageMaker"
-  | "Database";
-export const SavingsPlanType = S.Literal(
-  "Compute",
-  "EC2Instance",
-  "SageMaker",
-  "Database",
-);
+  | "Database"
+  | (string & {});
+export const SavingsPlanType = S.String;
 export type SavingsPlanTypeList = SavingsPlanType[];
 export const SavingsPlanTypeList = S.Array(SavingsPlanType);
 export type SavingsPlanProductType =
@@ -217,22 +202,9 @@ export type SavingsPlanProductType =
   | "Neptune"
   | "Timestream"
   | "Keyspaces"
-  | "DMS";
-export const SavingsPlanProductType = S.Literal(
-  "EC2",
-  "Fargate",
-  "Lambda",
-  "SageMaker",
-  "RDS",
-  "DSQL",
-  "DynamoDB",
-  "ElastiCache",
-  "DocDB",
-  "Neptune",
-  "Timestream",
-  "Keyspaces",
-  "DMS",
-);
+  | "DMS"
+  | (string & {});
+export const SavingsPlanProductType = S.String;
 export type SavingsPlanProductTypeList = SavingsPlanProductType[];
 export const SavingsPlanProductTypeList = S.Array(SavingsPlanProductType);
 export type SavingsPlanRateServiceCode =
@@ -249,23 +221,9 @@ export type SavingsPlanRateServiceCode =
   | "AmazonNeptune"
   | "AmazonTimestream"
   | "AmazonMCS"
-  | "AWSDatabaseMigrationSvc";
-export const SavingsPlanRateServiceCode = S.Literal(
-  "AmazonEC2",
-  "AmazonECS",
-  "AmazonEKS",
-  "AWSLambda",
-  "AmazonSageMaker",
-  "AmazonRDS",
-  "AuroraDSQL",
-  "AmazonDynamoDB",
-  "AmazonElastiCache",
-  "AmazonDocDB",
-  "AmazonNeptune",
-  "AmazonTimestream",
-  "AmazonMCS",
-  "AWSDatabaseMigrationSvc",
-);
+  | "AWSDatabaseMigrationSvc"
+  | (string & {});
+export const SavingsPlanRateServiceCode = S.String;
 export type SavingsPlanRateServiceCodeList = SavingsPlanRateServiceCode[];
 export const SavingsPlanRateServiceCodeList = S.Array(
   SavingsPlanRateServiceCode,
@@ -276,8 +234,8 @@ export type SavingsPlanRateOperationList = string[];
 export const SavingsPlanRateOperationList = S.Array(S.String);
 export type DurationsList = number[];
 export const DurationsList = S.Array(S.Number);
-export type CurrencyCode = "CNY" | "USD" | "EUR";
-export const CurrencyCode = S.Literal("CNY", "USD", "EUR");
+export type CurrencyCode = "CNY" | "USD" | "EUR" | (string & {});
+export const CurrencyCode = S.String;
 export type CurrencyList = CurrencyCode[];
 export const CurrencyList = S.Array(CurrencyCode);
 export type SavingsPlanDescriptionsList = string[];
@@ -408,17 +366,9 @@ export type SavingsPlanRateFilterName =
   | "productType"
   | "serviceCode"
   | "usageType"
-  | "operation";
-export const SavingsPlanRateFilterName = S.Literal(
-  "region",
-  "instanceType",
-  "productDescription",
-  "tenancy",
-  "productType",
-  "serviceCode",
-  "usageType",
-  "operation",
-);
+  | "operation"
+  | (string & {});
+export const SavingsPlanRateFilterName = S.String;
 export type ListOfStrings = string[];
 export const ListOfStrings = S.Array(S.String);
 export type SavingsPlansFilterName =
@@ -431,41 +381,25 @@ export type SavingsPlansFilterName =
   | "payment-option"
   | "start"
   | "end"
-  | "instance-family";
-export const SavingsPlansFilterName = S.Literal(
-  "region",
-  "ec2-instance-family",
-  "commitment",
-  "upfront",
-  "term",
-  "savings-plan-type",
-  "payment-option",
-  "start",
-  "end",
-  "instance-family",
-);
+  | "instance-family"
+  | (string & {});
+export const SavingsPlansFilterName = S.String;
 export type SavingsPlanRateFilterAttribute =
   | "region"
   | "instanceFamily"
   | "instanceType"
   | "productDescription"
   | "tenancy"
-  | "productId";
-export const SavingsPlanRateFilterAttribute = S.Literal(
-  "region",
-  "instanceFamily",
-  "instanceType",
-  "productDescription",
-  "tenancy",
-  "productId",
-);
+  | "productId"
+  | (string & {});
+export const SavingsPlanRateFilterAttribute = S.String;
 export type FilterValuesList = string[];
 export const FilterValuesList = S.Array(S.String);
-export type SavingsPlanOfferingFilterAttribute = "region" | "instanceFamily";
-export const SavingsPlanOfferingFilterAttribute = S.Literal(
-  "region",
-  "instanceFamily",
-);
+export type SavingsPlanOfferingFilterAttribute =
+  | "region"
+  | "instanceFamily"
+  | (string & {});
+export const SavingsPlanOfferingFilterAttribute = S.String;
 export interface SavingsPlanRateFilter {
   name?: SavingsPlanRateFilterName;
   values?: string[];
@@ -729,24 +663,9 @@ export type SavingsPlanRateUnit =
   | "DPU"
   | "ElastiCacheProcessingUnit"
   | "DCU-Hr"
-  | "NCU-hr";
-export const SavingsPlanRateUnit = S.Literal(
-  "Hrs",
-  "Lambda-GB-Second",
-  "Request",
-  "ACU-Hr",
-  "ReadRequestUnits",
-  "WriteRequestUnits",
-  "ReadCapacityUnit-Hrs",
-  "WriteCapacityUnit-Hrs",
-  "ReplicatedWriteRequestUnits",
-  "ReplicatedWriteCapacityUnit-Hrs",
-  "GB-Hours",
-  "DPU",
-  "ElastiCacheProcessingUnit",
-  "DCU-Hr",
-  "NCU-hr",
-);
+  | "NCU-hr"
+  | (string & {});
+export const SavingsPlanRateUnit = S.String;
 export interface SavingsPlan {
   offeringId?: string;
   savingsPlanId?: string;
@@ -798,19 +717,14 @@ export type SavingsPlanRatePropertyKey =
   | "instanceType"
   | "instanceFamily"
   | "productDescription"
-  | "tenancy";
-export const SavingsPlanRatePropertyKey = S.Literal(
-  "region",
-  "instanceType",
-  "instanceFamily",
-  "productDescription",
-  "tenancy",
-);
-export type SavingsPlanOfferingPropertyKey = "region" | "instanceFamily";
-export const SavingsPlanOfferingPropertyKey = S.Literal(
-  "region",
-  "instanceFamily",
-);
+  | "tenancy"
+  | (string & {});
+export const SavingsPlanRatePropertyKey = S.String;
+export type SavingsPlanOfferingPropertyKey =
+  | "region"
+  | "instanceFamily"
+  | (string & {});
+export const SavingsPlanOfferingPropertyKey = S.String;
 export interface DescribeSavingsPlansResponse {
   savingsPlans?: SavingsPlan[];
   nextToken?: string;

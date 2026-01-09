@@ -283,64 +283,57 @@ export type ConnectorEventOperation =
   | "DEVICE_COMMAND_RESPONSE"
   | "DEVICE_DISCOVERY"
   | "DEVICE_EVENT"
-  | "DEVICE_COMMAND_REQUEST";
-export const ConnectorEventOperation = S.Literal(
-  "DEVICE_COMMAND_RESPONSE",
-  "DEVICE_DISCOVERY",
-  "DEVICE_EVENT",
-  "DEVICE_COMMAND_REQUEST",
-);
+  | "DEVICE_COMMAND_REQUEST"
+  | (string & {});
+export const ConnectorEventOperation = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
-export type EndpointType = "LAMBDA";
-export const EndpointType = S.Literal("LAMBDA");
-export type CloudConnectorType = "LISTED" | "UNLISTED";
-export const CloudConnectorType = S.Literal("LISTED", "UNLISTED");
-export type AuthType = "OAUTH";
-export const AuthType = S.Literal("OAUTH");
-export type DeliveryDestinationType = "KINESIS";
-export const DeliveryDestinationType = S.Literal("KINESIS");
-export type DiscoveryType = "ZWAVE" | "ZIGBEE" | "CLOUD" | "CUSTOM";
-export const DiscoveryType = S.Literal("ZWAVE", "ZIGBEE", "CLOUD", "CUSTOM");
-export type DiscoveryAuthMaterialType = "ZWAVE_INSTALL_CODE";
-export const DiscoveryAuthMaterialType = S.Literal("ZWAVE_INSTALL_CODE");
+export type EndpointType = "LAMBDA" | (string & {});
+export const EndpointType = S.String;
+export type CloudConnectorType = "LISTED" | "UNLISTED" | (string & {});
+export const CloudConnectorType = S.String;
+export type AuthType = "OAUTH" | (string & {});
+export const AuthType = S.String;
+export type DeliveryDestinationType = "KINESIS" | (string & {});
+export const DeliveryDestinationType = S.String;
+export type DiscoveryType =
+  | "ZWAVE"
+  | "ZIGBEE"
+  | "CLOUD"
+  | "CUSTOM"
+  | (string & {});
+export const DiscoveryType = S.String;
+export type DiscoveryAuthMaterialType = "ZWAVE_INSTALL_CODE" | (string & {});
+export const DiscoveryAuthMaterialType = S.String;
 export type DeviceDiscoveryStatus =
   | "RUNNING"
   | "SUCCEEDED"
   | "FAILED"
-  | "TIMED_OUT";
-export const DeviceDiscoveryStatus = S.Literal(
-  "RUNNING",
-  "SUCCEEDED",
-  "FAILED",
-  "TIMED_OUT",
-);
-export type LogLevel = "DEBUG" | "ERROR" | "INFO" | "WARN";
-export const LogLevel = S.Literal("DEBUG", "ERROR", "INFO", "WARN");
+  | "TIMED_OUT"
+  | (string & {});
+export const DeviceDiscoveryStatus = S.String;
+export type LogLevel = "DEBUG" | "ERROR" | "INFO" | "WARN" | (string & {});
+export const LogLevel = S.String;
 export type EncryptionType =
   | "MANAGED_INTEGRATIONS_DEFAULT_ENCRYPTION"
-  | "CUSTOMER_KEY_ENCRYPTION";
-export const EncryptionType = S.Literal(
-  "MANAGED_INTEGRATIONS_DEFAULT_ENCRYPTION",
-  "CUSTOMER_KEY_ENCRYPTION",
-);
-export type Role = "CONTROLLER" | "DEVICE";
-export const Role = S.Literal("CONTROLLER", "DEVICE");
+  | "CUSTOMER_KEY_ENCRYPTION"
+  | (string & {});
+export const EncryptionType = S.String;
+export type Role = "CONTROLLER" | "DEVICE" | (string & {});
+export const Role = S.String;
 export type AuthMaterialType =
   | "CUSTOM_PROTOCOL_QR_BAR_CODE"
   | "WIFI_SETUP_QR_BAR_CODE"
   | "ZWAVE_QR_BAR_CODE"
   | "ZIGBEE_QR_BAR_CODE"
-  | "DISCOVERED_DEVICE";
-export const AuthMaterialType = S.Literal(
-  "CUSTOM_PROTOCOL_QR_BAR_CODE",
-  "WIFI_SETUP_QR_BAR_CODE",
-  "ZWAVE_QR_BAR_CODE",
-  "ZIGBEE_QR_BAR_CODE",
-  "DISCOVERED_DEVICE",
-);
-export type HubNetworkMode = "STANDARD" | "NETWORK_WIDE_EXCLUSION";
-export const HubNetworkMode = S.Literal("STANDARD", "NETWORK_WIDE_EXCLUSION");
+  | "DISCOVERED_DEVICE"
+  | (string & {});
+export const AuthMaterialType = S.String;
+export type HubNetworkMode =
+  | "STANDARD"
+  | "NETWORK_WIDE_EXCLUSION"
+  | (string & {});
+export const HubNetworkMode = S.String;
 export type ProvisioningStatus =
   | "UNASSOCIATED"
   | "PRE_ASSOCIATED"
@@ -349,17 +342,9 @@ export type ProvisioningStatus =
   | "DELETION_FAILED"
   | "DELETE_IN_PROGRESS"
   | "ISOLATED"
-  | "DELETED";
-export const ProvisioningStatus = S.Literal(
-  "UNASSOCIATED",
-  "PRE_ASSOCIATED",
-  "DISCOVERED",
-  "ACTIVATED",
-  "DELETION_FAILED",
-  "DELETE_IN_PROGRESS",
-  "ISOLATED",
-  "DELETED",
-);
+  | "DELETED"
+  | (string & {});
+export const ProvisioningStatus = S.String;
 export type EventType =
   | "DEVICE_COMMAND"
   | "DEVICE_COMMAND_REQUEST"
@@ -370,35 +355,25 @@ export type EventType =
   | "DEVICE_OTA"
   | "CONNECTOR_ASSOCIATION"
   | "ACCOUNT_ASSOCIATION"
-  | "CONNECTOR_ERROR_REPORT";
-export const EventType = S.Literal(
-  "DEVICE_COMMAND",
-  "DEVICE_COMMAND_REQUEST",
-  "DEVICE_DISCOVERY_STATUS",
-  "DEVICE_EVENT",
-  "DEVICE_LIFE_CYCLE",
-  "DEVICE_STATE",
-  "DEVICE_OTA",
-  "CONNECTOR_ASSOCIATION",
-  "ACCOUNT_ASSOCIATION",
-  "CONNECTOR_ERROR_REPORT",
-);
-export type OtaProtocol = "HTTP";
-export const OtaProtocol = S.Literal("HTTP");
+  | "CONNECTOR_ERROR_REPORT"
+  | (string & {});
+export const EventType = S.String;
+export type OtaProtocol = "HTTP" | (string & {});
+export const OtaProtocol = S.String;
 export type Target = string[];
 export const Target = S.Array(S.String);
-export type OtaMechanism = "PUSH";
-export const OtaMechanism = S.Literal("PUSH");
-export type OtaType = "ONE_TIME" | "CONTINUOUS";
-export const OtaType = S.Literal("ONE_TIME", "CONTINUOUS");
-export type ProvisioningType = "FLEET_PROVISIONING" | "JITR";
-export const ProvisioningType = S.Literal("FLEET_PROVISIONING", "JITR");
-export type SchemaVersionType = "capability" | "definition";
-export const SchemaVersionType = S.Literal("capability", "definition");
-export type SchemaVersionFormat = "AWS" | "ZCL" | "CONNECTOR";
-export const SchemaVersionFormat = S.Literal("AWS", "ZCL", "CONNECTOR");
-export type SchemaVersionVisibility = "PUBLIC" | "PRIVATE";
-export const SchemaVersionVisibility = S.Literal("PUBLIC", "PRIVATE");
+export type OtaMechanism = "PUSH" | (string & {});
+export const OtaMechanism = S.String;
+export type OtaType = "ONE_TIME" | "CONTINUOUS" | (string & {});
+export const OtaType = S.String;
+export type ProvisioningType = "FLEET_PROVISIONING" | "JITR" | (string & {});
+export const ProvisioningType = S.String;
+export type SchemaVersionType = "capability" | "definition" | (string & {});
+export const SchemaVersionType = S.String;
+export type SchemaVersionFormat = "AWS" | "ZCL" | "CONNECTOR" | (string & {});
+export const SchemaVersionFormat = S.String;
+export type SchemaVersionVisibility = "PUBLIC" | "PRIVATE" | (string & {});
+export const SchemaVersionVisibility = S.String;
 export interface GetCustomEndpointResponse {
   EndpointAddress: string;
 }
@@ -2148,34 +2123,23 @@ export const ListSchemaVersionsRequest = S.suspend(() =>
 export type ConfigurationState =
   | "ENABLED"
   | "UPDATE_IN_PROGRESS"
-  | "UPDATE_FAILED";
-export const ConfigurationState = S.Literal(
-  "ENABLED",
-  "UPDATE_IN_PROGRESS",
-  "UPDATE_FAILED",
-);
+  | "UPDATE_FAILED"
+  | (string & {});
+export const ConfigurationState = S.String;
 export type SchedulingConfigEndBehavior =
   | "STOP_ROLLOUT"
   | "CANCEL"
-  | "FORCE_CANCEL";
-export const SchedulingConfigEndBehavior = S.Literal(
-  "STOP_ROLLOUT",
-  "CANCEL",
-  "FORCE_CANCEL",
-);
+  | "FORCE_CANCEL"
+  | (string & {});
+export const SchedulingConfigEndBehavior = S.String;
 export type AssociationState =
   | "ASSOCIATION_IN_PROGRESS"
   | "ASSOCIATION_FAILED"
   | "ASSOCIATION_SUCCEEDED"
   | "ASSOCIATION_DELETING"
-  | "REFRESH_TOKEN_EXPIRED";
-export const AssociationState = S.Literal(
-  "ASSOCIATION_IN_PROGRESS",
-  "ASSOCIATION_FAILED",
-  "ASSOCIATION_SUCCEEDED",
-  "ASSOCIATION_DELETING",
-  "REFRESH_TOKEN_EXPIRED",
-);
+  | "REFRESH_TOKEN_EXPIRED"
+  | (string & {});
+export const AssociationState = S.String;
 export interface SecretsManager {
   arn: string;
   versionId: string;
@@ -2204,36 +2168,17 @@ export type DisconnectReasonValue =
   | "WEBSOCKET_TTL_EXPIRATION"
   | "CUSTOMAUTH_TTL_EXPIRATION"
   | "UNKNOWN"
-  | "NONE";
-export const DisconnectReasonValue = S.Literal(
-  "AUTH_ERROR",
-  "CLIENT_INITIATED_DISCONNECT",
-  "CLIENT_ERROR",
-  "CONNECTION_LOST",
-  "DUPLICATE_CLIENTID",
-  "FORBIDDEN_ACCESS",
-  "MQTT_KEEP_ALIVE_TIMEOUT",
-  "SERVER_ERROR",
-  "SERVER_INITIATED_DISCONNECT",
-  "THROTTLED",
-  "WEBSOCKET_TTL_EXPIRATION",
-  "CUSTOMAUTH_TTL_EXPIRATION",
-  "UNKNOWN",
-  "NONE",
-);
+  | "NONE"
+  | (string & {});
+export const DisconnectReasonValue = S.String;
 export type OtaStatus =
   | "IN_PROGRESS"
   | "CANCELED"
   | "COMPLETED"
   | "DELETION_IN_PROGRESS"
-  | "SCHEDULED";
-export const OtaStatus = S.Literal(
-  "IN_PROGRESS",
-  "CANCELED",
-  "COMPLETED",
-  "DELETION_IN_PROGRESS",
-  "SCHEDULED",
-);
+  | "SCHEDULED"
+  | (string & {});
+export const OtaStatus = S.String;
 export interface RuntimeLogConfigurations {
   LogLevel?: LogLevel;
   LogFlushLevel?: LogLevel;
@@ -2260,13 +2205,15 @@ export const RuntimeLogConfigurations = S.suspend(() =>
 }) as any as S.Schema<RuntimeLogConfigurations>;
 export type TokenEndpointAuthenticationScheme =
   | "HTTP_BASIC"
-  | "REQUEST_BODY_CREDENTIALS";
-export const TokenEndpointAuthenticationScheme = S.Literal(
-  "HTTP_BASIC",
-  "REQUEST_BODY_CREDENTIALS",
-);
-export type RetryCriteriaFailureType = "FAILED" | "TIMED_OUT" | "ALL";
-export const RetryCriteriaFailureType = S.Literal("FAILED", "TIMED_OUT", "ALL");
+  | "REQUEST_BODY_CREDENTIALS"
+  | (string & {});
+export const TokenEndpointAuthenticationScheme = S.String;
+export type RetryCriteriaFailureType =
+  | "FAILED"
+  | "TIMED_OUT"
+  | "ALL"
+  | (string & {});
+export const RetryCriteriaFailureType = S.String;
 export interface ListTagsForResourceResponse {
   tags?: { [key: string]: string | undefined };
 }
@@ -2792,19 +2739,15 @@ export const GetNotificationConfigurationResponse = S.suspend(() =>
 ).annotations({
   identifier: "GetNotificationConfigurationResponse",
 }) as any as S.Schema<GetNotificationConfigurationResponse>;
-export type AbortCriteriaAction = "CANCEL";
-export const AbortCriteriaAction = S.Literal("CANCEL");
+export type AbortCriteriaAction = "CANCEL" | (string & {});
+export const AbortCriteriaAction = S.String;
 export type AbortCriteriaFailureType =
   | "FAILED"
   | "REJECTED"
   | "TIMED_OUT"
-  | "ALL";
-export const AbortCriteriaFailureType = S.Literal(
-  "FAILED",
-  "REJECTED",
-  "TIMED_OUT",
-  "ALL",
-);
+  | "ALL"
+  | (string & {});
+export const AbortCriteriaFailureType = S.String;
 export interface AbortConfigCriteria {
   Action?: AbortCriteriaAction;
   FailureType?: AbortCriteriaFailureType;
@@ -3023,12 +2966,12 @@ export const OAuthUpdate = S.suspend(() =>
 ).annotations({ identifier: "OAuthUpdate" }) as any as S.Schema<OAuthUpdate>;
 export type DeviceTypeList = string[];
 export const DeviceTypeList = S.Array(S.String);
-export type DiscoveryModification = "DISCOVERED" | "UPDATED" | "NO_CHANGE";
-export const DiscoveryModification = S.Literal(
-  "DISCOVERED",
-  "UPDATED",
-  "NO_CHANGE",
-);
+export type DiscoveryModification =
+  | "DISCOVERED"
+  | "UPDATED"
+  | "NO_CHANGE"
+  | (string & {});
+export const DiscoveryModification = S.String;
 export interface ScheduleMaintenanceWindow {
   DurationInMinutes?: number;
   StartTime?: string;
@@ -3505,17 +3448,9 @@ export type OtaTaskExecutionStatus =
   | "TIMED_OUT"
   | "REJECTED"
   | "REMOVED"
-  | "CANCELED";
-export const OtaTaskExecutionStatus = S.Literal(
-  "QUEUED",
-  "IN_PROGRESS",
-  "SUCCEEDED",
-  "FAILED",
-  "TIMED_OUT",
-  "REJECTED",
-  "REMOVED",
-  "CANCELED",
-);
+  | "CANCELED"
+  | (string & {});
+export const OtaTaskExecutionStatus = S.String;
 export type MatterCapabilityReportCommands = string[];
 export const MatterCapabilityReportCommands = S.Array(S.String);
 export type MatterCapabilityReportEvents = string[];

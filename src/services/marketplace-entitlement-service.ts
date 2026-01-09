@@ -131,12 +131,9 @@ export type ErrorMessage = string;
 export type GetEntitlementFilterName =
   | "CUSTOMER_IDENTIFIER"
   | "DIMENSION"
-  | "CUSTOMER_AWS_ACCOUNT_ID";
-export const GetEntitlementFilterName = S.Literal(
-  "CUSTOMER_IDENTIFIER",
-  "DIMENSION",
-  "CUSTOMER_AWS_ACCOUNT_ID",
-);
+  | "CUSTOMER_AWS_ACCOUNT_ID"
+  | (string & {});
+export const GetEntitlementFilterName = S.String;
 export type FilterValueList = string[];
 export const FilterValueList = S.Array(S.String);
 export type GetEntitlementFilters = {

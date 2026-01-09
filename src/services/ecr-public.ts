@@ -916,13 +916,13 @@ export const UploadLayerPartResponse = S.suspend(() =>
 ).annotations({
   identifier: "UploadLayerPartResponse",
 }) as any as S.Schema<UploadLayerPartResponse>;
-export type LayerAvailability = "AVAILABLE" | "UNAVAILABLE";
-export const LayerAvailability = S.Literal("AVAILABLE", "UNAVAILABLE");
-export type LayerFailureCode = "InvalidLayerDigest" | "MissingLayerDigest";
-export const LayerFailureCode = S.Literal(
-  "InvalidLayerDigest",
-  "MissingLayerDigest",
-);
+export type LayerAvailability = "AVAILABLE" | "UNAVAILABLE" | (string & {});
+export const LayerAvailability = S.String;
+export type LayerFailureCode =
+  | "InvalidLayerDigest"
+  | "MissingLayerDigest"
+  | (string & {});
+export const LayerFailureCode = S.String;
 export type ImageTagList = string[];
 export const ImageTagList = S.Array(S.String);
 export interface Layer {
@@ -995,8 +995,12 @@ export const Image = S.suspend(() =>
     imageManifestMediaType: S.optional(S.String),
   }),
 ).annotations({ identifier: "Image" }) as any as S.Schema<Image>;
-export type RegistryAliasStatus = "ACTIVE" | "PENDING" | "REJECTED";
-export const RegistryAliasStatus = S.Literal("ACTIVE", "PENDING", "REJECTED");
+export type RegistryAliasStatus =
+  | "ACTIVE"
+  | "PENDING"
+  | "REJECTED"
+  | (string & {});
+export const RegistryAliasStatus = S.String;
 export interface BatchCheckLayerAvailabilityResponse {
   layers?: Layer[];
   failures?: LayerFailure[];
@@ -1064,16 +1068,9 @@ export type ImageFailureCode =
   | "ImageNotFound"
   | "MissingDigestAndTag"
   | "ImageReferencedByManifestList"
-  | "KmsError";
-export const ImageFailureCode = S.Literal(
-  "InvalidImageDigest",
-  "InvalidImageTag",
-  "ImageTagDoesNotMatchDigest",
-  "ImageNotFound",
-  "MissingDigestAndTag",
-  "ImageReferencedByManifestList",
-  "KmsError",
-);
+  | "KmsError"
+  | (string & {});
+export const ImageFailureCode = S.String;
 export interface ReferencedImageDetail {
   imageDigest?: string;
   imageSizeInBytes?: number;

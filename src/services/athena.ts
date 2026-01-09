@@ -173,12 +173,17 @@ export type PreparedStatementNameList = string[];
 export const PreparedStatementNameList = S.Array(S.String);
 export type QueryExecutionIdList = string[];
 export const QueryExecutionIdList = S.Array(S.String);
-export type DataCatalogType = "LAMBDA" | "GLUE" | "HIVE" | "FEDERATED";
-export const DataCatalogType = S.Literal("LAMBDA", "GLUE", "HIVE", "FEDERATED");
-export type QueryResultType = "DATA_MANIFEST" | "DATA_ROWS";
-export const QueryResultType = S.Literal("DATA_MANIFEST", "DATA_ROWS");
-export type NotebookType = "IPYNB";
-export const NotebookType = S.Literal("IPYNB");
+export type DataCatalogType =
+  | "LAMBDA"
+  | "GLUE"
+  | "HIVE"
+  | "FEDERATED"
+  | (string & {});
+export const DataCatalogType = S.String;
+export type QueryResultType = "DATA_MANIFEST" | "DATA_ROWS" | (string & {});
+export const QueryResultType = S.String;
+export type NotebookType = "IPYNB" | (string & {});
+export const NotebookType = S.String;
 export type CalculationExecutionState =
   | "CREATING"
   | "CREATED"
@@ -187,32 +192,18 @@ export type CalculationExecutionState =
   | "CANCELING"
   | "CANCELED"
   | "COMPLETED"
-  | "FAILED";
-export const CalculationExecutionState = S.Literal(
-  "CREATING",
-  "CREATED",
-  "QUEUED",
-  "RUNNING",
-  "CANCELING",
-  "CANCELED",
-  "COMPLETED",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const CalculationExecutionState = S.String;
 export type ExecutorState =
   | "CREATING"
   | "CREATED"
   | "REGISTERED"
   | "TERMINATING"
   | "TERMINATED"
-  | "FAILED";
-export const ExecutorState = S.Literal(
-  "CREATING",
-  "CREATED",
-  "REGISTERED",
-  "TERMINATING",
-  "TERMINATED",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const ExecutorState = S.String;
 export type SessionState =
   | "CREATING"
   | "CREATED"
@@ -221,23 +212,15 @@ export type SessionState =
   | "TERMINATING"
   | "TERMINATED"
   | "DEGRADED"
-  | "FAILED";
-export const SessionState = S.Literal(
-  "CREATING",
-  "CREATED",
-  "IDLE",
-  "BUSY",
-  "TERMINATING",
-  "TERMINATED",
-  "DEGRADED",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const SessionState = S.String;
 export type ExecutionParameters = string[];
 export const ExecutionParameters = S.Array(S.String);
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
-export type WorkGroupState = "ENABLED" | "DISABLED";
-export const WorkGroupState = S.Literal("ENABLED", "DISABLED");
+export type WorkGroupState = "ENABLED" | "DISABLED" | (string & {});
+export const WorkGroupState = S.String;
 export interface BatchGetNamedQueryInput {
   NamedQueryIds: string[];
 }
@@ -1163,21 +1146,15 @@ export type CapacityReservationStatus =
   | "CANCELLING"
   | "CANCELLED"
   | "FAILED"
-  | "UPDATE_PENDING";
-export const CapacityReservationStatus = S.Literal(
-  "PENDING",
-  "ACTIVE",
-  "CANCELLING",
-  "CANCELLED",
-  "FAILED",
-  "UPDATE_PENDING",
-);
-export type CapacityAllocationStatus = "PENDING" | "SUCCEEDED" | "FAILED";
-export const CapacityAllocationStatus = S.Literal(
-  "PENDING",
-  "SUCCEEDED",
-  "FAILED",
-);
+  | "UPDATE_PENDING"
+  | (string & {});
+export const CapacityReservationStatus = S.String;
+export type CapacityAllocationStatus =
+  | "PENDING"
+  | "SUCCEEDED"
+  | "FAILED"
+  | (string & {});
+export const CapacityAllocationStatus = S.String;
 export interface CapacityAllocation {
   Status: CapacityAllocationStatus;
   StatusMessage?: string;
@@ -1323,12 +1300,12 @@ export const QueryExecutionContext = S.suspend(() =>
 ).annotations({
   identifier: "QueryExecutionContext",
 }) as any as S.Schema<QueryExecutionContext>;
-export type AuthenticationType = "DIRECTORY_IDENTITY";
-export const AuthenticationType = S.Literal("DIRECTORY_IDENTITY");
-export type EncryptionOption = "SSE_S3" | "SSE_KMS" | "CSE_KMS";
-export const EncryptionOption = S.Literal("SSE_S3", "SSE_KMS", "CSE_KMS");
-export type S3AclOption = "BUCKET_OWNER_FULL_CONTROL";
-export const S3AclOption = S.Literal("BUCKET_OWNER_FULL_CONTROL");
+export type AuthenticationType = "DIRECTORY_IDENTITY" | (string & {});
+export const AuthenticationType = S.String;
+export type EncryptionOption = "SSE_S3" | "SSE_KMS" | "CSE_KMS" | (string & {});
+export const EncryptionOption = S.String;
+export type S3AclOption = "BUCKET_OWNER_FULL_CONTROL" | (string & {});
+export const S3AclOption = S.String;
 export interface CreateCapacityReservationInput {
   TargetDpus: number;
   Name: string;
@@ -1462,18 +1439,9 @@ export type DataCatalogStatus =
   | "CREATE_FAILED_CLEANUP_FAILED"
   | "DELETE_IN_PROGRESS"
   | "DELETE_COMPLETE"
-  | "DELETE_FAILED";
-export const DataCatalogStatus = S.Literal(
-  "CREATE_IN_PROGRESS",
-  "CREATE_COMPLETE",
-  "CREATE_FAILED",
-  "CREATE_FAILED_CLEANUP_IN_PROGRESS",
-  "CREATE_FAILED_CLEANUP_COMPLETE",
-  "CREATE_FAILED_CLEANUP_FAILED",
-  "DELETE_IN_PROGRESS",
-  "DELETE_COMPLETE",
-  "DELETE_FAILED",
-);
+  | "DELETE_FAILED"
+  | (string & {});
+export const DataCatalogStatus = S.String;
 export type ConnectionType =
   | "DYNAMODB"
   | "MYSQL"
@@ -1494,29 +1462,9 @@ export type ConnectionType =
   | "SAPHANA"
   | "SNOWFLAKE"
   | "DATALAKEGEN2"
-  | "DB2AS400";
-export const ConnectionType = S.Literal(
-  "DYNAMODB",
-  "MYSQL",
-  "POSTGRESQL",
-  "REDSHIFT",
-  "ORACLE",
-  "SYNAPSE",
-  "SQLSERVER",
-  "DB2",
-  "OPENSEARCH",
-  "BIGQUERY",
-  "GOOGLECLOUDSTORAGE",
-  "HBASE",
-  "DOCUMENTDB",
-  "CMDB",
-  "TPCDS",
-  "TIMESTREAM",
-  "SAPHANA",
-  "SNOWFLAKE",
-  "DATALAKEGEN2",
-  "DB2AS400",
-);
+  | "DB2AS400"
+  | (string & {});
+export const ConnectionType = S.String;
 export interface DataCatalog {
   Name: string;
   Description?: string;
@@ -1629,8 +1577,8 @@ export const GetPreparedStatementOutput = S.suspend(() =>
 ).annotations({
   identifier: "GetPreparedStatementOutput",
 }) as any as S.Schema<GetPreparedStatementOutput>;
-export type StatementType = "DDL" | "DML" | "UTILITY";
-export const StatementType = S.Literal("DDL", "DML", "UTILITY");
+export type StatementType = "DDL" | "DML" | "UTILITY" | (string & {});
+export const StatementType = S.String;
 export interface ManagedQueryResultsEncryptionConfiguration {
   KmsKey: string;
 }
@@ -1713,14 +1661,9 @@ export type QueryExecutionState =
   | "RUNNING"
   | "SUCCEEDED"
   | "FAILED"
-  | "CANCELLED";
-export const QueryExecutionState = S.Literal(
-  "QUEUED",
-  "RUNNING",
-  "SUCCEEDED",
-  "FAILED",
-  "CANCELLED",
-);
+  | "CANCELLED"
+  | (string & {});
+export const QueryExecutionState = S.String;
 export interface AthenaError {
   ErrorCategory?: number;
   ErrorType?: number;
@@ -2098,8 +2041,8 @@ export const IdentityCenterConfiguration = S.suspend(() =>
 }) as any as S.Schema<IdentityCenterConfiguration>;
 export type SupportedDPUSizeList = number[];
 export const SupportedDPUSizeList = S.Array(S.Number);
-export type ExecutorType = "COORDINATOR" | "GATEWAY" | "WORKER";
-export const ExecutorType = S.Literal("COORDINATOR", "GATEWAY", "WORKER");
+export type ExecutorType = "COORDINATOR" | "GATEWAY" | "WORKER" | (string & {});
+export const ExecutorType = S.String;
 export interface Classification {
   Name?: string;
   Properties?: { [key: string]: string | undefined };
@@ -2941,8 +2884,12 @@ export const QueryRuntimeStatisticsRows = S.suspend(() =>
 ).annotations({
   identifier: "QueryRuntimeStatisticsRows",
 }) as any as S.Schema<QueryRuntimeStatisticsRows>;
-export type ColumnNullable = "NOT_NULL" | "NULLABLE" | "UNKNOWN";
-export const ColumnNullable = S.Literal("NOT_NULL", "NULLABLE", "UNKNOWN");
+export type ColumnNullable =
+  | "NOT_NULL"
+  | "NULLABLE"
+  | "UNKNOWN"
+  | (string & {});
+export const ColumnNullable = S.String;
 export type QueryStagePlanNodes = QueryStagePlanNode[];
 export const QueryStagePlanNodes = S.Array(
   S.suspend(
@@ -2951,8 +2898,8 @@ export const QueryStagePlanNodes = S.Array(
 ) as any as S.Schema<QueryStagePlanNodes>;
 export type StringList = string[];
 export const StringList = S.Array(S.String);
-export type ThrottleReason = "CONCURRENT_QUERY_LIMIT_EXCEEDED";
-export const ThrottleReason = S.Literal("CONCURRENT_QUERY_LIMIT_EXCEEDED");
+export type ThrottleReason = "CONCURRENT_QUERY_LIMIT_EXCEEDED" | (string & {});
+export const ThrottleReason = S.String;
 export interface Datum {
   VarCharValue?: string;
 }

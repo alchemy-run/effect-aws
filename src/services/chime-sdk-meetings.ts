@@ -110,15 +110,18 @@ export type RetryAfterSeconds = string;
 //# Schemas
 export type TenantIdList = string[];
 export const TenantIdList = S.Array(S.String);
-export type MediaPlacementNetworkType = "Ipv4Only" | "DualStack";
-export const MediaPlacementNetworkType = S.Literal("Ipv4Only", "DualStack");
-export type MediaCapabilities = "SendReceive" | "Send" | "Receive" | "None";
-export const MediaCapabilities = S.Literal(
-  "SendReceive",
-  "Send",
-  "Receive",
-  "None",
-);
+export type MediaPlacementNetworkType =
+  | "Ipv4Only"
+  | "DualStack"
+  | (string & {});
+export const MediaPlacementNetworkType = S.String;
+export type MediaCapabilities =
+  | "SendReceive"
+  | "Send"
+  | "Receive"
+  | "None"
+  | (string & {});
+export const MediaCapabilities = S.String;
 export interface AttendeeCapabilities {
   Audio: MediaCapabilities;
   Video: MediaCapabilities;
@@ -175,8 +178,8 @@ export const CreateAttendeeRequest = S.suspend(() =>
 ).annotations({
   identifier: "CreateAttendeeRequest",
 }) as any as S.Schema<CreateAttendeeRequest>;
-export type MeetingFeatureStatus = "AVAILABLE" | "UNAVAILABLE";
-export const MeetingFeatureStatus = S.Literal("AVAILABLE", "UNAVAILABLE");
+export type MeetingFeatureStatus = "AVAILABLE" | "UNAVAILABLE" | (string & {});
+export const MeetingFeatureStatus = S.String;
 export interface AudioFeatures {
   EchoReduction?: MeetingFeatureStatus;
 }
@@ -185,8 +188,8 @@ export const AudioFeatures = S.suspend(() =>
 ).annotations({
   identifier: "AudioFeatures",
 }) as any as S.Schema<AudioFeatures>;
-export type VideoResolution = "None" | "HD" | "FHD";
-export const VideoResolution = S.Literal("None", "HD", "FHD");
+export type VideoResolution = "None" | "HD" | "FHD" | (string & {});
+export const VideoResolution = S.String;
 export interface VideoFeatures {
   MaxResolution?: VideoResolution;
 }
@@ -195,8 +198,8 @@ export const VideoFeatures = S.suspend(() =>
 ).annotations({
   identifier: "VideoFeatures",
 }) as any as S.Schema<VideoFeatures>;
-export type ContentResolution = "None" | "FHD" | "UHD";
-export const ContentResolution = S.Literal("None", "FHD", "UHD");
+export type ContentResolution = "None" | "FHD" | "UHD" | (string & {});
+export const ContentResolution = S.String;
 export interface ContentFeatures {
   MaxResolution?: ContentResolution;
 }
@@ -559,29 +562,15 @@ export type TranscribeLanguageCode =
   | "ko-KR"
   | "zh-CN"
   | "th-TH"
-  | "hi-IN";
-export const TranscribeLanguageCode = S.Literal(
-  "en-US",
-  "en-GB",
-  "es-US",
-  "fr-CA",
-  "fr-FR",
-  "en-AU",
-  "it-IT",
-  "de-DE",
-  "pt-BR",
-  "ja-JP",
-  "ko-KR",
-  "zh-CN",
-  "th-TH",
-  "hi-IN",
-);
-export type TranscribeVocabularyFilterMethod = "remove" | "mask" | "tag";
-export const TranscribeVocabularyFilterMethod = S.Literal(
-  "remove",
-  "mask",
-  "tag",
-);
+  | "hi-IN"
+  | (string & {});
+export const TranscribeLanguageCode = S.String;
+export type TranscribeVocabularyFilterMethod =
+  | "remove"
+  | "mask"
+  | "tag"
+  | (string & {});
+export const TranscribeVocabularyFilterMethod = S.String;
 export type TranscribeRegion =
   | "us-east-2"
   | "us-east-1"
@@ -595,51 +584,35 @@ export type TranscribeRegion =
   | "eu-west-2"
   | "sa-east-1"
   | "auto"
-  | "us-gov-west-1";
-export const TranscribeRegion = S.Literal(
-  "us-east-2",
-  "us-east-1",
-  "us-west-2",
-  "ap-northeast-2",
-  "ap-southeast-2",
-  "ap-northeast-1",
-  "ca-central-1",
-  "eu-central-1",
-  "eu-west-1",
-  "eu-west-2",
-  "sa-east-1",
-  "auto",
-  "us-gov-west-1",
-);
-export type TranscribePartialResultsStability = "low" | "medium" | "high";
-export const TranscribePartialResultsStability = S.Literal(
-  "low",
-  "medium",
-  "high",
-);
-export type TranscribeContentIdentificationType = "PII";
-export const TranscribeContentIdentificationType = S.Literal("PII");
-export type TranscribeContentRedactionType = "PII";
-export const TranscribeContentRedactionType = S.Literal("PII");
-export type TranscribeMedicalLanguageCode = "en-US";
-export const TranscribeMedicalLanguageCode = S.Literal("en-US");
+  | "us-gov-west-1"
+  | (string & {});
+export const TranscribeRegion = S.String;
+export type TranscribePartialResultsStability =
+  | "low"
+  | "medium"
+  | "high"
+  | (string & {});
+export const TranscribePartialResultsStability = S.String;
+export type TranscribeContentIdentificationType = "PII" | (string & {});
+export const TranscribeContentIdentificationType = S.String;
+export type TranscribeContentRedactionType = "PII" | (string & {});
+export const TranscribeContentRedactionType = S.String;
+export type TranscribeMedicalLanguageCode = "en-US" | (string & {});
+export const TranscribeMedicalLanguageCode = S.String;
 export type TranscribeMedicalSpecialty =
   | "PRIMARYCARE"
   | "CARDIOLOGY"
   | "NEUROLOGY"
   | "ONCOLOGY"
   | "RADIOLOGY"
-  | "UROLOGY";
-export const TranscribeMedicalSpecialty = S.Literal(
-  "PRIMARYCARE",
-  "CARDIOLOGY",
-  "NEUROLOGY",
-  "ONCOLOGY",
-  "RADIOLOGY",
-  "UROLOGY",
-);
-export type TranscribeMedicalType = "CONVERSATION" | "DICTATION";
-export const TranscribeMedicalType = S.Literal("CONVERSATION", "DICTATION");
+  | "UROLOGY"
+  | (string & {});
+export const TranscribeMedicalSpecialty = S.String;
+export type TranscribeMedicalType =
+  | "CONVERSATION"
+  | "DICTATION"
+  | (string & {});
+export const TranscribeMedicalType = S.String;
 export type TranscribeMedicalRegion =
   | "us-east-1"
   | "us-east-2"
@@ -647,18 +620,11 @@ export type TranscribeMedicalRegion =
   | "ap-southeast-2"
   | "ca-central-1"
   | "eu-west-1"
-  | "auto";
-export const TranscribeMedicalRegion = S.Literal(
-  "us-east-1",
-  "us-east-2",
-  "us-west-2",
-  "ap-southeast-2",
-  "ca-central-1",
-  "eu-west-1",
-  "auto",
-);
-export type TranscribeMedicalContentIdentificationType = "PHI";
-export const TranscribeMedicalContentIdentificationType = S.Literal("PHI");
+  | "auto"
+  | (string & {});
+export const TranscribeMedicalRegion = S.String;
+export type TranscribeMedicalContentIdentificationType = "PHI" | (string & {});
+export const TranscribeMedicalContentIdentificationType = S.String;
 export interface BatchCreateAttendeeRequest {
   MeetingId: string;
   Attendees: CreateAttendeeRequestItem[];

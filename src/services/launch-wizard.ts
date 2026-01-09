@@ -283,11 +283,11 @@ export const ListWorkloadDeploymentPatternsInput = S.suspend(() =>
 ).annotations({
   identifier: "ListWorkloadDeploymentPatternsInput",
 }) as any as S.Schema<ListWorkloadDeploymentPatternsInput>;
-export type DeploymentFilterKey = "WORKLOAD_NAME" | "DEPLOYMENT_STATUS";
-export const DeploymentFilterKey = S.Literal(
-  "WORKLOAD_NAME",
-  "DEPLOYMENT_STATUS",
-);
+export type DeploymentFilterKey =
+  | "WORKLOAD_NAME"
+  | "DEPLOYMENT_STATUS"
+  | (string & {});
+export const DeploymentFilterKey = S.String;
 export type DeploymentFilterValues = string[];
 export const DeploymentFilterValues = S.Array(S.String);
 export type Tags = { [key: string]: string | undefined };
@@ -306,18 +306,9 @@ export type DeploymentStatus =
   | "DELETED"
   | "FAILED"
   | "IN_PROGRESS"
-  | "VALIDATING";
-export const DeploymentStatus = S.Literal(
-  "COMPLETED",
-  "CREATING",
-  "DELETE_IN_PROGRESS",
-  "DELETE_INITIATING",
-  "DELETE_FAILED",
-  "DELETED",
-  "FAILED",
-  "IN_PROGRESS",
-  "VALIDATING",
-);
+  | "VALIDATING"
+  | (string & {});
+export const DeploymentStatus = S.String;
 export interface DeploymentFilter {
   name?: DeploymentFilterKey;
   values?: string[];
@@ -437,35 +428,23 @@ export type EventStatus =
   | "FAILED"
   | "IN_PROGRESS"
   | "PENDING"
-  | "TIMED_OUT";
-export const EventStatus = S.Literal(
-  "CANCELED",
-  "CANCELING",
-  "COMPLETED",
-  "CREATED",
-  "FAILED",
-  "IN_PROGRESS",
-  "PENDING",
-  "TIMED_OUT",
-);
-export type WorkloadStatus = "ACTIVE" | "INACTIVE" | "DISABLED" | "DELETED";
-export const WorkloadStatus = S.Literal(
-  "ACTIVE",
-  "INACTIVE",
-  "DISABLED",
-  "DELETED",
-);
+  | "TIMED_OUT"
+  | (string & {});
+export const EventStatus = S.String;
+export type WorkloadStatus =
+  | "ACTIVE"
+  | "INACTIVE"
+  | "DISABLED"
+  | "DELETED"
+  | (string & {});
+export const WorkloadStatus = S.String;
 export type WorkloadDeploymentPatternStatus =
   | "ACTIVE"
   | "INACTIVE"
   | "DISABLED"
-  | "DELETED";
-export const WorkloadDeploymentPatternStatus = S.Literal(
-  "ACTIVE",
-  "INACTIVE",
-  "DISABLED",
-  "DELETED",
-);
+  | "DELETED"
+  | (string & {});
+export const WorkloadDeploymentPatternStatus = S.String;
 export interface DeploymentData {
   name?: string;
   id?: string;

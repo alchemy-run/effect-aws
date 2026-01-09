@@ -140,10 +140,10 @@ export const GetDataAutomationStatusRequest = S.suspend(() =>
 ).annotations({
   identifier: "GetDataAutomationStatusRequest",
 }) as any as S.Schema<GetDataAutomationStatusRequest>;
-export type DataAutomationStage = "LIVE" | "DEVELOPMENT";
-export const DataAutomationStage = S.Literal("LIVE", "DEVELOPMENT");
-export type BlueprintStage = "DEVELOPMENT" | "LIVE";
-export const BlueprintStage = S.Literal("DEVELOPMENT", "LIVE");
+export type DataAutomationStage = "LIVE" | "DEVELOPMENT" | (string & {});
+export const DataAutomationStage = S.String;
+export type BlueprintStage = "DEVELOPMENT" | "LIVE" | (string & {});
+export const BlueprintStage = S.String;
 export interface SyncInputConfiguration {
   bytes?: Uint8Array;
   s3Uri?: string;
@@ -201,14 +201,9 @@ export type AutomationJobStatus =
   | "InProgress"
   | "Success"
   | "ServiceError"
-  | "ClientError";
-export const AutomationJobStatus = S.Literal(
-  "Created",
-  "InProgress",
-  "Success",
-  "ServiceError",
-  "ClientError",
-);
+  | "ClientError"
+  | (string & {});
+export const AutomationJobStatus = S.String;
 export interface ListTagsForResourceResponse {
   tags?: Tag[];
 }
@@ -307,13 +302,13 @@ export const InvokeDataAutomationRequest = S.suspend(() =>
 ).annotations({
   identifier: "InvokeDataAutomationRequest",
 }) as any as S.Schema<InvokeDataAutomationRequest>;
-export type SemanticModality = "DOCUMENT" | "IMAGE" | "AUDIO" | "VIDEO";
-export const SemanticModality = S.Literal(
-  "DOCUMENT",
-  "IMAGE",
-  "AUDIO",
-  "VIDEO",
-);
+export type SemanticModality =
+  | "DOCUMENT"
+  | "IMAGE"
+  | "AUDIO"
+  | "VIDEO"
+  | (string & {});
+export const SemanticModality = S.String;
 export interface TimestampSegment {
   startTimeMillis: number;
   endTimeMillis: number;
@@ -323,8 +318,8 @@ export const TimestampSegment = S.suspend(() =>
 ).annotations({
   identifier: "TimestampSegment",
 }) as any as S.Schema<TimestampSegment>;
-export type CustomOutputStatus = "MATCH" | "NO_MATCH";
-export const CustomOutputStatus = S.Literal("MATCH", "NO_MATCH");
+export type CustomOutputStatus = "MATCH" | "NO_MATCH" | (string & {});
+export const CustomOutputStatus = S.String;
 export type VideoSegmentConfiguration = { timestampSegment: TimestampSegment };
 export const VideoSegmentConfiguration = S.Union(
   S.Struct({ timestampSegment: TimestampSegment }),

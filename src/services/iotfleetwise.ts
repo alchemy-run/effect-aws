@@ -198,56 +198,55 @@ export const GetRegisterAccountStatusRequest = S.suspend(() =>
 ).annotations({
   identifier: "GetRegisterAccountStatusRequest",
 }) as any as S.Schema<GetRegisterAccountStatusRequest>;
-export type EncryptionStatus = "PENDING" | "SUCCESS" | "FAILURE";
-export const EncryptionStatus = S.Literal("PENDING", "SUCCESS", "FAILURE");
+export type EncryptionStatus =
+  | "PENDING"
+  | "SUCCESS"
+  | "FAILURE"
+  | (string & {});
+export const EncryptionStatus = S.String;
 export type EncryptionType =
   | "KMS_BASED_ENCRYPTION"
-  | "FLEETWISE_DEFAULT_ENCRYPTION";
-export const EncryptionType = S.Literal(
-  "KMS_BASED_ENCRYPTION",
-  "FLEETWISE_DEFAULT_ENCRYPTION",
-);
+  | "FLEETWISE_DEFAULT_ENCRYPTION"
+  | (string & {});
+export const EncryptionType = S.String;
 export type RegistrationStatus =
   | "REGISTRATION_PENDING"
   | "REGISTRATION_SUCCESS"
-  | "REGISTRATION_FAILURE";
-export const RegistrationStatus = S.Literal(
-  "REGISTRATION_PENDING",
-  "REGISTRATION_SUCCESS",
-  "REGISTRATION_FAILURE",
-);
+  | "REGISTRATION_FAILURE"
+  | (string & {});
+export const RegistrationStatus = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
-export type DiagnosticsMode = "OFF" | "SEND_ACTIVE_DTCS";
-export const DiagnosticsMode = S.Literal("OFF", "SEND_ACTIVE_DTCS");
-export type SpoolingMode = "OFF" | "TO_DISK";
-export const SpoolingMode = S.Literal("OFF", "TO_DISK");
-export type Compression = "OFF" | "SNAPPY";
-export const Compression = S.Literal("OFF", "SNAPPY");
+export type DiagnosticsMode = "OFF" | "SEND_ACTIVE_DTCS" | (string & {});
+export const DiagnosticsMode = S.String;
+export type SpoolingMode = "OFF" | "TO_DISK" | (string & {});
+export const SpoolingMode = S.String;
+export type Compression = "OFF" | "SNAPPY" | (string & {});
+export const Compression = S.String;
 export type DataExtraDimensionNodePathList = string[];
 export const DataExtraDimensionNodePathList = S.Array(S.String);
-export type UpdateCampaignAction = "APPROVE" | "SUSPEND" | "RESUME" | "UPDATE";
-export const UpdateCampaignAction = S.Literal(
-  "APPROVE",
-  "SUSPEND",
-  "RESUME",
-  "UPDATE",
-);
-export type ListResponseScope = "METADATA_ONLY";
-export const ListResponseScope = S.Literal("METADATA_ONLY");
-export type DefaultForUnmappedSignalsType = "CUSTOM_DECODING";
-export const DefaultForUnmappedSignalsType = S.Literal("CUSTOM_DECODING");
+export type UpdateCampaignAction =
+  | "APPROVE"
+  | "SUSPEND"
+  | "RESUME"
+  | "UPDATE"
+  | (string & {});
+export const UpdateCampaignAction = S.String;
+export type ListResponseScope = "METADATA_ONLY" | (string & {});
+export const ListResponseScope = S.String;
+export type DefaultForUnmappedSignalsType = "CUSTOM_DECODING" | (string & {});
+export const DefaultForUnmappedSignalsType = S.String;
 export type Fqns = string[];
 export const Fqns = S.Array(S.String);
 export type InterfaceIds = string[];
 export const InterfaceIds = S.Array(S.String);
-export type ManifestStatus = "ACTIVE" | "DRAFT" | "INVALID" | "VALIDATING";
-export const ManifestStatus = S.Literal(
-  "ACTIVE",
-  "DRAFT",
-  "INVALID",
-  "VALIDATING",
-);
+export type ManifestStatus =
+  | "ACTIVE"
+  | "DRAFT"
+  | "INVALID"
+  | "VALIDATING"
+  | (string & {});
+export const ManifestStatus = S.String;
 export type ListOfStrings = string[];
 export const ListOfStrings = S.Array(S.String);
 export type NodePaths = string[];
@@ -258,15 +257,9 @@ export type SignalNodeType =
   | "ATTRIBUTE"
   | "BRANCH"
   | "CUSTOM_STRUCT"
-  | "CUSTOM_PROPERTY";
-export const SignalNodeType = S.Literal(
-  "SENSOR",
-  "ACTUATOR",
-  "ATTRIBUTE",
-  "BRANCH",
-  "CUSTOM_STRUCT",
-  "CUSTOM_PROPERTY",
-);
+  | "CUSTOM_PROPERTY"
+  | (string & {});
+export const SignalNodeType = S.String;
 export type StateTemplateProperties = string[];
 export const StateTemplateProperties = S.Array(S.String);
 export type StateTemplateDataExtraDimensionNodePathList = string[];
@@ -277,13 +270,11 @@ export const StateTemplateMetadataExtraDimensionNodePathList = S.Array(
 );
 export type VehicleAssociationBehavior =
   | "CreateIotThing"
-  | "ValidateIotThingExists";
-export const VehicleAssociationBehavior = S.Literal(
-  "CreateIotThing",
-  "ValidateIotThingExists",
-);
-export type UpdateMode = "Overwrite" | "Merge";
-export const UpdateMode = S.Literal("Overwrite", "Merge");
+  | "ValidateIotThingExists"
+  | (string & {});
+export const VehicleAssociationBehavior = S.String;
+export type UpdateMode = "Overwrite" | "Merge" | (string & {});
+export const UpdateMode = S.String;
 export type StateTemplateAssociationIdentifiers = string[];
 export const StateTemplateAssociationIdentifiers = S.Array(S.String);
 export type AttributeNamesList = string[];
@@ -373,8 +364,8 @@ export const PutEncryptionConfigurationRequest = S.suspend(() =>
 ).annotations({
   identifier: "PutEncryptionConfigurationRequest",
 }) as any as S.Schema<PutEncryptionConfigurationRequest>;
-export type LogType = "OFF" | "ERROR";
-export const LogType = S.Literal("OFF", "ERROR");
+export type LogType = "OFF" | "ERROR" | (string & {});
+export const LogType = S.String;
 export interface CloudWatchLogDeliveryOptions {
   logType: LogType;
   logGroupName?: string;
@@ -539,15 +530,11 @@ export type SignalDecoderType =
   | "CAN_SIGNAL"
   | "OBD_SIGNAL"
   | "MESSAGE_SIGNAL"
-  | "CUSTOM_DECODING_SIGNAL";
-export const SignalDecoderType = S.Literal(
-  "CAN_SIGNAL",
-  "OBD_SIGNAL",
-  "MESSAGE_SIGNAL",
-  "CUSTOM_DECODING_SIGNAL",
-);
-export type SignalValueType = "INTEGER" | "FLOATING_POINT";
-export const SignalValueType = S.Literal("INTEGER", "FLOATING_POINT");
+  | "CUSTOM_DECODING_SIGNAL"
+  | (string & {});
+export const SignalDecoderType = S.String;
+export type SignalValueType = "INTEGER" | "FLOATING_POINT" | (string & {});
+export const SignalValueType = S.String;
 export interface CanSignal {
   messageId: number;
   isBigEndian: boolean;
@@ -615,24 +602,9 @@ export type ROS2PrimitiveType =
   | "INT64"
   | "UINT64"
   | "STRING"
-  | "WSTRING";
-export const ROS2PrimitiveType = S.Literal(
-  "BOOL",
-  "BYTE",
-  "CHAR",
-  "FLOAT32",
-  "FLOAT64",
-  "INT8",
-  "UINT8",
-  "INT16",
-  "UINT16",
-  "INT32",
-  "UINT32",
-  "INT64",
-  "UINT64",
-  "STRING",
-  "WSTRING",
-);
+  | "WSTRING"
+  | (string & {});
+export const ROS2PrimitiveType = S.String;
 export interface ROS2PrimitiveMessageDefinition {
   primitiveType: ROS2PrimitiveType;
   offset?: number;
@@ -730,13 +702,9 @@ export type NetworkInterfaceType =
   | "CAN_INTERFACE"
   | "OBD_INTERFACE"
   | "VEHICLE_MIDDLEWARE"
-  | "CUSTOM_DECODING_INTERFACE";
-export const NetworkInterfaceType = S.Literal(
-  "CAN_INTERFACE",
-  "OBD_INTERFACE",
-  "VEHICLE_MIDDLEWARE",
-  "CUSTOM_DECODING_INTERFACE",
-);
+  | "CUSTOM_DECODING_INTERFACE"
+  | (string & {});
+export const NetworkInterfaceType = S.String;
 export interface CanInterface {
   name: string;
   protocolName?: string;
@@ -769,8 +737,8 @@ export const ObdInterface = S.suspend(() =>
     hasTransmissionEcu: S.optional(S.Boolean),
   }),
 ).annotations({ identifier: "ObdInterface" }) as any as S.Schema<ObdInterface>;
-export type VehicleMiddlewareProtocol = "ROS_2";
-export const VehicleMiddlewareProtocol = S.Literal("ROS_2");
+export type VehicleMiddlewareProtocol = "ROS_2" | (string & {});
+export const VehicleMiddlewareProtocol = S.String;
 export interface VehicleMiddleware {
   name: string;
   protocolName: VehicleMiddlewareProtocol;
@@ -1279,38 +1247,9 @@ export type NodeDataType =
   | "UNIX_TIMESTAMP_ARRAY"
   | "UNKNOWN"
   | "STRUCT"
-  | "STRUCT_ARRAY";
-export const NodeDataType = S.Literal(
-  "INT8",
-  "UINT8",
-  "INT16",
-  "UINT16",
-  "INT32",
-  "UINT32",
-  "INT64",
-  "UINT64",
-  "BOOLEAN",
-  "FLOAT",
-  "DOUBLE",
-  "STRING",
-  "UNIX_TIMESTAMP",
-  "INT8_ARRAY",
-  "UINT8_ARRAY",
-  "INT16_ARRAY",
-  "UINT16_ARRAY",
-  "INT32_ARRAY",
-  "UINT32_ARRAY",
-  "INT64_ARRAY",
-  "UINT64_ARRAY",
-  "BOOLEAN_ARRAY",
-  "FLOAT_ARRAY",
-  "DOUBLE_ARRAY",
-  "STRING_ARRAY",
-  "UNIX_TIMESTAMP_ARRAY",
-  "UNKNOWN",
-  "STRUCT",
-  "STRUCT_ARRAY",
-);
+  | "STRUCT_ARRAY"
+  | (string & {});
+export const NodeDataType = S.String;
 export interface Sensor {
   fullyQualifiedName: string;
   dataType: NodeDataType;
@@ -1407,8 +1346,8 @@ export const CustomStruct = S.suspend(() =>
     comment: S.optional(S.String),
   }),
 ).annotations({ identifier: "CustomStruct" }) as any as S.Schema<CustomStruct>;
-export type NodeDataEncoding = "BINARY" | "TYPED";
-export const NodeDataEncoding = S.Literal("BINARY", "TYPED");
+export type NodeDataEncoding = "BINARY" | "TYPED" | (string & {});
+export const NodeDataEncoding = S.String;
 export interface CustomProperty {
   fullyQualifiedName: string;
   dataType: NodeDataType;
@@ -1731,8 +1670,13 @@ export const AttributesMap = S.Record({
   key: S.String,
   value: S.UndefinedOr(S.String),
 });
-export type TimeUnit = "MILLISECOND" | "SECOND" | "MINUTE" | "HOUR";
-export const TimeUnit = S.Literal("MILLISECOND", "SECOND", "MINUTE", "HOUR");
+export type TimeUnit =
+  | "MILLISECOND"
+  | "SECOND"
+  | "MINUTE"
+  | "HOUR"
+  | (string & {});
+export const TimeUnit = S.String;
 export interface TimePeriod {
   unit: TimeUnit;
   value: number;
@@ -2062,25 +2006,21 @@ export type CampaignStatus =
   | "CREATING"
   | "WAITING_FOR_APPROVAL"
   | "RUNNING"
-  | "SUSPENDED";
-export const CampaignStatus = S.Literal(
-  "CREATING",
-  "WAITING_FOR_APPROVAL",
-  "RUNNING",
-  "SUSPENDED",
-);
+  | "SUSPENDED"
+  | (string & {});
+export const CampaignStatus = S.String;
 export type Vehicles = string[];
 export const Vehicles = S.Array(S.String);
 export type FormattedVss = { vssJson: string };
 export const FormattedVss = S.Union(S.Struct({ vssJson: S.String }));
 export type Fleets = string[];
 export const Fleets = S.Array(S.String);
-export type TriggerMode = "ALWAYS" | "RISING_EDGE";
-export const TriggerMode = S.Literal("ALWAYS", "RISING_EDGE");
-export type DataFormat = "JSON" | "PARQUET";
-export const DataFormat = S.Literal("JSON", "PARQUET");
-export type StorageCompressionFormat = "NONE" | "GZIP";
-export const StorageCompressionFormat = S.Literal("NONE", "GZIP");
+export type TriggerMode = "ALWAYS" | "RISING_EDGE" | (string & {});
+export const TriggerMode = S.String;
+export type DataFormat = "JSON" | "PARQUET" | (string & {});
+export const DataFormat = S.String;
+export type StorageCompressionFormat = "NONE" | "GZIP" | (string & {});
+export const StorageCompressionFormat = S.String;
 export type NetworkFilesList = Uint8Array[];
 export const NetworkFilesList = S.Array(T.Blob);
 export interface BatchCreateVehicleRequest {
@@ -2301,8 +2241,8 @@ export const DataDestinationConfig = S.Union(
 );
 export type DataDestinationConfigs = DataDestinationConfig[];
 export const DataDestinationConfigs = S.Array(DataDestinationConfig);
-export type StorageMaximumSizeUnit = "MB" | "GB" | "TB";
-export const StorageMaximumSizeUnit = S.Literal("MB", "GB", "TB");
+export type StorageMaximumSizeUnit = "MB" | "GB" | "TB" | (string & {});
+export const StorageMaximumSizeUnit = S.String;
 export interface StorageMaximumSize {
   unit: StorageMaximumSizeUnit;
   value: number;
@@ -2312,8 +2252,12 @@ export const StorageMaximumSize = S.suspend(() =>
 ).annotations({
   identifier: "StorageMaximumSize",
 }) as any as S.Schema<StorageMaximumSize>;
-export type StorageMinimumTimeToLiveUnit = "HOURS" | "DAYS" | "WEEKS";
-export const StorageMinimumTimeToLiveUnit = S.Literal("HOURS", "DAYS", "WEEKS");
+export type StorageMinimumTimeToLiveUnit =
+  | "HOURS"
+  | "DAYS"
+  | "WEEKS"
+  | (string & {});
+export const StorageMinimumTimeToLiveUnit = S.String;
 export interface StorageMinimumTimeToLive {
   unit: StorageMinimumTimeToLiveUnit;
   value: number;
@@ -2849,15 +2793,9 @@ export type VehicleState =
   | "HEALTHY"
   | "SUSPENDED"
   | "DELETING"
-  | "READY_FOR_CHECKIN";
-export const VehicleState = S.Literal(
-  "CREATED",
-  "READY",
-  "HEALTHY",
-  "SUSPENDED",
-  "DELETING",
-  "READY_FOR_CHECKIN",
-);
+  | "READY_FOR_CHECKIN"
+  | (string & {});
+export const VehicleState = S.String;
 export interface VehicleStatus {
   campaignName?: string;
   vehicleName?: string;
@@ -3112,12 +3050,9 @@ export const ListCampaignsResponse = S.suspend(() =>
 export type StructuredMessageListType =
   | "FIXED_CAPACITY"
   | "DYNAMIC_UNBOUNDED_CAPACITY"
-  | "DYNAMIC_BOUNDED_CAPACITY";
-export const StructuredMessageListType = S.Literal(
-  "FIXED_CAPACITY",
-  "DYNAMIC_UNBOUNDED_CAPACITY",
-  "DYNAMIC_BOUNDED_CAPACITY",
-);
+  | "DYNAMIC_BOUNDED_CAPACITY"
+  | (string & {});
+export const StructuredMessageListType = S.String;
 export interface ListDecoderManifestsResponse {
   summaries?: DecoderManifestSummary[];
   nextToken?: string;
@@ -3361,13 +3296,9 @@ export type ValidationExceptionReason =
   | "unknownOperation"
   | "cannotParse"
   | "fieldValidationFailed"
-  | "other";
-export const ValidationExceptionReason = S.Literal(
-  "unknownOperation",
-  "cannotParse",
-  "fieldValidationFailed",
-  "other",
-);
+  | "other"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 export type NetworkFileDefinition = { canDbc: CanDbcDefinition };
 export const NetworkFileDefinition = S.Union(
   S.Struct({ canDbc: CanDbcDefinition }),
@@ -3497,25 +3428,9 @@ export type SignalDecoderFailureReason =
   | "NO_SIGNAL_IN_CATALOG_FOR_DECODER_SIGNAL"
   | "SIGNAL_DECODER_INCOMPATIBLE_WITH_SIGNAL_CATALOG"
   | "EMPTY_MESSAGE_SIGNAL"
-  | "CUSTOM_DECODING_SIGNAL_INFO_IS_NULL";
-export const SignalDecoderFailureReason = S.Literal(
-  "DUPLICATE_SIGNAL",
-  "CONFLICTING_SIGNAL",
-  "SIGNAL_TO_ADD_ALREADY_EXISTS",
-  "SIGNAL_NOT_ASSOCIATED_WITH_NETWORK_INTERFACE",
-  "NETWORK_INTERFACE_TYPE_INCOMPATIBLE_WITH_SIGNAL_DECODER_TYPE",
-  "SIGNAL_NOT_IN_MODEL",
-  "CAN_SIGNAL_INFO_IS_NULL",
-  "OBD_SIGNAL_INFO_IS_NULL",
-  "NO_DECODER_INFO_FOR_SIGNAL_IN_MODEL",
-  "MESSAGE_SIGNAL_INFO_IS_NULL",
-  "SIGNAL_DECODER_TYPE_INCOMPATIBLE_WITH_MESSAGE_SIGNAL_TYPE",
-  "STRUCT_SIZE_MISMATCH",
-  "NO_SIGNAL_IN_CATALOG_FOR_DECODER_SIGNAL",
-  "SIGNAL_DECODER_INCOMPATIBLE_WITH_SIGNAL_CATALOG",
-  "EMPTY_MESSAGE_SIGNAL",
-  "CUSTOM_DECODING_SIGNAL_INFO_IS_NULL",
-);
+  | "CUSTOM_DECODING_SIGNAL_INFO_IS_NULL"
+  | (string & {});
+export const SignalDecoderFailureReason = S.String;
 export type NetworkInterfaceFailureReason =
   | "DUPLICATE_NETWORK_INTERFACE"
   | "CONFLICTING_NETWORK_INTERFACE"
@@ -3524,17 +3439,9 @@ export type NetworkInterfaceFailureReason =
   | "OBD_NETWORK_INTERFACE_INFO_IS_NULL"
   | "NETWORK_INTERFACE_TO_REMOVE_ASSOCIATED_WITH_SIGNALS"
   | "VEHICLE_MIDDLEWARE_NETWORK_INTERFACE_INFO_IS_NULL"
-  | "CUSTOM_DECODING_SIGNAL_NETWORK_INTERFACE_INFO_IS_NULL";
-export const NetworkInterfaceFailureReason = S.Literal(
-  "DUPLICATE_NETWORK_INTERFACE",
-  "CONFLICTING_NETWORK_INTERFACE",
-  "NETWORK_INTERFACE_TO_ADD_ALREADY_EXISTS",
-  "CAN_NETWORK_INTERFACE_INFO_IS_NULL",
-  "OBD_NETWORK_INTERFACE_INFO_IS_NULL",
-  "NETWORK_INTERFACE_TO_REMOVE_ASSOCIATED_WITH_SIGNALS",
-  "VEHICLE_MIDDLEWARE_NETWORK_INTERFACE_INFO_IS_NULL",
-  "CUSTOM_DECODING_SIGNAL_NETWORK_INTERFACE_INFO_IS_NULL",
-);
+  | "CUSTOM_DECODING_SIGNAL_NETWORK_INTERFACE_INFO_IS_NULL"
+  | (string & {});
+export const NetworkInterfaceFailureReason = S.String;
 export interface ValidationExceptionField {
   name: string;
   message: string;

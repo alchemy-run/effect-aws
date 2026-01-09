@@ -136,11 +136,11 @@ export type ResourceArnList = string[];
 export const ResourceArnList = S.Array(S.String);
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
-export type GroupLifecycleEventsDesiredStatus = "ACTIVE" | "INACTIVE";
-export const GroupLifecycleEventsDesiredStatus = S.Literal(
-  "ACTIVE",
-  "INACTIVE",
-);
+export type GroupLifecycleEventsDesiredStatus =
+  | "ACTIVE"
+  | "INACTIVE"
+  | (string & {});
+export const GroupLifecycleEventsDesiredStatus = S.String;
 export interface CancelTagSyncTaskInput {
   TaskArn: string;
 }
@@ -348,11 +348,11 @@ export const PutGroupConfigurationOutput = S.suspend(() =>
 ).annotations({
   identifier: "PutGroupConfigurationOutput",
 }) as any as S.Schema<PutGroupConfigurationOutput>;
-export type QueryType = "TAG_FILTERS_1_0" | "CLOUDFORMATION_STACK_1_0";
-export const QueryType = S.Literal(
-  "TAG_FILTERS_1_0",
-  "CLOUDFORMATION_STACK_1_0",
-);
+export type QueryType =
+  | "TAG_FILTERS_1_0"
+  | "CLOUDFORMATION_STACK_1_0"
+  | (string & {});
+export const QueryType = S.String;
 export interface ResourceQuery {
   Type: QueryType;
   Query: string;
@@ -541,22 +541,18 @@ export type GroupLifecycleEventsStatus =
   | "ACTIVE"
   | "INACTIVE"
   | "IN_PROGRESS"
-  | "ERROR";
-export const GroupLifecycleEventsStatus = S.Literal(
-  "ACTIVE",
-  "INACTIVE",
-  "IN_PROGRESS",
-  "ERROR",
-);
-export type ListGroupingStatusesFilterName = "status" | "resource-arn";
-export const ListGroupingStatusesFilterName = S.Literal(
-  "status",
-  "resource-arn",
-);
+  | "ERROR"
+  | (string & {});
+export const GroupLifecycleEventsStatus = S.String;
+export type ListGroupingStatusesFilterName =
+  | "status"
+  | "resource-arn"
+  | (string & {});
+export const ListGroupingStatusesFilterName = S.String;
 export type ListGroupingStatusesFilterValues = string[];
 export const ListGroupingStatusesFilterValues = S.Array(S.String);
-export type ResourceFilterName = "resource-type";
-export const ResourceFilterName = S.Literal("resource-type");
+export type ResourceFilterName = "resource-type" | (string & {});
+export const ResourceFilterName = S.String;
 export type ResourceFilterValues = string[];
 export const ResourceFilterValues = S.Array(S.String);
 export type GroupFilterName =
@@ -564,14 +560,9 @@ export type GroupFilterName =
   | "configuration-type"
   | "owner"
   | "display-name"
-  | "criticality";
-export const GroupFilterName = S.Literal(
-  "resource-type",
-  "configuration-type",
-  "owner",
-  "display-name",
-  "criticality",
-);
+  | "criticality"
+  | (string & {});
+export const GroupFilterName = S.String;
 export type GroupFilterValues = string[];
 export const GroupFilterValues = S.Array(S.String);
 export interface AccountSettings {
@@ -590,8 +581,8 @@ export const AccountSettings = S.suspend(() =>
 ).annotations({
   identifier: "AccountSettings",
 }) as any as S.Schema<AccountSettings>;
-export type TagSyncTaskStatus = "ACTIVE" | "ERROR";
-export const TagSyncTaskStatus = S.Literal("ACTIVE", "ERROR");
+export type TagSyncTaskStatus = "ACTIVE" | "ERROR" | (string & {});
+export const TagSyncTaskStatus = S.String;
 export interface ListGroupingStatusesFilter {
   Name: ListGroupingStatusesFilterName;
   Values: string[];
@@ -925,23 +916,16 @@ export const UpdateGroupQueryOutput = S.suspend(() =>
 export type GroupConfigurationStatus =
   | "UPDATING"
   | "UPDATE_COMPLETE"
-  | "UPDATE_FAILED";
-export const GroupConfigurationStatus = S.Literal(
-  "UPDATING",
-  "UPDATE_COMPLETE",
-  "UPDATE_FAILED",
-);
+  | "UPDATE_FAILED"
+  | (string & {});
+export const GroupConfigurationStatus = S.String;
 export type QueryErrorCode =
   | "CLOUDFORMATION_STACK_INACTIVE"
   | "CLOUDFORMATION_STACK_NOT_EXISTING"
   | "CLOUDFORMATION_STACK_UNASSUMABLE_ROLE"
-  | "RESOURCE_TYPE_NOT_SUPPORTED";
-export const QueryErrorCode = S.Literal(
-  "CLOUDFORMATION_STACK_INACTIVE",
-  "CLOUDFORMATION_STACK_NOT_EXISTING",
-  "CLOUDFORMATION_STACK_UNASSUMABLE_ROLE",
-  "RESOURCE_TYPE_NOT_SUPPORTED",
-);
+  | "RESOURCE_TYPE_NOT_SUPPORTED"
+  | (string & {});
+export const QueryErrorCode = S.String;
 export interface GroupConfiguration {
   Configuration?: GroupConfigurationItem[];
   ProposedConfiguration?: GroupConfigurationItem[];
@@ -1063,15 +1047,15 @@ export const SearchResourcesOutput = S.suspend(() =>
 ).annotations({
   identifier: "SearchResourcesOutput",
 }) as any as S.Schema<SearchResourcesOutput>;
-export type GroupingType = "GROUP" | "UNGROUP";
-export const GroupingType = S.Literal("GROUP", "UNGROUP");
-export type GroupingStatus = "SUCCESS" | "FAILED" | "IN_PROGRESS" | "SKIPPED";
-export const GroupingStatus = S.Literal(
-  "SUCCESS",
-  "FAILED",
-  "IN_PROGRESS",
-  "SKIPPED",
-);
+export type GroupingType = "GROUP" | "UNGROUP" | (string & {});
+export const GroupingType = S.String;
+export type GroupingStatus =
+  | "SUCCESS"
+  | "FAILED"
+  | "IN_PROGRESS"
+  | "SKIPPED"
+  | (string & {});
+export const GroupingStatus = S.String;
 export interface GroupingStatusesItem {
   ResourceArn?: string;
   Action?: GroupingType;
@@ -1146,8 +1130,8 @@ export const TagSyncTaskItem = S.suspend(() =>
 }) as any as S.Schema<TagSyncTaskItem>;
 export type TagSyncTaskList = TagSyncTaskItem[];
 export const TagSyncTaskList = S.Array(TagSyncTaskItem);
-export type ResourceStatusValue = "PENDING";
-export const ResourceStatusValue = S.Literal("PENDING");
+export type ResourceStatusValue = "PENDING" | (string & {});
+export const ResourceStatusValue = S.String;
 export interface CreateGroupOutput {
   Group?: Group;
   ResourceQuery?: ResourceQuery;

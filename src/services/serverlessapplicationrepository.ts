@@ -421,13 +421,9 @@ export type Capability =
   | "CAPABILITY_IAM"
   | "CAPABILITY_NAMED_IAM"
   | "CAPABILITY_AUTO_EXPAND"
-  | "CAPABILITY_RESOURCE_POLICY";
-export const Capability = S.Literal(
-  "CAPABILITY_IAM",
-  "CAPABILITY_NAMED_IAM",
-  "CAPABILITY_AUTO_EXPAND",
-  "CAPABILITY_RESOURCE_POLICY",
-);
+  | "CAPABILITY_RESOURCE_POLICY"
+  | (string & {});
+export const Capability = S.String;
 export type __listOfCapability = Capability[];
 export const __listOfCapability = S.Array(Capability);
 export interface ParameterValue {
@@ -456,8 +452,8 @@ export const Tag = S.suspend(() =>
 ).annotations({ identifier: "Tag" }) as any as S.Schema<Tag>;
 export type __listOfTag = Tag[];
 export const __listOfTag = S.Array(Tag);
-export type Status = "PREPARING" | "ACTIVE" | "EXPIRED";
-export const Status = S.Literal("PREPARING", "ACTIVE", "EXPIRED");
+export type Status = "PREPARING" | "ACTIVE" | "EXPIRED" | (string & {});
+export const Status = S.String;
 export interface ApplicationPolicyStatement {
   Actions?: string[];
   PrincipalOrgIDs?: string[];

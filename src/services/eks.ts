@@ -130,14 +130,18 @@ export type RequiredClaimsValue = string;
 //# Schemas
 export type StringList = string[];
 export const StringList = S.Array(S.String);
-export type ResolveConflicts = "OVERWRITE" | "NONE" | "PRESERVE";
-export const ResolveConflicts = S.Literal("OVERWRITE", "NONE", "PRESERVE");
-export type CapabilityType = "ACK" | "KRO" | "ARGOCD";
-export const CapabilityType = S.Literal("ACK", "KRO", "ARGOCD");
-export type CapabilityDeletePropagationPolicy = "RETAIN";
-export const CapabilityDeletePropagationPolicy = S.Literal("RETAIN");
-export type EksAnywhereSubscriptionLicenseType = "Cluster";
-export const EksAnywhereSubscriptionLicenseType = S.Literal("Cluster");
+export type ResolveConflicts =
+  | "OVERWRITE"
+  | "NONE"
+  | "PRESERVE"
+  | (string & {});
+export const ResolveConflicts = S.String;
+export type CapabilityType = "ACK" | "KRO" | "ARGOCD" | (string & {});
+export const CapabilityType = S.String;
+export type CapabilityDeletePropagationPolicy = "RETAIN" | (string & {});
+export const CapabilityDeletePropagationPolicy = S.String;
+export type EksAnywhereSubscriptionLicenseType = "Cluster" | (string & {});
+export const EksAnywhereSubscriptionLicenseType = S.String;
 export type AMITypes =
   | "AL2_x86_64"
   | "AL2_x86_64_GPU"
@@ -157,48 +161,27 @@ export type AMITypes =
   | "AL2023_ARM_64_STANDARD"
   | "AL2023_x86_64_NEURON"
   | "AL2023_x86_64_NVIDIA"
-  | "AL2023_ARM_64_NVIDIA";
-export const AMITypes = S.Literal(
-  "AL2_x86_64",
-  "AL2_x86_64_GPU",
-  "AL2_ARM_64",
-  "CUSTOM",
-  "BOTTLEROCKET_ARM_64",
-  "BOTTLEROCKET_x86_64",
-  "BOTTLEROCKET_ARM_64_FIPS",
-  "BOTTLEROCKET_x86_64_FIPS",
-  "BOTTLEROCKET_ARM_64_NVIDIA",
-  "BOTTLEROCKET_x86_64_NVIDIA",
-  "WINDOWS_CORE_2019_x86_64",
-  "WINDOWS_FULL_2019_x86_64",
-  "WINDOWS_CORE_2022_x86_64",
-  "WINDOWS_FULL_2022_x86_64",
-  "AL2023_x86_64_STANDARD",
-  "AL2023_ARM_64_STANDARD",
-  "AL2023_x86_64_NEURON",
-  "AL2023_x86_64_NVIDIA",
-  "AL2023_ARM_64_NVIDIA",
-);
-export type CapacityTypes = "ON_DEMAND" | "SPOT" | "CAPACITY_BLOCK";
-export const CapacityTypes = S.Literal("ON_DEMAND", "SPOT", "CAPACITY_BLOCK");
+  | "AL2023_ARM_64_NVIDIA"
+  | (string & {});
+export const AMITypes = S.String;
+export type CapacityTypes =
+  | "ON_DEMAND"
+  | "SPOT"
+  | "CAPACITY_BLOCK"
+  | (string & {});
+export const CapacityTypes = S.String;
 export type ClusterVersionStatus =
   | "unsupported"
   | "standard-support"
-  | "extended-support";
-export const ClusterVersionStatus = S.Literal(
-  "unsupported",
-  "standard-support",
-  "extended-support",
-);
+  | "extended-support"
+  | (string & {});
+export const ClusterVersionStatus = S.String;
 export type VersionStatus =
   | "UNSUPPORTED"
   | "STANDARD_SUPPORT"
-  | "EXTENDED_SUPPORT";
-export const VersionStatus = S.Literal(
-  "UNSUPPORTED",
-  "STANDARD_SUPPORT",
-  "EXTENDED_SUPPORT",
-);
+  | "EXTENDED_SUPPORT"
+  | (string & {});
+export const VersionStatus = S.String;
 export type IncludeClustersList = string[];
 export const IncludeClustersList = S.Array(S.String);
 export type EksAnywhereSubscriptionStatus =
@@ -207,15 +190,9 @@ export type EksAnywhereSubscriptionStatus =
   | "UPDATING"
   | "EXPIRING"
   | "EXPIRED"
-  | "DELETING";
-export const EksAnywhereSubscriptionStatus = S.Literal(
-  "CREATING",
-  "ACTIVE",
-  "UPDATING",
-  "EXPIRING",
-  "EXPIRED",
-  "DELETING",
-);
+  | "DELETING"
+  | (string & {});
+export const EksAnywhereSubscriptionStatus = S.String;
 export type EksAnywhereSubscriptionStatusValues =
   EksAnywhereSubscriptionStatus[];
 export const EksAnywhereSubscriptionStatusValues = S.Array(
@@ -1498,50 +1475,46 @@ export const UpdatePodIdentityAssociationRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdatePodIdentityAssociationRequest",
 }) as any as S.Schema<UpdatePodIdentityAssociationRequest>;
-export type AccessScopeType = "cluster" | "namespace";
-export const AccessScopeType = S.Literal("cluster", "namespace");
-export type IpFamily = "ipv4" | "ipv6";
-export const IpFamily = S.Literal("ipv4", "ipv6");
-export type AuthenticationMode = "API" | "API_AND_CONFIG_MAP" | "CONFIG_MAP";
-export const AuthenticationMode = S.Literal(
-  "API",
-  "API_AND_CONFIG_MAP",
-  "CONFIG_MAP",
-);
-export type SupportType = "STANDARD" | "EXTENDED";
-export const SupportType = S.Literal("STANDARD", "EXTENDED");
+export type AccessScopeType = "cluster" | "namespace" | (string & {});
+export const AccessScopeType = S.String;
+export type IpFamily = "ipv4" | "ipv6" | (string & {});
+export const IpFamily = S.String;
+export type AuthenticationMode =
+  | "API"
+  | "API_AND_CONFIG_MAP"
+  | "CONFIG_MAP"
+  | (string & {});
+export const AuthenticationMode = S.String;
+export type SupportType = "STANDARD" | "EXTENDED" | (string & {});
+export const SupportType = S.String;
 export type ProvisionedControlPlaneTier =
   | "standard"
   | "tier-xl"
   | "tier-2xl"
-  | "tier-4xl";
-export const ProvisionedControlPlaneTier = S.Literal(
-  "standard",
-  "tier-xl",
-  "tier-2xl",
-  "tier-4xl",
-);
-export type EksAnywhereSubscriptionTermUnit = "MONTHS";
-export const EksAnywhereSubscriptionTermUnit = S.Literal("MONTHS");
-export type TaintEffect = "NO_SCHEDULE" | "NO_EXECUTE" | "PREFER_NO_SCHEDULE";
-export const TaintEffect = S.Literal(
-  "NO_SCHEDULE",
-  "NO_EXECUTE",
-  "PREFER_NO_SCHEDULE",
-);
-export type NodegroupUpdateStrategies = "DEFAULT" | "MINIMAL";
-export const NodegroupUpdateStrategies = S.Literal("DEFAULT", "MINIMAL");
-export type Category = "UPGRADE_READINESS" | "MISCONFIGURATION";
-export const Category = S.Literal("UPGRADE_READINESS", "MISCONFIGURATION");
+  | "tier-4xl"
+  | (string & {});
+export const ProvisionedControlPlaneTier = S.String;
+export type EksAnywhereSubscriptionTermUnit = "MONTHS" | (string & {});
+export const EksAnywhereSubscriptionTermUnit = S.String;
+export type TaintEffect =
+  | "NO_SCHEDULE"
+  | "NO_EXECUTE"
+  | "PREFER_NO_SCHEDULE"
+  | (string & {});
+export const TaintEffect = S.String;
+export type NodegroupUpdateStrategies = "DEFAULT" | "MINIMAL" | (string & {});
+export const NodegroupUpdateStrategies = S.String;
+export type Category = "UPGRADE_READINESS" | "MISCONFIGURATION" | (string & {});
+export const Category = S.String;
 export type CategoryList = Category[];
 export const CategoryList = S.Array(Category);
-export type InsightStatusValue = "PASSING" | "WARNING" | "ERROR" | "UNKNOWN";
-export const InsightStatusValue = S.Literal(
-  "PASSING",
-  "WARNING",
-  "ERROR",
-  "UNKNOWN",
-);
+export type InsightStatusValue =
+  | "PASSING"
+  | "WARNING"
+  | "ERROR"
+  | "UNKNOWN"
+  | (string & {});
+export const InsightStatusValue = S.String;
 export type InsightStatusValueList = InsightStatusValue[];
 export const InsightStatusValueList = S.Array(InsightStatusValue);
 export type ConnectorConfigProvider =
@@ -1553,18 +1526,9 @@ export type ConnectorConfigProvider =
   | "TANZU"
   | "RANCHER"
   | "EC2"
-  | "OTHER";
-export const ConnectorConfigProvider = S.Literal(
-  "EKS_ANYWHERE",
-  "ANTHOS",
-  "GKE",
-  "AKS",
-  "OPENSHIFT",
-  "TANZU",
-  "RANCHER",
-  "EC2",
-  "OTHER",
-);
+  | "OTHER"
+  | (string & {});
+export const ConnectorConfigProvider = S.String;
 export type LabelsKeyList = string[];
 export const LabelsKeyList = S.Array(S.String);
 export interface AccessScope {
@@ -1724,12 +1688,12 @@ export const NodegroupUpdateConfig = S.suspend(() =>
 ).annotations({
   identifier: "NodegroupUpdateConfig",
 }) as any as S.Schema<NodegroupUpdateConfig>;
-export type InsightsRefreshStatus = "IN_PROGRESS" | "FAILED" | "COMPLETED";
-export const InsightsRefreshStatus = S.Literal(
-  "IN_PROGRESS",
-  "FAILED",
-  "COMPLETED",
-);
+export type InsightsRefreshStatus =
+  | "IN_PROGRESS"
+  | "FAILED"
+  | "COMPLETED"
+  | (string & {});
+export const InsightsRefreshStatus = S.String;
 export interface License {
   id?: string;
   token?: string;
@@ -1837,18 +1801,13 @@ export type LogType =
   | "audit"
   | "authenticator"
   | "controllerManager"
-  | "scheduler";
-export const LogType = S.Literal(
-  "api",
-  "audit",
-  "authenticator",
-  "controllerManager",
-  "scheduler",
-);
+  | "scheduler"
+  | (string & {});
+export const LogType = S.String;
 export type LogTypes = LogType[];
 export const LogTypes = S.Array(LogType);
-export type RepairAction = "Replace" | "Reboot" | "NoAction";
-export const RepairAction = S.Literal("Replace", "Reboot", "NoAction");
+export type RepairAction = "Replace" | "Reboot" | "NoAction" | (string & {});
+export const RepairAction = S.String;
 export interface AssociateAccessPolicyRequest {
   clusterName: string;
   principalArn: string;
@@ -2066,15 +2025,9 @@ export type ClusterStatus =
   | "DELETING"
   | "FAILED"
   | "UPDATING"
-  | "PENDING";
-export const ClusterStatus = S.Literal(
-  "CREATING",
-  "ACTIVE",
-  "DELETING",
-  "FAILED",
-  "UPDATING",
-  "PENDING",
-);
+  | "PENDING"
+  | (string & {});
+export const ClusterStatus = S.String;
 export interface Certificate {
   data?: string;
 }
@@ -2140,28 +2093,9 @@ export type ClusterIssueCode =
   | "KmsKeyDisabled"
   | "StsRegionalEndpointDisabled"
   | "UnsupportedVersion"
-  | "Other";
-export const ClusterIssueCode = S.Literal(
-  "AccessDenied",
-  "ClusterUnreachable",
-  "ConfigurationConflict",
-  "InternalFailure",
-  "ResourceLimitExceeded",
-  "ResourceNotFound",
-  "IamRoleNotFound",
-  "VpcNotFound",
-  "InsufficientFreeAddresses",
-  "Ec2ServiceNotSubscribed",
-  "Ec2SubnetNotFound",
-  "Ec2SecurityGroupNotFound",
-  "KmsGrantRevoked",
-  "KmsKeyNotFound",
-  "KmsKeyMarkedForDeletion",
-  "KmsKeyDisabled",
-  "StsRegionalEndpointDisabled",
-  "UnsupportedVersion",
-  "Other",
-);
+  | "Other"
+  | (string & {});
+export const ClusterIssueCode = S.String;
 export interface ClusterIssue {
   code?: ClusterIssueCode;
   message?: string;
@@ -2404,17 +2338,9 @@ export type AddonStatus =
   | "DELETING"
   | "DELETE_FAILED"
   | "DEGRADED"
-  | "UPDATE_FAILED";
-export const AddonStatus = S.Literal(
-  "CREATING",
-  "ACTIVE",
-  "CREATE_FAILED",
-  "UPDATING",
-  "DELETING",
-  "DELETE_FAILED",
-  "DEGRADED",
-  "UPDATE_FAILED",
-);
+  | "UPDATE_FAILED"
+  | (string & {});
+export const AddonStatus = S.String;
 export type AddonIssueCode =
   | "AccessDenied"
   | "InternalFailure"
@@ -2425,19 +2351,9 @@ export type AddonIssueCode =
   | "UnsupportedAddonModification"
   | "K8sResourceNotFound"
   | "AddonSubscriptionNeeded"
-  | "AddonPermissionFailure";
-export const AddonIssueCode = S.Literal(
-  "AccessDenied",
-  "InternalFailure",
-  "ClusterUnreachable",
-  "InsufficientNumberOfReplicas",
-  "ConfigurationConflict",
-  "AdmissionRequestDenied",
-  "UnsupportedAddonModification",
-  "K8sResourceNotFound",
-  "AddonSubscriptionNeeded",
-  "AddonPermissionFailure",
-);
+  | "AddonPermissionFailure"
+  | (string & {});
+export const AddonIssueCode = S.String;
 export interface AddonIssue {
   code?: AddonIssueCode;
   message?: string;
@@ -2531,16 +2447,9 @@ export type CapabilityStatus =
   | "DELETING"
   | "DELETE_FAILED"
   | "ACTIVE"
-  | "DEGRADED";
-export const CapabilityStatus = S.Literal(
-  "CREATING",
-  "CREATE_FAILED",
-  "UPDATING",
-  "DELETING",
-  "DELETE_FAILED",
-  "ACTIVE",
-  "DEGRADED",
-);
+  | "DEGRADED"
+  | (string & {});
+export const CapabilityStatus = S.String;
 export interface ArgoCdAwsIdcConfigResponse {
   idcInstanceArn?: string;
   idcRegion?: string;
@@ -2555,10 +2464,10 @@ export const ArgoCdAwsIdcConfigResponse = S.suspend(() =>
 ).annotations({
   identifier: "ArgoCdAwsIdcConfigResponse",
 }) as any as S.Schema<ArgoCdAwsIdcConfigResponse>;
-export type ArgoCdRole = "ADMIN" | "EDITOR" | "VIEWER";
-export const ArgoCdRole = S.Literal("ADMIN", "EDITOR", "VIEWER");
-export type SsoIdentityType = "SSO_USER" | "SSO_GROUP";
-export const SsoIdentityType = S.Literal("SSO_USER", "SSO_GROUP");
+export type ArgoCdRole = "ADMIN" | "EDITOR" | "VIEWER" | (string & {});
+export const ArgoCdRole = S.String;
+export type SsoIdentityType = "SSO_USER" | "SSO_GROUP" | (string & {});
+export const SsoIdentityType = S.String;
 export interface SsoIdentity {
   id: string;
   type: SsoIdentityType;
@@ -2613,11 +2522,11 @@ export const CapabilityConfigurationResponse = S.suspend(() =>
 ).annotations({
   identifier: "CapabilityConfigurationResponse",
 }) as any as S.Schema<CapabilityConfigurationResponse>;
-export type CapabilityIssueCode = "AccessDenied" | "ClusterUnreachable";
-export const CapabilityIssueCode = S.Literal(
-  "AccessDenied",
-  "ClusterUnreachable",
-);
+export type CapabilityIssueCode =
+  | "AccessDenied"
+  | "ClusterUnreachable"
+  | (string & {});
+export const CapabilityIssueCode = S.String;
 export interface CapabilityIssue {
   code?: CapabilityIssueCode;
   message?: string;
@@ -2720,25 +2629,16 @@ export type FargateProfileStatus =
   | "ACTIVE"
   | "DELETING"
   | "CREATE_FAILED"
-  | "DELETE_FAILED";
-export const FargateProfileStatus = S.Literal(
-  "CREATING",
-  "ACTIVE",
-  "DELETING",
-  "CREATE_FAILED",
-  "DELETE_FAILED",
-);
+  | "DELETE_FAILED"
+  | (string & {});
+export const FargateProfileStatus = S.String;
 export type FargateProfileIssueCode =
   | "PodExecutionRoleAlreadyInUse"
   | "AccessDenied"
   | "ClusterUnreachable"
-  | "InternalFailure";
-export const FargateProfileIssueCode = S.Literal(
-  "PodExecutionRoleAlreadyInUse",
-  "AccessDenied",
-  "ClusterUnreachable",
-  "InternalFailure",
-);
+  | "InternalFailure"
+  | (string & {});
+export const FargateProfileIssueCode = S.String;
 export interface FargateProfileIssue {
   code?: FargateProfileIssueCode;
   message?: string;
@@ -2846,16 +2746,9 @@ export type NodegroupStatus =
   | "DELETING"
   | "CREATE_FAILED"
   | "DELETE_FAILED"
-  | "DEGRADED";
-export const NodegroupStatus = S.Literal(
-  "CREATING",
-  "ACTIVE",
-  "UPDATING",
-  "DELETING",
-  "CREATE_FAILED",
-  "DELETE_FAILED",
-  "DEGRADED",
-);
+  | "DEGRADED"
+  | (string & {});
+export const NodegroupStatus = S.String;
 export interface AutoScalingGroup {
   name?: string;
 }
@@ -2914,45 +2807,9 @@ export type NodegroupIssueCode =
   | "AutoScalingGroupInstanceRefreshActive"
   | "KubernetesLabelInvalid"
   | "Ec2LaunchTemplateVersionMaxLimitExceeded"
-  | "Ec2InstanceTypeDoesNotExist";
-export const NodegroupIssueCode = S.Literal(
-  "AutoScalingGroupNotFound",
-  "AutoScalingGroupInvalidConfiguration",
-  "Ec2SecurityGroupNotFound",
-  "Ec2SecurityGroupDeletionFailure",
-  "Ec2LaunchTemplateNotFound",
-  "Ec2LaunchTemplateVersionMismatch",
-  "Ec2SubnetNotFound",
-  "Ec2SubnetInvalidConfiguration",
-  "IamInstanceProfileNotFound",
-  "Ec2SubnetMissingIpv6Assignment",
-  "IamLimitExceeded",
-  "IamNodeRoleNotFound",
-  "NodeCreationFailure",
-  "AsgInstanceLaunchFailures",
-  "InstanceLimitExceeded",
-  "InsufficientFreeAddresses",
-  "AccessDenied",
-  "InternalFailure",
-  "ClusterUnreachable",
-  "AmiIdNotFound",
-  "AutoScalingGroupOptInRequired",
-  "AutoScalingGroupRateLimitExceeded",
-  "Ec2LaunchTemplateDeletionFailure",
-  "Ec2LaunchTemplateInvalidConfiguration",
-  "Ec2LaunchTemplateMaxLimitExceeded",
-  "Ec2SubnetListTooLong",
-  "IamThrottling",
-  "NodeTerminationFailure",
-  "PodEvictionFailure",
-  "SourceEc2LaunchTemplateNotFound",
-  "LimitExceeded",
-  "Unknown",
-  "AutoScalingGroupInstanceRefreshActive",
-  "KubernetesLabelInvalid",
-  "Ec2LaunchTemplateVersionMaxLimitExceeded",
-  "Ec2InstanceTypeDoesNotExist",
-);
+  | "Ec2InstanceTypeDoesNotExist"
+  | (string & {});
+export const NodegroupIssueCode = S.String;
 export interface Issue {
   code?: NodegroupIssueCode;
   message?: string;
@@ -3083,13 +2940,13 @@ export const DescribePodIdentityAssociationResponse = S.suspend(() =>
 ).annotations({
   identifier: "DescribePodIdentityAssociationResponse",
 }) as any as S.Schema<DescribePodIdentityAssociationResponse>;
-export type UpdateStatus = "InProgress" | "Failed" | "Cancelled" | "Successful";
-export const UpdateStatus = S.Literal(
-  "InProgress",
-  "Failed",
-  "Cancelled",
-  "Successful",
-);
+export type UpdateStatus =
+  | "InProgress"
+  | "Failed"
+  | "Cancelled"
+  | "Successful"
+  | (string & {});
+export const UpdateStatus = S.String;
 export type UpdateType =
   | "VersionUpdate"
   | "EndpointAccessUpdate"
@@ -3106,25 +2963,9 @@ export type UpdateType =
   | "AutoModeUpdate"
   | "RemoteNetworkConfigUpdate"
   | "DeletionProtectionUpdate"
-  | "ControlPlaneScalingConfigUpdate";
-export const UpdateType = S.Literal(
-  "VersionUpdate",
-  "EndpointAccessUpdate",
-  "LoggingUpdate",
-  "ConfigUpdate",
-  "AssociateIdentityProviderConfig",
-  "DisassociateIdentityProviderConfig",
-  "AssociateEncryptionConfig",
-  "AddonUpdate",
-  "VpcConfigUpdate",
-  "AccessConfigUpdate",
-  "UpgradePolicyUpdate",
-  "ZonalShiftConfigUpdate",
-  "AutoModeUpdate",
-  "RemoteNetworkConfigUpdate",
-  "DeletionProtectionUpdate",
-  "ControlPlaneScalingConfigUpdate",
-);
+  | "ControlPlaneScalingConfigUpdate"
+  | (string & {});
+export const UpdateType = S.String;
 export type UpdateParamType =
   | "Version"
   | "PlatformVersion"
@@ -3165,49 +3006,9 @@ export type UpdateParamType =
   | "DeletionProtection"
   | "NodeRepairConfig"
   | "UpdatedTier"
-  | "PreviousTier";
-export const UpdateParamType = S.Literal(
-  "Version",
-  "PlatformVersion",
-  "EndpointPrivateAccess",
-  "EndpointPublicAccess",
-  "ClusterLogging",
-  "DesiredSize",
-  "LabelsToAdd",
-  "LabelsToRemove",
-  "TaintsToAdd",
-  "TaintsToRemove",
-  "MaxSize",
-  "MinSize",
-  "ReleaseVersion",
-  "PublicAccessCidrs",
-  "LaunchTemplateName",
-  "LaunchTemplateVersion",
-  "IdentityProviderConfig",
-  "EncryptionConfig",
-  "AddonVersion",
-  "ServiceAccountRoleArn",
-  "ResolveConflicts",
-  "MaxUnavailable",
-  "MaxUnavailablePercentage",
-  "NodeRepairEnabled",
-  "UpdateStrategy",
-  "ConfigurationValues",
-  "SecurityGroups",
-  "Subnets",
-  "AuthenticationMode",
-  "PodIdentityAssociations",
-  "UpgradePolicy",
-  "ZonalShiftConfig",
-  "ComputeConfig",
-  "StorageConfig",
-  "KubernetesNetworkConfig",
-  "RemoteNetworkConfig",
-  "DeletionProtection",
-  "NodeRepairConfig",
-  "UpdatedTier",
-  "PreviousTier",
-);
+  | "PreviousTier"
+  | (string & {});
+export const UpdateParamType = S.String;
 export interface UpdateParam {
   type?: UpdateParamType;
   value?: string;
@@ -3234,26 +3035,9 @@ export type ErrorCode =
   | "ConfigurationConflict"
   | "AdmissionRequestDenied"
   | "UnsupportedAddonModification"
-  | "K8sResourceNotFound";
-export const ErrorCode = S.Literal(
-  "SubnetNotFound",
-  "SecurityGroupNotFound",
-  "EniLimitReached",
-  "IpNotAvailable",
-  "AccessDenied",
-  "OperationNotPermitted",
-  "VpcIdNotFound",
-  "Unknown",
-  "NodeCreationFailure",
-  "PodEvictionFailure",
-  "InsufficientFreeAddresses",
-  "ClusterUnreachable",
-  "InsufficientNumberOfReplicas",
-  "ConfigurationConflict",
-  "AdmissionRequestDenied",
-  "UnsupportedAddonModification",
-  "K8sResourceNotFound",
-);
+  | "K8sResourceNotFound"
+  | (string & {});
+export const ErrorCode = S.String;
 export interface ErrorDetail {
   errorCode?: ErrorCode;
   errorMessage?: string;
@@ -4270,8 +4054,8 @@ export const Compatibility = S.suspend(() =>
 }) as any as S.Schema<Compatibility>;
 export type Compatibilities = Compatibility[];
 export const Compatibilities = S.Array(Compatibility);
-export type ConfigStatus = "CREATING" | "DELETING" | "ACTIVE";
-export const ConfigStatus = S.Literal("CREATING", "DELETING", "ACTIVE");
+export type ConfigStatus = "CREATING" | "DELETING" | "ACTIVE" | (string & {});
+export const ConfigStatus = S.String;
 export interface AddonCompatibilityDetail {
   name?: string;
   compatibleVersions?: string[];

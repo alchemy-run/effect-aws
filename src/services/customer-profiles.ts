@@ -183,48 +183,38 @@ export type Statistic =
   | "MINIMUM"
   | "MAXIMUM"
   | "AVERAGE"
-  | "MAX_OCCURRENCE";
-export const Statistic = S.Literal(
-  "FIRST_OCCURRENCE",
-  "LAST_OCCURRENCE",
-  "COUNT",
-  "SUM",
-  "MINIMUM",
-  "MAXIMUM",
-  "AVERAGE",
-  "MAX_OCCURRENCE",
-);
-export type LayoutType = "PROFILE_EXPLORER";
-export const LayoutType = S.Literal("PROFILE_EXPLORER");
-export type WorkflowType = "APPFLOW_INTEGRATION";
-export const WorkflowType = S.Literal("APPFLOW_INTEGRATION");
-export type PartyType = "INDIVIDUAL" | "BUSINESS" | "OTHER";
-export const PartyType = S.Literal("INDIVIDUAL", "BUSINESS", "OTHER");
-export type Gender = "MALE" | "FEMALE" | "UNSPECIFIED";
-export const Gender = S.Literal("MALE", "FEMALE", "UNSPECIFIED");
-export type ProfileType = "ACCOUNT_PROFILE" | "PROFILE";
-export const ProfileType = S.Literal("ACCOUNT_PROFILE", "PROFILE");
+  | "MAX_OCCURRENCE"
+  | (string & {});
+export const Statistic = S.String;
+export type LayoutType = "PROFILE_EXPLORER" | (string & {});
+export const LayoutType = S.String;
+export type WorkflowType = "APPFLOW_INTEGRATION" | (string & {});
+export const WorkflowType = S.String;
+export type PartyType = "INDIVIDUAL" | "BUSINESS" | "OTHER" | (string & {});
+export const PartyType = S.String;
+export type Gender = "MALE" | "FEMALE" | "UNSPECIFIED" | (string & {});
+export const Gender = S.String;
+export type ProfileType = "ACCOUNT_PROFILE" | "PROFILE" | (string & {});
+export const ProfileType = S.String;
 export type RecommenderRecipeName =
   | "recommended-for-you"
   | "similar-items"
   | "frequently-paired-items"
   | "popular-items"
-  | "trending-now";
-export const RecommenderRecipeName = S.Literal(
-  "recommended-for-you",
-  "similar-items",
-  "frequently-paired-items",
-  "popular-items",
-  "trending-now",
-);
-export type DataFormat = "CSV" | "JSONL" | "ORC";
-export const DataFormat = S.Literal("CSV", "JSONL", "ORC");
+  | "trending-now"
+  | (string & {});
+export const RecommenderRecipeName = S.String;
+export type DataFormat = "CSV" | "JSONL" | "ORC" | (string & {});
+export const DataFormat = S.String;
 export type Objects = string | redacted.Redacted<string>[];
 export const Objects = S.Array(SensitiveString);
 export type ProfileIds = string[];
 export const ProfileIds = S.Array(S.String);
-export type MatchType = "RULE_BASED_MATCHING" | "ML_BASED_MATCHING";
-export const MatchType = S.Literal("RULE_BASED_MATCHING", "ML_BASED_MATCHING");
+export type MatchType =
+  | "RULE_BASED_MATCHING"
+  | "ML_BASED_MATCHING"
+  | (string & {});
+export const MatchType = S.String;
 export type ActionType =
   | "ADDED_PROFILE_KEY"
   | "DELETED_PROFILE_KEY"
@@ -234,18 +224,9 @@ export type ActionType =
   | "DELETED_BY_CUSTOMER"
   | "EXPIRED"
   | "MERGED"
-  | "DELETED_BY_MERGE";
-export const ActionType = S.Literal(
-  "ADDED_PROFILE_KEY",
-  "DELETED_PROFILE_KEY",
-  "CREATED",
-  "UPDATED",
-  "INGESTED",
-  "DELETED_BY_CUSTOMER",
-  "EXPIRED",
-  "MERGED",
-  "DELETED_BY_MERGE",
-);
+  | "DELETED_BY_MERGE"
+  | (string & {});
+export const ActionType = S.String;
 export type Status =
   | "NOT_STARTED"
   | "IN_PROGRESS"
@@ -253,24 +234,17 @@ export type Status =
   | "FAILED"
   | "SPLIT"
   | "RETRY"
-  | "CANCELLED";
-export const Status = S.Literal(
-  "NOT_STARTED",
-  "IN_PROGRESS",
-  "COMPLETE",
-  "FAILED",
-  "SPLIT",
-  "RETRY",
-  "CANCELLED",
-);
+  | "CANCELLED"
+  | (string & {});
+export const Status = S.String;
 export type ProfileIdToBeMergedList = string[];
 export const ProfileIdToBeMergedList = S.Array(S.String);
 export type EventTriggerNames = string[];
 export const EventTriggerNames = S.Array(S.String);
-export type Scope = "PROFILE" | "DOMAIN";
-export const Scope = S.Literal("PROFILE", "DOMAIN");
-export type LogicalOperator = "AND" | "OR";
-export const LogicalOperator = S.Literal("AND", "OR");
+export type Scope = "PROFILE" | "DOMAIN" | (string & {});
+export const Scope = S.String;
+export type LogicalOperator = "AND" | "OR" | (string & {});
+export const LogicalOperator = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export interface AddProfileKeyRequest {
@@ -2158,8 +2132,8 @@ export interface UntagResourceResponse {}
 export const UntagResourceResponse = S.suspend(() => S.Struct({})).annotations({
   identifier: "UntagResourceResponse",
 }) as any as S.Schema<UntagResourceResponse>;
-export type Unit = "DAYS";
-export const Unit = S.Literal("DAYS");
+export type Unit = "DAYS" | (string & {});
+export const Unit = S.String;
 export interface ValueRange {
   Start: number;
   End: number;
@@ -2187,13 +2161,9 @@ export type Operator =
   | "EQUAL_TO"
   | "GREATER_THAN"
   | "LESS_THAN"
-  | "NOT_EQUAL_TO";
-export const Operator = S.Literal(
-  "EQUAL_TO",
-  "GREATER_THAN",
-  "LESS_THAN",
-  "NOT_EQUAL_TO",
-);
+  | "NOT_EQUAL_TO"
+  | (string & {});
+export const Operator = S.String;
 export interface Threshold {
   Value: string;
   Operator: Operator;
@@ -2252,16 +2222,9 @@ export type JobScheduleDayOfTheWeek =
   | "WEDNESDAY"
   | "THURSDAY"
   | "FRIDAY"
-  | "SATURDAY";
-export const JobScheduleDayOfTheWeek = S.Literal(
-  "SUNDAY",
-  "MONDAY",
-  "TUESDAY",
-  "WEDNESDAY",
-  "THURSDAY",
-  "FRIDAY",
-  "SATURDAY",
-);
+  | "SATURDAY"
+  | (string & {});
+export const JobScheduleDayOfTheWeek = S.String;
 export interface JobSchedule {
   DayOfTheWeek: JobScheduleDayOfTheWeek;
   Time: string;
@@ -2281,8 +2244,8 @@ export const Consolidation = S.suspend(() =>
 ).annotations({
   identifier: "Consolidation",
 }) as any as S.Schema<Consolidation>;
-export type ConflictResolvingModel = "RECENCY" | "SOURCE";
-export const ConflictResolvingModel = S.Literal("RECENCY", "SOURCE");
+export type ConflictResolvingModel = "RECENCY" | "SOURCE" | (string & {});
+export const ConflictResolvingModel = S.String;
 export interface ConflictResolution {
   ConflictResolvingModel: ConflictResolvingModel;
   SourceName?: string;
@@ -2352,8 +2315,11 @@ export const MatchingRule = S.suspend(() =>
 ).annotations({ identifier: "MatchingRule" }) as any as S.Schema<MatchingRule>;
 export type MatchingRules = MatchingRule[];
 export const MatchingRules = S.Array(MatchingRule);
-export type AttributeMatchingModel = "ONE_TO_ONE" | "MANY_TO_MANY";
-export const AttributeMatchingModel = S.Literal("ONE_TO_ONE", "MANY_TO_MANY");
+export type AttributeMatchingModel =
+  | "ONE_TO_ONE"
+  | "MANY_TO_MANY"
+  | (string & {});
+export const AttributeMatchingModel = S.String;
 export type AddressList = string[];
 export const AddressList = S.Array(S.String);
 export type PhoneNumberList = string[];
@@ -2488,24 +2454,9 @@ export type ComparisonOperator =
   | "AFTER"
   | "ON"
   | "BETWEEN"
-  | "NOT_BETWEEN";
-export const ComparisonOperator = S.Literal(
-  "INCLUSIVE",
-  "EXCLUSIVE",
-  "CONTAINS",
-  "BEGINS_WITH",
-  "ENDS_WITH",
-  "GREATER_THAN",
-  "LESS_THAN",
-  "GREATER_THAN_OR_EQUAL",
-  "LESS_THAN_OR_EQUAL",
-  "EQUAL",
-  "BEFORE",
-  "AFTER",
-  "ON",
-  "BETWEEN",
-  "NOT_BETWEEN",
-);
+  | "NOT_BETWEEN"
+  | (string & {});
+export const ComparisonOperator = S.String;
 export type EventTriggerValues = string[];
 export const EventTriggerValues = S.Array(S.String);
 export interface ObjectAttribute {
@@ -2536,8 +2487,12 @@ export const EventTriggerDimension = S.suspend(() =>
 }) as any as S.Schema<EventTriggerDimension>;
 export type EventTriggerDimensions = EventTriggerDimension[];
 export const EventTriggerDimensions = S.Array(EventTriggerDimension);
-export type EventTriggerLogicalOperator = "ANY" | "ALL" | "NONE";
-export const EventTriggerLogicalOperator = S.Literal("ANY", "ALL", "NONE");
+export type EventTriggerLogicalOperator =
+  | "ANY"
+  | "ALL"
+  | "NONE"
+  | (string & {});
+export const EventTriggerLogicalOperator = S.String;
 export interface EventTriggerCondition {
   EventTriggerDimensions: EventTriggerDimension[];
   LogicalOperator: EventTriggerLogicalOperator;
@@ -2552,8 +2507,8 @@ export const EventTriggerCondition = S.suspend(() =>
 }) as any as S.Schema<EventTriggerCondition>;
 export type EventTriggerConditions = EventTriggerCondition[];
 export const EventTriggerConditions = S.Array(EventTriggerCondition);
-export type PeriodUnit = "HOURS" | "DAYS" | "WEEKS" | "MONTHS";
-export const PeriodUnit = S.Literal("HOURS", "DAYS", "WEEKS", "MONTHS");
+export type PeriodUnit = "HOURS" | "DAYS" | "WEEKS" | "MONTHS" | (string & {});
+export const PeriodUnit = S.String;
 export interface Period {
   Unit: PeriodUnit;
   Value: number;
@@ -2673,8 +2628,8 @@ export const UpdateRecommenderRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateRecommenderRequest",
 }) as any as S.Schema<UpdateRecommenderRequest>;
-export type Include = "ALL" | "ANY" | "NONE";
-export const Include = S.Literal("ALL", "ANY", "NONE");
+export type Include = "ALL" | "ANY" | "NONE" | (string & {});
+export const Include = S.String;
 export type ContactType =
   | "PhoneNumber"
   | "MobilePhoneNumber"
@@ -2682,16 +2637,9 @@ export type ContactType =
   | "BusinessPhoneNumber"
   | "EmailAddress"
   | "PersonalEmailAddress"
-  | "BusinessEmailAddress";
-export const ContactType = S.Literal(
-  "PhoneNumber",
-  "MobilePhoneNumber",
-  "HomePhoneNumber",
-  "BusinessPhoneNumber",
-  "EmailAddress",
-  "PersonalEmailAddress",
-  "BusinessEmailAddress",
-);
+  | "BusinessEmailAddress"
+  | (string & {});
+export const ContactType = S.String;
 export interface ContactPreference {
   KeyName?: string;
   KeyValue?: string;
@@ -2710,8 +2658,8 @@ export const ContactPreference = S.suspend(() =>
 }) as any as S.Schema<ContactPreference>;
 export type EmailPreferenceList = ContactPreference[];
 export const EmailPreferenceList = S.Array(ContactPreference);
-export type IncludeOptions = "ALL" | "ANY" | "NONE";
-export const IncludeOptions = S.Literal("ALL", "ANY", "NONE");
+export type IncludeOptions = "ALL" | "ANY" | "NONE" | (string & {});
+export const IncludeOptions = S.String;
 export interface Address {
   Address1?: string;
   Address2?: string;
@@ -2748,14 +2696,9 @@ export type StringDimensionType =
   | "EXCLUSIVE"
   | "CONTAINS"
   | "BEGINS_WITH"
-  | "ENDS_WITH";
-export const StringDimensionType = S.Literal(
-  "INCLUSIVE",
-  "EXCLUSIVE",
-  "CONTAINS",
-  "BEGINS_WITH",
-  "ENDS_WITH",
-);
+  | "ENDS_WITH"
+  | (string & {});
+export const StringDimensionType = S.String;
 export type Values = string[];
 export const Values = S.Array(S.String);
 export interface ProfileDimension {
@@ -2789,14 +2732,9 @@ export type DateDimensionType =
   | "AFTER"
   | "BETWEEN"
   | "NOT_BETWEEN"
-  | "ON";
-export const DateDimensionType = S.Literal(
-  "BEFORE",
-  "AFTER",
-  "BETWEEN",
-  "NOT_BETWEEN",
-  "ON",
-);
+  | "ON"
+  | (string & {});
+export const DateDimensionType = S.String;
 export type DateValues = string[];
 export const DateValues = S.Array(S.String);
 export interface DateDimension {
@@ -2858,24 +2796,9 @@ export type AttributeDimensionType =
   | "LESS_THAN"
   | "GREATER_THAN_OR_EQUAL"
   | "LESS_THAN_OR_EQUAL"
-  | "EQUAL";
-export const AttributeDimensionType = S.Literal(
-  "INCLUSIVE",
-  "EXCLUSIVE",
-  "CONTAINS",
-  "BEGINS_WITH",
-  "ENDS_WITH",
-  "BEFORE",
-  "AFTER",
-  "BETWEEN",
-  "NOT_BETWEEN",
-  "ON",
-  "GREATER_THAN",
-  "LESS_THAN",
-  "GREATER_THAN_OR_EQUAL",
-  "LESS_THAN_OR_EQUAL",
-  "EQUAL",
-);
+  | "EQUAL"
+  | (string & {});
+export const AttributeDimensionType = S.String;
 export interface AttributeDimension {
   DimensionType: AttributeDimensionType;
   Values: string[];
@@ -2895,8 +2818,11 @@ export const CustomAttributes = S.Record({
   key: S.String,
   value: S.UndefinedOr(AttributeDimension),
 });
-export type ProfileTypeDimensionType = "INCLUSIVE" | "EXCLUSIVE";
-export const ProfileTypeDimensionType = S.Literal("INCLUSIVE", "EXCLUSIVE");
+export type ProfileTypeDimensionType =
+  | "INCLUSIVE"
+  | "EXCLUSIVE"
+  | (string & {});
+export const ProfileTypeDimensionType = S.String;
 export type ProfileTypeValues = ProfileType[];
 export const ProfileTypeValues = S.Array(ProfileType);
 export interface ProfileTypeDimension {
@@ -3005,8 +2931,8 @@ export const ProfileAttributes = S.suspend(() =>
 ).annotations({
   identifier: "ProfileAttributes",
 }) as any as S.Schema<ProfileAttributes>;
-export type RangeUnit = "DAYS";
-export const RangeUnit = S.Literal("DAYS");
+export type RangeUnit = "DAYS" | (string & {});
+export const RangeUnit = S.String;
 export interface RangeOverride {
   Start: number;
   End?: number;
@@ -3118,15 +3044,11 @@ export type ReadinessStatus =
   | "PREPARING"
   | "IN_PROGRESS"
   | "COMPLETED"
-  | "FAILED";
-export const ReadinessStatus = S.Literal(
-  "PREPARING",
-  "IN_PROGRESS",
-  "COMPLETED",
-  "FAILED",
-);
-export type EventStreamState = "RUNNING" | "STOPPED";
-export const EventStreamState = S.Literal("RUNNING", "STOPPED");
+  | "FAILED"
+  | (string & {});
+export const ReadinessStatus = S.String;
+export type EventStreamState = "RUNNING" | "STOPPED" | (string & {});
+export const EventStreamState = S.String;
 export type IdentityResolutionJobStatus =
   | "PENDING"
   | "PREPROCESSING"
@@ -3134,16 +3056,9 @@ export type IdentityResolutionJobStatus =
   | "MERGING"
   | "COMPLETED"
   | "PARTIAL_SUCCESS"
-  | "FAILED";
-export const IdentityResolutionJobStatus = S.Literal(
-  "PENDING",
-  "PREPROCESSING",
-  "FIND_MATCHING",
-  "MERGING",
-  "COMPLETED",
-  "PARTIAL_SUCCESS",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const IdentityResolutionJobStatus = S.String;
 export type RecommenderContext = { [key: string]: string | undefined };
 export const RecommenderContext = S.Record({
   key: S.String,
@@ -3157,27 +3072,19 @@ export type RecommenderStatus =
   | "STOPPING"
   | "INACTIVE"
   | "STARTING"
-  | "DELETING";
-export const RecommenderStatus = S.Literal(
-  "PENDING",
-  "IN_PROGRESS",
-  "ACTIVE",
-  "FAILED",
-  "STOPPING",
-  "INACTIVE",
-  "STARTING",
-  "DELETING",
-);
-export type SegmentType = "CLASSIC" | "ENHANCED";
-export const SegmentType = S.Literal("CLASSIC", "ENHANCED");
-export type EstimateStatus = "RUNNING" | "SUCCEEDED" | "FAILED";
-export const EstimateStatus = S.Literal("RUNNING", "SUCCEEDED", "FAILED");
-export type SegmentSnapshotStatus = "COMPLETED" | "IN_PROGRESS" | "FAILED";
-export const SegmentSnapshotStatus = S.Literal(
-  "COMPLETED",
-  "IN_PROGRESS",
-  "FAILED",
-);
+  | "DELETING"
+  | (string & {});
+export const RecommenderStatus = S.String;
+export type SegmentType = "CLASSIC" | "ENHANCED" | (string & {});
+export const SegmentType = S.String;
+export type EstimateStatus = "RUNNING" | "SUCCEEDED" | "FAILED" | (string & {});
+export const EstimateStatus = S.String;
+export type SegmentSnapshotStatus =
+  | "COMPLETED"
+  | "IN_PROGRESS"
+  | "FAILED"
+  | (string & {});
+export const SegmentSnapshotStatus = S.String;
 export type ProfileIdList = string[];
 export const ProfileIdList = S.Array(S.String);
 export type UploadJobStatus =
@@ -3186,17 +3093,14 @@ export type UploadJobStatus =
   | "PARTIALLY_SUCCEEDED"
   | "SUCCEEDED"
   | "FAILED"
-  | "STOPPED";
-export const UploadJobStatus = S.Literal(
-  "CREATED",
-  "IN_PROGRESS",
-  "PARTIALLY_SUCCEEDED",
-  "SUCCEEDED",
-  "FAILED",
-  "STOPPED",
-);
-export type StatusReason = "VALIDATION_FAILURE" | "INTERNAL_FAILURE";
-export const StatusReason = S.Literal("VALIDATION_FAILURE", "INTERNAL_FAILURE");
+  | "STOPPED"
+  | (string & {});
+export const UploadJobStatus = S.String;
+export type StatusReason =
+  | "VALIDATION_FAILURE"
+  | "INTERNAL_FAILURE"
+  | (string & {});
+export const StatusReason = S.String;
 export interface ObjectFilter {
   KeyName: string;
   Values: string[];
@@ -3255,38 +3159,28 @@ export const UpdateAttributes = S.Record({
   key: S.String,
   value: S.UndefinedOr(S.String),
 });
-export type Type = "ALL" | "ANY" | "NONE";
-export const Type = S.Literal("ALL", "ANY", "NONE");
+export type Type = "ALL" | "ANY" | "NONE" | (string & {});
+export const Type = S.String;
 export type FieldContentType =
   | "STRING"
   | "NUMBER"
   | "PHONE_NUMBER"
   | "EMAIL_ADDRESS"
-  | "NAME";
-export const FieldContentType = S.Literal(
-  "STRING",
-  "NUMBER",
-  "PHONE_NUMBER",
-  "EMAIL_ADDRESS",
-  "NAME",
-);
-export type ContentType = "STRING" | "NUMBER";
-export const ContentType = S.Literal("STRING", "NUMBER");
-export type FeatureType = "TEXTUAL" | "CATEGORICAL";
-export const FeatureType = S.Literal("TEXTUAL", "CATEGORICAL");
+  | "NAME"
+  | (string & {});
+export const FieldContentType = S.String;
+export type ContentType = "STRING" | "NUMBER" | (string & {});
+export const ContentType = S.String;
+export type FeatureType = "TEXTUAL" | "CATEGORICAL" | (string & {});
+export const FeatureType = S.String;
 export type SourceConnectorType =
   | "Salesforce"
   | "Marketo"
   | "Zendesk"
   | "Servicenow"
-  | "S3";
-export const SourceConnectorType = S.Literal(
-  "Salesforce",
-  "Marketo",
-  "Zendesk",
-  "Servicenow",
-  "S3",
-);
+  | "S3"
+  | (string & {});
+export const SourceConnectorType = S.String;
 export type SourceFields = string[];
 export const SourceFields = S.Array(S.String);
 export type TaskType =
@@ -3296,18 +3190,11 @@ export type TaskType =
   | "Mask"
   | "Merge"
   | "Truncate"
-  | "Validate";
-export const TaskType = S.Literal(
-  "Arithmetic",
-  "Filter",
-  "Map",
-  "Mask",
-  "Merge",
-  "Truncate",
-  "Validate",
-);
-export type TriggerType = "Scheduled" | "Event" | "OnDemand";
-export const TriggerType = S.Literal("Scheduled", "Event", "OnDemand");
+  | "Validate"
+  | (string & {});
+export const TaskType = S.String;
+export type TriggerType = "Scheduled" | "Event" | "OnDemand" | (string & {});
+export const TriggerType = S.String;
 export type StandardIdentifier =
   | "PROFILE"
   | "ASSET"
@@ -3326,27 +3213,9 @@ export type StandardIdentifier =
   | "UNIQUE"
   | "SECONDARY"
   | "LOOKUP_ONLY"
-  | "NEW_ONLY";
-export const StandardIdentifier = S.Literal(
-  "PROFILE",
-  "ASSET",
-  "CASE",
-  "ORDER",
-  "COMMUNICATION_RECORD",
-  "AIR_PREFERENCE",
-  "HOTEL_PREFERENCE",
-  "AIR_BOOKING",
-  "AIR_SEGMENT",
-  "HOTEL_RESERVATION",
-  "HOTEL_STAY_REVENUE",
-  "LOYALTY",
-  "LOYALTY_TRANSACTION",
-  "LOYALTY_PROMOTION",
-  "UNIQUE",
-  "SECONDARY",
-  "LOOKUP_ONLY",
-  "NEW_ONLY",
-);
+  | "NEW_ONLY"
+  | (string & {});
+export const StandardIdentifier = S.String;
 export type StandardIdentifierList = StandardIdentifier[];
 export const StandardIdentifierList = S.Array(StandardIdentifier);
 export type FieldNameList = string[];
@@ -4168,12 +4037,12 @@ export const MatchingResponse = S.suspend(() =>
 ).annotations({
   identifier: "MatchingResponse",
 }) as any as S.Schema<MatchingResponse>;
-export type RuleBasedMatchingStatus = "PENDING" | "IN_PROGRESS" | "ACTIVE";
-export const RuleBasedMatchingStatus = S.Literal(
-  "PENDING",
-  "IN_PROGRESS",
-  "ACTIVE",
-);
+export type RuleBasedMatchingStatus =
+  | "PENDING"
+  | "IN_PROGRESS"
+  | "ACTIVE"
+  | (string & {});
+export const RuleBasedMatchingStatus = S.String;
 export interface RuleBasedMatchingResponse {
   Enabled?: boolean;
   MatchingRules?: MatchingRule[];
@@ -4385,10 +4254,13 @@ export const UpdateRecommenderResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateRecommenderResponse",
 }) as any as S.Schema<UpdateRecommenderResponse>;
-export type EventStreamDestinationStatus = "HEALTHY" | "UNHEALTHY";
-export const EventStreamDestinationStatus = S.Literal("HEALTHY", "UNHEALTHY");
-export type QueryResult = "PRESENT" | "ABSENT";
-export const QueryResult = S.Literal("PRESENT", "ABSENT");
+export type EventStreamDestinationStatus =
+  | "HEALTHY"
+  | "UNHEALTHY"
+  | (string & {});
+export const EventStreamDestinationStatus = S.String;
+export type QueryResult = "PRESENT" | "ABSENT" | (string & {});
+export const QueryResult = S.String;
 export type AttributeSourceIdMap = { [key: string]: string | undefined };
 export const AttributeSourceIdMap = S.Record({
   key: S.String,
@@ -4410,25 +4282,9 @@ export type MarketoConnectorOperator =
   | "VALIDATE_NON_ZERO"
   | "VALIDATE_NON_NEGATIVE"
   | "VALIDATE_NUMERIC"
-  | "NO_OP";
-export const MarketoConnectorOperator = S.Literal(
-  "PROJECTION",
-  "LESS_THAN",
-  "GREATER_THAN",
-  "BETWEEN",
-  "ADDITION",
-  "MULTIPLICATION",
-  "DIVISION",
-  "SUBTRACTION",
-  "MASK_ALL",
-  "MASK_FIRST_N",
-  "MASK_LAST_N",
-  "VALIDATE_NON_NULL",
-  "VALIDATE_NON_ZERO",
-  "VALIDATE_NON_NEGATIVE",
-  "VALIDATE_NUMERIC",
-  "NO_OP",
-);
+  | "NO_OP"
+  | (string & {});
+export const MarketoConnectorOperator = S.String;
 export type S3ConnectorOperator =
   | "PROJECTION"
   | "LESS_THAN"
@@ -4449,29 +4305,9 @@ export type S3ConnectorOperator =
   | "VALIDATE_NON_ZERO"
   | "VALIDATE_NON_NEGATIVE"
   | "VALIDATE_NUMERIC"
-  | "NO_OP";
-export const S3ConnectorOperator = S.Literal(
-  "PROJECTION",
-  "LESS_THAN",
-  "GREATER_THAN",
-  "BETWEEN",
-  "LESS_THAN_OR_EQUAL_TO",
-  "GREATER_THAN_OR_EQUAL_TO",
-  "EQUAL_TO",
-  "NOT_EQUAL_TO",
-  "ADDITION",
-  "MULTIPLICATION",
-  "DIVISION",
-  "SUBTRACTION",
-  "MASK_ALL",
-  "MASK_FIRST_N",
-  "MASK_LAST_N",
-  "VALIDATE_NON_NULL",
-  "VALIDATE_NON_ZERO",
-  "VALIDATE_NON_NEGATIVE",
-  "VALIDATE_NUMERIC",
-  "NO_OP",
-);
+  | "NO_OP"
+  | (string & {});
+export const S3ConnectorOperator = S.String;
 export type SalesforceConnectorOperator =
   | "PROJECTION"
   | "LESS_THAN"
@@ -4493,30 +4329,9 @@ export type SalesforceConnectorOperator =
   | "VALIDATE_NON_ZERO"
   | "VALIDATE_NON_NEGATIVE"
   | "VALIDATE_NUMERIC"
-  | "NO_OP";
-export const SalesforceConnectorOperator = S.Literal(
-  "PROJECTION",
-  "LESS_THAN",
-  "CONTAINS",
-  "GREATER_THAN",
-  "BETWEEN",
-  "LESS_THAN_OR_EQUAL_TO",
-  "GREATER_THAN_OR_EQUAL_TO",
-  "EQUAL_TO",
-  "NOT_EQUAL_TO",
-  "ADDITION",
-  "MULTIPLICATION",
-  "DIVISION",
-  "SUBTRACTION",
-  "MASK_ALL",
-  "MASK_FIRST_N",
-  "MASK_LAST_N",
-  "VALIDATE_NON_NULL",
-  "VALIDATE_NON_ZERO",
-  "VALIDATE_NON_NEGATIVE",
-  "VALIDATE_NUMERIC",
-  "NO_OP",
-);
+  | "NO_OP"
+  | (string & {});
+export const SalesforceConnectorOperator = S.String;
 export type ServiceNowConnectorOperator =
   | "PROJECTION"
   | "CONTAINS"
@@ -4538,30 +4353,9 @@ export type ServiceNowConnectorOperator =
   | "VALIDATE_NON_ZERO"
   | "VALIDATE_NON_NEGATIVE"
   | "VALIDATE_NUMERIC"
-  | "NO_OP";
-export const ServiceNowConnectorOperator = S.Literal(
-  "PROJECTION",
-  "CONTAINS",
-  "LESS_THAN",
-  "GREATER_THAN",
-  "BETWEEN",
-  "LESS_THAN_OR_EQUAL_TO",
-  "GREATER_THAN_OR_EQUAL_TO",
-  "EQUAL_TO",
-  "NOT_EQUAL_TO",
-  "ADDITION",
-  "MULTIPLICATION",
-  "DIVISION",
-  "SUBTRACTION",
-  "MASK_ALL",
-  "MASK_FIRST_N",
-  "MASK_LAST_N",
-  "VALIDATE_NON_NULL",
-  "VALIDATE_NON_ZERO",
-  "VALIDATE_NON_NEGATIVE",
-  "VALIDATE_NUMERIC",
-  "NO_OP",
-);
+  | "NO_OP"
+  | (string & {});
+export const ServiceNowConnectorOperator = S.String;
 export type ZendeskConnectorOperator =
   | "PROJECTION"
   | "GREATER_THAN"
@@ -4576,23 +4370,9 @@ export type ZendeskConnectorOperator =
   | "VALIDATE_NON_ZERO"
   | "VALIDATE_NON_NEGATIVE"
   | "VALIDATE_NUMERIC"
-  | "NO_OP";
-export const ZendeskConnectorOperator = S.Literal(
-  "PROJECTION",
-  "GREATER_THAN",
-  "ADDITION",
-  "MULTIPLICATION",
-  "DIVISION",
-  "SUBTRACTION",
-  "MASK_ALL",
-  "MASK_FIRST_N",
-  "MASK_LAST_N",
-  "VALIDATE_NON_NULL",
-  "VALIDATE_NON_ZERO",
-  "VALIDATE_NON_NEGATIVE",
-  "VALIDATE_NUMERIC",
-  "NO_OP",
-);
+  | "NO_OP"
+  | (string & {});
+export const ZendeskConnectorOperator = S.String;
 export type OperatorPropertiesKeys =
   | "VALUE"
   | "VALUES"
@@ -4607,23 +4387,9 @@ export type OperatorPropertiesKeys =
   | "TRUNCATE_LENGTH"
   | "MATH_OPERATION_FIELDS_ORDER"
   | "CONCAT_FORMAT"
-  | "SUBFIELD_CATEGORY_MAP";
-export const OperatorPropertiesKeys = S.Literal(
-  "VALUE",
-  "VALUES",
-  "DATA_TYPE",
-  "UPPER_BOUND",
-  "LOWER_BOUND",
-  "SOURCE_DATA_TYPE",
-  "DESTINATION_DATA_TYPE",
-  "VALIDATION_ACTION",
-  "MASK_VALUE",
-  "MASK_LENGTH",
-  "TRUNCATE_LENGTH",
-  "MATH_OPERATION_FIELDS_ORDER",
-  "CONCAT_FORMAT",
-  "SUBFIELD_CATEGORY_MAP",
-);
+  | "SUBFIELD_CATEGORY_MAP"
+  | (string & {});
+export const OperatorPropertiesKeys = S.String;
 export interface BatchGetProfileError {
   Code: string;
   Message: string;
@@ -5337,15 +5103,9 @@ export type TrainingMetricName =
   | "recall"
   | "popularity"
   | "freshness"
-  | "similarity";
-export const TrainingMetricName = S.Literal(
-  "hit",
-  "coverage",
-  "recall",
-  "popularity",
-  "freshness",
-  "similarity",
-);
+  | "similarity"
+  | (string & {});
+export const TrainingMetricName = S.String;
 export interface IncrementalPullConfig {
   DatetimeTypeFieldName?: string;
 }
@@ -5557,24 +5317,9 @@ export type FilterDimensionType =
   | "LESS_THAN"
   | "GREATER_THAN_OR_EQUAL"
   | "LESS_THAN_OR_EQUAL"
-  | "EQUAL";
-export const FilterDimensionType = S.Literal(
-  "INCLUSIVE",
-  "EXCLUSIVE",
-  "CONTAINS",
-  "BEGINS_WITH",
-  "ENDS_WITH",
-  "BEFORE",
-  "AFTER",
-  "BETWEEN",
-  "NOT_BETWEEN",
-  "ON",
-  "GREATER_THAN",
-  "LESS_THAN",
-  "GREATER_THAN_OR_EQUAL",
-  "LESS_THAN_OR_EQUAL",
-  "EQUAL",
-);
+  | "EQUAL"
+  | (string & {});
+export const FilterDimensionType = S.String;
 export type ValueList = string[];
 export const ValueList = S.Array(S.String);
 export interface FilterAttributeDimension {
@@ -6063,8 +5808,8 @@ export const PutDomainObjectTypeRequest = S.suspend(() =>
 ).annotations({
   identifier: "PutDomainObjectTypeRequest",
 }) as any as S.Schema<PutDomainObjectTypeRequest>;
-export type DataPullMode = "Incremental" | "Complete";
-export const DataPullMode = S.Literal("Incremental", "Complete");
+export type DataPullMode = "Incremental" | "Complete" | (string & {});
+export const DataPullMode = S.String;
 export interface PutProfileObjectTypeRequest {
   DomainName: string;
   ObjectTypeName: string;

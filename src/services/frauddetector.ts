@@ -156,60 +156,61 @@ export type NameList = string[];
 export const NameList = S.Array(S.String);
 export type ListOfStrings = string[];
 export const ListOfStrings = S.Array(S.String);
-export type RuleExecutionMode = "ALL_MATCHED" | "FIRST_MATCHED";
-export const RuleExecutionMode = S.Literal("ALL_MATCHED", "FIRST_MATCHED");
+export type RuleExecutionMode = "ALL_MATCHED" | "FIRST_MATCHED" | (string & {});
+export const RuleExecutionMode = S.String;
 export type ElementsList = string | redacted.Redacted<string>[];
 export const ElementsList = S.Array(SensitiveString);
 export type ModelTypeEnum =
   | "ONLINE_FRAUD_INSIGHTS"
   | "TRANSACTION_FRAUD_INSIGHTS"
-  | "ACCOUNT_TAKEOVER_INSIGHTS";
-export const ModelTypeEnum = S.Literal(
-  "ONLINE_FRAUD_INSIGHTS",
-  "TRANSACTION_FRAUD_INSIGHTS",
-  "ACCOUNT_TAKEOVER_INSIGHTS",
-);
-export type TrainingDataSourceEnum = "EXTERNAL_EVENTS" | "INGESTED_EVENTS";
-export const TrainingDataSourceEnum = S.Literal(
-  "EXTERNAL_EVENTS",
-  "INGESTED_EVENTS",
-);
-export type Language = "DETECTORPL";
-export const Language = S.Literal("DETECTORPL");
+  | "ACCOUNT_TAKEOVER_INSIGHTS"
+  | (string & {});
+export const ModelTypeEnum = S.String;
+export type TrainingDataSourceEnum =
+  | "EXTERNAL_EVENTS"
+  | "INGESTED_EVENTS"
+  | (string & {});
+export const TrainingDataSourceEnum = S.String;
+export type Language = "DETECTORPL" | (string & {});
+export const Language = S.String;
 export type NonEmptyListOfStrings = string[];
 export const NonEmptyListOfStrings = S.Array(S.String);
-export type DataType = "STRING" | "INTEGER" | "FLOAT" | "BOOLEAN" | "DATETIME";
-export const DataType = S.Literal(
-  "STRING",
-  "INTEGER",
-  "FLOAT",
-  "BOOLEAN",
-  "DATETIME",
-);
-export type DataSource = "EVENT" | "MODEL_SCORE" | "EXTERNAL_MODEL_SCORE";
-export const DataSource = S.Literal(
-  "EVENT",
-  "MODEL_SCORE",
-  "EXTERNAL_MODEL_SCORE",
-);
-export type EventIngestion = "ENABLED" | "DISABLED";
-export const EventIngestion = S.Literal("ENABLED", "DISABLED");
-export type ModelSource = "SAGEMAKER";
-export const ModelSource = S.Literal("SAGEMAKER");
-export type ModelEndpointStatus = "ASSOCIATED" | "DISSOCIATED";
-export const ModelEndpointStatus = S.Literal("ASSOCIATED", "DISSOCIATED");
+export type DataType =
+  | "STRING"
+  | "INTEGER"
+  | "FLOAT"
+  | "BOOLEAN"
+  | "DATETIME"
+  | (string & {});
+export const DataType = S.String;
+export type DataSource =
+  | "EVENT"
+  | "MODEL_SCORE"
+  | "EXTERNAL_MODEL_SCORE"
+  | (string & {});
+export const DataSource = S.String;
+export type EventIngestion = "ENABLED" | "DISABLED" | (string & {});
+export const EventIngestion = S.String;
+export type ModelSource = "SAGEMAKER" | (string & {});
+export const ModelSource = S.String;
+export type ModelEndpointStatus = "ASSOCIATED" | "DISSOCIATED" | (string & {});
+export const ModelEndpointStatus = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
-export type DetectorVersionStatus = "DRAFT" | "ACTIVE" | "INACTIVE";
-export const DetectorVersionStatus = S.Literal("DRAFT", "ACTIVE", "INACTIVE");
-export type ListUpdateMode = "REPLACE" | "APPEND" | "REMOVE";
-export const ListUpdateMode = S.Literal("REPLACE", "APPEND", "REMOVE");
-export type ModelVersionStatus = "ACTIVE" | "INACTIVE" | "TRAINING_CANCELLED";
-export const ModelVersionStatus = S.Literal(
-  "ACTIVE",
-  "INACTIVE",
-  "TRAINING_CANCELLED",
-);
+export type DetectorVersionStatus =
+  | "DRAFT"
+  | "ACTIVE"
+  | "INACTIVE"
+  | (string & {});
+export const DetectorVersionStatus = S.String;
+export type ListUpdateMode = "REPLACE" | "APPEND" | "REMOVE" | (string & {});
+export const ListUpdateMode = S.String;
+export type ModelVersionStatus =
+  | "ACTIVE"
+  | "INACTIVE"
+  | "TRAINING_CANCELLED"
+  | (string & {});
+export const ModelVersionStatus = S.String;
 export interface BatchGetVariableRequest {
   names: string[];
 }
@@ -2040,13 +2041,16 @@ export const UpdateVariableResult = S.suspend(() =>
 ).annotations({
   identifier: "UpdateVariableResult",
 }) as any as S.Schema<UpdateVariableResult>;
-export type ModelInputDataFormat = "TEXT_CSV" | "APPLICATION_JSON";
-export const ModelInputDataFormat = S.Literal("TEXT_CSV", "APPLICATION_JSON");
-export type ModelOutputDataFormat = "TEXT_CSV" | "APPLICATION_JSONLINES";
-export const ModelOutputDataFormat = S.Literal(
-  "TEXT_CSV",
-  "APPLICATION_JSONLINES",
-);
+export type ModelInputDataFormat =
+  | "TEXT_CSV"
+  | "APPLICATION_JSON"
+  | (string & {});
+export const ModelInputDataFormat = S.String;
+export type ModelOutputDataFormat =
+  | "TEXT_CSV"
+  | "APPLICATION_JSONLINES"
+  | (string & {});
+export const ModelOutputDataFormat = S.String;
 export interface VariableEntry {
   name?: string;
   dataType?: string;
@@ -2075,15 +2079,9 @@ export type AsyncJobStatus =
   | "CANCEL_IN_PROGRESS"
   | "CANCELED"
   | "COMPLETE"
-  | "FAILED";
-export const AsyncJobStatus = S.Literal(
-  "IN_PROGRESS_INITIALIZING",
-  "IN_PROGRESS",
-  "CANCEL_IN_PROGRESS",
-  "CANCELED",
-  "COMPLETE",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const AsyncJobStatus = S.String;
 export interface KMSKey {
   kmsEncryptionKeyArn?: string;
 }
@@ -2133,13 +2131,13 @@ export const ModelInputConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "ModelInputConfiguration",
 }) as any as S.Schema<ModelInputConfiguration>;
-export type UnlabeledEventsTreatment = "IGNORE" | "FRAUD" | "LEGIT" | "AUTO";
-export const UnlabeledEventsTreatment = S.Literal(
-  "IGNORE",
-  "FRAUD",
-  "LEGIT",
-  "AUTO",
-);
+export type UnlabeledEventsTreatment =
+  | "IGNORE"
+  | "FRAUD"
+  | "LEGIT"
+  | "AUTO"
+  | (string & {});
+export const UnlabeledEventsTreatment = S.String;
 export interface BatchCreateVariableRequest {
   variableEntries: VariableEntry[];
   tags?: Tag[];

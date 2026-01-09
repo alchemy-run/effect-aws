@@ -387,10 +387,13 @@ export const LeaveOrganizationResponse = S.suspend(() =>
 ).annotations({
   identifier: "LeaveOrganizationResponse",
 }) as any as S.Schema<LeaveOrganizationResponse>;
-export type IAMUserAccessToBilling = "ALLOW" | "DENY";
-export const IAMUserAccessToBilling = S.Literal("ALLOW", "DENY");
-export type OrganizationFeatureSet = "ALL" | "CONSOLIDATED_BILLING";
-export const OrganizationFeatureSet = S.Literal("ALL", "CONSOLIDATED_BILLING");
+export type IAMUserAccessToBilling = "ALLOW" | "DENY" | (string & {});
+export const IAMUserAccessToBilling = S.String;
+export type OrganizationFeatureSet =
+  | "ALL"
+  | "CONSOLIDATED_BILLING"
+  | (string & {});
+export const OrganizationFeatureSet = S.String;
 export type PolicyType =
   | "SERVICE_CONTROL_POLICY"
   | "RESOURCE_CONTROL_POLICY"
@@ -404,22 +407,9 @@ export type PolicyType =
   | "UPGRADE_ROLLOUT_POLICY"
   | "BEDROCK_POLICY"
   | "S3_POLICY"
-  | "NETWORK_SECURITY_DIRECTOR_POLICY";
-export const PolicyType = S.Literal(
-  "SERVICE_CONTROL_POLICY",
-  "RESOURCE_CONTROL_POLICY",
-  "TAG_POLICY",
-  "BACKUP_POLICY",
-  "AISERVICES_OPT_OUT_POLICY",
-  "CHATBOT_POLICY",
-  "DECLARATIVE_POLICY_EC2",
-  "SECURITYHUB_POLICY",
-  "INSPECTOR_POLICY",
-  "UPGRADE_ROLLOUT_POLICY",
-  "BEDROCK_POLICY",
-  "S3_POLICY",
-  "NETWORK_SECURITY_DIRECTOR_POLICY",
-);
+  | "NETWORK_SECURITY_DIRECTOR_POLICY"
+  | (string & {});
+export const PolicyType = S.String;
 export type EffectivePolicyType =
   | "TAG_POLICY"
   | "BACKUP_POLICY"
@@ -431,30 +421,19 @@ export type EffectivePolicyType =
   | "UPGRADE_ROLLOUT_POLICY"
   | "BEDROCK_POLICY"
   | "S3_POLICY"
-  | "NETWORK_SECURITY_DIRECTOR_POLICY";
-export const EffectivePolicyType = S.Literal(
-  "TAG_POLICY",
-  "BACKUP_POLICY",
-  "AISERVICES_OPT_OUT_POLICY",
-  "CHATBOT_POLICY",
-  "DECLARATIVE_POLICY_EC2",
-  "SECURITYHUB_POLICY",
-  "INSPECTOR_POLICY",
-  "UPGRADE_ROLLOUT_POLICY",
-  "BEDROCK_POLICY",
-  "S3_POLICY",
-  "NETWORK_SECURITY_DIRECTOR_POLICY",
-);
-export type ResponsibilityTransferType = "BILLING";
-export const ResponsibilityTransferType = S.Literal("BILLING");
-export type ChildType = "ACCOUNT" | "ORGANIZATIONAL_UNIT";
-export const ChildType = S.Literal("ACCOUNT", "ORGANIZATIONAL_UNIT");
-export type CreateAccountState = "IN_PROGRESS" | "SUCCEEDED" | "FAILED";
-export const CreateAccountState = S.Literal(
-  "IN_PROGRESS",
-  "SUCCEEDED",
-  "FAILED",
-);
+  | "NETWORK_SECURITY_DIRECTOR_POLICY"
+  | (string & {});
+export const EffectivePolicyType = S.String;
+export type ResponsibilityTransferType = "BILLING" | (string & {});
+export const ResponsibilityTransferType = S.String;
+export type ChildType = "ACCOUNT" | "ORGANIZATIONAL_UNIT" | (string & {});
+export const ChildType = S.String;
+export type CreateAccountState =
+  | "IN_PROGRESS"
+  | "SUCCEEDED"
+  | "FAILED"
+  | (string & {});
+export const CreateAccountState = S.String;
 export type CreateAccountStates = CreateAccountState[];
 export const CreateAccountStates = S.Array(CreateAccountState);
 export type TagKeys = string[];
@@ -979,8 +958,12 @@ export const EnablePolicyTypeRequest = S.suspend(() =>
 ).annotations({
   identifier: "EnablePolicyTypeRequest",
 }) as any as S.Schema<EnablePolicyTypeRequest>;
-export type HandshakePartyType = "ACCOUNT" | "ORGANIZATION" | "EMAIL";
-export const HandshakePartyType = S.Literal("ACCOUNT", "ORGANIZATION", "EMAIL");
+export type HandshakePartyType =
+  | "ACCOUNT"
+  | "ORGANIZATION"
+  | "EMAIL"
+  | (string & {});
+export const HandshakePartyType = S.String;
 export interface HandshakeParty {
   Id: string | redacted.Redacted<string>;
   Type: HandshakePartyType;
@@ -1241,14 +1224,9 @@ export type ActionType =
   | "ENABLE_ALL_FEATURES"
   | "APPROVE_ALL_FEATURES"
   | "ADD_ORGANIZATIONS_SERVICE_LINKED_ROLE"
-  | "TRANSFER_RESPONSIBILITY";
-export const ActionType = S.Literal(
-  "INVITE",
-  "ENABLE_ALL_FEATURES",
-  "APPROVE_ALL_FEATURES",
-  "ADD_ORGANIZATIONS_SERVICE_LINKED_ROLE",
-  "TRANSFER_RESPONSIBILITY",
-);
+  | "TRANSFER_RESPONSIBILITY"
+  | (string & {});
+export const ActionType = S.String;
 export interface HandshakeFilter {
   ActionType?: ActionType;
   ParentHandshakeId?: string;
@@ -1740,36 +1718,25 @@ export type HandshakeState =
   | "CANCELED"
   | "ACCEPTED"
   | "DECLINED"
-  | "EXPIRED";
-export const HandshakeState = S.Literal(
-  "REQUESTED",
-  "OPEN",
-  "CANCELED",
-  "ACCEPTED",
-  "DECLINED",
-  "EXPIRED",
-);
-export type AccountStatus = "ACTIVE" | "SUSPENDED" | "PENDING_CLOSURE";
-export const AccountStatus = S.Literal(
-  "ACTIVE",
-  "SUSPENDED",
-  "PENDING_CLOSURE",
-);
+  | "EXPIRED"
+  | (string & {});
+export const HandshakeState = S.String;
+export type AccountStatus =
+  | "ACTIVE"
+  | "SUSPENDED"
+  | "PENDING_CLOSURE"
+  | (string & {});
+export const AccountStatus = S.String;
 export type AccountState =
   | "PENDING_ACTIVATION"
   | "ACTIVE"
   | "SUSPENDED"
   | "PENDING_CLOSURE"
-  | "CLOSED";
-export const AccountState = S.Literal(
-  "PENDING_ACTIVATION",
-  "ACTIVE",
-  "SUSPENDED",
-  "PENDING_CLOSURE",
-  "CLOSED",
-);
-export type AccountJoinedMethod = "INVITED" | "CREATED";
-export const AccountJoinedMethod = S.Literal("INVITED", "CREATED");
+  | "CLOSED"
+  | (string & {});
+export const AccountState = S.String;
+export type AccountJoinedMethod = "INVITED" | "CREATED" | (string & {});
+export const AccountJoinedMethod = S.String;
 export interface Account {
   Id?: string;
   Arn?: string;
@@ -1811,24 +1778,9 @@ export type CreateAccountFailureReason =
   | "UNKNOWN_BUSINESS_VALIDATION"
   | "MISSING_PAYMENT_INSTRUMENT"
   | "INVALID_PAYMENT_INSTRUMENT"
-  | "UPDATE_EXISTING_RESOURCE_POLICY_WITH_TAGS_NOT_SUPPORTED";
-export const CreateAccountFailureReason = S.Literal(
-  "ACCOUNT_LIMIT_EXCEEDED",
-  "EMAIL_ALREADY_EXISTS",
-  "INVALID_ADDRESS",
-  "INVALID_EMAIL",
-  "CONCURRENT_ACCOUNT_MODIFICATION",
-  "INTERNAL_FAILURE",
-  "GOVCLOUD_ACCOUNT_ALREADY_EXISTS",
-  "MISSING_BUSINESS_VALIDATION",
-  "FAILED_BUSINESS_VALIDATION",
-  "PENDING_BUSINESS_VALIDATION",
-  "INVALID_IDENTITY_FOR_BUSINESS_VALIDATION",
-  "UNKNOWN_BUSINESS_VALIDATION",
-  "MISSING_PAYMENT_INSTRUMENT",
-  "INVALID_PAYMENT_INSTRUMENT",
-  "UPDATE_EXISTING_RESOURCE_POLICY_WITH_TAGS_NOT_SUPPORTED",
-);
+  | "UPDATE_EXISTING_RESOURCE_POLICY_WITH_TAGS_NOT_SUPPORTED"
+  | (string & {});
+export const CreateAccountFailureReason = S.String;
 export interface CreateAccountStatus {
   Id?: string;
   AccountName?: string | redacted.Redacted<string>;
@@ -1899,15 +1851,9 @@ export type ResponsibilityTransferStatus =
   | "CANCELED"
   | "EXPIRED"
   | "ACCEPTED"
-  | "WITHDRAWN";
-export const ResponsibilityTransferStatus = S.Literal(
-  "REQUESTED",
-  "DECLINED",
-  "CANCELED",
-  "EXPIRED",
-  "ACCEPTED",
-  "WITHDRAWN",
-);
+  | "WITHDRAWN"
+  | (string & {});
+export const ResponsibilityTransferStatus = S.String;
 export interface TransferParticipant {
   ManagementAccountId?: string;
   ManagementAccountEmail?: string | redacted.Redacted<string>;
@@ -1966,12 +1912,12 @@ export const OrganizationalUnit = S.suspend(() =>
 }) as any as S.Schema<OrganizationalUnit>;
 export type OrganizationalUnits = OrganizationalUnit[];
 export const OrganizationalUnits = S.Array(OrganizationalUnit);
-export type PolicyTypeStatus = "ENABLED" | "PENDING_ENABLE" | "PENDING_DISABLE";
-export const PolicyTypeStatus = S.Literal(
-  "ENABLED",
-  "PENDING_ENABLE",
-  "PENDING_DISABLE",
-);
+export type PolicyTypeStatus =
+  | "ENABLED"
+  | "PENDING_ENABLE"
+  | "PENDING_DISABLE"
+  | (string & {});
+export const PolicyTypeStatus = S.String;
 export interface PolicyTypeSummary {
   Type?: PolicyType;
   Status?: PolicyTypeStatus;
@@ -2016,23 +1962,9 @@ export type HandshakeResourceType =
   | "TRANSFER_TYPE"
   | "MANAGEMENT_ACCOUNT"
   | "MANAGEMENT_EMAIL"
-  | "MANAGEMENT_NAME";
-export const HandshakeResourceType = S.Literal(
-  "ACCOUNT",
-  "ORGANIZATION",
-  "ORGANIZATION_FEATURE_SET",
-  "EMAIL",
-  "MASTER_EMAIL",
-  "MASTER_NAME",
-  "NOTES",
-  "PARENT_HANDSHAKE",
-  "RESPONSIBILITY_TRANSFER",
-  "TRANSFER_START_TIMESTAMP",
-  "TRANSFER_TYPE",
-  "MANAGEMENT_ACCOUNT",
-  "MANAGEMENT_EMAIL",
-  "MANAGEMENT_NAME",
-);
+  | "MANAGEMENT_NAME"
+  | (string & {});
+export const HandshakeResourceType = S.String;
 export interface AcceptHandshakeResponse {
   Handshake?: Handshake;
 }
@@ -2458,15 +2390,18 @@ export const HandshakeResource = S.suspend(() =>
 }) as any as S.Schema<HandshakeResource>;
 export type PolicyIds = string[];
 export const PolicyIds = S.Array(S.String);
-export type ParentType = "ROOT" | "ORGANIZATIONAL_UNIT";
-export const ParentType = S.Literal("ROOT", "ORGANIZATIONAL_UNIT");
-export type TargetType = "ACCOUNT" | "ORGANIZATIONAL_UNIT" | "ROOT";
-export const TargetType = S.Literal("ACCOUNT", "ORGANIZATIONAL_UNIT", "ROOT");
+export type ParentType = "ROOT" | "ORGANIZATIONAL_UNIT" | (string & {});
+export const ParentType = S.String;
+export type TargetType =
+  | "ACCOUNT"
+  | "ORGANIZATIONAL_UNIT"
+  | "ROOT"
+  | (string & {});
+export const TargetType = S.String;
 export type AccessDeniedForDependencyExceptionReason =
-  "ACCESS_DENIED_DURING_CREATE_SERVICE_LINKED_ROLE";
-export const AccessDeniedForDependencyExceptionReason = S.Literal(
-  "ACCESS_DENIED_DURING_CREATE_SERVICE_LINKED_ROLE",
-);
+  | "ACCESS_DENIED_DURING_CREATE_SERVICE_LINKED_ROLE"
+  | (string & {});
+export const AccessDeniedForDependencyExceptionReason = S.String;
 export interface EffectivePolicy {
   PolicyContent?: string;
   LastUpdatedTimestamp?: Date;
@@ -2525,49 +2460,9 @@ export type InvalidInputExceptionReason =
   | "INVALID_START_DATE"
   | "END_DATE_NOT_END_OF_MONTH"
   | "END_DATE_TOO_EARLY"
-  | "INVALID_END_DATE";
-export const InvalidInputExceptionReason = S.Literal(
-  "INVALID_PARTY_TYPE_TARGET",
-  "INVALID_SYNTAX_ORGANIZATION_ARN",
-  "INVALID_SYNTAX_POLICY_ID",
-  "INVALID_ENUM",
-  "INVALID_ENUM_POLICY_TYPE",
-  "INVALID_LIST_MEMBER",
-  "MAX_LENGTH_EXCEEDED",
-  "MAX_VALUE_EXCEEDED",
-  "MIN_LENGTH_EXCEEDED",
-  "MIN_VALUE_EXCEEDED",
-  "IMMUTABLE_POLICY",
-  "INVALID_PATTERN",
-  "INVALID_PATTERN_TARGET_ID",
-  "INPUT_REQUIRED",
-  "INVALID_NEXT_TOKEN",
-  "MAX_LIMIT_EXCEEDED_FILTER",
-  "MOVING_ACCOUNT_BETWEEN_DIFFERENT_ROOTS",
-  "INVALID_FULL_NAME_TARGET",
-  "UNRECOGNIZED_SERVICE_PRINCIPAL",
-  "INVALID_ROLE_NAME",
-  "INVALID_SYSTEM_TAGS_PARAMETER",
-  "DUPLICATE_TAG_KEY",
-  "TARGET_NOT_SUPPORTED",
-  "INVALID_EMAIL_ADDRESS_TARGET",
-  "INVALID_RESOURCE_POLICY_JSON",
-  "INVALID_PRINCIPAL",
-  "UNSUPPORTED_ACTION_IN_RESOURCE_POLICY",
-  "UNSUPPORTED_POLICY_TYPE_IN_RESOURCE_POLICY",
-  "UNSUPPORTED_RESOURCE_IN_RESOURCE_POLICY",
-  "NON_DETACHABLE_POLICY",
-  "CALLER_REQUIRED_FIELD_MISSING",
-  "UNSUPPORTED_ACTION_IN_RESPONSIBILITY_TRANSFER",
-  "START_DATE_NOT_BEGINNING_OF_MONTH",
-  "START_DATE_NOT_BEGINNING_OF_DAY",
-  "START_DATE_TOO_EARLY",
-  "START_DATE_TOO_LATE",
-  "INVALID_START_DATE",
-  "END_DATE_NOT_END_OF_MONTH",
-  "END_DATE_TOO_EARLY",
-  "INVALID_END_DATE",
-);
+  | "INVALID_END_DATE"
+  | (string & {});
+export const InvalidInputExceptionReason = S.String;
 export type ConstraintViolationExceptionReason =
   | "ACCOUNT_NUMBER_LIMIT_EXCEEDED"
   | "HANDSHAKE_RATE_LIMIT_EXCEEDED"
@@ -2613,54 +2508,9 @@ export type ConstraintViolationExceptionReason =
   | "ACTIVE_RESPONSIBILITY_TRANSFER_PROCESS"
   | "TRANSFER_RESPONSIBILITY_TARGET_DELETION_IN_PROGRESS"
   | "TRANSFER_RESPONSIBILITY_SOURCE_DELETION_IN_PROGRESS"
-  | "UNSUPPORTED_PRICING";
-export const ConstraintViolationExceptionReason = S.Literal(
-  "ACCOUNT_NUMBER_LIMIT_EXCEEDED",
-  "HANDSHAKE_RATE_LIMIT_EXCEEDED",
-  "OU_NUMBER_LIMIT_EXCEEDED",
-  "OU_DEPTH_LIMIT_EXCEEDED",
-  "POLICY_NUMBER_LIMIT_EXCEEDED",
-  "POLICY_CONTENT_LIMIT_EXCEEDED",
-  "MAX_POLICY_TYPE_ATTACHMENT_LIMIT_EXCEEDED",
-  "MIN_POLICY_TYPE_ATTACHMENT_LIMIT_EXCEEDED",
-  "ACCOUNT_CANNOT_LEAVE_ORGANIZATION",
-  "ACCOUNT_CANNOT_LEAVE_WITHOUT_EULA",
-  "ACCOUNT_CANNOT_LEAVE_WITHOUT_PHONE_VERIFICATION",
-  "MASTER_ACCOUNT_PAYMENT_INSTRUMENT_REQUIRED",
-  "MEMBER_ACCOUNT_PAYMENT_INSTRUMENT_REQUIRED",
-  "ACCOUNT_CREATION_RATE_LIMIT_EXCEEDED",
-  "MASTER_ACCOUNT_ADDRESS_DOES_NOT_MATCH_MARKETPLACE",
-  "MASTER_ACCOUNT_MISSING_CONTACT_INFO",
-  "MASTER_ACCOUNT_NOT_GOVCLOUD_ENABLED",
-  "ORGANIZATION_NOT_IN_ALL_FEATURES_MODE",
-  "CREATE_ORGANIZATION_IN_BILLING_MODE_UNSUPPORTED_REGION",
-  "EMAIL_VERIFICATION_CODE_EXPIRED",
-  "WAIT_PERIOD_ACTIVE",
-  "MAX_TAG_LIMIT_EXCEEDED",
-  "TAG_POLICY_VIOLATION",
-  "MAX_DELEGATED_ADMINISTRATORS_FOR_SERVICE_LIMIT_EXCEEDED",
-  "CANNOT_REGISTER_MASTER_AS_DELEGATED_ADMINISTRATOR",
-  "CANNOT_REMOVE_DELEGATED_ADMINISTRATOR_FROM_ORG",
-  "DELEGATED_ADMINISTRATOR_EXISTS_FOR_THIS_SERVICE",
-  "POLICY_TYPE_ENABLED_FOR_THIS_SERVICE",
-  "MASTER_ACCOUNT_MISSING_BUSINESS_LICENSE",
-  "CANNOT_CLOSE_MANAGEMENT_ACCOUNT",
-  "CLOSE_ACCOUNT_QUOTA_EXCEEDED",
-  "CLOSE_ACCOUNT_REQUESTS_LIMIT_EXCEEDED",
-  "SERVICE_ACCESS_NOT_ENABLED",
-  "INVALID_PAYMENT_INSTRUMENT",
-  "ACCOUNT_CREATION_NOT_COMPLETE",
-  "CANNOT_REGISTER_SUSPENDED_ACCOUNT_AS_DELEGATED_ADMINISTRATOR",
-  "ALL_FEATURES_MIGRATION_ORGANIZATION_SIZE_LIMIT_EXCEEDED",
-  "RESPONSIBILITY_TRANSFER_MAX_LEVEL_VIOLATION",
-  "RESPONSIBILITY_TRANSFER_MAX_INBOUND_QUOTA_VIOLATION",
-  "RESPONSIBILITY_TRANSFER_MAX_OUTBOUND_QUOTA_VIOLATION",
-  "RESPONSIBILITY_TRANSFER_MAX_TRANSFERS_QUOTA_VIOLATION",
-  "ACTIVE_RESPONSIBILITY_TRANSFER_PROCESS",
-  "TRANSFER_RESPONSIBILITY_TARGET_DELETION_IN_PROGRESS",
-  "TRANSFER_RESPONSIBILITY_SOURCE_DELETION_IN_PROGRESS",
-  "UNSUPPORTED_PRICING",
-);
+  | "UNSUPPORTED_PRICING"
+  | (string & {});
+export const ConstraintViolationExceptionReason = S.String;
 export interface EnabledServicePrincipal {
   ServicePrincipal?: string;
   DateEnabled?: Date;
@@ -3001,23 +2851,9 @@ export type HandshakeConstraintViolationExceptionReason =
   | "RESPONSIBILITY_TRANSFER_ALREADY_EXISTS"
   | "SOURCE_AND_TARGET_CANNOT_MATCH"
   | "UNUSED_PREPAYMENT_BALANCE"
-  | "LEGACY_PERMISSIONS_STILL_IN_USE";
-export const HandshakeConstraintViolationExceptionReason = S.Literal(
-  "ACCOUNT_NUMBER_LIMIT_EXCEEDED",
-  "HANDSHAKE_RATE_LIMIT_EXCEEDED",
-  "ALREADY_IN_AN_ORGANIZATION",
-  "ORGANIZATION_ALREADY_HAS_ALL_FEATURES",
-  "ORGANIZATION_IS_ALREADY_PENDING_ALL_FEATURES_MIGRATION",
-  "INVITE_DISABLED_DURING_ENABLE_ALL_FEATURES",
-  "PAYMENT_INSTRUMENT_REQUIRED",
-  "ORGANIZATION_FROM_DIFFERENT_SELLER_OF_RECORD",
-  "ORGANIZATION_MEMBERSHIP_CHANGE_RATE_LIMIT_EXCEEDED",
-  "MANAGEMENT_ACCOUNT_EMAIL_NOT_VERIFIED",
-  "RESPONSIBILITY_TRANSFER_ALREADY_EXISTS",
-  "SOURCE_AND_TARGET_CANNOT_MATCH",
-  "UNUSED_PREPAYMENT_BALANCE",
-  "LEGACY_PERMISSIONS_STILL_IN_USE",
-);
+  | "LEGACY_PERMISSIONS_STILL_IN_USE"
+  | (string & {});
+export const HandshakeConstraintViolationExceptionReason = S.String;
 export interface DescribeResponsibilityTransferResponse {
   ResponsibilityTransfer?: ResponsibilityTransfer;
 }

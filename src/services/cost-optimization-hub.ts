@@ -100,21 +100,21 @@ export const GetPreferencesRequest = S.suspend(() =>
 ).annotations({
   identifier: "GetPreferencesRequest",
 }) as any as S.Schema<GetPreferencesRequest>;
-export type SavingsEstimationMode = "BeforeDiscounts" | "AfterDiscounts";
-export const SavingsEstimationMode = S.Literal(
-  "BeforeDiscounts",
-  "AfterDiscounts",
-);
-export type MemberAccountDiscountVisibility = "All" | "None";
-export const MemberAccountDiscountVisibility = S.Literal("All", "None");
-export type GranularityType = "Daily" | "Monthly";
-export const GranularityType = S.Literal("Daily", "Monthly");
-export type SummaryMetrics = "SavingsPercentage";
-export const SummaryMetrics = S.Literal("SavingsPercentage");
+export type SavingsEstimationMode =
+  | "BeforeDiscounts"
+  | "AfterDiscounts"
+  | (string & {});
+export const SavingsEstimationMode = S.String;
+export type MemberAccountDiscountVisibility = "All" | "None" | (string & {});
+export const MemberAccountDiscountVisibility = S.String;
+export type GranularityType = "Daily" | "Monthly" | (string & {});
+export const GranularityType = S.String;
+export type SummaryMetrics = "SavingsPercentage" | (string & {});
+export const SummaryMetrics = S.String;
 export type SummaryMetricsList = SummaryMetrics[];
 export const SummaryMetricsList = S.Array(SummaryMetrics);
-export type EnrollmentStatus = "Active" | "Inactive";
-export const EnrollmentStatus = S.Literal("Active", "Inactive");
+export type EnrollmentStatus = "Active" | "Inactive" | (string & {});
+export const EnrollmentStatus = S.String;
 export interface GetRecommendationRequest {
   recommendationId: string;
 }
@@ -148,14 +148,9 @@ export type ImplementationEffort =
   | "Low"
   | "Medium"
   | "High"
-  | "VeryHigh";
-export const ImplementationEffort = S.Literal(
-  "VeryLow",
-  "Low",
-  "Medium",
-  "High",
-  "VeryHigh",
-);
+  | "VeryHigh"
+  | (string & {});
+export const ImplementationEffort = S.String;
 export type ImplementationEffortList = ImplementationEffort[];
 export const ImplementationEffortList = S.Array(ImplementationEffort);
 export type AccountIdList = string[];
@@ -181,28 +176,9 @@ export type ResourceType =
   | "AuroraDbClusterStorage"
   | "DynamoDbReservedCapacity"
   | "MemoryDbReservedInstances"
-  | "NatGateway";
-export const ResourceType = S.Literal(
-  "Ec2Instance",
-  "LambdaFunction",
-  "EbsVolume",
-  "EcsService",
-  "Ec2AutoScalingGroup",
-  "Ec2InstanceSavingsPlans",
-  "ComputeSavingsPlans",
-  "SageMakerSavingsPlans",
-  "Ec2ReservedInstances",
-  "RdsReservedInstances",
-  "OpenSearchReservedInstances",
-  "RedshiftReservedInstances",
-  "ElastiCacheReservedInstances",
-  "RdsDbInstanceStorage",
-  "RdsDbInstance",
-  "AuroraDbClusterStorage",
-  "DynamoDbReservedCapacity",
-  "MemoryDbReservedInstances",
-  "NatGateway",
-);
+  | "NatGateway"
+  | (string & {});
+export const ResourceType = S.String;
 export type ResourceTypeList = ResourceType[];
 export const ResourceTypeList = S.Array(ResourceType);
 export type ActionType =
@@ -213,17 +189,9 @@ export type ActionType =
   | "PurchaseReservedInstances"
   | "MigrateToGraviton"
   | "Delete"
-  | "ScaleIn";
-export const ActionType = S.Literal(
-  "Rightsize",
-  "Stop",
-  "Upgrade",
-  "PurchaseSavingsPlans",
-  "PurchaseReservedInstances",
-  "MigrateToGraviton",
-  "Delete",
-  "ScaleIn",
-);
+  | "ScaleIn"
+  | (string & {});
+export const ActionType = S.String;
 export type ActionTypeList = ActionType[];
 export const ActionTypeList = S.Array(ActionType);
 export interface Tag {
@@ -303,14 +271,14 @@ export const UpdateEnrollmentStatusRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateEnrollmentStatusRequest",
 }) as any as S.Schema<UpdateEnrollmentStatusRequest>;
-export type Term = "OneYear" | "ThreeYears";
-export const Term = S.Literal("OneYear", "ThreeYears");
-export type PaymentOption = "AllUpfront" | "PartialUpfront" | "NoUpfront";
-export const PaymentOption = S.Literal(
-  "AllUpfront",
-  "PartialUpfront",
-  "NoUpfront",
-);
+export type Term = "OneYear" | "ThreeYears" | (string & {});
+export const Term = S.String;
+export type PaymentOption =
+  | "AllUpfront"
+  | "PartialUpfront"
+  | "NoUpfront"
+  | (string & {});
+export const PaymentOption = S.String;
 export interface PreferredCommitment {
   term?: Term;
   paymentOption?: PaymentOption;
@@ -341,10 +309,10 @@ export const UpdatePreferencesRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdatePreferencesRequest",
 }) as any as S.Schema<UpdatePreferencesRequest>;
-export type Order = "Asc" | "Desc";
-export const Order = S.Literal("Asc", "Desc");
-export type Source = "ComputeOptimizer" | "CostExplorer";
-export const Source = S.Literal("ComputeOptimizer", "CostExplorer");
+export type Order = "Asc" | "Desc" | (string & {});
+export const Order = S.String;
+export type Source = "ComputeOptimizer" | "CostExplorer" | (string & {});
+export const Source = S.String;
 export interface TimePeriod {
   start: string;
   end: string;
@@ -523,13 +491,11 @@ export const ListRecommendationSummariesResponse = S.suspend(() =>
 }) as any as S.Schema<ListRecommendationSummariesResponse>;
 export type Ec2AutoScalingGroupType =
   | "SingleInstanceType"
-  | "MixedInstanceTypes";
-export const Ec2AutoScalingGroupType = S.Literal(
-  "SingleInstanceType",
-  "MixedInstanceTypes",
-);
-export type AllocationStrategy = "Prioritized" | "LowestPrice";
-export const AllocationStrategy = S.Literal("Prioritized", "LowestPrice");
+  | "MixedInstanceTypes"
+  | (string & {});
+export const Ec2AutoScalingGroupType = S.String;
+export type AllocationStrategy = "Prioritized" | "LowestPrice" | (string & {});
+export const AllocationStrategy = S.String;
 export interface ComputeConfiguration {
   vCpu?: number;
   memorySizeInMB?: number;
@@ -1414,11 +1380,11 @@ export const RdsDbInstance = S.suspend(() =>
 ).annotations({
   identifier: "RdsDbInstance",
 }) as any as S.Schema<RdsDbInstance>;
-export type ValidationExceptionReason = "FieldValidationFailed" | "Other";
-export const ValidationExceptionReason = S.Literal(
-  "FieldValidationFailed",
-  "Other",
-);
+export type ValidationExceptionReason =
+  | "FieldValidationFailed"
+  | "Other"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 export interface LambdaFunction {
   configuration?: LambdaFunctionConfiguration;
   costCalculation?: ResourceCostCalculation;

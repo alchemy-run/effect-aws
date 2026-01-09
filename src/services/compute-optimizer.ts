@@ -202,34 +202,18 @@ export type ResourceType =
   | "License"
   | "RdsDBInstance"
   | "AuroraDBClusterStorage"
-  | "Idle";
-export const ResourceType = S.Literal(
-  "Ec2Instance",
-  "AutoScalingGroup",
-  "EbsVolume",
-  "LambdaFunction",
-  "NotApplicable",
-  "EcsService",
-  "License",
-  "RdsDBInstance",
-  "AuroraDBClusterStorage",
-  "Idle",
-);
+  | "Idle"
+  | (string & {});
+export const ResourceType = S.String;
 export type RecommendationPreferenceName =
   | "EnhancedInfrastructureMetrics"
   | "InferredWorkloadTypes"
   | "ExternalMetricsPreference"
   | "LookBackPeriodPreference"
   | "PreferredResources"
-  | "UtilizationPreferences";
-export const RecommendationPreferenceName = S.Literal(
-  "EnhancedInfrastructureMetrics",
-  "InferredWorkloadTypes",
-  "ExternalMetricsPreference",
-  "LookBackPeriodPreference",
-  "PreferredResources",
-  "UtilizationPreferences",
-);
+  | "UtilizationPreferences"
+  | (string & {});
+export const RecommendationPreferenceName = S.String;
 export type RecommendationPreferenceNames = RecommendationPreferenceName[];
 export const RecommendationPreferenceNames = S.Array(
   RecommendationPreferenceName,
@@ -311,89 +295,16 @@ export type ExportableAutoScalingGroupField =
   | "EffectiveRecommendationPreferencesSavingsEstimationMode"
   | "RecommendationOptionsSavingsOpportunityAfterDiscountsPercentage"
   | "RecommendationOptionsEstimatedMonthlySavingsCurrencyAfterDiscounts"
-  | "RecommendationOptionsEstimatedMonthlySavingsValueAfterDiscounts";
-export const ExportableAutoScalingGroupField = S.Literal(
-  "AccountId",
-  "AutoScalingGroupArn",
-  "AutoScalingGroupName",
-  "Finding",
-  "UtilizationMetricsCpuMaximum",
-  "UtilizationMetricsMemoryMaximum",
-  "UtilizationMetricsEbsReadOpsPerSecondMaximum",
-  "UtilizationMetricsEbsWriteOpsPerSecondMaximum",
-  "UtilizationMetricsEbsReadBytesPerSecondMaximum",
-  "UtilizationMetricsEbsWriteBytesPerSecondMaximum",
-  "UtilizationMetricsDiskReadOpsPerSecondMaximum",
-  "UtilizationMetricsDiskWriteOpsPerSecondMaximum",
-  "UtilizationMetricsDiskReadBytesPerSecondMaximum",
-  "UtilizationMetricsDiskWriteBytesPerSecondMaximum",
-  "UtilizationMetricsNetworkInBytesPerSecondMaximum",
-  "UtilizationMetricsNetworkOutBytesPerSecondMaximum",
-  "UtilizationMetricsNetworkPacketsInPerSecondMaximum",
-  "UtilizationMetricsNetworkPacketsOutPerSecondMaximum",
-  "LookbackPeriodInDays",
-  "CurrentConfigurationInstanceType",
-  "CurrentConfigurationDesiredCapacity",
-  "CurrentConfigurationMinSize",
-  "CurrentConfigurationMaxSize",
-  "CurrentConfigurationAllocationStrategy",
-  "CurrentConfigurationMixedInstanceTypes",
-  "CurrentConfigurationType",
-  "CurrentOnDemandPrice",
-  "CurrentStandardOneYearNoUpfrontReservedPrice",
-  "CurrentStandardThreeYearNoUpfrontReservedPrice",
-  "CurrentVCpus",
-  "CurrentMemory",
-  "CurrentStorage",
-  "CurrentNetwork",
-  "RecommendationOptionsConfigurationInstanceType",
-  "RecommendationOptionsConfigurationDesiredCapacity",
-  "RecommendationOptionsConfigurationMinSize",
-  "RecommendationOptionsConfigurationMaxSize",
-  "RecommendationOptionsConfigurationEstimatedInstanceHourReductionPercentage",
-  "RecommendationOptionsConfigurationAllocationStrategy",
-  "RecommendationOptionsConfigurationMixedInstanceTypes",
-  "RecommendationOptionsConfigurationType",
-  "RecommendationOptionsProjectedUtilizationMetricsCpuMaximum",
-  "RecommendationOptionsProjectedUtilizationMetricsMemoryMaximum",
-  "RecommendationOptionsPerformanceRisk",
-  "RecommendationOptionsOnDemandPrice",
-  "RecommendationOptionsStandardOneYearNoUpfrontReservedPrice",
-  "RecommendationOptionsStandardThreeYearNoUpfrontReservedPrice",
-  "RecommendationOptionsVcpus",
-  "RecommendationOptionsMemory",
-  "RecommendationOptionsStorage",
-  "RecommendationOptionsNetwork",
-  "LastRefreshTimestamp",
-  "CurrentPerformanceRisk",
-  "RecommendationOptionsSavingsOpportunityPercentage",
-  "RecommendationOptionsEstimatedMonthlySavingsCurrency",
-  "RecommendationOptionsEstimatedMonthlySavingsValue",
-  "EffectiveRecommendationPreferencesCpuVendorArchitectures",
-  "EffectiveRecommendationPreferencesEnhancedInfrastructureMetrics",
-  "EffectiveRecommendationPreferencesInferredWorkloadTypes",
-  "EffectiveRecommendationPreferencesPreferredResources",
-  "EffectiveRecommendationPreferencesLookBackPeriod",
-  "InferredWorkloadTypes",
-  "RecommendationOptionsMigrationEffort",
-  "CurrentInstanceGpuInfo",
-  "RecommendationOptionsInstanceGpuInfo",
-  "UtilizationMetricsGpuPercentageMaximum",
-  "UtilizationMetricsGpuMemoryPercentageMaximum",
-  "RecommendationOptionsProjectedUtilizationMetricsGpuPercentageMaximum",
-  "RecommendationOptionsProjectedUtilizationMetricsGpuMemoryPercentageMaximum",
-  "EffectiveRecommendationPreferencesSavingsEstimationMode",
-  "RecommendationOptionsSavingsOpportunityAfterDiscountsPercentage",
-  "RecommendationOptionsEstimatedMonthlySavingsCurrencyAfterDiscounts",
-  "RecommendationOptionsEstimatedMonthlySavingsValueAfterDiscounts",
-);
+  | "RecommendationOptionsEstimatedMonthlySavingsValueAfterDiscounts"
+  | (string & {});
+export const ExportableAutoScalingGroupField = S.String;
 export type ExportableAutoScalingGroupFields =
   ExportableAutoScalingGroupField[];
 export const ExportableAutoScalingGroupFields = S.Array(
   ExportableAutoScalingGroupField,
 );
-export type FileFormat = "Csv";
-export const FileFormat = S.Literal("Csv");
+export type FileFormat = "Csv" | (string & {});
+export const FileFormat = S.String;
 export type ExportableVolumeField =
   | "AccountId"
   | "VolumeArn"
@@ -429,44 +340,9 @@ export type ExportableVolumeField =
   | "EffectiveRecommendationPreferencesSavingsEstimationMode"
   | "RecommendationOptionsSavingsOpportunityAfterDiscountsPercentage"
   | "RecommendationOptionsEstimatedMonthlySavingsCurrencyAfterDiscounts"
-  | "RecommendationOptionsEstimatedMonthlySavingsValueAfterDiscounts";
-export const ExportableVolumeField = S.Literal(
-  "AccountId",
-  "VolumeArn",
-  "Finding",
-  "UtilizationMetricsVolumeReadOpsPerSecondMaximum",
-  "UtilizationMetricsVolumeWriteOpsPerSecondMaximum",
-  "UtilizationMetricsVolumeReadBytesPerSecondMaximum",
-  "UtilizationMetricsVolumeWriteBytesPerSecondMaximum",
-  "LookbackPeriodInDays",
-  "CurrentConfigurationVolumeType",
-  "CurrentConfigurationVolumeBaselineIOPS",
-  "CurrentConfigurationVolumeBaselineThroughput",
-  "CurrentConfigurationVolumeBurstIOPS",
-  "CurrentConfigurationVolumeBurstThroughput",
-  "CurrentConfigurationVolumeSize",
-  "CurrentMonthlyPrice",
-  "RecommendationOptionsConfigurationVolumeType",
-  "RecommendationOptionsConfigurationVolumeBaselineIOPS",
-  "RecommendationOptionsConfigurationVolumeBaselineThroughput",
-  "RecommendationOptionsConfigurationVolumeBurstIOPS",
-  "RecommendationOptionsConfigurationVolumeBurstThroughput",
-  "RecommendationOptionsConfigurationVolumeSize",
-  "RecommendationOptionsMonthlyPrice",
-  "RecommendationOptionsPerformanceRisk",
-  "LastRefreshTimestamp",
-  "CurrentPerformanceRisk",
-  "RecommendationOptionsSavingsOpportunityPercentage",
-  "RecommendationOptionsEstimatedMonthlySavingsCurrency",
-  "RecommendationOptionsEstimatedMonthlySavingsValue",
-  "Tags",
-  "RootVolume",
-  "CurrentConfigurationRootVolume",
-  "EffectiveRecommendationPreferencesSavingsEstimationMode",
-  "RecommendationOptionsSavingsOpportunityAfterDiscountsPercentage",
-  "RecommendationOptionsEstimatedMonthlySavingsCurrencyAfterDiscounts",
-  "RecommendationOptionsEstimatedMonthlySavingsValueAfterDiscounts",
-);
+  | "RecommendationOptionsEstimatedMonthlySavingsValueAfterDiscounts"
+  | (string & {});
+export const ExportableVolumeField = S.String;
 export type ExportableVolumeFields = ExportableVolumeField[];
 export const ExportableVolumeFields = S.Array(ExportableVolumeField);
 export type ExportableInstanceField =
@@ -540,80 +416,9 @@ export type ExportableInstanceField =
   | "EffectiveRecommendationPreferencesSavingsEstimationMode"
   | "RecommendationOptionsSavingsOpportunityAfterDiscountsPercentage"
   | "RecommendationOptionsEstimatedMonthlySavingsCurrencyAfterDiscounts"
-  | "RecommendationOptionsEstimatedMonthlySavingsValueAfterDiscounts";
-export const ExportableInstanceField = S.Literal(
-  "AccountId",
-  "InstanceArn",
-  "InstanceName",
-  "Finding",
-  "FindingReasonCodes",
-  "LookbackPeriodInDays",
-  "CurrentInstanceType",
-  "UtilizationMetricsCpuMaximum",
-  "UtilizationMetricsMemoryMaximum",
-  "UtilizationMetricsEbsReadOpsPerSecondMaximum",
-  "UtilizationMetricsEbsWriteOpsPerSecondMaximum",
-  "UtilizationMetricsEbsReadBytesPerSecondMaximum",
-  "UtilizationMetricsEbsWriteBytesPerSecondMaximum",
-  "UtilizationMetricsDiskReadOpsPerSecondMaximum",
-  "UtilizationMetricsDiskWriteOpsPerSecondMaximum",
-  "UtilizationMetricsDiskReadBytesPerSecondMaximum",
-  "UtilizationMetricsDiskWriteBytesPerSecondMaximum",
-  "UtilizationMetricsNetworkInBytesPerSecondMaximum",
-  "UtilizationMetricsNetworkOutBytesPerSecondMaximum",
-  "UtilizationMetricsNetworkPacketsInPerSecondMaximum",
-  "UtilizationMetricsNetworkPacketsOutPerSecondMaximum",
-  "CurrentOnDemandPrice",
-  "CurrentStandardOneYearNoUpfrontReservedPrice",
-  "CurrentStandardThreeYearNoUpfrontReservedPrice",
-  "CurrentVCpus",
-  "CurrentMemory",
-  "CurrentStorage",
-  "CurrentNetwork",
-  "RecommendationOptionsInstanceType",
-  "RecommendationOptionsProjectedUtilizationMetricsCpuMaximum",
-  "RecommendationOptionsProjectedUtilizationMetricsMemoryMaximum",
-  "RecommendationOptionsPlatformDifferences",
-  "RecommendationOptionsPerformanceRisk",
-  "RecommendationOptionsVcpus",
-  "RecommendationOptionsMemory",
-  "RecommendationOptionsStorage",
-  "RecommendationOptionsNetwork",
-  "RecommendationOptionsOnDemandPrice",
-  "RecommendationOptionsStandardOneYearNoUpfrontReservedPrice",
-  "RecommendationOptionsStandardThreeYearNoUpfrontReservedPrice",
-  "RecommendationsSourcesRecommendationSourceArn",
-  "RecommendationsSourcesRecommendationSourceType",
-  "LastRefreshTimestamp",
-  "CurrentPerformanceRisk",
-  "RecommendationOptionsSavingsOpportunityPercentage",
-  "RecommendationOptionsEstimatedMonthlySavingsCurrency",
-  "RecommendationOptionsEstimatedMonthlySavingsValue",
-  "EffectiveRecommendationPreferencesCpuVendorArchitectures",
-  "EffectiveRecommendationPreferencesEnhancedInfrastructureMetrics",
-  "EffectiveRecommendationPreferencesInferredWorkloadTypes",
-  "InferredWorkloadTypes",
-  "RecommendationOptionsMigrationEffort",
-  "EffectiveRecommendationPreferencesExternalMetricsSource",
-  "Tags",
-  "InstanceState",
-  "ExternalMetricStatusCode",
-  "ExternalMetricStatusReason",
-  "CurrentInstanceGpuInfo",
-  "RecommendationOptionsInstanceGpuInfo",
-  "UtilizationMetricsGpuPercentageMaximum",
-  "UtilizationMetricsGpuMemoryPercentageMaximum",
-  "RecommendationOptionsProjectedUtilizationMetricsGpuPercentageMaximum",
-  "RecommendationOptionsProjectedUtilizationMetricsGpuMemoryPercentageMaximum",
-  "Idle",
-  "EffectiveRecommendationPreferencesPreferredResources",
-  "EffectiveRecommendationPreferencesLookBackPeriod",
-  "EffectiveRecommendationPreferencesUtilizationPreferences",
-  "EffectiveRecommendationPreferencesSavingsEstimationMode",
-  "RecommendationOptionsSavingsOpportunityAfterDiscountsPercentage",
-  "RecommendationOptionsEstimatedMonthlySavingsCurrencyAfterDiscounts",
-  "RecommendationOptionsEstimatedMonthlySavingsValueAfterDiscounts",
-);
+  | "RecommendationOptionsEstimatedMonthlySavingsValueAfterDiscounts"
+  | (string & {});
+export const ExportableInstanceField = S.String;
 export type ExportableInstanceFields = ExportableInstanceField[];
 export const ExportableInstanceFields = S.Array(ExportableInstanceField);
 export type ExportableECSServiceField =
@@ -644,37 +449,9 @@ export type ExportableECSServiceField =
   | "EffectiveRecommendationPreferencesSavingsEstimationMode"
   | "RecommendationOptionsSavingsOpportunityAfterDiscountsPercentage"
   | "RecommendationOptionsEstimatedMonthlySavingsCurrencyAfterDiscounts"
-  | "RecommendationOptionsEstimatedMonthlySavingsValueAfterDiscounts";
-export const ExportableECSServiceField = S.Literal(
-  "AccountId",
-  "ServiceArn",
-  "LookbackPeriodInDays",
-  "LastRefreshTimestamp",
-  "LaunchType",
-  "CurrentPerformanceRisk",
-  "CurrentServiceConfigurationMemory",
-  "CurrentServiceConfigurationCpu",
-  "CurrentServiceConfigurationTaskDefinitionArn",
-  "CurrentServiceConfigurationAutoScalingConfiguration",
-  "CurrentServiceContainerConfigurations",
-  "UtilizationMetricsCpuMaximum",
-  "UtilizationMetricsMemoryMaximum",
-  "Finding",
-  "FindingReasonCodes",
-  "RecommendationOptionsMemory",
-  "RecommendationOptionsCpu",
-  "RecommendationOptionsSavingsOpportunityPercentage",
-  "RecommendationOptionsEstimatedMonthlySavingsCurrency",
-  "RecommendationOptionsEstimatedMonthlySavingsValue",
-  "RecommendationOptionsContainerRecommendations",
-  "RecommendationOptionsProjectedUtilizationMetricsCpuMaximum",
-  "RecommendationOptionsProjectedUtilizationMetricsMemoryMaximum",
-  "Tags",
-  "EffectiveRecommendationPreferencesSavingsEstimationMode",
-  "RecommendationOptionsSavingsOpportunityAfterDiscountsPercentage",
-  "RecommendationOptionsEstimatedMonthlySavingsCurrencyAfterDiscounts",
-  "RecommendationOptionsEstimatedMonthlySavingsValueAfterDiscounts",
-);
+  | "RecommendationOptionsEstimatedMonthlySavingsValueAfterDiscounts"
+  | (string & {});
+export const ExportableECSServiceField = S.String;
 export type ExportableECSServiceFields = ExportableECSServiceField[];
 export const ExportableECSServiceFields = S.Array(ExportableECSServiceField);
 export type ExportableIdleField =
@@ -700,32 +477,9 @@ export type ExportableIdleField =
   | "UtilizationMetricsPacketsInFromDestinationMaximum"
   | "Finding"
   | "FindingDescription"
-  | "Tags";
-export const ExportableIdleField = S.Literal(
-  "AccountId",
-  "ResourceArn",
-  "ResourceId",
-  "ResourceType",
-  "LastRefreshTimestamp",
-  "LookbackPeriodInDays",
-  "SavingsOpportunity",
-  "SavingsOpportunityAfterDiscount",
-  "UtilizationMetricsCpuMaximum",
-  "UtilizationMetricsMemoryMaximum",
-  "UtilizationMetricsNetworkOutBytesPerSecondMaximum",
-  "UtilizationMetricsNetworkInBytesPerSecondMaximum",
-  "UtilizationMetricsDatabaseConnectionsMaximum",
-  "UtilizationMetricsEBSVolumeReadIOPSMaximum",
-  "UtilizationMetricsEBSVolumeWriteIOPSMaximum",
-  "UtilizationMetricsVolumeReadOpsPerSecondMaximum",
-  "UtilizationMetricsVolumeWriteOpsPerSecondMaximum",
-  "UtilizationMetricsActiveConnectionCountMaximum",
-  "UtilizationMetricsPacketsInFromSourceMaximum",
-  "UtilizationMetricsPacketsInFromDestinationMaximum",
-  "Finding",
-  "FindingDescription",
-  "Tags",
-);
+  | "Tags"
+  | (string & {});
+export const ExportableIdleField = S.String;
 export type ExportableIdleFields = ExportableIdleField[];
 export const ExportableIdleFields = S.Array(ExportableIdleField);
 export type ExportableLambdaFunctionField =
@@ -759,40 +513,9 @@ export type ExportableLambdaFunctionField =
   | "EffectiveRecommendationPreferencesSavingsEstimationMode"
   | "RecommendationOptionsSavingsOpportunityAfterDiscountsPercentage"
   | "RecommendationOptionsEstimatedMonthlySavingsCurrencyAfterDiscounts"
-  | "RecommendationOptionsEstimatedMonthlySavingsValueAfterDiscounts";
-export const ExportableLambdaFunctionField = S.Literal(
-  "AccountId",
-  "FunctionArn",
-  "FunctionVersion",
-  "Finding",
-  "FindingReasonCodes",
-  "NumberOfInvocations",
-  "UtilizationMetricsDurationMaximum",
-  "UtilizationMetricsDurationAverage",
-  "UtilizationMetricsMemoryMaximum",
-  "UtilizationMetricsMemoryAverage",
-  "LookbackPeriodInDays",
-  "CurrentConfigurationMemorySize",
-  "CurrentConfigurationTimeout",
-  "CurrentCostTotal",
-  "CurrentCostAverage",
-  "RecommendationOptionsConfigurationMemorySize",
-  "RecommendationOptionsCostLow",
-  "RecommendationOptionsCostHigh",
-  "RecommendationOptionsProjectedUtilizationMetricsDurationLowerBound",
-  "RecommendationOptionsProjectedUtilizationMetricsDurationUpperBound",
-  "RecommendationOptionsProjectedUtilizationMetricsDurationExpected",
-  "LastRefreshTimestamp",
-  "CurrentPerformanceRisk",
-  "RecommendationOptionsSavingsOpportunityPercentage",
-  "RecommendationOptionsEstimatedMonthlySavingsCurrency",
-  "RecommendationOptionsEstimatedMonthlySavingsValue",
-  "Tags",
-  "EffectiveRecommendationPreferencesSavingsEstimationMode",
-  "RecommendationOptionsSavingsOpportunityAfterDiscountsPercentage",
-  "RecommendationOptionsEstimatedMonthlySavingsCurrencyAfterDiscounts",
-  "RecommendationOptionsEstimatedMonthlySavingsValueAfterDiscounts",
-);
+  | "RecommendationOptionsEstimatedMonthlySavingsValueAfterDiscounts"
+  | (string & {});
+export const ExportableLambdaFunctionField = S.String;
 export type ExportableLambdaFunctionFields = ExportableLambdaFunctionField[];
 export const ExportableLambdaFunctionFields = S.Array(
   ExportableLambdaFunctionField,
@@ -818,30 +541,9 @@ export type ExportableLicenseField =
   | "RecommendationOptionsSavingsOpportunityPercentage"
   | "RecommendationOptionsEstimatedMonthlySavingsCurrency"
   | "RecommendationOptionsEstimatedMonthlySavingsValue"
-  | "Tags";
-export const ExportableLicenseField = S.Literal(
-  "AccountId",
-  "ResourceArn",
-  "LookbackPeriodInDays",
-  "LastRefreshTimestamp",
-  "Finding",
-  "FindingReasonCodes",
-  "CurrentLicenseConfigurationNumberOfCores",
-  "CurrentLicenseConfigurationInstanceType",
-  "CurrentLicenseConfigurationOperatingSystem",
-  "CurrentLicenseConfigurationLicenseName",
-  "CurrentLicenseConfigurationLicenseEdition",
-  "CurrentLicenseConfigurationLicenseModel",
-  "CurrentLicenseConfigurationLicenseVersion",
-  "CurrentLicenseConfigurationMetricsSource",
-  "RecommendationOptionsOperatingSystem",
-  "RecommendationOptionsLicenseEdition",
-  "RecommendationOptionsLicenseModel",
-  "RecommendationOptionsSavingsOpportunityPercentage",
-  "RecommendationOptionsEstimatedMonthlySavingsCurrency",
-  "RecommendationOptionsEstimatedMonthlySavingsValue",
-  "Tags",
-);
+  | "Tags"
+  | (string & {});
+export const ExportableLicenseField = S.String;
 export type ExportableLicenseFields = ExportableLicenseField[];
 export const ExportableLicenseFields = S.Array(ExportableLicenseField);
 export type ExportableRDSDBField =
@@ -926,91 +628,9 @@ export type ExportableRDSDBField =
   | "LastRefreshTimestamp"
   | "Tags"
   | "DBClusterIdentifier"
-  | "PromotionTier";
-export const ExportableRDSDBField = S.Literal(
-  "ResourceArn",
-  "AccountId",
-  "Engine",
-  "EngineVersion",
-  "Idle",
-  "MultiAZDBInstance",
-  "ClusterWriter",
-  "CurrentDBInstanceClass",
-  "CurrentStorageConfigurationStorageType",
-  "CurrentStorageConfigurationAllocatedStorage",
-  "CurrentStorageConfigurationMaxAllocatedStorage",
-  "CurrentStorageConfigurationIOPS",
-  "CurrentStorageConfigurationStorageThroughput",
-  "CurrentStorageEstimatedMonthlyVolumeIOPsCostVariation",
-  "CurrentInstanceOnDemandHourlyPrice",
-  "CurrentStorageOnDemandMonthlyPrice",
-  "LookbackPeriodInDays",
-  "CurrentStorageEstimatedClusterInstanceOnDemandMonthlyCost",
-  "CurrentStorageEstimatedClusterStorageOnDemandMonthlyCost",
-  "CurrentStorageEstimatedClusterStorageIOOnDemandMonthlyCost",
-  "CurrentInstancePerformanceRisk",
-  "UtilizationMetricsCpuMaximum",
-  "UtilizationMetricsMemoryMaximum",
-  "UtilizationMetricsEBSVolumeStorageSpaceUtilizationMaximum",
-  "UtilizationMetricsNetworkReceiveThroughputMaximum",
-  "UtilizationMetricsNetworkTransmitThroughputMaximum",
-  "UtilizationMetricsEBSVolumeReadIOPSMaximum",
-  "UtilizationMetricsEBSVolumeWriteIOPSMaximum",
-  "UtilizationMetricsEBSVolumeReadThroughputMaximum",
-  "UtilizationMetricsEBSVolumeWriteThroughputMaximum",
-  "UtilizationMetricsDatabaseConnectionsMaximum",
-  "UtilizationMetricsStorageNetworkReceiveThroughputMaximum",
-  "UtilizationMetricsStorageNetworkTransmitThroughputMaximum",
-  "UtilizationMetricsAuroraMemoryHealthStateMaximum",
-  "UtilizationMetricsAuroraMemoryNumDeclinedSqlTotalMaximum",
-  "UtilizationMetricsAuroraMemoryNumKillConnTotalMaximum",
-  "UtilizationMetricsAuroraMemoryNumKillQueryTotalMaximum",
-  "UtilizationMetricsReadIOPSEphemeralStorageMaximum",
-  "UtilizationMetricsWriteIOPSEphemeralStorageMaximum",
-  "UtilizationMetricsVolumeBytesUsedAverage",
-  "UtilizationMetricsVolumeReadIOPsAverage",
-  "UtilizationMetricsVolumeWriteIOPsAverage",
-  "InstanceFinding",
-  "InstanceFindingReasonCodes",
-  "StorageFinding",
-  "StorageFindingReasonCodes",
-  "InstanceRecommendationOptionsDBInstanceClass",
-  "InstanceRecommendationOptionsRank",
-  "InstanceRecommendationOptionsPerformanceRisk",
-  "InstanceRecommendationOptionsProjectedUtilizationMetricsCpuMaximum",
-  "StorageRecommendationOptionsStorageType",
-  "StorageRecommendationOptionsAllocatedStorage",
-  "StorageRecommendationOptionsMaxAllocatedStorage",
-  "StorageRecommendationOptionsIOPS",
-  "StorageRecommendationOptionsStorageThroughput",
-  "StorageRecommendationOptionsRank",
-  "StorageRecommendationOptionsEstimatedMonthlyVolumeIOPsCostVariation",
-  "InstanceRecommendationOptionsInstanceOnDemandHourlyPrice",
-  "InstanceRecommendationOptionsSavingsOpportunityPercentage",
-  "InstanceRecommendationOptionsEstimatedMonthlySavingsCurrency",
-  "InstanceRecommendationOptionsEstimatedMonthlySavingsValue",
-  "InstanceRecommendationOptionsSavingsOpportunityAfterDiscountsPercentage",
-  "InstanceRecommendationOptionsEstimatedMonthlySavingsCurrencyAfterDiscounts",
-  "InstanceRecommendationOptionsEstimatedMonthlySavingsValueAfterDiscounts",
-  "StorageRecommendationOptionsOnDemandMonthlyPrice",
-  "StorageRecommendationOptionsEstimatedClusterInstanceOnDemandMonthlyCost",
-  "StorageRecommendationOptionsEstimatedClusterStorageOnDemandMonthlyCost",
-  "StorageRecommendationOptionsEstimatedClusterStorageIOOnDemandMonthlyCost",
-  "StorageRecommendationOptionsSavingsOpportunityPercentage",
-  "StorageRecommendationOptionsEstimatedMonthlySavingsCurrency",
-  "StorageRecommendationOptionsEstimatedMonthlySavingsValue",
-  "StorageRecommendationOptionsSavingsOpportunityAfterDiscountsPercentage",
-  "StorageRecommendationOptionsEstimatedMonthlySavingsCurrencyAfterDiscounts",
-  "StorageRecommendationOptionsEstimatedMonthlySavingsValueAfterDiscounts",
-  "EffectiveRecommendationPreferencesCpuVendorArchitectures",
-  "EffectiveRecommendationPreferencesEnhancedInfrastructureMetrics",
-  "EffectiveRecommendationPreferencesLookBackPeriod",
-  "EffectiveRecommendationPreferencesSavingsEstimationMode",
-  "LastRefreshTimestamp",
-  "Tags",
-  "DBClusterIdentifier",
-  "PromotionTier",
-);
+  | "PromotionTier"
+  | (string & {});
+export const ExportableRDSDBField = S.String;
 export type ExportableRDSDBFields = ExportableRDSDBField[];
 export const ExportableRDSDBFields = S.Array(ExportableRDSDBField);
 export type AutoScalingGroupArns = string[];
@@ -1019,42 +639,49 @@ export type VolumeArns = string[];
 export const VolumeArns = S.Array(S.String);
 export type InstanceArns = string[];
 export const InstanceArns = S.Array(S.String);
-export type MetricStatistic = "Maximum" | "Average";
-export const MetricStatistic = S.Literal("Maximum", "Average");
+export type MetricStatistic = "Maximum" | "Average" | (string & {});
+export const MetricStatistic = S.String;
 export type ServiceArns = string[];
 export const ServiceArns = S.Array(S.String);
-export type Status = "Active" | "Inactive" | "Pending" | "Failed";
-export const Status = S.Literal("Active", "Inactive", "Pending", "Failed");
+export type Status =
+  | "Active"
+  | "Inactive"
+  | "Pending"
+  | "Failed"
+  | (string & {});
+export const Status = S.String;
 export type ResourceArns = string[];
 export const ResourceArns = S.Array(S.String);
 export type FunctionArns = string[];
 export const FunctionArns = S.Array(S.String);
-export type EnhancedInfrastructureMetrics = "Active" | "Inactive";
-export const EnhancedInfrastructureMetrics = S.Literal("Active", "Inactive");
-export type InferredWorkloadTypesPreference = "Active" | "Inactive";
-export const InferredWorkloadTypesPreference = S.Literal("Active", "Inactive");
-export type LookBackPeriodPreference = "DAYS_14" | "DAYS_32" | "DAYS_93";
-export const LookBackPeriodPreference = S.Literal(
-  "DAYS_14",
-  "DAYS_32",
-  "DAYS_93",
-);
-export type SavingsEstimationMode = "AfterDiscounts" | "BeforeDiscounts";
-export const SavingsEstimationMode = S.Literal(
-  "AfterDiscounts",
-  "BeforeDiscounts",
-);
+export type EnhancedInfrastructureMetrics =
+  | "Active"
+  | "Inactive"
+  | (string & {});
+export const EnhancedInfrastructureMetrics = S.String;
+export type InferredWorkloadTypesPreference =
+  | "Active"
+  | "Inactive"
+  | (string & {});
+export const InferredWorkloadTypesPreference = S.String;
+export type LookBackPeriodPreference =
+  | "DAYS_14"
+  | "DAYS_32"
+  | "DAYS_93"
+  | (string & {});
+export const LookBackPeriodPreference = S.String;
+export type SavingsEstimationMode =
+  | "AfterDiscounts"
+  | "BeforeDiscounts"
+  | (string & {});
+export const SavingsEstimationMode = S.String;
 export type FilterName =
   | "Finding"
   | "FindingReasonCodes"
   | "RecommendationSourceType"
-  | "InferredWorkloadTypes";
-export const FilterName = S.Literal(
-  "Finding",
-  "FindingReasonCodes",
-  "RecommendationSourceType",
-  "InferredWorkloadTypes",
-);
+  | "InferredWorkloadTypes"
+  | (string & {});
+export const FilterName = S.String;
 export type FilterValues = string[];
 export const FilterValues = S.Array(S.String);
 export interface Filter {
@@ -1075,8 +702,8 @@ export const S3DestinationConfig = S.suspend(() =>
 ).annotations({
   identifier: "S3DestinationConfig",
 }) as any as S.Schema<S3DestinationConfig>;
-export type CpuVendorArchitecture = "AWS_ARM64" | "CURRENT";
-export const CpuVendorArchitecture = S.Literal("AWS_ARM64", "CURRENT");
+export type CpuVendorArchitecture = "AWS_ARM64" | "CURRENT" | (string & {});
+export const CpuVendorArchitecture = S.String;
 export type CpuVendorArchitectures = CpuVendorArchitecture[];
 export const CpuVendorArchitectures = S.Array(CpuVendorArchitecture);
 export interface RecommendationPreferences {
@@ -1133,8 +760,8 @@ export const GetAutoScalingGroupRecommendationsRequest = S.suspend(() =>
 ).annotations({
   identifier: "GetAutoScalingGroupRecommendationsRequest",
 }) as any as S.Schema<GetAutoScalingGroupRecommendationsRequest>;
-export type EBSFilterName = "Finding";
-export const EBSFilterName = S.Literal("Finding");
+export type EBSFilterName = "Finding" | (string & {});
+export const EBSFilterName = S.String;
 export interface EBSFilter {
   name?: EBSFilterName;
   values?: string[];
@@ -1234,11 +861,9 @@ export const GetECSServiceRecommendationProjectedMetricsRequest = S.suspend(
 }) as any as S.Schema<GetECSServiceRecommendationProjectedMetricsRequest>;
 export type ECSServiceRecommendationFilterName =
   | "Finding"
-  | "FindingReasonCode";
-export const ECSServiceRecommendationFilterName = S.Literal(
-  "Finding",
-  "FindingReasonCode",
-);
+  | "FindingReasonCode"
+  | (string & {});
+export const ECSServiceRecommendationFilterName = S.String;
 export interface ECSServiceRecommendationFilter {
   name?: ECSServiceRecommendationFilterName;
   values?: string[];
@@ -1307,11 +932,9 @@ export const GetEnrollmentStatusResponse = S.suspend(() =>
 }) as any as S.Schema<GetEnrollmentStatusResponse>;
 export type LambdaFunctionRecommendationFilterName =
   | "Finding"
-  | "FindingReasonCode";
-export const LambdaFunctionRecommendationFilterName = S.Literal(
-  "Finding",
-  "FindingReasonCode",
-);
+  | "FindingReasonCode"
+  | (string & {});
+export const LambdaFunctionRecommendationFilterName = S.String;
 export interface LambdaFunctionRecommendationFilter {
   name?: LambdaFunctionRecommendationFilterName;
   values?: string[];
@@ -1352,12 +975,9 @@ export const GetLambdaFunctionRecommendationsRequest = S.suspend(() =>
 export type LicenseRecommendationFilterName =
   | "Finding"
   | "FindingReasonCode"
-  | "LicenseName";
-export const LicenseRecommendationFilterName = S.Literal(
-  "Finding",
-  "FindingReasonCode",
-  "LicenseName",
-);
+  | "LicenseName"
+  | (string & {});
+export const LicenseRecommendationFilterName = S.String;
 export interface LicenseRecommendationFilter {
   name?: LicenseRecommendationFilterName;
   values?: string[];
@@ -1422,14 +1042,9 @@ export type RDSDBRecommendationFilterName =
   | "InstanceFindingReasonCode"
   | "StorageFinding"
   | "StorageFindingReasonCode"
-  | "Idle";
-export const RDSDBRecommendationFilterName = S.Literal(
-  "InstanceFinding",
-  "InstanceFindingReasonCode",
-  "StorageFinding",
-  "StorageFindingReasonCode",
-  "Idle",
-);
+  | "Idle"
+  | (string & {});
+export const RDSDBRecommendationFilterName = S.String;
 export interface RDSDBRecommendationFilter {
   name?: RDSDBRecommendationFilterName;
   values?: string[];
@@ -1466,8 +1081,12 @@ export const GetRDSDatabaseRecommendationsRequest = S.suspend(() =>
 ).annotations({
   identifier: "GetRDSDatabaseRecommendationsRequest",
 }) as any as S.Schema<GetRDSDatabaseRecommendationsRequest>;
-export type ScopeName = "Organization" | "AccountId" | "ResourceArn";
-export const ScopeName = S.Literal("Organization", "AccountId", "ResourceArn");
+export type ScopeName =
+  | "Organization"
+  | "AccountId"
+  | "ResourceArn"
+  | (string & {});
+export const ScopeName = S.String;
 export interface Scope {
   name?: ScopeName;
   value?: string;
@@ -1523,37 +1142,36 @@ export const UpdateEnrollmentStatusRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateEnrollmentStatusRequest",
 }) as any as S.Schema<UpdateEnrollmentStatusRequest>;
-export type JobFilterName = "ResourceType" | "JobStatus";
-export const JobFilterName = S.Literal("ResourceType", "JobStatus");
-export type IdleRecommendationFilterName = "Finding" | "ResourceType";
-export const IdleRecommendationFilterName = S.Literal(
-  "Finding",
-  "ResourceType",
-);
-export type EnrollmentFilterName = "Status";
-export const EnrollmentFilterName = S.Literal("Status");
-export type Dimension = "SavingsValue" | "SavingsValueAfterDiscount";
-export const Dimension = S.Literal("SavingsValue", "SavingsValueAfterDiscount");
-export type Order = "Asc" | "Desc";
-export const Order = S.Literal("Asc", "Desc");
+export type JobFilterName = "ResourceType" | "JobStatus" | (string & {});
+export const JobFilterName = S.String;
+export type IdleRecommendationFilterName =
+  | "Finding"
+  | "ResourceType"
+  | (string & {});
+export const IdleRecommendationFilterName = S.String;
+export type EnrollmentFilterName = "Status" | (string & {});
+export const EnrollmentFilterName = S.String;
+export type Dimension =
+  | "SavingsValue"
+  | "SavingsValueAfterDiscount"
+  | (string & {});
+export const Dimension = S.String;
+export type Order = "Asc" | "Desc" | (string & {});
+export const Order = S.String;
 export type ExternalMetricsSource =
   | "Datadog"
   | "Dynatrace"
   | "NewRelic"
-  | "Instana";
-export const ExternalMetricsSource = S.Literal(
-  "Datadog",
-  "Dynatrace",
-  "NewRelic",
-  "Instana",
-);
-export type CustomizableMetricName = "CpuUtilization" | "MemoryUtilization";
-export const CustomizableMetricName = S.Literal(
-  "CpuUtilization",
-  "MemoryUtilization",
-);
-export type PreferredResourceName = "Ec2InstanceTypes";
-export const PreferredResourceName = S.Literal("Ec2InstanceTypes");
+  | "Instana"
+  | (string & {});
+export const ExternalMetricsSource = S.String;
+export type CustomizableMetricName =
+  | "CpuUtilization"
+  | "MemoryUtilization"
+  | (string & {});
+export const CustomizableMetricName = S.String;
+export type PreferredResourceName = "Ec2InstanceTypes" | (string & {});
+export const PreferredResourceName = S.String;
 export type PreferredResourceValues = string[];
 export const PreferredResourceValues = S.Array(S.String);
 export interface JobFilter {
@@ -1627,19 +1245,19 @@ export const PreferredResource = S.suspend(() =>
 }) as any as S.Schema<PreferredResource>;
 export type PreferredResources = PreferredResource[];
 export const PreferredResources = S.Array(PreferredResource);
-export type CustomizableMetricThreshold = "P90" | "P95" | "P99_5";
-export const CustomizableMetricThreshold = S.Literal("P90", "P95", "P99_5");
+export type CustomizableMetricThreshold =
+  | "P90"
+  | "P95"
+  | "P99_5"
+  | (string & {});
+export const CustomizableMetricThreshold = S.String;
 export type CustomizableMetricHeadroom =
   | "PERCENT_30"
   | "PERCENT_20"
   | "PERCENT_10"
-  | "PERCENT_0";
-export const CustomizableMetricHeadroom = S.Literal(
-  "PERCENT_30",
-  "PERCENT_20",
-  "PERCENT_10",
-  "PERCENT_0",
-);
+  | "PERCENT_0"
+  | (string & {});
+export const CustomizableMetricHeadroom = S.String;
 export interface DeleteRecommendationPreferencesRequest {
   resourceType: ResourceType;
   scope?: Scope;
@@ -1889,20 +1507,16 @@ export type Finding =
   | "Underprovisioned"
   | "Overprovisioned"
   | "Optimized"
-  | "NotOptimized";
-export const Finding = S.Literal(
-  "Underprovisioned",
-  "Overprovisioned",
-  "Optimized",
-  "NotOptimized",
-);
-export type CurrentPerformanceRisk = "VeryLow" | "Low" | "Medium" | "High";
-export const CurrentPerformanceRisk = S.Literal(
-  "VeryLow",
-  "Low",
-  "Medium",
-  "High",
-);
+  | "NotOptimized"
+  | (string & {});
+export const Finding = S.String;
+export type CurrentPerformanceRisk =
+  | "VeryLow"
+  | "Low"
+  | "Medium"
+  | "High"
+  | (string & {});
+export const CurrentPerformanceRisk = S.String;
 export type InferredWorkloadType =
   | "AmazonEmr"
   | "ApacheCassandra"
@@ -1912,22 +1526,13 @@ export type InferredWorkloadType =
   | "PostgreSql"
   | "Redis"
   | "Kafka"
-  | "SQLServer";
-export const InferredWorkloadType = S.Literal(
-  "AmazonEmr",
-  "ApacheCassandra",
-  "ApacheHadoop",
-  "Memcached",
-  "Nginx",
-  "PostgreSql",
-  "Redis",
-  "Kafka",
-  "SQLServer",
-);
+  | "SQLServer"
+  | (string & {});
+export const InferredWorkloadType = S.String;
 export type InferredWorkloadTypes = InferredWorkloadType[];
 export const InferredWorkloadTypes = S.Array(InferredWorkloadType);
-export type EBSFinding = "Optimized" | "NotOptimized";
-export const EBSFinding = S.Literal("Optimized", "NotOptimized");
+export type EBSFinding = "Optimized" | "NotOptimized" | (string & {});
+export const EBSFinding = S.String;
 export type InstanceRecommendationFindingReasonCode =
   | "CPUOverprovisioned"
   | "CPUUnderprovisioned"
@@ -1948,29 +1553,9 @@ export type InstanceRecommendationFindingReasonCode =
   | "GPUUnderprovisioned"
   | "GPUOverprovisioned"
   | "GPUMemoryUnderprovisioned"
-  | "GPUMemoryOverprovisioned";
-export const InstanceRecommendationFindingReasonCode = S.Literal(
-  "CPUOverprovisioned",
-  "CPUUnderprovisioned",
-  "MemoryOverprovisioned",
-  "MemoryUnderprovisioned",
-  "EBSThroughputOverprovisioned",
-  "EBSThroughputUnderprovisioned",
-  "EBSIOPSOverprovisioned",
-  "EBSIOPSUnderprovisioned",
-  "NetworkBandwidthOverprovisioned",
-  "NetworkBandwidthUnderprovisioned",
-  "NetworkPPSOverprovisioned",
-  "NetworkPPSUnderprovisioned",
-  "DiskIOPSOverprovisioned",
-  "DiskIOPSUnderprovisioned",
-  "DiskThroughputOverprovisioned",
-  "DiskThroughputUnderprovisioned",
-  "GPUUnderprovisioned",
-  "GPUOverprovisioned",
-  "GPUMemoryUnderprovisioned",
-  "GPUMemoryOverprovisioned",
-);
+  | "GPUMemoryOverprovisioned"
+  | (string & {});
+export const InstanceRecommendationFindingReasonCode = S.String;
 export type InstanceRecommendationFindingReasonCodes =
   InstanceRecommendationFindingReasonCode[];
 export const InstanceRecommendationFindingReasonCodes = S.Array(
@@ -1982,39 +1567,26 @@ export type InstanceState =
   | "shutting-down"
   | "terminated"
   | "stopping"
-  | "stopped";
-export const InstanceState = S.Literal(
-  "pending",
-  "running",
-  "shutting-down",
-  "terminated",
-  "stopping",
-  "stopped",
-);
-export type InstanceIdle = "True" | "False";
-export const InstanceIdle = S.Literal("True", "False");
-export type ECSServiceLaunchType = "EC2" | "Fargate";
-export const ECSServiceLaunchType = S.Literal("EC2", "Fargate");
+  | "stopped"
+  | (string & {});
+export const InstanceState = S.String;
+export type InstanceIdle = "True" | "False" | (string & {});
+export const InstanceIdle = S.String;
+export type ECSServiceLaunchType = "EC2" | "Fargate" | (string & {});
+export const ECSServiceLaunchType = S.String;
 export type ECSServiceRecommendationFinding =
   | "Optimized"
   | "Underprovisioned"
-  | "Overprovisioned";
-export const ECSServiceRecommendationFinding = S.Literal(
-  "Optimized",
-  "Underprovisioned",
-  "Overprovisioned",
-);
+  | "Overprovisioned"
+  | (string & {});
+export const ECSServiceRecommendationFinding = S.String;
 export type ECSServiceRecommendationFindingReasonCode =
   | "MemoryOverprovisioned"
   | "MemoryUnderprovisioned"
   | "CPUOverprovisioned"
-  | "CPUUnderprovisioned";
-export const ECSServiceRecommendationFindingReasonCode = S.Literal(
-  "MemoryOverprovisioned",
-  "MemoryUnderprovisioned",
-  "CPUOverprovisioned",
-  "CPUUnderprovisioned",
-);
+  | "CPUUnderprovisioned"
+  | (string & {});
+export const ECSServiceRecommendationFindingReasonCode = S.String;
 export type ECSServiceRecommendationFindingReasonCodes =
   ECSServiceRecommendationFindingReasonCode[];
 export const ECSServiceRecommendationFindingReasonCodes = S.Array(
@@ -2023,23 +1595,16 @@ export const ECSServiceRecommendationFindingReasonCodes = S.Array(
 export type LambdaFunctionRecommendationFinding =
   | "Optimized"
   | "NotOptimized"
-  | "Unavailable";
-export const LambdaFunctionRecommendationFinding = S.Literal(
-  "Optimized",
-  "NotOptimized",
-  "Unavailable",
-);
+  | "Unavailable"
+  | (string & {});
+export const LambdaFunctionRecommendationFinding = S.String;
 export type LambdaFunctionRecommendationFindingReasonCode =
   | "MemoryOverprovisioned"
   | "MemoryUnderprovisioned"
   | "InsufficientData"
-  | "Inconclusive";
-export const LambdaFunctionRecommendationFindingReasonCode = S.Literal(
-  "MemoryOverprovisioned",
-  "MemoryUnderprovisioned",
-  "InsufficientData",
-  "Inconclusive",
-);
+  | "Inconclusive"
+  | (string & {});
+export const LambdaFunctionRecommendationFindingReasonCode = S.String;
 export type LambdaFunctionRecommendationFindingReasonCodes =
   LambdaFunctionRecommendationFindingReasonCode[];
 export const LambdaFunctionRecommendationFindingReasonCodes = S.Array(
@@ -2048,47 +1613,33 @@ export const LambdaFunctionRecommendationFindingReasonCodes = S.Array(
 export type LicenseFinding =
   | "InsufficientMetrics"
   | "Optimized"
-  | "NotOptimized";
-export const LicenseFinding = S.Literal(
-  "InsufficientMetrics",
-  "Optimized",
-  "NotOptimized",
-);
+  | "NotOptimized"
+  | (string & {});
+export const LicenseFinding = S.String;
 export type LicenseFindingReasonCode =
   | "InvalidCloudWatchApplicationInsightsSetup"
   | "CloudWatchApplicationInsightsError"
   | "LicenseOverprovisioned"
-  | "Optimized";
-export const LicenseFindingReasonCode = S.Literal(
-  "InvalidCloudWatchApplicationInsightsSetup",
-  "CloudWatchApplicationInsightsError",
-  "LicenseOverprovisioned",
-  "Optimized",
-);
+  | "Optimized"
+  | (string & {});
+export const LicenseFindingReasonCode = S.String;
 export type LicenseFindingReasonCodes = LicenseFindingReasonCode[];
 export const LicenseFindingReasonCodes = S.Array(LicenseFindingReasonCode);
-export type Idle = "True" | "False";
-export const Idle = S.Literal("True", "False");
+export type Idle = "True" | "False" | (string & {});
+export const Idle = S.String;
 export type RDSInstanceFinding =
   | "Optimized"
   | "Underprovisioned"
-  | "Overprovisioned";
-export const RDSInstanceFinding = S.Literal(
-  "Optimized",
-  "Underprovisioned",
-  "Overprovisioned",
-);
+  | "Overprovisioned"
+  | (string & {});
+export const RDSInstanceFinding = S.String;
 export type RDSStorageFinding =
   | "Optimized"
   | "Underprovisioned"
   | "Overprovisioned"
-  | "NotOptimized";
-export const RDSStorageFinding = S.Literal(
-  "Optimized",
-  "Underprovisioned",
-  "Overprovisioned",
-  "NotOptimized",
-);
+  | "NotOptimized"
+  | (string & {});
+export const RDSStorageFinding = S.String;
 export type RDSInstanceFindingReasonCode =
   | "CPUOverprovisioned"
   | "NetworkBandwidthOverprovisioned"
@@ -2103,23 +1654,9 @@ export type RDSInstanceFindingReasonCode =
   | "DBClusterWriterUnderprovisioned"
   | "MemoryUnderprovisioned"
   | "InstanceStorageReadIOPSUnderprovisioned"
-  | "InstanceStorageWriteIOPSUnderprovisioned";
-export const RDSInstanceFindingReasonCode = S.Literal(
-  "CPUOverprovisioned",
-  "NetworkBandwidthOverprovisioned",
-  "EBSIOPSOverprovisioned",
-  "EBSIOPSUnderprovisioned",
-  "EBSThroughputOverprovisioned",
-  "CPUUnderprovisioned",
-  "NetworkBandwidthUnderprovisioned",
-  "EBSThroughputUnderprovisioned",
-  "NewGenerationDBInstanceClassAvailable",
-  "NewEngineVersionAvailable",
-  "DBClusterWriterUnderprovisioned",
-  "MemoryUnderprovisioned",
-  "InstanceStorageReadIOPSUnderprovisioned",
-  "InstanceStorageWriteIOPSUnderprovisioned",
-);
+  | "InstanceStorageWriteIOPSUnderprovisioned"
+  | (string & {});
+export const RDSInstanceFindingReasonCode = S.String;
 export type RDSInstanceFindingReasonCodes = RDSInstanceFindingReasonCode[];
 export const RDSInstanceFindingReasonCodes = S.Array(
   RDSInstanceFindingReasonCode,
@@ -2128,24 +1665,16 @@ export type RDSCurrentInstancePerformanceRisk =
   | "VeryLow"
   | "Low"
   | "Medium"
-  | "High";
-export const RDSCurrentInstancePerformanceRisk = S.Literal(
-  "VeryLow",
-  "Low",
-  "Medium",
-  "High",
-);
+  | "High"
+  | (string & {});
+export const RDSCurrentInstancePerformanceRisk = S.String;
 export type RDSEstimatedMonthlyVolumeIOPsCostVariation =
   | "None"
   | "Low"
   | "Medium"
-  | "High";
-export const RDSEstimatedMonthlyVolumeIOPsCostVariation = S.Literal(
-  "None",
-  "Low",
-  "Medium",
-  "High",
-);
+  | "High"
+  | (string & {});
+export const RDSEstimatedMonthlyVolumeIOPsCostVariation = S.String;
 export type RDSStorageFindingReasonCode =
   | "EBSVolumeAllocatedStorageUnderprovisioned"
   | "EBSVolumeThroughputUnderprovisioned"
@@ -2153,16 +1682,9 @@ export type RDSStorageFindingReasonCode =
   | "EBSVolumeThroughputOverprovisioned"
   | "NewGenerationStorageTypeAvailable"
   | "DBClusterStorageOptionAvailable"
-  | "DBClusterStorageSavingsAvailable";
-export const RDSStorageFindingReasonCode = S.Literal(
-  "EBSVolumeAllocatedStorageUnderprovisioned",
-  "EBSVolumeThroughputUnderprovisioned",
-  "EBSVolumeIOPSOverprovisioned",
-  "EBSVolumeThroughputOverprovisioned",
-  "NewGenerationStorageTypeAvailable",
-  "DBClusterStorageOptionAvailable",
-  "DBClusterStorageSavingsAvailable",
-);
+  | "DBClusterStorageSavingsAvailable"
+  | (string & {});
+export const RDSStorageFindingReasonCode = S.String;
 export type RDSStorageFindingReasonCodes = RDSStorageFindingReasonCode[];
 export const RDSStorageFindingReasonCodes = S.Array(
   RDSStorageFindingReasonCode,
@@ -2177,19 +1699,9 @@ export type RecommendationSourceType =
   | "RdsDBInstance"
   | "RdsDBInstanceStorage"
   | "AuroraDBClusterStorage"
-  | "NatGateway";
-export const RecommendationSourceType = S.Literal(
-  "Ec2Instance",
-  "AutoScalingGroup",
-  "EbsVolume",
-  "LambdaFunction",
-  "EcsService",
-  "License",
-  "RdsDBInstance",
-  "RdsDBInstanceStorage",
-  "AuroraDBClusterStorage",
-  "NatGateway",
-);
+  | "NatGateway"
+  | (string & {});
+export const RecommendationSourceType = S.String;
 export interface CustomizableMetricParameters {
   threshold?: CustomizableMetricThreshold;
   headroom?: CustomizableMetricHeadroom;
@@ -2311,29 +1823,16 @@ export type MetricName =
   | "NETWORK_PACKETS_IN_PER_SECOND"
   | "NETWORK_PACKETS_OUT_PER_SECOND"
   | "GPU_PERCENTAGE"
-  | "GPU_MEMORY_PERCENTAGE";
-export const MetricName = S.Literal(
-  "Cpu",
-  "Memory",
-  "EBS_READ_OPS_PER_SECOND",
-  "EBS_WRITE_OPS_PER_SECOND",
-  "EBS_READ_BYTES_PER_SECOND",
-  "EBS_WRITE_BYTES_PER_SECOND",
-  "DISK_READ_OPS_PER_SECOND",
-  "DISK_WRITE_OPS_PER_SECOND",
-  "DISK_READ_BYTES_PER_SECOND",
-  "DISK_WRITE_BYTES_PER_SECOND",
-  "NETWORK_IN_BYTES_PER_SECOND",
-  "NETWORK_OUT_BYTES_PER_SECOND",
-  "NETWORK_PACKETS_IN_PER_SECOND",
-  "NETWORK_PACKETS_OUT_PER_SECOND",
-  "GPU_PERCENTAGE",
-  "GPU_MEMORY_PERCENTAGE",
-);
-export type AllocationStrategy = "Prioritized" | "LowestPrice";
-export const AllocationStrategy = S.Literal("Prioritized", "LowestPrice");
-export type AsgType = "SingleInstanceType" | "MixedInstanceTypes";
-export const AsgType = S.Literal("SingleInstanceType", "MixedInstanceTypes");
+  | "GPU_MEMORY_PERCENTAGE"
+  | (string & {});
+export const MetricName = S.String;
+export type AllocationStrategy = "Prioritized" | "LowestPrice" | (string & {});
+export const AllocationStrategy = S.String;
+export type AsgType =
+  | "SingleInstanceType"
+  | "MixedInstanceTypes"
+  | (string & {});
+export const AsgType = S.String;
 export type MixedInstanceTypes = string[];
 export const MixedInstanceTypes = S.Array(S.String);
 export interface UtilizationMetric {
@@ -2352,34 +1851,29 @@ export const UtilizationMetric = S.suspend(() =>
 }) as any as S.Schema<UtilizationMetric>;
 export type ProjectedUtilizationMetrics = UtilizationMetric[];
 export const ProjectedUtilizationMetrics = S.Array(UtilizationMetric);
-export type MigrationEffort = "VeryLow" | "Low" | "Medium" | "High";
-export const MigrationEffort = S.Literal("VeryLow", "Low", "Medium", "High");
+export type MigrationEffort =
+  | "VeryLow"
+  | "Low"
+  | "Medium"
+  | "High"
+  | (string & {});
+export const MigrationEffort = S.String;
 export type EBSMetricName =
   | "VolumeReadOpsPerSecond"
   | "VolumeWriteOpsPerSecond"
   | "VolumeReadBytesPerSecond"
-  | "VolumeWriteBytesPerSecond";
-export const EBSMetricName = S.Literal(
-  "VolumeReadOpsPerSecond",
-  "VolumeWriteOpsPerSecond",
-  "VolumeReadBytesPerSecond",
-  "VolumeWriteBytesPerSecond",
-);
+  | "VolumeWriteBytesPerSecond"
+  | (string & {});
+export const EBSMetricName = S.String;
 export type PlatformDifference =
   | "Hypervisor"
   | "NetworkInterface"
   | "StorageInterface"
   | "InstanceStoreAvailability"
   | "VirtualizationType"
-  | "Architecture";
-export const PlatformDifference = S.Literal(
-  "Hypervisor",
-  "NetworkInterface",
-  "StorageInterface",
-  "InstanceStoreAvailability",
-  "VirtualizationType",
-  "Architecture",
-);
+  | "Architecture"
+  | (string & {});
+export const PlatformDifference = S.String;
 export type PlatformDifferences = PlatformDifference[];
 export const PlatformDifferences = S.Array(PlatformDifference);
 export type ExternalMetricStatusCode =
@@ -2392,55 +1886,45 @@ export type ExternalMetricStatusCode =
   | "INSUFFICIENT_DATADOG_METRICS"
   | "INSUFFICIENT_DYNATRACE_METRICS"
   | "INSUFFICIENT_NEWRELIC_METRICS"
-  | "INSUFFICIENT_INSTANA_METRICS";
-export const ExternalMetricStatusCode = S.Literal(
-  "NO_EXTERNAL_METRIC_SET",
-  "INTEGRATION_SUCCESS",
-  "DATADOG_INTEGRATION_ERROR",
-  "DYNATRACE_INTEGRATION_ERROR",
-  "NEWRELIC_INTEGRATION_ERROR",
-  "INSTANA_INTEGRATION_ERROR",
-  "INSUFFICIENT_DATADOG_METRICS",
-  "INSUFFICIENT_DYNATRACE_METRICS",
-  "INSUFFICIENT_NEWRELIC_METRICS",
-  "INSUFFICIENT_INSTANA_METRICS",
-);
+  | "INSUFFICIENT_INSTANA_METRICS"
+  | (string & {});
+export const ExternalMetricStatusCode = S.String;
 export type Timestamps = Date[];
 export const Timestamps = S.Array(
   S.Date.pipe(T.TimestampFormat("epoch-seconds")),
 );
 export type MetricValues = number[];
 export const MetricValues = S.Array(S.Number);
-export type ECSServiceMetricName = "Cpu" | "Memory";
-export const ECSServiceMetricName = S.Literal("Cpu", "Memory");
+export type ECSServiceMetricName = "Cpu" | "Memory" | (string & {});
+export const ECSServiceMetricName = S.String;
 export type AutoScalingConfiguration =
   | "TargetTrackingScalingCpu"
-  | "TargetTrackingScalingMemory";
-export const AutoScalingConfiguration = S.Literal(
-  "TargetTrackingScalingCpu",
-  "TargetTrackingScalingMemory",
-);
-export type ECSServiceMetricStatistic = "Maximum" | "Average";
-export const ECSServiceMetricStatistic = S.Literal("Maximum", "Average");
-export type LambdaFunctionMetricName = "Duration" | "Memory";
-export const LambdaFunctionMetricName = S.Literal("Duration", "Memory");
-export type LambdaFunctionMetricStatistic = "Maximum" | "Average";
-export const LambdaFunctionMetricStatistic = S.Literal("Maximum", "Average");
+  | "TargetTrackingScalingMemory"
+  | (string & {});
+export const AutoScalingConfiguration = S.String;
+export type ECSServiceMetricStatistic = "Maximum" | "Average" | (string & {});
+export const ECSServiceMetricStatistic = S.String;
+export type LambdaFunctionMetricName = "Duration" | "Memory" | (string & {});
+export const LambdaFunctionMetricName = S.String;
+export type LambdaFunctionMetricStatistic =
+  | "Maximum"
+  | "Average"
+  | (string & {});
+export const LambdaFunctionMetricStatistic = S.String;
 export type LicenseEdition =
   | "Enterprise"
   | "Standard"
   | "Free"
-  | "NoLicenseEditionFound";
-export const LicenseEdition = S.Literal(
-  "Enterprise",
-  "Standard",
-  "Free",
-  "NoLicenseEditionFound",
-);
-export type LicenseName = "SQLServer";
-export const LicenseName = S.Literal("SQLServer");
-export type LicenseModel = "LicenseIncluded" | "BringYourOwnLicense";
-export const LicenseModel = S.Literal("LicenseIncluded", "BringYourOwnLicense");
+  | "NoLicenseEditionFound"
+  | (string & {});
+export const LicenseEdition = S.String;
+export type LicenseName = "SQLServer" | (string & {});
+export const LicenseName = S.String;
+export type LicenseModel =
+  | "LicenseIncluded"
+  | "BringYourOwnLicense"
+  | (string & {});
+export const LicenseModel = S.String;
 export type RDSDBMetricName =
   | "CPU"
   | "Memory"
@@ -2462,32 +1946,15 @@ export type RDSDBMetricName =
   | "WriteIOPSEphemeralStorage"
   | "VolumeReadIOPs"
   | "VolumeBytesUsed"
-  | "VolumeWriteIOPs";
-export const RDSDBMetricName = S.Literal(
-  "CPU",
-  "Memory",
-  "EBSVolumeStorageSpaceUtilization",
-  "NetworkReceiveThroughput",
-  "NetworkTransmitThroughput",
-  "EBSVolumeReadIOPS",
-  "EBSVolumeWriteIOPS",
-  "EBSVolumeReadThroughput",
-  "EBSVolumeWriteThroughput",
-  "DatabaseConnections",
-  "StorageNetworkReceiveThroughput",
-  "StorageNetworkTransmitThroughput",
-  "AuroraMemoryHealthState",
-  "AuroraMemoryNumDeclinedSql",
-  "AuroraMemoryNumKillConnTotal",
-  "AuroraMemoryNumKillQueryTotal",
-  "ReadIOPSEphemeralStorage",
-  "WriteIOPSEphemeralStorage",
-  "VolumeReadIOPs",
-  "VolumeBytesUsed",
-  "VolumeWriteIOPs",
-);
-export type RDSDBMetricStatistic = "Maximum" | "Minimum" | "Average";
-export const RDSDBMetricStatistic = S.Literal("Maximum", "Minimum", "Average");
+  | "VolumeWriteIOPs"
+  | (string & {});
+export const RDSDBMetricName = S.String;
+export type RDSDBMetricStatistic =
+  | "Maximum"
+  | "Minimum"
+  | "Average"
+  | (string & {});
+export const RDSDBMetricStatistic = S.String;
 export interface RDSDBUtilizationMetric {
   name?: RDSDBMetricName;
   statistic?: RDSDBMetricStatistic;
@@ -2504,8 +1971,8 @@ export const RDSDBUtilizationMetric = S.suspend(() =>
 }) as any as S.Schema<RDSDBUtilizationMetric>;
 export type RDSDBProjectedUtilizationMetrics = RDSDBUtilizationMetric[];
 export const RDSDBProjectedUtilizationMetrics = S.Array(RDSDBUtilizationMetric);
-export type IdleFinding = "Idle" | "Unattached" | "Unused";
-export const IdleFinding = S.Literal("Idle", "Unattached", "Unused");
+export type IdleFinding = "Idle" | "Unattached" | "Unused" | (string & {});
+export const IdleFinding = S.String;
 export interface ExportAutoScalingGroupRecommendationsResponse {
   jobId?: string;
   s3Destination?: S3Destination;
@@ -2668,13 +2135,13 @@ export const PutRecommendationPreferencesResponse = S.suspend(() =>
 ).annotations({
   identifier: "PutRecommendationPreferencesResponse",
 }) as any as S.Schema<PutRecommendationPreferencesResponse>;
-export type JobStatus = "Queued" | "InProgress" | "Complete" | "Failed";
-export const JobStatus = S.Literal(
-  "Queued",
-  "InProgress",
-  "Complete",
-  "Failed",
-);
+export type JobStatus =
+  | "Queued"
+  | "InProgress"
+  | "Complete"
+  | "Failed"
+  | (string & {});
+export const JobStatus = S.String;
 export type UtilizationMetrics = UtilizationMetric[];
 export const UtilizationMetrics = S.Array(UtilizationMetric);
 export interface AutoScalingGroupConfiguration {
@@ -2832,15 +2299,9 @@ export type IdleRecommendationResourceType =
   | "EBSVolume"
   | "ECSService"
   | "RDSDBInstance"
-  | "NatGateway";
-export const IdleRecommendationResourceType = S.Literal(
-  "EC2Instance",
-  "AutoScalingGroup",
-  "EBSVolume",
-  "ECSService",
-  "RDSDBInstance",
-  "NatGateway",
-);
+  | "NatGateway"
+  | (string & {});
+export const IdleRecommendationResourceType = S.String;
 export interface LambdaFunctionUtilizationMetric {
   name?: LambdaFunctionMetricName;
   statistic?: LambdaFunctionMetricStatistic;
@@ -2860,8 +2321,8 @@ export type LambdaFunctionUtilizationMetrics =
 export const LambdaFunctionUtilizationMetrics = S.Array(
   LambdaFunctionUtilizationMetric,
 );
-export type Currency = "USD" | "CNY";
-export const Currency = S.Literal("USD", "CNY");
+export type Currency = "USD" | "CNY" | (string & {});
+export const Currency = S.String;
 export interface EstimatedMonthlySavings {
   currency?: Currency;
   value?: number;
@@ -2983,68 +2444,50 @@ export const InferredWorkloadSavings = S.Array(InferredWorkloadSaving);
 export type InstanceSavingsEstimationModeSource =
   | "PublicPricing"
   | "CostExplorerRightsizing"
-  | "CostOptimizationHub";
-export const InstanceSavingsEstimationModeSource = S.Literal(
-  "PublicPricing",
-  "CostExplorerRightsizing",
-  "CostOptimizationHub",
-);
+  | "CostOptimizationHub"
+  | (string & {});
+export const InstanceSavingsEstimationModeSource = S.String;
 export type EBSSavingsEstimationModeSource =
   | "PublicPricing"
   | "CostExplorerRightsizing"
-  | "CostOptimizationHub";
-export const EBSSavingsEstimationModeSource = S.Literal(
-  "PublicPricing",
-  "CostExplorerRightsizing",
-  "CostOptimizationHub",
-);
+  | "CostOptimizationHub"
+  | (string & {});
+export const EBSSavingsEstimationModeSource = S.String;
 export type ECSSavingsEstimationModeSource =
   | "PublicPricing"
   | "CostExplorerRightsizing"
-  | "CostOptimizationHub";
-export const ECSSavingsEstimationModeSource = S.Literal(
-  "PublicPricing",
-  "CostExplorerRightsizing",
-  "CostOptimizationHub",
-);
-export type LambdaFunctionMemoryMetricName = "Duration";
-export const LambdaFunctionMemoryMetricName = S.Literal("Duration");
+  | "CostOptimizationHub"
+  | (string & {});
+export const ECSSavingsEstimationModeSource = S.String;
+export type LambdaFunctionMemoryMetricName = "Duration" | (string & {});
+export const LambdaFunctionMemoryMetricName = S.String;
 export type LambdaFunctionMemoryMetricStatistic =
   | "LowerBound"
   | "UpperBound"
-  | "Expected";
-export const LambdaFunctionMemoryMetricStatistic = S.Literal(
-  "LowerBound",
-  "UpperBound",
-  "Expected",
-);
+  | "Expected"
+  | (string & {});
+export const LambdaFunctionMemoryMetricStatistic = S.String;
 export type LambdaSavingsEstimationModeSource =
   | "PublicPricing"
   | "CostExplorerRightsizing"
-  | "CostOptimizationHub";
-export const LambdaSavingsEstimationModeSource = S.Literal(
-  "PublicPricing",
-  "CostExplorerRightsizing",
-  "CostOptimizationHub",
-);
-export type MetricSourceProvider = "CloudWatchApplicationInsights";
-export const MetricSourceProvider = S.Literal("CloudWatchApplicationInsights");
+  | "CostOptimizationHub"
+  | (string & {});
+export const LambdaSavingsEstimationModeSource = S.String;
+export type MetricSourceProvider =
+  | "CloudWatchApplicationInsights"
+  | (string & {});
+export const MetricSourceProvider = S.String;
 export type RDSSavingsEstimationModeSource =
   | "PublicPricing"
   | "CostExplorerRightsizing"
-  | "CostOptimizationHub";
-export const RDSSavingsEstimationModeSource = S.Literal(
-  "PublicPricing",
-  "CostExplorerRightsizing",
-  "CostOptimizationHub",
-);
+  | "CostOptimizationHub"
+  | (string & {});
+export const RDSSavingsEstimationModeSource = S.String;
 export type FindingReasonCode =
   | "MemoryOverprovisioned"
-  | "MemoryUnderprovisioned";
-export const FindingReasonCode = S.Literal(
-  "MemoryOverprovisioned",
-  "MemoryUnderprovisioned",
-);
+  | "MemoryUnderprovisioned"
+  | (string & {});
+export const FindingReasonCode = S.String;
 export interface RecommendedOptionProjectedMetric {
   recommendedInstanceType?: string;
   rank?: number;
@@ -3237,21 +2680,9 @@ export type IdleMetricName =
   | "VolumeWriteOpsPerSecond"
   | "ActiveConnectionCount"
   | "PacketsInFromSource"
-  | "PacketsInFromDestination";
-export const IdleMetricName = S.Literal(
-  "CPU",
-  "Memory",
-  "NetworkOutBytesPerSecond",
-  "NetworkInBytesPerSecond",
-  "DatabaseConnections",
-  "EBSVolumeReadIOPS",
-  "EBSVolumeWriteIOPS",
-  "VolumeReadOpsPerSecond",
-  "VolumeWriteOpsPerSecond",
-  "ActiveConnectionCount",
-  "PacketsInFromSource",
-  "PacketsInFromDestination",
-);
+  | "PacketsInFromDestination"
+  | (string & {});
+export const IdleMetricName = S.String;
 export interface LambdaFunctionMemoryProjectedMetric {
   name?: LambdaFunctionMemoryMetricName;
   statistic?: LambdaFunctionMemoryMetricStatistic;

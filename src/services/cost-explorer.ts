@@ -290,18 +290,24 @@ export const StartSavingsPlansPurchaseRecommendationGenerationRequest =
   ).annotations({
     identifier: "StartSavingsPlansPurchaseRecommendationGenerationRequest",
   }) as any as S.Schema<StartSavingsPlansPurchaseRecommendationGenerationRequest>;
-export type CostCategoryRuleVersion = "CostCategoryExpression.v1";
-export const CostCategoryRuleVersion = S.Literal("CostCategoryExpression.v1");
-export type AnomalyFeedbackType = "YES" | "NO" | "PLANNED_ACTIVITY";
-export const AnomalyFeedbackType = S.Literal("YES", "NO", "PLANNED_ACTIVITY");
+export type CostCategoryRuleVersion =
+  | "CostCategoryExpression.v1"
+  | (string & {});
+export const CostCategoryRuleVersion = S.String;
+export type AnomalyFeedbackType =
+  | "YES"
+  | "NO"
+  | "PLANNED_ACTIVITY"
+  | (string & {});
+export const AnomalyFeedbackType = S.String;
 export type Values = string[];
 export const Values = S.Array(S.String);
-export type Granularity = "DAILY" | "MONTHLY" | "HOURLY";
-export const Granularity = S.Literal("DAILY", "MONTHLY", "HOURLY");
+export type Granularity = "DAILY" | "MONTHLY" | "HOURLY" | (string & {});
+export const Granularity = S.String;
 export type UsageServices = string[];
 export const UsageServices = S.Array(S.String);
-export type ApproximationDimension = "SERVICE" | "RESOURCE";
-export const ApproximationDimension = S.Literal("SERVICE", "RESOURCE");
+export type ApproximationDimension = "SERVICE" | "RESOURCE" | (string & {});
+export const ApproximationDimension = S.String;
 export type MetricNames = string[];
 export const MetricNames = S.Array(S.String);
 export type Metric =
@@ -311,16 +317,9 @@ export type Metric =
   | "NET_UNBLENDED_COST"
   | "NET_AMORTIZED_COST"
   | "USAGE_QUANTITY"
-  | "NORMALIZED_USAGE_AMOUNT";
-export const Metric = S.Literal(
-  "BLENDED_COST",
-  "UNBLENDED_COST",
-  "AMORTIZED_COST",
-  "NET_UNBLENDED_COST",
-  "NET_AMORTIZED_COST",
-  "USAGE_QUANTITY",
-  "NORMALIZED_USAGE_AMOUNT",
-);
+  | "NORMALIZED_USAGE_AMOUNT"
+  | (string & {});
+export const Metric = S.String;
 export type Dimension =
   | "AZ"
   | "INSTANCE_TYPE"
@@ -356,123 +355,85 @@ export type Dimension =
   | "AGREEMENT_END_DATE_TIME_BEFORE"
   | "INVOICING_ENTITY"
   | "ANOMALY_TOTAL_IMPACT_ABSOLUTE"
-  | "ANOMALY_TOTAL_IMPACT_PERCENTAGE";
-export const Dimension = S.Literal(
-  "AZ",
-  "INSTANCE_TYPE",
-  "LINKED_ACCOUNT",
-  "PAYER_ACCOUNT",
-  "LINKED_ACCOUNT_NAME",
-  "OPERATION",
-  "PURCHASE_TYPE",
-  "REGION",
-  "SERVICE",
-  "SERVICE_CODE",
-  "USAGE_TYPE",
-  "USAGE_TYPE_GROUP",
-  "RECORD_TYPE",
-  "OPERATING_SYSTEM",
-  "TENANCY",
-  "SCOPE",
-  "PLATFORM",
-  "SUBSCRIPTION_ID",
-  "LEGAL_ENTITY_NAME",
-  "DEPLOYMENT_OPTION",
-  "DATABASE_ENGINE",
-  "CACHE_ENGINE",
-  "INSTANCE_TYPE_FAMILY",
-  "BILLING_ENTITY",
-  "RESERVATION_ID",
-  "RESOURCE_ID",
-  "RIGHTSIZING_TYPE",
-  "SAVINGS_PLANS_TYPE",
-  "SAVINGS_PLAN_ARN",
-  "PAYMENT_OPTION",
-  "AGREEMENT_END_DATE_TIME_AFTER",
-  "AGREEMENT_END_DATE_TIME_BEFORE",
-  "INVOICING_ENTITY",
-  "ANOMALY_TOTAL_IMPACT_ABSOLUTE",
-  "ANOMALY_TOTAL_IMPACT_PERCENTAGE",
-);
-export type Context = "COST_AND_USAGE" | "RESERVATIONS" | "SAVINGS_PLANS";
-export const Context = S.Literal(
-  "COST_AND_USAGE",
-  "RESERVATIONS",
-  "SAVINGS_PLANS",
-);
-export type AccountScope = "PAYER" | "LINKED";
-export const AccountScope = S.Literal("PAYER", "LINKED");
-export type LookbackPeriodInDays = "SEVEN_DAYS" | "THIRTY_DAYS" | "SIXTY_DAYS";
-export const LookbackPeriodInDays = S.Literal(
-  "SEVEN_DAYS",
-  "THIRTY_DAYS",
-  "SIXTY_DAYS",
-);
-export type TermInYears = "ONE_YEAR" | "THREE_YEARS";
-export const TermInYears = S.Literal("ONE_YEAR", "THREE_YEARS");
+  | "ANOMALY_TOTAL_IMPACT_PERCENTAGE"
+  | (string & {});
+export const Dimension = S.String;
+export type Context =
+  | "COST_AND_USAGE"
+  | "RESERVATIONS"
+  | "SAVINGS_PLANS"
+  | (string & {});
+export const Context = S.String;
+export type AccountScope = "PAYER" | "LINKED" | (string & {});
+export const AccountScope = S.String;
+export type LookbackPeriodInDays =
+  | "SEVEN_DAYS"
+  | "THIRTY_DAYS"
+  | "SIXTY_DAYS"
+  | (string & {});
+export const LookbackPeriodInDays = S.String;
+export type TermInYears = "ONE_YEAR" | "THREE_YEARS" | (string & {});
+export const TermInYears = S.String;
 export type PaymentOption =
   | "NO_UPFRONT"
   | "PARTIAL_UPFRONT"
   | "ALL_UPFRONT"
   | "LIGHT_UTILIZATION"
   | "MEDIUM_UTILIZATION"
-  | "HEAVY_UTILIZATION";
-export const PaymentOption = S.Literal(
-  "NO_UPFRONT",
-  "PARTIAL_UPFRONT",
-  "ALL_UPFRONT",
-  "LIGHT_UTILIZATION",
-  "MEDIUM_UTILIZATION",
-  "HEAVY_UTILIZATION",
-);
+  | "HEAVY_UTILIZATION"
+  | (string & {});
+export const PaymentOption = S.String;
 export type SupportedSavingsPlansType =
   | "COMPUTE_SP"
   | "EC2_INSTANCE_SP"
   | "SAGEMAKER_SP"
-  | "DATABASE_SP";
-export const SupportedSavingsPlansType = S.Literal(
-  "COMPUTE_SP",
-  "EC2_INSTANCE_SP",
-  "SAGEMAKER_SP",
-  "DATABASE_SP",
-);
+  | "DATABASE_SP"
+  | (string & {});
+export const SupportedSavingsPlansType = S.String;
 export type SavingsPlansDataType =
   | "ATTRIBUTES"
   | "UTILIZATION"
   | "AMORTIZED_COMMITMENT"
-  | "SAVINGS";
-export const SavingsPlansDataType = S.Literal(
-  "ATTRIBUTES",
-  "UTILIZATION",
-  "AMORTIZED_COMMITMENT",
-  "SAVINGS",
-);
+  | "SAVINGS"
+  | (string & {});
+export const SavingsPlansDataType = S.String;
 export type SavingsPlansDataTypes = SavingsPlansDataType[];
 export const SavingsPlansDataTypes = S.Array(SavingsPlansDataType);
-export type AnalysisStatus = "SUCCEEDED" | "PROCESSING" | "FAILED";
-export const AnalysisStatus = S.Literal("SUCCEEDED", "PROCESSING", "FAILED");
+export type AnalysisStatus =
+  | "SUCCEEDED"
+  | "PROCESSING"
+  | "FAILED"
+  | (string & {});
+export const AnalysisStatus = S.String;
 export type AnalysisIds = string[];
 export const AnalysisIds = S.Array(S.String);
-export type CostAllocationTagStatus = "Active" | "Inactive";
-export const CostAllocationTagStatus = S.Literal("Active", "Inactive");
+export type CostAllocationTagStatus = "Active" | "Inactive" | (string & {});
+export const CostAllocationTagStatus = S.String;
 export type CostAllocationTagKeyList = string[];
 export const CostAllocationTagKeyList = S.Array(S.String);
-export type CostAllocationTagType = "AWSGenerated" | "UserDefined";
-export const CostAllocationTagType = S.Literal("AWSGenerated", "UserDefined");
+export type CostAllocationTagType =
+  | "AWSGenerated"
+  | "UserDefined"
+  | (string & {});
+export const CostAllocationTagType = S.String;
 export type ResourceTypesFilterInput = string[];
 export const ResourceTypesFilterInput = S.Array(S.String);
-export type GenerationStatus = "SUCCEEDED" | "PROCESSING" | "FAILED";
-export const GenerationStatus = S.Literal("SUCCEEDED", "PROCESSING", "FAILED");
+export type GenerationStatus =
+  | "SUCCEEDED"
+  | "PROCESSING"
+  | "FAILED"
+  | (string & {});
+export const GenerationStatus = S.String;
 export type RecommendationIdList = string[];
 export const RecommendationIdList = S.Array(S.String);
 export type ResourceTagKeyList = string[];
 export const ResourceTagKeyList = S.Array(S.String);
-export type AnomalySubscriptionFrequency = "DAILY" | "IMMEDIATE" | "WEEKLY";
-export const AnomalySubscriptionFrequency = S.Literal(
-  "DAILY",
-  "IMMEDIATE",
-  "WEEKLY",
-);
+export type AnomalySubscriptionFrequency =
+  | "DAILY"
+  | "IMMEDIATE"
+  | "WEEKLY"
+  | (string & {});
+export const AnomalySubscriptionFrequency = S.String;
 export type MonitorArnList = string[];
 export const MonitorArnList = S.Array(S.String);
 export interface DeleteAnomalyMonitorRequest {
@@ -606,17 +567,9 @@ export type MatchOption =
   | "CONTAINS"
   | "CASE_SENSITIVE"
   | "CASE_INSENSITIVE"
-  | "GREATER_THAN_OR_EQUAL";
-export const MatchOption = S.Literal(
-  "EQUALS",
-  "ABSENT",
-  "STARTS_WITH",
-  "ENDS_WITH",
-  "CONTAINS",
-  "CASE_SENSITIVE",
-  "CASE_INSENSITIVE",
-  "GREATER_THAN_OR_EQUAL",
-);
+  | "GREATER_THAN_OR_EQUAL"
+  | (string & {});
+export const MatchOption = S.String;
 export type MatchOptions = MatchOption[];
 export const MatchOptions = S.Array(MatchOption);
 export interface DimensionValues {
@@ -685,12 +638,12 @@ export const Expression = S.suspend(() =>
     CostCategories: S.optional(CostCategoryValues),
   }),
 ).annotations({ identifier: "Expression" }) as any as S.Schema<Expression>;
-export type GroupDefinitionType = "DIMENSION" | "TAG" | "COST_CATEGORY";
-export const GroupDefinitionType = S.Literal(
-  "DIMENSION",
-  "TAG",
-  "COST_CATEGORY",
-);
+export type GroupDefinitionType =
+  | "DIMENSION"
+  | "TAG"
+  | "COST_CATEGORY"
+  | (string & {});
+export const GroupDefinitionType = S.String;
 export interface GroupDefinition {
   Type?: GroupDefinitionType;
   Key?: string;
@@ -803,8 +756,8 @@ export const GetCostForecastRequest = S.suspend(() =>
 ).annotations({
   identifier: "GetCostForecastRequest",
 }) as any as S.Schema<GetCostForecastRequest>;
-export type SortOrder = "ASCENDING" | "DESCENDING";
-export const SortOrder = S.Literal("ASCENDING", "DESCENDING");
+export type SortOrder = "ASCENDING" | "DESCENDING" | (string & {});
+export const SortOrder = S.String;
 export interface SortDefinition {
   Key: string;
   SortOrder?: SortOrder;
@@ -1248,11 +1201,9 @@ export const UpdateAnomalyMonitorRequest = S.suspend(() =>
 }) as any as S.Schema<UpdateAnomalyMonitorRequest>;
 export type CostCategoryInheritedValueDimensionName =
   | "LINKED_ACCOUNT_NAME"
-  | "TAG";
-export const CostCategoryInheritedValueDimensionName = S.Literal(
-  "LINKED_ACCOUNT_NAME",
-  "TAG",
-);
+  | "TAG"
+  | (string & {});
+export const CostCategoryInheritedValueDimensionName = S.String;
 export interface CostCategoryInheritedValueDimension {
   DimensionName?: CostCategoryInheritedValueDimensionName;
   DimensionKey?: string;
@@ -1265,8 +1216,11 @@ export const CostCategoryInheritedValueDimension = S.suspend(() =>
 ).annotations({
   identifier: "CostCategoryInheritedValueDimension",
 }) as any as S.Schema<CostCategoryInheritedValueDimension>;
-export type CostCategoryRuleType = "REGULAR" | "INHERITED_VALUE";
-export const CostCategoryRuleType = S.Literal("REGULAR", "INHERITED_VALUE");
+export type CostCategoryRuleType =
+  | "REGULAR"
+  | "INHERITED_VALUE"
+  | (string & {});
+export const CostCategoryRuleType = S.String;
 export interface CostCategoryRule {
   Value?: string;
   Rule?: Expression;
@@ -1287,16 +1241,16 @@ export type CostCategoryRulesList = CostCategoryRule[];
 export const CostCategoryRulesList = S.Array(CostCategoryRule);
 export type CostCategorySplitChargeRuleTargetsList = string[];
 export const CostCategorySplitChargeRuleTargetsList = S.Array(S.String);
-export type CostCategorySplitChargeMethod = "FIXED" | "PROPORTIONAL" | "EVEN";
-export const CostCategorySplitChargeMethod = S.Literal(
-  "FIXED",
-  "PROPORTIONAL",
-  "EVEN",
-);
-export type CostCategorySplitChargeRuleParameterType = "ALLOCATION_PERCENTAGES";
-export const CostCategorySplitChargeRuleParameterType = S.Literal(
-  "ALLOCATION_PERCENTAGES",
-);
+export type CostCategorySplitChargeMethod =
+  | "FIXED"
+  | "PROPORTIONAL"
+  | "EVEN"
+  | (string & {});
+export const CostCategorySplitChargeMethod = S.String;
+export type CostCategorySplitChargeRuleParameterType =
+  | "ALLOCATION_PERCENTAGES"
+  | (string & {});
+export const CostCategorySplitChargeRuleParameterType = S.String;
 export type CostCategorySplitChargeRuleParameterValuesList = string[];
 export const CostCategorySplitChargeRuleParameterValuesList = S.Array(S.String);
 export interface CostCategorySplitChargeRuleParameter {
@@ -1358,34 +1312,24 @@ export const UpdateCostCategoryDefinitionRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateCostCategoryDefinitionRequest",
 }) as any as S.Schema<UpdateCostCategoryDefinitionRequest>;
-export type MonitorType = "DIMENSIONAL" | "CUSTOM";
-export const MonitorType = S.Literal("DIMENSIONAL", "CUSTOM");
+export type MonitorType = "DIMENSIONAL" | "CUSTOM" | (string & {});
+export const MonitorType = S.String;
 export type MonitorDimension =
   | "SERVICE"
   | "LINKED_ACCOUNT"
   | "TAG"
-  | "COST_CATEGORY";
-export const MonitorDimension = S.Literal(
-  "SERVICE",
-  "LINKED_ACCOUNT",
-  "TAG",
-  "COST_CATEGORY",
-);
+  | "COST_CATEGORY"
+  | (string & {});
+export const MonitorDimension = S.String;
 export type NumericOperator =
   | "EQUAL"
   | "GREATER_THAN_OR_EQUAL"
   | "LESS_THAN_OR_EQUAL"
   | "GREATER_THAN"
   | "LESS_THAN"
-  | "BETWEEN";
-export const NumericOperator = S.Literal(
-  "EQUAL",
-  "GREATER_THAN_OR_EQUAL",
-  "LESS_THAN_OR_EQUAL",
-  "GREATER_THAN",
-  "LESS_THAN",
-  "BETWEEN",
-);
+  | "BETWEEN"
+  | (string & {});
+export const NumericOperator = S.String;
 export type Expressions = Expression[];
 export const Expressions = S.Array(
   S.suspend((): S.Schema<Expression, any> => Expression).annotations({
@@ -1394,15 +1338,13 @@ export const Expressions = S.Array(
 ) as any as S.Schema<Expressions>;
 export type RecommendationTarget =
   | "SAME_INSTANCE_FAMILY"
-  | "CROSS_INSTANCE_FAMILY";
-export const RecommendationTarget = S.Literal(
-  "SAME_INSTANCE_FAMILY",
-  "CROSS_INSTANCE_FAMILY",
-);
-export type SubscriberType = "EMAIL" | "SNS";
-export const SubscriberType = S.Literal("EMAIL", "SNS");
-export type SubscriberStatus = "CONFIRMED" | "DECLINED";
-export const SubscriberStatus = S.Literal("CONFIRMED", "DECLINED");
+  | "CROSS_INSTANCE_FAMILY"
+  | (string & {});
+export const RecommendationTarget = S.String;
+export type SubscriberType = "EMAIL" | "SNS" | (string & {});
+export const SubscriberType = S.String;
+export type SubscriberStatus = "CONFIRMED" | "DECLINED" | (string & {});
+export const SubscriberStatus = S.String;
 export interface AnomalyMonitor {
   MonitorArn?: string;
   MonitorName: string;
@@ -1499,14 +1441,9 @@ export type ErrorCode =
   | "INTERNAL_FAILURE"
   | "INVALID_SAVINGS_PLANS_TO_ADD"
   | "INVALID_SAVINGS_PLANS_TO_EXCLUDE"
-  | "INVALID_ACCOUNT_ID";
-export const ErrorCode = S.Literal(
-  "NO_USAGE_FOUND",
-  "INTERNAL_FAILURE",
-  "INVALID_SAVINGS_PLANS_TO_ADD",
-  "INVALID_SAVINGS_PLANS_TO_EXCLUDE",
-  "INVALID_ACCOUNT_ID",
-);
+  | "INVALID_ACCOUNT_ID"
+  | (string & {});
+export const ErrorCode = S.String;
 export interface RightsizingRecommendationConfiguration {
   RecommendationTarget: RecommendationTarget;
   BenefitsConsidered: boolean;
@@ -1534,10 +1471,10 @@ export type CostAllocationTagStatusList = CostAllocationTagStatusEntry[];
 export const CostAllocationTagStatusList = S.Array(
   CostAllocationTagStatusEntry,
 );
-export type OfferingClass = "STANDARD" | "CONVERTIBLE";
-export const OfferingClass = S.Literal("STANDARD", "CONVERTIBLE");
-export type AnalysisType = "MAX_SAVINGS" | "CUSTOM_COMMITMENT";
-export const AnalysisType = S.Literal("MAX_SAVINGS", "CUSTOM_COMMITMENT");
+export type OfferingClass = "STANDARD" | "CONVERTIBLE" | (string & {});
+export const OfferingClass = S.String;
+export type AnalysisType = "MAX_SAVINGS" | "CUSTOM_COMMITMENT" | (string & {});
+export const AnalysisType = S.String;
 export type SavingsPlansToExclude = string[];
 export const SavingsPlansToExclude = S.Array(S.String);
 export interface CreateAnomalyMonitorRequest {
@@ -1778,12 +1715,9 @@ export const ProvideAnomalyFeedbackResponse = S.suspend(() =>
 export type CostAllocationTagBackfillStatus =
   | "SUCCEEDED"
   | "PROCESSING"
-  | "FAILED";
-export const CostAllocationTagBackfillStatus = S.Literal(
-  "SUCCEEDED",
-  "PROCESSING",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const CostAllocationTagBackfillStatus = S.String;
 export interface CostAllocationTagBackfillRequest {
   BackfillFrom?: string;
   RequestedAt?: string;
@@ -2169,10 +2103,10 @@ export const CostAllocationTag = S.suspend(() =>
 }) as any as S.Schema<CostAllocationTag>;
 export type CostAllocationTagList = CostAllocationTag[];
 export const CostAllocationTagList = S.Array(CostAllocationTag);
-export type CostCategoryStatusComponent = "COST_EXPLORER";
-export const CostCategoryStatusComponent = S.Literal("COST_EXPLORER");
-export type CostCategoryStatus = "PROCESSING" | "APPLIED";
-export const CostCategoryStatus = S.Literal("PROCESSING", "APPLIED");
+export type CostCategoryStatusComponent = "COST_EXPLORER" | (string & {});
+export const CostCategoryStatusComponent = S.String;
+export type CostCategoryStatus = "PROCESSING" | "APPLIED" | (string & {});
+export const CostCategoryStatus = S.String;
 export interface CostCategoryProcessingStatus {
   Component?: CostCategoryStatusComponent;
   Status?: CostCategoryStatus;
@@ -2681,8 +2615,8 @@ export type ReservationUtilizationGroups = ReservationUtilizationGroup[];
 export const ReservationUtilizationGroups = S.Array(
   ReservationUtilizationGroup,
 );
-export type RightsizingType = "TERMINATE" | "MODIFY";
-export const RightsizingType = S.Literal("TERMINATE", "MODIFY");
+export type RightsizingType = "TERMINATE" | "MODIFY" | (string & {});
+export const RightsizingType = S.String;
 export type FindingReasonCode =
   | "CPU_OVER_PROVISIONED"
   | "CPU_UNDER_PROVISIONED"
@@ -2699,25 +2633,9 @@ export type FindingReasonCode =
   | "DISK_IOPS_OVER_PROVISIONED"
   | "DISK_IOPS_UNDER_PROVISIONED"
   | "DISK_THROUGHPUT_OVER_PROVISIONED"
-  | "DISK_THROUGHPUT_UNDER_PROVISIONED";
-export const FindingReasonCode = S.Literal(
-  "CPU_OVER_PROVISIONED",
-  "CPU_UNDER_PROVISIONED",
-  "MEMORY_OVER_PROVISIONED",
-  "MEMORY_UNDER_PROVISIONED",
-  "EBS_THROUGHPUT_OVER_PROVISIONED",
-  "EBS_THROUGHPUT_UNDER_PROVISIONED",
-  "EBS_IOPS_OVER_PROVISIONED",
-  "EBS_IOPS_UNDER_PROVISIONED",
-  "NETWORK_BANDWIDTH_OVER_PROVISIONED",
-  "NETWORK_BANDWIDTH_UNDER_PROVISIONED",
-  "NETWORK_PPS_OVER_PROVISIONED",
-  "NETWORK_PPS_UNDER_PROVISIONED",
-  "DISK_IOPS_OVER_PROVISIONED",
-  "DISK_IOPS_UNDER_PROVISIONED",
-  "DISK_THROUGHPUT_OVER_PROVISIONED",
-  "DISK_THROUGHPUT_UNDER_PROVISIONED",
-);
+  | "DISK_THROUGHPUT_UNDER_PROVISIONED"
+  | (string & {});
+export const FindingReasonCode = S.String;
 export type FindingReasonCodes = FindingReasonCode[];
 export const FindingReasonCodes = S.Array(FindingReasonCode);
 export interface SavingsPlansCoverageData {
@@ -3311,14 +3229,9 @@ export type PlatformDifference =
   | "NETWORK_INTERFACE"
   | "STORAGE_INTERFACE"
   | "INSTANCE_STORE_AVAILABILITY"
-  | "VIRTUALIZATION_TYPE";
-export const PlatformDifference = S.Literal(
-  "HYPERVISOR",
-  "NETWORK_INTERFACE",
-  "STORAGE_INTERFACE",
-  "INSTANCE_STORE_AVAILABILITY",
-  "VIRTUALIZATION_TYPE",
-);
+  | "VIRTUALIZATION_TYPE"
+  | (string & {});
+export const PlatformDifference = S.String;
 export type PlatformDifferences = PlatformDifference[];
 export const PlatformDifferences = S.Array(PlatformDifference);
 export interface ReservationPurchaseRecommendationMetadata {

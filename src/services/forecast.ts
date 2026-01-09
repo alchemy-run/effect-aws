@@ -127,14 +127,9 @@ export type OptimizationMetric =
   | "RMSE"
   | "AverageWeightedQuantileLoss"
   | "MASE"
-  | "MAPE";
-export const OptimizationMetric = S.Literal(
-  "WAPE",
-  "RMSE",
-  "AverageWeightedQuantileLoss",
-  "MASE",
-  "MAPE",
-);
+  | "MAPE"
+  | (string & {});
+export const OptimizationMetric = S.String;
 export type Domain =
   | "RETAIL"
   | "CUSTOM"
@@ -142,34 +137,24 @@ export type Domain =
   | "EC2_CAPACITY"
   | "WORK_FORCE"
   | "WEB_TRAFFIC"
-  | "METRICS";
-export const Domain = S.Literal(
-  "RETAIL",
-  "CUSTOM",
-  "INVENTORY_PLANNING",
-  "EC2_CAPACITY",
-  "WORK_FORCE",
-  "WEB_TRAFFIC",
-  "METRICS",
-);
+  | "METRICS"
+  | (string & {});
+export const Domain = S.String;
 export type DatasetType =
   | "TARGET_TIME_SERIES"
   | "RELATED_TIME_SERIES"
-  | "ITEM_METADATA";
-export const DatasetType = S.Literal(
-  "TARGET_TIME_SERIES",
-  "RELATED_TIME_SERIES",
-  "ITEM_METADATA",
-);
+  | "ITEM_METADATA"
+  | (string & {});
+export const DatasetType = S.String;
 export type ArnList = string[];
 export const ArnList = S.Array(S.String);
-export type ImportMode = "FULL" | "INCREMENTAL";
-export const ImportMode = S.Literal("FULL", "INCREMENTAL");
-export type AutoMLOverrideStrategy = "LatencyOptimized" | "AccuracyOptimized";
-export const AutoMLOverrideStrategy = S.Literal(
-  "LatencyOptimized",
-  "AccuracyOptimized",
-);
+export type ImportMode = "FULL" | "INCREMENTAL" | (string & {});
+export const ImportMode = S.String;
+export type AutoMLOverrideStrategy =
+  | "LatencyOptimized"
+  | "AccuracyOptimized"
+  | (string & {});
+export const AutoMLOverrideStrategy = S.String;
 export type WhatIfForecastArnListForExport = string[];
 export const WhatIfForecastArnListForExport = S.Array(S.String);
 export type TagKeys = string | redacted.Redacted<string>[];
@@ -288,14 +273,9 @@ export type AttributeType =
   | "integer"
   | "float"
   | "timestamp"
-  | "geolocation";
-export const AttributeType = S.Literal(
-  "string",
-  "integer",
-  "float",
-  "timestamp",
-  "geolocation",
-);
+  | "geolocation"
+  | (string & {});
+export const AttributeType = S.String;
 export interface SchemaAttribute {
   AttributeName?: string;
   AttributeType?: AttributeType;
@@ -772,8 +752,8 @@ export const ListDatasetsRequest = S.suspend(() =>
 ).annotations({
   identifier: "ListDatasetsRequest",
 }) as any as S.Schema<ListDatasetsRequest>;
-export type FilterConditionString = "IS" | "IS_NOT";
-export const FilterConditionString = S.Literal("IS", "IS_NOT");
+export type FilterConditionString = "IS" | "IS_NOT" | (string & {});
+export const FilterConditionString = S.String;
 export interface Filter {
   Key: string;
   Value: string;
@@ -1063,21 +1043,9 @@ export type Month =
   | "SEPTEMBER"
   | "OCTOBER"
   | "NOVEMBER"
-  | "DECEMBER";
-export const Month = S.Literal(
-  "JANUARY",
-  "FEBRUARY",
-  "MARCH",
-  "APRIL",
-  "MAY",
-  "JUNE",
-  "JULY",
-  "AUGUST",
-  "SEPTEMBER",
-  "OCTOBER",
-  "NOVEMBER",
-  "DECEMBER",
-);
+  | "DECEMBER"
+  | (string & {});
+export const Month = S.String;
 export type DayOfWeek =
   | "MONDAY"
   | "TUESDAY"
@@ -1085,20 +1053,13 @@ export type DayOfWeek =
   | "THURSDAY"
   | "FRIDAY"
   | "SATURDAY"
-  | "SUNDAY";
-export const DayOfWeek = S.Literal(
-  "MONDAY",
-  "TUESDAY",
-  "WEDNESDAY",
-  "THURSDAY",
-  "FRIDAY",
-  "SATURDAY",
-  "SUNDAY",
-);
-export type TimeSeriesGranularity = "ALL" | "SPECIFIC";
-export const TimeSeriesGranularity = S.Literal("ALL", "SPECIFIC");
-export type TimePointGranularity = "ALL" | "SPECIFIC";
-export const TimePointGranularity = S.Literal("ALL", "SPECIFIC");
+  | "SUNDAY"
+  | (string & {});
+export const DayOfWeek = S.String;
+export type TimeSeriesGranularity = "ALL" | "SPECIFIC" | (string & {});
+export const TimeSeriesGranularity = S.String;
+export type TimePointGranularity = "ALL" | "SPECIFIC" | (string & {});
+export const TimePointGranularity = S.String;
 export interface EncryptionConfig {
   RoleArn: string;
   KMSKeyArn: string;
@@ -1179,15 +1140,20 @@ export const TimeSeriesReplacementsDataSource = S.suspend(() =>
 }) as any as S.Schema<TimeSeriesReplacementsDataSource>;
 export type LongArnList = string[];
 export const LongArnList = S.Array(S.String);
-export type Operation = "ADD" | "SUBTRACT" | "MULTIPLY" | "DIVIDE";
-export const Operation = S.Literal("ADD", "SUBTRACT", "MULTIPLY", "DIVIDE");
-export type Condition = "EQUALS" | "NOT_EQUALS" | "LESS_THAN" | "GREATER_THAN";
-export const Condition = S.Literal(
-  "EQUALS",
-  "NOT_EQUALS",
-  "LESS_THAN",
-  "GREATER_THAN",
-);
+export type Operation =
+  | "ADD"
+  | "SUBTRACT"
+  | "MULTIPLY"
+  | "DIVIDE"
+  | (string & {});
+export const Operation = S.String;
+export type Condition =
+  | "EQUALS"
+  | "NOT_EQUALS"
+  | "LESS_THAN"
+  | "GREATER_THAN"
+  | (string & {});
+export const Condition = S.String;
 export interface CreateDatasetGroupResponse {
   DatasetGroupArn?: string;
 }
@@ -1657,23 +1623,19 @@ export const SupplementaryFeature = S.suspend(() =>
 }) as any as S.Schema<SupplementaryFeature>;
 export type SupplementaryFeatures = SupplementaryFeature[];
 export const SupplementaryFeatures = S.Array(SupplementaryFeature);
-export type State = "Active" | "Deleted";
-export const State = S.Literal("Active", "Deleted");
+export type State = "Active" | "Deleted" | (string & {});
+export const State = S.String;
 export type Values = string[];
 export const Values = S.Array(S.String);
 export type ScalingType =
   | "Auto"
   | "Linear"
   | "Logarithmic"
-  | "ReverseLogarithmic";
-export const ScalingType = S.Literal(
-  "Auto",
-  "Linear",
-  "Logarithmic",
-  "ReverseLogarithmic",
-);
-export type FeaturizationMethodName = "filling";
-export const FeaturizationMethodName = S.Literal("filling");
+  | "ReverseLogarithmic"
+  | (string & {});
+export const ScalingType = S.String;
+export type FeaturizationMethodName = "filling" | (string & {});
+export const FeaturizationMethodName = S.String;
 export interface InputDataConfig {
   DatasetGroupArn: string;
   SupplementaryFeatures?: SupplementaryFeature[];
@@ -2087,8 +2049,8 @@ export const IntegerParameterRange = S.suspend(() =>
 }) as any as S.Schema<IntegerParameterRange>;
 export type IntegerParameterRanges = IntegerParameterRange[];
 export const IntegerParameterRanges = S.Array(IntegerParameterRange);
-export type EvaluationType = "SUMMARY" | "COMPUTED";
-export const EvaluationType = S.Literal("SUMMARY", "COMPUTED");
+export type EvaluationType = "SUMMARY" | "COMPUTED" | (string & {});
+export const EvaluationType = S.String;
 export interface CreateDatasetRequest {
   DatasetName: string;
   Domain: Domain;

@@ -125,12 +125,9 @@ export type CodeErrorSpan = number;
 export type ApiCachingBehavior =
   | "FULL_REQUEST_CACHING"
   | "PER_RESOLVER_CACHING"
-  | "OPERATION_LEVEL_CACHING";
-export const ApiCachingBehavior = S.Literal(
-  "FULL_REQUEST_CACHING",
-  "PER_RESOLVER_CACHING",
-  "OPERATION_LEVEL_CACHING",
-);
+  | "OPERATION_LEVEL_CACHING"
+  | (string & {});
+export const ApiCachingBehavior = S.String;
 export type ApiCacheType =
   | "T2_SMALL"
   | "T2_MEDIUM"
@@ -146,26 +143,11 @@ export type ApiCacheType =
   | "LARGE_2X"
   | "LARGE_4X"
   | "LARGE_8X"
-  | "LARGE_12X";
-export const ApiCacheType = S.Literal(
-  "T2_SMALL",
-  "T2_MEDIUM",
-  "R4_LARGE",
-  "R4_XLARGE",
-  "R4_2XLARGE",
-  "R4_4XLARGE",
-  "R4_8XLARGE",
-  "SMALL",
-  "MEDIUM",
-  "LARGE",
-  "XLARGE",
-  "LARGE_2X",
-  "LARGE_4X",
-  "LARGE_8X",
-  "LARGE_12X",
-);
-export type CacheHealthMetricsConfig = "ENABLED" | "DISABLED";
-export const CacheHealthMetricsConfig = S.Literal("ENABLED", "DISABLED");
+  | "LARGE_12X"
+  | (string & {});
+export const ApiCacheType = S.String;
+export type CacheHealthMetricsConfig = "ENABLED" | "DISABLED" | (string & {});
+export const CacheHealthMetricsConfig = S.String;
 export type DataSourceType =
   | "AWS_LAMBDA"
   | "AMAZON_DYNAMODB"
@@ -175,49 +157,41 @@ export type DataSourceType =
   | "RELATIONAL_DATABASE"
   | "AMAZON_OPENSEARCH_SERVICE"
   | "AMAZON_EVENTBRIDGE"
-  | "AMAZON_BEDROCK_RUNTIME";
-export const DataSourceType = S.Literal(
-  "AWS_LAMBDA",
-  "AMAZON_DYNAMODB",
-  "AMAZON_ELASTICSEARCH",
-  "NONE",
-  "HTTP",
-  "RELATIONAL_DATABASE",
-  "AMAZON_OPENSEARCH_SERVICE",
-  "AMAZON_EVENTBRIDGE",
-  "AMAZON_BEDROCK_RUNTIME",
-);
-export type DataSourceLevelMetricsConfig = "ENABLED" | "DISABLED";
-export const DataSourceLevelMetricsConfig = S.Literal("ENABLED", "DISABLED");
+  | "AMAZON_BEDROCK_RUNTIME"
+  | (string & {});
+export const DataSourceType = S.String;
+export type DataSourceLevelMetricsConfig =
+  | "ENABLED"
+  | "DISABLED"
+  | (string & {});
+export const DataSourceLevelMetricsConfig = S.String;
 export type AuthenticationType =
   | "API_KEY"
   | "AWS_IAM"
   | "AMAZON_COGNITO_USER_POOLS"
   | "OPENID_CONNECT"
-  | "AWS_LAMBDA";
-export const AuthenticationType = S.Literal(
-  "API_KEY",
-  "AWS_IAM",
-  "AMAZON_COGNITO_USER_POOLS",
-  "OPENID_CONNECT",
-  "AWS_LAMBDA",
-);
-export type GraphQLApiType = "GRAPHQL" | "MERGED";
-export const GraphQLApiType = S.Literal("GRAPHQL", "MERGED");
-export type GraphQLApiVisibility = "GLOBAL" | "PRIVATE";
-export const GraphQLApiVisibility = S.Literal("GLOBAL", "PRIVATE");
-export type GraphQLApiIntrospectionConfig = "ENABLED" | "DISABLED";
-export const GraphQLApiIntrospectionConfig = S.Literal("ENABLED", "DISABLED");
-export type ResolverKind = "UNIT" | "PIPELINE";
-export const ResolverKind = S.Literal("UNIT", "PIPELINE");
-export type ResolverLevelMetricsConfig = "ENABLED" | "DISABLED";
-export const ResolverLevelMetricsConfig = S.Literal("ENABLED", "DISABLED");
-export type TypeDefinitionFormat = "SDL" | "JSON";
-export const TypeDefinitionFormat = S.Literal("SDL", "JSON");
-export type OutputType = "SDL" | "JSON";
-export const OutputType = S.Literal("SDL", "JSON");
-export type Ownership = "CURRENT_ACCOUNT" | "OTHER_ACCOUNTS";
-export const Ownership = S.Literal("CURRENT_ACCOUNT", "OTHER_ACCOUNTS");
+  | "AWS_LAMBDA"
+  | (string & {});
+export const AuthenticationType = S.String;
+export type GraphQLApiType = "GRAPHQL" | "MERGED" | (string & {});
+export const GraphQLApiType = S.String;
+export type GraphQLApiVisibility = "GLOBAL" | "PRIVATE" | (string & {});
+export const GraphQLApiVisibility = S.String;
+export type GraphQLApiIntrospectionConfig =
+  | "ENABLED"
+  | "DISABLED"
+  | (string & {});
+export const GraphQLApiIntrospectionConfig = S.String;
+export type ResolverKind = "UNIT" | "PIPELINE" | (string & {});
+export const ResolverKind = S.String;
+export type ResolverLevelMetricsConfig = "ENABLED" | "DISABLED" | (string & {});
+export const ResolverLevelMetricsConfig = S.String;
+export type TypeDefinitionFormat = "SDL" | "JSON" | (string & {});
+export const TypeDefinitionFormat = S.String;
+export type OutputType = "SDL" | "JSON" | (string & {});
+export const OutputType = S.String;
+export type Ownership = "CURRENT_ACCOUNT" | "OTHER_ACCOUNTS" | (string & {});
+export const Ownership = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export interface AssociateApiRequest {
@@ -245,8 +219,8 @@ export const AssociateApiRequest = S.suspend(() =>
 ).annotations({
   identifier: "AssociateApiRequest",
 }) as any as S.Schema<AssociateApiRequest>;
-export type MergeType = "MANUAL_MERGE" | "AUTO_MERGE";
-export const MergeType = S.Literal("MANUAL_MERGE", "AUTO_MERGE");
+export type MergeType = "MANUAL_MERGE" | "AUTO_MERGE" | (string & {});
+export const MergeType = S.String;
 export interface SourceApiAssociationConfig {
   mergeType?: MergeType;
 }
@@ -747,8 +721,8 @@ export const DisassociateSourceGraphqlApiRequest = S.suspend(() =>
 ).annotations({
   identifier: "DisassociateSourceGraphqlApiRequest",
 }) as any as S.Schema<DisassociateSourceGraphqlApiRequest>;
-export type RuntimeName = "APPSYNC_JS";
-export const RuntimeName = S.Literal("APPSYNC_JS");
+export type RuntimeName = "APPSYNC_JS" | (string & {});
+export const RuntimeName = S.String;
 export interface AppSyncRuntime {
   name: RuntimeName;
   runtimeVersion: string;
@@ -1652,8 +1626,14 @@ export const AuthMode = S.suspend(() =>
 ).annotations({ identifier: "AuthMode" }) as any as S.Schema<AuthMode>;
 export type AuthModes = AuthMode[];
 export const AuthModes = S.Array(AuthMode);
-export type EventLogLevel = "NONE" | "ERROR" | "ALL" | "INFO" | "DEBUG";
-export const EventLogLevel = S.Literal("NONE", "ERROR", "ALL", "INFO", "DEBUG");
+export type EventLogLevel =
+  | "NONE"
+  | "ERROR"
+  | "ALL"
+  | "INFO"
+  | "DEBUG"
+  | (string & {});
+export const EventLogLevel = S.String;
 export interface EventLogConfig {
   logLevel: EventLogLevel;
   cloudWatchLogsRoleArn: string;
@@ -1759,10 +1739,10 @@ export const UpdateApiKeyRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateApiKeyRequest",
 }) as any as S.Schema<UpdateApiKeyRequest>;
-export type HandlerBehavior = "CODE" | "DIRECT";
-export const HandlerBehavior = S.Literal("CODE", "DIRECT");
-export type InvokeType = "REQUEST_RESPONSE" | "EVENT";
-export const InvokeType = S.Literal("REQUEST_RESPONSE", "EVENT");
+export type HandlerBehavior = "CODE" | "DIRECT" | (string & {});
+export const HandlerBehavior = S.String;
+export type InvokeType = "REQUEST_RESPONSE" | "EVENT" | (string & {});
+export const InvokeType = S.String;
 export interface LambdaConfig {
   invokeType?: InvokeType;
 }
@@ -1891,8 +1871,8 @@ export const OpenSearchServiceDataSourceConfig = S.suspend(() =>
 ).annotations({
   identifier: "OpenSearchServiceDataSourceConfig",
 }) as any as S.Schema<OpenSearchServiceDataSourceConfig>;
-export type AuthorizationType = "AWS_IAM";
-export const AuthorizationType = S.Literal("AWS_IAM");
+export type AuthorizationType = "AWS_IAM" | (string & {});
+export const AuthorizationType = S.String;
 export interface AwsIamConfig {
   signingRegion?: string;
   signingServiceName?: string;
@@ -1927,8 +1907,8 @@ export const HttpDataSourceConfig = S.suspend(() =>
 ).annotations({
   identifier: "HttpDataSourceConfig",
 }) as any as S.Schema<HttpDataSourceConfig>;
-export type RelationalDatabaseSourceType = "RDS_HTTP_ENDPOINT";
-export const RelationalDatabaseSourceType = S.Literal("RDS_HTTP_ENDPOINT");
+export type RelationalDatabaseSourceType = "RDS_HTTP_ENDPOINT" | (string & {});
+export const RelationalDatabaseSourceType = S.String;
 export interface RdsHttpEndpointConfig {
   awsRegion?: string;
   dbClusterIdentifier?: string;
@@ -2037,15 +2017,11 @@ export type ConflictHandlerType =
   | "OPTIMISTIC_CONCURRENCY"
   | "LAMBDA"
   | "AUTOMERGE"
-  | "NONE";
-export const ConflictHandlerType = S.Literal(
-  "OPTIMISTIC_CONCURRENCY",
-  "LAMBDA",
-  "AUTOMERGE",
-  "NONE",
-);
-export type ConflictDetectionType = "VERSION" | "NONE";
-export const ConflictDetectionType = S.Literal("VERSION", "NONE");
+  | "NONE"
+  | (string & {});
+export const ConflictHandlerType = S.String;
+export type ConflictDetectionType = "VERSION" | "NONE" | (string & {});
+export const ConflictDetectionType = S.String;
 export interface LambdaConflictHandlerConfig {
   lambdaConflictHandlerArn?: string;
 }
@@ -2111,8 +2087,14 @@ export const UpdateFunctionRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateFunctionRequest",
 }) as any as S.Schema<UpdateFunctionRequest>;
-export type FieldLogLevel = "NONE" | "ERROR" | "ALL" | "INFO" | "DEBUG";
-export const FieldLogLevel = S.Literal("NONE", "ERROR", "ALL", "INFO", "DEBUG");
+export type FieldLogLevel =
+  | "NONE"
+  | "ERROR"
+  | "ALL"
+  | "INFO"
+  | "DEBUG"
+  | (string & {});
+export const FieldLogLevel = S.String;
 export interface LogConfig {
   fieldLogLevel: FieldLogLevel;
   cloudWatchLogsRoleArn: string;
@@ -2125,8 +2107,8 @@ export const LogConfig = S.suspend(() =>
     excludeVerboseContent: S.optional(S.Boolean),
   }),
 ).annotations({ identifier: "LogConfig" }) as any as S.Schema<LogConfig>;
-export type DefaultAction = "ALLOW" | "DENY";
-export const DefaultAction = S.Literal("ALLOW", "DENY");
+export type DefaultAction = "ALLOW" | "DENY" | (string & {});
+export const DefaultAction = S.String;
 export interface UserPoolConfig {
   userPoolId: string;
   awsRegion: string;
@@ -2180,20 +2162,19 @@ export const AdditionalAuthenticationProviders = S.Array(
 );
 export type ResolverLevelMetricsBehavior =
   | "FULL_REQUEST_RESOLVER_METRICS"
-  | "PER_RESOLVER_METRICS";
-export const ResolverLevelMetricsBehavior = S.Literal(
-  "FULL_REQUEST_RESOLVER_METRICS",
-  "PER_RESOLVER_METRICS",
-);
+  | "PER_RESOLVER_METRICS"
+  | (string & {});
+export const ResolverLevelMetricsBehavior = S.String;
 export type DataSourceLevelMetricsBehavior =
   | "FULL_REQUEST_DATA_SOURCE_METRICS"
-  | "PER_DATA_SOURCE_METRICS";
-export const DataSourceLevelMetricsBehavior = S.Literal(
-  "FULL_REQUEST_DATA_SOURCE_METRICS",
-  "PER_DATA_SOURCE_METRICS",
-);
-export type OperationLevelMetricsConfig = "ENABLED" | "DISABLED";
-export const OperationLevelMetricsConfig = S.Literal("ENABLED", "DISABLED");
+  | "PER_DATA_SOURCE_METRICS"
+  | (string & {});
+export const DataSourceLevelMetricsBehavior = S.String;
+export type OperationLevelMetricsConfig =
+  | "ENABLED"
+  | "DISABLED"
+  | (string & {});
+export const OperationLevelMetricsConfig = S.String;
 export interface EnhancedMetricsConfig {
   resolverLevelMetricsBehavior: ResolverLevelMetricsBehavior;
   dataSourceLevelMetricsBehavior: DataSourceLevelMetricsBehavior;
@@ -2383,8 +2364,8 @@ export const UpdateTypeRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateTypeRequest",
 }) as any as S.Schema<UpdateTypeRequest>;
-export type BadRequestReason = "CODE_ERROR";
-export const BadRequestReason = S.Literal("CODE_ERROR");
+export type BadRequestReason = "CODE_ERROR" | (string & {});
+export const BadRequestReason = S.String;
 export type SourceApiAssociationStatus =
   | "MERGE_SCHEDULED"
   | "MERGE_FAILED"
@@ -2393,40 +2374,26 @@ export type SourceApiAssociationStatus =
   | "AUTO_MERGE_SCHEDULE_FAILED"
   | "DELETION_SCHEDULED"
   | "DELETION_IN_PROGRESS"
-  | "DELETION_FAILED";
-export const SourceApiAssociationStatus = S.Literal(
-  "MERGE_SCHEDULED",
-  "MERGE_FAILED",
-  "MERGE_SUCCESS",
-  "MERGE_IN_PROGRESS",
-  "AUTO_MERGE_SCHEDULE_FAILED",
-  "DELETION_SCHEDULED",
-  "DELETION_IN_PROGRESS",
-  "DELETION_FAILED",
-);
+  | "DELETION_FAILED"
+  | (string & {});
+export const SourceApiAssociationStatus = S.String;
 export type Logs = string[];
 export const Logs = S.Array(S.String);
-export type DataSourceIntrospectionStatus = "PROCESSING" | "FAILED" | "SUCCESS";
-export const DataSourceIntrospectionStatus = S.Literal(
-  "PROCESSING",
-  "FAILED",
-  "SUCCESS",
-);
+export type DataSourceIntrospectionStatus =
+  | "PROCESSING"
+  | "FAILED"
+  | "SUCCESS"
+  | (string & {});
+export const DataSourceIntrospectionStatus = S.String;
 export type SchemaStatus =
   | "PROCESSING"
   | "ACTIVE"
   | "DELETING"
   | "FAILED"
   | "SUCCESS"
-  | "NOT_APPLICABLE";
-export const SchemaStatus = S.Literal(
-  "PROCESSING",
-  "ACTIVE",
-  "DELETING",
-  "FAILED",
-  "SUCCESS",
-  "NOT_APPLICABLE",
-);
+  | "NOT_APPLICABLE"
+  | (string & {});
+export const SchemaStatus = S.String;
 export interface ApiKey {
   id?: string;
   description?: string;
@@ -2825,8 +2792,12 @@ export const DisassociateSourceGraphqlApiResponse = S.suspend(() =>
 ).annotations({
   identifier: "DisassociateSourceGraphqlApiResponse",
 }) as any as S.Schema<DisassociateSourceGraphqlApiResponse>;
-export type AssociationStatus = "PROCESSING" | "FAILED" | "SUCCESS";
-export const AssociationStatus = S.Literal("PROCESSING", "FAILED", "SUCCESS");
+export type AssociationStatus =
+  | "PROCESSING"
+  | "FAILED"
+  | "SUCCESS"
+  | (string & {});
+export const AssociationStatus = S.String;
 export interface ApiAssociation {
   domainName?: string;
   apiId?: string;
@@ -2856,14 +2827,9 @@ export type ApiCacheStatus =
   | "CREATING"
   | "DELETING"
   | "MODIFYING"
-  | "FAILED";
-export const ApiCacheStatus = S.Literal(
-  "AVAILABLE",
-  "CREATING",
-  "DELETING",
-  "MODIFYING",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const ApiCacheStatus = S.String;
 export interface ApiCache {
   ttl?: number;
   apiCachingBehavior?: ApiCachingBehavior;

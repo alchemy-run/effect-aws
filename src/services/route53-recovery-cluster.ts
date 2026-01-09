@@ -96,8 +96,8 @@ export type Owner = string;
 export type RetryAfterSeconds = number;
 
 //# Schemas
-export type RoutingControlState = "On" | "Off";
-export const RoutingControlState = S.Literal("On", "Off");
+export type RoutingControlState = "On" | "Off" | (string & {});
+export const RoutingControlState = S.String;
 export type Arns = string[];
 export const Arns = S.Array(S.String);
 export interface GetRoutingControlStateRequest {
@@ -236,13 +236,9 @@ export type ValidationExceptionReason =
   | "unknownOperation"
   | "cannotParse"
   | "fieldValidationFailed"
-  | "other";
-export const ValidationExceptionReason = S.Literal(
-  "unknownOperation",
-  "cannotParse",
-  "fieldValidationFailed",
-  "other",
-);
+  | "other"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 export interface ValidationExceptionField {
   name: string;
   message: string;

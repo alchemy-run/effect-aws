@@ -109,36 +109,25 @@ export type ToolInputSchemaDocument = unknown;
 export type SensitiveDocument = unknown;
 
 //# Schemas
-export type SortOrder = "Ascending" | "Descending";
-export const SortOrder = S.Literal("Ascending", "Descending");
+export type SortOrder = "Ascending" | "Descending" | (string & {});
+export const SortOrder = S.String;
 export type ActStatus =
   | "RUNNING"
   | "PENDING_CLIENT_ACTION"
   | "PENDING_HUMAN_ACTION"
   | "SUCCEEDED"
   | "FAILED"
-  | "TIMED_OUT";
-export const ActStatus = S.Literal(
-  "RUNNING",
-  "PENDING_CLIENT_ACTION",
-  "PENDING_HUMAN_ACTION",
-  "SUCCEEDED",
-  "FAILED",
-  "TIMED_OUT",
-);
+  | "TIMED_OUT"
+  | (string & {});
+export const ActStatus = S.String;
 export type WorkflowRunStatus =
   | "RUNNING"
   | "SUCCEEDED"
   | "FAILED"
   | "TIMED_OUT"
-  | "DELETING";
-export const WorkflowRunStatus = S.Literal(
-  "RUNNING",
-  "SUCCEEDED",
-  "FAILED",
-  "TIMED_OUT",
-  "DELETING",
-);
+  | "DELETING"
+  | (string & {});
+export const WorkflowRunStatus = S.String;
 export interface ListActsRequest {
   workflowDefinitionName: string;
   workflowRunId?: string;
@@ -457,8 +446,8 @@ export const WorkflowExportConfig = S.suspend(() =>
 ).annotations({
   identifier: "WorkflowExportConfig",
 }) as any as S.Schema<WorkflowExportConfig>;
-export type WorkflowDefinitionStatus = "ACTIVE" | "DELETING";
-export const WorkflowDefinitionStatus = S.Literal("ACTIVE", "DELETING");
+export type WorkflowDefinitionStatus = "ACTIVE" | "DELETING" | (string & {});
+export const WorkflowDefinitionStatus = S.String;
 export interface ClientInfo {
   compatibilityVersion: number;
   sdkVersion?: string;
@@ -717,8 +706,8 @@ export const WorkflowDefinitionSummary = S.suspend(() =>
 }) as any as S.Schema<WorkflowDefinitionSummary>;
 export type WorkflowDefinitionSummaries = WorkflowDefinitionSummary[];
 export const WorkflowDefinitionSummaries = S.Array(WorkflowDefinitionSummary);
-export type TraceLocationType = "S3";
-export const TraceLocationType = S.Literal("S3");
+export type TraceLocationType = "S3" | (string & {});
+export const TraceLocationType = S.String;
 export interface TraceLocation {
   locationType: TraceLocationType;
   location: string;
@@ -750,20 +739,18 @@ export const WorkflowRunSummary = S.suspend(() =>
 }) as any as S.Schema<WorkflowRunSummary>;
 export type WorkflowRunSummaries = WorkflowRunSummary[];
 export const WorkflowRunSummaries = S.Array(WorkflowRunSummary);
-export type ModelStatus = "ACTIVE" | "LEGACY" | "DEPRECATED" | "PREVIEW";
-export const ModelStatus = S.Literal(
-  "ACTIVE",
-  "LEGACY",
-  "DEPRECATED",
-  "PREVIEW",
-);
+export type ModelStatus =
+  | "ACTIVE"
+  | "LEGACY"
+  | "DEPRECATED"
+  | "PREVIEW"
+  | (string & {});
+export const ModelStatus = S.String;
 export type InternalServerExceptionReason =
   | "InvalidModelGeneration"
-  | "RequestTokenLimitExceeded";
-export const InternalServerExceptionReason = S.Literal(
-  "InvalidModelGeneration",
-  "RequestTokenLimitExceeded",
-);
+  | "RequestTokenLimitExceeded"
+  | (string & {});
+export const InternalServerExceptionReason = S.String;
 export interface CreateActRequest {
   workflowDefinitionName: string;
   workflowRunId: string;
@@ -983,12 +970,9 @@ export const InvokeActStepResponse = S.suspend(() =>
 export type ValidationExceptionReason =
   | "FieldValidationFailed"
   | "InvalidStatus"
-  | "GuardrailIntervened";
-export const ValidationExceptionReason = S.Literal(
-  "FieldValidationFailed",
-  "InvalidStatus",
-  "GuardrailIntervened",
-);
+  | "GuardrailIntervened"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 export interface ValidationExceptionField {
   name: string;
   message: string;

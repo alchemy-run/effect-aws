@@ -169,29 +169,26 @@ export type SuccessValue = string;
 export type FailureValue = string;
 
 //# Schemas
-export type Scope = "CLOUDFRONT" | "REGIONAL";
-export const Scope = S.Literal("CLOUDFRONT", "REGIONAL");
+export type Scope = "CLOUDFRONT" | "REGIONAL" | (string & {});
+export const Scope = S.String;
 export type APIKeyTokenDomains = string[];
 export const APIKeyTokenDomains = S.Array(S.String);
-export type IPAddressVersion = "IPV4" | "IPV6";
-export const IPAddressVersion = S.Literal("IPV4", "IPV6");
+export type IPAddressVersion = "IPV4" | "IPV6" | (string & {});
+export const IPAddressVersion = S.String;
 export type IPAddresses = string[];
 export const IPAddresses = S.Array(S.String);
 export type TokenDomains = string[];
 export const TokenDomains = S.Array(S.String);
-export type LogType = "WAF_LOGS";
-export const LogType = S.Literal("WAF_LOGS");
+export type LogType = "WAF_LOGS" | (string & {});
+export const LogType = S.String;
 export type LogScope =
   | "CUSTOMER"
   | "SECURITY_LAKE"
-  | "CLOUDWATCH_TELEMETRY_RULE_MANAGED";
-export const LogScope = S.Literal(
-  "CUSTOMER",
-  "SECURITY_LAKE",
-  "CLOUDWATCH_TELEMETRY_RULE_MANAGED",
-);
-export type Platform = "IOS" | "ANDROID";
-export const Platform = S.Literal("IOS", "ANDROID");
+  | "CLOUDWATCH_TELEMETRY_RULE_MANAGED"
+  | (string & {});
+export const LogScope = S.String;
+export type Platform = "IOS" | "ANDROID" | (string & {});
+export const Platform = S.String;
 export type ResourceType =
   | "APPLICATION_LOAD_BALANCER"
   | "API_GATEWAY"
@@ -199,16 +196,9 @@ export type ResourceType =
   | "COGNITO_USER_POOL"
   | "APP_RUNNER_SERVICE"
   | "VERIFIED_ACCESS_INSTANCE"
-  | "AMPLIFY";
-export const ResourceType = S.Literal(
-  "APPLICATION_LOAD_BALANCER",
-  "API_GATEWAY",
-  "APPSYNC",
-  "COGNITO_USER_POOL",
-  "APP_RUNNER_SERVICE",
-  "VERIFIED_ACCESS_INSTANCE",
-  "AMPLIFY",
-);
+  | "AMPLIFY"
+  | (string & {});
+export const ResourceType = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export interface AssociateWebACLRequest {
@@ -1325,8 +1315,12 @@ export interface QueryString {}
 export const QueryString = S.suspend(() => S.Struct({})).annotations({
   identifier: "QueryString",
 }) as any as S.Schema<QueryString>;
-export type OversizeHandling = "CONTINUE" | "MATCH" | "NO_MATCH";
-export const OversizeHandling = S.Literal("CONTINUE", "MATCH", "NO_MATCH");
+export type OversizeHandling =
+  | "CONTINUE"
+  | "MATCH"
+  | "NO_MATCH"
+  | (string & {});
+export const OversizeHandling = S.String;
 export interface Body {
   OversizeHandling?: OversizeHandling;
 }
@@ -1355,17 +1349,14 @@ export const JsonMatchPattern = S.suspend(() =>
 ).annotations({
   identifier: "JsonMatchPattern",
 }) as any as S.Schema<JsonMatchPattern>;
-export type JsonMatchScope = "ALL" | "KEY" | "VALUE";
-export const JsonMatchScope = S.Literal("ALL", "KEY", "VALUE");
+export type JsonMatchScope = "ALL" | "KEY" | "VALUE" | (string & {});
+export const JsonMatchScope = S.String;
 export type BodyParsingFallbackBehavior =
   | "MATCH"
   | "NO_MATCH"
-  | "EVALUATE_AS_STRING";
-export const BodyParsingFallbackBehavior = S.Literal(
-  "MATCH",
-  "NO_MATCH",
-  "EVALUATE_AS_STRING",
-);
+  | "EVALUATE_AS_STRING"
+  | (string & {});
+export const BodyParsingFallbackBehavior = S.String;
 export interface JsonBody {
   MatchPattern: JsonMatchPattern;
   MatchScope: JsonMatchScope;
@@ -1396,8 +1387,8 @@ export const HeaderMatchPattern = S.suspend(() =>
 ).annotations({
   identifier: "HeaderMatchPattern",
 }) as any as S.Schema<HeaderMatchPattern>;
-export type MapMatchScope = "ALL" | "KEY" | "VALUE";
-export const MapMatchScope = S.Literal("ALL", "KEY", "VALUE");
+export type MapMatchScope = "ALL" | "KEY" | "VALUE" | (string & {});
+export const MapMatchScope = S.String;
 export interface Headers {
   MatchPattern: HeaderMatchPattern;
   MatchScope: MapMatchScope;
@@ -1444,8 +1435,8 @@ export interface HeaderOrder {
 export const HeaderOrder = S.suspend(() =>
   S.Struct({ OversizeHandling: OversizeHandling }),
 ).annotations({ identifier: "HeaderOrder" }) as any as S.Schema<HeaderOrder>;
-export type FallbackBehavior = "MATCH" | "NO_MATCH";
-export const FallbackBehavior = S.Literal("MATCH", "NO_MATCH");
+export type FallbackBehavior = "MATCH" | "NO_MATCH" | (string & {});
+export const FallbackBehavior = S.String;
 export interface JA3Fingerprint {
   FallbackBehavior: FallbackBehavior;
 }
@@ -1523,30 +1514,9 @@ export type TextTransformationType =
   | "REPLACE_NULLS"
   | "BASE64_DECODE_EXT"
   | "URL_DECODE_UNI"
-  | "UTF8_TO_UNICODE";
-export const TextTransformationType = S.Literal(
-  "NONE",
-  "COMPRESS_WHITE_SPACE",
-  "HTML_ENTITY_DECODE",
-  "LOWERCASE",
-  "CMD_LINE",
-  "URL_DECODE",
-  "BASE64_DECODE",
-  "HEX_DECODE",
-  "MD5",
-  "REPLACE_COMMENTS",
-  "ESCAPE_SEQ_DECODE",
-  "SQL_HEX_DECODE",
-  "CSS_DECODE",
-  "JS_DECODE",
-  "NORMALIZE_PATH",
-  "NORMALIZE_PATH_WIN",
-  "REMOVE_NULLS",
-  "REPLACE_NULLS",
-  "BASE64_DECODE_EXT",
-  "URL_DECODE_UNI",
-  "UTF8_TO_UNICODE",
-);
+  | "UTF8_TO_UNICODE"
+  | (string & {});
+export const TextTransformationType = S.String;
 export interface TextTransformation {
   Priority: number;
   Type: TextTransformationType;
@@ -1563,14 +1533,9 @@ export type PositionalConstraint =
   | "STARTS_WITH"
   | "ENDS_WITH"
   | "CONTAINS"
-  | "CONTAINS_WORD";
-export const PositionalConstraint = S.Literal(
-  "EXACTLY",
-  "STARTS_WITH",
-  "ENDS_WITH",
-  "CONTAINS",
-  "CONTAINS_WORD",
-);
+  | "CONTAINS_WORD"
+  | (string & {});
+export const PositionalConstraint = S.String;
 export interface ByteMatchStatement {
   SearchString: Uint8Array;
   FieldToMatch: FieldToMatch;
@@ -1587,8 +1552,8 @@ export const ByteMatchStatement = S.suspend(() =>
 ).annotations({
   identifier: "ByteMatchStatement",
 }) as any as S.Schema<ByteMatchStatement>;
-export type SensitivityLevel = "LOW" | "HIGH";
-export const SensitivityLevel = S.Literal("LOW", "HIGH");
+export type SensitivityLevel = "LOW" | "HIGH" | (string & {});
+export const SensitivityLevel = S.String;
 export interface SqliMatchStatement {
   FieldToMatch: FieldToMatch;
   TextTransformations: TextTransformation[];
@@ -1615,8 +1580,15 @@ export const XssMatchStatement = S.suspend(() =>
 ).annotations({
   identifier: "XssMatchStatement",
 }) as any as S.Schema<XssMatchStatement>;
-export type ComparisonOperator = "EQ" | "NE" | "LE" | "LT" | "GE" | "GT";
-export const ComparisonOperator = S.Literal("EQ", "NE", "LE", "LT", "GE", "GT");
+export type ComparisonOperator =
+  | "EQ"
+  | "NE"
+  | "LE"
+  | "LT"
+  | "GE"
+  | "GT"
+  | (string & {});
+export const ComparisonOperator = S.String;
 export interface SizeConstraintStatement {
   FieldToMatch: FieldToMatch;
   ComparisonOperator: ComparisonOperator;
@@ -1883,259 +1855,9 @@ export type CountryCode =
   | "YE"
   | "ZM"
   | "ZW"
-  | "XK";
-export const CountryCode = S.Literal(
-  "AF",
-  "AX",
-  "AL",
-  "DZ",
-  "AS",
-  "AD",
-  "AO",
-  "AI",
-  "AQ",
-  "AG",
-  "AR",
-  "AM",
-  "AW",
-  "AU",
-  "AT",
-  "AZ",
-  "BS",
-  "BH",
-  "BD",
-  "BB",
-  "BY",
-  "BE",
-  "BZ",
-  "BJ",
-  "BM",
-  "BT",
-  "BO",
-  "BQ",
-  "BA",
-  "BW",
-  "BV",
-  "BR",
-  "IO",
-  "BN",
-  "BG",
-  "BF",
-  "BI",
-  "KH",
-  "CM",
-  "CA",
-  "CV",
-  "KY",
-  "CF",
-  "TD",
-  "CL",
-  "CN",
-  "CX",
-  "CC",
-  "CO",
-  "KM",
-  "CG",
-  "CD",
-  "CK",
-  "CR",
-  "CI",
-  "HR",
-  "CU",
-  "CW",
-  "CY",
-  "CZ",
-  "DK",
-  "DJ",
-  "DM",
-  "DO",
-  "EC",
-  "EG",
-  "SV",
-  "GQ",
-  "ER",
-  "EE",
-  "ET",
-  "FK",
-  "FO",
-  "FJ",
-  "FI",
-  "FR",
-  "GF",
-  "PF",
-  "TF",
-  "GA",
-  "GM",
-  "GE",
-  "DE",
-  "GH",
-  "GI",
-  "GR",
-  "GL",
-  "GD",
-  "GP",
-  "GU",
-  "GT",
-  "GG",
-  "GN",
-  "GW",
-  "GY",
-  "HT",
-  "HM",
-  "VA",
-  "HN",
-  "HK",
-  "HU",
-  "IS",
-  "IN",
-  "ID",
-  "IR",
-  "IQ",
-  "IE",
-  "IM",
-  "IL",
-  "IT",
-  "JM",
-  "JP",
-  "JE",
-  "JO",
-  "KZ",
-  "KE",
-  "KI",
-  "KP",
-  "KR",
-  "KW",
-  "KG",
-  "LA",
-  "LV",
-  "LB",
-  "LS",
-  "LR",
-  "LY",
-  "LI",
-  "LT",
-  "LU",
-  "MO",
-  "MK",
-  "MG",
-  "MW",
-  "MY",
-  "MV",
-  "ML",
-  "MT",
-  "MH",
-  "MQ",
-  "MR",
-  "MU",
-  "YT",
-  "MX",
-  "FM",
-  "MD",
-  "MC",
-  "MN",
-  "ME",
-  "MS",
-  "MA",
-  "MZ",
-  "MM",
-  "NA",
-  "NR",
-  "NP",
-  "NL",
-  "NC",
-  "NZ",
-  "NI",
-  "NE",
-  "NG",
-  "NU",
-  "NF",
-  "MP",
-  "NO",
-  "OM",
-  "PK",
-  "PW",
-  "PS",
-  "PA",
-  "PG",
-  "PY",
-  "PE",
-  "PH",
-  "PN",
-  "PL",
-  "PT",
-  "PR",
-  "QA",
-  "RE",
-  "RO",
-  "RU",
-  "RW",
-  "BL",
-  "SH",
-  "KN",
-  "LC",
-  "MF",
-  "PM",
-  "VC",
-  "WS",
-  "SM",
-  "ST",
-  "SA",
-  "SN",
-  "RS",
-  "SC",
-  "SL",
-  "SG",
-  "SX",
-  "SK",
-  "SI",
-  "SB",
-  "SO",
-  "ZA",
-  "GS",
-  "SS",
-  "ES",
-  "LK",
-  "SD",
-  "SR",
-  "SJ",
-  "SZ",
-  "SE",
-  "CH",
-  "SY",
-  "TW",
-  "TJ",
-  "TZ",
-  "TH",
-  "TL",
-  "TG",
-  "TK",
-  "TO",
-  "TT",
-  "TN",
-  "TR",
-  "TM",
-  "TC",
-  "TV",
-  "UG",
-  "UA",
-  "AE",
-  "GB",
-  "US",
-  "UM",
-  "UY",
-  "UZ",
-  "VU",
-  "VE",
-  "VN",
-  "VG",
-  "VI",
-  "WF",
-  "EH",
-  "YE",
-  "ZM",
-  "ZW",
-  "XK",
-);
+  | "XK"
+  | (string & {});
+export const CountryCode = S.String;
 export type CountryCodes = CountryCode[];
 export const CountryCodes = S.Array(CountryCode);
 export interface ForwardedIPConfig {
@@ -2275,8 +1997,8 @@ export const RuleGroupReferenceStatement = S.suspend(() =>
 ).annotations({
   identifier: "RuleGroupReferenceStatement",
 }) as any as S.Schema<RuleGroupReferenceStatement>;
-export type ForwardedIPPosition = "FIRST" | "LAST" | "ANY";
-export const ForwardedIPPosition = S.Literal("FIRST", "LAST", "ANY");
+export type ForwardedIPPosition = "FIRST" | "LAST" | "ANY" | (string & {});
+export const ForwardedIPPosition = S.String;
 export interface IPSetForwardedIPConfig {
   HeaderName: string;
   FallbackBehavior: FallbackBehavior;
@@ -2317,8 +2039,8 @@ export const RegexPatternSetReferenceStatement = S.suspend(() =>
 ).annotations({
   identifier: "RegexPatternSetReferenceStatement",
 }) as any as S.Schema<RegexPatternSetReferenceStatement>;
-export type LabelMatchScope = "LABEL" | "NAMESPACE";
-export const LabelMatchScope = S.Literal("LABEL", "NAMESPACE");
+export type LabelMatchScope = "LABEL" | "NAMESPACE" | (string & {});
+export const LabelMatchScope = S.String;
 export interface LabelMatchStatement {
   Scope: LabelMatchScope;
   Key: string;
@@ -2505,12 +2227,9 @@ export const Rules = S.Array(Rule);
 export type ResponseContentType =
   | "TEXT_PLAIN"
   | "TEXT_HTML"
-  | "APPLICATION_JSON";
-export const ResponseContentType = S.Literal(
-  "TEXT_PLAIN",
-  "TEXT_HTML",
-  "APPLICATION_JSON",
-);
+  | "APPLICATION_JSON"
+  | (string & {});
+export const ResponseContentType = S.String;
 export interface CustomResponseBody {
   ContentType: ResponseContentType;
   Content: string;
@@ -2575,14 +2294,9 @@ export type FieldToProtectType =
   | "SINGLE_COOKIE"
   | "SINGLE_QUERY_ARGUMENT"
   | "QUERY_STRING"
-  | "BODY";
-export const FieldToProtectType = S.Literal(
-  "SINGLE_HEADER",
-  "SINGLE_COOKIE",
-  "SINGLE_QUERY_ARGUMENT",
-  "QUERY_STRING",
-  "BODY",
-);
+  | "BODY"
+  | (string & {});
+export const FieldToProtectType = S.String;
 export type FieldToProtectKeys = string[];
 export const FieldToProtectKeys = S.Array(S.String);
 export interface FieldToProtect {
@@ -2597,8 +2311,8 @@ export const FieldToProtect = S.suspend(() =>
 ).annotations({
   identifier: "FieldToProtect",
 }) as any as S.Schema<FieldToProtect>;
-export type DataProtectionAction = "SUBSTITUTION" | "HASH";
-export const DataProtectionAction = S.Literal("SUBSTITUTION", "HASH");
+export type DataProtectionAction = "SUBSTITUTION" | "HASH" | (string & {});
+export const DataProtectionAction = S.String;
 export interface DataProtection {
   Field: FieldToProtect;
   Action: DataProtectionAction;
@@ -2630,21 +2344,16 @@ export type AssociatedResourceType =
   | "API_GATEWAY"
   | "COGNITO_USER_POOL"
   | "APP_RUNNER_SERVICE"
-  | "VERIFIED_ACCESS_INSTANCE";
-export const AssociatedResourceType = S.Literal(
-  "CLOUDFRONT",
-  "API_GATEWAY",
-  "COGNITO_USER_POOL",
-  "APP_RUNNER_SERVICE",
-  "VERIFIED_ACCESS_INSTANCE",
-);
-export type SizeInspectionLimit = "KB_16" | "KB_32" | "KB_48" | "KB_64";
-export const SizeInspectionLimit = S.Literal(
-  "KB_16",
-  "KB_32",
-  "KB_48",
-  "KB_64",
-);
+  | "VERIFIED_ACCESS_INSTANCE"
+  | (string & {});
+export const AssociatedResourceType = S.String;
+export type SizeInspectionLimit =
+  | "KB_16"
+  | "KB_32"
+  | "KB_48"
+  | "KB_64"
+  | (string & {});
+export const SizeInspectionLimit = S.String;
 export interface RequestBodyAssociatedResourceTypeConfig {
   DefaultSizeInspectionLimit: SizeInspectionLimit;
 }
@@ -2672,8 +2381,11 @@ export const AssociationConfig = S.suspend(() =>
 ).annotations({
   identifier: "AssociationConfig",
 }) as any as S.Schema<AssociationConfig>;
-export type LowReputationMode = "ACTIVE_UNDER_DDOS" | "ALWAYS_ON";
-export const LowReputationMode = S.Literal("ACTIVE_UNDER_DDOS", "ALWAYS_ON");
+export type LowReputationMode =
+  | "ACTIVE_UNDER_DDOS"
+  | "ALWAYS_ON"
+  | (string & {});
+export const LowReputationMode = S.String;
 export interface OnSourceDDoSProtectionConfig {
   ALBLowReputationMode: LowReputationMode;
 }
@@ -2767,25 +2479,19 @@ export const TimeWindow = S.suspend(() =>
 ).annotations({ identifier: "TimeWindow" }) as any as S.Schema<TimeWindow>;
 export type RedactedFields = FieldToMatch[];
 export const RedactedFields = S.Array(FieldToMatch);
-export type FilterBehavior = "KEEP" | "DROP";
-export const FilterBehavior = S.Literal("KEEP", "DROP");
-export type FilterRequirement = "MEETS_ALL" | "MEETS_ANY";
-export const FilterRequirement = S.Literal("MEETS_ALL", "MEETS_ANY");
+export type FilterBehavior = "KEEP" | "DROP" | (string & {});
+export const FilterBehavior = S.String;
+export type FilterRequirement = "MEETS_ALL" | "MEETS_ANY" | (string & {});
+export const FilterRequirement = S.String;
 export type ActionValue =
   | "ALLOW"
   | "BLOCK"
   | "COUNT"
   | "CAPTCHA"
   | "CHALLENGE"
-  | "EXCLUDED_AS_COUNT";
-export const ActionValue = S.Literal(
-  "ALLOW",
-  "BLOCK",
-  "COUNT",
-  "CAPTCHA",
-  "CHALLENGE",
-  "EXCLUDED_AS_COUNT",
-);
+  | "EXCLUDED_AS_COUNT"
+  | (string & {});
+export const ActionValue = S.String;
 export interface ActionCondition {
   Action: ActionValue;
 }
@@ -3039,8 +2745,8 @@ export const GetSampledRequestsRequest = S.suspend(() =>
 ).annotations({
   identifier: "GetSampledRequestsRequest",
 }) as any as S.Schema<GetSampledRequestsRequest>;
-export type PayloadType = "JSON" | "FORM_ENCODED";
-export const PayloadType = S.Literal("JSON", "FORM_ENCODED");
+export type PayloadType = "JSON" | "FORM_ENCODED" | (string & {});
+export const PayloadType = S.String;
 export interface UsernameField {
   Identifier: string;
 }
@@ -3057,8 +2763,8 @@ export const PasswordField = S.suspend(() =>
 ).annotations({
   identifier: "PasswordField",
 }) as any as S.Schema<PasswordField>;
-export type InspectionLevel = "COMMON" | "TARGETED";
-export const InspectionLevel = S.Literal("COMMON", "TARGETED");
+export type InspectionLevel = "COMMON" | "TARGETED" | (string & {});
+export const InspectionLevel = S.String;
 export interface AWSManagedRulesBotControlRuleSet {
   InspectionLevel: InspectionLevel;
   EnableMachineLearning?: boolean;
@@ -3247,10 +2953,10 @@ export const AWSManagedRulesACFPRuleSet = S.suspend(() =>
 ).annotations({
   identifier: "AWSManagedRulesACFPRuleSet",
 }) as any as S.Schema<AWSManagedRulesACFPRuleSet>;
-export type UsageOfAction = "ENABLED" | "DISABLED";
-export const UsageOfAction = S.Literal("ENABLED", "DISABLED");
-export type SensitivityToAct = "LOW" | "MEDIUM" | "HIGH";
-export const SensitivityToAct = S.Literal("LOW", "MEDIUM", "HIGH");
+export type UsageOfAction = "ENABLED" | "DISABLED" | (string & {});
+export const UsageOfAction = S.String;
+export type SensitivityToAct = "LOW" | "MEDIUM" | "HIGH" | (string & {});
+export const SensitivityToAct = S.String;
 export interface ClientSideAction {
   UsageOfAction: UsageOfAction;
   Sensitivity?: SensitivityToAct;
@@ -3511,13 +3217,9 @@ export type RateBasedStatementAggregateKeyType =
   | "IP"
   | "FORWARDED_IP"
   | "CUSTOM_KEYS"
-  | "CONSTANT";
-export const RateBasedStatementAggregateKeyType = S.Literal(
-  "IP",
-  "FORWARDED_IP",
-  "CUSTOM_KEYS",
-  "CONSTANT",
-);
+  | "CONSTANT"
+  | (string & {});
+export const RateBasedStatementAggregateKeyType = S.String;
 export type Statements = Statement[];
 export const Statements = S.Array(
   S.suspend((): S.Schema<Statement, any> => Statement).annotations({
@@ -3661,81 +3363,9 @@ export type ParameterExceptionField =
   | "CUSTOM_KEYS"
   | "ACP_RULE_SET_RESPONSE_INSPECTION"
   | "DATA_PROTECTION_CONFIG"
-  | "LOW_REPUTATION_MODE";
-export const ParameterExceptionField = S.Literal(
-  "WEB_ACL",
-  "RULE_GROUP",
-  "REGEX_PATTERN_SET",
-  "IP_SET",
-  "MANAGED_RULE_SET",
-  "RULE",
-  "EXCLUDED_RULE",
-  "STATEMENT",
-  "BYTE_MATCH_STATEMENT",
-  "SQLI_MATCH_STATEMENT",
-  "XSS_MATCH_STATEMENT",
-  "SIZE_CONSTRAINT_STATEMENT",
-  "GEO_MATCH_STATEMENT",
-  "RATE_BASED_STATEMENT",
-  "RULE_GROUP_REFERENCE_STATEMENT",
-  "REGEX_PATTERN_REFERENCE_STATEMENT",
-  "IP_SET_REFERENCE_STATEMENT",
-  "MANAGED_RULE_SET_STATEMENT",
-  "LABEL_MATCH_STATEMENT",
-  "AND_STATEMENT",
-  "OR_STATEMENT",
-  "NOT_STATEMENT",
-  "IP_ADDRESS",
-  "IP_ADDRESS_VERSION",
-  "FIELD_TO_MATCH",
-  "TEXT_TRANSFORMATION",
-  "SINGLE_QUERY_ARGUMENT",
-  "SINGLE_HEADER",
-  "DEFAULT_ACTION",
-  "RULE_ACTION",
-  "ENTITY_LIMIT",
-  "OVERRIDE_ACTION",
-  "SCOPE_VALUE",
-  "RESOURCE_ARN",
-  "RESOURCE_TYPE",
-  "TAGS",
-  "TAG_KEYS",
-  "METRIC_NAME",
-  "FIREWALL_MANAGER_STATEMENT",
-  "FALLBACK_BEHAVIOR",
-  "POSITION",
-  "FORWARDED_IP_CONFIG",
-  "IP_SET_FORWARDED_IP_CONFIG",
-  "HEADER_NAME",
-  "CUSTOM_REQUEST_HANDLING",
-  "RESPONSE_CONTENT_TYPE",
-  "CUSTOM_RESPONSE",
-  "CUSTOM_RESPONSE_BODY",
-  "JSON_MATCH_PATTERN",
-  "JSON_MATCH_SCOPE",
-  "BODY_PARSING_FALLBACK_BEHAVIOR",
-  "LOGGING_FILTER",
-  "FILTER_CONDITION",
-  "EXPIRE_TIMESTAMP",
-  "CHANGE_PROPAGATION_STATUS",
-  "ASSOCIABLE_RESOURCE",
-  "LOG_DESTINATION",
-  "MANAGED_RULE_GROUP_CONFIG",
-  "PAYLOAD_TYPE",
-  "HEADER_MATCH_PATTERN",
-  "COOKIE_MATCH_PATTERN",
-  "MAP_MATCH_SCOPE",
-  "OVERSIZE_HANDLING",
-  "CHALLENGE_CONFIG",
-  "TOKEN_DOMAIN",
-  "ATP_RULE_SET_RESPONSE_INSPECTION",
-  "ASSOCIATED_RESOURCE_TYPE",
-  "SCOPE_DOWN",
-  "CUSTOM_KEYS",
-  "ACP_RULE_SET_RESPONSE_INSPECTION",
-  "DATA_PROTECTION_CONFIG",
-  "LOW_REPUTATION_MODE",
-);
+  | "LOW_REPUTATION_MODE"
+  | (string & {});
+export const ParameterExceptionField = S.String;
 export interface RateBasedStatementManagedKeysIPSet {
   IPAddressVersion?: IPAddressVersion;
   Addresses?: string[];
@@ -4341,13 +3971,9 @@ export type FailureReason =
   | "TOKEN_MISSING"
   | "TOKEN_EXPIRED"
   | "TOKEN_INVALID"
-  | "TOKEN_DOMAIN_MISMATCH";
-export const FailureReason = S.Literal(
-  "TOKEN_MISSING",
-  "TOKEN_EXPIRED",
-  "TOKEN_INVALID",
-  "TOKEN_DOMAIN_MISMATCH",
-);
+  | "TOKEN_DOMAIN_MISMATCH"
+  | (string & {});
+export const FailureReason = S.String;
 export interface RateLimitHeader {
   Name: string;
   TextTransformations: TextTransformation[];

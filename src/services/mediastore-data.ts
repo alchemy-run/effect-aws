@@ -106,10 +106,10 @@ export type SHA256Hash = string;
 export type ItemName = string;
 
 //# Schemas
-export type StorageClass = "TEMPORAL";
-export const StorageClass = S.Literal("TEMPORAL");
-export type UploadAvailability = "STANDARD" | "STREAMING";
-export const UploadAvailability = S.Literal("STANDARD", "STREAMING");
+export type StorageClass = "TEMPORAL" | (string & {});
+export const StorageClass = S.String;
+export type UploadAvailability = "STANDARD" | "STREAMING" | (string & {});
+export const UploadAvailability = S.String;
 export interface DeleteObjectRequest {
   Path: string;
 }
@@ -292,8 +292,8 @@ export const PutObjectResponse = S.suspend(() =>
 ).annotations({
   identifier: "PutObjectResponse",
 }) as any as S.Schema<PutObjectResponse>;
-export type ItemType = "OBJECT" | "FOLDER";
-export const ItemType = S.Literal("OBJECT", "FOLDER");
+export type ItemType = "OBJECT" | "FOLDER" | (string & {});
+export const ItemType = S.String;
 export interface Item {
   Name?: string;
   Type?: ItemType;

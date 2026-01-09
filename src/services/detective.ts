@@ -181,12 +181,9 @@ export const AccountIdList = S.Array(S.String);
 export type ErrorCode =
   | "INVALID_GRAPH_ARN"
   | "INVALID_REQUEST_BODY"
-  | "INTERNAL_ERROR";
-export const ErrorCode = S.Literal(
-  "INVALID_GRAPH_ARN",
-  "INVALID_REQUEST_BODY",
-  "INTERNAL_ERROR",
-);
+  | "INTERNAL_ERROR"
+  | (string & {});
+export const ErrorCode = S.String;
 export type IndicatorType =
   | "TTP_OBSERVED"
   | "IMPOSSIBLE_TRAVEL"
@@ -195,32 +192,21 @@ export type IndicatorType =
   | "NEW_ASO"
   | "NEW_USER_AGENT"
   | "RELATED_FINDING"
-  | "RELATED_FINDING_GROUP";
-export const IndicatorType = S.Literal(
-  "TTP_OBSERVED",
-  "IMPOSSIBLE_TRAVEL",
-  "FLAGGED_IP_ADDRESS",
-  "NEW_GEOLOCATION",
-  "NEW_ASO",
-  "NEW_USER_AGENT",
-  "RELATED_FINDING",
-  "RELATED_FINDING_GROUP",
-);
+  | "RELATED_FINDING_GROUP"
+  | (string & {});
+export const IndicatorType = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export type DatasourcePackage =
   | "DETECTIVE_CORE"
   | "EKS_AUDIT"
-  | "ASFF_SECURITYHUB_FINDING";
-export const DatasourcePackage = S.Literal(
-  "DETECTIVE_CORE",
-  "EKS_AUDIT",
-  "ASFF_SECURITYHUB_FINDING",
-);
+  | "ASFF_SECURITYHUB_FINDING"
+  | (string & {});
+export const DatasourcePackage = S.String;
 export type DatasourcePackageList = DatasourcePackage[];
 export const DatasourcePackageList = S.Array(DatasourcePackage);
-export type State = "ACTIVE" | "ARCHIVED";
-export const State = S.Literal("ACTIVE", "ARCHIVED");
+export type State = "ACTIVE" | "ARCHIVED" | (string & {});
+export const State = S.String;
 export interface AcceptInvitationRequest {
   GraphArn: string;
 }
@@ -783,10 +769,10 @@ export const UpdateOrganizationConfigurationResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateOrganizationConfigurationResponse",
 }) as any as S.Schema<UpdateOrganizationConfigurationResponse>;
-export type Field = "SEVERITY" | "STATUS" | "CREATED_TIME";
-export const Field = S.Literal("SEVERITY", "STATUS", "CREATED_TIME");
-export type SortOrder = "ASC" | "DESC";
-export const SortOrder = S.Literal("ASC", "DESC");
+export type Field = "SEVERITY" | "STATUS" | "CREATED_TIME" | (string & {});
+export const Field = S.String;
+export type SortOrder = "ASC" | "DESC" | (string & {});
+export const SortOrder = S.String;
 export interface Account {
   AccountId: string;
   EmailAddress: string | redacted.Redacted<string>;
@@ -796,18 +782,18 @@ export const Account = S.suspend(() =>
 ).annotations({ identifier: "Account" }) as any as S.Schema<Account>;
 export type AccountList = Account[];
 export const AccountList = S.Array(Account);
-export type EntityType = "IAM_ROLE" | "IAM_USER";
-export const EntityType = S.Literal("IAM_ROLE", "IAM_USER");
-export type Status = "RUNNING" | "FAILED" | "SUCCESSFUL";
-export const Status = S.Literal("RUNNING", "FAILED", "SUCCESSFUL");
-export type Severity = "INFORMATIONAL" | "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
-export const Severity = S.Literal(
-  "INFORMATIONAL",
-  "LOW",
-  "MEDIUM",
-  "HIGH",
-  "CRITICAL",
-);
+export type EntityType = "IAM_ROLE" | "IAM_USER" | (string & {});
+export const EntityType = S.String;
+export type Status = "RUNNING" | "FAILED" | "SUCCESSFUL" | (string & {});
+export const Status = S.String;
+export type Severity =
+  | "INFORMATIONAL"
+  | "LOW"
+  | "MEDIUM"
+  | "HIGH"
+  | "CRITICAL"
+  | (string & {});
+export const Severity = S.String;
 export interface SortCriteria {
   Field?: Field;
   SortOrder?: SortOrder;
@@ -921,21 +907,16 @@ export type MemberStatus =
   | "VERIFICATION_IN_PROGRESS"
   | "VERIFICATION_FAILED"
   | "ENABLED"
-  | "ACCEPTED_BUT_DISABLED";
-export const MemberStatus = S.Literal(
-  "INVITED",
-  "VERIFICATION_IN_PROGRESS",
-  "VERIFICATION_FAILED",
-  "ENABLED",
-  "ACCEPTED_BUT_DISABLED",
-);
-export type MemberDisabledReason = "VOLUME_TOO_HIGH" | "VOLUME_UNKNOWN";
-export const MemberDisabledReason = S.Literal(
-  "VOLUME_TOO_HIGH",
-  "VOLUME_UNKNOWN",
-);
-export type InvitationType = "INVITATION" | "ORGANIZATION";
-export const InvitationType = S.Literal("INVITATION", "ORGANIZATION");
+  | "ACCEPTED_BUT_DISABLED"
+  | (string & {});
+export const MemberStatus = S.String;
+export type MemberDisabledReason =
+  | "VOLUME_TOO_HIGH"
+  | "VOLUME_UNKNOWN"
+  | (string & {});
+export const MemberDisabledReason = S.String;
+export type InvitationType = "INVITATION" | "ORGANIZATION" | (string & {});
+export const InvitationType = S.String;
 export interface DatasourcePackageUsageInfo {
   VolumeUsageInBytes?: number;
   VolumeUsageUpdateTime?: Date;
@@ -959,12 +940,12 @@ export const VolumeUsageByDatasourcePackage = S.partial(
     value: S.UndefinedOr(DatasourcePackageUsageInfo),
   }),
 );
-export type DatasourcePackageIngestState = "STARTED" | "STOPPED" | "DISABLED";
-export const DatasourcePackageIngestState = S.Literal(
-  "STARTED",
-  "STOPPED",
-  "DISABLED",
-);
+export type DatasourcePackageIngestState =
+  | "STARTED"
+  | "STOPPED"
+  | "DISABLED"
+  | (string & {});
+export const DatasourcePackageIngestState = S.String;
 export type DatasourcePackageIngestStates = {
   [key in DatasourcePackage]?: DatasourcePackageIngestState;
 };
@@ -1280,8 +1261,8 @@ export const DatasourcePackageIngestDetail = S.suspend(() =>
 ).annotations({
   identifier: "DatasourcePackageIngestDetail",
 }) as any as S.Schema<DatasourcePackageIngestDetail>;
-export type Reason = "AWS_THREAT_INTELLIGENCE";
-export const Reason = S.Literal("AWS_THREAT_INTELLIGENCE");
+export type Reason = "AWS_THREAT_INTELLIGENCE" | (string & {});
+export const Reason = S.String;
 export type ResourceList = string[];
 export const ResourceList = S.Array(S.String);
 export type DatasourcePackageIngestDetails = {

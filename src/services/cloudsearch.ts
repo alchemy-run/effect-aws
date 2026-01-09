@@ -545,44 +545,9 @@ export type AnalysisSchemeLanguage =
   | "th"
   | "tr"
   | "zh-Hans"
-  | "zh-Hant";
-export const AnalysisSchemeLanguage = S.Literal(
-  "ar",
-  "bg",
-  "ca",
-  "cs",
-  "da",
-  "de",
-  "el",
-  "en",
-  "es",
-  "eu",
-  "fa",
-  "fi",
-  "fr",
-  "ga",
-  "gl",
-  "he",
-  "hi",
-  "hu",
-  "hy",
-  "id",
-  "it",
-  "ja",
-  "ko",
-  "lv",
-  "mul",
-  "nl",
-  "no",
-  "pt",
-  "ro",
-  "ru",
-  "sv",
-  "th",
-  "tr",
-  "zh-Hans",
-  "zh-Hant",
-);
+  | "zh-Hant"
+  | (string & {});
+export const AnalysisSchemeLanguage = S.String;
 export type IndexFieldType =
   | "int"
   | "double"
@@ -594,27 +559,14 @@ export type IndexFieldType =
   | "double-array"
   | "literal-array"
   | "text-array"
-  | "date-array";
-export const IndexFieldType = S.Literal(
-  "int",
-  "double",
-  "literal",
-  "text",
-  "date",
-  "latlon",
-  "int-array",
-  "double-array",
-  "literal-array",
-  "text-array",
-  "date-array",
-);
+  | "date-array"
+  | (string & {});
+export const IndexFieldType = S.String;
 export type TLSSecurityPolicy =
   | "Policy-Min-TLS-1-0-2019-07"
-  | "Policy-Min-TLS-1-2-2019-07";
-export const TLSSecurityPolicy = S.Literal(
-  "Policy-Min-TLS-1-0-2019-07",
-  "Policy-Min-TLS-1-2-2019-07",
-);
+  | "Policy-Min-TLS-1-2-2019-07"
+  | (string & {});
+export const TLSSecurityPolicy = S.String;
 export type PartitionInstanceType =
   | "search.m1.small"
   | "search.m1.large"
@@ -632,26 +584,9 @@ export type PartitionInstanceType =
   | "search.previousgeneration.small"
   | "search.previousgeneration.large"
   | "search.previousgeneration.xlarge"
-  | "search.previousgeneration.2xlarge";
-export const PartitionInstanceType = S.Literal(
-  "search.m1.small",
-  "search.m1.large",
-  "search.m2.xlarge",
-  "search.m2.2xlarge",
-  "search.m3.medium",
-  "search.m3.large",
-  "search.m3.xlarge",
-  "search.m3.2xlarge",
-  "search.small",
-  "search.medium",
-  "search.large",
-  "search.xlarge",
-  "search.2xlarge",
-  "search.previousgeneration.small",
-  "search.previousgeneration.large",
-  "search.previousgeneration.xlarge",
-  "search.previousgeneration.2xlarge",
-);
+  | "search.previousgeneration.2xlarge"
+  | (string & {});
+export const PartitionInstanceType = S.String;
 export type FieldNameList = string[];
 export const FieldNameList = S.Array(S.String);
 export interface Expression {
@@ -661,13 +596,13 @@ export interface Expression {
 export const Expression = S.suspend(() =>
   S.Struct({ ExpressionName: S.String, ExpressionValue: S.String }),
 ).annotations({ identifier: "Expression" }) as any as S.Schema<Expression>;
-export type AlgorithmicStemming = "none" | "minimal" | "light" | "full";
-export const AlgorithmicStemming = S.Literal(
-  "none",
-  "minimal",
-  "light",
-  "full",
-);
+export type AlgorithmicStemming =
+  | "none"
+  | "minimal"
+  | "light"
+  | "full"
+  | (string & {});
+export const AlgorithmicStemming = S.String;
 export interface AnalysisOptions {
   Synonyms?: string;
   Stopwords?: string;
@@ -704,13 +639,9 @@ export type OptionState =
   | "RequiresIndexDocuments"
   | "Processing"
   | "Active"
-  | "FailedToValidate";
-export const OptionState = S.Literal(
-  "RequiresIndexDocuments",
-  "Processing",
-  "Active",
-  "FailedToValidate",
-);
+  | "FailedToValidate"
+  | (string & {});
+export const OptionState = S.String;
 export interface OptionStatus {
   CreationDate: Date;
   UpdateDate: Date;
@@ -1048,8 +979,8 @@ export const IndexFieldStatus = S.suspend(() =>
 }) as any as S.Schema<IndexFieldStatus>;
 export type IndexFieldStatusList = IndexFieldStatus[];
 export const IndexFieldStatusList = S.Array(IndexFieldStatus);
-export type SuggesterFuzzyMatching = "none" | "low" | "high";
-export const SuggesterFuzzyMatching = S.Literal("none", "low", "high");
+export type SuggesterFuzzyMatching = "none" | "low" | "high" | (string & {});
+export const SuggesterFuzzyMatching = S.String;
 export interface DocumentSuggesterOptions {
   SourceField: string;
   FuzzyMatching?: SuggesterFuzzyMatching;

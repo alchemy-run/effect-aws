@@ -131,27 +131,19 @@ export const TagKeyList = S.Array(S.String);
 export type HandshakeType =
   | "START_SERVICE_PERIOD"
   | "REVOKE_SERVICE_PERIOD"
-  | "PROGRAM_MANAGEMENT_ACCOUNT";
-export const HandshakeType = S.Literal(
-  "START_SERVICE_PERIOD",
-  "REVOKE_SERVICE_PERIOD",
-  "PROGRAM_MANAGEMENT_ACCOUNT",
-);
-export type ParticipantType = "SENDER" | "RECEIVER";
-export const ParticipantType = S.Literal("SENDER", "RECEIVER");
+  | "PROGRAM_MANAGEMENT_ACCOUNT"
+  | (string & {});
+export const HandshakeType = S.String;
+export type ParticipantType = "SENDER" | "RECEIVER" | (string & {});
+export const ParticipantType = S.String;
 export type HandshakeStatus =
   | "PENDING"
   | "ACCEPTED"
   | "REJECTED"
   | "CANCELED"
-  | "EXPIRED";
-export const HandshakeStatus = S.Literal(
-  "PENDING",
-  "ACCEPTED",
-  "REJECTED",
-  "CANCELED",
-  "EXPIRED",
-);
+  | "EXPIRED"
+  | (string & {});
+export const HandshakeStatus = S.String;
 export type HandshakeStatusList = HandshakeStatus[];
 export const HandshakeStatusList = S.Array(HandshakeStatus);
 export type AssociatedResourceIdentifierList = string[];
@@ -159,50 +151,44 @@ export const AssociatedResourceIdentifierList = S.Array(S.String);
 export type Program =
   | "SOLUTION_PROVIDER"
   | "DISTRIBUTION"
-  | "DISTRIBUTION_SELLER";
-export const Program = S.Literal(
-  "SOLUTION_PROVIDER",
-  "DISTRIBUTION",
-  "DISTRIBUTION_SELLER",
-);
+  | "DISTRIBUTION_SELLER"
+  | (string & {});
+export const Program = S.String;
 export type ProgramManagementAccountDisplayNameList = string[];
 export const ProgramManagementAccountDisplayNameList = S.Array(S.String);
 export type ProgramList = Program[];
 export const ProgramList = S.Array(Program);
 export type AccountIdList = string[];
 export const AccountIdList = S.Array(S.String);
-export type ProgramManagementAccountStatus = "PENDING" | "ACTIVE" | "INACTIVE";
-export const ProgramManagementAccountStatus = S.Literal(
-  "PENDING",
-  "ACTIVE",
-  "INACTIVE",
-);
+export type ProgramManagementAccountStatus =
+  | "PENDING"
+  | "ACTIVE"
+  | "INACTIVE"
+  | (string & {});
+export const ProgramManagementAccountStatus = S.String;
 export type ProgramManagementAccountStatusList =
   ProgramManagementAccountStatus[];
 export const ProgramManagementAccountStatusList = S.Array(
   ProgramManagementAccountStatus,
 );
-export type AssociationType = "DOWNSTREAM_SELLER" | "END_CUSTOMER" | "INTERNAL";
-export const AssociationType = S.Literal(
-  "DOWNSTREAM_SELLER",
-  "END_CUSTOMER",
-  "INTERNAL",
-);
+export type AssociationType =
+  | "DOWNSTREAM_SELLER"
+  | "END_CUSTOMER"
+  | "INTERNAL"
+  | (string & {});
+export const AssociationType = S.String;
 export type ResaleAccountModel =
   | "DISTRIBUTOR"
   | "END_CUSTOMER"
-  | "SOLUTION_PROVIDER";
-export const ResaleAccountModel = S.Literal(
-  "DISTRIBUTOR",
-  "END_CUSTOMER",
-  "SOLUTION_PROVIDER",
-);
-export type Sector = "COMMERCIAL" | "GOVERNMENT" | "GOVERNMENT_EXCEPTION";
-export const Sector = S.Literal(
-  "COMMERCIAL",
-  "GOVERNMENT",
-  "GOVERNMENT_EXCEPTION",
-);
+  | "SOLUTION_PROVIDER"
+  | (string & {});
+export const ResaleAccountModel = S.String;
+export type Sector =
+  | "COMMERCIAL"
+  | "GOVERNMENT"
+  | "GOVERNMENT_EXCEPTION"
+  | (string & {});
+export const Sector = S.String;
 export type AssociationTypeList = AssociationType[];
 export const AssociationTypeList = S.Array(AssociationType);
 export type RelationshipDisplayNameList = string[];
@@ -417,11 +403,11 @@ export const GetRelationshipRequest = S.suspend(() =>
 ).annotations({
   identifier: "GetRelationshipRequest",
 }) as any as S.Schema<GetRelationshipRequest>;
-export type Coverage = "ENTIRE_ORGANIZATION" | "MANAGEMENT_ACCOUNT_ONLY";
-export const Coverage = S.Literal(
-  "ENTIRE_ORGANIZATION",
-  "MANAGEMENT_ACCOUNT_ONLY",
-);
+export type Coverage =
+  | "ENTIRE_ORGANIZATION"
+  | "MANAGEMENT_ACCOUNT_ONLY"
+  | (string & {});
+export const Coverage = S.String;
 export interface ResoldBusiness {
   coverage: Coverage;
 }
@@ -444,8 +430,8 @@ export const ResoldEnterprise = S.suspend(() =>
 ).annotations({
   identifier: "ResoldEnterprise",
 }) as any as S.Schema<ResoldEnterprise>;
-export type Provider = "DISTRIBUTOR" | "DISTRIBUTION_SELLER";
-export const Provider = S.Literal("DISTRIBUTOR", "DISTRIBUTION_SELLER");
+export type Provider = "DISTRIBUTOR" | "DISTRIBUTION_SELLER" | (string & {});
+export const Provider = S.String;
 export interface PartnerLedSupport {
   coverage: Coverage;
   provider?: Provider;
@@ -541,12 +527,12 @@ export const DeleteRelationshipResponse = S.suspend(() =>
 ).annotations({
   identifier: "DeleteRelationshipResponse",
 }) as any as S.Schema<DeleteRelationshipResponse>;
-export type SortOrder = "Ascending" | "Descending";
-export const SortOrder = S.Literal("Ascending", "Descending");
-export type ListProgramManagementAccountsSortName = "UpdatedAt";
-export const ListProgramManagementAccountsSortName = S.Literal("UpdatedAt");
-export type ListRelationshipsSortName = "UpdatedAt";
-export const ListRelationshipsSortName = S.Literal("UpdatedAt");
+export type SortOrder = "Ascending" | "Descending" | (string & {});
+export const SortOrder = S.String;
+export type ListProgramManagementAccountsSortName = "UpdatedAt" | (string & {});
+export const ListProgramManagementAccountsSortName = S.String;
+export type ListRelationshipsSortName = "UpdatedAt" | (string & {});
+export const ListRelationshipsSortName = S.String;
 export interface ListProgramManagementAccountsSortBase {
   sortOrder: SortOrder;
   sortBy: ListProgramManagementAccountsSortName;
@@ -570,19 +556,17 @@ export const ListRelationshipsSortBase = S.suspend(() =>
 }) as any as S.Schema<ListRelationshipsSortBase>;
 export type ServicePeriodType =
   | "MINIMUM_NOTICE_PERIOD"
-  | "FIXED_COMMITMENT_PERIOD";
-export const ServicePeriodType = S.Literal(
-  "MINIMUM_NOTICE_PERIOD",
-  "FIXED_COMMITMENT_PERIOD",
-);
+  | "FIXED_COMMITMENT_PERIOD"
+  | (string & {});
+export const ServicePeriodType = S.String;
 export type ServicePeriodTypeList = ServicePeriodType[];
 export const ServicePeriodTypeList = S.Array(ServicePeriodType);
-export type StartServicePeriodTypeSortName = "UpdatedAt";
-export const StartServicePeriodTypeSortName = S.Literal("UpdatedAt");
-export type RevokeServicePeriodTypeSortName = "UpdatedAt";
-export const RevokeServicePeriodTypeSortName = S.Literal("UpdatedAt");
-export type ProgramManagementAccountTypeSortName = "UpdatedAt";
-export const ProgramManagementAccountTypeSortName = S.Literal("UpdatedAt");
+export type StartServicePeriodTypeSortName = "UpdatedAt" | (string & {});
+export const StartServicePeriodTypeSortName = S.String;
+export type RevokeServicePeriodTypeSortName = "UpdatedAt" | (string & {});
+export const RevokeServicePeriodTypeSortName = S.String;
+export type ProgramManagementAccountTypeSortName = "UpdatedAt" | (string & {});
+export const ProgramManagementAccountTypeSortName = S.String;
 export interface ListTagsForResourceResponse {
   tags?: Tag[];
 }
@@ -1243,11 +1227,9 @@ export const CreateRelationshipResponse = S.suspend(() =>
 }) as any as S.Schema<CreateRelationshipResponse>;
 export type ValidationExceptionReason =
   | "REQUEST_VALIDATION_FAILED"
-  | "BUSINESS_VALIDATION_FAILED";
-export const ValidationExceptionReason = S.Literal(
-  "REQUEST_VALIDATION_FAILED",
-  "BUSINESS_VALIDATION_FAILED",
-);
+  | "BUSINESS_VALIDATION_FAILED"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 export interface StartServicePeriodHandshakeDetail {
   note?: string;
   servicePeriodType?: ServicePeriodType;

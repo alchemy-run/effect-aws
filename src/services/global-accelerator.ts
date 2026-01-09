@@ -119,18 +119,18 @@ export type DestinationAddresses = string[];
 export const DestinationAddresses = S.Array(S.String);
 export type DestinationPorts = number[];
 export const DestinationPorts = S.Array(S.Number);
-export type IpAddressType = "IPV4" | "DUAL_STACK";
-export const IpAddressType = S.Literal("IPV4", "DUAL_STACK");
+export type IpAddressType = "IPV4" | "DUAL_STACK" | (string & {});
+export const IpAddressType = S.String;
 export type IpAddresses = string[];
 export const IpAddresses = S.Array(S.String);
 export type Principals = string[];
 export const Principals = S.Array(S.String);
-export type HealthCheckProtocol = "TCP" | "HTTP" | "HTTPS";
-export const HealthCheckProtocol = S.Literal("TCP", "HTTP", "HTTPS");
-export type Protocol = "TCP" | "UDP";
-export const Protocol = S.Literal("TCP", "UDP");
-export type ClientAffinity = "NONE" | "SOURCE_IP";
-export const ClientAffinity = S.Literal("NONE", "SOURCE_IP");
+export type HealthCheckProtocol = "TCP" | "HTTP" | "HTTPS" | (string & {});
+export const HealthCheckProtocol = S.String;
+export type Protocol = "TCP" | "UDP" | (string & {});
+export const Protocol = S.String;
+export type ClientAffinity = "NONE" | "SOURCE_IP" | (string & {});
+export const ClientAffinity = S.String;
 export type AwsAccountIds = string[];
 export const AwsAccountIds = S.Array(S.String);
 export type EndpointIds = string[];
@@ -917,8 +917,8 @@ export const WithdrawByoipCidrRequest = S.suspend(() =>
 ).annotations({
   identifier: "WithdrawByoipCidrRequest",
 }) as any as S.Schema<WithdrawByoipCidrRequest>;
-export type CustomRoutingProtocol = "TCP" | "UDP";
-export const CustomRoutingProtocol = S.Literal("TCP", "UDP");
+export type CustomRoutingProtocol = "TCP" | "UDP" | (string & {});
+export const CustomRoutingProtocol = S.String;
 export type CustomRoutingProtocols = CustomRoutingProtocol[];
 export const CustomRoutingProtocols = S.Array(CustomRoutingProtocol);
 export interface CustomRoutingEndpointConfiguration {
@@ -957,8 +957,8 @@ export type CustomRoutingDestinationConfigurations =
 export const CustomRoutingDestinationConfigurations = S.Array(
   CustomRoutingDestinationConfiguration,
 );
-export type IpAddressFamily = "IPv4" | "IPv6";
-export const IpAddressFamily = S.Literal("IPv4", "IPv6");
+export type IpAddressFamily = "IPv4" | "IPv6" | (string & {});
+export const IpAddressFamily = S.String;
 export interface IpSet {
   IpFamily?: string;
   IpAddresses?: string[];
@@ -973,8 +973,8 @@ export const IpSet = S.suspend(() =>
 ).annotations({ identifier: "IpSet" }) as any as S.Schema<IpSet>;
 export type IpSets = IpSet[];
 export const IpSets = S.Array(IpSet);
-export type AcceleratorStatus = "DEPLOYED" | "IN_PROGRESS";
-export const AcceleratorStatus = S.Literal("DEPLOYED", "IN_PROGRESS");
+export type AcceleratorStatus = "DEPLOYED" | "IN_PROGRESS" | (string & {});
+export const AcceleratorStatus = S.String;
 export interface AcceleratorEvent {
   Message?: string;
   Timestamp?: Date;
@@ -1032,20 +1032,9 @@ export type ByoipCidrState =
   | "FAILED_PROVISION"
   | "FAILED_ADVERTISING"
   | "FAILED_WITHDRAW"
-  | "FAILED_DEPROVISION";
-export const ByoipCidrState = S.Literal(
-  "PENDING_PROVISIONING",
-  "READY",
-  "PENDING_ADVERTISING",
-  "ADVERTISING",
-  "PENDING_WITHDRAWING",
-  "PENDING_DEPROVISIONING",
-  "DEPROVISIONED",
-  "FAILED_PROVISION",
-  "FAILED_ADVERTISING",
-  "FAILED_WITHDRAW",
-  "FAILED_DEPROVISION",
-);
+  | "FAILED_DEPROVISION"
+  | (string & {});
+export const ByoipCidrState = S.String;
 export interface ByoipCidrEvent {
   Message?: string;
   Timestamp?: Date;
@@ -1096,11 +1085,11 @@ export const Attachment = S.suspend(() =>
 ).annotations({ identifier: "Attachment" }) as any as S.Schema<Attachment>;
 export type Attachments = Attachment[];
 export const Attachments = S.Array(Attachment);
-export type CustomRoutingAcceleratorStatus = "DEPLOYED" | "IN_PROGRESS";
-export const CustomRoutingAcceleratorStatus = S.Literal(
-  "DEPLOYED",
-  "IN_PROGRESS",
-);
+export type CustomRoutingAcceleratorStatus =
+  | "DEPLOYED"
+  | "IN_PROGRESS"
+  | (string & {});
+export const CustomRoutingAcceleratorStatus = S.String;
 export interface CustomRoutingAccelerator {
   AcceleratorArn?: string;
   Name?: string;
@@ -1197,8 +1186,8 @@ export const CustomRoutingListener = S.suspend(() =>
 }) as any as S.Schema<CustomRoutingListener>;
 export type CustomRoutingListeners = CustomRoutingListener[];
 export const CustomRoutingListeners = S.Array(CustomRoutingListener);
-export type HealthState = "INITIAL" | "HEALTHY" | "UNHEALTHY";
-export const HealthState = S.Literal("INITIAL", "HEALTHY", "UNHEALTHY");
+export type HealthState = "INITIAL" | "HEALTHY" | "UNHEALTHY" | (string & {});
+export const HealthState = S.String;
 export interface EndpointDescription {
   EndpointId?: string;
   Weight?: number;
@@ -1688,8 +1677,11 @@ export const WithdrawByoipCidrResponse = S.suspend(() =>
 ).annotations({
   identifier: "WithdrawByoipCidrResponse",
 }) as any as S.Schema<WithdrawByoipCidrResponse>;
-export type CustomRoutingDestinationTrafficState = "ALLOW" | "DENY";
-export const CustomRoutingDestinationTrafficState = S.Literal("ALLOW", "DENY");
+export type CustomRoutingDestinationTrafficState =
+  | "ALLOW"
+  | "DENY"
+  | (string & {});
+export const CustomRoutingDestinationTrafficState = S.String;
 export interface SocketAddress {
   IpAddress?: string;
   Port?: number;

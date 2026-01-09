@@ -115,21 +115,19 @@ export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export type NamespaceList = string[];
 export const NamespaceList = S.Array(S.String);
-export type TableBucketType = "customer" | "aws";
-export const TableBucketType = S.Literal("customer", "aws");
-export type TableBucketMaintenanceType = "icebergUnreferencedFileRemoval";
-export const TableBucketMaintenanceType = S.Literal(
-  "icebergUnreferencedFileRemoval",
-);
-export type OpenTableFormat = "ICEBERG";
-export const OpenTableFormat = S.Literal("ICEBERG");
+export type TableBucketType = "customer" | "aws" | (string & {});
+export const TableBucketType = S.String;
+export type TableBucketMaintenanceType =
+  | "icebergUnreferencedFileRemoval"
+  | (string & {});
+export const TableBucketMaintenanceType = S.String;
+export type OpenTableFormat = "ICEBERG" | (string & {});
+export const OpenTableFormat = S.String;
 export type TableMaintenanceType =
   | "icebergCompaction"
-  | "icebergSnapshotManagement";
-export const TableMaintenanceType = S.Literal(
-  "icebergCompaction",
-  "icebergSnapshotManagement",
-);
+  | "icebergSnapshotManagement"
+  | (string & {});
+export const TableMaintenanceType = S.String;
 export interface ListTagsForResourceRequest {
   resourceArn: string;
 }
@@ -613,8 +611,8 @@ export const PutTableBucketMetricsConfigurationResponse = S.suspend(() =>
 ).annotations({
   identifier: "PutTableBucketMetricsConfigurationResponse",
 }) as any as S.Schema<PutTableBucketMetricsConfigurationResponse>;
-export type StorageClass = "STANDARD" | "INTELLIGENT_TIERING";
-export const StorageClass = S.Literal("STANDARD", "INTELLIGENT_TIERING");
+export type StorageClass = "STANDARD" | "INTELLIGENT_TIERING" | (string & {});
+export const StorageClass = S.String;
 export interface StorageClassConfiguration {
   storageClass: StorageClass;
 }
@@ -1117,12 +1115,15 @@ export const UpdateTableMetadataLocationRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateTableMetadataLocationRequest",
 }) as any as S.Schema<UpdateTableMetadataLocationRequest>;
-export type SSEAlgorithm = "AES256" | "aws:kms";
-export const SSEAlgorithm = S.Literal("AES256", "aws:kms");
-export type MaintenanceStatus = "enabled" | "disabled";
-export const MaintenanceStatus = S.Literal("enabled", "disabled");
-export type TableRecordExpirationStatus = "enabled" | "disabled";
-export const TableRecordExpirationStatus = S.Literal("enabled", "disabled");
+export type SSEAlgorithm = "AES256" | "aws:kms" | (string & {});
+export const SSEAlgorithm = S.String;
+export type MaintenanceStatus = "enabled" | "disabled" | (string & {});
+export const MaintenanceStatus = S.String;
+export type TableRecordExpirationStatus =
+  | "enabled"
+  | "disabled"
+  | (string & {});
+export const TableRecordExpirationStatus = S.String;
 export type Tags = { [key: string]: string | undefined };
 export const Tags = S.Record({ key: S.String, value: S.UndefinedOr(S.String) });
 export interface EncryptionConfiguration {
@@ -1134,19 +1135,15 @@ export const EncryptionConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "EncryptionConfiguration",
 }) as any as S.Schema<EncryptionConfiguration>;
-export type TableType = "customer" | "aws";
-export const TableType = S.Literal("customer", "aws");
+export type TableType = "customer" | "aws" | (string & {});
+export const TableType = S.String;
 export type TableRecordExpirationJobStatus =
   | "NotYetRun"
   | "Successful"
   | "Failed"
-  | "Disabled";
-export const TableRecordExpirationJobStatus = S.Literal(
-  "NotYetRun",
-  "Successful",
-  "Failed",
-  "Disabled",
-);
+  | "Disabled"
+  | (string & {});
+export const TableRecordExpirationJobStatus = S.String;
 export interface ListTagsForResourceResponse {
   tags?: { [key: string]: string | undefined };
 }
@@ -1470,24 +1467,25 @@ export const UpdateTableMetadataLocationResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateTableMetadataLocationResponse",
 }) as any as S.Schema<UpdateTableMetadataLocationResponse>;
-export type ReplicationStatus = "pending" | "completed" | "failed";
-export const ReplicationStatus = S.Literal("pending", "completed", "failed");
+export type ReplicationStatus =
+  | "pending"
+  | "completed"
+  | "failed"
+  | (string & {});
+export const ReplicationStatus = S.String;
 export type TableMaintenanceJobType =
   | "icebergCompaction"
   | "icebergSnapshotManagement"
-  | "icebergUnreferencedFileRemoval";
-export const TableMaintenanceJobType = S.Literal(
-  "icebergCompaction",
-  "icebergSnapshotManagement",
-  "icebergUnreferencedFileRemoval",
-);
-export type IcebergCompactionStrategy = "auto" | "binpack" | "sort" | "z-order";
-export const IcebergCompactionStrategy = S.Literal(
-  "auto",
-  "binpack",
-  "sort",
-  "z-order",
-);
+  | "icebergUnreferencedFileRemoval"
+  | (string & {});
+export const TableMaintenanceJobType = S.String;
+export type IcebergCompactionStrategy =
+  | "auto"
+  | "binpack"
+  | "sort"
+  | "z-order"
+  | (string & {});
+export const IcebergCompactionStrategy = S.String;
 export interface NamespaceSummary {
   namespace: string[];
   createdAt: Date;
@@ -1676,13 +1674,13 @@ export const TableProperties = S.Record({
   key: S.String,
   value: S.UndefinedOr(S.String),
 });
-export type JobStatus = "Not_Yet_Run" | "Successful" | "Failed" | "Disabled";
-export const JobStatus = S.Literal(
-  "Not_Yet_Run",
-  "Successful",
-  "Failed",
-  "Disabled",
-);
+export type JobStatus =
+  | "Not_Yet_Run"
+  | "Successful"
+  | "Failed"
+  | "Disabled"
+  | (string & {});
+export const JobStatus = S.String;
 export interface ListNamespacesResponse {
   namespaces: NamespaceSummary[];
   continuationToken?: string;

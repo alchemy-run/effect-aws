@@ -477,8 +477,8 @@ export const UpdateConfigurationDefinitionResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateConfigurationDefinitionResponse",
 }) as any as S.Schema<UpdateConfigurationDefinitionResponse>;
-export type StatusType = "Deployment" | "AsyncExecutions";
-export const StatusType = S.Literal("Deployment", "AsyncExecutions");
+export type StatusType = "Deployment" | "AsyncExecutions" | (string & {});
+export const StatusType = S.String;
 export type Status =
   | "INITIALIZING"
   | "DEPLOYING"
@@ -489,19 +489,9 @@ export type Status =
   | "STOPPED"
   | "DELETE_FAILED"
   | "STOP_FAILED"
-  | "NONE";
-export const Status = S.Literal(
-  "INITIALIZING",
-  "DEPLOYING",
-  "SUCCEEDED",
-  "DELETING",
-  "STOPPING",
-  "FAILED",
-  "STOPPED",
-  "DELETE_FAILED",
-  "STOP_FAILED",
-  "NONE",
-);
+  | "NONE"
+  | (string & {});
+export const Status = S.String;
 export interface ConfigurationDefinition {
   Type: string;
   Parameters: { [key: string]: string | undefined };

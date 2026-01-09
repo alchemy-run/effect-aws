@@ -172,19 +172,16 @@ export const BlacklistItemNames = S.Array(S.String);
 export type DeliverabilityDashboardAccountStatus =
   | "ACTIVE"
   | "PENDING_EXPIRATION"
-  | "DISABLED";
-export const DeliverabilityDashboardAccountStatus = S.Literal(
-  "ACTIVE",
-  "PENDING_EXPIRATION",
-  "DISABLED",
-);
-export type TlsPolicy = "REQUIRE" | "OPTIONAL";
-export const TlsPolicy = S.Literal("REQUIRE", "OPTIONAL");
-export type BehaviorOnMxFailure = "USE_DEFAULT_VALUE" | "REJECT_MESSAGE";
-export const BehaviorOnMxFailure = S.Literal(
-  "USE_DEFAULT_VALUE",
-  "REJECT_MESSAGE",
-);
+  | "DISABLED"
+  | (string & {});
+export const DeliverabilityDashboardAccountStatus = S.String;
+export type TlsPolicy = "REQUIRE" | "OPTIONAL" | (string & {});
+export const TlsPolicy = S.String;
+export type BehaviorOnMxFailure =
+  | "USE_DEFAULT_VALUE"
+  | "REJECT_MESSAGE"
+  | (string & {});
+export const BehaviorOnMxFailure = S.String;
 export type EmailAddressList = string[];
 export const EmailAddressList = S.Array(S.String);
 export type TagKeyList = string[];
@@ -1111,17 +1108,9 @@ export type EventType =
   | "DELIVERY"
   | "OPEN"
   | "CLICK"
-  | "RENDERING_FAILURE";
-export const EventType = S.Literal(
-  "SEND",
-  "REJECT",
-  "BOUNCE",
-  "COMPLAINT",
-  "DELIVERY",
-  "OPEN",
-  "CLICK",
-  "RENDERING_FAILURE",
-);
+  | "RENDERING_FAILURE"
+  | (string & {});
+export const EventType = S.String;
 export type EventTypes = EventType[];
 export const EventTypes = S.Array(EventType);
 export interface KinesisFirehoseDestination {
@@ -1133,12 +1122,12 @@ export const KinesisFirehoseDestination = S.suspend(() =>
 ).annotations({
   identifier: "KinesisFirehoseDestination",
 }) as any as S.Schema<KinesisFirehoseDestination>;
-export type DimensionValueSource = "MESSAGE_TAG" | "EMAIL_HEADER" | "LINK_TAG";
-export const DimensionValueSource = S.Literal(
-  "MESSAGE_TAG",
-  "EMAIL_HEADER",
-  "LINK_TAG",
-);
+export type DimensionValueSource =
+  | "MESSAGE_TAG"
+  | "EMAIL_HEADER"
+  | "LINK_TAG"
+  | (string & {});
+export const DimensionValueSource = S.String;
 export interface CloudWatchDimensionConfiguration {
   DimensionName: string;
   DimensionValueSource: DimensionValueSource;
@@ -1274,12 +1263,12 @@ export const SendingOptions = S.suspend(() =>
 ).annotations({
   identifier: "SendingOptions",
 }) as any as S.Schema<SendingOptions>;
-export type IdentityType = "EMAIL_ADDRESS" | "DOMAIN" | "MANAGED_DOMAIN";
-export const IdentityType = S.Literal(
-  "EMAIL_ADDRESS",
-  "DOMAIN",
-  "MANAGED_DOMAIN",
-);
+export type IdentityType =
+  | "EMAIL_ADDRESS"
+  | "DOMAIN"
+  | "MANAGED_DOMAIN"
+  | (string & {});
+export const IdentityType = S.String;
 export interface SendQuota {
   Max24HourSend?: number;
   MaxSendRate?: number;
@@ -1292,8 +1281,8 @@ export const SendQuota = S.suspend(() =>
     SentLast24Hours: S.optional(S.Number),
   }),
 ).annotations({ identifier: "SendQuota" }) as any as S.Schema<SendQuota>;
-export type WarmupStatus = "IN_PROGRESS" | "DONE";
-export const WarmupStatus = S.Literal("IN_PROGRESS", "DONE");
+export type WarmupStatus = "IN_PROGRESS" | "DONE" | (string & {});
+export const WarmupStatus = S.String;
 export interface DedicatedIp {
   Ip: string;
   WarmupStatus: WarmupStatus;
@@ -1314,8 +1303,11 @@ export type ConfigurationSetNameList = string[];
 export const ConfigurationSetNameList = S.Array(S.String);
 export type ListOfDedicatedIpPools = string[];
 export const ListOfDedicatedIpPools = S.Array(S.String);
-export type DeliverabilityTestStatus = "IN_PROGRESS" | "COMPLETED";
-export const DeliverabilityTestStatus = S.Literal("IN_PROGRESS", "COMPLETED");
+export type DeliverabilityTestStatus =
+  | "IN_PROGRESS"
+  | "COMPLETED"
+  | (string & {});
+export const DeliverabilityTestStatus = S.String;
 export interface DeliverabilityTestReport {
   ReportId?: string;
   ReportName?: string;
@@ -1633,27 +1625,18 @@ export type DkimStatus =
   | "SUCCESS"
   | "FAILED"
   | "TEMPORARY_FAILURE"
-  | "NOT_STARTED";
-export const DkimStatus = S.Literal(
-  "PENDING",
-  "SUCCESS",
-  "FAILED",
-  "TEMPORARY_FAILURE",
-  "NOT_STARTED",
-);
+  | "NOT_STARTED"
+  | (string & {});
+export const DkimStatus = S.String;
 export type DnsTokenList = string[];
 export const DnsTokenList = S.Array(S.String);
 export type MailFromDomainStatus =
   | "PENDING"
   | "SUCCESS"
   | "FAILED"
-  | "TEMPORARY_FAILURE";
-export const MailFromDomainStatus = S.Literal(
-  "PENDING",
-  "SUCCESS",
-  "FAILED",
-  "TEMPORARY_FAILURE",
-);
+  | "TEMPORARY_FAILURE"
+  | (string & {});
+export const MailFromDomainStatus = S.String;
 export interface DkimAttributes {
   SigningEnabled?: boolean;
   Status?: DkimStatus;

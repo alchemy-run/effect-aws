@@ -179,31 +179,31 @@ export type DifferentialPrivacyAggregationExpression = string;
 //# Schemas
 export type TagKeys = string[];
 export const TagKeys = S.Array(S.String);
-export type AnalysisFormat = "SQL" | "PYSPARK_1_0";
-export const AnalysisFormat = S.Literal("SQL", "PYSPARK_1_0");
-export type MemberAbility = "CAN_QUERY" | "CAN_RECEIVE_RESULTS" | "CAN_RUN_JOB";
-export const MemberAbility = S.Literal(
-  "CAN_QUERY",
-  "CAN_RECEIVE_RESULTS",
-  "CAN_RUN_JOB",
-);
+export type AnalysisFormat = "SQL" | "PYSPARK_1_0" | (string & {});
+export const AnalysisFormat = S.String;
+export type MemberAbility =
+  | "CAN_QUERY"
+  | "CAN_RECEIVE_RESULTS"
+  | "CAN_RUN_JOB"
+  | (string & {});
+export const MemberAbility = S.String;
 export type MemberAbilities = MemberAbility[];
 export const MemberAbilities = S.Array(MemberAbility);
-export type CollaborationQueryLogStatus = "ENABLED" | "DISABLED";
-export const CollaborationQueryLogStatus = S.Literal("ENABLED", "DISABLED");
-export type CollaborationJobLogStatus = "ENABLED" | "DISABLED";
-export const CollaborationJobLogStatus = S.Literal("ENABLED", "DISABLED");
-export type AnalyticsEngine = "SPARK" | "CLEAN_ROOMS_SQL";
-export const AnalyticsEngine = S.Literal("SPARK", "CLEAN_ROOMS_SQL");
+export type CollaborationQueryLogStatus =
+  | "ENABLED"
+  | "DISABLED"
+  | (string & {});
+export const CollaborationQueryLogStatus = S.String;
+export type CollaborationJobLogStatus = "ENABLED" | "DISABLED" | (string & {});
+export const CollaborationJobLogStatus = S.String;
+export type AnalyticsEngine = "SPARK" | "CLEAN_ROOMS_SQL" | (string & {});
+export const AnalyticsEngine = S.String;
 export type AutoApprovedChangeType =
   | "ADD_MEMBER"
   | "GRANT_RECEIVE_RESULTS_ABILITY"
-  | "REVOKE_RECEIVE_RESULTS_ABILITY";
-export const AutoApprovedChangeType = S.Literal(
-  "ADD_MEMBER",
-  "GRANT_RECEIVE_RESULTS_ABILITY",
-  "REVOKE_RECEIVE_RESULTS_ABILITY",
-);
+  | "REVOKE_RECEIVE_RESULTS_ABILITY"
+  | (string & {});
+export const AutoApprovedChangeType = S.String;
 export type AutoApprovedChangeTypeList = AutoApprovedChangeType[];
 export const AutoApprovedChangeTypeList = S.Array(AutoApprovedChangeType);
 export type SupportedS3Region =
@@ -239,42 +239,9 @@ export type SupportedS3Region =
   | "me-central-1"
   | "il-central-1"
   | "sa-east-1"
-  | "mx-central-1";
-export const SupportedS3Region = S.Literal(
-  "us-west-1",
-  "us-west-2",
-  "us-east-1",
-  "us-east-2",
-  "af-south-1",
-  "ap-east-1",
-  "ap-east-2",
-  "ap-south-2",
-  "ap-southeast-1",
-  "ap-southeast-2",
-  "ap-southeast-3",
-  "ap-southeast-5",
-  "ap-southeast-4",
-  "ap-southeast-7",
-  "ap-south-1",
-  "ap-northeast-3",
-  "ap-northeast-1",
-  "ap-northeast-2",
-  "ca-central-1",
-  "ca-west-1",
-  "eu-south-1",
-  "eu-west-3",
-  "eu-south-2",
-  "eu-central-2",
-  "eu-central-1",
-  "eu-north-1",
-  "eu-west-1",
-  "eu-west-2",
-  "me-south-1",
-  "me-central-1",
-  "il-central-1",
-  "sa-east-1",
-  "mx-central-1",
-);
+  | "mx-central-1"
+  | (string & {});
+export const SupportedS3Region = S.String;
 export type AllowedResultRegions = SupportedS3Region[];
 export const AllowedResultRegions = S.Array(SupportedS3Region);
 export type AnalysisTemplateArnList = string[];
@@ -285,97 +252,82 @@ export type AnalysisRuleType =
   | "AGGREGATION"
   | "LIST"
   | "CUSTOM"
-  | "ID_MAPPING_TABLE";
-export const AnalysisRuleType = S.Literal(
-  "AGGREGATION",
-  "LIST",
-  "CUSTOM",
-  "ID_MAPPING_TABLE",
-);
+  | "ID_MAPPING_TABLE"
+  | (string & {});
+export const AnalysisRuleType = S.String;
 export type ChangeRequestStatus =
   | "PENDING"
   | "APPROVED"
   | "CANCELLED"
   | "DENIED"
-  | "COMMITTED";
-export const ChangeRequestStatus = S.Literal(
-  "PENDING",
-  "APPROVED",
-  "CANCELLED",
-  "DENIED",
-  "COMMITTED",
-);
-export type PrivacyBudgetType = "DIFFERENTIAL_PRIVACY" | "ACCESS_BUDGET";
-export const PrivacyBudgetType = S.Literal(
-  "DIFFERENTIAL_PRIVACY",
-  "ACCESS_BUDGET",
-);
-export type SchemaType = "TABLE" | "ID_MAPPING_TABLE";
-export const SchemaType = S.Literal("TABLE", "ID_MAPPING_TABLE");
-export type ChangeRequestAction = "APPROVE" | "DENY" | "CANCEL" | "COMMIT";
-export const ChangeRequestAction = S.Literal(
-  "APPROVE",
-  "DENY",
-  "CANCEL",
-  "COMMIT",
-);
+  | "COMMITTED"
+  | (string & {});
+export const ChangeRequestStatus = S.String;
+export type PrivacyBudgetType =
+  | "DIFFERENTIAL_PRIVACY"
+  | "ACCESS_BUDGET"
+  | (string & {});
+export const PrivacyBudgetType = S.String;
+export type SchemaType = "TABLE" | "ID_MAPPING_TABLE" | (string & {});
+export const SchemaType = S.String;
+export type ChangeRequestAction =
+  | "APPROVE"
+  | "DENY"
+  | "CANCEL"
+  | "COMMIT"
+  | (string & {});
+export const ChangeRequestAction = S.String;
 export type ConfiguredTableAssociationAnalysisRuleType =
   | "AGGREGATION"
   | "LIST"
-  | "CUSTOM";
-export const ConfiguredTableAssociationAnalysisRuleType = S.Literal(
-  "AGGREGATION",
-  "LIST",
-  "CUSTOM",
-);
+  | "CUSTOM"
+  | (string & {});
+export const ConfiguredTableAssociationAnalysisRuleType = S.String;
 export type AllowedColumnList = string[];
 export const AllowedColumnList = S.Array(S.String);
-export type AnalysisMethod = "DIRECT_QUERY" | "DIRECT_JOB" | "MULTIPLE";
-export const AnalysisMethod = S.Literal(
-  "DIRECT_QUERY",
-  "DIRECT_JOB",
-  "MULTIPLE",
-);
-export type SelectedAnalysisMethod = "DIRECT_QUERY" | "DIRECT_JOB";
-export const SelectedAnalysisMethod = S.Literal("DIRECT_QUERY", "DIRECT_JOB");
+export type AnalysisMethod =
+  | "DIRECT_QUERY"
+  | "DIRECT_JOB"
+  | "MULTIPLE"
+  | (string & {});
+export const AnalysisMethod = S.String;
+export type SelectedAnalysisMethod =
+  | "DIRECT_QUERY"
+  | "DIRECT_JOB"
+  | (string & {});
+export const SelectedAnalysisMethod = S.String;
 export type SelectedAnalysisMethods = SelectedAnalysisMethod[];
 export const SelectedAnalysisMethods = S.Array(SelectedAnalysisMethod);
-export type ConfiguredTableAnalysisRuleType = "AGGREGATION" | "LIST" | "CUSTOM";
-export const ConfiguredTableAnalysisRuleType = S.Literal(
-  "AGGREGATION",
-  "LIST",
-  "CUSTOM",
-);
-export type JobType = "BATCH" | "INCREMENTAL" | "DELETE_ONLY";
-export const JobType = S.Literal("BATCH", "INCREMENTAL", "DELETE_ONLY");
-export type MembershipQueryLogStatus = "ENABLED" | "DISABLED";
-export const MembershipQueryLogStatus = S.Literal("ENABLED", "DISABLED");
-export type MembershipJobLogStatus = "ENABLED" | "DISABLED";
-export const MembershipJobLogStatus = S.Literal("ENABLED", "DISABLED");
+export type ConfiguredTableAnalysisRuleType =
+  | "AGGREGATION"
+  | "LIST"
+  | "CUSTOM"
+  | (string & {});
+export const ConfiguredTableAnalysisRuleType = S.String;
+export type JobType = "BATCH" | "INCREMENTAL" | "DELETE_ONLY" | (string & {});
+export const JobType = S.String;
+export type MembershipQueryLogStatus = "ENABLED" | "DISABLED" | (string & {});
+export const MembershipQueryLogStatus = S.String;
+export type MembershipJobLogStatus = "ENABLED" | "DISABLED" | (string & {});
+export const MembershipJobLogStatus = S.String;
 export type ProtectedJobStatus =
   | "SUBMITTED"
   | "STARTED"
   | "CANCELLED"
   | "CANCELLING"
   | "FAILED"
-  | "SUCCESS";
-export const ProtectedJobStatus = S.Literal(
-  "SUBMITTED",
-  "STARTED",
-  "CANCELLED",
-  "CANCELLING",
-  "FAILED",
-  "SUCCESS",
-);
-export type ProtectedJobType = "PYSPARK";
-export const ProtectedJobType = S.Literal("PYSPARK");
-export type TargetProtectedJobStatus = "CANCELLED";
-export const TargetProtectedJobStatus = S.Literal("CANCELLED");
-export type PrivacyBudgetTemplateAutoRefresh = "CALENDAR_MONTH" | "NONE";
-export const PrivacyBudgetTemplateAutoRefresh = S.Literal(
-  "CALENDAR_MONTH",
-  "NONE",
-);
+  | "SUCCESS"
+  | (string & {});
+export const ProtectedJobStatus = S.String;
+export type ProtectedJobType = "PYSPARK" | (string & {});
+export const ProtectedJobType = S.String;
+export type TargetProtectedJobStatus = "CANCELLED" | (string & {});
+export const TargetProtectedJobStatus = S.String;
+export type PrivacyBudgetTemplateAutoRefresh =
+  | "CALENDAR_MONTH"
+  | "NONE"
+  | (string & {});
+export const PrivacyBudgetTemplateAutoRefresh = S.String;
 export interface ListTagsForResourceInput {
   resourceArn: string;
 }
@@ -1696,42 +1648,9 @@ export type CommercialRegion =
   | "il-central-1"
   | "sa-east-1"
   | "mx-central-1"
-  | "ap-east-2";
-export const CommercialRegion = S.Literal(
-  "us-west-1",
-  "us-west-2",
-  "us-east-1",
-  "us-east-2",
-  "af-south-1",
-  "ap-east-1",
-  "ap-south-2",
-  "ap-southeast-1",
-  "ap-southeast-2",
-  "ap-southeast-3",
-  "ap-southeast-5",
-  "ap-southeast-4",
-  "ap-southeast-7",
-  "ap-south-1",
-  "ap-northeast-3",
-  "ap-northeast-1",
-  "ap-northeast-2",
-  "ca-central-1",
-  "ca-west-1",
-  "eu-south-1",
-  "eu-west-3",
-  "eu-south-2",
-  "eu-central-2",
-  "eu-central-1",
-  "eu-north-1",
-  "eu-west-1",
-  "eu-west-2",
-  "me-south-1",
-  "me-central-1",
-  "il-central-1",
-  "sa-east-1",
-  "mx-central-1",
-  "ap-east-2",
-);
+  | "ap-east-2"
+  | (string & {});
+export const CommercialRegion = S.String;
 export interface GlueTableReference {
   region?: CommercialRegion;
   tableName: string;
@@ -1961,12 +1880,12 @@ export type AnalysisRuleColumnList = string[];
 export const AnalysisRuleColumnList = S.Array(S.String);
 export type JoinOperatorsList = string[];
 export const JoinOperatorsList = S.Array(S.String);
-export type AdditionalAnalyses = "ALLOWED" | "REQUIRED" | "NOT_ALLOWED";
-export const AdditionalAnalyses = S.Literal(
-  "ALLOWED",
-  "REQUIRED",
-  "NOT_ALLOWED",
-);
+export type AdditionalAnalyses =
+  | "ALLOWED"
+  | "REQUIRED"
+  | "NOT_ALLOWED"
+  | (string & {});
+export const AdditionalAnalyses = S.String;
 export interface AnalysisRuleList {
   joinColumns: string[];
   allowedJoinOperators?: string[];
@@ -2850,52 +2769,25 @@ export type ParameterType =
   | "STRING"
   | "TIMESTAMP_LTZ"
   | "TIMESTAMP_NTZ"
-  | "TINYINT";
-export const ParameterType = S.Literal(
-  "SMALLINT",
-  "INTEGER",
-  "BIGINT",
-  "DECIMAL",
-  "REAL",
-  "DOUBLE_PRECISION",
-  "BOOLEAN",
-  "CHAR",
-  "VARCHAR",
-  "DATE",
-  "TIMESTAMP",
-  "TIMESTAMPTZ",
-  "TIME",
-  "TIMETZ",
-  "VARBYTE",
-  "BINARY",
-  "BYTE",
-  "CHARACTER",
-  "DOUBLE",
-  "FLOAT",
-  "INT",
-  "LONG",
-  "NUMERIC",
-  "SHORT",
-  "STRING",
-  "TIMESTAMP_LTZ",
-  "TIMESTAMP_NTZ",
-  "TINYINT",
-);
+  | "TINYINT"
+  | (string & {});
+export const ParameterType = S.String;
 export type QueryTables = string[];
 export const QueryTables = S.Array(S.String);
-export type ErrorMessageType = "DETAILED";
-export const ErrorMessageType = S.Literal("DETAILED");
+export type ErrorMessageType = "DETAILED" | (string & {});
+export const ErrorMessageType = S.String;
 export type CustomMLMemberAbility =
   | "CAN_RECEIVE_MODEL_OUTPUT"
-  | "CAN_RECEIVE_INFERENCE_OUTPUT";
-export const CustomMLMemberAbility = S.Literal(
-  "CAN_RECEIVE_MODEL_OUTPUT",
-  "CAN_RECEIVE_INFERENCE_OUTPUT",
-);
+  | "CAN_RECEIVE_INFERENCE_OUTPUT"
+  | (string & {});
+export const CustomMLMemberAbility = S.String;
 export type CustomMLMemberAbilities = CustomMLMemberAbility[];
 export const CustomMLMemberAbilities = S.Array(CustomMLMemberAbility);
-export type ChangeSpecificationType = "MEMBER" | "COLLABORATION";
-export const ChangeSpecificationType = S.Literal("MEMBER", "COLLABORATION");
+export type ChangeSpecificationType =
+  | "MEMBER"
+  | "COLLABORATION"
+  | (string & {});
+export const ChangeSpecificationType = S.String;
 export interface AnalysisParameter {
   name: string;
   type: ParameterType;
@@ -3094,10 +2986,10 @@ export const AnalysisTemplateArtifact = S.suspend(() =>
 }) as any as S.Schema<AnalysisTemplateArtifact>;
 export type AnalysisTemplateArtifactList = AnalysisTemplateArtifact[];
 export const AnalysisTemplateArtifactList = S.Array(AnalysisTemplateArtifact);
-export type ProtectedJobWorkerComputeType = "CR.1X" | "CR.4X";
-export const ProtectedJobWorkerComputeType = S.Literal("CR.1X", "CR.4X");
-export type WorkerComputeType = "CR.1X" | "CR.4X";
-export const WorkerComputeType = S.Literal("CR.1X", "CR.4X");
+export type ProtectedJobWorkerComputeType = "CR.1X" | "CR.4X" | (string & {});
+export const ProtectedJobWorkerComputeType = S.String;
+export type WorkerComputeType = "CR.1X" | "CR.4X" | (string & {});
+export const WorkerComputeType = S.String;
 export interface ListTagsForResourceOutput {
   tags: { [key: string]: string | undefined };
 }
@@ -3178,17 +3070,16 @@ export type AnalysisSourceMetadata = {
 export const AnalysisSourceMetadata = S.Union(
   S.Struct({ artifacts: AnalysisTemplateArtifactMetadata }),
 );
-export type AnalysisTemplateValidationType = "DIFFERENTIAL_PRIVACY";
-export const AnalysisTemplateValidationType = S.Literal("DIFFERENTIAL_PRIVACY");
+export type AnalysisTemplateValidationType =
+  | "DIFFERENTIAL_PRIVACY"
+  | (string & {});
+export const AnalysisTemplateValidationType = S.String;
 export type AnalysisTemplateValidationStatus =
   | "VALID"
   | "INVALID"
-  | "UNABLE_TO_VALIDATE";
-export const AnalysisTemplateValidationStatus = S.Literal(
-  "VALID",
-  "INVALID",
-  "UNABLE_TO_VALIDATE",
-);
+  | "UNABLE_TO_VALIDATE"
+  | (string & {});
+export const AnalysisTemplateValidationStatus = S.String;
 export interface AnalysisTemplateValidationStatusReason {
   message: string;
 }
@@ -3221,8 +3112,11 @@ export type AnalysisTemplateValidationStatusDetailList =
 export const AnalysisTemplateValidationStatusDetailList = S.Array(
   AnalysisTemplateValidationStatusDetail,
 );
-export type SyntheticDataColumnType = "CATEGORICAL" | "NUMERICAL";
-export const SyntheticDataColumnType = S.Literal("CATEGORICAL", "NUMERICAL");
+export type SyntheticDataColumnType =
+  | "CATEGORICAL"
+  | "NUMERICAL"
+  | (string & {});
+export const SyntheticDataColumnType = S.String;
 export interface SyntheticDataColumnProperties {
   columnName: string;
   columnType: SyntheticDataColumnType;
@@ -3458,8 +3352,8 @@ export type ColumnList = Column[];
 export const ColumnList = S.Array(Column);
 export type AnalysisRuleTypeList = AnalysisRuleType[];
 export const AnalysisRuleTypeList = S.Array(AnalysisRuleType);
-export type SchemaStatus = "READY" | "NOT_READY";
-export const SchemaStatus = S.Literal("READY", "NOT_READY");
+export type SchemaStatus = "READY" | "NOT_READY" | (string & {});
+export const SchemaStatus = S.String;
 export type SchemaStatusReasonCode =
   | "ANALYSIS_RULE_MISSING"
   | "ANALYSIS_TEMPLATES_NOT_CONFIGURED"
@@ -3471,20 +3365,9 @@ export type SchemaStatusReasonCode =
   | "RESULT_RECEIVERS_NOT_CONFIGURED"
   | "ADDITIONAL_ANALYSES_NOT_ALLOWED"
   | "RESULT_RECEIVERS_NOT_ALLOWED"
-  | "ANALYSIS_RULE_TYPES_NOT_COMPATIBLE";
-export const SchemaStatusReasonCode = S.Literal(
-  "ANALYSIS_RULE_MISSING",
-  "ANALYSIS_TEMPLATES_NOT_CONFIGURED",
-  "ANALYSIS_PROVIDERS_NOT_CONFIGURED",
-  "DIFFERENTIAL_PRIVACY_POLICY_NOT_CONFIGURED",
-  "ID_MAPPING_TABLE_NOT_POPULATED",
-  "COLLABORATION_ANALYSIS_RULE_NOT_CONFIGURED",
-  "ADDITIONAL_ANALYSES_NOT_CONFIGURED",
-  "RESULT_RECEIVERS_NOT_CONFIGURED",
-  "ADDITIONAL_ANALYSES_NOT_ALLOWED",
-  "RESULT_RECEIVERS_NOT_ALLOWED",
-  "ANALYSIS_RULE_TYPES_NOT_COMPATIBLE",
-);
+  | "ANALYSIS_RULE_TYPES_NOT_COMPATIBLE"
+  | (string & {});
+export const SchemaStatusReasonCode = S.String;
 export interface SchemaStatusReason {
   code: SchemaStatusReasonCode;
   message: string;
@@ -3496,12 +3379,15 @@ export const SchemaStatusReason = S.suspend(() =>
 }) as any as S.Schema<SchemaStatusReason>;
 export type SchemaStatusReasonList = SchemaStatusReason[];
 export const SchemaStatusReasonList = S.Array(SchemaStatusReason);
-export type SchemaConfiguration = "DIFFERENTIAL_PRIVACY";
-export const SchemaConfiguration = S.Literal("DIFFERENTIAL_PRIVACY");
+export type SchemaConfiguration = "DIFFERENTIAL_PRIVACY" | (string & {});
+export const SchemaConfiguration = S.String;
 export type SchemaConfigurationList = SchemaConfiguration[];
 export const SchemaConfigurationList = S.Array(SchemaConfiguration);
-export type AnalysisType = "DIRECT_ANALYSIS" | "ADDITIONAL_ANALYSIS";
-export const AnalysisType = S.Literal("DIRECT_ANALYSIS", "ADDITIONAL_ANALYSIS");
+export type AnalysisType =
+  | "DIRECT_ANALYSIS"
+  | "ADDITIONAL_ANALYSIS"
+  | (string & {});
+export const AnalysisType = S.String;
 export interface SchemaStatusDetail {
   status: SchemaStatus;
   reasons?: SchemaStatusReason[];
@@ -3522,8 +3408,8 @@ export const SchemaStatusDetail = S.suspend(() =>
 }) as any as S.Schema<SchemaStatusDetail>;
 export type SchemaStatusDetailList = SchemaStatusDetail[];
 export const SchemaStatusDetailList = S.Array(SchemaStatusDetail);
-export type IdNamespaceType = "SOURCE" | "TARGET";
-export const IdNamespaceType = S.Literal("SOURCE", "TARGET");
+export type IdNamespaceType = "SOURCE" | "TARGET" | (string & {});
+export const IdNamespaceType = S.String;
 export interface IdMappingTableInputSource {
   idNamespaceAssociationId: string;
   type: IdNamespaceType;
@@ -3628,13 +3514,9 @@ export type ChangeType =
   | "ADD_MEMBER"
   | "GRANT_RECEIVE_RESULTS_ABILITY"
   | "REVOKE_RECEIVE_RESULTS_ABILITY"
-  | "EDIT_AUTO_APPROVED_CHANGE_TYPES";
-export const ChangeType = S.Literal(
-  "ADD_MEMBER",
-  "GRANT_RECEIVE_RESULTS_ABILITY",
-  "REVOKE_RECEIVE_RESULTS_ABILITY",
-  "EDIT_AUTO_APPROVED_CHANGE_TYPES",
-);
+  | "EDIT_AUTO_APPROVED_CHANGE_TYPES"
+  | (string & {});
+export const ChangeType = S.String;
 export type ChangeTypeList = ChangeType[];
 export const ChangeTypeList = S.Array(ChangeType);
 export interface Change {
@@ -3651,8 +3533,8 @@ export const Change = S.suspend(() =>
 ).annotations({ identifier: "Change" }) as any as S.Schema<Change>;
 export type ChangeList = Change[];
 export const ChangeList = S.Array(Change);
-export type ApprovalStatus = "APPROVED" | "DENIED" | "PENDING";
-export const ApprovalStatus = S.Literal("APPROVED", "DENIED", "PENDING");
+export type ApprovalStatus = "APPROVED" | "DENIED" | "PENDING" | (string & {});
+export const ApprovalStatus = S.String;
 export interface ApprovalStatusDetails {
   status: ApprovalStatus;
 }
@@ -4524,14 +4406,9 @@ export type DifferentialPrivacyAggregationType =
   | "COUNT"
   | "COUNT_DISTINCT"
   | "SUM"
-  | "STDDEV";
-export const DifferentialPrivacyAggregationType = S.Literal(
-  "AVG",
-  "COUNT",
-  "COUNT_DISTINCT",
-  "SUM",
-  "STDDEV",
-);
+  | "STDDEV"
+  | (string & {});
+export const DifferentialPrivacyAggregationType = S.String;
 export interface DifferentialPrivacySensitivityParameters {
   aggregationType: DifferentialPrivacyAggregationType;
   aggregationExpression: string;
@@ -4668,15 +4545,11 @@ export type AccessBudgetType =
   | "CALENDAR_DAY"
   | "CALENDAR_MONTH"
   | "CALENDAR_WEEK"
-  | "LIFETIME";
-export const AccessBudgetType = S.Literal(
-  "CALENDAR_DAY",
-  "CALENDAR_MONTH",
-  "CALENDAR_WEEK",
-  "LIFETIME",
-);
-export type AutoRefreshMode = "ENABLED" | "DISABLED";
-export const AutoRefreshMode = S.Literal("ENABLED", "DISABLED");
+  | "LIFETIME"
+  | (string & {});
+export const AccessBudgetType = S.String;
+export type AutoRefreshMode = "ENABLED" | "DISABLED" | (string & {});
+export const AutoRefreshMode = S.String;
 export interface BudgetParameter {
   type: AccessBudgetType;
   budget: number;
@@ -5608,8 +5481,8 @@ export type PrivacyBudgetTemplateSummaryList = PrivacyBudgetTemplateSummary[];
 export const PrivacyBudgetTemplateSummaryList = S.Array(
   PrivacyBudgetTemplateSummary,
 );
-export type ProtectedJobAnalysisType = "DIRECT_ANALYSIS";
-export const ProtectedJobAnalysisType = S.Literal("DIRECT_ANALYSIS");
+export type ProtectedJobAnalysisType = "DIRECT_ANALYSIS" | (string & {});
+export const ProtectedJobAnalysisType = S.String;
 export interface ProtectedJobMemberOutputConfigurationInput {
   accountId: string;
 }

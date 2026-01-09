@@ -184,24 +184,13 @@ export type MetricName =
   | "SpendCoveredBySavingsPlans"
   | "Hour"
   | "Unit"
-  | "Cost";
-export const MetricName = S.Literal(
-  "AmortizedCost",
-  "BlendedCost",
-  "NetAmortizedCost",
-  "NetUnblendedCost",
-  "NormalizedUsageAmount",
-  "UnblendedCost",
-  "UsageQuantity",
-  "SpendCoveredBySavingsPlans",
-  "Hour",
-  "Unit",
-  "Cost",
-);
+  | "Cost"
+  | (string & {});
+export const MetricName = S.String;
 export type MetricNames = MetricName[];
 export const MetricNames = S.Array(MetricName);
-export type DateTimeType = "ABSOLUTE" | "RELATIVE";
-export const DateTimeType = S.Literal("ABSOLUTE", "RELATIVE");
+export type DateTimeType = "ABSOLUTE" | "RELATIVE" | (string & {});
+export const DateTimeType = S.String;
 export interface DateTimeValue {
   type: DateTimeType;
   value: string;
@@ -220,14 +209,14 @@ export const DateTimeRange = S.suspend(() =>
 ).annotations({
   identifier: "DateTimeRange",
 }) as any as S.Schema<DateTimeRange>;
-export type Granularity = "HOURLY" | "DAILY" | "MONTHLY";
-export const Granularity = S.Literal("HOURLY", "DAILY", "MONTHLY");
-export type GroupDefinitionType = "DIMENSION" | "TAG" | "COST_CATEGORY";
-export const GroupDefinitionType = S.Literal(
-  "DIMENSION",
-  "TAG",
-  "COST_CATEGORY",
-);
+export type Granularity = "HOURLY" | "DAILY" | "MONTHLY" | (string & {});
+export const Granularity = S.String;
+export type GroupDefinitionType =
+  | "DIMENSION"
+  | "TAG"
+  | "COST_CATEGORY"
+  | (string & {});
+export const GroupDefinitionType = S.String;
 export interface GroupDefinition {
   key: string;
   type?: GroupDefinitionType;
@@ -265,35 +254,9 @@ export type Dimension =
   | "CACHE_ENGINE"
   | "DEPLOYMENT_OPTION"
   | "SCOPE"
-  | "PLATFORM";
-export const Dimension = S.Literal(
-  "AZ",
-  "INSTANCE_TYPE",
-  "LINKED_ACCOUNT",
-  "OPERATION",
-  "PURCHASE_TYPE",
-  "REGION",
-  "SERVICE",
-  "USAGE_TYPE",
-  "USAGE_TYPE_GROUP",
-  "RECORD_TYPE",
-  "RESOURCE_ID",
-  "SUBSCRIPTION_ID",
-  "TAG_KEY",
-  "OPERATING_SYSTEM",
-  "TENANCY",
-  "BILLING_ENTITY",
-  "RESERVATION_ID",
-  "COST_CATEGORY_NAME",
-  "DATABASE_ENGINE",
-  "LEGAL_ENTITY_NAME",
-  "SAVINGS_PLANS_TYPE",
-  "INSTANCE_TYPE_FAMILY",
-  "CACHE_ENGINE",
-  "DEPLOYMENT_OPTION",
-  "SCOPE",
-  "PLATFORM",
-);
+  | "PLATFORM"
+  | (string & {});
+export const Dimension = S.String;
 export type StringList = string[];
 export const StringList = S.Array(S.String);
 export type MatchOption =
@@ -304,17 +267,9 @@ export type MatchOption =
   | "CONTAINS"
   | "GREATER_THAN_OR_EQUAL"
   | "CASE_SENSITIVE"
-  | "CASE_INSENSITIVE";
-export const MatchOption = S.Literal(
-  "EQUALS",
-  "ABSENT",
-  "STARTS_WITH",
-  "ENDS_WITH",
-  "CONTAINS",
-  "GREATER_THAN_OR_EQUAL",
-  "CASE_SENSITIVE",
-  "CASE_INSENSITIVE",
-);
+  | "CASE_INSENSITIVE"
+  | (string & {});
+export const MatchOption = S.String;
 export type MatchOptions = MatchOption[];
 export const MatchOptions = S.Array(MatchOption);
 export interface DimensionValues {
@@ -510,8 +465,8 @@ export const QueryParameters = S.Union(
   S.Struct({ reservationCoverage: ReservationCoverageQuery }),
   S.Struct({ reservationUtilization: ReservationUtilizationQuery }),
 );
-export type VisualType = "LINE" | "BAR" | "STACK";
-export const VisualType = S.Literal("LINE", "BAR", "STACK");
+export type VisualType = "LINE" | "BAR" | "STACK" | (string & {});
+export const VisualType = S.String;
 export interface GraphDisplayConfig {
   visualType: VisualType;
 }
@@ -587,8 +542,8 @@ export const UpdateDashboardRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateDashboardRequest",
 }) as any as S.Schema<UpdateDashboardRequest>;
-export type DashboardType = "CUSTOM";
-export const DashboardType = S.Literal("CUSTOM");
+export type DashboardType = "CUSTOM" | (string & {});
+export const DashboardType = S.String;
 export interface DeleteDashboardResponse {
   arn: string;
 }

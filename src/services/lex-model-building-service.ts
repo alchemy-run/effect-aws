@@ -166,52 +166,49 @@ export type Locale =
   | "fr-CA"
   | "it-IT"
   | "ja-JP"
-  | "ko-KR";
-export const Locale = S.Literal(
-  "de-DE",
-  "en-AU",
-  "en-GB",
-  "en-IN",
-  "en-US",
-  "es-419",
-  "es-ES",
-  "es-US",
-  "fr-FR",
-  "fr-CA",
-  "it-IT",
-  "ja-JP",
-  "ko-KR",
-);
-export type ResourceType = "BOT" | "INTENT" | "SLOT_TYPE";
-export const ResourceType = S.Literal("BOT", "INTENT", "SLOT_TYPE");
-export type ExportType = "ALEXA_SKILLS_KIT" | "LEX";
-export const ExportType = S.Literal("ALEXA_SKILLS_KIT", "LEX");
-export type MigrationSortAttribute = "V1_BOT_NAME" | "MIGRATION_DATE_TIME";
-export const MigrationSortAttribute = S.Literal(
-  "V1_BOT_NAME",
-  "MIGRATION_DATE_TIME",
-);
-export type SortOrder = "ASCENDING" | "DESCENDING";
-export const SortOrder = S.Literal("ASCENDING", "DESCENDING");
-export type MigrationStatus = "IN_PROGRESS" | "COMPLETED" | "FAILED";
-export const MigrationStatus = S.Literal("IN_PROGRESS", "COMPLETED", "FAILED");
+  | "ko-KR"
+  | (string & {});
+export const Locale = S.String;
+export type ResourceType = "BOT" | "INTENT" | "SLOT_TYPE" | (string & {});
+export const ResourceType = S.String;
+export type ExportType = "ALEXA_SKILLS_KIT" | "LEX" | (string & {});
+export const ExportType = S.String;
+export type MigrationSortAttribute =
+  | "V1_BOT_NAME"
+  | "MIGRATION_DATE_TIME"
+  | (string & {});
+export const MigrationSortAttribute = S.String;
+export type SortOrder = "ASCENDING" | "DESCENDING" | (string & {});
+export const SortOrder = S.String;
+export type MigrationStatus =
+  | "IN_PROGRESS"
+  | "COMPLETED"
+  | "FAILED"
+  | (string & {});
+export const MigrationStatus = S.String;
 export type BotVersions = string[];
 export const BotVersions = S.Array(S.String);
-export type StatusType = "Detected" | "Missed";
-export const StatusType = S.Literal("Detected", "Missed");
-export type ProcessBehavior = "SAVE" | "BUILD";
-export const ProcessBehavior = S.Literal("SAVE", "BUILD");
+export type StatusType = "Detected" | "Missed" | (string & {});
+export const StatusType = S.String;
+export type ProcessBehavior = "SAVE" | "BUILD" | (string & {});
+export const ProcessBehavior = S.String;
 export type IntentUtteranceList = string[];
 export const IntentUtteranceList = S.Array(S.String);
-export type SlotValueSelectionStrategy = "ORIGINAL_VALUE" | "TOP_RESOLUTION";
-export const SlotValueSelectionStrategy = S.Literal(
-  "ORIGINAL_VALUE",
-  "TOP_RESOLUTION",
-);
-export type MergeStrategy = "OVERWRITE_LATEST" | "FAIL_ON_CONFLICT";
-export const MergeStrategy = S.Literal("OVERWRITE_LATEST", "FAIL_ON_CONFLICT");
-export type MigrationStrategy = "CREATE_NEW" | "UPDATE_EXISTING";
-export const MigrationStrategy = S.Literal("CREATE_NEW", "UPDATE_EXISTING");
+export type SlotValueSelectionStrategy =
+  | "ORIGINAL_VALUE"
+  | "TOP_RESOLUTION"
+  | (string & {});
+export const SlotValueSelectionStrategy = S.String;
+export type MergeStrategy =
+  | "OVERWRITE_LATEST"
+  | "FAIL_ON_CONFLICT"
+  | (string & {});
+export const MergeStrategy = S.String;
+export type MigrationStrategy =
+  | "CREATE_NEW"
+  | "UPDATE_EXISTING"
+  | (string & {});
+export const MigrationStrategy = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export interface CreateBotVersionRequest {
@@ -1127,14 +1124,17 @@ export interface UntagResourceResponse {}
 export const UntagResourceResponse = S.suspend(() => S.Struct({})).annotations({
   identifier: "UntagResourceResponse",
 }) as any as S.Schema<UntagResourceResponse>;
-export type SlotConstraint = "Required" | "Optional";
-export const SlotConstraint = S.Literal("Required", "Optional");
+export type SlotConstraint = "Required" | "Optional" | (string & {});
+export const SlotConstraint = S.String;
 export type SlotUtteranceList = string[];
 export const SlotUtteranceList = S.Array(S.String);
-export type ObfuscationSetting = "NONE" | "DEFAULT_OBFUSCATION";
-export const ObfuscationSetting = S.Literal("NONE", "DEFAULT_OBFUSCATION");
-export type FulfillmentActivityType = "ReturnIntent" | "CodeHook";
-export const FulfillmentActivityType = S.Literal("ReturnIntent", "CodeHook");
+export type ObfuscationSetting = "NONE" | "DEFAULT_OBFUSCATION" | (string & {});
+export const ObfuscationSetting = S.String;
+export type FulfillmentActivityType =
+  | "ReturnIntent"
+  | "CodeHook"
+  | (string & {});
+export const FulfillmentActivityType = S.String;
 export type SynonymList = string[];
 export const SynonymList = S.Array(S.String);
 export type Status =
@@ -1142,24 +1142,32 @@ export type Status =
   | "READY"
   | "READY_BASIC_TESTING"
   | "FAILED"
-  | "NOT_BUILT";
-export const Status = S.Literal(
-  "BUILDING",
-  "READY",
-  "READY_BASIC_TESTING",
-  "FAILED",
-  "NOT_BUILT",
-);
-export type ChannelType = "Facebook" | "Slack" | "Twilio-Sms" | "Kik";
-export const ChannelType = S.Literal("Facebook", "Slack", "Twilio-Sms", "Kik");
-export type ChannelStatus = "IN_PROGRESS" | "CREATED" | "FAILED";
-export const ChannelStatus = S.Literal("IN_PROGRESS", "CREATED", "FAILED");
+  | "NOT_BUILT"
+  | (string & {});
+export const Status = S.String;
+export type ChannelType =
+  | "Facebook"
+  | "Slack"
+  | "Twilio-Sms"
+  | "Kik"
+  | (string & {});
+export const ChannelType = S.String;
+export type ChannelStatus =
+  | "IN_PROGRESS"
+  | "CREATED"
+  | "FAILED"
+  | (string & {});
+export const ChannelStatus = S.String;
 export type LocaleList = Locale[];
 export const LocaleList = S.Array(Locale);
-export type ExportStatus = "IN_PROGRESS" | "READY" | "FAILED";
-export const ExportStatus = S.Literal("IN_PROGRESS", "READY", "FAILED");
-export type ImportStatus = "IN_PROGRESS" | "COMPLETE" | "FAILED";
-export const ImportStatus = S.Literal("IN_PROGRESS", "COMPLETE", "FAILED");
+export type ExportStatus = "IN_PROGRESS" | "READY" | "FAILED" | (string & {});
+export const ExportStatus = S.String;
+export type ImportStatus =
+  | "IN_PROGRESS"
+  | "COMPLETE"
+  | "FAILED"
+  | (string & {});
+export const ImportStatus = S.String;
 export type StringList = string[];
 export const StringList = S.Array(S.String);
 export interface Intent {
@@ -1171,8 +1179,12 @@ export const Intent = S.suspend(() =>
 ).annotations({ identifier: "Intent" }) as any as S.Schema<Intent>;
 export type IntentList = Intent[];
 export const IntentList = S.Array(Intent);
-export type ContentType = "PlainText" | "SSML" | "CustomPayload";
-export const ContentType = S.Literal("PlainText", "SSML", "CustomPayload");
+export type ContentType =
+  | "PlainText"
+  | "SSML"
+  | "CustomPayload"
+  | (string & {});
+export const ContentType = S.String;
 export interface Message {
   contentType: ContentType;
   content: string;
@@ -1280,10 +1292,10 @@ export const EnumerationValue = S.suspend(() =>
 }) as any as S.Schema<EnumerationValue>;
 export type EnumerationValues = EnumerationValue[];
 export const EnumerationValues = S.Array(EnumerationValue);
-export type LogType = "AUDIO" | "TEXT";
-export const LogType = S.Literal("AUDIO", "TEXT");
-export type Destination = "CLOUDWATCH_LOGS" | "S3";
-export const Destination = S.Literal("CLOUDWATCH_LOGS", "S3");
+export type LogType = "AUDIO" | "TEXT" | (string & {});
+export const LogType = S.String;
+export type Destination = "CLOUDWATCH_LOGS" | "S3" | (string & {});
+export const Destination = S.String;
 export interface CreateBotVersionResponse {
   name?: string;
   description?: string;
@@ -1794,8 +1806,8 @@ export const StartMigrationResponse = S.suspend(() =>
 ).annotations({
   identifier: "StartMigrationResponse",
 }) as any as S.Schema<StartMigrationResponse>;
-export type MigrationAlertType = "ERROR" | "WARN";
-export const MigrationAlertType = S.Literal("ERROR", "WARN");
+export type MigrationAlertType = "ERROR" | "WARN" | (string & {});
+export const MigrationAlertType = S.String;
 export type MigrationAlertDetails = string[];
 export const MigrationAlertDetails = S.Array(S.String);
 export type MigrationAlertReferenceURLs = string[];
@@ -2568,13 +2580,13 @@ export const PutIntentResponse = S.suspend(() =>
 ).annotations({
   identifier: "PutIntentResponse",
 }) as any as S.Schema<PutIntentResponse>;
-export type ReferenceType = "Intent" | "Bot" | "BotAlias" | "BotChannel";
-export const ReferenceType = S.Literal(
-  "Intent",
-  "Bot",
-  "BotAlias",
-  "BotChannel",
-);
+export type ReferenceType =
+  | "Intent"
+  | "Bot"
+  | "BotAlias"
+  | "BotChannel"
+  | (string & {});
+export const ReferenceType = S.String;
 export interface ResourceReference {
   name?: string;
   version?: string;

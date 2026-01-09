@@ -111,17 +111,11 @@ export type ProbeState =
   | "INACTIVE"
   | "ERROR"
   | "DELETING"
-  | "DELETED";
-export const ProbeState = S.Literal(
-  "PENDING",
-  "ACTIVE",
-  "INACTIVE",
-  "ERROR",
-  "DELETING",
-  "DELETED",
-);
-export type Protocol = "TCP" | "ICMP";
-export const Protocol = S.Literal("TCP", "ICMP");
+  | "DELETED"
+  | (string & {});
+export const ProbeState = S.String;
+export type Protocol = "TCP" | "ICMP" | (string & {});
+export const Protocol = S.String;
 export interface ListTagsForResourceInput {
   resourceArn: string;
 }
@@ -364,14 +358,9 @@ export type MonitorState =
   | "ACTIVE"
   | "INACTIVE"
   | "ERROR"
-  | "DELETING";
-export const MonitorState = S.Literal(
-  "PENDING",
-  "ACTIVE",
-  "INACTIVE",
-  "ERROR",
-  "DELETING",
-);
+  | "DELETING"
+  | (string & {});
+export const MonitorState = S.String;
 export interface ProbeInput {
   sourceArn: string;
   destination: string;
@@ -390,8 +379,8 @@ export const ProbeInput = S.suspend(() =>
     tags: S.optional(TagMap),
   }),
 ).annotations({ identifier: "ProbeInput" }) as any as S.Schema<ProbeInput>;
-export type AddressFamily = "IPV4" | "IPV6";
-export const AddressFamily = S.Literal("IPV4", "IPV6");
+export type AddressFamily = "IPV4" | "IPV6" | (string & {});
+export const AddressFamily = S.String;
 export interface ListTagsForResourceOutput {
   tags?: { [key: string]: string | undefined };
 }

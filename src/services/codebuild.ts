@@ -149,21 +149,9 @@ export type EnvironmentType =
   | "LINUX_EC2"
   | "ARM_EC2"
   | "WINDOWS_EC2"
-  | "MAC_ARM";
-export const EnvironmentType = S.Literal(
-  "WINDOWS_CONTAINER",
-  "LINUX_CONTAINER",
-  "LINUX_GPU_CONTAINER",
-  "ARM_CONTAINER",
-  "WINDOWS_SERVER_2019_CONTAINER",
-  "WINDOWS_SERVER_2022_CONTAINER",
-  "LINUX_LAMBDA_CONTAINER",
-  "ARM_LAMBDA_CONTAINER",
-  "LINUX_EC2",
-  "ARM_EC2",
-  "WINDOWS_EC2",
-  "MAC_ARM",
-);
+  | "MAC_ARM"
+  | (string & {});
+export const EnvironmentType = S.String;
 export type ComputeType =
   | "BUILD_GENERAL1_SMALL"
   | "BUILD_GENERAL1_MEDIUM"
@@ -176,23 +164,11 @@ export type ComputeType =
   | "BUILD_LAMBDA_8GB"
   | "BUILD_LAMBDA_10GB"
   | "ATTRIBUTE_BASED_COMPUTE"
-  | "CUSTOM_INSTANCE_TYPE";
-export const ComputeType = S.Literal(
-  "BUILD_GENERAL1_SMALL",
-  "BUILD_GENERAL1_MEDIUM",
-  "BUILD_GENERAL1_LARGE",
-  "BUILD_GENERAL1_XLARGE",
-  "BUILD_GENERAL1_2XLARGE",
-  "BUILD_LAMBDA_1GB",
-  "BUILD_LAMBDA_2GB",
-  "BUILD_LAMBDA_4GB",
-  "BUILD_LAMBDA_8GB",
-  "BUILD_LAMBDA_10GB",
-  "ATTRIBUTE_BASED_COMPUTE",
-  "CUSTOM_INSTANCE_TYPE",
-);
-export type FleetOverflowBehavior = "QUEUE" | "ON_DEMAND";
-export const FleetOverflowBehavior = S.Literal("QUEUE", "ON_DEMAND");
+  | "CUSTOM_INSTANCE_TYPE"
+  | (string & {});
+export const ComputeType = S.String;
+export type FleetOverflowBehavior = "QUEUE" | "ON_DEMAND" | (string & {});
+export const FleetOverflowBehavior = S.String;
 export type SourceType =
   | "CODECOMMIT"
   | "CODEPIPELINE"
@@ -202,18 +178,9 @@ export type SourceType =
   | "S3"
   | "BITBUCKET"
   | "GITHUB_ENTERPRISE"
-  | "NO_SOURCE";
-export const SourceType = S.Literal(
-  "CODECOMMIT",
-  "CODEPIPELINE",
-  "GITHUB",
-  "GITLAB",
-  "GITLAB_SELF_MANAGED",
-  "S3",
-  "BITBUCKET",
-  "GITHUB_ENTERPRISE",
-  "NO_SOURCE",
-);
+  | "NO_SOURCE"
+  | (string & {});
+export const SourceType = S.String;
 export interface GitSubmodulesConfig {
   fetchSubmodules: boolean;
 }
@@ -222,12 +189,12 @@ export const GitSubmodulesConfig = S.suspend(() =>
 ).annotations({
   identifier: "GitSubmodulesConfig",
 }) as any as S.Schema<GitSubmodulesConfig>;
-export type SourceAuthType = "OAUTH" | "CODECONNECTIONS" | "SECRETS_MANAGER";
-export const SourceAuthType = S.Literal(
-  "OAUTH",
-  "CODECONNECTIONS",
-  "SECRETS_MANAGER",
-);
+export type SourceAuthType =
+  | "OAUTH"
+  | "CODECONNECTIONS"
+  | "SECRETS_MANAGER"
+  | (string & {});
+export const SourceAuthType = S.String;
 export interface SourceAuth {
   type: SourceAuthType;
   resource?: string;
@@ -274,14 +241,18 @@ export const ProjectSource = S.suspend(() =>
 }) as any as S.Schema<ProjectSource>;
 export type ProjectSources = ProjectSource[];
 export const ProjectSources = S.Array(ProjectSource);
-export type ArtifactsType = "CODEPIPELINE" | "S3" | "NO_ARTIFACTS";
-export const ArtifactsType = S.Literal("CODEPIPELINE", "S3", "NO_ARTIFACTS");
-export type ArtifactNamespace = "NONE" | "BUILD_ID";
-export const ArtifactNamespace = S.Literal("NONE", "BUILD_ID");
-export type ArtifactPackaging = "NONE" | "ZIP";
-export const ArtifactPackaging = S.Literal("NONE", "ZIP");
-export type BucketOwnerAccess = "NONE" | "READ_ONLY" | "FULL";
-export const BucketOwnerAccess = S.Literal("NONE", "READ_ONLY", "FULL");
+export type ArtifactsType =
+  | "CODEPIPELINE"
+  | "S3"
+  | "NO_ARTIFACTS"
+  | (string & {});
+export const ArtifactsType = S.String;
+export type ArtifactNamespace = "NONE" | "BUILD_ID" | (string & {});
+export const ArtifactNamespace = S.String;
+export type ArtifactPackaging = "NONE" | "ZIP" | (string & {});
+export const ArtifactPackaging = S.String;
+export type BucketOwnerAccess = "NONE" | "READ_ONLY" | "FULL" | (string & {});
+export const BucketOwnerAccess = S.String;
 export interface ProjectArtifacts {
   type: ArtifactsType;
   location?: string;
@@ -312,26 +283,21 @@ export const ProjectArtifacts = S.suspend(() =>
 }) as any as S.Schema<ProjectArtifacts>;
 export type ProjectArtifactsList = ProjectArtifacts[];
 export const ProjectArtifactsList = S.Array(ProjectArtifacts);
-export type ReportType = "TEST" | "CODE_COVERAGE";
-export const ReportType = S.Literal("TEST", "CODE_COVERAGE");
+export type ReportType = "TEST" | "CODE_COVERAGE" | (string & {});
+export const ReportType = S.String;
 export type WebhookBuildType =
   | "BUILD"
   | "BUILD_BATCH"
-  | "RUNNER_BUILDKITE_BUILD";
-export const WebhookBuildType = S.Literal(
-  "BUILD",
-  "BUILD_BATCH",
-  "RUNNER_BUILDKITE_BUILD",
-);
-export type SortOrderType = "ASCENDING" | "DESCENDING";
-export const SortOrderType = S.Literal("ASCENDING", "DESCENDING");
+  | "RUNNER_BUILDKITE_BUILD"
+  | (string & {});
+export const WebhookBuildType = S.String;
+export type SortOrderType = "ASCENDING" | "DESCENDING" | (string & {});
+export const SortOrderType = S.String;
 export type ReportCodeCoverageSortByType =
   | "LINE_COVERAGE_PERCENTAGE"
-  | "FILE_PATH";
-export const ReportCodeCoverageSortByType = S.Literal(
-  "LINE_COVERAGE_PERCENTAGE",
-  "FILE_PATH",
-);
+  | "FILE_PATH"
+  | (string & {});
+export const ReportCodeCoverageSortByType = S.String;
 export type ReportGroupTrendFieldType =
   | "PASS_RATE"
   | "DURATION"
@@ -341,78 +307,59 @@ export type ReportGroupTrendFieldType =
   | "LINES_MISSED"
   | "BRANCH_COVERAGE"
   | "BRANCHES_COVERED"
-  | "BRANCHES_MISSED";
-export const ReportGroupTrendFieldType = S.Literal(
-  "PASS_RATE",
-  "DURATION",
-  "TOTAL",
-  "LINE_COVERAGE",
-  "LINES_COVERED",
-  "LINES_MISSED",
-  "BRANCH_COVERAGE",
-  "BRANCHES_COVERED",
-  "BRANCHES_MISSED",
-);
+  | "BRANCHES_MISSED"
+  | (string & {});
+export const ReportGroupTrendFieldType = S.String;
 export type ServerType =
   | "GITHUB"
   | "BITBUCKET"
   | "GITHUB_ENTERPRISE"
   | "GITLAB"
-  | "GITLAB_SELF_MANAGED";
-export const ServerType = S.Literal(
-  "GITHUB",
-  "BITBUCKET",
-  "GITHUB_ENTERPRISE",
-  "GITLAB",
-  "GITLAB_SELF_MANAGED",
-);
+  | "GITLAB_SELF_MANAGED"
+  | (string & {});
+export const ServerType = S.String;
 export type AuthType =
   | "OAUTH"
   | "BASIC_AUTH"
   | "PERSONAL_ACCESS_TOKEN"
   | "CODECONNECTIONS"
-  | "SECRETS_MANAGER";
-export const AuthType = S.Literal(
-  "OAUTH",
-  "BASIC_AUTH",
-  "PERSONAL_ACCESS_TOKEN",
-  "CODECONNECTIONS",
-  "SECRETS_MANAGER",
-);
-export type FleetSortByType = "NAME" | "CREATED_TIME" | "LAST_MODIFIED_TIME";
-export const FleetSortByType = S.Literal(
-  "NAME",
-  "CREATED_TIME",
-  "LAST_MODIFIED_TIME",
-);
-export type ProjectSortByType = "NAME" | "CREATED_TIME" | "LAST_MODIFIED_TIME";
-export const ProjectSortByType = S.Literal(
-  "NAME",
-  "CREATED_TIME",
-  "LAST_MODIFIED_TIME",
-);
+  | "SECRETS_MANAGER"
+  | (string & {});
+export const AuthType = S.String;
+export type FleetSortByType =
+  | "NAME"
+  | "CREATED_TIME"
+  | "LAST_MODIFIED_TIME"
+  | (string & {});
+export const FleetSortByType = S.String;
+export type ProjectSortByType =
+  | "NAME"
+  | "CREATED_TIME"
+  | "LAST_MODIFIED_TIME"
+  | (string & {});
+export const ProjectSortByType = S.String;
 export type ReportGroupSortByType =
   | "NAME"
   | "CREATED_TIME"
-  | "LAST_MODIFIED_TIME";
-export const ReportGroupSortByType = S.Literal(
-  "NAME",
-  "CREATED_TIME",
-  "LAST_MODIFIED_TIME",
-);
-export type SharedResourceSortByType = "ARN" | "MODIFIED_TIME";
-export const SharedResourceSortByType = S.Literal("ARN", "MODIFIED_TIME");
-export type RetryBuildBatchType = "RETRY_ALL_BUILDS" | "RETRY_FAILED_BUILDS";
-export const RetryBuildBatchType = S.Literal(
-  "RETRY_ALL_BUILDS",
-  "RETRY_FAILED_BUILDS",
-);
-export type ImagePullCredentialsType = "CODEBUILD" | "SERVICE_ROLE";
-export const ImagePullCredentialsType = S.Literal("CODEBUILD", "SERVICE_ROLE");
-export type CommandType = "SHELL";
-export const CommandType = S.Literal("SHELL");
-export type ProjectVisibilityType = "PUBLIC_READ" | "PRIVATE";
-export const ProjectVisibilityType = S.Literal("PUBLIC_READ", "PRIVATE");
+  | "LAST_MODIFIED_TIME"
+  | (string & {});
+export const ReportGroupSortByType = S.String;
+export type SharedResourceSortByType = "ARN" | "MODIFIED_TIME" | (string & {});
+export const SharedResourceSortByType = S.String;
+export type RetryBuildBatchType =
+  | "RETRY_ALL_BUILDS"
+  | "RETRY_FAILED_BUILDS"
+  | (string & {});
+export const RetryBuildBatchType = S.String;
+export type ImagePullCredentialsType =
+  | "CODEBUILD"
+  | "SERVICE_ROLE"
+  | (string & {});
+export const ImagePullCredentialsType = S.String;
+export type CommandType = "SHELL" | (string & {});
+export const CommandType = S.String;
+export type ProjectVisibilityType = "PUBLIC_READ" | "PRIVATE" | (string & {});
+export const ProjectVisibilityType = S.String;
 export interface BatchDeleteBuildsInput {
   ids: string[];
 }
@@ -708,15 +655,9 @@ export type StatusType =
   | "FAULT"
   | "TIMED_OUT"
   | "IN_PROGRESS"
-  | "STOPPED";
-export const StatusType = S.Literal(
-  "SUCCEEDED",
-  "FAILED",
-  "FAULT",
-  "TIMED_OUT",
-  "IN_PROGRESS",
-  "STOPPED",
-);
+  | "STOPPED"
+  | (string & {});
+export const StatusType = S.String;
 export interface BuildBatchFilter {
   status?: StatusType;
 }
@@ -850,14 +791,9 @@ export type ReportStatusType =
   | "SUCCEEDED"
   | "FAILED"
   | "INCOMPLETE"
-  | "DELETING";
-export const ReportStatusType = S.Literal(
-  "GENERATING",
-  "SUCCEEDED",
-  "FAILED",
-  "INCOMPLETE",
-  "DELETING",
-);
+  | "DELETING"
+  | (string & {});
+export const ReportStatusType = S.String;
 export interface ReportFilter {
   status?: ReportStatusType;
 }
@@ -1009,12 +945,9 @@ export const ProjectSecondarySourceVersions = S.Array(ProjectSourceVersion);
 export type EnvironmentVariableType =
   | "PLAINTEXT"
   | "PARAMETER_STORE"
-  | "SECRETS_MANAGER";
-export const EnvironmentVariableType = S.Literal(
-  "PLAINTEXT",
-  "PARAMETER_STORE",
-  "SECRETS_MANAGER",
-);
+  | "SECRETS_MANAGER"
+  | (string & {});
+export const EnvironmentVariableType = S.String;
 export interface EnvironmentVariable {
   name: string;
   value: string;
@@ -1031,17 +964,14 @@ export const EnvironmentVariable = S.suspend(() =>
 }) as any as S.Schema<EnvironmentVariable>;
 export type EnvironmentVariables = EnvironmentVariable[];
 export const EnvironmentVariables = S.Array(EnvironmentVariable);
-export type CacheType = "NO_CACHE" | "S3" | "LOCAL";
-export const CacheType = S.Literal("NO_CACHE", "S3", "LOCAL");
+export type CacheType = "NO_CACHE" | "S3" | "LOCAL" | (string & {});
+export const CacheType = S.String;
 export type CacheMode =
   | "LOCAL_DOCKER_LAYER_CACHE"
   | "LOCAL_SOURCE_CACHE"
-  | "LOCAL_CUSTOM_CACHE";
-export const CacheMode = S.Literal(
-  "LOCAL_DOCKER_LAYER_CACHE",
-  "LOCAL_SOURCE_CACHE",
-  "LOCAL_CUSTOM_CACHE",
-);
+  | "LOCAL_CUSTOM_CACHE"
+  | (string & {});
+export const CacheMode = S.String;
 export type ProjectCacheModes = CacheMode[];
 export const ProjectCacheModes = S.Array(CacheMode);
 export interface ProjectCache {
@@ -1058,8 +988,8 @@ export const ProjectCache = S.suspend(() =>
     cacheNamespace: S.optional(S.String),
   }),
 ).annotations({ identifier: "ProjectCache" }) as any as S.Schema<ProjectCache>;
-export type LogsConfigStatusType = "ENABLED" | "DISABLED";
-export const LogsConfigStatusType = S.Literal("ENABLED", "DISABLED");
+export type LogsConfigStatusType = "ENABLED" | "DISABLED" | (string & {});
+export const LogsConfigStatusType = S.String;
 export interface CloudWatchLogsConfig {
   status: LogsConfigStatusType;
   groupName?: string;
@@ -1098,8 +1028,8 @@ export const LogsConfig = S.suspend(() =>
     s3Logs: S.optional(S3LogsConfig),
   }),
 ).annotations({ identifier: "LogsConfig" }) as any as S.Schema<LogsConfig>;
-export type CredentialProviderType = "SECRETS_MANAGER";
-export const CredentialProviderType = S.Literal("SECRETS_MANAGER");
+export type CredentialProviderType = "SECRETS_MANAGER" | (string & {});
+export const CredentialProviderType = S.String;
 export interface RegistryCredential {
   credential: string;
   credentialProvider: CredentialProviderType;
@@ -1132,11 +1062,9 @@ export const BatchRestrictions = S.suspend(() =>
 }) as any as S.Schema<BatchRestrictions>;
 export type BatchReportModeType =
   | "REPORT_INDIVIDUAL_BUILDS"
-  | "REPORT_AGGREGATED_BATCH";
-export const BatchReportModeType = S.Literal(
-  "REPORT_INDIVIDUAL_BUILDS",
-  "REPORT_AGGREGATED_BATCH",
-);
+  | "REPORT_AGGREGATED_BATCH"
+  | (string & {});
+export const BatchReportModeType = S.String;
 export interface ProjectBuildBatchConfig {
   serviceRole?: string;
   combineArtifacts?: boolean;
@@ -1297,8 +1225,8 @@ export const StopSandboxInput = S.suspend(() =>
 ).annotations({
   identifier: "StopSandboxInput",
 }) as any as S.Schema<StopSandboxInput>;
-export type MachineType = "GENERAL" | "NVME";
-export const MachineType = S.Literal("GENERAL", "NVME");
+export type MachineType = "GENERAL" | "NVME" | (string & {});
+export const MachineType = S.String;
 export interface ComputeConfiguration {
   vCpu?: number;
   memory?: number;
@@ -1317,10 +1245,10 @@ export const ComputeConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "ComputeConfiguration",
 }) as any as S.Schema<ComputeConfiguration>;
-export type FleetScalingType = "TARGET_TRACKING_SCALING";
-export const FleetScalingType = S.Literal("TARGET_TRACKING_SCALING");
-export type FleetScalingMetricType = "FLEET_UTILIZATION_RATE";
-export const FleetScalingMetricType = S.Literal("FLEET_UTILIZATION_RATE");
+export type FleetScalingType = "TARGET_TRACKING_SCALING" | (string & {});
+export const FleetScalingType = S.String;
+export type FleetScalingMetricType = "FLEET_UTILIZATION_RATE" | (string & {});
+export const FleetScalingMetricType = S.String;
 export interface TargetTrackingScalingConfiguration {
   metricType?: FleetScalingMetricType;
   targetValue?: number;
@@ -1370,12 +1298,12 @@ export const VpcConfig = S.suspend(() =>
     securityGroupIds: S.optional(SecurityGroupIds),
   }),
 ).annotations({ identifier: "VpcConfig" }) as any as S.Schema<VpcConfig>;
-export type FleetProxyRuleBehavior = "ALLOW_ALL" | "DENY_ALL";
-export const FleetProxyRuleBehavior = S.Literal("ALLOW_ALL", "DENY_ALL");
-export type FleetProxyRuleType = "DOMAIN" | "IP";
-export const FleetProxyRuleType = S.Literal("DOMAIN", "IP");
-export type FleetProxyRuleEffectType = "ALLOW" | "DENY";
-export const FleetProxyRuleEffectType = S.Literal("ALLOW", "DENY");
+export type FleetProxyRuleBehavior = "ALLOW_ALL" | "DENY_ALL" | (string & {});
+export const FleetProxyRuleBehavior = S.String;
+export type FleetProxyRuleType = "DOMAIN" | "IP" | (string & {});
+export const FleetProxyRuleType = S.String;
+export type FleetProxyRuleEffectType = "ALLOW" | "DENY" | (string & {});
+export const FleetProxyRuleEffectType = S.String;
 export type FleetProxyRuleEntities = string[];
 export const FleetProxyRuleEntities = S.Array(S.String);
 export interface FleetProxyRule {
@@ -1506,8 +1434,8 @@ export const ProjectEnvironment = S.suspend(() =>
 ).annotations({
   identifier: "ProjectEnvironment",
 }) as any as S.Schema<ProjectEnvironment>;
-export type FileSystemType = "EFS";
-export const FileSystemType = S.Literal("EFS");
+export type FileSystemType = "EFS" | (string & {});
+export const FileSystemType = S.String;
 export interface ProjectFileSystemLocation {
   type?: FileSystemType;
   location?: string;
@@ -1598,10 +1526,10 @@ export const UpdateProjectVisibilityInput = S.suspend(() =>
 ).annotations({
   identifier: "UpdateProjectVisibilityInput",
 }) as any as S.Schema<UpdateProjectVisibilityInput>;
-export type ReportExportConfigType = "S3" | "NO_EXPORT";
-export const ReportExportConfigType = S.Literal("S3", "NO_EXPORT");
-export type ReportPackagingType = "ZIP" | "NONE";
-export const ReportPackagingType = S.Literal("ZIP", "NONE");
+export type ReportExportConfigType = "S3" | "NO_EXPORT" | (string & {});
+export const ReportExportConfigType = S.String;
+export type ReportPackagingType = "ZIP" | "NONE" | (string & {});
+export const ReportPackagingType = S.String;
 export interface S3ReportExportConfig {
   bucket?: string;
   bucketOwner?: string;
@@ -1661,20 +1589,9 @@ export type WebhookFilterType =
   | "TAG_NAME"
   | "RELEASE_NAME"
   | "REPOSITORY_NAME"
-  | "ORGANIZATION_NAME";
-export const WebhookFilterType = S.Literal(
-  "EVENT",
-  "BASE_REF",
-  "HEAD_REF",
-  "ACTOR_ACCOUNT_ID",
-  "FILE_PATH",
-  "COMMIT_MESSAGE",
-  "WORKFLOW_NAME",
-  "TAG_NAME",
-  "RELEASE_NAME",
-  "REPOSITORY_NAME",
-  "ORGANIZATION_NAME",
-);
+  | "ORGANIZATION_NAME"
+  | (string & {});
+export const WebhookFilterType = S.String;
 export interface WebhookFilter {
   type: WebhookFilterType;
   pattern: string;
@@ -1696,12 +1613,9 @@ export const FilterGroups = S.Array(FilterGroup);
 export type PullRequestBuildCommentApproval =
   | "DISABLED"
   | "ALL_PULL_REQUESTS"
-  | "FORK_PULL_REQUESTS";
-export const PullRequestBuildCommentApproval = S.Literal(
-  "DISABLED",
-  "ALL_PULL_REQUESTS",
-  "FORK_PULL_REQUESTS",
-);
+  | "FORK_PULL_REQUESTS"
+  | (string & {});
+export const PullRequestBuildCommentApproval = S.String;
 export type PullRequestBuildApproverRole =
   | "GITHUB_READ"
   | "GITHUB_TRIAGE"
@@ -1716,23 +1630,9 @@ export type PullRequestBuildApproverRole =
   | "GITLAB_OWNER"
   | "BITBUCKET_READ"
   | "BITBUCKET_WRITE"
-  | "BITBUCKET_ADMIN";
-export const PullRequestBuildApproverRole = S.Literal(
-  "GITHUB_READ",
-  "GITHUB_TRIAGE",
-  "GITHUB_WRITE",
-  "GITHUB_MAINTAIN",
-  "GITHUB_ADMIN",
-  "GITLAB_GUEST",
-  "GITLAB_PLANNER",
-  "GITLAB_REPORTER",
-  "GITLAB_DEVELOPER",
-  "GITLAB_MAINTAINER",
-  "GITLAB_OWNER",
-  "BITBUCKET_READ",
-  "BITBUCKET_WRITE",
-  "BITBUCKET_ADMIN",
-);
+  | "BITBUCKET_ADMIN"
+  | (string & {});
+export const PullRequestBuildApproverRole = S.String;
 export type PullRequestBuildApproverRoles = PullRequestBuildApproverRole[];
 export const PullRequestBuildApproverRoles = S.Array(
   PullRequestBuildApproverRole,
@@ -1774,23 +1674,16 @@ export const UpdateWebhookInput = S.suspend(() =>
 export type WebhookScopeType =
   | "GITHUB_ORGANIZATION"
   | "GITHUB_GLOBAL"
-  | "GITLAB_GROUP";
-export const WebhookScopeType = S.Literal(
-  "GITHUB_ORGANIZATION",
-  "GITHUB_GLOBAL",
-  "GITLAB_GROUP",
-);
+  | "GITLAB_GROUP"
+  | (string & {});
+export const WebhookScopeType = S.String;
 export type PlatformType =
   | "DEBIAN"
   | "AMAZON_LINUX"
   | "UBUNTU"
-  | "WINDOWS_SERVER";
-export const PlatformType = S.Literal(
-  "DEBIAN",
-  "AMAZON_LINUX",
-  "UBUNTU",
-  "WINDOWS_SERVER",
-);
+  | "WINDOWS_SERVER"
+  | (string & {});
+export const PlatformType = S.String;
 export interface ScopeConfiguration {
   name: string;
   domain?: string;
@@ -1846,19 +1739,9 @@ export type LanguageType =
   | "ANDROID"
   | "DOTNET"
   | "BASE"
-  | "PHP";
-export const LanguageType = S.Literal(
-  "JAVA",
-  "PYTHON",
-  "NODE_JS",
-  "RUBY",
-  "GOLANG",
-  "DOCKER",
-  "ANDROID",
-  "DOTNET",
-  "BASE",
-  "PHP",
-);
+  | "PHP"
+  | (string & {});
+export const LanguageType = S.String;
 export interface CreateWebhookInput {
   projectName: string;
   branchFilter?: string;
@@ -2197,20 +2080,9 @@ export type BuildPhaseType =
   | "POST_BUILD"
   | "UPLOAD_ARTIFACTS"
   | "FINALIZING"
-  | "COMPLETED";
-export const BuildPhaseType = S.Literal(
-  "SUBMITTED",
-  "QUEUED",
-  "PROVISIONING",
-  "DOWNLOAD_SOURCE",
-  "INSTALL",
-  "PRE_BUILD",
-  "BUILD",
-  "POST_BUILD",
-  "UPLOAD_ARTIFACTS",
-  "FINALIZING",
-  "COMPLETED",
-);
+  | "COMPLETED"
+  | (string & {});
+export const BuildPhaseType = S.String;
 export interface PhaseContext {
   statusCode?: string;
   message?: string;
@@ -2404,16 +2276,9 @@ export type BuildBatchPhaseType =
   | "COMBINE_ARTIFACTS"
   | "SUCCEEDED"
   | "FAILED"
-  | "STOPPED";
-export const BuildBatchPhaseType = S.Literal(
-  "SUBMITTED",
-  "DOWNLOAD_BATCHSPEC",
-  "IN_PROGRESS",
-  "COMBINE_ARTIFACTS",
-  "SUCCEEDED",
-  "FAILED",
-  "STOPPED",
-);
+  | "STOPPED"
+  | (string & {});
+export const BuildBatchPhaseType = S.String;
 export interface BuildBatchPhase {
   phaseType?: BuildBatchPhaseType;
   phaseStatus?: StatusType;
@@ -2792,30 +2657,17 @@ export type FleetStatusCode =
   | "DELETING"
   | "CREATE_FAILED"
   | "UPDATE_ROLLBACK_FAILED"
-  | "ACTIVE";
-export const FleetStatusCode = S.Literal(
-  "CREATING",
-  "UPDATING",
-  "ROTATING",
-  "PENDING_DELETION",
-  "DELETING",
-  "CREATE_FAILED",
-  "UPDATE_ROLLBACK_FAILED",
-  "ACTIVE",
-);
+  | "ACTIVE"
+  | (string & {});
+export const FleetStatusCode = S.String;
 export type FleetContextCode =
   | "CREATE_FAILED"
   | "UPDATE_FAILED"
   | "ACTION_REQUIRED"
   | "PENDING_DELETION"
-  | "INSUFFICIENT_CAPACITY";
-export const FleetContextCode = S.Literal(
-  "CREATE_FAILED",
-  "UPDATE_FAILED",
-  "ACTION_REQUIRED",
-  "PENDING_DELETION",
-  "INSUFFICIENT_CAPACITY",
-);
+  | "INSUFFICIENT_CAPACITY"
+  | (string & {});
+export const FleetContextCode = S.String;
 export interface FleetStatus {
   statusCode?: FleetStatusCode;
   context?: FleetContextCode;
@@ -2898,13 +2750,9 @@ export type WebhookStatus =
   | "CREATING"
   | "CREATE_FAILED"
   | "ACTIVE"
-  | "DELETING";
-export const WebhookStatus = S.Literal(
-  "CREATING",
-  "CREATE_FAILED",
-  "ACTIVE",
-  "DELETING",
-);
+  | "DELETING"
+  | (string & {});
+export const WebhookStatus = S.String;
 export interface Webhook {
   url?: string;
   payloadUrl?: string;
@@ -3033,8 +2881,8 @@ export const UpdateProjectVisibilityOutput = S.suspend(() =>
 ).annotations({
   identifier: "UpdateProjectVisibilityOutput",
 }) as any as S.Schema<UpdateProjectVisibilityOutput>;
-export type ReportGroupStatusType = "ACTIVE" | "DELETING";
-export const ReportGroupStatusType = S.Literal("ACTIVE", "DELETING");
+export type ReportGroupStatusType = "ACTIVE" | "DELETING" | (string & {});
+export const ReportGroupStatusType = S.String;
 export interface ReportGroup {
   arn?: string;
   name?: string;

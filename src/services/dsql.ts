@@ -326,19 +326,9 @@ export type ClusterStatus =
   | "DELETED"
   | "FAILED"
   | "PENDING_SETUP"
-  | "PENDING_DELETE";
-export const ClusterStatus = S.Literal(
-  "CREATING",
-  "ACTIVE",
-  "IDLE",
-  "INACTIVE",
-  "UPDATING",
-  "DELETING",
-  "DELETED",
-  "FAILED",
-  "PENDING_SETUP",
-  "PENDING_DELETE",
-);
+  | "PENDING_DELETE"
+  | (string & {});
+export const ClusterStatus = S.String;
 export interface ListTagsForResourceOutput {
   tags?: { [key: string]: string | undefined };
 }
@@ -469,22 +459,18 @@ export const PutClusterPolicyOutput = S.suspend(() =>
 ).annotations({
   identifier: "PutClusterPolicyOutput",
 }) as any as S.Schema<PutClusterPolicyOutput>;
-export type EncryptionType = "AWS_OWNED_KMS_KEY" | "CUSTOMER_MANAGED_KMS_KEY";
-export const EncryptionType = S.Literal(
-  "AWS_OWNED_KMS_KEY",
-  "CUSTOMER_MANAGED_KMS_KEY",
-);
+export type EncryptionType =
+  | "AWS_OWNED_KMS_KEY"
+  | "CUSTOMER_MANAGED_KMS_KEY"
+  | (string & {});
+export const EncryptionType = S.String;
 export type EncryptionStatus =
   | "ENABLED"
   | "UPDATING"
   | "KMS_KEY_INACCESSIBLE"
-  | "ENABLING";
-export const EncryptionStatus = S.Literal(
-  "ENABLED",
-  "UPDATING",
-  "KMS_KEY_INACCESSIBLE",
-  "ENABLING",
-);
+  | "ENABLING"
+  | (string & {});
+export const EncryptionStatus = S.String;
 export interface EncryptionDetails {
   encryptionType: EncryptionType;
   kmsKeyArn?: string;
@@ -515,14 +501,9 @@ export type ValidationExceptionReason =
   | "cannotParse"
   | "fieldValidationFailed"
   | "deletionProtectionEnabled"
-  | "other";
-export const ValidationExceptionReason = S.Literal(
-  "unknownOperation",
-  "cannotParse",
-  "fieldValidationFailed",
-  "deletionProtectionEnabled",
-  "other",
-);
+  | "other"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 export interface CreateClusterOutput {
   identifier: string;
   arn: string;

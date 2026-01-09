@@ -121,42 +121,33 @@ export type CurrencyCode = string;
 export type RetryAfterSeconds = number;
 
 //# Schemas
-export type AppAssessmentScheduleType = "Disabled" | "Daily";
-export const AppAssessmentScheduleType = S.Literal("Disabled", "Daily");
+export type AppAssessmentScheduleType = "Disabled" | "Daily" | (string & {});
+export const AppAssessmentScheduleType = S.String;
 export type AppComponentNameList = string[];
 export const AppComponentNameList = S.Array(S.String);
 export type RecommendationIdList = string[];
 export const RecommendationIdList = S.Array(S.String);
-export type TemplateFormat = "CfnYaml" | "CfnJson";
-export const TemplateFormat = S.Literal("CfnYaml", "CfnJson");
-export type RenderRecommendationType = "Alarm" | "Sop" | "Test";
-export const RenderRecommendationType = S.Literal("Alarm", "Sop", "Test");
+export type TemplateFormat = "CfnYaml" | "CfnJson" | (string & {});
+export const TemplateFormat = S.String;
+export type RenderRecommendationType = "Alarm" | "Sop" | "Test" | (string & {});
+export const RenderRecommendationType = S.String;
 export type RenderRecommendationTypeList = RenderRecommendationType[];
 export const RenderRecommendationTypeList = S.Array(RenderRecommendationType);
 export type DataLocationConstraint =
   | "AnyLocation"
   | "SameContinent"
-  | "SameCountry";
-export const DataLocationConstraint = S.Literal(
-  "AnyLocation",
-  "SameContinent",
-  "SameCountry",
-);
+  | "SameCountry"
+  | (string & {});
+export const DataLocationConstraint = S.String;
 export type ResiliencyPolicyTier =
   | "MissionCritical"
   | "Critical"
   | "Important"
   | "CoreServices"
   | "NonCritical"
-  | "NotApplicable";
-export const ResiliencyPolicyTier = S.Literal(
-  "MissionCritical",
-  "Critical",
-  "Important",
-  "CoreServices",
-  "NonCritical",
-  "NotApplicable",
-);
+  | "NotApplicable"
+  | (string & {});
+export const ResiliencyPolicyTier = S.String;
 export type ArnList = string[];
 export const ArnList = S.Array(S.String);
 export interface TerraformSource {
@@ -169,41 +160,36 @@ export const TerraformSource = S.suspend(() =>
 }) as any as S.Schema<TerraformSource>;
 export type TerraformSourceList = TerraformSource[];
 export const TerraformSourceList = S.Array(TerraformSource);
-export type ResourceImportStrategyType = "AddOnly" | "ReplaceAll";
-export const ResourceImportStrategyType = S.Literal("AddOnly", "ReplaceAll");
-export type AssessmentStatus = "Pending" | "InProgress" | "Failed" | "Success";
-export const AssessmentStatus = S.Literal(
-  "Pending",
-  "InProgress",
-  "Failed",
-  "Success",
-);
+export type ResourceImportStrategyType =
+  | "AddOnly"
+  | "ReplaceAll"
+  | (string & {});
+export const ResourceImportStrategyType = S.String;
+export type AssessmentStatus =
+  | "Pending"
+  | "InProgress"
+  | "Failed"
+  | "Success"
+  | (string & {});
+export const AssessmentStatus = S.String;
 export type AssessmentStatusList = AssessmentStatus[];
 export const AssessmentStatusList = S.Array(AssessmentStatus);
 export type ComplianceStatus =
   | "PolicyBreached"
   | "PolicyMet"
   | "NotApplicable"
-  | "MissingPolicy";
-export const ComplianceStatus = S.Literal(
-  "PolicyBreached",
-  "PolicyMet",
-  "NotApplicable",
-  "MissingPolicy",
-);
-export type AssessmentInvoker = "User" | "System";
-export const AssessmentInvoker = S.Literal("User", "System");
+  | "MissingPolicy"
+  | (string & {});
+export const ComplianceStatus = S.String;
+export type AssessmentInvoker = "User" | "System" | (string & {});
+export const AssessmentInvoker = S.String;
 export type RecommendationTemplateStatus =
   | "Pending"
   | "InProgress"
   | "Failed"
-  | "Success";
-export const RecommendationTemplateStatus = S.Literal(
-  "Pending",
-  "InProgress",
-  "Failed",
-  "Success",
-);
+  | "Success"
+  | (string & {});
+export const RecommendationTemplateStatus = S.String;
 export type RecommendationTemplateStatusList = RecommendationTemplateStatus[];
 export const RecommendationTemplateStatusList = S.Array(
   RecommendationTemplateStatus,
@@ -1354,8 +1340,8 @@ export interface UntagResourceResponse {}
 export const UntagResourceResponse = S.suspend(() => S.Struct({})).annotations({
   identifier: "UntagResourceResponse",
 }) as any as S.Schema<UntagResourceResponse>;
-export type PermissionModelType = "LegacyIAMUser" | "RoleBased";
-export const PermissionModelType = S.Literal("LegacyIAMUser", "RoleBased");
+export type PermissionModelType = "LegacyIAMUser" | "RoleBased" | (string & {});
+export const PermissionModelType = S.String;
 export type IamRoleArnList = string[];
 export const IamRoleArnList = S.Array(S.String);
 export interface PermissionModel {
@@ -1372,11 +1358,11 @@ export const PermissionModel = S.suspend(() =>
 ).annotations({
   identifier: "PermissionModel",
 }) as any as S.Schema<PermissionModel>;
-export type EventType = "ScheduledAssessmentFailure" | "DriftDetected";
-export const EventType = S.Literal(
-  "ScheduledAssessmentFailure",
-  "DriftDetected",
-);
+export type EventType =
+  | "ScheduledAssessmentFailure"
+  | "DriftDetected"
+  | (string & {});
+export const EventType = S.String;
 export interface EventSubscription {
   name: string;
   eventType: EventType;
@@ -1516,8 +1502,13 @@ export const UpdateAppVersionResourceRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateAppVersionResourceRequest",
 }) as any as S.Schema<UpdateAppVersionResourceRequest>;
-export type DisruptionType = "Software" | "Hardware" | "AZ" | "Region";
-export const DisruptionType = S.Literal("Software", "Hardware", "AZ", "Region");
+export type DisruptionType =
+  | "Software"
+  | "Hardware"
+  | "AZ"
+  | "Region"
+  | (string & {});
+export const DisruptionType = S.String;
 export interface FailurePolicy {
   rtoInSecs: number;
   rpoInSecs: number;
@@ -1566,60 +1557,41 @@ export type ResourceMappingType =
   | "AppRegistryApp"
   | "ResourceGroup"
   | "Terraform"
-  | "EKS";
-export const ResourceMappingType = S.Literal(
-  "CfnStack",
-  "Resource",
-  "AppRegistryApp",
-  "ResourceGroup",
-  "Terraform",
-  "EKS",
-);
+  | "EKS"
+  | (string & {});
+export const ResourceMappingType = S.String;
 export type ExcludeRecommendationReason =
   | "AlreadyImplemented"
   | "NotRelevant"
-  | "ComplexityOfImplementation";
-export const ExcludeRecommendationReason = S.Literal(
-  "AlreadyImplemented",
-  "NotRelevant",
-  "ComplexityOfImplementation",
-);
+  | "ComplexityOfImplementation"
+  | (string & {});
+export const ExcludeRecommendationReason = S.String;
 export type EksNamespaceList = string[];
 export const EksNamespaceList = S.Array(S.String);
-export type FieldAggregationType = "Min" | "Max" | "Sum" | "Avg" | "Count";
-export const FieldAggregationType = S.Literal(
-  "Min",
-  "Max",
-  "Sum",
-  "Avg",
-  "Count",
-);
+export type FieldAggregationType =
+  | "Min"
+  | "Max"
+  | "Sum"
+  | "Avg"
+  | "Count"
+  | (string & {});
+export const FieldAggregationType = S.String;
 export type ConditionOperatorType =
   | "Equals"
   | "NotEquals"
   | "GreaterThen"
   | "GreaterOrEquals"
   | "LessThen"
-  | "LessOrEquals";
-export const ConditionOperatorType = S.Literal(
-  "Equals",
-  "NotEquals",
-  "GreaterThen",
-  "GreaterOrEquals",
-  "LessThen",
-  "LessOrEquals",
-);
+  | "LessOrEquals"
+  | (string & {});
+export const ConditionOperatorType = S.String;
 export type GroupingRecommendationRejectionReason =
   | "DistinctBusinessPurpose"
   | "SeparateDataConcern"
   | "DistinctUserGroupHandling"
-  | "Other";
-export const GroupingRecommendationRejectionReason = S.Literal(
-  "DistinctBusinessPurpose",
-  "SeparateDataConcern",
-  "DistinctUserGroupHandling",
-  "Other",
-);
+  | "Other"
+  | (string & {});
+export const GroupingRecommendationRejectionReason = S.String;
 export interface AcceptGroupingRecommendationEntry {
   groupingRecommendationId: string;
 }
@@ -1646,46 +1618,30 @@ export type ResourceResolutionStatusType =
   | "Pending"
   | "InProgress"
   | "Failed"
-  | "Success";
-export const ResourceResolutionStatusType = S.Literal(
-  "Pending",
-  "InProgress",
-  "Failed",
-  "Success",
-);
+  | "Success"
+  | (string & {});
+export const ResourceResolutionStatusType = S.String;
 export type ResourceImportStatusType =
   | "Pending"
   | "InProgress"
   | "Failed"
-  | "Success";
-export const ResourceImportStatusType = S.Literal(
-  "Pending",
-  "InProgress",
-  "Failed",
-  "Success",
-);
+  | "Success"
+  | (string & {});
+export const ResourceImportStatusType = S.String;
 export type MetricsExportStatusType =
   | "Pending"
   | "InProgress"
   | "Failed"
-  | "Success";
-export const MetricsExportStatusType = S.Literal(
-  "Pending",
-  "InProgress",
-  "Failed",
-  "Success",
-);
+  | "Success"
+  | (string & {});
+export const MetricsExportStatusType = S.String;
 export type ResourcesGroupingRecGenStatusType =
   | "Pending"
   | "InProgress"
   | "Failed"
-  | "Success";
-export const ResourcesGroupingRecGenStatusType = S.Literal(
-  "Pending",
-  "InProgress",
-  "Failed",
-  "Success",
-);
+  | "Success"
+  | (string & {});
+export const ResourcesGroupingRecGenStatusType = S.String;
 export interface EksSource {
   eksClusterArn: string;
   namespaces: string[];
@@ -1711,8 +1667,8 @@ export const AppComponent = S.suspend(() =>
 ).annotations({ identifier: "AppComponent" }) as any as S.Schema<AppComponent>;
 export type AppComponentList = AppComponent[];
 export const AppComponentList = S.Array(AppComponent);
-export type PhysicalIdentifierType = "Arn" | "Native";
-export const PhysicalIdentifierType = S.Literal("Arn", "Native");
+export type PhysicalIdentifierType = "Arn" | "Native" | (string & {});
+export const PhysicalIdentifierType = S.String;
 export interface PhysicalResourceId {
   identifier: string;
   type: PhysicalIdentifierType;
@@ -1729,8 +1685,8 @@ export const PhysicalResourceId = S.suspend(() =>
 ).annotations({
   identifier: "PhysicalResourceId",
 }) as any as S.Schema<PhysicalResourceId>;
-export type ResourceSourceType = "AppTemplate" | "Discovered";
-export const ResourceSourceType = S.Literal("AppTemplate", "Discovered");
+export type ResourceSourceType = "AppTemplate" | "Discovered" | (string & {});
+export const ResourceSourceType = S.String;
 export interface PhysicalResource {
   resourceName?: string;
   logicalResourceId: LogicalResourceId;
@@ -1836,8 +1792,8 @@ export const RecommendationTemplate = S.suspend(() =>
 }) as any as S.Schema<RecommendationTemplate>;
 export type RecommendationTemplateList = RecommendationTemplate[];
 export const RecommendationTemplateList = S.Array(RecommendationTemplate);
-export type EstimatedCostTier = "L1" | "L2" | "L3" | "L4";
-export const EstimatedCostTier = S.Literal("L1", "L2", "L3", "L4");
+export type EstimatedCostTier = "L1" | "L2" | "L3" | "L4" | (string & {});
+export const EstimatedCostTier = S.String;
 export interface ResiliencyPolicy {
   policyArn?: string;
   policyName?: string;
@@ -2404,8 +2360,13 @@ export const ResolveAppVersionResourcesResponse = S.suspend(() =>
 ).annotations({
   identifier: "ResolveAppVersionResourcesResponse",
 }) as any as S.Schema<ResolveAppVersionResourcesResponse>;
-export type CostFrequency = "Hourly" | "Daily" | "Monthly" | "Yearly";
-export const CostFrequency = S.Literal("Hourly", "Daily", "Monthly", "Yearly");
+export type CostFrequency =
+  | "Hourly"
+  | "Daily"
+  | "Monthly"
+  | "Yearly"
+  | (string & {});
+export const CostFrequency = S.String;
 export interface Cost {
   amount: number;
   currency: string;
@@ -2418,13 +2379,13 @@ export type DisruptionResiliencyScore = { [key in DisruptionType]?: number };
 export const DisruptionResiliencyScore = S.partial(
   S.Record({ key: DisruptionType, value: S.UndefinedOr(S.Number) }),
 );
-export type ResiliencyScoreType = "Compliance" | "Test" | "Alarm" | "Sop";
-export const ResiliencyScoreType = S.Literal(
-  "Compliance",
-  "Test",
-  "Alarm",
-  "Sop",
-);
+export type ResiliencyScoreType =
+  | "Compliance"
+  | "Test"
+  | "Alarm"
+  | "Sop"
+  | (string & {});
+export const ResiliencyScoreType = S.String;
 export interface ScoringComponentResiliencyScore {
   score?: number;
   possibleScore?: number;
@@ -2528,8 +2489,12 @@ export const ResourceErrorsDetails = S.suspend(() =>
 ).annotations({
   identifier: "ResourceErrorsDetails",
 }) as any as S.Schema<ResourceErrorsDetails>;
-export type DriftStatus = "NotChecked" | "NotDetected" | "Detected";
-export const DriftStatus = S.Literal("NotChecked", "NotDetected", "Detected");
+export type DriftStatus =
+  | "NotChecked"
+  | "NotDetected"
+  | "Detected"
+  | (string & {});
+export const DriftStatus = S.String;
 export interface AssessmentRiskRecommendation {
   risk?: string;
   recommendation?: string;
@@ -2639,29 +2604,23 @@ export const StartResourceGroupingRecommendationTaskResponse = S.suspend(() =>
 ).annotations({
   identifier: "StartResourceGroupingRecommendationTaskResponse",
 }) as any as S.Schema<StartResourceGroupingRecommendationTaskResponse>;
-export type AppStatusType = "Active" | "Deleting";
-export const AppStatusType = S.Literal("Active", "Deleting");
+export type AppStatusType = "Active" | "Deleting" | (string & {});
+export const AppStatusType = S.String;
 export type AppComplianceStatusType =
   | "PolicyBreached"
   | "PolicyMet"
   | "NotAssessed"
   | "ChangesDetected"
   | "NotApplicable"
-  | "MissingPolicy";
-export const AppComplianceStatusType = S.Literal(
-  "PolicyBreached",
-  "PolicyMet",
-  "NotAssessed",
-  "ChangesDetected",
-  "NotApplicable",
-  "MissingPolicy",
-);
-export type AppDriftStatusType = "NotChecked" | "NotDetected" | "Detected";
-export const AppDriftStatusType = S.Literal(
-  "NotChecked",
-  "NotDetected",
-  "Detected",
-);
+  | "MissingPolicy"
+  | (string & {});
+export const AppComplianceStatusType = S.String;
+export type AppDriftStatusType =
+  | "NotChecked"
+  | "NotDetected"
+  | "Detected"
+  | (string & {});
+export const AppDriftStatusType = S.String;
 export interface App {
   appArn: string;
   name: string;
@@ -2784,65 +2743,57 @@ export const UpdateRecommendationStatusItem = S.suspend(() =>
 ).annotations({
   identifier: "UpdateRecommendationStatusItem",
 }) as any as S.Schema<UpdateRecommendationStatusItem>;
-export type AlarmType = "Metric" | "Composite" | "Canary" | "Logs" | "Event";
-export const AlarmType = S.Literal(
-  "Metric",
-  "Composite",
-  "Canary",
-  "Logs",
-  "Event",
-);
+export type AlarmType =
+  | "Metric"
+  | "Composite"
+  | "Canary"
+  | "Logs"
+  | "Event"
+  | (string & {});
+export const AlarmType = S.String;
 export type RecommendationStatus =
   | "Implemented"
   | "Inactive"
   | "NotImplemented"
-  | "Excluded";
-export const RecommendationStatus = S.Literal(
-  "Implemented",
-  "Inactive",
-  "NotImplemented",
-  "Excluded",
-);
+  | "Excluded"
+  | (string & {});
+export const RecommendationStatus = S.String;
 export type DriftType =
   | "ApplicationCompliance"
-  | "AppComponentResiliencyComplianceStatus";
-export const DriftType = S.Literal(
-  "ApplicationCompliance",
-  "AppComponentResiliencyComplianceStatus",
-);
-export type DifferenceType = "NotEqual" | "Added" | "Removed";
-export const DifferenceType = S.Literal("NotEqual", "Added", "Removed");
+  | "AppComponentResiliencyComplianceStatus"
+  | (string & {});
+export const DriftType = S.String;
+export type DifferenceType = "NotEqual" | "Added" | "Removed" | (string & {});
+export const DifferenceType = S.String;
 export type RecommendationComplianceStatus =
   | "BreachedUnattainable"
   | "BreachedCanMeet"
   | "MetCanImprove"
-  | "MissingPolicy";
-export const RecommendationComplianceStatus = S.Literal(
-  "BreachedUnattainable",
-  "BreachedCanMeet",
-  "MetCanImprove",
-  "MissingPolicy",
-);
+  | "MissingPolicy"
+  | (string & {});
+export const RecommendationComplianceStatus = S.String;
 export type GroupingRecommendationStatusType =
   | "Accepted"
   | "Rejected"
-  | "PendingDecision";
-export const GroupingRecommendationStatusType = S.Literal(
-  "Accepted",
-  "Rejected",
-  "PendingDecision",
-);
-export type GroupingRecommendationConfidenceLevel = "High" | "Medium";
-export const GroupingRecommendationConfidenceLevel = S.Literal(
-  "High",
-  "Medium",
-);
-export type SopServiceType = "SSM";
-export const SopServiceType = S.Literal("SSM");
-export type TestRisk = "Small" | "Medium" | "High";
-export const TestRisk = S.Literal("Small", "Medium", "High");
-export type TestType = "Software" | "Hardware" | "AZ" | "Region";
-export const TestType = S.Literal("Software", "Hardware", "AZ", "Region");
+  | "PendingDecision"
+  | (string & {});
+export const GroupingRecommendationStatusType = S.String;
+export type GroupingRecommendationConfidenceLevel =
+  | "High"
+  | "Medium"
+  | (string & {});
+export const GroupingRecommendationConfidenceLevel = S.String;
+export type SopServiceType = "SSM" | (string & {});
+export const SopServiceType = S.String;
+export type TestRisk = "Small" | "Medium" | "High" | (string & {});
+export const TestRisk = S.String;
+export type TestType =
+  | "Software"
+  | "Hardware"
+  | "AZ"
+  | "Region"
+  | (string & {});
+export const TestType = S.String;
 export type AlarmReferenceIdList = string[];
 export const AlarmReferenceIdList = S.Array(S.String);
 export interface UpdateRecommendationStatusRequestEntry {
@@ -3179,15 +3130,9 @@ export type ConfigRecommendationOptimizationType =
   | "BestAZRecovery"
   | "LeastErrors"
   | "BestAttainable"
-  | "BestRegionRecovery";
-export const ConfigRecommendationOptimizationType = S.Literal(
-  "LeastCost",
-  "LeastChange",
-  "BestAZRecovery",
-  "LeastErrors",
-  "BestAttainable",
-  "BestRegionRecovery",
-);
+  | "BestRegionRecovery"
+  | (string & {});
+export const ConfigRecommendationOptimizationType = S.String;
 export type SuggestedChangesList = string[];
 export const SuggestedChangesList = S.Array(S.String);
 export type HaArchitecture =
@@ -3195,14 +3140,9 @@ export type HaArchitecture =
   | "WarmStandby"
   | "PilotLight"
   | "BackupAndRestore"
-  | "NoRecoveryPlan";
-export const HaArchitecture = S.Literal(
-  "MultiSite",
-  "WarmStandby",
-  "PilotLight",
-  "BackupAndRestore",
-  "NoRecoveryPlan",
-);
+  | "NoRecoveryPlan"
+  | (string & {});
+export const HaArchitecture = S.String;
 export interface AddDraftAppVersionResourceMappingsRequest {
   appArn: string;
   resourceMappings: ResourceMapping[];

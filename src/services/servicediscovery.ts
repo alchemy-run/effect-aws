@@ -128,27 +128,23 @@ export type Message = string;
 export type Code = string;
 
 //# Schemas
-export type ServiceTypeOption = "HTTP";
-export const ServiceTypeOption = S.Literal("HTTP");
+export type ServiceTypeOption = "HTTP" | (string & {});
+export const ServiceTypeOption = S.String;
 export type ServiceAttributeKeyList = string[];
 export const ServiceAttributeKeyList = S.Array(S.String);
 export type HealthStatusFilter =
   | "HEALTHY"
   | "UNHEALTHY"
   | "ALL"
-  | "HEALTHY_OR_ELSE_ALL";
-export const HealthStatusFilter = S.Literal(
-  "HEALTHY",
-  "UNHEALTHY",
-  "ALL",
-  "HEALTHY_OR_ELSE_ALL",
-);
+  | "HEALTHY_OR_ELSE_ALL"
+  | (string & {});
+export const HealthStatusFilter = S.String;
 export type InstanceIdList = string[];
 export const InstanceIdList = S.Array(S.String.pipe(T.XmlName("InstanceId")));
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
-export type CustomHealthStatus = "HEALTHY" | "UNHEALTHY";
-export const CustomHealthStatus = S.Literal("HEALTHY", "UNHEALTHY");
+export type CustomHealthStatus = "HEALTHY" | "UNHEALTHY" | (string & {});
+export const CustomHealthStatus = S.String;
 export interface DeleteNamespaceRequest {
   Id: string;
 }
@@ -397,40 +393,39 @@ export const UpdateInstanceCustomHealthStatusResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateInstanceCustomHealthStatusResponse",
 }) as any as S.Schema<UpdateInstanceCustomHealthStatusResponse>;
-export type RoutingPolicy = "MULTIVALUE" | "WEIGHTED";
-export const RoutingPolicy = S.Literal("MULTIVALUE", "WEIGHTED");
-export type HealthCheckType = "HTTP" | "HTTPS" | "TCP";
-export const HealthCheckType = S.Literal("HTTP", "HTTPS", "TCP");
+export type RoutingPolicy = "MULTIVALUE" | "WEIGHTED" | (string & {});
+export const RoutingPolicy = S.String;
+export type HealthCheckType = "HTTP" | "HTTPS" | "TCP" | (string & {});
+export const HealthCheckType = S.String;
 export type NamespaceFilterName =
   | "TYPE"
   | "NAME"
   | "HTTP_NAME"
-  | "RESOURCE_OWNER";
-export const NamespaceFilterName = S.Literal(
-  "TYPE",
-  "NAME",
-  "HTTP_NAME",
-  "RESOURCE_OWNER",
-);
+  | "RESOURCE_OWNER"
+  | (string & {});
+export const NamespaceFilterName = S.String;
 export type FilterValues = string[];
 export const FilterValues = S.Array(S.String.pipe(T.XmlName("item")));
-export type FilterCondition = "EQ" | "IN" | "BETWEEN" | "BEGINS_WITH";
-export const FilterCondition = S.Literal("EQ", "IN", "BETWEEN", "BEGINS_WITH");
+export type FilterCondition =
+  | "EQ"
+  | "IN"
+  | "BETWEEN"
+  | "BEGINS_WITH"
+  | (string & {});
+export const FilterCondition = S.String;
 export type OperationFilterName =
   | "NAMESPACE_ID"
   | "SERVICE_ID"
   | "STATUS"
   | "TYPE"
-  | "UPDATE_DATE";
-export const OperationFilterName = S.Literal(
-  "NAMESPACE_ID",
-  "SERVICE_ID",
-  "STATUS",
-  "TYPE",
-  "UPDATE_DATE",
-);
-export type ServiceFilterName = "NAMESPACE_ID" | "RESOURCE_OWNER";
-export const ServiceFilterName = S.Literal("NAMESPACE_ID", "RESOURCE_OWNER");
+  | "UPDATE_DATE"
+  | (string & {});
+export const OperationFilterName = S.String;
+export type ServiceFilterName =
+  | "NAMESPACE_ID"
+  | "RESOURCE_OWNER"
+  | (string & {});
+export const ServiceFilterName = S.String;
 export interface HealthCheckConfig {
   Type: HealthCheckType;
   ResourcePath?: string;
@@ -526,8 +521,8 @@ export const ServiceAttributesMap = S.Record({
   key: S.String,
   value: S.UndefinedOr(S.String),
 });
-export type RecordType = "SRV" | "A" | "AAAA" | "CNAME";
-export const RecordType = S.Literal("SRV", "A", "AAAA", "CNAME");
+export type RecordType = "SRV" | "A" | "AAAA" | "CNAME" | (string & {});
+export const RecordType = S.String;
 export interface CreateHttpNamespaceRequest {
   Name: string;
   CreatorRequestId?: string;
@@ -714,34 +709,32 @@ export const DnsRecord = S.suspend(() =>
 ).annotations({ identifier: "DnsRecord" }) as any as S.Schema<DnsRecord>;
 export type DnsRecordList = DnsRecord[];
 export const DnsRecordList = S.Array(DnsRecord);
-export type HealthStatus = "HEALTHY" | "UNHEALTHY" | "UNKNOWN";
-export const HealthStatus = S.Literal("HEALTHY", "UNHEALTHY", "UNKNOWN");
-export type NamespaceType = "DNS_PUBLIC" | "DNS_PRIVATE" | "HTTP";
-export const NamespaceType = S.Literal("DNS_PUBLIC", "DNS_PRIVATE", "HTTP");
+export type HealthStatus = "HEALTHY" | "UNHEALTHY" | "UNKNOWN" | (string & {});
+export const HealthStatus = S.String;
+export type NamespaceType =
+  | "DNS_PUBLIC"
+  | "DNS_PRIVATE"
+  | "HTTP"
+  | (string & {});
+export const NamespaceType = S.String;
 export type OperationType =
   | "CREATE_NAMESPACE"
   | "DELETE_NAMESPACE"
   | "UPDATE_NAMESPACE"
   | "UPDATE_SERVICE"
   | "REGISTER_INSTANCE"
-  | "DEREGISTER_INSTANCE";
-export const OperationType = S.Literal(
-  "CREATE_NAMESPACE",
-  "DELETE_NAMESPACE",
-  "UPDATE_NAMESPACE",
-  "UPDATE_SERVICE",
-  "REGISTER_INSTANCE",
-  "DEREGISTER_INSTANCE",
-);
-export type OperationStatus = "SUBMITTED" | "PENDING" | "SUCCESS" | "FAIL";
-export const OperationStatus = S.Literal(
-  "SUBMITTED",
-  "PENDING",
-  "SUCCESS",
-  "FAIL",
-);
-export type ServiceType = "HTTP" | "DNS_HTTP" | "DNS";
-export const ServiceType = S.Literal("HTTP", "DNS_HTTP", "DNS");
+  | "DEREGISTER_INSTANCE"
+  | (string & {});
+export const OperationType = S.String;
+export type OperationStatus =
+  | "SUBMITTED"
+  | "PENDING"
+  | "SUCCESS"
+  | "FAIL"
+  | (string & {});
+export const OperationStatus = S.String;
+export type ServiceType = "HTTP" | "DNS_HTTP" | "DNS" | (string & {});
+export const ServiceType = S.String;
 export interface DnsConfigChange {
   DnsRecords: DnsRecord[];
 }
@@ -873,12 +866,12 @@ export const ServiceChange = S.suspend(() =>
 ).annotations({
   identifier: "ServiceChange",
 }) as any as S.Schema<ServiceChange>;
-export type OperationTargetType = "NAMESPACE" | "SERVICE" | "INSTANCE";
-export const OperationTargetType = S.Literal(
-  "NAMESPACE",
-  "SERVICE",
-  "INSTANCE",
-);
+export type OperationTargetType =
+  | "NAMESPACE"
+  | "SERVICE"
+  | "INSTANCE"
+  | (string & {});
+export const OperationTargetType = S.String;
 export interface SOAChange {
   TTL: number;
 }

@@ -301,23 +301,18 @@ export const GetRevealConfigurationRequest = S.suspend(() =>
 }) as any as S.Schema<GetRevealConfigurationRequest>;
 export type __listOf__string = string[];
 export const __listOf__string = S.Array(S.String);
-export type JobType = "ONE_TIME" | "SCHEDULED";
-export const JobType = S.Literal("ONE_TIME", "SCHEDULED");
+export type JobType = "ONE_TIME" | "SCHEDULED" | (string & {});
+export const JobType = S.String;
 export type ManagedDataIdentifierSelector =
   | "ALL"
   | "EXCLUDE"
   | "INCLUDE"
   | "NONE"
-  | "RECOMMENDED";
-export const ManagedDataIdentifierSelector = S.Literal(
-  "ALL",
-  "EXCLUDE",
-  "INCLUDE",
-  "NONE",
-  "RECOMMENDED",
-);
-export type FindingsFilterAction = "ARCHIVE" | "NOOP";
-export const FindingsFilterAction = S.Literal("ARCHIVE", "NOOP");
+  | "RECOMMENDED"
+  | (string & {});
+export const ManagedDataIdentifierSelector = S.String;
+export type FindingsFilterAction = "ARCHIVE" | "NOOP" | (string & {});
+export const FindingsFilterAction = S.String;
 export type FindingType =
   | "SensitiveData:S3Object/Multiple"
   | "SensitiveData:S3Object/Financial"
@@ -329,65 +324,41 @@ export type FindingType =
   | "Policy:IAMUser/S3BucketReplicatedExternally"
   | "Policy:IAMUser/S3BucketEncryptionDisabled"
   | "Policy:IAMUser/S3BlockPublicAccessDisabled"
-  | "Policy:IAMUser/S3BucketSharedWithCloudFront";
-export const FindingType = S.Literal(
-  "SensitiveData:S3Object/Multiple",
-  "SensitiveData:S3Object/Financial",
-  "SensitiveData:S3Object/Personal",
-  "SensitiveData:S3Object/Credentials",
-  "SensitiveData:S3Object/CustomIdentifier",
-  "Policy:IAMUser/S3BucketPublic",
-  "Policy:IAMUser/S3BucketSharedExternally",
-  "Policy:IAMUser/S3BucketReplicatedExternally",
-  "Policy:IAMUser/S3BucketEncryptionDisabled",
-  "Policy:IAMUser/S3BlockPublicAccessDisabled",
-  "Policy:IAMUser/S3BucketSharedWithCloudFront",
-);
+  | "Policy:IAMUser/S3BucketSharedWithCloudFront"
+  | (string & {});
+export const FindingType = S.String;
 export type __listOfFindingType = FindingType[];
 export const __listOfFindingType = S.Array(FindingType);
 export type FindingPublishingFrequency =
   | "FIFTEEN_MINUTES"
   | "ONE_HOUR"
-  | "SIX_HOURS";
-export const FindingPublishingFrequency = S.Literal(
-  "FIFTEEN_MINUTES",
-  "ONE_HOUR",
-  "SIX_HOURS",
-);
-export type MacieStatus = "PAUSED" | "ENABLED";
-export const MacieStatus = S.Literal("PAUSED", "ENABLED");
-export type AutoEnableMode = "ALL" | "NEW" | "NONE";
-export const AutoEnableMode = S.Literal("ALL", "NEW", "NONE");
-export type AutomatedDiscoveryStatus = "ENABLED" | "DISABLED";
-export const AutomatedDiscoveryStatus = S.Literal("ENABLED", "DISABLED");
+  | "SIX_HOURS"
+  | (string & {});
+export const FindingPublishingFrequency = S.String;
+export type MacieStatus = "PAUSED" | "ENABLED" | (string & {});
+export const MacieStatus = S.String;
+export type AutoEnableMode = "ALL" | "NEW" | "NONE" | (string & {});
+export const AutoEnableMode = S.String;
+export type AutomatedDiscoveryStatus = "ENABLED" | "DISABLED" | (string & {});
+export const AutomatedDiscoveryStatus = S.String;
 export type GroupBy =
   | "resourcesAffected.s3Bucket.name"
   | "type"
   | "classificationDetails.jobId"
-  | "severity.description";
-export const GroupBy = S.Literal(
-  "resourcesAffected.s3Bucket.name",
-  "type",
-  "classificationDetails.jobId",
-  "severity.description",
-);
-export type TimeRange = "MONTH_TO_DATE" | "PAST_30_DAYS";
-export const TimeRange = S.Literal("MONTH_TO_DATE", "PAST_30_DAYS");
+  | "severity.description"
+  | (string & {});
+export const GroupBy = S.String;
+export type TimeRange = "MONTH_TO_DATE" | "PAST_30_DAYS" | (string & {});
+export const TimeRange = S.String;
 export type JobStatus =
   | "RUNNING"
   | "PAUSED"
   | "CANCELLED"
   | "COMPLETE"
   | "IDLE"
-  | "USER_PAUSED";
-export const JobStatus = S.Literal(
-  "RUNNING",
-  "PAUSED",
-  "CANCELLED",
-  "COMPLETE",
-  "IDLE",
-  "USER_PAUSED",
-);
+  | "USER_PAUSED"
+  | (string & {});
+export const JobStatus = S.String;
 export interface AcceptInvitationRequest {
   administratorAccountId?: string;
   invitationId?: string;
@@ -926,19 +897,9 @@ export type RelationshipStatus =
   | "EmailVerificationInProgress"
   | "EmailVerificationFailed"
   | "RegionDisabled"
-  | "AccountSuspended";
-export const RelationshipStatus = S.Literal(
-  "Enabled",
-  "Paused",
-  "Invited",
-  "Created",
-  "Removed",
-  "Resigned",
-  "EmailVerificationInProgress",
-  "EmailVerificationFailed",
-  "RegionDisabled",
-  "AccountSuspended",
-);
+  | "AccountSuspended"
+  | (string & {});
+export const RelationshipStatus = S.String;
 export interface Invitation {
   accountId?: string;
   invitationId?: string;
@@ -1201,8 +1162,8 @@ export const FindingCriteria = S.suspend(() =>
 ).annotations({
   identifier: "FindingCriteria",
 }) as any as S.Schema<FindingCriteria>;
-export type OrderBy = "ASC" | "DESC";
-export const OrderBy = S.Literal("ASC", "DESC");
+export type OrderBy = "ASC" | "DESC" | (string & {});
+export const OrderBy = S.String;
 export interface SortCriteria {
   attributeName?: string;
   orderBy?: OrderBy;
@@ -1861,23 +1822,29 @@ export const UpdateResourceProfileResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateResourceProfileResponse",
 }) as any as S.Schema<UpdateResourceProfileResponse>;
-export type AutomatedDiscoveryAccountStatus = "ENABLED" | "DISABLED";
-export const AutomatedDiscoveryAccountStatus = S.Literal("ENABLED", "DISABLED");
+export type AutomatedDiscoveryAccountStatus =
+  | "ENABLED"
+  | "DISABLED"
+  | (string & {});
+export const AutomatedDiscoveryAccountStatus = S.String;
 export interface DailySchedule {}
 export const DailySchedule = S.suspend(() => S.Struct({})).annotations({
   identifier: "DailySchedule",
 }) as any as S.Schema<DailySchedule>;
-export type DataIdentifierSeverity = "LOW" | "MEDIUM" | "HIGH";
-export const DataIdentifierSeverity = S.Literal("LOW", "MEDIUM", "HIGH");
-export type FindingStatisticsSortAttributeName = "groupKey" | "count";
-export const FindingStatisticsSortAttributeName = S.Literal(
-  "groupKey",
-  "count",
-);
-export type RevealStatus = "ENABLED" | "DISABLED";
-export const RevealStatus = S.Literal("ENABLED", "DISABLED");
-export type RetrievalMode = "CALLER_CREDENTIALS" | "ASSUME_ROLE";
-export const RetrievalMode = S.Literal("CALLER_CREDENTIALS", "ASSUME_ROLE");
+export type DataIdentifierSeverity = "LOW" | "MEDIUM" | "HIGH" | (string & {});
+export const DataIdentifierSeverity = S.String;
+export type FindingStatisticsSortAttributeName =
+  | "groupKey"
+  | "count"
+  | (string & {});
+export const FindingStatisticsSortAttributeName = S.String;
+export type RevealStatus = "ENABLED" | "DISABLED" | (string & {});
+export const RevealStatus = S.String;
+export type RetrievalMode =
+  | "CALLER_CREDENTIALS"
+  | "ASSUME_ROLE"
+  | (string & {});
+export const RetrievalMode = S.String;
 export type UsageStatisticsFilterComparator =
   | "GT"
   | "GTE"
@@ -1885,62 +1852,39 @@ export type UsageStatisticsFilterComparator =
   | "LTE"
   | "EQ"
   | "NE"
-  | "CONTAINS";
-export const UsageStatisticsFilterComparator = S.Literal(
-  "GT",
-  "GTE",
-  "LT",
-  "LTE",
-  "EQ",
-  "NE",
-  "CONTAINS",
-);
+  | "CONTAINS"
+  | (string & {});
+export const UsageStatisticsFilterComparator = S.String;
 export type UsageStatisticsFilterKey =
   | "accountId"
   | "serviceLimit"
   | "freeTrialStartDate"
-  | "total";
-export const UsageStatisticsFilterKey = S.Literal(
-  "accountId",
-  "serviceLimit",
-  "freeTrialStartDate",
-  "total",
-);
+  | "total"
+  | (string & {});
+export const UsageStatisticsFilterKey = S.String;
 export type UsageStatisticsSortKey =
   | "accountId"
   | "total"
   | "serviceLimitValue"
-  | "freeTrialStartDate";
-export const UsageStatisticsSortKey = S.Literal(
-  "accountId",
-  "total",
-  "serviceLimitValue",
-  "freeTrialStartDate",
-);
+  | "freeTrialStartDate"
+  | (string & {});
+export const UsageStatisticsSortKey = S.String;
 export type ListJobsSortAttributeName =
   | "createdAt"
   | "jobStatus"
   | "name"
-  | "jobType";
-export const ListJobsSortAttributeName = S.Literal(
-  "createdAt",
-  "jobStatus",
-  "name",
-  "jobType",
-);
+  | "jobType"
+  | (string & {});
+export const ListJobsSortAttributeName = S.String;
 export type SearchResourcesSortAttributeName =
   | "ACCOUNT_ID"
   | "RESOURCE_NAME"
   | "S3_CLASSIFIABLE_OBJECT_COUNT"
-  | "S3_CLASSIFIABLE_SIZE_IN_BYTES";
-export const SearchResourcesSortAttributeName = S.Literal(
-  "ACCOUNT_ID",
-  "RESOURCE_NAME",
-  "S3_CLASSIFIABLE_OBJECT_COUNT",
-  "S3_CLASSIFIABLE_SIZE_IN_BYTES",
-);
-export type DataIdentifierType = "CUSTOM" | "MANAGED";
-export const DataIdentifierType = S.Literal("CUSTOM", "MANAGED");
+  | "S3_CLASSIFIABLE_SIZE_IN_BYTES"
+  | (string & {});
+export const SearchResourcesSortAttributeName = S.String;
+export type DataIdentifierType = "CUSTOM" | "MANAGED" | (string & {});
+export const DataIdentifierType = S.String;
 export interface AutomatedDiscoveryAccountUpdate {
   accountId?: string;
   status?: AutomatedDiscoveryAccountStatus;
@@ -2040,10 +1984,14 @@ export const RetrievalConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "RetrievalConfiguration",
 }) as any as S.Schema<RetrievalConfiguration>;
-export type RevealRequestStatus = "SUCCESS" | "PROCESSING" | "ERROR";
-export const RevealRequestStatus = S.Literal("SUCCESS", "PROCESSING", "ERROR");
-export type AvailabilityCode = "AVAILABLE" | "UNAVAILABLE";
-export const AvailabilityCode = S.Literal("AVAILABLE", "UNAVAILABLE");
+export type RevealRequestStatus =
+  | "SUCCESS"
+  | "PROCESSING"
+  | "ERROR"
+  | (string & {});
+export const RevealRequestStatus = S.String;
+export type AvailabilityCode = "AVAILABLE" | "UNAVAILABLE" | (string & {});
+export const AvailabilityCode = S.String;
 export type UnavailabilityReasonCode =
   | "OBJECT_EXCEEDS_SIZE_QUOTA"
   | "UNSUPPORTED_OBJECT_TYPE"
@@ -2055,20 +2003,9 @@ export type UnavailabilityReasonCode =
   | "ROLE_TOO_PERMISSIVE"
   | "MEMBER_ROLE_TOO_PERMISSIVE"
   | "INVALID_RESULT_SIGNATURE"
-  | "RESULT_NOT_SIGNED";
-export const UnavailabilityReasonCode = S.Literal(
-  "OBJECT_EXCEEDS_SIZE_QUOTA",
-  "UNSUPPORTED_OBJECT_TYPE",
-  "UNSUPPORTED_FINDING_TYPE",
-  "INVALID_CLASSIFICATION_RESULT",
-  "OBJECT_UNAVAILABLE",
-  "ACCOUNT_NOT_IN_ORGANIZATION",
-  "MISSING_GET_MEMBER_PERMISSION",
-  "ROLE_TOO_PERMISSIVE",
-  "MEMBER_ROLE_TOO_PERMISSIVE",
-  "INVALID_RESULT_SIGNATURE",
-  "RESULT_NOT_SIGNED",
-);
+  | "RESULT_NOT_SIGNED"
+  | (string & {});
+export const UnavailabilityReasonCode = S.String;
 export type __listOfUnavailabilityReasonCode = UnavailabilityReasonCode[];
 export const __listOfUnavailabilityReasonCode = S.Array(
   UnavailabilityReasonCode,
@@ -2196,16 +2133,9 @@ export type DayOfWeek =
   | "WEDNESDAY"
   | "THURSDAY"
   | "FRIDAY"
-  | "SATURDAY";
-export const DayOfWeek = S.Literal(
-  "SUNDAY",
-  "MONDAY",
-  "TUESDAY",
-  "WEDNESDAY",
-  "THURSDAY",
-  "FRIDAY",
-  "SATURDAY",
-);
+  | "SATURDAY"
+  | (string & {});
+export const DayOfWeek = S.String;
 export type JobComparator =
   | "EQ"
   | "GT"
@@ -2214,32 +2144,24 @@ export type JobComparator =
   | "LTE"
   | "NE"
   | "CONTAINS"
-  | "STARTS_WITH";
-export const JobComparator = S.Literal(
-  "EQ",
-  "GT",
-  "GTE",
-  "LT",
-  "LTE",
-  "NE",
-  "CONTAINS",
-  "STARTS_WITH",
-);
-export type ListJobsFilterKey = "jobType" | "jobStatus" | "createdAt" | "name";
-export const ListJobsFilterKey = S.Literal(
-  "jobType",
-  "jobStatus",
-  "createdAt",
-  "name",
-);
+  | "STARTS_WITH"
+  | (string & {});
+export const JobComparator = S.String;
+export type ListJobsFilterKey =
+  | "jobType"
+  | "jobStatus"
+  | "createdAt"
+  | "name"
+  | (string & {});
+export const ListJobsFilterKey = S.String;
 export type __listOfS3BucketName = string[];
 export const __listOfS3BucketName = S.Array(S.String);
-export type ClassificationScopeUpdateOperation = "ADD" | "REPLACE" | "REMOVE";
-export const ClassificationScopeUpdateOperation = S.Literal(
-  "ADD",
-  "REPLACE",
-  "REMOVE",
-);
+export type ClassificationScopeUpdateOperation =
+  | "ADD"
+  | "REPLACE"
+  | "REMOVE"
+  | (string & {});
+export const ClassificationScopeUpdateOperation = S.String;
 export interface BatchUpdateAutomatedDiscoveryAccountsRequest {
   accounts?: AutomatedDiscoveryAccountUpdate[];
 }
@@ -2326,8 +2248,8 @@ export const CreateMemberRequest = S.suspend(() =>
 ).annotations({
   identifier: "CreateMemberRequest",
 }) as any as S.Schema<CreateMemberRequest>;
-export type ErrorCode = "ClientError" | "InternalError";
-export const ErrorCode = S.Literal("ClientError", "InternalError");
+export type ErrorCode = "ClientError" | "InternalError" | (string & {});
+export const ErrorCode = S.String;
 export interface UnprocessedAccount {
   accountId?: string;
   errorCode?: ErrorCode;
@@ -2856,8 +2778,8 @@ export const BucketCriteriaAdditionalProperties = S.suspend(() =>
 ).annotations({
   identifier: "BucketCriteriaAdditionalProperties",
 }) as any as S.Schema<BucketCriteriaAdditionalProperties>;
-export type LastRunErrorStatusCode = "NONE" | "ERROR";
-export const LastRunErrorStatusCode = S.Literal("NONE", "ERROR");
+export type LastRunErrorStatusCode = "NONE" | "ERROR" | (string & {});
+export const LastRunErrorStatusCode = S.String;
 export type AllowListStatusCode =
   | "OK"
   | "S3_OBJECT_NOT_FOUND"
@@ -2866,30 +2788,18 @@ export type AllowListStatusCode =
   | "S3_THROTTLED"
   | "S3_OBJECT_OVERSIZE"
   | "S3_OBJECT_EMPTY"
-  | "UNKNOWN_ERROR";
-export const AllowListStatusCode = S.Literal(
-  "OK",
-  "S3_OBJECT_NOT_FOUND",
-  "S3_USER_ACCESS_DENIED",
-  "S3_OBJECT_ACCESS_DENIED",
-  "S3_THROTTLED",
-  "S3_OBJECT_OVERSIZE",
-  "S3_OBJECT_EMPTY",
-  "UNKNOWN_ERROR",
-);
-export type Currency = "USD";
-export const Currency = S.Literal("USD");
+  | "UNKNOWN_ERROR"
+  | (string & {});
+export const AllowListStatusCode = S.String;
+export type Currency = "USD" | (string & {});
+export const Currency = S.String;
 export type UsageType =
   | "DATA_INVENTORY_EVALUATION"
   | "SENSITIVE_DATA_DISCOVERY"
   | "AUTOMATED_SENSITIVE_DATA_DISCOVERY"
-  | "AUTOMATED_OBJECT_MONITORING";
-export const UsageType = S.Literal(
-  "DATA_INVENTORY_EVALUATION",
-  "SENSITIVE_DATA_DISCOVERY",
-  "AUTOMATED_SENSITIVE_DATA_DISCOVERY",
-  "AUTOMATED_OBJECT_MONITORING",
-);
+  | "AUTOMATED_OBJECT_MONITORING"
+  | (string & {});
+export const UsageType = S.String;
 export interface ListJobsFilterTerm {
   comparator?: JobComparator;
   key?: ListJobsFilterKey;
@@ -2910,15 +2820,11 @@ export type SensitiveDataItemCategory =
   | "FINANCIAL_INFORMATION"
   | "PERSONAL_INFORMATION"
   | "CREDENTIALS"
-  | "CUSTOM_IDENTIFIER";
-export const SensitiveDataItemCategory = S.Literal(
-  "FINANCIAL_INFORMATION",
-  "PERSONAL_INFORMATION",
-  "CREDENTIALS",
-  "CUSTOM_IDENTIFIER",
-);
-export type AdminStatus = "ENABLED" | "DISABLING_IN_PROGRESS";
-export const AdminStatus = S.Literal("ENABLED", "DISABLING_IN_PROGRESS");
+  | "CUSTOM_IDENTIFIER"
+  | (string & {});
+export const SensitiveDataItemCategory = S.String;
+export type AdminStatus = "ENABLED" | "DISABLING_IN_PROGRESS" | (string & {});
+export const AdminStatus = S.String;
 export interface S3ClassificationScopeExclusionUpdate {
   bucketNames?: string[];
   operation?: ClassificationScopeUpdateOperation;
@@ -3544,13 +3450,9 @@ export type SimpleCriterionKeyForJob =
   | "ACCOUNT_ID"
   | "S3_BUCKET_NAME"
   | "S3_BUCKET_EFFECTIVE_PERMISSION"
-  | "S3_BUCKET_SHARED_ACCESS";
-export const SimpleCriterionKeyForJob = S.Literal(
-  "ACCOUNT_ID",
-  "S3_BUCKET_NAME",
-  "S3_BUCKET_EFFECTIVE_PERMISSION",
-  "S3_BUCKET_SHARED_ACCESS",
-);
+  | "S3_BUCKET_SHARED_ACCESS"
+  | (string & {});
+export const SimpleCriterionKeyForJob = S.String;
 export interface SimpleCriterionForJob {
   comparator?: JobComparator;
   key?: SimpleCriterionKeyForJob;
@@ -3639,13 +3541,9 @@ export type ScopeFilterKey =
   | "OBJECT_EXTENSION"
   | "OBJECT_LAST_MODIFIED_DATE"
   | "OBJECT_SIZE"
-  | "OBJECT_KEY";
-export const ScopeFilterKey = S.Literal(
-  "OBJECT_EXTENSION",
-  "OBJECT_LAST_MODIFIED_DATE",
-  "OBJECT_SIZE",
-  "OBJECT_KEY",
-);
+  | "OBJECT_KEY"
+  | (string & {});
+export const ScopeFilterKey = S.String;
 export interface SimpleScopeTerm {
   comparator?: JobComparator;
   key?: ScopeFilterKey;
@@ -3672,8 +3570,8 @@ export const TagValuePair = S.suspend(() =>
 ).annotations({ identifier: "TagValuePair" }) as any as S.Schema<TagValuePair>;
 export type __listOfTagValuePair = TagValuePair[];
 export const __listOfTagValuePair = S.Array(TagValuePair);
-export type TagTarget = "S3_OBJECT";
-export const TagTarget = S.Literal("S3_OBJECT");
+export type TagTarget = "S3_OBJECT" | (string & {});
+export const TagTarget = S.String;
 export interface TagScopeTerm {
   comparator?: JobComparator;
   key?: string;
@@ -4095,21 +3993,16 @@ export const ListSensitivityInspectionTemplatesResponse = S.suspend(() =>
 ).annotations({
   identifier: "ListSensitivityInspectionTemplatesResponse",
 }) as any as S.Schema<ListSensitivityInspectionTemplatesResponse>;
-export type SearchResourcesComparator = "EQ" | "NE";
-export const SearchResourcesComparator = S.Literal("EQ", "NE");
+export type SearchResourcesComparator = "EQ" | "NE" | (string & {});
+export const SearchResourcesComparator = S.String;
 export type SearchResourcesSimpleCriterionKey =
   | "ACCOUNT_ID"
   | "S3_BUCKET_NAME"
   | "S3_BUCKET_EFFECTIVE_PERMISSION"
   | "S3_BUCKET_SHARED_ACCESS"
-  | "AUTOMATED_DISCOVERY_MONITORING_STATUS";
-export const SearchResourcesSimpleCriterionKey = S.Literal(
-  "ACCOUNT_ID",
-  "S3_BUCKET_NAME",
-  "S3_BUCKET_EFFECTIVE_PERMISSION",
-  "S3_BUCKET_SHARED_ACCESS",
-  "AUTOMATED_DISCOVERY_MONITORING_STATUS",
-);
+  | "AUTOMATED_DISCOVERY_MONITORING_STATUS"
+  | (string & {});
+export const SearchResourcesSimpleCriterionKey = S.String;
 export interface UpdateClassificationScopeRequest {
   id: string;
   s3?: S3ClassificationScopeUpdate;
@@ -4159,11 +4052,9 @@ export const UpdateRevealConfigurationResponse = S.suspend(() =>
 }) as any as S.Schema<UpdateRevealConfigurationResponse>;
 export type AutomatedDiscoveryAccountUpdateErrorCode =
   | "ACCOUNT_PAUSED"
-  | "ACCOUNT_NOT_FOUND";
-export const AutomatedDiscoveryAccountUpdateErrorCode = S.Literal(
-  "ACCOUNT_PAUSED",
-  "ACCOUNT_NOT_FOUND",
-);
+  | "ACCOUNT_NOT_FOUND"
+  | (string & {});
+export const AutomatedDiscoveryAccountUpdateErrorCode = S.String;
 export interface SensitivityAggregations {
   classifiableSizeInBytes?: number;
   publiclyAccessibleCount?: number;
@@ -4196,8 +4087,8 @@ export const S3ClassificationScopeExclusion = S.suspend(() =>
 ).annotations({
   identifier: "S3ClassificationScopeExclusion",
 }) as any as S.Schema<S3ClassificationScopeExclusion>;
-export type FindingCategory = "CLASSIFICATION" | "POLICY";
-export const FindingCategory = S.Literal("CLASSIFICATION", "POLICY");
+export type FindingCategory = "CLASSIFICATION" | "POLICY" | (string & {});
+export const FindingCategory = S.String;
 export interface DetectedDataDetails {
   value?: string;
 }
@@ -4300,13 +4191,11 @@ export const SensitiveDataOccurrences = S.Record({
 });
 export type OriginType =
   | "SENSITIVE_DATA_DISCOVERY_JOB"
-  | "AUTOMATED_SENSITIVE_DATA_DISCOVERY";
-export const OriginType = S.Literal(
-  "SENSITIVE_DATA_DISCOVERY_JOB",
-  "AUTOMATED_SENSITIVE_DATA_DISCOVERY",
-);
-export type SeverityDescription = "Low" | "Medium" | "High";
-export const SeverityDescription = S.Literal("Low", "Medium", "High");
+  | "AUTOMATED_SENSITIVE_DATA_DISCOVERY"
+  | (string & {});
+export const OriginType = S.String;
+export type SeverityDescription = "Low" | "Medium" | "High" | (string & {});
+export const SeverityDescription = S.String;
 export interface BatchUpdateAutomatedDiscoveryAccountsResponse {
   errors?: AutomatedDiscoveryAccountUpdateError[];
 }
@@ -4500,31 +4389,29 @@ export type __listOfSearchResourcesTagCriterionPair =
 export const __listOfSearchResourcesTagCriterionPair = S.Array(
   SearchResourcesTagCriterionPair,
 );
-export type AllowsUnencryptedObjectUploads = "TRUE" | "FALSE" | "UNKNOWN";
-export const AllowsUnencryptedObjectUploads = S.Literal(
-  "TRUE",
-  "FALSE",
-  "UNKNOWN",
-);
-export type AutomatedDiscoveryMonitoringStatus = "MONITORED" | "NOT_MONITORED";
-export const AutomatedDiscoveryMonitoringStatus = S.Literal(
-  "MONITORED",
-  "NOT_MONITORED",
-);
+export type AllowsUnencryptedObjectUploads =
+  | "TRUE"
+  | "FALSE"
+  | "UNKNOWN"
+  | (string & {});
+export const AllowsUnencryptedObjectUploads = S.String;
+export type AutomatedDiscoveryMonitoringStatus =
+  | "MONITORED"
+  | "NOT_MONITORED"
+  | (string & {});
+export const AutomatedDiscoveryMonitoringStatus = S.String;
 export type BucketMetadataErrorCode =
   | "ACCESS_DENIED"
-  | "BUCKET_COUNT_EXCEEDS_QUOTA";
-export const BucketMetadataErrorCode = S.Literal(
-  "ACCESS_DENIED",
-  "BUCKET_COUNT_EXCEEDS_QUOTA",
-);
-export type SharedAccess = "EXTERNAL" | "INTERNAL" | "NOT_SHARED" | "UNKNOWN";
-export const SharedAccess = S.Literal(
-  "EXTERNAL",
-  "INTERNAL",
-  "NOT_SHARED",
-  "UNKNOWN",
-);
+  | "BUCKET_COUNT_EXCEEDS_QUOTA"
+  | (string & {});
+export const BucketMetadataErrorCode = S.String;
+export type SharedAccess =
+  | "EXTERNAL"
+  | "INTERNAL"
+  | "NOT_SHARED"
+  | "UNKNOWN"
+  | (string & {});
+export const SharedAccess = S.String;
 export interface Severity {
   description?: SeverityDescription;
   score?: number;
@@ -4537,8 +4424,8 @@ export const Severity = S.suspend(() =>
     score: S.optional(S.Number).pipe(T.JsonName("score")),
   }),
 ).annotations({ identifier: "Severity" }) as any as S.Schema<Severity>;
-export type FindingActionType = "AWS_API_CALL";
-export const FindingActionType = S.Literal("AWS_API_CALL");
+export type FindingActionType = "AWS_API_CALL" | (string & {});
+export const FindingActionType = S.String;
 export interface KeyValuePair {
   key?: string;
   value?: string;
@@ -4560,20 +4447,11 @@ export type StorageClass =
   | "ONEZONE_IA"
   | "GLACIER"
   | "GLACIER_IR"
-  | "OUTPOSTS";
-export const StorageClass = S.Literal(
-  "STANDARD",
-  "REDUCED_REDUNDANCY",
-  "STANDARD_IA",
-  "INTELLIGENT_TIERING",
-  "DEEP_ARCHIVE",
-  "ONEZONE_IA",
-  "GLACIER",
-  "GLACIER_IR",
-  "OUTPOSTS",
-);
-export type Unit = "TERABYTES";
-export const Unit = S.Literal("TERABYTES");
+  | "OUTPOSTS"
+  | (string & {});
+export const StorageClass = S.String;
+export type Unit = "TERABYTES" | (string & {});
+export const Unit = S.String;
 export interface SearchResourcesTagCriterion {
   comparator?: SearchResourcesComparator;
   tagValues?: SearchResourcesTagCriterionPair[];
@@ -4626,27 +4504,31 @@ export const JobSummary = S.suspend(() =>
 ).annotations({ identifier: "JobSummary" }) as any as S.Schema<JobSummary>;
 export type __listOfJobSummary = JobSummary[];
 export const __listOfJobSummary = S.Array(JobSummary);
-export type IsDefinedInJob = "TRUE" | "FALSE" | "UNKNOWN";
-export const IsDefinedInJob = S.Literal("TRUE", "FALSE", "UNKNOWN");
-export type IsMonitoredByJob = "TRUE" | "FALSE" | "UNKNOWN";
-export const IsMonitoredByJob = S.Literal("TRUE", "FALSE", "UNKNOWN");
-export type EffectivePermission = "PUBLIC" | "NOT_PUBLIC" | "UNKNOWN";
-export const EffectivePermission = S.Literal("PUBLIC", "NOT_PUBLIC", "UNKNOWN");
-export type Type = "NONE" | "AES256" | "aws:kms" | "aws:kms:dsse";
-export const Type = S.Literal("NONE", "AES256", "aws:kms", "aws:kms:dsse");
+export type IsDefinedInJob = "TRUE" | "FALSE" | "UNKNOWN" | (string & {});
+export const IsDefinedInJob = S.String;
+export type IsMonitoredByJob = "TRUE" | "FALSE" | "UNKNOWN" | (string & {});
+export const IsMonitoredByJob = S.String;
+export type EffectivePermission =
+  | "PUBLIC"
+  | "NOT_PUBLIC"
+  | "UNKNOWN"
+  | (string & {});
+export const EffectivePermission = S.String;
+export type Type =
+  | "NONE"
+  | "AES256"
+  | "aws:kms"
+  | "aws:kms:dsse"
+  | (string & {});
+export const Type = S.String;
 export type EncryptionType =
   | "NONE"
   | "AES256"
   | "aws:kms"
   | "UNKNOWN"
-  | "aws:kms:dsse";
-export const EncryptionType = S.Literal(
-  "NONE",
-  "AES256",
-  "aws:kms",
-  "UNKNOWN",
-  "aws:kms:dsse",
-);
+  | "aws:kms:dsse"
+  | (string & {});
+export const EncryptionType = S.String;
 export interface ServerSideEncryption {
   encryptionType?: EncryptionType;
   kmsMasterKeyId?: string;
@@ -4745,15 +4627,9 @@ export type UserIdentityType =
   | "FederatedUser"
   | "Root"
   | "AWSAccount"
-  | "AWSService";
-export const UserIdentityType = S.Literal(
-  "AssumedRole",
-  "IAMUser",
-  "FederatedUser",
-  "Root",
-  "AWSAccount",
-  "AWSService",
-);
+  | "AWSService"
+  | (string & {});
+export const UserIdentityType = S.String;
 export interface ListClassificationJobsResponse {
   items?: (JobSummary & {
     bucketDefinitions: (S3BucketDefinitionForJob & {

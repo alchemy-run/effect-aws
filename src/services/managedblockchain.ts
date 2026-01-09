@@ -116,23 +116,18 @@ export type Enabled = boolean;
 export type ExceptionMessage = string;
 
 //# Schemas
-export type AccessorType = "BILLING_TOKEN";
-export const AccessorType = S.Literal("BILLING_TOKEN");
+export type AccessorType = "BILLING_TOKEN" | (string & {});
+export const AccessorType = S.String;
 export type AccessorNetworkType =
   | "ETHEREUM_GOERLI"
   | "ETHEREUM_MAINNET"
   | "ETHEREUM_MAINNET_AND_GOERLI"
   | "POLYGON_MAINNET"
-  | "POLYGON_MUMBAI";
-export const AccessorNetworkType = S.Literal(
-  "ETHEREUM_GOERLI",
-  "ETHEREUM_MAINNET",
-  "ETHEREUM_MAINNET_AND_GOERLI",
-  "POLYGON_MAINNET",
-  "POLYGON_MUMBAI",
-);
-export type Framework = "HYPERLEDGER_FABRIC" | "ETHEREUM";
-export const Framework = S.Literal("HYPERLEDGER_FABRIC", "ETHEREUM");
+  | "POLYGON_MUMBAI"
+  | (string & {});
+export const AccessorNetworkType = S.String;
+export type Framework = "HYPERLEDGER_FABRIC" | "ETHEREUM" | (string & {});
+export const Framework = S.String;
 export type MemberStatus =
   | "CREATING"
   | "AVAILABLE"
@@ -140,29 +135,17 @@ export type MemberStatus =
   | "UPDATING"
   | "DELETING"
   | "DELETED"
-  | "INACCESSIBLE_ENCRYPTION_KEY";
-export const MemberStatus = S.Literal(
-  "CREATING",
-  "AVAILABLE",
-  "CREATE_FAILED",
-  "UPDATING",
-  "DELETING",
-  "DELETED",
-  "INACCESSIBLE_ENCRYPTION_KEY",
-);
+  | "INACCESSIBLE_ENCRYPTION_KEY"
+  | (string & {});
+export const MemberStatus = S.String;
 export type NetworkStatus =
   | "CREATING"
   | "AVAILABLE"
   | "CREATE_FAILED"
   | "DELETING"
-  | "DELETED";
-export const NetworkStatus = S.Literal(
-  "CREATING",
-  "AVAILABLE",
-  "CREATE_FAILED",
-  "DELETING",
-  "DELETED",
-);
+  | "DELETED"
+  | (string & {});
+export const NetworkStatus = S.String;
 export type NodeStatus =
   | "CREATING"
   | "AVAILABLE"
@@ -172,22 +155,13 @@ export type NodeStatus =
   | "DELETING"
   | "DELETED"
   | "FAILED"
-  | "INACCESSIBLE_ENCRYPTION_KEY";
-export const NodeStatus = S.Literal(
-  "CREATING",
-  "AVAILABLE",
-  "UNHEALTHY",
-  "CREATE_FAILED",
-  "UPDATING",
-  "DELETING",
-  "DELETED",
-  "FAILED",
-  "INACCESSIBLE_ENCRYPTION_KEY",
-);
+  | "INACCESSIBLE_ENCRYPTION_KEY"
+  | (string & {});
+export const NodeStatus = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
-export type VoteValue = "YES" | "NO";
-export const VoteValue = S.Literal("YES", "NO");
+export type VoteValue = "YES" | "NO" | (string & {});
+export const VoteValue = S.String;
 export interface DeleteAccessorInput {
   AccessorId: string;
 }
@@ -672,8 +646,8 @@ export interface VoteOnProposalOutput {}
 export const VoteOnProposalOutput = S.suspend(() => S.Struct({})).annotations({
   identifier: "VoteOnProposalOutput",
 }) as any as S.Schema<VoteOnProposalOutput>;
-export type StateDBType = "LevelDB" | "CouchDB";
-export const StateDBType = S.Literal("LevelDB", "CouchDB");
+export type StateDBType = "LevelDB" | "CouchDB" | (string & {});
+export const StateDBType = S.String;
 export interface LogConfiguration {
   Enabled?: boolean;
 }
@@ -726,13 +700,13 @@ export const NodeConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "NodeConfiguration",
 }) as any as S.Schema<NodeConfiguration>;
-export type Edition = "STARTER" | "STANDARD";
-export const Edition = S.Literal("STARTER", "STANDARD");
-export type ThresholdComparator = "GREATER_THAN" | "GREATER_THAN_OR_EQUAL_TO";
-export const ThresholdComparator = S.Literal(
-  "GREATER_THAN",
-  "GREATER_THAN_OR_EQUAL_TO",
-);
+export type Edition = "STARTER" | "STANDARD" | (string & {});
+export const Edition = S.String;
+export type ThresholdComparator =
+  | "GREATER_THAN"
+  | "GREATER_THAN_OR_EQUAL_TO"
+  | (string & {});
+export const ThresholdComparator = S.String;
 export interface CreateAccessorInput {
   ClientRequestToken: string;
   AccessorType: AccessorType;
@@ -823,38 +797,28 @@ export const RemoveAction = S.suspend(() =>
 ).annotations({ identifier: "RemoveAction" }) as any as S.Schema<RemoveAction>;
 export type RemoveActionList = RemoveAction[];
 export const RemoveActionList = S.Array(RemoveAction);
-export type AccessorStatus = "AVAILABLE" | "PENDING_DELETION" | "DELETED";
-export const AccessorStatus = S.Literal(
-  "AVAILABLE",
-  "PENDING_DELETION",
-  "DELETED",
-);
+export type AccessorStatus =
+  | "AVAILABLE"
+  | "PENDING_DELETION"
+  | "DELETED"
+  | (string & {});
+export const AccessorStatus = S.String;
 export type ProposalStatus =
   | "IN_PROGRESS"
   | "APPROVED"
   | "REJECTED"
   | "EXPIRED"
-  | "ACTION_FAILED";
-export const ProposalStatus = S.Literal(
-  "IN_PROGRESS",
-  "APPROVED",
-  "REJECTED",
-  "EXPIRED",
-  "ACTION_FAILED",
-);
+  | "ACTION_FAILED"
+  | (string & {});
+export const ProposalStatus = S.String;
 export type InvitationStatus =
   | "PENDING"
   | "ACCEPTED"
   | "ACCEPTING"
   | "REJECTED"
-  | "EXPIRED";
-export const InvitationStatus = S.Literal(
-  "PENDING",
-  "ACCEPTED",
-  "ACCEPTING",
-  "REJECTED",
-  "EXPIRED",
-);
+  | "EXPIRED"
+  | (string & {});
+export const InvitationStatus = S.String;
 export interface NetworkFrameworkConfiguration {
   Fabric?: NetworkFabricConfiguration;
 }

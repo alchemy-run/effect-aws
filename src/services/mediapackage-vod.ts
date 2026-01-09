@@ -360,19 +360,16 @@ export const UpdatePackagingGroupRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdatePackagingGroupRequest",
 }) as any as S.Schema<UpdatePackagingGroupRequest>;
-export type __PeriodTriggersElement = "ADS";
-export const __PeriodTriggersElement = S.Literal("ADS");
+export type __PeriodTriggersElement = "ADS" | (string & {});
+export const __PeriodTriggersElement = S.String;
 export type __listOf__PeriodTriggersElement = __PeriodTriggersElement[];
 export const __listOf__PeriodTriggersElement = S.Array(__PeriodTriggersElement);
 export type SegmentTemplateFormat =
   | "NUMBER_WITH_TIMELINE"
   | "TIME_WITH_TIMELINE"
-  | "NUMBER_WITH_DURATION";
-export const SegmentTemplateFormat = S.Literal(
-  "NUMBER_WITH_TIMELINE",
-  "TIME_WITH_TIMELINE",
-  "NUMBER_WITH_DURATION",
-);
+  | "NUMBER_WITH_DURATION"
+  | (string & {});
+export const SegmentTemplateFormat = S.String;
 export interface EgressAccessLogs {
   LogGroupName?: string;
 }
@@ -390,16 +387,20 @@ export const __mapOf__string = S.Record({
   key: S.String,
   value: S.UndefinedOr(S.String),
 });
-export type AdMarkers = "NONE" | "SCTE35_ENHANCED" | "PASSTHROUGH";
-export const AdMarkers = S.Literal("NONE", "SCTE35_ENHANCED", "PASSTHROUGH");
-export type ManifestLayout = "FULL" | "COMPACT";
-export const ManifestLayout = S.Literal("FULL", "COMPACT");
-export type Profile = "NONE" | "HBBTV_1_5";
-export const Profile = S.Literal("NONE", "HBBTV_1_5");
-export type ScteMarkersSource = "SEGMENTS" | "MANIFEST";
-export const ScteMarkersSource = S.Literal("SEGMENTS", "MANIFEST");
-export type EncryptionMethod = "AES_128" | "SAMPLE_AES";
-export const EncryptionMethod = S.Literal("AES_128", "SAMPLE_AES");
+export type AdMarkers =
+  | "NONE"
+  | "SCTE35_ENHANCED"
+  | "PASSTHROUGH"
+  | (string & {});
+export const AdMarkers = S.String;
+export type ManifestLayout = "FULL" | "COMPACT" | (string & {});
+export const ManifestLayout = S.String;
+export type Profile = "NONE" | "HBBTV_1_5" | (string & {});
+export const Profile = S.String;
+export type ScteMarkersSource = "SEGMENTS" | "MANIFEST" | (string & {});
+export const ScteMarkersSource = S.String;
+export type EncryptionMethod = "AES_128" | "SAMPLE_AES" | (string & {});
+export const EncryptionMethod = S.String;
 export interface ConfigureLogsRequest {
   EgressAccessLogs?: EgressAccessLogs;
   Id: string;
@@ -486,14 +487,9 @@ export type PresetSpeke20Audio =
   | "PRESET-AUDIO-2"
   | "PRESET-AUDIO-3"
   | "SHARED"
-  | "UNENCRYPTED";
-export const PresetSpeke20Audio = S.Literal(
-  "PRESET-AUDIO-1",
-  "PRESET-AUDIO-2",
-  "PRESET-AUDIO-3",
-  "SHARED",
-  "UNENCRYPTED",
-);
+  | "UNENCRYPTED"
+  | (string & {});
+export const PresetSpeke20Audio = S.String;
 export type PresetSpeke20Video =
   | "PRESET-VIDEO-1"
   | "PRESET-VIDEO-2"
@@ -504,19 +500,9 @@ export type PresetSpeke20Video =
   | "PRESET-VIDEO-7"
   | "PRESET-VIDEO-8"
   | "SHARED"
-  | "UNENCRYPTED";
-export const PresetSpeke20Video = S.Literal(
-  "PRESET-VIDEO-1",
-  "PRESET-VIDEO-2",
-  "PRESET-VIDEO-3",
-  "PRESET-VIDEO-4",
-  "PRESET-VIDEO-5",
-  "PRESET-VIDEO-6",
-  "PRESET-VIDEO-7",
-  "PRESET-VIDEO-8",
-  "SHARED",
-  "UNENCRYPTED",
-);
+  | "UNENCRYPTED"
+  | (string & {});
+export const PresetSpeke20Video = S.String;
 export interface EncryptionContractConfiguration {
   PresetSpeke20Audio?: PresetSpeke20Audio;
   PresetSpeke20Video?: PresetSpeke20Video;
@@ -570,12 +556,9 @@ export const CmafEncryption = S.suspend(() =>
 export type StreamOrder =
   | "ORIGINAL"
   | "VIDEO_BITRATE_ASCENDING"
-  | "VIDEO_BITRATE_DESCENDING";
-export const StreamOrder = S.Literal(
-  "ORIGINAL",
-  "VIDEO_BITRATE_ASCENDING",
-  "VIDEO_BITRATE_DESCENDING",
-);
+  | "VIDEO_BITRATE_DESCENDING"
+  | (string & {});
+export const StreamOrder = S.String;
 export interface StreamSelection {
   MaxVideoBitsPerSecond?: number;
   MinVideoBitsPerSecond?: number;

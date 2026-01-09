@@ -132,8 +132,8 @@ export type Percentage = number;
 export type DurationInSeconds = number;
 
 //# Schemas
-export type InputType = "REAL_TIME" | "POST_CALL";
-export const InputType = S.Literal("REAL_TIME", "POST_CALL");
+export type InputType = "REAL_TIME" | "POST_CALL" | (string & {});
+export const InputType = S.String;
 export type CLMLanguageCode =
   | "en-US"
   | "hi-IN"
@@ -141,18 +141,11 @@ export type CLMLanguageCode =
   | "en-GB"
   | "en-AU"
   | "de-DE"
-  | "ja-JP";
-export const CLMLanguageCode = S.Literal(
-  "en-US",
-  "hi-IN",
-  "es-US",
-  "en-GB",
-  "en-AU",
-  "de-DE",
-  "ja-JP",
-);
-export type BaseModelName = "NarrowBand" | "WideBand";
-export const BaseModelName = S.Literal("NarrowBand", "WideBand");
+  | "ja-JP"
+  | (string & {});
+export const CLMLanguageCode = S.String;
+export type BaseModelName = "NarrowBand" | "WideBand" | (string & {});
+export const BaseModelName = S.String;
 export type LanguageCode =
   | "af-ZA"
   | "ar-AE"
@@ -258,114 +251,9 @@ export type LanguageCode =
   | "uz-UZ"
   | "wo-SN"
   | "zh-HK"
-  | "zu-ZA";
-export const LanguageCode = S.Literal(
-  "af-ZA",
-  "ar-AE",
-  "ar-SA",
-  "da-DK",
-  "de-CH",
-  "de-DE",
-  "en-AB",
-  "en-AU",
-  "en-GB",
-  "en-IE",
-  "en-IN",
-  "en-US",
-  "en-WL",
-  "es-ES",
-  "es-US",
-  "fa-IR",
-  "fr-CA",
-  "fr-FR",
-  "he-IL",
-  "hi-IN",
-  "id-ID",
-  "it-IT",
-  "ja-JP",
-  "ko-KR",
-  "ms-MY",
-  "nl-NL",
-  "pt-BR",
-  "pt-PT",
-  "ru-RU",
-  "ta-IN",
-  "te-IN",
-  "tr-TR",
-  "zh-CN",
-  "zh-TW",
-  "th-TH",
-  "en-ZA",
-  "en-NZ",
-  "vi-VN",
-  "sv-SE",
-  "ab-GE",
-  "ast-ES",
-  "az-AZ",
-  "ba-RU",
-  "be-BY",
-  "bg-BG",
-  "bn-IN",
-  "bs-BA",
-  "ca-ES",
-  "ckb-IQ",
-  "ckb-IR",
-  "cs-CZ",
-  "cy-WL",
-  "el-GR",
-  "et-EE",
-  "et-ET",
-  "eu-ES",
-  "fi-FI",
-  "gl-ES",
-  "gu-IN",
-  "ha-NG",
-  "hr-HR",
-  "hu-HU",
-  "hy-AM",
-  "is-IS",
-  "ka-GE",
-  "kab-DZ",
-  "kk-KZ",
-  "kn-IN",
-  "ky-KG",
-  "lg-IN",
-  "lt-LT",
-  "lv-LV",
-  "mhr-RU",
-  "mi-NZ",
-  "mk-MK",
-  "ml-IN",
-  "mn-MN",
-  "mr-IN",
-  "mt-MT",
-  "no-NO",
-  "or-IN",
-  "pa-IN",
-  "pl-PL",
-  "ps-AF",
-  "ro-RO",
-  "rw-RW",
-  "si-LK",
-  "sk-SK",
-  "sl-SI",
-  "so-SO",
-  "sr-RS",
-  "su-ID",
-  "sw-BI",
-  "sw-KE",
-  "sw-RW",
-  "sw-TZ",
-  "sw-UG",
-  "tl-PH",
-  "tt-RU",
-  "ug-CN",
-  "uk-UA",
-  "uz-UZ",
-  "wo-SN",
-  "zh-HK",
-  "zu-ZA",
-);
+  | "zu-ZA"
+  | (string & {});
+export const LanguageCode = S.String;
 export type Phrases = string[];
 export const Phrases = S.Array(S.String);
 export type Words = string[];
@@ -374,39 +262,31 @@ export type CallAnalyticsJobStatus =
   | "QUEUED"
   | "IN_PROGRESS"
   | "FAILED"
-  | "COMPLETED";
-export const CallAnalyticsJobStatus = S.Literal(
-  "QUEUED",
-  "IN_PROGRESS",
-  "FAILED",
-  "COMPLETED",
-);
-export type ModelStatus = "IN_PROGRESS" | "FAILED" | "COMPLETED";
-export const ModelStatus = S.Literal("IN_PROGRESS", "FAILED", "COMPLETED");
+  | "COMPLETED"
+  | (string & {});
+export const CallAnalyticsJobStatus = S.String;
+export type ModelStatus =
+  | "IN_PROGRESS"
+  | "FAILED"
+  | "COMPLETED"
+  | (string & {});
+export const ModelStatus = S.String;
 export type MedicalScribeJobStatus =
   | "QUEUED"
   | "IN_PROGRESS"
   | "FAILED"
-  | "COMPLETED";
-export const MedicalScribeJobStatus = S.Literal(
-  "QUEUED",
-  "IN_PROGRESS",
-  "FAILED",
-  "COMPLETED",
-);
+  | "COMPLETED"
+  | (string & {});
+export const MedicalScribeJobStatus = S.String;
 export type TranscriptionJobStatus =
   | "QUEUED"
   | "IN_PROGRESS"
   | "FAILED"
-  | "COMPLETED";
-export const TranscriptionJobStatus = S.Literal(
-  "QUEUED",
-  "IN_PROGRESS",
-  "FAILED",
-  "COMPLETED",
-);
-export type VocabularyState = "PENDING" | "READY" | "FAILED";
-export const VocabularyState = S.Literal("PENDING", "READY", "FAILED");
+  | "COMPLETED"
+  | (string & {});
+export const TranscriptionJobStatus = S.String;
+export type VocabularyState = "PENDING" | "READY" | "FAILED" | (string & {});
+export const VocabularyState = S.String;
 export type MediaFormat =
   | "mp3"
   | "mp4"
@@ -415,23 +295,15 @@ export type MediaFormat =
   | "ogg"
   | "amr"
   | "webm"
-  | "m4a";
-export const MediaFormat = S.Literal(
-  "mp3",
-  "mp4",
-  "wav",
-  "flac",
-  "ogg",
-  "amr",
-  "webm",
-  "m4a",
-);
-export type MedicalContentIdentificationType = "PHI";
-export const MedicalContentIdentificationType = S.Literal("PHI");
-export type Specialty = "PRIMARYCARE";
-export const Specialty = S.Literal("PRIMARYCARE");
-export type Type = "CONVERSATION" | "DICTATION";
-export const Type = S.Literal("CONVERSATION", "DICTATION");
+  | "m4a"
+  | (string & {});
+export const MediaFormat = S.String;
+export type MedicalContentIdentificationType = "PHI" | (string & {});
+export const MedicalContentIdentificationType = S.String;
+export type Specialty = "PRIMARYCARE" | (string & {});
+export const Specialty = S.String;
+export type Type = "CONVERSATION" | "DICTATION" | (string & {});
+export const Type = S.String;
 export type LanguageOptions = LanguageCode[];
 export const LanguageOptions = S.Array(LanguageCode);
 export type TagKeyList = string[];
@@ -1295,8 +1167,8 @@ export const NonTalkTimeFilter = S.suspend(() =>
 ).annotations({
   identifier: "NonTalkTimeFilter",
 }) as any as S.Schema<NonTalkTimeFilter>;
-export type ParticipantRole = "AGENT" | "CUSTOMER";
-export const ParticipantRole = S.Literal("AGENT", "CUSTOMER");
+export type ParticipantRole = "AGENT" | "CUSTOMER" | (string & {});
+export const ParticipantRole = S.String;
 export interface InterruptionFilter {
   Threshold?: number;
   ParticipantRole?: ParticipantRole;
@@ -1315,8 +1187,8 @@ export const InterruptionFilter = S.suspend(() =>
 ).annotations({
   identifier: "InterruptionFilter",
 }) as any as S.Schema<InterruptionFilter>;
-export type TranscriptFilterType = "EXACT";
-export const TranscriptFilterType = S.Literal("EXACT");
+export type TranscriptFilterType = "EXACT" | (string & {});
+export const TranscriptFilterType = S.String;
 export type StringTargetList = string[];
 export const StringTargetList = S.Array(S.String);
 export interface TranscriptFilter {
@@ -1339,13 +1211,13 @@ export const TranscriptFilter = S.suspend(() =>
 ).annotations({
   identifier: "TranscriptFilter",
 }) as any as S.Schema<TranscriptFilter>;
-export type SentimentValue = "POSITIVE" | "NEGATIVE" | "NEUTRAL" | "MIXED";
-export const SentimentValue = S.Literal(
-  "POSITIVE",
-  "NEGATIVE",
-  "NEUTRAL",
-  "MIXED",
-);
+export type SentimentValue =
+  | "POSITIVE"
+  | "NEGATIVE"
+  | "NEUTRAL"
+  | "MIXED"
+  | (string & {});
+export const SentimentValue = S.String;
 export type SentimentValueList = SentimentValue[];
 export const SentimentValueList = S.Array(SentimentValue);
 export interface SentimentFilter {
@@ -1503,14 +1375,20 @@ export const UpdateVocabularyFilterRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateVocabularyFilterRequest",
 }) as any as S.Schema<UpdateVocabularyFilterRequest>;
-export type VocabularyFilterMethod = "remove" | "mask" | "tag";
-export const VocabularyFilterMethod = S.Literal("remove", "mask", "tag");
-export type MedicalScribeParticipantRole = "PATIENT" | "CLINICIAN";
-export const MedicalScribeParticipantRole = S.Literal("PATIENT", "CLINICIAN");
-export type RedactionType = "PII";
-export const RedactionType = S.Literal("PII");
-export type RedactionOutput = "redacted" | "redacted_and_unredacted";
-export const RedactionOutput = S.Literal("redacted", "redacted_and_unredacted");
+export type VocabularyFilterMethod = "remove" | "mask" | "tag" | (string & {});
+export const VocabularyFilterMethod = S.String;
+export type MedicalScribeParticipantRole =
+  | "PATIENT"
+  | "CLINICIAN"
+  | (string & {});
+export const MedicalScribeParticipantRole = S.String;
+export type RedactionType = "PII" | (string & {});
+export const RedactionType = S.String;
+export type RedactionOutput =
+  | "redacted"
+  | "redacted_and_unredacted"
+  | (string & {});
+export const RedactionOutput = S.String;
 export type PiiEntityType =
   | "BANK_ACCOUNT_NUMBER"
   | "BANK_ROUTING"
@@ -1523,29 +1401,17 @@ export type PiiEntityType =
   | "NAME"
   | "PHONE"
   | "SSN"
-  | "ALL";
-export const PiiEntityType = S.Literal(
-  "BANK_ACCOUNT_NUMBER",
-  "BANK_ROUTING",
-  "CREDIT_DEBIT_NUMBER",
-  "CREDIT_DEBIT_CVV",
-  "CREDIT_DEBIT_EXPIRY",
-  "PIN",
-  "EMAIL",
-  "ADDRESS",
-  "NAME",
-  "PHONE",
-  "SSN",
-  "ALL",
-);
+  | "ALL"
+  | (string & {});
+export const PiiEntityType = S.String;
 export type PiiEntityTypes = PiiEntityType[];
 export const PiiEntityTypes = S.Array(PiiEntityType);
-export type SubtitleFormat = "vtt" | "srt";
-export const SubtitleFormat = S.Literal("vtt", "srt");
+export type SubtitleFormat = "vtt" | "srt" | (string & {});
+export const SubtitleFormat = S.String;
 export type SubtitleFormats = SubtitleFormat[];
 export const SubtitleFormats = S.Array(SubtitleFormat);
-export type ToxicityCategory = "ALL";
-export const ToxicityCategory = S.Literal("ALL");
+export type ToxicityCategory = "ALL" | (string & {});
+export const ToxicityCategory = S.String;
 export type ToxicityCategories = ToxicityCategory[];
 export const ToxicityCategories = S.Array(ToxicityCategory);
 export interface InputDataConfig {
@@ -1762,18 +1628,11 @@ export type MedicalScribeNoteTemplate =
   | "SIRP"
   | "DAP"
   | "BEHAVIORAL_SOAP"
-  | "PHYSICAL_SOAP";
-export const MedicalScribeNoteTemplate = S.Literal(
-  "HISTORY_AND_PHYSICAL",
-  "GIRPP",
-  "BIRP",
-  "SIRP",
-  "DAP",
-  "BEHAVIORAL_SOAP",
-  "PHYSICAL_SOAP",
-);
-export type Pronouns = "HE_HIM" | "SHE_HER" | "THEY_THEM";
-export const Pronouns = S.Literal("HE_HIM", "SHE_HER", "THEY_THEM");
+  | "PHYSICAL_SOAP"
+  | (string & {});
+export const MedicalScribeNoteTemplate = S.String;
+export type Pronouns = "HE_HIM" | "SHE_HER" | "THEY_THEM" | (string & {});
+export const Pronouns = S.String;
 export interface CreateLanguageModelRequest {
   LanguageCode: CLMLanguageCode;
   BaseModelName: BaseModelName;
@@ -2093,13 +1952,13 @@ export const UpdateVocabularyFilterResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateVocabularyFilterResponse",
 }) as any as S.Schema<UpdateVocabularyFilterResponse>;
-export type MedicalScribeLanguageCode = "en-US";
-export const MedicalScribeLanguageCode = S.Literal("en-US");
-export type OutputLocationType = "CUSTOMER_BUCKET" | "SERVICE_BUCKET";
-export const OutputLocationType = S.Literal(
-  "CUSTOMER_BUCKET",
-  "SERVICE_BUCKET",
-);
+export type MedicalScribeLanguageCode = "en-US" | (string & {});
+export const MedicalScribeLanguageCode = S.String;
+export type OutputLocationType =
+  | "CUSTOMER_BUCKET"
+  | "SERVICE_BUCKET"
+  | (string & {});
+export const OutputLocationType = S.String;
 export interface Summarization {
   GenerateAbstractiveSummary: boolean;
 }
@@ -2138,15 +1997,13 @@ export const LanguageIdSettings = S.suspend(() =>
 ).annotations({
   identifier: "LanguageIdSettings",
 }) as any as S.Schema<LanguageIdSettings>;
-export type CallAnalyticsFeature = "GENERATIVE_SUMMARIZATION";
-export const CallAnalyticsFeature = S.Literal("GENERATIVE_SUMMARIZATION");
+export type CallAnalyticsFeature = "GENERATIVE_SUMMARIZATION" | (string & {});
+export const CallAnalyticsFeature = S.String;
 export type CallAnalyticsSkippedReasonCode =
   | "INSUFFICIENT_CONVERSATION_CONTENT"
-  | "FAILED_SAFETY_GUIDELINES";
-export const CallAnalyticsSkippedReasonCode = S.Literal(
-  "INSUFFICIENT_CONVERSATION_CONTENT",
-  "FAILED_SAFETY_GUIDELINES",
-);
+  | "FAILED_SAFETY_GUIDELINES"
+  | (string & {});
+export const CallAnalyticsSkippedReasonCode = S.String;
 export interface CallAnalyticsSkippedFeature {
   Feature?: CallAnalyticsFeature;
   ReasonCode?: CallAnalyticsSkippedReasonCode;

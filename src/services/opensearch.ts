@@ -235,25 +235,21 @@ export type DirectQueryOpenSearchARNList = string[];
 export const DirectQueryOpenSearchARNList = S.Array(S.String);
 export type PackageIDList = string[];
 export const PackageIDList = S.Array(S.String);
-export type AWSServicePrincipal = "application.opensearchservice.amazonaws.com";
-export const AWSServicePrincipal = S.Literal(
-  "application.opensearchservice.amazonaws.com",
-);
-export type IPAddressType = "ipv4" | "dualstack";
-export const IPAddressType = S.Literal("ipv4", "dualstack");
-export type ConnectionMode = "DIRECT" | "VPC_ENDPOINT";
-export const ConnectionMode = S.Literal("DIRECT", "VPC_ENDPOINT");
+export type AWSServicePrincipal =
+  | "application.opensearchservice.amazonaws.com"
+  | (string & {});
+export const AWSServicePrincipal = S.String;
+export type IPAddressType = "ipv4" | "dualstack" | (string & {});
+export const IPAddressType = S.String;
+export type ConnectionMode = "DIRECT" | "VPC_ENDPOINT" | (string & {});
+export const ConnectionMode = S.String;
 export type PackageType =
   | "TXT-DICTIONARY"
   | "ZIP-PLUGIN"
   | "PACKAGE-LICENSE"
-  | "PACKAGE-CONFIG";
-export const PackageType = S.Literal(
-  "TXT-DICTIONARY",
-  "ZIP-PLUGIN",
-  "PACKAGE-LICENSE",
-  "PACKAGE-CONFIG",
-);
+  | "PACKAGE-CONFIG"
+  | (string & {});
+export const PackageType = S.String;
 export type DomainNameList = string[];
 export const DomainNameList = S.Array(S.String);
 export type OpenSearchPartitionInstanceType =
@@ -359,112 +355,9 @@ export type OpenSearchPartitionInstanceType =
   | "r6gd.12xlarge.search"
   | "r6gd.16xlarge.search"
   | "t4g.small.search"
-  | "t4g.medium.search";
-export const OpenSearchPartitionInstanceType = S.Literal(
-  "m3.medium.search",
-  "m3.large.search",
-  "m3.xlarge.search",
-  "m3.2xlarge.search",
-  "m4.large.search",
-  "m4.xlarge.search",
-  "m4.2xlarge.search",
-  "m4.4xlarge.search",
-  "m4.10xlarge.search",
-  "m5.large.search",
-  "m5.xlarge.search",
-  "m5.2xlarge.search",
-  "m5.4xlarge.search",
-  "m5.12xlarge.search",
-  "m5.24xlarge.search",
-  "r5.large.search",
-  "r5.xlarge.search",
-  "r5.2xlarge.search",
-  "r5.4xlarge.search",
-  "r5.12xlarge.search",
-  "r5.24xlarge.search",
-  "c5.large.search",
-  "c5.xlarge.search",
-  "c5.2xlarge.search",
-  "c5.4xlarge.search",
-  "c5.9xlarge.search",
-  "c5.18xlarge.search",
-  "t3.nano.search",
-  "t3.micro.search",
-  "t3.small.search",
-  "t3.medium.search",
-  "t3.large.search",
-  "t3.xlarge.search",
-  "t3.2xlarge.search",
-  "or1.medium.search",
-  "or1.large.search",
-  "or1.xlarge.search",
-  "or1.2xlarge.search",
-  "or1.4xlarge.search",
-  "or1.8xlarge.search",
-  "or1.12xlarge.search",
-  "or1.16xlarge.search",
-  "ultrawarm1.medium.search",
-  "ultrawarm1.large.search",
-  "ultrawarm1.xlarge.search",
-  "t2.micro.search",
-  "t2.small.search",
-  "t2.medium.search",
-  "r3.large.search",
-  "r3.xlarge.search",
-  "r3.2xlarge.search",
-  "r3.4xlarge.search",
-  "r3.8xlarge.search",
-  "i2.xlarge.search",
-  "i2.2xlarge.search",
-  "d2.xlarge.search",
-  "d2.2xlarge.search",
-  "d2.4xlarge.search",
-  "d2.8xlarge.search",
-  "c4.large.search",
-  "c4.xlarge.search",
-  "c4.2xlarge.search",
-  "c4.4xlarge.search",
-  "c4.8xlarge.search",
-  "r4.large.search",
-  "r4.xlarge.search",
-  "r4.2xlarge.search",
-  "r4.4xlarge.search",
-  "r4.8xlarge.search",
-  "r4.16xlarge.search",
-  "i3.large.search",
-  "i3.xlarge.search",
-  "i3.2xlarge.search",
-  "i3.4xlarge.search",
-  "i3.8xlarge.search",
-  "i3.16xlarge.search",
-  "r6g.large.search",
-  "r6g.xlarge.search",
-  "r6g.2xlarge.search",
-  "r6g.4xlarge.search",
-  "r6g.8xlarge.search",
-  "r6g.12xlarge.search",
-  "m6g.large.search",
-  "m6g.xlarge.search",
-  "m6g.2xlarge.search",
-  "m6g.4xlarge.search",
-  "m6g.8xlarge.search",
-  "m6g.12xlarge.search",
-  "c6g.large.search",
-  "c6g.xlarge.search",
-  "c6g.2xlarge.search",
-  "c6g.4xlarge.search",
-  "c6g.8xlarge.search",
-  "c6g.12xlarge.search",
-  "r6gd.large.search",
-  "r6gd.xlarge.search",
-  "r6gd.2xlarge.search",
-  "r6gd.4xlarge.search",
-  "r6gd.8xlarge.search",
-  "r6gd.12xlarge.search",
-  "r6gd.16xlarge.search",
-  "t4g.small.search",
-  "t4g.medium.search",
-);
+  | "t4g.medium.search"
+  | (string & {});
+export const OpenSearchPartitionInstanceType = S.String;
 export type VpcEndpointIdList = string[];
 export const VpcEndpointIdList = S.Array(S.String);
 export type ApplicationStatus =
@@ -472,61 +365,53 @@ export type ApplicationStatus =
   | "UPDATING"
   | "DELETING"
   | "ACTIVE"
-  | "FAILED";
-export const ApplicationStatus = S.Literal(
-  "CREATING",
-  "UPDATING",
-  "DELETING",
-  "ACTIVE",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const ApplicationStatus = S.String;
 export type ApplicationStatuses = ApplicationStatus[];
 export const ApplicationStatuses = S.Array(ApplicationStatus);
 export type MaintenanceType =
   | "REBOOT_NODE"
   | "RESTART_SEARCH_PROCESS"
-  | "RESTART_DASHBOARD";
-export const MaintenanceType = S.Literal(
-  "REBOOT_NODE",
-  "RESTART_SEARCH_PROCESS",
-  "RESTART_DASHBOARD",
-);
+  | "RESTART_DASHBOARD"
+  | (string & {});
+export const MaintenanceType = S.String;
 export type MaintenanceStatus =
   | "PENDING"
   | "IN_PROGRESS"
   | "COMPLETED"
   | "FAILED"
-  | "TIMED_OUT";
-export const MaintenanceStatus = S.Literal(
-  "PENDING",
-  "IN_PROGRESS",
-  "COMPLETED",
-  "FAILED",
-  "TIMED_OUT",
-);
-export type EngineType = "OpenSearch" | "Elasticsearch";
-export const EngineType = S.Literal("OpenSearch", "Elasticsearch");
+  | "TIMED_OUT"
+  | (string & {});
+export const MaintenanceStatus = S.String;
+export type EngineType = "OpenSearch" | "Elasticsearch" | (string & {});
+export const EngineType = S.String;
 export type StringList = string[];
 export const StringList = S.Array(S.String);
-export type ScheduleAt = "NOW" | "TIMESTAMP" | "OFF_PEAK_WINDOW";
-export const ScheduleAt = S.Literal("NOW", "TIMESTAMP", "OFF_PEAK_WINDOW");
-export type DataSourceStatus = "ACTIVE" | "DISABLED";
-export const DataSourceStatus = S.Literal("ACTIVE", "DISABLED");
-export type DryRunMode = "Basic" | "Verbose";
-export const DryRunMode = S.Literal("Basic", "Verbose");
-export type PackageScopeOperationEnum = "ADD" | "OVERRIDE" | "REMOVE";
-export const PackageScopeOperationEnum = S.Literal("ADD", "OVERRIDE", "REMOVE");
+export type ScheduleAt =
+  | "NOW"
+  | "TIMESTAMP"
+  | "OFF_PEAK_WINDOW"
+  | (string & {});
+export const ScheduleAt = S.String;
+export type DataSourceStatus = "ACTIVE" | "DISABLED" | (string & {});
+export const DataSourceStatus = S.String;
+export type DryRunMode = "Basic" | "Verbose" | (string & {});
+export const DryRunMode = S.String;
+export type PackageScopeOperationEnum =
+  | "ADD"
+  | "OVERRIDE"
+  | "REMOVE"
+  | (string & {});
+export const PackageScopeOperationEnum = S.String;
 export type PackageUserList = string[];
 export const PackageUserList = S.Array(S.String);
 export type ActionType =
   | "SERVICE_SOFTWARE_UPDATE"
   | "JVM_HEAP_SIZE_TUNING"
-  | "JVM_YOUNG_GEN_TUNING";
-export const ActionType = S.Literal(
-  "SERVICE_SOFTWARE_UPDATE",
-  "JVM_HEAP_SIZE_TUNING",
-  "JVM_YOUNG_GEN_TUNING",
-);
+  | "JVM_YOUNG_GEN_TUNING"
+  | (string & {});
+export const ActionType = S.String;
 export interface AcceptInboundConnectionRequest {
   ConnectionId: string;
 }
@@ -2062,11 +1947,9 @@ export type DataSources = DataSource[];
 export const DataSources = S.Array(DataSource);
 export type AppConfigType =
   | "opensearchDashboards.dashboardAdmin.users"
-  | "opensearchDashboards.dashboardAdmin.groups";
-export const AppConfigType = S.Literal(
-  "opensearchDashboards.dashboardAdmin.users",
-  "opensearchDashboards.dashboardAdmin.groups",
-);
+  | "opensearchDashboards.dashboardAdmin.groups"
+  | (string & {});
+export const AppConfigType = S.String;
 export interface AppConfig {
   key?: AppConfigType;
   value?: string;
@@ -2231,8 +2114,8 @@ export const PackageSource = S.suspend(() =>
 ).annotations({
   identifier: "PackageSource",
 }) as any as S.Schema<PackageSource>;
-export type RequirementLevel = "REQUIRED" | "OPTIONAL" | "NONE";
-export const RequirementLevel = S.Literal("REQUIRED", "OPTIONAL", "NONE");
+export type RequirementLevel = "REQUIRED" | "OPTIONAL" | "NONE" | (string & {});
+export const RequirementLevel = S.String;
 export interface PackageConfiguration {
   LicenseRequirement: RequirementLevel;
   LicenseFilepath?: string;
@@ -2402,59 +2285,50 @@ export const UpgradeDomainRequest = S.suspend(() =>
 export type OpenSearchWarmPartitionInstanceType =
   | "ultrawarm1.medium.search"
   | "ultrawarm1.large.search"
-  | "ultrawarm1.xlarge.search";
-export const OpenSearchWarmPartitionInstanceType = S.Literal(
-  "ultrawarm1.medium.search",
-  "ultrawarm1.large.search",
-  "ultrawarm1.xlarge.search",
-);
-export type VolumeType = "standard" | "gp2" | "io1" | "gp3";
-export const VolumeType = S.Literal("standard", "gp2", "io1", "gp3");
+  | "ultrawarm1.xlarge.search"
+  | (string & {});
+export const OpenSearchWarmPartitionInstanceType = S.String;
+export type VolumeType = "standard" | "gp2" | "io1" | "gp3" | (string & {});
+export const VolumeType = S.String;
 export type LogType =
   | "INDEX_SLOW_LOGS"
   | "SEARCH_SLOW_LOGS"
   | "ES_APPLICATION_LOGS"
-  | "AUDIT_LOGS";
-export const LogType = S.Literal(
-  "INDEX_SLOW_LOGS",
-  "SEARCH_SLOW_LOGS",
-  "ES_APPLICATION_LOGS",
-  "AUDIT_LOGS",
-);
+  | "AUDIT_LOGS"
+  | (string & {});
+export const LogType = S.String;
 export type TLSSecurityPolicy =
   | "Policy-Min-TLS-1-0-2019-07"
   | "Policy-Min-TLS-1-2-2019-07"
-  | "Policy-Min-TLS-1-2-PFS-2023-10";
-export const TLSSecurityPolicy = S.Literal(
-  "Policy-Min-TLS-1-0-2019-07",
-  "Policy-Min-TLS-1-2-2019-07",
-  "Policy-Min-TLS-1-2-PFS-2023-10",
-);
-export type SubjectKeyIdCOption = "UserName" | "UserId" | "Email";
-export const SubjectKeyIdCOption = S.Literal("UserName", "UserId", "Email");
-export type RolesKeyIdCOption = "GroupName" | "GroupId";
-export const RolesKeyIdCOption = S.Literal("GroupName", "GroupId");
-export type AutoTuneDesiredState = "ENABLED" | "DISABLED";
-export const AutoTuneDesiredState = S.Literal("ENABLED", "DISABLED");
+  | "Policy-Min-TLS-1-2-PFS-2023-10"
+  | (string & {});
+export const TLSSecurityPolicy = S.String;
+export type SubjectKeyIdCOption =
+  | "UserName"
+  | "UserId"
+  | "Email"
+  | (string & {});
+export const SubjectKeyIdCOption = S.String;
+export type RolesKeyIdCOption = "GroupName" | "GroupId" | (string & {});
+export const RolesKeyIdCOption = S.String;
+export type AutoTuneDesiredState = "ENABLED" | "DISABLED" | (string & {});
+export const AutoTuneDesiredState = S.String;
 export type DescribePackagesFilterName =
   | "PackageID"
   | "PackageName"
   | "PackageStatus"
   | "PackageType"
   | "EngineVersion"
-  | "PackageOwner";
-export const DescribePackagesFilterName = S.Literal(
-  "PackageID",
-  "PackageName",
-  "PackageStatus",
-  "PackageType",
-  "EngineVersion",
-  "PackageOwner",
-);
+  | "PackageOwner"
+  | (string & {});
+export const DescribePackagesFilterName = S.String;
 export type DescribePackagesFilterValues = string[];
 export const DescribePackagesFilterValues = S.Array(S.String);
-export type RollbackOnDisable = "NO_ROLLBACK" | "DEFAULT_ROLLBACK";
-export const RollbackOnDisable = S.Literal("NO_ROLLBACK", "DEFAULT_ROLLBACK");
+export type RollbackOnDisable =
+  | "NO_ROLLBACK"
+  | "DEFAULT_ROLLBACK"
+  | (string & {});
+export const RollbackOnDisable = S.String;
 export interface KeyStoreAccessOption {
   KeyAccessRoleArn?: string;
   KeyStoreAccessEnabled: boolean;
@@ -2608,8 +2482,8 @@ export const SoftwareUpdateOptions = S.suspend(() =>
 ).annotations({
   identifier: "SoftwareUpdateOptions",
 }) as any as S.Schema<SoftwareUpdateOptions>;
-export type IndexStatus = "CREATED" | "UPDATED" | "DELETED";
-export const IndexStatus = S.Literal("CREATED", "UPDATED", "DELETED");
+export type IndexStatus = "CREATED" | "UPDATED" | "DELETED" | (string & {});
+export const IndexStatus = S.String;
 export interface PackageVendingOptions {
   VendingEnabled: boolean;
 }
@@ -2618,12 +2492,21 @@ export const PackageVendingOptions = S.suspend(() =>
 ).annotations({
   identifier: "PackageVendingOptions",
 }) as any as S.Schema<PackageVendingOptions>;
-export type DomainState = "Active" | "Processing" | "NotAvailable";
-export const DomainState = S.Literal("Active", "Processing", "NotAvailable");
-export type MasterNodeStatus = "Available" | "UnAvailable";
-export const MasterNodeStatus = S.Literal("Available", "UnAvailable");
-export type DomainHealth = "Red" | "Yellow" | "Green" | "NotAvailable";
-export const DomainHealth = S.Literal("Red", "Yellow", "Green", "NotAvailable");
+export type DomainState =
+  | "Active"
+  | "Processing"
+  | "NotAvailable"
+  | (string & {});
+export const DomainState = S.String;
+export type MasterNodeStatus = "Available" | "UnAvailable" | (string & {});
+export const MasterNodeStatus = S.String;
+export type DomainHealth =
+  | "Red"
+  | "Yellow"
+  | "Green"
+  | "NotAvailable"
+  | (string & {});
+export const DomainHealth = S.String;
 export type EndpointsMap = { [key: string]: string | undefined };
 export const EndpointsMap = S.Record({
   key: S.String,
@@ -2645,8 +2528,8 @@ export const ColdStorageOptions = S.suspend(() =>
 ).annotations({
   identifier: "ColdStorageOptions",
 }) as any as S.Schema<ColdStorageOptions>;
-export type NodeOptionsNodeType = "coordinator";
-export const NodeOptionsNodeType = S.Literal("coordinator");
+export type NodeOptionsNodeType = "coordinator" | (string & {});
+export const NodeOptionsNodeType = S.String;
 export interface NodeConfig {
   Enabled?: boolean;
   Type?: OpenSearchPartitionInstanceType;
@@ -2742,14 +2625,9 @@ export type DeploymentStatus =
   | "IN_PROGRESS"
   | "COMPLETED"
   | "NOT_ELIGIBLE"
-  | "ELIGIBLE";
-export const DeploymentStatus = S.Literal(
-  "PENDING_UPDATE",
-  "IN_PROGRESS",
-  "COMPLETED",
-  "NOT_ELIGIBLE",
-  "ELIGIBLE",
-);
+  | "ELIGIBLE"
+  | (string & {});
+export const DeploymentStatus = S.String;
 export interface ServiceSoftwareOptions {
   CurrentVersion?: string;
   NewVersion?: string;
@@ -2884,18 +2762,9 @@ export type AutoTuneState =
   | "DISABLED_AND_ROLLBACK_IN_PROGRESS"
   | "DISABLED_AND_ROLLBACK_COMPLETE"
   | "DISABLED_AND_ROLLBACK_ERROR"
-  | "ERROR";
-export const AutoTuneState = S.Literal(
-  "ENABLED",
-  "DISABLED",
-  "ENABLE_IN_PROGRESS",
-  "DISABLE_IN_PROGRESS",
-  "DISABLED_AND_ROLLBACK_SCHEDULED",
-  "DISABLED_AND_ROLLBACK_IN_PROGRESS",
-  "DISABLED_AND_ROLLBACK_COMPLETE",
-  "DISABLED_AND_ROLLBACK_ERROR",
-  "ERROR",
-);
+  | "ERROR"
+  | (string & {});
+export const AutoTuneState = S.String;
 export interface AutoTuneOptionsOutput {
   State?: AutoTuneState;
   ErrorMessage?: string;
@@ -2918,19 +2787,11 @@ export type ConfigChangeStatus =
   | "ApplyingChanges"
   | "Completed"
   | "PendingUserInput"
-  | "Cancelled";
-export const ConfigChangeStatus = S.Literal(
-  "Pending",
-  "Initializing",
-  "Validating",
-  "ValidationFailed",
-  "ApplyingChanges",
-  "Completed",
-  "PendingUserInput",
-  "Cancelled",
-);
-export type InitiatedBy = "CUSTOMER" | "SERVICE";
-export const InitiatedBy = S.Literal("CUSTOMER", "SERVICE");
+  | "Cancelled"
+  | (string & {});
+export const ConfigChangeStatus = S.String;
+export type InitiatedBy = "CUSTOMER" | "SERVICE" | (string & {});
+export const InitiatedBy = S.String;
 export interface ChangeProgressDetails {
   ChangeId?: string;
   Message?: string;
@@ -2989,18 +2850,14 @@ export type DomainProcessingStatusType =
   | "UpgradingEngineVersion"
   | "UpdatingServiceSoftware"
   | "Isolated"
-  | "Deleting";
-export const DomainProcessingStatusType = S.Literal(
-  "Creating",
-  "Active",
-  "Modifying",
-  "UpgradingEngineVersion",
-  "UpdatingServiceSoftware",
-  "Isolated",
-  "Deleting",
-);
-export type PropertyValueType = "PLAIN_TEXT" | "STRINGIFIED_JSON";
-export const PropertyValueType = S.Literal("PLAIN_TEXT", "STRINGIFIED_JSON");
+  | "Deleting"
+  | (string & {});
+export const DomainProcessingStatusType = S.String;
+export type PropertyValueType =
+  | "PLAIN_TEXT"
+  | "STRINGIFIED_JSON"
+  | (string & {});
+export const PropertyValueType = S.String;
 export interface ModifyingProperties {
   Name?: string;
   ActiveValue?: string;
@@ -3019,11 +2876,11 @@ export const ModifyingProperties = S.suspend(() =>
 }) as any as S.Schema<ModifyingProperties>;
 export type ModifyingPropertiesList = ModifyingProperties[];
 export const ModifyingPropertiesList = S.Array(ModifyingProperties);
-export type NaturalLanguageQueryGenerationDesiredState = "ENABLED" | "DISABLED";
-export const NaturalLanguageQueryGenerationDesiredState = S.Literal(
-  "ENABLED",
-  "DISABLED",
-);
+export type NaturalLanguageQueryGenerationDesiredState =
+  | "ENABLED"
+  | "DISABLED"
+  | (string & {});
+export const NaturalLanguageQueryGenerationDesiredState = S.String;
 export type NaturalLanguageQueryGenerationCurrentState =
   | "NOT_ENABLED"
   | "ENABLE_COMPLETE"
@@ -3031,16 +2888,9 @@ export type NaturalLanguageQueryGenerationCurrentState =
   | "ENABLE_FAILED"
   | "DISABLE_COMPLETE"
   | "DISABLE_IN_PROGRESS"
-  | "DISABLE_FAILED";
-export const NaturalLanguageQueryGenerationCurrentState = S.Literal(
-  "NOT_ENABLED",
-  "ENABLE_COMPLETE",
-  "ENABLE_IN_PROGRESS",
-  "ENABLE_FAILED",
-  "DISABLE_COMPLETE",
-  "DISABLE_IN_PROGRESS",
-  "DISABLE_FAILED",
-);
+  | "DISABLE_FAILED"
+  | (string & {});
+export const NaturalLanguageQueryGenerationCurrentState = S.String;
 export interface NaturalLanguageQueryGenerationOptionsOutput {
   DesiredState?: NaturalLanguageQueryGenerationDesiredState;
   CurrentState?: NaturalLanguageQueryGenerationCurrentState;
@@ -3193,19 +3043,9 @@ export type OutboundConnectionStatusCode =
   | "REJECTING"
   | "REJECTED"
   | "DELETING"
-  | "DELETED";
-export const OutboundConnectionStatusCode = S.Literal(
-  "VALIDATING",
-  "VALIDATION_FAILED",
-  "PENDING_ACCEPTANCE",
-  "APPROVED",
-  "PROVISIONING",
-  "ACTIVE",
-  "REJECTING",
-  "REJECTED",
-  "DELETING",
-  "DELETED",
-);
+  | "DELETED"
+  | (string & {});
+export const OutboundConnectionStatusCode = S.String;
 export interface OutboundConnectionStatus {
   StatusCode?: OutboundConnectionStatusCode;
   Message?: string;
@@ -3218,8 +3058,8 @@ export const OutboundConnectionStatus = S.suspend(() =>
 ).annotations({
   identifier: "OutboundConnectionStatus",
 }) as any as S.Schema<OutboundConnectionStatus>;
-export type SkipUnavailableStatus = "ENABLED" | "DISABLED";
-export const SkipUnavailableStatus = S.Literal("ENABLED", "DISABLED");
+export type SkipUnavailableStatus = "ENABLED" | "DISABLED" | (string & {});
+export const SkipUnavailableStatus = S.String;
 export interface CrossClusterSearchConnectionProperties {
   SkipUnavailable?: SkipUnavailableStatus;
 }
@@ -3285,16 +3125,9 @@ export type VpcEndpointStatus =
   | "UPDATING"
   | "UPDATE_FAILED"
   | "DELETING"
-  | "DELETE_FAILED";
-export const VpcEndpointStatus = S.Literal(
-  "CREATING",
-  "CREATE_FAILED",
-  "ACTIVE",
-  "UPDATING",
-  "UPDATE_FAILED",
-  "DELETING",
-  "DELETE_FAILED",
-);
+  | "DELETE_FAILED"
+  | (string & {});
+export const VpcEndpointStatus = S.String;
 export interface VpcEndpoint {
   VpcEndpointId?: string;
   VpcEndpointOwner?: string;
@@ -3320,14 +3153,9 @@ export type DomainPackageStatus =
   | "ASSOCIATION_FAILED"
   | "ACTIVE"
   | "DISSOCIATING"
-  | "DISSOCIATION_FAILED";
-export const DomainPackageStatus = S.Literal(
-  "ASSOCIATING",
-  "ASSOCIATION_FAILED",
-  "ACTIVE",
-  "DISSOCIATING",
-  "DISSOCIATION_FAILED",
-);
+  | "DISSOCIATION_FAILED"
+  | (string & {});
+export const DomainPackageStatus = S.String;
 export interface ErrorDetails {
   ErrorType?: string;
   ErrorMessage?: string;
@@ -3370,27 +3198,23 @@ export const DomainPackageDetails = S.suspend(() =>
 }) as any as S.Schema<DomainPackageDetails>;
 export type DomainPackageDetailsList = DomainPackageDetails[];
 export const DomainPackageDetailsList = S.Array(DomainPackageDetails);
-export type UpgradeStep = "PRE_UPGRADE_CHECK" | "SNAPSHOT" | "UPGRADE";
-export const UpgradeStep = S.Literal(
-  "PRE_UPGRADE_CHECK",
-  "SNAPSHOT",
-  "UPGRADE",
-);
+export type UpgradeStep =
+  | "PRE_UPGRADE_CHECK"
+  | "SNAPSHOT"
+  | "UPGRADE"
+  | (string & {});
+export const UpgradeStep = S.String;
 export type UpgradeStatus =
   | "IN_PROGRESS"
   | "SUCCEEDED"
   | "SUCCEEDED_WITH_ISSUES"
-  | "FAILED";
-export const UpgradeStatus = S.Literal(
-  "IN_PROGRESS",
-  "SUCCEEDED",
-  "SUCCEEDED_WITH_ISSUES",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const UpgradeStatus = S.String;
 export type VersionList = string[];
 export const VersionList = S.Array(S.String);
-export type PrincipalType = "AWS_ACCOUNT" | "AWS_SERVICE";
-export const PrincipalType = S.Literal("AWS_ACCOUNT", "AWS_SERVICE");
+export type PrincipalType = "AWS_ACCOUNT" | "AWS_SERVICE" | (string & {});
+export const PrincipalType = S.String;
 export interface AuthorizedPrincipal {
   PrincipalType?: PrincipalType;
   Principal?: string;
@@ -3423,8 +3247,8 @@ export const VpcEndpointSummary = S.suspend(() =>
 }) as any as S.Schema<VpcEndpointSummary>;
 export type VpcEndpointSummaryList = VpcEndpointSummary[];
 export const VpcEndpointSummaryList = S.Array(VpcEndpointSummary);
-export type TimeUnit = "HOURS";
-export const TimeUnit = S.Literal("HOURS");
+export type TimeUnit = "HOURS" | (string & {});
+export const TimeUnit = S.String;
 export interface Duration {
   Value?: number;
   Unit?: TimeUnit;
@@ -3578,17 +3402,9 @@ export type InboundConnectionStatusCode =
   | "REJECTING"
   | "REJECTED"
   | "DELETING"
-  | "DELETED";
-export const InboundConnectionStatusCode = S.Literal(
-  "PENDING_ACCEPTANCE",
-  "APPROVED",
-  "PROVISIONING",
-  "ACTIVE",
-  "REJECTING",
-  "REJECTED",
-  "DELETING",
-  "DELETED",
-);
+  | "DELETED"
+  | (string & {});
+export const InboundConnectionStatusCode = S.String;
 export interface InboundConnectionStatus {
   StatusCode?: InboundConnectionStatusCode;
   Message?: string;
@@ -4175,17 +3991,9 @@ export type PackageStatus =
   | "AVAILABLE"
   | "DELETING"
   | "DELETED"
-  | "DELETE_FAILED";
-export const PackageStatus = S.Literal(
-  "COPYING",
-  "COPY_FAILED",
-  "VALIDATING",
-  "VALIDATION_FAILED",
-  "AVAILABLE",
-  "DELETING",
-  "DELETED",
-  "DELETE_FAILED",
-);
+  | "DELETE_FAILED"
+  | (string & {});
+export const PackageStatus = S.String;
 export interface PluginProperties {
   Name?: string;
   Description?: string;
@@ -4266,25 +4074,19 @@ export const UpdatePackageScopeResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdatePackageScopeResponse",
 }) as any as S.Schema<UpdatePackageScopeResponse>;
-export type ActionSeverity = "HIGH" | "MEDIUM" | "LOW";
-export const ActionSeverity = S.Literal("HIGH", "MEDIUM", "LOW");
-export type ScheduledBy = "CUSTOMER" | "SYSTEM";
-export const ScheduledBy = S.Literal("CUSTOMER", "SYSTEM");
+export type ActionSeverity = "HIGH" | "MEDIUM" | "LOW" | (string & {});
+export const ActionSeverity = S.String;
+export type ScheduledBy = "CUSTOMER" | "SYSTEM" | (string & {});
+export const ScheduledBy = S.String;
 export type ActionStatus =
   | "PENDING_UPDATE"
   | "IN_PROGRESS"
   | "FAILED"
   | "COMPLETED"
   | "NOT_ELIGIBLE"
-  | "ELIGIBLE";
-export const ActionStatus = S.Literal(
-  "PENDING_UPDATE",
-  "IN_PROGRESS",
-  "FAILED",
-  "COMPLETED",
-  "NOT_ELIGIBLE",
-  "ELIGIBLE",
-);
+  | "ELIGIBLE"
+  | (string & {});
+export const ActionStatus = S.String;
 export interface ScheduledAction {
   Id: string;
   Type: ActionType;
@@ -4327,37 +4129,30 @@ export const UpdateVpcEndpointResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateVpcEndpointResponse",
 }) as any as S.Schema<UpdateVpcEndpointResponse>;
-export type AutoTuneType = "SCHEDULED_ACTION";
-export const AutoTuneType = S.Literal("SCHEDULED_ACTION");
+export type AutoTuneType = "SCHEDULED_ACTION" | (string & {});
+export const AutoTuneType = S.String;
 export type OverallChangeStatus =
   | "PENDING"
   | "PROCESSING"
   | "COMPLETED"
-  | "FAILED";
-export const OverallChangeStatus = S.Literal(
-  "PENDING",
-  "PROCESSING",
-  "COMPLETED",
-  "FAILED",
-);
-export type NodeType = "Data" | "Ultrawarm" | "Master" | "Warm";
-export const NodeType = S.Literal("Data", "Ultrawarm", "Master", "Warm");
-export type NodeStatus = "Active" | "StandBy" | "NotAvailable";
-export const NodeStatus = S.Literal("Active", "StandBy", "NotAvailable");
+  | "FAILED"
+  | (string & {});
+export const OverallChangeStatus = S.String;
+export type NodeType = "Data" | "Ultrawarm" | "Master" | "Warm" | (string & {});
+export const NodeType = S.String;
+export type NodeStatus = "Active" | "StandBy" | "NotAvailable" | (string & {});
+export const NodeStatus = S.String;
 export type ReservedInstancePaymentOption =
   | "ALL_UPFRONT"
   | "PARTIAL_UPFRONT"
-  | "NO_UPFRONT";
-export const ReservedInstancePaymentOption = S.Literal(
-  "ALL_UPFRONT",
-  "PARTIAL_UPFRONT",
-  "NO_UPFRONT",
-);
-export type VpcEndpointErrorCode = "ENDPOINT_NOT_FOUND" | "SERVER_ERROR";
-export const VpcEndpointErrorCode = S.Literal(
-  "ENDPOINT_NOT_FOUND",
-  "SERVER_ERROR",
-);
+  | "NO_UPFRONT"
+  | (string & {});
+export const ReservedInstancePaymentOption = S.String;
+export type VpcEndpointErrorCode =
+  | "ENDPOINT_NOT_FOUND"
+  | "SERVER_ERROR"
+  | (string & {});
+export const VpcEndpointErrorCode = S.String;
 export type InstanceRoleList = string[];
 export const InstanceRoleList = S.Array(S.String);
 export type AvailabilityZoneList = string[];
@@ -4656,8 +4451,8 @@ export type InstanceTypeDetailsList = InstanceTypeDetails[];
 export const InstanceTypeDetailsList = S.Array(InstanceTypeDetails);
 export type ScheduledActionsList = ScheduledAction[];
 export const ScheduledActionsList = S.Array(ScheduledAction);
-export type ZoneStatus = "Active" | "StandBy" | "NotAvailable";
-export const ZoneStatus = S.Literal("Active", "StandBy", "NotAvailable");
+export type ZoneStatus = "Active" | "StandBy" | "NotAvailable" | (string & {});
+export const ZoneStatus = S.String;
 export type Issues = string[];
 export const Issues = S.Array(S.String);
 export interface AddDataSourceRequest {
@@ -5058,12 +4853,12 @@ export const ListScheduledActionsResponse = S.suspend(() =>
 ).annotations({
   identifier: "ListScheduledActionsResponse",
 }) as any as S.Schema<ListScheduledActionsResponse>;
-export type OptionState = "RequiresIndexDocuments" | "Processing" | "Active";
-export const OptionState = S.Literal(
-  "RequiresIndexDocuments",
-  "Processing",
-  "Active",
-);
+export type OptionState =
+  | "RequiresIndexDocuments"
+  | "Processing"
+  | "Active"
+  | (string & {});
+export const OptionState = S.String;
 export interface OptionStatus {
   CreationDate: Date;
   UpdateDate: Date;
@@ -5457,13 +5252,15 @@ export type UpgradeStepsList = UpgradeStepItem[];
 export const UpgradeStepsList = S.Array(UpgradeStepItem);
 export type ScheduledAutoTuneActionType =
   | "JVM_HEAP_SIZE_TUNING"
-  | "JVM_YOUNG_GEN_TUNING";
-export const ScheduledAutoTuneActionType = S.Literal(
-  "JVM_HEAP_SIZE_TUNING",
-  "JVM_YOUNG_GEN_TUNING",
-);
-export type ScheduledAutoTuneSeverityType = "LOW" | "MEDIUM" | "HIGH";
-export const ScheduledAutoTuneSeverityType = S.Literal("LOW", "MEDIUM", "HIGH");
+  | "JVM_YOUNG_GEN_TUNING"
+  | (string & {});
+export const ScheduledAutoTuneActionType = S.String;
+export type ScheduledAutoTuneSeverityType =
+  | "LOW"
+  | "MEDIUM"
+  | "HIGH"
+  | (string & {});
+export const ScheduledAutoTuneSeverityType = S.String;
 export type LimitValueList = string[];
 export const LimitValueList = S.Array(S.String);
 export interface AutoTuneOptionsInput {

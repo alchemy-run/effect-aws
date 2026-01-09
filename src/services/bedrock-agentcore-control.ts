@@ -212,16 +212,16 @@ export type CustomEvaluatorArn = string;
 //# Schemas
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
-export type ResourceType = "SYSTEM" | "CUSTOM";
-export const ResourceType = S.Literal("SYSTEM", "CUSTOM");
-export type EvaluatorLevel = "TOOL_CALL" | "TRACE" | "SESSION";
-export const EvaluatorLevel = S.Literal("TOOL_CALL", "TRACE", "SESSION");
-export type GatewayProtocolType = "MCP";
-export const GatewayProtocolType = S.Literal("MCP");
-export type AuthorizerType = "CUSTOM_JWT" | "AWS_IAM" | "NONE";
-export const AuthorizerType = S.Literal("CUSTOM_JWT", "AWS_IAM", "NONE");
-export type ExceptionLevel = "DEBUG";
-export const ExceptionLevel = S.Literal("DEBUG");
+export type ResourceType = "SYSTEM" | "CUSTOM" | (string & {});
+export const ResourceType = S.String;
+export type EvaluatorLevel = "TOOL_CALL" | "TRACE" | "SESSION" | (string & {});
+export const EvaluatorLevel = S.String;
+export type GatewayProtocolType = "MCP" | (string & {});
+export const GatewayProtocolType = S.String;
+export type AuthorizerType = "CUSTOM_JWT" | "AWS_IAM" | "NONE" | (string & {});
+export const AuthorizerType = S.String;
+export type ExceptionLevel = "DEBUG" | (string & {});
+export const ExceptionLevel = S.String;
 export type TargetIdList = string[];
 export const TargetIdList = S.Array(S.String);
 export type CredentialProviderVendorType =
@@ -249,43 +249,19 @@ export type CredentialProviderVendorType =
   | "CyberArkOauth2"
   | "FusionAuthOauth2"
   | "Auth0Oauth2"
-  | "CognitoOauth2";
-export const CredentialProviderVendorType = S.Literal(
-  "GoogleOauth2",
-  "GithubOauth2",
-  "SlackOauth2",
-  "SalesforceOauth2",
-  "MicrosoftOauth2",
-  "CustomOauth2",
-  "AtlassianOauth2",
-  "LinkedinOauth2",
-  "XOauth2",
-  "OktaOauth2",
-  "OneLoginOauth2",
-  "PingOneOauth2",
-  "FacebookOauth2",
-  "YandexOauth2",
-  "RedditOauth2",
-  "ZoomOauth2",
-  "TwitchOauth2",
-  "SpotifyOauth2",
-  "DropboxOauth2",
-  "NotionOauth2",
-  "HubspotOauth2",
-  "CyberArkOauth2",
-  "FusionAuthOauth2",
-  "Auth0Oauth2",
-  "CognitoOauth2",
-);
-export type OnlineEvaluationExecutionStatus = "ENABLED" | "DISABLED";
-export const OnlineEvaluationExecutionStatus = S.Literal("ENABLED", "DISABLED");
+  | "CognitoOauth2"
+  | (string & {});
+export const CredentialProviderVendorType = S.String;
+export type OnlineEvaluationExecutionStatus =
+  | "ENABLED"
+  | "DISABLED"
+  | (string & {});
+export const OnlineEvaluationExecutionStatus = S.String;
 export type PolicyValidationMode =
   | "FAIL_ON_ANY_FINDINGS"
-  | "IGNORE_ALL_FINDINGS";
-export const PolicyValidationMode = S.Literal(
-  "FAIL_ON_ANY_FINDINGS",
-  "IGNORE_ALL_FINDINGS",
-);
+  | "IGNORE_ALL_FINDINGS"
+  | (string & {});
+export const PolicyValidationMode = S.String;
 export type ResourceOauth2ReturnUrlListType = string[];
 export const ResourceOauth2ReturnUrlListType = S.Array(S.String);
 export interface DeleteResourcePolicyRequest {
@@ -601,13 +577,9 @@ export type AgentManagedRuntimeType =
   | "PYTHON_3_10"
   | "PYTHON_3_11"
   | "PYTHON_3_12"
-  | "PYTHON_3_13";
-export const AgentManagedRuntimeType = S.Literal(
-  "PYTHON_3_10",
-  "PYTHON_3_11",
-  "PYTHON_3_12",
-  "PYTHON_3_13",
-);
+  | "PYTHON_3_13"
+  | (string & {});
+export const AgentManagedRuntimeType = S.String;
 export type EntryPoints = string[];
 export const EntryPoints = S.Array(S.String);
 export interface CodeConfiguration {
@@ -634,8 +606,8 @@ export const AgentRuntimeArtifact = S.Union(
   S.Struct({ containerConfiguration: ContainerConfiguration }),
   S.Struct({ codeConfiguration: CodeConfiguration }),
 );
-export type NetworkMode = "PUBLIC" | "VPC";
-export const NetworkMode = S.Literal("PUBLIC", "VPC");
+export type NetworkMode = "PUBLIC" | "VPC" | (string & {});
+export const NetworkMode = S.String;
 export type SecurityGroups = string[];
 export const SecurityGroups = S.Array(S.String);
 export type Subnets = string[];
@@ -665,8 +637,11 @@ export type AllowedClientsList = string[];
 export const AllowedClientsList = S.Array(S.String);
 export type AllowedScopesType = string[];
 export const AllowedScopesType = S.Array(S.String);
-export type InboundTokenClaimValueType = "STRING" | "STRING_ARRAY";
-export const InboundTokenClaimValueType = S.Literal("STRING", "STRING_ARRAY");
+export type InboundTokenClaimValueType =
+  | "STRING"
+  | "STRING_ARRAY"
+  | (string & {});
+export const InboundTokenClaimValueType = S.String;
 export type MatchValueStringList = string[];
 export const MatchValueStringList = S.Array(S.String);
 export type ClaimMatchValueType =
@@ -676,12 +651,12 @@ export const ClaimMatchValueType = S.Union(
   S.Struct({ matchValueString: S.String }),
   S.Struct({ matchValueStringList: MatchValueStringList }),
 );
-export type ClaimMatchOperatorType = "EQUALS" | "CONTAINS" | "CONTAINS_ANY";
-export const ClaimMatchOperatorType = S.Literal(
-  "EQUALS",
-  "CONTAINS",
-  "CONTAINS_ANY",
-);
+export type ClaimMatchOperatorType =
+  | "EQUALS"
+  | "CONTAINS"
+  | "CONTAINS_ANY"
+  | (string & {});
+export const ClaimMatchOperatorType = S.String;
 export interface AuthorizingClaimMatchValueType {
   claimMatchValue: ClaimMatchValueType;
   claimMatchOperator: ClaimMatchOperatorType;
@@ -740,8 +715,8 @@ export type RequestHeaderConfiguration = { requestHeaderAllowlist: string[] };
 export const RequestHeaderConfiguration = S.Union(
   S.Struct({ requestHeaderAllowlist: RequestHeaderAllowlist }),
 );
-export type ServerProtocol = "MCP" | "HTTP" | "A2A";
-export const ServerProtocol = S.Literal("MCP", "HTTP", "A2A");
+export type ServerProtocol = "MCP" | "HTTP" | "A2A" | (string & {});
+export const ServerProtocol = S.String;
 export interface ProtocolConfiguration {
   serverProtocol: ServerProtocol;
 }
@@ -1353,8 +1328,8 @@ export const ListGatewaysRequest = S.suspend(() =>
 }) as any as S.Schema<ListGatewaysRequest>;
 export type McpSupportedVersions = string[];
 export const McpSupportedVersions = S.Array(S.String);
-export type SearchType = "SEMANTIC";
-export const SearchType = S.Literal("SEMANTIC");
+export type SearchType = "SEMANTIC" | (string & {});
+export const SearchType = S.String;
 export interface MCPGatewayConfiguration {
   supportedVersions?: string[];
   instructions?: string;
@@ -1387,8 +1362,8 @@ export type InterceptorConfiguration = {
 export const InterceptorConfiguration = S.Union(
   S.Struct({ lambda: LambdaInterceptorConfiguration }),
 );
-export type GatewayInterceptionPoint = "REQUEST" | "RESPONSE";
-export const GatewayInterceptionPoint = S.Literal("REQUEST", "RESPONSE");
+export type GatewayInterceptionPoint = "REQUEST" | "RESPONSE" | (string & {});
+export const GatewayInterceptionPoint = S.String;
 export type GatewayInterceptionPoints = GatewayInterceptionPoint[];
 export const GatewayInterceptionPoints = S.Array(GatewayInterceptionPoint);
 export interface InterceptorInputConfiguration {
@@ -1418,8 +1393,8 @@ export type GatewayInterceptorConfigurations =
 export const GatewayInterceptorConfigurations = S.Array(
   GatewayInterceptorConfiguration,
 );
-export type GatewayPolicyEngineMode = "LOG_ONLY" | "ENFORCE";
-export const GatewayPolicyEngineMode = S.Literal("LOG_ONLY", "ENFORCE");
+export type GatewayPolicyEngineMode = "LOG_ONLY" | "ENFORCE" | (string & {});
+export const GatewayPolicyEngineMode = S.String;
 export interface GatewayPolicyEngineConfiguration {
   arn: string;
   mode: GatewayPolicyEngineMode;
@@ -1590,15 +1565,9 @@ export type SchemaType =
   | "object"
   | "array"
   | "boolean"
-  | "integer";
-export const SchemaType = S.Literal(
-  "string",
-  "number",
-  "object",
-  "array",
-  "boolean",
-  "integer",
-);
+  | "integer"
+  | (string & {});
+export const SchemaType = S.String;
 export type RequiredProperties = string[];
 export const RequiredProperties = S.Array(S.String);
 export interface SchemaDefinition {
@@ -1676,16 +1645,9 @@ export type RestApiMethod =
   | "OPTIONS"
   | "PATCH"
   | "PUT"
-  | "POST";
-export const RestApiMethod = S.Literal(
-  "GET",
-  "DELETE",
-  "HEAD",
-  "OPTIONS",
-  "PATCH",
-  "PUT",
-  "POST",
-);
+  | "POST"
+  | (string & {});
+export const RestApiMethod = S.String;
 export interface ApiGatewayToolOverride {
   name: string;
   description?: string;
@@ -1790,12 +1752,12 @@ export type TargetConfiguration = { mcp: McpTargetConfiguration };
 export const TargetConfiguration = S.Union(
   S.Struct({ mcp: McpTargetConfiguration }),
 );
-export type CredentialProviderType = "GATEWAY_IAM_ROLE" | "OAUTH" | "API_KEY";
-export const CredentialProviderType = S.Literal(
-  "GATEWAY_IAM_ROLE",
-  "OAUTH",
-  "API_KEY",
-);
+export type CredentialProviderType =
+  | "GATEWAY_IAM_ROLE"
+  | "OAUTH"
+  | "API_KEY"
+  | (string & {});
+export const CredentialProviderType = S.String;
 export type OAuthScopes = string[];
 export const OAuthScopes = S.Array(S.String);
 export type OAuthCustomParameters = {
@@ -1805,11 +1767,11 @@ export const OAuthCustomParameters = S.Record({
   key: S.String,
   value: S.UndefinedOr(SensitiveString),
 });
-export type OAuthGrantType = "CLIENT_CREDENTIALS" | "AUTHORIZATION_CODE";
-export const OAuthGrantType = S.Literal(
-  "CLIENT_CREDENTIALS",
-  "AUTHORIZATION_CODE",
-);
+export type OAuthGrantType =
+  | "CLIENT_CREDENTIALS"
+  | "AUTHORIZATION_CODE"
+  | (string & {});
+export const OAuthGrantType = S.String;
 export interface OAuthCredentialProvider {
   providerArn: string;
   scopes: string[];
@@ -1830,8 +1792,11 @@ export const OAuthCredentialProvider = S.suspend(() =>
 ).annotations({
   identifier: "OAuthCredentialProvider",
 }) as any as S.Schema<OAuthCredentialProvider>;
-export type ApiKeyCredentialLocation = "HEADER" | "QUERY_PARAMETER";
-export const ApiKeyCredentialLocation = S.Literal("HEADER", "QUERY_PARAMETER");
+export type ApiKeyCredentialLocation =
+  | "HEADER"
+  | "QUERY_PARAMETER"
+  | (string & {});
+export const ApiKeyCredentialLocation = S.String;
 export interface GatewayApiKeyCredentialProvider {
   providerArn: string;
   credentialParameterName?: string;
@@ -2381,17 +2346,9 @@ export type FilterOperator =
   | "GreaterThanOrEqual"
   | "LessThanOrEqual"
   | "Contains"
-  | "NotContains";
-export const FilterOperator = S.Literal(
-  "Equals",
-  "NotEquals",
-  "GreaterThan",
-  "LessThan",
-  "GreaterThanOrEqual",
-  "LessThanOrEqual",
-  "Contains",
-  "NotContains",
-);
+  | "NotContains"
+  | (string & {});
+export const FilterOperator = S.String;
 export type FilterValue =
   | { stringValue: string; doubleValue?: never; booleanValue?: never }
   | { stringValue?: never; doubleValue: number; booleanValue?: never }
@@ -2944,12 +2901,19 @@ export const ListWorkloadIdentitiesRequest = S.suspend(() =>
 ).annotations({
   identifier: "ListWorkloadIdentitiesRequest",
 }) as any as S.Schema<ListWorkloadIdentitiesRequest>;
-export type KeyType = "CustomerManagedKey" | "ServiceManagedKey";
-export const KeyType = S.Literal("CustomerManagedKey", "ServiceManagedKey");
-export type BrowserNetworkMode = "PUBLIC" | "VPC";
-export const BrowserNetworkMode = S.Literal("PUBLIC", "VPC");
-export type CodeInterpreterNetworkMode = "PUBLIC" | "SANDBOX" | "VPC";
-export const CodeInterpreterNetworkMode = S.Literal("PUBLIC", "SANDBOX", "VPC");
+export type KeyType =
+  | "CustomerManagedKey"
+  | "ServiceManagedKey"
+  | (string & {});
+export const KeyType = S.String;
+export type BrowserNetworkMode = "PUBLIC" | "VPC" | (string & {});
+export const BrowserNetworkMode = S.String;
+export type CodeInterpreterNetworkMode =
+  | "PUBLIC"
+  | "SANDBOX"
+  | "VPC"
+  | (string & {});
+export const CodeInterpreterNetworkMode = S.String;
 export interface KmsConfiguration {
   keyType: KeyType;
   kmsKeyArn?: string;
@@ -2965,30 +2929,18 @@ export type AgentRuntimeEndpointStatus =
   | "UPDATING"
   | "UPDATE_FAILED"
   | "READY"
-  | "DELETING";
-export const AgentRuntimeEndpointStatus = S.Literal(
-  "CREATING",
-  "CREATE_FAILED",
-  "UPDATING",
-  "UPDATE_FAILED",
-  "READY",
-  "DELETING",
-);
+  | "DELETING"
+  | (string & {});
+export const AgentRuntimeEndpointStatus = S.String;
 export type AgentRuntimeStatus =
   | "CREATING"
   | "CREATE_FAILED"
   | "UPDATING"
   | "UPDATE_FAILED"
   | "READY"
-  | "DELETING";
-export const AgentRuntimeStatus = S.Literal(
-  "CREATING",
-  "CREATE_FAILED",
-  "UPDATING",
-  "UPDATE_FAILED",
-  "READY",
-  "DELETING",
-);
+  | "DELETING"
+  | (string & {});
+export const AgentRuntimeStatus = S.String;
 export interface BrowserNetworkConfiguration {
   networkMode: BrowserNetworkMode;
   vpcConfig?: VpcConfig;
@@ -3015,15 +2967,9 @@ export type BrowserStatus =
   | "READY"
   | "DELETING"
   | "DELETE_FAILED"
-  | "DELETED";
-export const BrowserStatus = S.Literal(
-  "CREATING",
-  "CREATE_FAILED",
-  "READY",
-  "DELETING",
-  "DELETE_FAILED",
-  "DELETED",
-);
+  | "DELETED"
+  | (string & {});
+export const BrowserStatus = S.String;
 export interface CodeInterpreterNetworkConfiguration {
   networkMode: CodeInterpreterNetworkMode;
   vpcConfig?: VpcConfig;
@@ -3042,45 +2988,27 @@ export type CodeInterpreterStatus =
   | "READY"
   | "DELETING"
   | "DELETE_FAILED"
-  | "DELETED";
-export const CodeInterpreterStatus = S.Literal(
-  "CREATING",
-  "CREATE_FAILED",
-  "READY",
-  "DELETING",
-  "DELETE_FAILED",
-  "DELETED",
-);
+  | "DELETED"
+  | (string & {});
+export const CodeInterpreterStatus = S.String;
 export type EvaluatorStatus =
   | "ACTIVE"
   | "CREATING"
   | "CREATE_FAILED"
   | "UPDATING"
   | "UPDATE_FAILED"
-  | "DELETING";
-export const EvaluatorStatus = S.Literal(
-  "ACTIVE",
-  "CREATING",
-  "CREATE_FAILED",
-  "UPDATING",
-  "UPDATE_FAILED",
-  "DELETING",
-);
+  | "DELETING"
+  | (string & {});
+export const EvaluatorStatus = S.String;
 export type GatewayStatus =
   | "CREATING"
   | "UPDATING"
   | "UPDATE_UNSUCCESSFUL"
   | "DELETING"
   | "READY"
-  | "FAILED";
-export const GatewayStatus = S.Literal(
-  "CREATING",
-  "UPDATING",
-  "UPDATE_UNSUCCESSFUL",
-  "DELETING",
-  "READY",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const GatewayStatus = S.String;
 export type StatusReasons = string[];
 export const StatusReasons = S.Array(S.String);
 export type TargetStatus =
@@ -3091,39 +3019,25 @@ export type TargetStatus =
   | "READY"
   | "FAILED"
   | "SYNCHRONIZING"
-  | "SYNCHRONIZE_UNSUCCESSFUL";
-export const TargetStatus = S.Literal(
-  "CREATING",
-  "UPDATING",
-  "UPDATE_UNSUCCESSFUL",
-  "DELETING",
-  "READY",
-  "FAILED",
-  "SYNCHRONIZING",
-  "SYNCHRONIZE_UNSUCCESSFUL",
-);
-export type MemoryStatus = "CREATING" | "ACTIVE" | "FAILED" | "DELETING";
-export const MemoryStatus = S.Literal(
-  "CREATING",
-  "ACTIVE",
-  "FAILED",
-  "DELETING",
-);
+  | "SYNCHRONIZE_UNSUCCESSFUL"
+  | (string & {});
+export const TargetStatus = S.String;
+export type MemoryStatus =
+  | "CREATING"
+  | "ACTIVE"
+  | "FAILED"
+  | "DELETING"
+  | (string & {});
+export const MemoryStatus = S.String;
 export type OnlineEvaluationConfigStatus =
   | "ACTIVE"
   | "CREATING"
   | "CREATE_FAILED"
   | "UPDATING"
   | "UPDATE_FAILED"
-  | "DELETING";
-export const OnlineEvaluationConfigStatus = S.Literal(
-  "ACTIVE",
-  "CREATING",
-  "CREATE_FAILED",
-  "UPDATING",
-  "UPDATE_FAILED",
-  "DELETING",
-);
+  | "DELETING"
+  | (string & {});
+export const OnlineEvaluationConfigStatus = S.String;
 export type PolicyEngineStatus =
   | "CREATING"
   | "ACTIVE"
@@ -3131,16 +3045,9 @@ export type PolicyEngineStatus =
   | "DELETING"
   | "CREATE_FAILED"
   | "UPDATE_FAILED"
-  | "DELETE_FAILED";
-export const PolicyEngineStatus = S.Literal(
-  "CREATING",
-  "ACTIVE",
-  "UPDATING",
-  "DELETING",
-  "CREATE_FAILED",
-  "UPDATE_FAILED",
-  "DELETE_FAILED",
-);
+  | "DELETE_FAILED"
+  | (string & {});
+export const PolicyEngineStatus = S.String;
 export type PolicyStatusReasons = string[];
 export const PolicyStatusReasons = S.Array(S.String);
 export type Resource = { arn: string };
@@ -3151,13 +3058,9 @@ export type PolicyGenerationStatus =
   | "GENERATING"
   | "GENERATED"
   | "GENERATE_FAILED"
-  | "DELETE_FAILED";
-export const PolicyGenerationStatus = S.Literal(
-  "GENERATING",
-  "GENERATED",
-  "GENERATE_FAILED",
-  "DELETE_FAILED",
-);
+  | "DELETE_FAILED"
+  | (string & {});
+export const PolicyGenerationStatus = S.String;
 export type PolicyStatus =
   | "CREATING"
   | "ACTIVE"
@@ -3165,16 +3068,9 @@ export type PolicyStatus =
   | "DELETING"
   | "CREATE_FAILED"
   | "UPDATE_FAILED"
-  | "DELETE_FAILED";
-export const PolicyStatus = S.Literal(
-  "CREATING",
-  "ACTIVE",
-  "UPDATING",
-  "DELETING",
-  "CREATE_FAILED",
-  "UPDATE_FAILED",
-  "DELETE_FAILED",
-);
+  | "DELETE_FAILED"
+  | (string & {});
+export const PolicyStatus = S.String;
 export type NamespacesList = string[];
 export const NamespacesList = S.Array(S.String);
 export interface GetResourcePolicyResponse {
@@ -4356,8 +4252,8 @@ export const UpdateWorkloadIdentityResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateWorkloadIdentityResponse",
 }) as any as S.Schema<UpdateWorkloadIdentityResponse>;
-export type EvaluatorType = "Builtin" | "Custom";
-export const EvaluatorType = S.Literal("Builtin", "Custom");
+export type EvaluatorType = "Builtin" | "Custom" | (string & {});
+export const EvaluatorType = S.String;
 export interface SemanticMemoryStrategyInput {
   name: string;
   description?: string | redacted.Redacted<string>;
@@ -4814,25 +4710,16 @@ export type MemoryStrategyType =
   | "SUMMARIZATION"
   | "USER_PREFERENCE"
   | "CUSTOM"
-  | "EPISODIC";
-export const MemoryStrategyType = S.Literal(
-  "SEMANTIC",
-  "SUMMARIZATION",
-  "USER_PREFERENCE",
-  "CUSTOM",
-  "EPISODIC",
-);
+  | "EPISODIC"
+  | (string & {});
+export const MemoryStrategyType = S.String;
 export type MemoryStrategyStatus =
   | "CREATING"
   | "ACTIVE"
   | "DELETING"
-  | "FAILED";
-export const MemoryStrategyStatus = S.Literal(
-  "CREATING",
-  "ACTIVE",
-  "DELETING",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const MemoryStrategyStatus = S.String;
 export type FindingType =
   | "VALID"
   | "INVALID"
@@ -4840,16 +4727,9 @@ export type FindingType =
   | "ALLOW_ALL"
   | "ALLOW_NONE"
   | "DENY_ALL"
-  | "DENY_NONE";
-export const FindingType = S.Literal(
-  "VALID",
-  "INVALID",
-  "NOT_TRANSLATABLE",
-  "ALLOW_ALL",
-  "ALLOW_NONE",
-  "DENY_ALL",
-  "DENY_NONE",
-);
+  | "DENY_NONE"
+  | (string & {});
+export const FindingType = S.String;
 export interface SetTokenVaultCMKResponse {
   tokenVaultId: string;
   kmsConfiguration: KmsConfiguration;
@@ -5274,14 +5154,9 @@ export type OverrideType =
   | "SUMMARY_OVERRIDE"
   | "USER_PREFERENCE_OVERRIDE"
   | "SELF_MANAGED"
-  | "EPISODIC_OVERRIDE";
-export const OverrideType = S.Literal(
-  "SEMANTIC_OVERRIDE",
-  "SUMMARY_OVERRIDE",
-  "USER_PREFERENCE_OVERRIDE",
-  "SELF_MANAGED",
-  "EPISODIC_OVERRIDE",
-);
+  | "EPISODIC_OVERRIDE"
+  | (string & {});
+export const OverrideType = S.String;
 export interface OutputConfig {
   cloudWatchConfig: CloudWatchOutputConfig;
 }
@@ -5824,14 +5699,9 @@ export type ValidationExceptionReason =
   | "FieldValidationFailed"
   | "IdempotentParameterMismatchException"
   | "EventInOtherSession"
-  | "ResourceConflict";
-export const ValidationExceptionReason = S.Literal(
-  "CannotParse",
-  "FieldValidationFailed",
-  "IdempotentParameterMismatchException",
-  "EventInOtherSession",
-  "ResourceConflict",
-);
+  | "ResourceConflict"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 export interface ModifyStrategyConfiguration {
   extraction?: ModifyExtractionConfiguration;
   consolidation?: ModifyConsolidationConfiguration;

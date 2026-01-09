@@ -107,15 +107,11 @@ export type EnhancedMonitoring =
   | "DEFAULT"
   | "PER_BROKER"
   | "PER_TOPIC_PER_BROKER"
-  | "PER_TOPIC_PER_PARTITION";
-export const EnhancedMonitoring = S.Literal(
-  "DEFAULT",
-  "PER_BROKER",
-  "PER_TOPIC_PER_BROKER",
-  "PER_TOPIC_PER_PARTITION",
-);
-export type StorageMode = "LOCAL" | "TIERED";
-export const StorageMode = S.Literal("LOCAL", "TIERED");
+  | "PER_TOPIC_PER_PARTITION"
+  | (string & {});
+export const EnhancedMonitoring = S.String;
+export type StorageMode = "LOCAL" | "TIERED" | (string & {});
+export const StorageMode = S.String;
 export interface BatchAssociateScramSecretRequest {
   ClusterArn: string;
   SecretArnList?: string[];
@@ -1328,8 +1324,8 @@ export const UpdateMonitoringRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateMonitoringRequest",
 }) as any as S.Schema<UpdateMonitoringRequest>;
-export type RebalancingStatus = "PAUSED" | "ACTIVE";
-export const RebalancingStatus = S.Literal("PAUSED", "ACTIVE");
+export type RebalancingStatus = "PAUSED" | "ACTIVE" | (string & {});
+export const RebalancingStatus = S.String;
 export interface Rebalancing {
   Status?: RebalancingStatus;
 }
@@ -1441,8 +1437,12 @@ export const EncryptionAtRest = S.suspend(() =>
 ).annotations({
   identifier: "EncryptionAtRest",
 }) as any as S.Schema<EncryptionAtRest>;
-export type ClientBroker = "TLS" | "TLS_PLAINTEXT" | "PLAINTEXT";
-export const ClientBroker = S.Literal("TLS", "TLS_PLAINTEXT", "PLAINTEXT");
+export type ClientBroker =
+  | "TLS"
+  | "TLS_PLAINTEXT"
+  | "PLAINTEXT"
+  | (string & {});
+export const ClientBroker = S.String;
 export interface EncryptionInTransit {
   ClientBroker?: ClientBroker;
   InCluster?: boolean;
@@ -1500,16 +1500,16 @@ export const UpdateSecurityRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateSecurityRequest",
 }) as any as S.Schema<UpdateSecurityRequest>;
-export type BrokerAZDistribution = "DEFAULT";
-export const BrokerAZDistribution = S.Literal("DEFAULT");
-export type TargetCompressionType = "NONE" | "GZIP" | "SNAPPY" | "LZ4" | "ZSTD";
-export const TargetCompressionType = S.Literal(
-  "NONE",
-  "GZIP",
-  "SNAPPY",
-  "LZ4",
-  "ZSTD",
-);
+export type BrokerAZDistribution = "DEFAULT" | (string & {});
+export const BrokerAZDistribution = S.String;
+export type TargetCompressionType =
+  | "NONE"
+  | "GZIP"
+  | "SNAPPY"
+  | "LZ4"
+  | "ZSTD"
+  | (string & {});
+export const TargetCompressionType = S.String;
 export type __listOf__stringMax256 = string[];
 export const __listOf__stringMax256 = S.Array(S.String);
 export type __listOf__stringMax249 = string[];
@@ -1720,12 +1720,12 @@ export const ProvisionedRequest = S.suspend(() =>
 ).annotations({
   identifier: "ProvisionedRequest",
 }) as any as S.Schema<ProvisionedRequest>;
-export type ConfigurationState = "ACTIVE" | "DELETING" | "DELETE_FAILED";
-export const ConfigurationState = S.Literal(
-  "ACTIVE",
-  "DELETING",
-  "DELETE_FAILED",
-);
+export type ConfigurationState =
+  | "ACTIVE"
+  | "DELETING"
+  | "DELETE_FAILED"
+  | (string & {});
+export const ConfigurationState = S.String;
 export type VpcConnectionState =
   | "CREATING"
   | "AVAILABLE"
@@ -1734,17 +1734,9 @@ export type VpcConnectionState =
   | "DELETING"
   | "FAILED"
   | "REJECTED"
-  | "REJECTING";
-export const VpcConnectionState = S.Literal(
-  "CREATING",
-  "AVAILABLE",
-  "INACTIVE",
-  "DEACTIVATING",
-  "DELETING",
-  "FAILED",
-  "REJECTED",
-  "REJECTING",
-);
+  | "REJECTING"
+  | (string & {});
+export const VpcConnectionState = S.String;
 export type ClusterState =
   | "ACTIVE"
   | "CREATING"
@@ -1753,37 +1745,24 @@ export type ClusterState =
   | "HEALING"
   | "MAINTENANCE"
   | "REBOOTING_BROKER"
-  | "UPDATING";
-export const ClusterState = S.Literal(
-  "ACTIVE",
-  "CREATING",
-  "DELETING",
-  "FAILED",
-  "HEALING",
-  "MAINTENANCE",
-  "REBOOTING_BROKER",
-  "UPDATING",
-);
+  | "UPDATING"
+  | (string & {});
+export const ClusterState = S.String;
 export type ReplicatorState =
   | "RUNNING"
   | "CREATING"
   | "UPDATING"
   | "DELETING"
-  | "FAILED";
-export const ReplicatorState = S.Literal(
-  "RUNNING",
-  "CREATING",
-  "UPDATING",
-  "DELETING",
-  "FAILED",
-);
-export type TopicState = "CREATING" | "UPDATING" | "DELETING" | "ACTIVE";
-export const TopicState = S.Literal(
-  "CREATING",
-  "UPDATING",
-  "DELETING",
-  "ACTIVE",
-);
+  | "FAILED"
+  | (string & {});
+export const ReplicatorState = S.String;
+export type TopicState =
+  | "CREATING"
+  | "UPDATING"
+  | "DELETING"
+  | "ACTIVE"
+  | (string & {});
+export const TopicState = S.String;
 export interface ErrorInfo {
   ErrorCode?: string;
   ErrorString?: string;
@@ -1956,8 +1935,8 @@ export const MutableClusterInfo = S.suspend(() =>
 ).annotations({
   identifier: "MutableClusterInfo",
 }) as any as S.Schema<MutableClusterInfo>;
-export type UserIdentityType = "AWSACCOUNT" | "AWSSERVICE";
-export const UserIdentityType = S.Literal("AWSACCOUNT", "AWSSERVICE");
+export type UserIdentityType = "AWSACCOUNT" | "AWSSERVICE" | (string & {});
+export const UserIdentityType = S.String;
 export interface UserIdentity {
   Type?: UserIdentityType;
   PrincipalId?: string;
@@ -2065,12 +2044,9 @@ export const StateInfo = S.suspend(() =>
 export type CustomerActionStatus =
   | "CRITICAL_ACTION_REQUIRED"
   | "ACTION_RECOMMENDED"
-  | "NONE";
-export const CustomerActionStatus = S.Literal(
-  "CRITICAL_ACTION_REQUIRED",
-  "ACTION_RECOMMENDED",
-  "NONE",
-);
+  | "NONE"
+  | (string & {});
+export const CustomerActionStatus = S.String;
 export interface ClusterInfo {
   ActiveOperationArn?: string;
   BrokerNodeGroupInfo?: BrokerNodeGroupInfo;
@@ -2151,8 +2127,8 @@ export const ClusterInfo = S.suspend(() =>
 ).annotations({ identifier: "ClusterInfo" }) as any as S.Schema<ClusterInfo>;
 export type __listOfClusterInfo = ClusterInfo[];
 export const __listOfClusterInfo = S.Array(ClusterInfo);
-export type ClusterType = "PROVISIONED" | "SERVERLESS";
-export const ClusterType = S.Literal("PROVISIONED", "SERVERLESS");
+export type ClusterType = "PROVISIONED" | "SERVERLESS" | (string & {});
+export const ClusterType = S.String;
 export interface Provisioned {
   BrokerNodeGroupInfo?: BrokerNodeGroupInfo;
   Rebalancing?: Rebalancing;
@@ -3099,19 +3075,20 @@ export const ConsumerGroupReplication = S.suspend(() =>
 }) as any as S.Schema<ConsumerGroupReplication>;
 export type __listOf__integer = number[];
 export const __listOf__integer = S.Array(S.Number);
-export type KafkaVersionStatus = "ACTIVE" | "DEPRECATED";
-export const KafkaVersionStatus = S.Literal("ACTIVE", "DEPRECATED");
-export type NodeType = "BROKER";
-export const NodeType = S.Literal("BROKER");
-export type ReplicationStartingPositionType = "LATEST" | "EARLIEST";
-export const ReplicationStartingPositionType = S.Literal("LATEST", "EARLIEST");
+export type KafkaVersionStatus = "ACTIVE" | "DEPRECATED" | (string & {});
+export const KafkaVersionStatus = S.String;
+export type NodeType = "BROKER" | (string & {});
+export const NodeType = S.String;
+export type ReplicationStartingPositionType =
+  | "LATEST"
+  | "EARLIEST"
+  | (string & {});
+export const ReplicationStartingPositionType = S.String;
 export type ReplicationTopicNameConfigurationType =
   | "PREFIXED_WITH_SOURCE_CLUSTER_ALIAS"
-  | "IDENTICAL";
-export const ReplicationTopicNameConfigurationType = S.Literal(
-  "PREFIXED_WITH_SOURCE_CLUSTER_ALIAS",
-  "IDENTICAL",
-);
+  | "IDENTICAL"
+  | (string & {});
+export const ReplicationTopicNameConfigurationType = S.String;
 export interface KafkaCluster {
   AmazonMskCluster?: AmazonMskCluster;
   VpcConfig?: KafkaClusterClientVpcConfig;

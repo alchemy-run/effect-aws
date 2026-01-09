@@ -134,20 +134,18 @@ export type ProviderType =
   | "GitHub"
   | "GitHubEnterpriseServer"
   | "GitLab"
-  | "GitLabSelfManaged";
-export const ProviderType = S.Literal(
-  "Bitbucket",
-  "GitHub",
-  "GitHubEnterpriseServer",
-  "GitLab",
-  "GitLabSelfManaged",
-);
-export type SyncConfigurationType = "CFN_STACK_SYNC";
-export const SyncConfigurationType = S.Literal("CFN_STACK_SYNC");
-export type PublishDeploymentStatus = "ENABLED" | "DISABLED";
-export const PublishDeploymentStatus = S.Literal("ENABLED", "DISABLED");
-export type TriggerResourceUpdateOn = "ANY_CHANGE" | "FILE_CHANGE";
-export const TriggerResourceUpdateOn = S.Literal("ANY_CHANGE", "FILE_CHANGE");
+  | "GitLabSelfManaged"
+  | (string & {});
+export const ProviderType = S.String;
+export type SyncConfigurationType = "CFN_STACK_SYNC" | (string & {});
+export const SyncConfigurationType = S.String;
+export type PublishDeploymentStatus = "ENABLED" | "DISABLED" | (string & {});
+export const PublishDeploymentStatus = S.String;
+export type TriggerResourceUpdateOn =
+  | "ANY_CHANGE"
+  | "FILE_CHANGE"
+  | (string & {});
+export const TriggerResourceUpdateOn = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export interface Tag {
@@ -561,8 +559,12 @@ export const UpdateSyncConfigurationInput = S.suspend(() =>
 ).annotations({
   identifier: "UpdateSyncConfigurationInput",
 }) as any as S.Schema<UpdateSyncConfigurationInput>;
-export type ConnectionStatus = "PENDING" | "AVAILABLE" | "ERROR";
-export const ConnectionStatus = S.Literal("PENDING", "AVAILABLE", "ERROR");
+export type ConnectionStatus =
+  | "PENDING"
+  | "AVAILABLE"
+  | "ERROR"
+  | (string & {});
+export const ConnectionStatus = S.String;
 export interface Connection {
   ConnectionName?: string;
   ConnectionArn?: string;
@@ -776,29 +778,20 @@ export type RepositorySyncStatus =
   | "INITIATED"
   | "IN_PROGRESS"
   | "SUCCEEDED"
-  | "QUEUED";
-export const RepositorySyncStatus = S.Literal(
-  "FAILED",
-  "INITIATED",
-  "IN_PROGRESS",
-  "SUCCEEDED",
-  "QUEUED",
-);
+  | "QUEUED"
+  | (string & {});
+export const RepositorySyncStatus = S.String;
 export type ResourceSyncStatus =
   | "FAILED"
   | "INITIATED"
   | "IN_PROGRESS"
-  | "SUCCEEDED";
-export const ResourceSyncStatus = S.Literal(
-  "FAILED",
-  "INITIATED",
-  "IN_PROGRESS",
-  "SUCCEEDED",
-);
-export type BlockerType = "AUTOMATED";
-export const BlockerType = S.Literal("AUTOMATED");
-export type BlockerStatus = "ACTIVE" | "RESOLVED";
-export const BlockerStatus = S.Literal("ACTIVE", "RESOLVED");
+  | "SUCCEEDED"
+  | (string & {});
+export const ResourceSyncStatus = S.String;
+export type BlockerType = "AUTOMATED" | (string & {});
+export const BlockerType = S.String;
+export type BlockerStatus = "ACTIVE" | "RESOLVED" | (string & {});
+export const BlockerStatus = S.String;
 export interface SyncBlockerContext {
   Key: string;
   Value: string;

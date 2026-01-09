@@ -310,10 +310,10 @@ export const StartDeviceAuthorizationResponse = S.suspend(() =>
 ).annotations({
   identifier: "StartDeviceAuthorizationResponse",
 }) as any as S.Schema<StartDeviceAuthorizationResponse>;
-export type AccessDeniedExceptionReason = "KMS_AccessDeniedException";
-export const AccessDeniedExceptionReason = S.Literal(
-  "KMS_AccessDeniedException",
-);
+export type AccessDeniedExceptionReason =
+  | "KMS_AccessDeniedException"
+  | (string & {});
+export const AccessDeniedExceptionReason = S.String;
 export interface AwsAdditionalDetails {
   identityContext?: string;
 }
@@ -350,13 +350,9 @@ export type InvalidRequestExceptionReason =
   | "KMS_NotFoundException"
   | "KMS_InvalidKeyUsageException"
   | "KMS_InvalidStateException"
-  | "KMS_DisabledException";
-export const InvalidRequestExceptionReason = S.Literal(
-  "KMS_NotFoundException",
-  "KMS_InvalidKeyUsageException",
-  "KMS_InvalidStateException",
-  "KMS_DisabledException",
-);
+  | "KMS_DisabledException"
+  | (string & {});
+export const InvalidRequestExceptionReason = S.String;
 
 //# Errors
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(

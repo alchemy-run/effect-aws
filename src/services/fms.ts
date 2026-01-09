@@ -184,11 +184,9 @@ export const GetNotificationChannelRequest = S.suspend(() =>
 }) as any as S.Schema<GetNotificationChannelRequest>;
 export type ThirdPartyFirewall =
   | "PALO_ALTO_NETWORKS_CLOUD_NGFW"
-  | "FORTIGATE_CLOUD_NATIVE_FIREWALL";
-export const ThirdPartyFirewall = S.Literal(
-  "PALO_ALTO_NETWORKS_CLOUD_NGFW",
-  "FORTIGATE_CLOUD_NATIVE_FIREWALL",
-);
+  | "FORTIGATE_CLOUD_NATIVE_FIREWALL"
+  | (string & {});
+export const ThirdPartyFirewall = S.String;
 export type IdentifierList = string[];
 export const IdentifierList = S.Array(S.String);
 export type AccountRoleStatus =
@@ -196,14 +194,9 @@ export type AccountRoleStatus =
   | "CREATING"
   | "PENDING_DELETION"
   | "DELETING"
-  | "DELETED";
-export const AccountRoleStatus = S.Literal(
-  "READY",
-  "CREATING",
-  "PENDING_DELETION",
-  "DELETING",
-  "DELETED",
-);
+  | "DELETED"
+  | (string & {});
+export const AccountRoleStatus = S.String;
 export type AWSAccountIdList = string[];
 export const AWSAccountIdList = S.Array(S.String);
 export type TagKeyList = string[];
@@ -705,38 +698,32 @@ export type ResourceTypeList = string[];
 export const ResourceTypeList = S.Array(S.String);
 export type ResourceSetIds = string[];
 export const ResourceSetIds = S.Array(S.String);
-export type CustomerPolicyStatus = "ACTIVE" | "OUT_OF_ADMIN_SCOPE";
-export const CustomerPolicyStatus = S.Literal("ACTIVE", "OUT_OF_ADMIN_SCOPE");
-export type ResourceTagLogicalOperator = "AND" | "OR";
-export const ResourceTagLogicalOperator = S.Literal("AND", "OR");
+export type CustomerPolicyStatus =
+  | "ACTIVE"
+  | "OUT_OF_ADMIN_SCOPE"
+  | (string & {});
+export const CustomerPolicyStatus = S.String;
+export type ResourceTagLogicalOperator = "AND" | "OR" | (string & {});
+export const ResourceTagLogicalOperator = S.String;
 export type ProtocolsList = string[];
 export const ProtocolsList = S.Array(S.String);
-export type ResourceSetStatus = "ACTIVE" | "OUT_OF_ADMIN_SCOPE";
-export const ResourceSetStatus = S.Literal("ACTIVE", "OUT_OF_ADMIN_SCOPE");
+export type ResourceSetStatus = "ACTIVE" | "OUT_OF_ADMIN_SCOPE" | (string & {});
+export const ResourceSetStatus = S.String;
 export type ThirdPartyFirewallAssociationStatus =
   | "ONBOARDING"
   | "ONBOARD_COMPLETE"
   | "OFFBOARDING"
   | "OFFBOARD_COMPLETE"
-  | "NOT_EXIST";
-export const ThirdPartyFirewallAssociationStatus = S.Literal(
-  "ONBOARDING",
-  "ONBOARD_COMPLETE",
-  "OFFBOARDING",
-  "OFFBOARD_COMPLETE",
-  "NOT_EXIST",
-);
+  | "NOT_EXIST"
+  | (string & {});
+export const ThirdPartyFirewallAssociationStatus = S.String;
 export type OrganizationStatus =
   | "ONBOARDING"
   | "ONBOARDING_COMPLETE"
   | "OFFBOARDING"
-  | "OFFBOARDING_COMPLETE";
-export const OrganizationStatus = S.Literal(
-  "ONBOARDING",
-  "ONBOARDING_COMPLETE",
-  "OFFBOARDING",
-  "OFFBOARDING_COMPLETE",
-);
+  | "OFFBOARDING_COMPLETE"
+  | (string & {});
+export const OrganizationStatus = S.String;
 export type SecurityServiceType =
   | "WAF"
   | "WAFV2"
@@ -748,29 +735,15 @@ export type SecurityServiceType =
   | "DNS_FIREWALL"
   | "THIRD_PARTY_FIREWALL"
   | "IMPORT_NETWORK_FIREWALL"
-  | "NETWORK_ACL_COMMON";
-export const SecurityServiceType = S.Literal(
-  "WAF",
-  "WAFV2",
-  "SHIELD_ADVANCED",
-  "SECURITY_GROUPS_COMMON",
-  "SECURITY_GROUPS_CONTENT_AUDIT",
-  "SECURITY_GROUPS_USAGE_AUDIT",
-  "NETWORK_FIREWALL",
-  "DNS_FIREWALL",
-  "THIRD_PARTY_FIREWALL",
-  "IMPORT_NETWORK_FIREWALL",
-  "NETWORK_ACL_COMMON",
-);
+  | "NETWORK_ACL_COMMON"
+  | (string & {});
+export const SecurityServiceType = S.String;
 export type MarketplaceSubscriptionOnboardingStatus =
   | "NO_SUBSCRIPTION"
   | "NOT_COMPLETE"
-  | "COMPLETE";
-export const MarketplaceSubscriptionOnboardingStatus = S.Literal(
-  "NO_SUBSCRIPTION",
-  "NOT_COMPLETE",
-  "COMPLETE",
-);
+  | "COMPLETE"
+  | (string & {});
+export const MarketplaceSubscriptionOnboardingStatus = S.String;
 export type AccountIdList = string[];
 export const AccountIdList = S.Array(S.String);
 export type MemberAccounts = string[];
@@ -801,8 +774,8 @@ export type AWSRegionList = string[];
 export const AWSRegionList = S.Array(S.String);
 export type SecurityServiceTypeList = SecurityServiceType[];
 export const SecurityServiceTypeList = S.Array(SecurityServiceType);
-export type CustomerPolicyScopeIdType = "ACCOUNT" | "ORG_UNIT";
-export const CustomerPolicyScopeIdType = S.Literal("ACCOUNT", "ORG_UNIT");
+export type CustomerPolicyScopeIdType = "ACCOUNT" | "ORG_UNIT" | (string & {});
+export const CustomerPolicyScopeIdType = S.String;
 export type CustomerPolicyScopeIdList = string[];
 export const CustomerPolicyScopeIdList = S.Array(S.String);
 export interface AssociateThirdPartyFirewallResponse {
@@ -821,15 +794,9 @@ export type FailedItemReason =
   | "NOT_VALID_REGION"
   | "NOT_VALID_SERVICE"
   | "NOT_VALID_RESOURCE_TYPE"
-  | "NOT_VALID_ACCOUNT_ID";
-export const FailedItemReason = S.Literal(
-  "NOT_VALID_ARN",
-  "NOT_VALID_PARTITION",
-  "NOT_VALID_REGION",
-  "NOT_VALID_SERVICE",
-  "NOT_VALID_RESOURCE_TYPE",
-  "NOT_VALID_ACCOUNT_ID",
-);
+  | "NOT_VALID_ACCOUNT_ID"
+  | (string & {});
+export const FailedItemReason = S.String;
 export interface FailedItem {
   URI?: string;
   Reason?: FailedItemReason;
@@ -979,8 +946,11 @@ export const GetAppsListResponse = S.suspend(() =>
 ).annotations({
   identifier: "GetAppsListResponse",
 }) as any as S.Schema<GetAppsListResponse>;
-export type FirewallDeploymentModel = "CENTRALIZED" | "DISTRIBUTED";
-export const FirewallDeploymentModel = S.Literal("CENTRALIZED", "DISTRIBUTED");
+export type FirewallDeploymentModel =
+  | "CENTRALIZED"
+  | "DISTRIBUTED"
+  | (string & {});
+export const FirewallDeploymentModel = S.String;
 export interface NetworkFirewallPolicy {
   FirewallDeploymentModel?: FirewallDeploymentModel;
 }
@@ -1015,8 +985,8 @@ export const NetworkAclPortRange = S.suspend(() =>
 ).annotations({
   identifier: "NetworkAclPortRange",
 }) as any as S.Schema<NetworkAclPortRange>;
-export type NetworkAclRuleAction = "allow" | "deny";
-export const NetworkAclRuleAction = S.Literal("allow", "deny");
+export type NetworkAclRuleAction = "allow" | "deny" | (string & {});
+export const NetworkAclRuleAction = S.String;
 export interface NetworkAclEntry {
   IcmpTypeCode?: NetworkAclIcmpTypeCode;
   Protocol: string;
@@ -1449,55 +1419,21 @@ export type ViolationReason =
   | "ROUTE_HAS_OUT_OF_SCOPE_ENDPOINT"
   | "FIREWALL_SUBNET_MISSING_VPCE_ENDPOINT"
   | "INVALID_NETWORK_ACL_ENTRY"
-  | "WEB_ACL_CONFIGURATION_OR_SCOPE_OF_USE";
-export const ViolationReason = S.Literal(
-  "WEB_ACL_MISSING_RULE_GROUP",
-  "RESOURCE_MISSING_WEB_ACL",
-  "RESOURCE_INCORRECT_WEB_ACL",
-  "RESOURCE_MISSING_SHIELD_PROTECTION",
-  "RESOURCE_MISSING_WEB_ACL_OR_SHIELD_PROTECTION",
-  "RESOURCE_MISSING_SECURITY_GROUP",
-  "RESOURCE_VIOLATES_AUDIT_SECURITY_GROUP",
-  "SECURITY_GROUP_UNUSED",
-  "SECURITY_GROUP_REDUNDANT",
-  "FMS_CREATED_SECURITY_GROUP_EDITED",
-  "MISSING_FIREWALL",
-  "MISSING_FIREWALL_SUBNET_IN_AZ",
-  "MISSING_EXPECTED_ROUTE_TABLE",
-  "NETWORK_FIREWALL_POLICY_MODIFIED",
-  "FIREWALL_SUBNET_IS_OUT_OF_SCOPE",
-  "INTERNET_GATEWAY_MISSING_EXPECTED_ROUTE",
-  "FIREWALL_SUBNET_MISSING_EXPECTED_ROUTE",
-  "UNEXPECTED_FIREWALL_ROUTES",
-  "UNEXPECTED_TARGET_GATEWAY_ROUTES",
-  "TRAFFIC_INSPECTION_CROSSES_AZ_BOUNDARY",
-  "INVALID_ROUTE_CONFIGURATION",
-  "MISSING_TARGET_GATEWAY",
-  "INTERNET_TRAFFIC_NOT_INSPECTED",
-  "BLACK_HOLE_ROUTE_DETECTED",
-  "BLACK_HOLE_ROUTE_DETECTED_IN_FIREWALL_SUBNET",
-  "RESOURCE_MISSING_DNS_FIREWALL",
-  "ROUTE_HAS_OUT_OF_SCOPE_ENDPOINT",
-  "FIREWALL_SUBNET_MISSING_VPCE_ENDPOINT",
-  "INVALID_NETWORK_ACL_ENTRY",
-  "WEB_ACL_CONFIGURATION_OR_SCOPE_OF_USE",
-);
+  | "WEB_ACL_CONFIGURATION_OR_SCOPE_OF_USE"
+  | (string & {});
+export const ViolationReason = S.String;
 export type DependentServiceName =
   | "AWSCONFIG"
   | "AWSWAF"
   | "AWSSHIELD_ADVANCED"
-  | "AWSVPC";
-export const DependentServiceName = S.Literal(
-  "AWSCONFIG",
-  "AWSWAF",
-  "AWSSHIELD_ADVANCED",
-  "AWSVPC",
-);
-export type PolicyComplianceStatusType = "COMPLIANT" | "NON_COMPLIANT";
-export const PolicyComplianceStatusType = S.Literal(
-  "COMPLIANT",
-  "NON_COMPLIANT",
-);
+  | "AWSVPC"
+  | (string & {});
+export const DependentServiceName = S.String;
+export type PolicyComplianceStatusType =
+  | "COMPLIANT"
+  | "NON_COMPLIANT"
+  | (string & {});
+export const PolicyComplianceStatusType = S.String;
 export interface BatchAssociateResourceResponse {
   ResourceSetIdentifier: string;
   FailedItems: FailedItem[];
@@ -1789,8 +1725,8 @@ export const NetworkFirewallMissingExpectedRTViolation = S.suspend(() =>
 ).annotations({
   identifier: "NetworkFirewallMissingExpectedRTViolation",
 }) as any as S.Schema<NetworkFirewallMissingExpectedRTViolation>;
-export type DestinationType = "IPV4" | "IPV6" | "PREFIX_LIST";
-export const DestinationType = S.Literal("IPV4", "IPV6", "PREFIX_LIST");
+export type DestinationType = "IPV4" | "IPV6" | "PREFIX_LIST" | (string & {});
+export const DestinationType = S.String;
 export type TargetType =
   | "GATEWAY"
   | "CARRIER_GATEWAY"
@@ -1801,19 +1737,9 @@ export type TargetType =
   | "VPC_ENDPOINT"
   | "VPC_PEERING_CONNECTION"
   | "EGRESS_ONLY_INTERNET_GATEWAY"
-  | "TRANSIT_GATEWAY";
-export const TargetType = S.Literal(
-  "GATEWAY",
-  "CARRIER_GATEWAY",
-  "INSTANCE",
-  "LOCAL_GATEWAY",
-  "NAT_GATEWAY",
-  "NETWORK_INTERFACE",
-  "VPC_ENDPOINT",
-  "VPC_PEERING_CONNECTION",
-  "EGRESS_ONLY_INTERNET_GATEWAY",
-  "TRANSIT_GATEWAY",
-);
+  | "TRANSIT_GATEWAY"
+  | (string & {});
+export const TargetType = S.String;
 export interface Route {
   DestinationType?: DestinationType;
   TargetType?: TargetType;
@@ -2145,19 +2071,16 @@ export const WebACLHasOutOfScopeResourcesViolation = S.suspend(() =>
 }) as any as S.Schema<WebACLHasOutOfScopeResourcesViolation>;
 export type TargetViolationReasons = string[];
 export const TargetViolationReasons = S.Array(S.String);
-export type RemediationActionType = "REMOVE" | "MODIFY";
-export const RemediationActionType = S.Literal("REMOVE", "MODIFY");
+export type RemediationActionType = "REMOVE" | "MODIFY" | (string & {});
+export const RemediationActionType = S.String;
 export type NetworkFirewallActionList = string[];
 export const NetworkFirewallActionList = S.Array(S.String);
 export type EntryType =
   | "FMS_MANAGED_FIRST_ENTRY"
   | "FMS_MANAGED_LAST_ENTRY"
-  | "CUSTOM_ENTRY";
-export const EntryType = S.Literal(
-  "FMS_MANAGED_FIRST_ENTRY",
-  "FMS_MANAGED_LAST_ENTRY",
-  "CUSTOM_ENTRY",
-);
+  | "CUSTOM_ENTRY"
+  | (string & {});
+export const EntryType = S.String;
 export interface EntryDescription {
   EntryDetail?: NetworkAclEntry;
   EntryRuleNumber?: number;
@@ -2177,12 +2100,9 @@ export const EntriesWithConflicts = S.Array(EntryDescription);
 export type EntryViolationReason =
   | "MISSING_EXPECTED_ENTRY"
   | "INCORRECT_ENTRY_ORDER"
-  | "ENTRY_CONFLICT";
-export const EntryViolationReason = S.Literal(
-  "MISSING_EXPECTED_ENTRY",
-  "INCORRECT_ENTRY_ORDER",
-  "ENTRY_CONFLICT",
-);
+  | "ENTRY_CONFLICT"
+  | (string & {});
+export const EntryViolationReason = S.String;
 export type EntryViolationReasons = EntryViolationReason[];
 export const EntryViolationReasons = S.Array(EntryViolationReason);
 export interface ListComplianceStatusResponse {
@@ -2273,19 +2193,15 @@ export const PolicyComplianceDetail = S.suspend(() =>
 ).annotations({
   identifier: "PolicyComplianceDetail",
 }) as any as S.Schema<PolicyComplianceDetail>;
-export type RuleOrder = "STRICT_ORDER" | "DEFAULT_ACTION_ORDER";
-export const RuleOrder = S.Literal("STRICT_ORDER", "DEFAULT_ACTION_ORDER");
+export type RuleOrder = "STRICT_ORDER" | "DEFAULT_ACTION_ORDER" | (string & {});
+export const RuleOrder = S.String;
 export type StreamExceptionPolicy =
   | "DROP"
   | "CONTINUE"
   | "REJECT"
-  | "FMS_IGNORE";
-export const StreamExceptionPolicy = S.Literal(
-  "DROP",
-  "CONTINUE",
-  "REJECT",
-  "FMS_IGNORE",
-);
+  | "FMS_IGNORE"
+  | (string & {});
+export const StreamExceptionPolicy = S.String;
 export interface NetworkFirewallInternetTrafficNotInspectedViolation {
   SubnetId?: string;
   SubnetAvailabilityZone?: string;
@@ -2381,8 +2297,8 @@ export const StatefulEngineOptions = S.suspend(() =>
 ).annotations({
   identifier: "StatefulEngineOptions",
 }) as any as S.Schema<StatefulEngineOptions>;
-export type NetworkFirewallOverrideAction = "DROP_TO_ALERT";
-export const NetworkFirewallOverrideAction = S.Literal("DROP_TO_ALERT");
+export type NetworkFirewallOverrideAction = "DROP_TO_ALERT" | (string & {});
+export const NetworkFirewallOverrideAction = S.String;
 export interface SecurityGroupRemediationAction {
   RemediationActionType?: RemediationActionType;
   Description?: string;

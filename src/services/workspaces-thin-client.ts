@@ -116,22 +116,23 @@ export type FieldName = string;
 //# Schemas
 export type SoftwareSetUpdateSchedule =
   | "USE_MAINTENANCE_WINDOW"
-  | "APPLY_IMMEDIATELY";
-export const SoftwareSetUpdateSchedule = S.Literal(
-  "USE_MAINTENANCE_WINDOW",
-  "APPLY_IMMEDIATELY",
-);
-export type SoftwareSetUpdateMode = "USE_LATEST" | "USE_DESIRED";
-export const SoftwareSetUpdateMode = S.Literal("USE_LATEST", "USE_DESIRED");
-export type TargetDeviceStatus = "DEREGISTERED" | "ARCHIVED";
-export const TargetDeviceStatus = S.Literal("DEREGISTERED", "ARCHIVED");
+  | "APPLY_IMMEDIATELY"
+  | (string & {});
+export const SoftwareSetUpdateSchedule = S.String;
+export type SoftwareSetUpdateMode =
+  | "USE_LATEST"
+  | "USE_DESIRED"
+  | (string & {});
+export const SoftwareSetUpdateMode = S.String;
+export type TargetDeviceStatus = "DEREGISTERED" | "ARCHIVED" | (string & {});
+export const TargetDeviceStatus = S.String;
 export type TagKeys = string[];
 export const TagKeys = S.Array(S.String);
-export type SoftwareSetValidationStatus = "VALIDATED" | "NOT_VALIDATED";
-export const SoftwareSetValidationStatus = S.Literal(
-  "VALIDATED",
-  "NOT_VALIDATED",
-);
+export type SoftwareSetValidationStatus =
+  | "VALIDATED"
+  | "NOT_VALIDATED"
+  | (string & {});
+export const SoftwareSetValidationStatus = S.String;
 export interface DeleteDeviceRequest {
   id: string;
   clientToken?: string;
@@ -430,8 +431,8 @@ export const UpdateDeviceRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateDeviceRequest",
 }) as any as S.Schema<UpdateDeviceRequest>;
-export type MaintenanceWindowType = "SYSTEM" | "CUSTOM";
-export const MaintenanceWindowType = S.Literal("SYSTEM", "CUSTOM");
+export type MaintenanceWindowType = "SYSTEM" | "CUSTOM" | (string & {});
+export const MaintenanceWindowType = S.String;
 export type DayOfWeek =
   | "MONDAY"
   | "TUESDAY"
@@ -439,20 +440,13 @@ export type DayOfWeek =
   | "THURSDAY"
   | "FRIDAY"
   | "SATURDAY"
-  | "SUNDAY";
-export const DayOfWeek = S.Literal(
-  "MONDAY",
-  "TUESDAY",
-  "WEDNESDAY",
-  "THURSDAY",
-  "FRIDAY",
-  "SATURDAY",
-  "SUNDAY",
-);
+  | "SUNDAY"
+  | (string & {});
+export const DayOfWeek = S.String;
 export type DayOfWeekList = DayOfWeek[];
 export const DayOfWeekList = S.Array(DayOfWeek);
-export type ApplyTimeOf = "UTC" | "DEVICE";
-export const ApplyTimeOf = S.Literal("UTC", "DEVICE");
+export type ApplyTimeOf = "UTC" | "DEVICE" | (string & {});
+export const ApplyTimeOf = S.String;
 export interface MaintenanceWindow {
   type: MaintenanceWindowType;
   startTimeHour?: number;
@@ -593,13 +587,9 @@ export type DeviceStatus =
   | "REGISTERED"
   | "DEREGISTERING"
   | "DEREGISTERED"
-  | "ARCHIVED";
-export const DeviceStatus = S.Literal(
-  "REGISTERED",
-  "DEREGISTERING",
-  "DEREGISTERED",
-  "ARCHIVED",
-);
+  | "ARCHIVED"
+  | (string & {});
+export const DeviceStatus = S.String;
 export interface DeviceSummary {
   id?: string;
   serialNumber?: string;
@@ -650,12 +640,12 @@ export const UpdateDeviceResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateDeviceResponse",
 }) as any as S.Schema<UpdateDeviceResponse>;
-export type DesktopType = "workspaces" | "appstream" | "workspaces-web";
-export const DesktopType = S.Literal(
-  "workspaces",
-  "appstream",
-  "workspaces-web",
-);
+export type DesktopType =
+  | "workspaces"
+  | "appstream"
+  | "workspaces-web"
+  | (string & {});
+export const DesktopType = S.String;
 export interface EnvironmentSummary {
   id?: string;
   name?: string | redacted.Redacted<string>;
@@ -703,30 +693,21 @@ export const UpdateEnvironmentResponse = S.suspend(() =>
 export type DeviceSoftwareSetComplianceStatus =
   | "NONE"
   | "COMPLIANT"
-  | "NOT_COMPLIANT";
-export const DeviceSoftwareSetComplianceStatus = S.Literal(
-  "NONE",
-  "COMPLIANT",
-  "NOT_COMPLIANT",
-);
+  | "NOT_COMPLIANT"
+  | (string & {});
+export const DeviceSoftwareSetComplianceStatus = S.String;
 export type SoftwareSetUpdateStatus =
   | "AVAILABLE"
   | "IN_PROGRESS"
-  | "UP_TO_DATE";
-export const SoftwareSetUpdateStatus = S.Literal(
-  "AVAILABLE",
-  "IN_PROGRESS",
-  "UP_TO_DATE",
-);
+  | "UP_TO_DATE"
+  | (string & {});
+export const SoftwareSetUpdateStatus = S.String;
 export type EnvironmentSoftwareSetComplianceStatus =
   | "NO_REGISTERED_DEVICES"
   | "COMPLIANT"
-  | "NOT_COMPLIANT";
-export const EnvironmentSoftwareSetComplianceStatus = S.Literal(
-  "NO_REGISTERED_DEVICES",
-  "COMPLIANT",
-  "NOT_COMPLIANT",
-);
+  | "NOT_COMPLIANT"
+  | (string & {});
+export const EnvironmentSoftwareSetComplianceStatus = S.String;
 export interface Device {
   id?: string;
   serialNumber?: string;
@@ -950,13 +931,9 @@ export type ValidationExceptionReason =
   | "unknownOperation"
   | "cannotParse"
   | "fieldValidationFailed"
-  | "other";
-export const ValidationExceptionReason = S.Literal(
-  "unknownOperation",
-  "cannotParse",
-  "fieldValidationFailed",
-  "other",
-);
+  | "other"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 export interface ValidationExceptionField {
   name: string;
   message: string;

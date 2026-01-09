@@ -95,12 +95,15 @@ export type CurrencyCode = string;
 //# Schemas
 export type AccountIdList = string[];
 export const AccountIdList = S.Array(S.String);
-export type ProcurementPortalName = "SAP_BUSINESS_NETWORK" | "COUPA";
-export const ProcurementPortalName = S.Literal("SAP_BUSINESS_NETWORK", "COUPA");
-export type BuyerDomain = "NetworkID";
-export const BuyerDomain = S.Literal("NetworkID");
-export type SupplierDomain = "NetworkID";
-export const SupplierDomain = S.Literal("NetworkID");
+export type ProcurementPortalName =
+  | "SAP_BUSINESS_NETWORK"
+  | "COUPA"
+  | (string & {});
+export const ProcurementPortalName = S.String;
+export type BuyerDomain = "NetworkID" | (string & {});
+export const BuyerDomain = S.String;
+export type SupplierDomain = "NetworkID" | (string & {});
+export const SupplierDomain = S.String;
 export type ResourceTagKeyList = string[];
 export const ResourceTagKeyList = S.Array(S.String);
 export type ProcurementPortalPreferenceStatus =
@@ -109,15 +112,9 @@ export type ProcurementPortalPreferenceStatus =
   | "TEST_INITIALIZATION_FAILED"
   | "TEST_FAILED"
   | "ACTIVE"
-  | "SUSPENDED";
-export const ProcurementPortalPreferenceStatus = S.Literal(
-  "PENDING_VERIFICATION",
-  "TEST_INITIALIZED",
-  "TEST_INITIALIZATION_FAILED",
-  "TEST_FAILED",
-  "ACTIVE",
-  "SUSPENDED",
-);
+  | "SUSPENDED"
+  | (string & {});
+export const ProcurementPortalPreferenceStatus = S.String;
 export interface BatchGetInvoiceProfileRequest {
   AccountIds: string[];
 }
@@ -247,36 +244,29 @@ export type EinvoiceDeliveryDocumentType =
   | "AWS_CLOUD_CREDIT_MEMO"
   | "AWS_MARKETPLACE_INVOICE"
   | "AWS_MARKETPLACE_CREDIT_MEMO"
-  | "AWS_REQUEST_FOR_PAYMENT";
-export const EinvoiceDeliveryDocumentType = S.Literal(
-  "AWS_CLOUD_INVOICE",
-  "AWS_CLOUD_CREDIT_MEMO",
-  "AWS_MARKETPLACE_INVOICE",
-  "AWS_MARKETPLACE_CREDIT_MEMO",
-  "AWS_REQUEST_FOR_PAYMENT",
-);
+  | "AWS_REQUEST_FOR_PAYMENT"
+  | (string & {});
+export const EinvoiceDeliveryDocumentType = S.String;
 export type EinvoiceDeliveryDocumentTypes = EinvoiceDeliveryDocumentType[];
 export const EinvoiceDeliveryDocumentTypes = S.Array(
   EinvoiceDeliveryDocumentType,
 );
-export type EinvoiceDeliveryAttachmentType = "INVOICE_PDF" | "RFP_PDF";
-export const EinvoiceDeliveryAttachmentType = S.Literal(
-  "INVOICE_PDF",
-  "RFP_PDF",
-);
+export type EinvoiceDeliveryAttachmentType =
+  | "INVOICE_PDF"
+  | "RFP_PDF"
+  | (string & {});
+export const EinvoiceDeliveryAttachmentType = S.String;
 export type EinvoiceDeliveryAttachmentTypes = EinvoiceDeliveryAttachmentType[];
 export const EinvoiceDeliveryAttachmentTypes = S.Array(
   EinvoiceDeliveryAttachmentType,
 );
-export type Protocol = "CXML";
-export const Protocol = S.Literal("CXML");
+export type Protocol = "CXML" | (string & {});
+export const Protocol = S.String;
 export type PurchaseOrderDataSourceType =
   | "ASSOCIATED_PURCHASE_ORDER_REQUIRED"
-  | "PURCHASE_ORDER_NOT_REQUIRED";
-export const PurchaseOrderDataSourceType = S.Literal(
-  "ASSOCIATED_PURCHASE_ORDER_REQUIRED",
-  "PURCHASE_ORDER_NOT_REQUIRED",
-);
+  | "PURCHASE_ORDER_NOT_REQUIRED"
+  | (string & {});
+export const PurchaseOrderDataSourceType = S.String;
 export interface PurchaseOrderDataSource {
   EinvoiceDeliveryDocumentType?: EinvoiceDeliveryDocumentType;
   PurchaseOrderDataSourceType?: PurchaseOrderDataSourceType;
@@ -293,11 +283,9 @@ export type PurchaseOrderDataSources = PurchaseOrderDataSource[];
 export const PurchaseOrderDataSources = S.Array(PurchaseOrderDataSource);
 export type ConnectionTestingMethod =
   | "PROD_ENV_DOLLAR_TEST"
-  | "TEST_ENV_REPLAY_TEST";
-export const ConnectionTestingMethod = S.Literal(
-  "PROD_ENV_DOLLAR_TEST",
-  "TEST_ENV_REPLAY_TEST",
-);
+  | "TEST_ENV_REPLAY_TEST"
+  | (string & {});
+export const ConnectionTestingMethod = S.String;
 export interface EinvoiceDeliveryPreference {
   EinvoiceDeliveryDocumentTypes: EinvoiceDeliveryDocumentType[];
   EinvoiceDeliveryAttachmentTypes?: EinvoiceDeliveryAttachmentType[];
@@ -454,11 +442,11 @@ export const UpdateProcurementPortalPreferenceStatusRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateProcurementPortalPreferenceStatusRequest",
 }) as any as S.Schema<UpdateProcurementPortalPreferenceStatusRequest>;
-export type ListInvoiceSummariesResourceType = "ACCOUNT_ID" | "INVOICE_ID";
-export const ListInvoiceSummariesResourceType = S.Literal(
-  "ACCOUNT_ID",
-  "INVOICE_ID",
-);
+export type ListInvoiceSummariesResourceType =
+  | "ACCOUNT_ID"
+  | "INVOICE_ID"
+  | (string & {});
+export const ListInvoiceSummariesResourceType = S.String;
 export type InvoiceUnitNames = string[];
 export const InvoiceUnitNames = S.Array(S.String);
 export interface InvoiceSummariesSelector {
@@ -984,8 +972,8 @@ export const ListInvoiceUnitsResponse = S.suspend(() =>
 ).annotations({
   identifier: "ListInvoiceUnitsResponse",
 }) as any as S.Schema<ListInvoiceUnitsResponse>;
-export type InvoiceType = "INVOICE" | "CREDIT_MEMO";
-export const InvoiceType = S.Literal("INVOICE", "CREDIT_MEMO");
+export type InvoiceType = "INVOICE" | "CREDIT_MEMO" | (string & {});
+export const InvoiceType = S.String;
 export type ValidationExceptionReason =
   | "nonMemberPresent"
   | "maxAccountsExceeded"
@@ -1000,23 +988,9 @@ export type ValidationExceptionReason =
   | "fieldValidationFailed"
   | "cannotParse"
   | "unknownOperation"
-  | "other";
-export const ValidationExceptionReason = S.Literal(
-  "nonMemberPresent",
-  "maxAccountsExceeded",
-  "maxInvoiceUnitsExceeded",
-  "duplicateInvoiceUnit",
-  "mutualExclusionError",
-  "accountMembershipError",
-  "taxSettingsError",
-  "expiredNextToken",
-  "invalidNextToken",
-  "invalidInput",
-  "fieldValidationFailed",
-  "cannotParse",
-  "unknownOperation",
-  "other",
-);
+  | "other"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 export interface Entity {
   InvoicingEntity?: string;
 }

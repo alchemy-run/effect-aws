@@ -139,21 +139,21 @@ export type CategoricalValue = string;
 export type Tunable = boolean;
 
 //# Schemas
-export type BatchInferenceJobMode = "BATCH_INFERENCE" | "THEME_GENERATION";
-export const BatchInferenceJobMode = S.Literal(
-  "BATCH_INFERENCE",
-  "THEME_GENERATION",
-);
-export type IngestionMode = "BULK" | "PUT" | "ALL";
-export const IngestionMode = S.Literal("BULK", "PUT", "ALL");
-export type Domain = "ECOMMERCE" | "VIDEO_ON_DEMAND";
-export const Domain = S.Literal("ECOMMERCE", "VIDEO_ON_DEMAND");
-export type ImportMode = "FULL" | "INCREMENTAL";
-export const ImportMode = S.Literal("FULL", "INCREMENTAL");
-export type TrainingMode = "FULL" | "UPDATE" | "AUTOTRAIN";
-export const TrainingMode = S.Literal("FULL", "UPDATE", "AUTOTRAIN");
-export type RecipeProvider = "SERVICE";
-export const RecipeProvider = S.Literal("SERVICE");
+export type BatchInferenceJobMode =
+  | "BATCH_INFERENCE"
+  | "THEME_GENERATION"
+  | (string & {});
+export const BatchInferenceJobMode = S.String;
+export type IngestionMode = "BULK" | "PUT" | "ALL" | (string & {});
+export const IngestionMode = S.String;
+export type Domain = "ECOMMERCE" | "VIDEO_ON_DEMAND" | (string & {});
+export const Domain = S.String;
+export type ImportMode = "FULL" | "INCREMENTAL" | (string & {});
+export const ImportMode = S.String;
+export type TrainingMode = "FULL" | "UPDATE" | "AUTOTRAIN" | (string & {});
+export const TrainingMode = S.String;
+export type RecipeProvider = "SERVICE" | (string & {});
+export const RecipeProvider = S.String;
 export type TagKeys = string | redacted.Redacted<string>[];
 export const TagKeys = S.Array(SensitiveString);
 export type MetricAttributesNamesList = string[];
@@ -980,8 +980,8 @@ export const HyperParameters = S.Record({
   key: S.String,
   value: S.UndefinedOr(S.String),
 });
-export type RankingInfluenceType = "POPULARITY" | "FRESHNESS";
-export const RankingInfluenceType = S.Literal("POPULARITY", "FRESHNESS");
+export type RankingInfluenceType = "POPULARITY" | "FRESHNESS" | (string & {});
+export const RankingInfluenceType = S.String;
 export type RankingInfluence = { [key in RankingInfluenceType]?: number };
 export const RankingInfluence = S.partial(
   S.Record({ key: RankingInfluenceType, value: S.UndefinedOr(S.Number) }),
@@ -1207,8 +1207,13 @@ export const SolutionUpdateConfig = S.suspend(() =>
 }) as any as S.Schema<SolutionUpdateConfig>;
 export type ArnList = string[];
 export const ArnList = S.Array(S.String);
-export type ObjectiveSensitivity = "LOW" | "MEDIUM" | "HIGH" | "OFF";
-export const ObjectiveSensitivity = S.Literal("LOW", "MEDIUM", "HIGH", "OFF");
+export type ObjectiveSensitivity =
+  | "LOW"
+  | "MEDIUM"
+  | "HIGH"
+  | "OFF"
+  | (string & {});
+export const ObjectiveSensitivity = S.String;
 export interface CreateBatchSegmentJobRequest {
   jobName: string;
   solutionVersionArn: string;
@@ -1502,8 +1507,8 @@ export const OptimizationObjective = S.suspend(() =>
 ).annotations({
   identifier: "OptimizationObjective",
 }) as any as S.Schema<OptimizationObjective>;
-export type TrainingType = "AUTOMATIC" | "MANUAL";
-export const TrainingType = S.Literal("AUTOMATIC", "MANUAL");
+export type TrainingType = "AUTOMATIC" | "MANUAL" | (string & {});
+export const TrainingType = S.String;
 export interface BatchInferenceJobInput {
   s3DataSource: S3DataConfig;
 }

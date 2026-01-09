@@ -182,10 +182,10 @@ export const Model = S.suspend(() =>
 ).annotations({ identifier: "Model" }) as any as S.Schema<Model>;
 export type Models = Model[];
 export const Models = S.Array(Model);
-export type ModelState = "DEPLOY" | "UNDEPLOY";
-export const ModelState = S.Literal("DEPLOY", "UNDEPLOY");
-export type DeploymentStatus = "SUCCESS" | "FAIL";
-export const DeploymentStatus = S.Literal("SUCCESS", "FAIL");
+export type ModelState = "DEPLOY" | "UNDEPLOY" | (string & {});
+export const ModelState = S.String;
+export type DeploymentStatus = "SUCCESS" | "FAIL" | (string & {});
+export const DeploymentStatus = S.String;
 export interface GetDeviceRegistrationResult {
   DeviceRegistration?: string;
   CacheTTL?: string;
@@ -198,13 +198,13 @@ export const GetDeviceRegistrationResult = S.suspend(() =>
 ).annotations({
   identifier: "GetDeviceRegistrationResult",
 }) as any as S.Schema<GetDeviceRegistrationResult>;
-export type DeploymentType = "Model";
-export const DeploymentType = S.Literal("Model");
-export type FailureHandlingPolicy = "ROLLBACK_ON_FAILURE" | "DO_NOTHING";
-export const FailureHandlingPolicy = S.Literal(
-  "ROLLBACK_ON_FAILURE",
-  "DO_NOTHING",
-);
+export type DeploymentType = "Model" | (string & {});
+export const DeploymentType = S.String;
+export type FailureHandlingPolicy =
+  | "ROLLBACK_ON_FAILURE"
+  | "DO_NOTHING"
+  | (string & {});
+export const FailureHandlingPolicy = S.String;
 export interface DeploymentModel {
   ModelHandle?: string;
   ModelName?: string;
@@ -288,8 +288,8 @@ export interface SendHeartbeatResponse {}
 export const SendHeartbeatResponse = S.suspend(() => S.Struct({})).annotations({
   identifier: "SendHeartbeatResponse",
 }) as any as S.Schema<SendHeartbeatResponse>;
-export type ChecksumType = "SHA1";
-export const ChecksumType = S.Literal("SHA1");
+export type ChecksumType = "SHA1" | (string & {});
+export const ChecksumType = S.String;
 export interface Checksum {
   Type?: ChecksumType;
   Sum?: string;

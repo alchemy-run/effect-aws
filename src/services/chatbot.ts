@@ -882,11 +882,11 @@ export const CustomActionDefinition = S.suspend(() =>
 ).annotations({
   identifier: "CustomActionDefinition",
 }) as any as S.Schema<CustomActionDefinition>;
-export type CustomActionAttachmentCriteriaOperator = "HAS_VALUE" | "EQUALS";
-export const CustomActionAttachmentCriteriaOperator = S.Literal(
-  "HAS_VALUE",
-  "EQUALS",
-);
+export type CustomActionAttachmentCriteriaOperator =
+  | "HAS_VALUE"
+  | "EQUALS"
+  | (string & {});
+export const CustomActionAttachmentCriteriaOperator = S.String;
 export interface CustomActionAttachmentCriteria {
   Operator: CustomActionAttachmentCriteriaOperator;
   VariableName: string;

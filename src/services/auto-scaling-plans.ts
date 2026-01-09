@@ -149,14 +149,9 @@ export type ServiceNamespace =
   | "ecs"
   | "ec2"
   | "rds"
-  | "dynamodb";
-export const ServiceNamespace = S.Literal(
-  "autoscaling",
-  "ecs",
-  "ec2",
-  "rds",
-  "dynamodb",
-);
+  | "dynamodb"
+  | (string & {});
+export const ServiceNamespace = S.String;
 export type ScalableDimension =
   | "autoscaling:autoScalingGroup:DesiredCapacity"
   | "ecs:service:DesiredCount"
@@ -165,28 +160,16 @@ export type ScalableDimension =
   | "dynamodb:table:ReadCapacityUnits"
   | "dynamodb:table:WriteCapacityUnits"
   | "dynamodb:index:ReadCapacityUnits"
-  | "dynamodb:index:WriteCapacityUnits";
-export const ScalableDimension = S.Literal(
-  "autoscaling:autoScalingGroup:DesiredCapacity",
-  "ecs:service:DesiredCount",
-  "ec2:spot-fleet-request:TargetCapacity",
-  "rds:cluster:ReadReplicaCount",
-  "dynamodb:table:ReadCapacityUnits",
-  "dynamodb:table:WriteCapacityUnits",
-  "dynamodb:index:ReadCapacityUnits",
-  "dynamodb:index:WriteCapacityUnits",
-);
+  | "dynamodb:index:WriteCapacityUnits"
+  | (string & {});
+export const ScalableDimension = S.String;
 export type ForecastDataType =
   | "CapacityForecast"
   | "LoadForecast"
   | "ScheduledActionMinCapacity"
-  | "ScheduledActionMaxCapacity";
-export const ForecastDataType = S.Literal(
-  "CapacityForecast",
-  "LoadForecast",
-  "ScheduledActionMinCapacity",
-  "ScheduledActionMaxCapacity",
-);
+  | "ScheduledActionMaxCapacity"
+  | (string & {});
+export const ForecastDataType = S.String;
 export interface DeleteScalingPlanRequest {
   ScalingPlanName: string;
   ScalingPlanVersion: number;
@@ -281,22 +264,9 @@ export type ScalingMetricType =
   | "RDSReaderAverageDatabaseConnections"
   | "EC2SpotFleetRequestAverageCPUUtilization"
   | "EC2SpotFleetRequestAverageNetworkIn"
-  | "EC2SpotFleetRequestAverageNetworkOut";
-export const ScalingMetricType = S.Literal(
-  "ASGAverageCPUUtilization",
-  "ASGAverageNetworkIn",
-  "ASGAverageNetworkOut",
-  "DynamoDBReadCapacityUtilization",
-  "DynamoDBWriteCapacityUtilization",
-  "ECSServiceAverageCPUUtilization",
-  "ECSServiceAverageMemoryUtilization",
-  "ALBRequestCountPerTarget",
-  "RDSReaderAverageCPUUtilization",
-  "RDSReaderAverageDatabaseConnections",
-  "EC2SpotFleetRequestAverageCPUUtilization",
-  "EC2SpotFleetRequestAverageNetworkIn",
-  "EC2SpotFleetRequestAverageNetworkOut",
-);
+  | "EC2SpotFleetRequestAverageNetworkOut"
+  | (string & {});
+export const ScalingMetricType = S.String;
 export interface PredefinedScalingMetricSpecification {
   PredefinedScalingMetricType: ScalingMetricType;
   ResourceLabel?: string;
@@ -325,14 +295,9 @@ export type MetricStatistic =
   | "Minimum"
   | "Maximum"
   | "SampleCount"
-  | "Sum";
-export const MetricStatistic = S.Literal(
-  "Average",
-  "Minimum",
-  "Maximum",
-  "SampleCount",
-  "Sum",
-);
+  | "Sum"
+  | (string & {});
+export const MetricStatistic = S.String;
 export interface CustomizedScalingMetricSpecification {
   MetricName: string;
   Namespace: string;
@@ -385,13 +350,9 @@ export type LoadMetricType =
   | "ASGTotalCPUUtilization"
   | "ASGTotalNetworkIn"
   | "ASGTotalNetworkOut"
-  | "ALBTargetGroupRequestCount";
-export const LoadMetricType = S.Literal(
-  "ASGTotalCPUUtilization",
-  "ASGTotalNetworkIn",
-  "ASGTotalNetworkOut",
-  "ALBTargetGroupRequestCount",
-);
+  | "ALBTargetGroupRequestCount"
+  | (string & {});
+export const LoadMetricType = S.String;
 export interface PredefinedLoadMetricSpecification {
   PredefinedLoadMetricType: LoadMetricType;
   ResourceLabel?: string;
@@ -425,24 +386,19 @@ export const CustomizedLoadMetricSpecification = S.suspend(() =>
 export type PredictiveScalingMaxCapacityBehavior =
   | "SetForecastCapacityToMaxCapacity"
   | "SetMaxCapacityToForecastCapacity"
-  | "SetMaxCapacityAboveForecastCapacity";
-export const PredictiveScalingMaxCapacityBehavior = S.Literal(
-  "SetForecastCapacityToMaxCapacity",
-  "SetMaxCapacityToForecastCapacity",
-  "SetMaxCapacityAboveForecastCapacity",
-);
-export type PredictiveScalingMode = "ForecastAndScale" | "ForecastOnly";
-export const PredictiveScalingMode = S.Literal(
-  "ForecastAndScale",
-  "ForecastOnly",
-);
+  | "SetMaxCapacityAboveForecastCapacity"
+  | (string & {});
+export const PredictiveScalingMaxCapacityBehavior = S.String;
+export type PredictiveScalingMode =
+  | "ForecastAndScale"
+  | "ForecastOnly"
+  | (string & {});
+export const PredictiveScalingMode = S.String;
 export type ScalingPolicyUpdateBehavior =
   | "KeepExternalPolicies"
-  | "ReplaceExternalPolicies";
-export const ScalingPolicyUpdateBehavior = S.Literal(
-  "KeepExternalPolicies",
-  "ReplaceExternalPolicies",
-);
+  | "ReplaceExternalPolicies"
+  | (string & {});
+export const ScalingPolicyUpdateBehavior = S.String;
 export interface ScalingInstruction {
   ServiceNamespace: ServiceNamespace;
   ResourceId: string;
@@ -511,12 +467,12 @@ export const UpdateScalingPlanResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateScalingPlanResponse",
 }) as any as S.Schema<UpdateScalingPlanResponse>;
-export type ScalingStatusCode = "Inactive" | "PartiallyActive" | "Active";
-export const ScalingStatusCode = S.Literal(
-  "Inactive",
-  "PartiallyActive",
-  "Active",
-);
+export type ScalingStatusCode =
+  | "Inactive"
+  | "PartiallyActive"
+  | "Active"
+  | (string & {});
+export const ScalingStatusCode = S.String;
 export type ScalingPlanStatusCode =
   | "Active"
   | "ActiveWithProblems"
@@ -525,17 +481,9 @@ export type ScalingPlanStatusCode =
   | "DeletionInProgress"
   | "DeletionFailed"
   | "UpdateInProgress"
-  | "UpdateFailed";
-export const ScalingPlanStatusCode = S.Literal(
-  "Active",
-  "ActiveWithProblems",
-  "CreationInProgress",
-  "CreationFailed",
-  "DeletionInProgress",
-  "DeletionFailed",
-  "UpdateInProgress",
-  "UpdateFailed",
-);
+  | "UpdateFailed"
+  | (string & {});
+export const ScalingPlanStatusCode = S.String;
 export interface ScalingPlan {
   ScalingPlanName: string;
   ScalingPlanVersion: number;
@@ -574,8 +522,8 @@ export const Datapoint = S.suspend(() =>
 ).annotations({ identifier: "Datapoint" }) as any as S.Schema<Datapoint>;
 export type Datapoints = Datapoint[];
 export const Datapoints = S.Array(Datapoint);
-export type PolicyType = "TargetTrackingScaling";
-export const PolicyType = S.Literal("TargetTrackingScaling");
+export type PolicyType = "TargetTrackingScaling" | (string & {});
+export const PolicyType = S.String;
 export interface DescribeScalingPlansResponse {
   ScalingPlans?: ScalingPlan[];
   NextToken?: string;

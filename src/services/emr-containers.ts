@@ -144,16 +144,9 @@ export type JobRunState =
   | "FAILED"
   | "CANCELLED"
   | "CANCEL_PENDING"
-  | "COMPLETED";
-export const JobRunState = S.Literal(
-  "PENDING",
-  "SUBMITTED",
-  "RUNNING",
-  "FAILED",
-  "CANCELLED",
-  "CANCEL_PENDING",
-  "COMPLETED",
-);
+  | "COMPLETED"
+  | (string & {});
+export const JobRunState = S.String;
 export type JobRunStates = JobRunState[];
 export const JobRunStates = S.Array(JobRunState);
 export type EndpointTypes = string[];
@@ -163,29 +156,20 @@ export type EndpointState =
   | "ACTIVE"
   | "TERMINATING"
   | "TERMINATED"
-  | "TERMINATED_WITH_ERRORS";
-export const EndpointState = S.Literal(
-  "CREATING",
-  "ACTIVE",
-  "TERMINATING",
-  "TERMINATED",
-  "TERMINATED_WITH_ERRORS",
-);
+  | "TERMINATED_WITH_ERRORS"
+  | (string & {});
+export const EndpointState = S.String;
 export type EndpointStates = EndpointState[];
 export const EndpointStates = S.Array(EndpointState);
-export type ContainerProviderType = "EKS";
-export const ContainerProviderType = S.Literal("EKS");
+export type ContainerProviderType = "EKS" | (string & {});
+export const ContainerProviderType = S.String;
 export type VirtualClusterState =
   | "RUNNING"
   | "TERMINATING"
   | "TERMINATED"
-  | "ARRESTED";
-export const VirtualClusterState = S.Literal(
-  "RUNNING",
-  "TERMINATING",
-  "TERMINATED",
-  "ARRESTED",
-);
+  | "ARRESTED"
+  | (string & {});
+export const VirtualClusterState = S.String;
 export type VirtualClusterStates = VirtualClusterState[];
 export const VirtualClusterStates = S.Array(VirtualClusterState);
 export type TagKeyList = string[];
@@ -715,8 +699,8 @@ export const ConfigurationList = S.Array(
     identifier: "Configuration",
   }),
 ) as any as S.Schema<ConfigurationList>;
-export type AllowAWSToRetainLogs = "ENABLED" | "DISABLED";
-export const AllowAWSToRetainLogs = S.Literal("ENABLED", "DISABLED");
+export type AllowAWSToRetainLogs = "ENABLED" | "DISABLED" | (string & {});
+export const AllowAWSToRetainLogs = S.String;
 export interface ManagedLogs {
   allowAWSToRetainLogs?: AllowAWSToRetainLogs;
   encryptionKeyArn?: string;
@@ -727,8 +711,8 @@ export const ManagedLogs = S.suspend(() =>
     encryptionKeyArn: S.optional(S.String),
   }),
 ).annotations({ identifier: "ManagedLogs" }) as any as S.Schema<ManagedLogs>;
-export type PersistentAppUI = "ENABLED" | "DISABLED";
-export const PersistentAppUI = S.Literal("ENABLED", "DISABLED");
+export type PersistentAppUI = "ENABLED" | "DISABLED" | (string & {});
+export const PersistentAppUI = S.String;
 export interface CloudWatchMonitoringConfiguration {
   logGroupName: string;
   logStreamNamePrefix?: string;
@@ -834,13 +818,9 @@ export type FailureReason =
   | "INTERNAL_ERROR"
   | "USER_ERROR"
   | "VALIDATION_ERROR"
-  | "CLUSTER_UNAVAILABLE";
-export const FailureReason = S.Literal(
-  "INTERNAL_ERROR",
-  "USER_ERROR",
-  "VALIDATION_ERROR",
-  "CLUSTER_UNAVAILABLE",
-);
+  | "CLUSTER_UNAVAILABLE"
+  | (string & {});
+export const FailureReason = S.String;
 export interface RetryPolicyConfiguration {
   maxAttempts: number;
 }
@@ -949,8 +929,8 @@ export const ParametricConfigurationOverrides = S.suspend(() =>
 ).annotations({
   identifier: "ParametricConfigurationOverrides",
 }) as any as S.Schema<ParametricConfigurationOverrides>;
-export type TemplateParameterDataType = "NUMBER" | "STRING";
-export const TemplateParameterDataType = S.Literal("NUMBER", "STRING");
+export type TemplateParameterDataType = "NUMBER" | "STRING" | (string & {});
+export const TemplateParameterDataType = S.String;
 export interface TemplateParameterConfiguration {
   type?: TemplateParameterDataType;
   defaultValue?: string;
@@ -1100,8 +1080,8 @@ export const LakeFormationConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "LakeFormationConfiguration",
 }) as any as S.Schema<LakeFormationConfiguration>;
-export type CertificateProviderType = "PEM";
-export const CertificateProviderType = S.Literal("PEM");
+export type CertificateProviderType = "PEM" | (string & {});
+export const CertificateProviderType = S.String;
 export interface TLSCertificateConfiguration {
   certificateProviderType?: CertificateProviderType;
   publicCertificateSecretArn?: string;

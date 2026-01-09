@@ -106,15 +106,9 @@ export type RecommendationPillar =
   | "security"
   | "service_limits"
   | "fault_tolerance"
-  | "operational_excellence";
-export const RecommendationPillar = S.Literal(
-  "cost_optimizing",
-  "performance",
-  "security",
-  "service_limits",
-  "fault_tolerance",
-  "operational_excellence",
-);
+  | "operational_excellence"
+  | (string & {});
+export const RecommendationPillar = S.String;
 export type RecommendationSource =
   | "aws_config"
   | "compute_optimizer"
@@ -128,22 +122,9 @@ export type RecommendationSource =
   | "security_hub"
   | "stir"
   | "ta_check"
-  | "well_architected";
-export const RecommendationSource = S.Literal(
-  "aws_config",
-  "compute_optimizer",
-  "cost_explorer",
-  "lse",
-  "manual",
-  "pse",
-  "rds",
-  "resilience",
-  "resilience_hub",
-  "security_hub",
-  "stir",
-  "ta_check",
-  "well_architected",
-);
+  | "well_architected"
+  | (string & {});
+export const RecommendationSource = S.String;
 export type RecommendationLanguage =
   | "en"
   | "ja"
@@ -155,39 +136,24 @@ export type RecommendationLanguage =
   | "it"
   | "es"
   | "pt_BR"
-  | "id";
-export const RecommendationLanguage = S.Literal(
-  "en",
-  "ja",
-  "zh",
-  "fr",
-  "de",
-  "ko",
-  "zh_TW",
-  "it",
-  "es",
-  "pt_BR",
-  "id",
-);
-export type ResourceStatus = "ok" | "warning" | "error";
-export const ResourceStatus = S.Literal("ok", "warning", "error");
-export type ExclusionStatus = "excluded" | "included";
-export const ExclusionStatus = S.Literal("excluded", "included");
-export type RecommendationType = "standard" | "priority";
-export const RecommendationType = S.Literal("standard", "priority");
-export type RecommendationStatus = "ok" | "warning" | "error";
-export const RecommendationStatus = S.Literal("ok", "warning", "error");
+  | "id"
+  | (string & {});
+export const RecommendationLanguage = S.String;
+export type ResourceStatus = "ok" | "warning" | "error" | (string & {});
+export const ResourceStatus = S.String;
+export type ExclusionStatus = "excluded" | "included" | (string & {});
+export const ExclusionStatus = S.String;
+export type RecommendationType = "standard" | "priority" | (string & {});
+export const RecommendationType = S.String;
+export type RecommendationStatus = "ok" | "warning" | "error" | (string & {});
+export const RecommendationStatus = S.String;
 export type UpdateRecommendationLifecycleStage =
   | "pending_response"
   | "in_progress"
   | "dismissed"
-  | "resolved";
-export const UpdateRecommendationLifecycleStage = S.Literal(
-  "pending_response",
-  "in_progress",
-  "dismissed",
-  "resolved",
-);
+  | "resolved"
+  | (string & {});
+export const UpdateRecommendationLifecycleStage = S.String;
 export type UpdateRecommendationLifecycleStageReasonCode =
   | "non_critical_account"
   | "temporary_account"
@@ -195,16 +161,9 @@ export type UpdateRecommendationLifecycleStageReasonCode =
   | "other_methods_available"
   | "low_priority"
   | "not_applicable"
-  | "other";
-export const UpdateRecommendationLifecycleStageReasonCode = S.Literal(
-  "non_critical_account",
-  "temporary_account",
-  "valid_business_case",
-  "other_methods_available",
-  "low_priority",
-  "not_applicable",
-  "other",
-);
+  | "other"
+  | (string & {});
+export const UpdateRecommendationLifecycleStageReasonCode = S.String;
 export interface GetOrganizationRecommendationRequest {
   organizationRecommendationIdentifier: string;
 }
@@ -584,13 +543,9 @@ export type RecommendationLifecycleStage =
   | "in_progress"
   | "pending_response"
   | "dismissed"
-  | "resolved";
-export const RecommendationLifecycleStage = S.Literal(
-  "in_progress",
-  "pending_response",
-  "dismissed",
-  "resolved",
-);
+  | "resolved"
+  | (string & {});
+export const RecommendationLifecycleStage = S.String;
 export type RecommendationPillarList = RecommendationPillar[];
 export const RecommendationPillarList = S.Array(RecommendationPillar);
 export type RecommendationAwsServiceList = string[];

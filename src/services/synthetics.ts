@@ -122,20 +122,23 @@ export type RetryAttempt = number;
 export type VpcId = string;
 
 //# Schemas
-export type ResourceToTag = "lambda-function";
-export const ResourceToTag = S.Literal("lambda-function");
+export type ResourceToTag = "lambda-function" | (string & {});
+export const ResourceToTag = S.String;
 export type ResourceList = ResourceToTag[];
 export const ResourceList = S.Array(ResourceToTag);
-export type ProvisionedResourceCleanupSetting = "AUTOMATIC" | "OFF";
-export const ProvisionedResourceCleanupSetting = S.Literal("AUTOMATIC", "OFF");
+export type ProvisionedResourceCleanupSetting =
+  | "AUTOMATIC"
+  | "OFF"
+  | (string & {});
+export const ProvisionedResourceCleanupSetting = S.String;
 export type DescribeCanariesNameFilter = string[];
 export const DescribeCanariesNameFilter = S.Array(S.String);
 export type DescribeCanariesLastRunNameFilter = string[];
 export const DescribeCanariesLastRunNameFilter = S.Array(S.String);
-export type BrowserType = "CHROME" | "FIREFOX";
-export const BrowserType = S.Literal("CHROME", "FIREFOX");
-export type RunType = "CANARY_RUN" | "DRY_RUN";
-export const RunType = S.Literal("CANARY_RUN", "DRY_RUN");
+export type BrowserType = "CHROME" | "FIREFOX" | (string & {});
+export const BrowserType = S.String;
+export type RunType = "CANARY_RUN" | "DRY_RUN" | (string & {});
+export const RunType = S.String;
 export type BaseScreenshotIgnoreCoordinates = string[];
 export const BaseScreenshotIgnoreCoordinates = S.Array(S.String);
 export interface BaseScreenshot {
@@ -609,8 +612,8 @@ export const UntagResourceResponse = S.suspend(() => S.Struct({})).annotations({
 }) as any as S.Schema<UntagResourceResponse>;
 export type BlueprintTypes = string[];
 export const BlueprintTypes = S.Array(S.String);
-export type DependencyType = "LambdaLayer";
-export const DependencyType = S.Literal("LambdaLayer");
+export type DependencyType = "LambdaLayer" | (string & {});
+export const DependencyType = S.String;
 export interface Dependency {
   Type?: DependencyType;
   Reference: string;
@@ -705,8 +708,8 @@ export const VpcConfigInput = S.suspend(() =>
 ).annotations({
   identifier: "VpcConfigInput",
 }) as any as S.Schema<VpcConfigInput>;
-export type EncryptionMode = "SSE_S3" | "SSE_KMS";
-export const EncryptionMode = S.Literal("SSE_S3", "SSE_KMS");
+export type EncryptionMode = "SSE_S3" | "SSE_KMS" | (string & {});
+export const EncryptionMode = S.String;
 export interface S3EncryptionConfig {
   EncryptionMode?: EncryptionMode;
   KmsKeyArn?: string;
@@ -855,18 +858,9 @@ export type CanaryState =
   | "STOPPING"
   | "STOPPED"
   | "ERROR"
-  | "DELETING";
-export const CanaryState = S.Literal(
-  "CREATING",
-  "READY",
-  "STARTING",
-  "RUNNING",
-  "UPDATING",
-  "STOPPING",
-  "STOPPED",
-  "ERROR",
-  "DELETING",
-);
+  | "DELETING"
+  | (string & {});
+export const CanaryState = S.String;
 export type CanaryStateReasonCode =
   | "INVALID_PERMISSIONS"
   | "CREATE_PENDING"
@@ -879,21 +873,9 @@ export type CanaryStateReasonCode =
   | "ROLLBACK_FAILED"
   | "DELETE_IN_PROGRESS"
   | "DELETE_FAILED"
-  | "SYNC_DELETE_IN_PROGRESS";
-export const CanaryStateReasonCode = S.Literal(
-  "INVALID_PERMISSIONS",
-  "CREATE_PENDING",
-  "CREATE_IN_PROGRESS",
-  "CREATE_FAILED",
-  "UPDATE_PENDING",
-  "UPDATE_IN_PROGRESS",
-  "UPDATE_COMPLETE",
-  "ROLLBACK_COMPLETE",
-  "ROLLBACK_FAILED",
-  "DELETE_IN_PROGRESS",
-  "DELETE_FAILED",
-  "SYNC_DELETE_IN_PROGRESS",
-);
+  | "SYNC_DELETE_IN_PROGRESS"
+  | (string & {});
+export const CanaryStateReasonCode = S.String;
 export interface CanaryStatus {
   State?: CanaryState;
   StateReason?: string;
@@ -1118,15 +1100,19 @@ export const ListTagsForResourceResponse = S.suspend(() =>
 ).annotations({
   identifier: "ListTagsForResourceResponse",
 }) as any as S.Schema<ListTagsForResourceResponse>;
-export type CanaryRunState = "RUNNING" | "PASSED" | "FAILED";
-export const CanaryRunState = S.Literal("RUNNING", "PASSED", "FAILED");
-export type CanaryRunStateReasonCode = "CANARY_FAILURE" | "EXECUTION_FAILURE";
-export const CanaryRunStateReasonCode = S.Literal(
-  "CANARY_FAILURE",
-  "EXECUTION_FAILURE",
-);
-export type CanaryRunTestResult = "PASSED" | "FAILED" | "UNKNOWN";
-export const CanaryRunTestResult = S.Literal("PASSED", "FAILED", "UNKNOWN");
+export type CanaryRunState = "RUNNING" | "PASSED" | "FAILED" | (string & {});
+export const CanaryRunState = S.String;
+export type CanaryRunStateReasonCode =
+  | "CANARY_FAILURE"
+  | "EXECUTION_FAILURE"
+  | (string & {});
+export const CanaryRunStateReasonCode = S.String;
+export type CanaryRunTestResult =
+  | "PASSED"
+  | "FAILED"
+  | "UNKNOWN"
+  | (string & {});
+export const CanaryRunTestResult = S.String;
 export interface CanaryRunStatus {
   State?: CanaryRunState;
   StateReason?: string;

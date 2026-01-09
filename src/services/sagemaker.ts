@@ -848,14 +848,9 @@ export type AssociationEdgeType =
   | "AssociatedWith"
   | "DerivedFrom"
   | "Produced"
-  | "SameAs";
-export const AssociationEdgeType = S.Literal(
-  "ContributedTo",
-  "AssociatedWith",
-  "DerivedFrom",
-  "Produced",
-  "SameAs",
-);
+  | "SameAs"
+  | (string & {});
+export const AssociationEdgeType = S.String;
 export type ClusterNodeIds = string[];
 export const ClusterNodeIds = S.Array(S.String);
 export type ClusterNodeLogicalIdList = string[];
@@ -868,15 +863,9 @@ export type ActionStatus =
   | "Completed"
   | "Failed"
   | "Stopping"
-  | "Stopped";
-export const ActionStatus = S.Literal(
-  "Unknown",
-  "InProgress",
-  "Completed",
-  "Failed",
-  "Stopping",
-  "Stopped",
-);
+  | "Stopped"
+  | (string & {});
+export const ActionStatus = S.String;
 export type AppType =
   | "JupyterServer"
   | "KernelGateway"
@@ -886,43 +875,34 @@ export type AppType =
   | "JupyterLab"
   | "RStudioServerPro"
   | "RSessionGateway"
-  | "Canvas";
-export const AppType = S.Literal(
-  "JupyterServer",
-  "KernelGateway",
-  "DetailedProfiler",
-  "TensorBoard",
-  "CodeEditor",
-  "JupyterLab",
-  "RStudioServerPro",
-  "RSessionGateway",
-  "Canvas",
-);
+  | "Canvas"
+  | (string & {});
+export const AppType = S.String;
 export type ProblemType =
   | "BinaryClassification"
   | "MulticlassClassification"
-  | "Regression";
-export const ProblemType = S.Literal(
-  "BinaryClassification",
-  "MulticlassClassification",
-  "Regression",
-);
-export type ClusterNodeRecovery = "Automatic" | "None";
-export const ClusterNodeRecovery = S.Literal("Automatic", "None");
-export type ClusterNodeProvisioningMode = "Continuous";
-export const ClusterNodeProvisioningMode = S.Literal("Continuous");
-export type ActivationState = "Enabled" | "Disabled";
-export const ActivationState = S.Literal("Enabled", "Disabled");
-export type AuthMode = "SSO" | "IAM";
-export const AuthMode = S.Literal("SSO", "IAM");
+  | "Regression"
+  | (string & {});
+export const ProblemType = S.String;
+export type ClusterNodeRecovery = "Automatic" | "None" | (string & {});
+export const ClusterNodeRecovery = S.String;
+export type ClusterNodeProvisioningMode = "Continuous" | (string & {});
+export const ClusterNodeProvisioningMode = S.String;
+export type ActivationState = "Enabled" | "Disabled" | (string & {});
+export const ActivationState = S.String;
+export type AuthMode = "SSO" | "IAM" | (string & {});
+export const AuthMode = S.String;
 export type Subnets = string[];
 export const Subnets = S.Array(S.String);
-export type AppNetworkAccessType = "PublicInternetOnly" | "VpcOnly";
-export const AppNetworkAccessType = S.Literal("PublicInternetOnly", "VpcOnly");
-export type AppSecurityGroupManagement = "Service" | "Customer";
-export const AppSecurityGroupManagement = S.Literal("Service", "Customer");
-export type TagPropagation = "ENABLED" | "DISABLED";
-export const TagPropagation = S.Literal("ENABLED", "DISABLED");
+export type AppNetworkAccessType =
+  | "PublicInternetOnly"
+  | "VpcOnly"
+  | (string & {});
+export const AppNetworkAccessType = S.String;
+export type AppSecurityGroupManagement = "Service" | "Customer" | (string & {});
+export const AppSecurityGroupManagement = S.String;
+export type TagPropagation = "ENABLED" | "DISABLED" | (string & {});
+export const TagPropagation = S.String;
 export type HubSearchKeywordList = string[];
 export const HubSearchKeywordList = S.Array(S.String);
 export type HubContentType =
@@ -930,19 +910,14 @@ export type HubContentType =
   | "Notebook"
   | "ModelReference"
   | "DataSet"
-  | "JsonDoc";
-export const HubContentType = S.Literal(
-  "Model",
-  "Notebook",
-  "ModelReference",
-  "DataSet",
-  "JsonDoc",
-);
-export type HyperParameterTuningJobObjectiveType = "Maximize" | "Minimize";
-export const HyperParameterTuningJobObjectiveType = S.Literal(
-  "Maximize",
-  "Minimize",
-);
+  | "JsonDoc"
+  | (string & {});
+export const HubContentType = S.String;
+export type HyperParameterTuningJobObjectiveType =
+  | "Maximize"
+  | "Minimize"
+  | (string & {});
+export const HyperParameterTuningJobObjectiveType = S.String;
 export interface HyperParameterTuningJobObjective {
   Type?: HyperParameterTuningJobObjectiveType;
   MetricName?: string;
@@ -959,13 +934,9 @@ export type HyperParameterScalingType =
   | "Auto"
   | "Linear"
   | "Logarithmic"
-  | "ReverseLogarithmic";
-export const HyperParameterScalingType = S.Literal(
-  "Auto",
-  "Linear",
-  "Logarithmic",
-  "ReverseLogarithmic",
-);
+  | "ReverseLogarithmic"
+  | (string & {});
+export const HyperParameterScalingType = S.String;
 export interface IntegerParameterRange {
   Name?: string;
   MinValue?: string;
@@ -1047,8 +1018,8 @@ export const HyperParameters = S.Record({
   key: S.String,
   value: S.UndefinedOr(S.String),
 });
-export type TrainingInputMode = "Pipe" | "File" | "FastFile";
-export const TrainingInputMode = S.Literal("Pipe", "File", "FastFile");
+export type TrainingInputMode = "Pipe" | "File" | "FastFile" | (string & {});
+export const TrainingInputMode = S.String;
 export interface MetricDefinition {
   Name?: string;
   Regex?: string;
@@ -1080,18 +1051,14 @@ export type S3DataType =
   | "ManifestFile"
   | "S3Prefix"
   | "AugmentedManifestFile"
-  | "Converse";
-export const S3DataType = S.Literal(
-  "ManifestFile",
-  "S3Prefix",
-  "AugmentedManifestFile",
-  "Converse",
-);
-export type S3DataDistribution = "FullyReplicated" | "ShardedByS3Key";
-export const S3DataDistribution = S.Literal(
-  "FullyReplicated",
-  "ShardedByS3Key",
-);
+  | "Converse"
+  | (string & {});
+export const S3DataType = S.String;
+export type S3DataDistribution =
+  | "FullyReplicated"
+  | "ShardedByS3Key"
+  | (string & {});
+export const S3DataDistribution = S.String;
 export type AttributeNames = string[];
 export const AttributeNames = S.Array(S.String);
 export type InstanceGroupNames = string[];
@@ -1132,10 +1099,10 @@ export const S3DataSource = S.suspend(() =>
     HubAccessConfig: S.optional(HubAccessConfig),
   }),
 ).annotations({ identifier: "S3DataSource" }) as any as S.Schema<S3DataSource>;
-export type FileSystemAccessMode = "rw" | "ro";
-export const FileSystemAccessMode = S.Literal("rw", "ro");
-export type FileSystemType = "EFS" | "FSxLustre";
-export const FileSystemType = S.Literal("EFS", "FSxLustre");
+export type FileSystemAccessMode = "rw" | "ro" | (string & {});
+export const FileSystemAccessMode = S.String;
+export type FileSystemType = "EFS" | "FSxLustre" | (string & {});
+export const FileSystemType = S.String;
 export interface FileSystemDataSource {
   FileSystemId?: string;
   FileSystemAccessMode?: FileSystemAccessMode;
@@ -1172,10 +1139,10 @@ export const DataSource = S.suspend(() =>
     DatasetSource: S.optional(DatasetSource),
   }),
 ).annotations({ identifier: "DataSource" }) as any as S.Schema<DataSource>;
-export type CompressionType = "None" | "Gzip";
-export const CompressionType = S.Literal("None", "Gzip");
-export type RecordWrapper = "None" | "RecordIO";
-export const RecordWrapper = S.Literal("None", "RecordIO");
+export type CompressionType = "None" | "Gzip" | (string & {});
+export const CompressionType = S.String;
+export type RecordWrapper = "None" | "RecordIO" | (string & {});
+export const RecordWrapper = S.String;
 export interface ShuffleConfig {
   Seed?: number;
 }
@@ -1218,8 +1185,8 @@ export const VpcConfig = S.suspend(() =>
     Subnets: S.optional(Subnets),
   }),
 ).annotations({ identifier: "VpcConfig" }) as any as S.Schema<VpcConfig>;
-export type OutputCompressionType = "GZIP" | "NONE";
-export const OutputCompressionType = S.Literal("GZIP", "NONE");
+export type OutputCompressionType = "GZIP" | "NONE" | (string & {});
+export const OutputCompressionType = S.String;
 export interface OutputDataConfig {
   KmsKeyId?: string;
   S3OutputPath?: string;
@@ -1373,148 +1340,9 @@ export type TrainingInstanceType =
   | "ml.r7i.48xlarge"
   | "ml.p6e-gb200.36xlarge"
   | "ml.p5.4xlarge"
-  | "ml.p6-b300.48xlarge";
-export const TrainingInstanceType = S.Literal(
-  "ml.m4.xlarge",
-  "ml.m4.2xlarge",
-  "ml.m4.4xlarge",
-  "ml.m4.10xlarge",
-  "ml.m4.16xlarge",
-  "ml.g4dn.xlarge",
-  "ml.g4dn.2xlarge",
-  "ml.g4dn.4xlarge",
-  "ml.g4dn.8xlarge",
-  "ml.g4dn.12xlarge",
-  "ml.g4dn.16xlarge",
-  "ml.m5.large",
-  "ml.m5.xlarge",
-  "ml.m5.2xlarge",
-  "ml.m5.4xlarge",
-  "ml.m5.12xlarge",
-  "ml.m5.24xlarge",
-  "ml.c4.xlarge",
-  "ml.c4.2xlarge",
-  "ml.c4.4xlarge",
-  "ml.c4.8xlarge",
-  "ml.p2.xlarge",
-  "ml.p2.8xlarge",
-  "ml.p2.16xlarge",
-  "ml.p3.2xlarge",
-  "ml.p3.8xlarge",
-  "ml.p3.16xlarge",
-  "ml.p3dn.24xlarge",
-  "ml.p4d.24xlarge",
-  "ml.p4de.24xlarge",
-  "ml.p5.48xlarge",
-  "ml.p5e.48xlarge",
-  "ml.p5en.48xlarge",
-  "ml.c5.xlarge",
-  "ml.c5.2xlarge",
-  "ml.c5.4xlarge",
-  "ml.c5.9xlarge",
-  "ml.c5.18xlarge",
-  "ml.c5n.xlarge",
-  "ml.c5n.2xlarge",
-  "ml.c5n.4xlarge",
-  "ml.c5n.9xlarge",
-  "ml.c5n.18xlarge",
-  "ml.g5.xlarge",
-  "ml.g5.2xlarge",
-  "ml.g5.4xlarge",
-  "ml.g5.8xlarge",
-  "ml.g5.16xlarge",
-  "ml.g5.12xlarge",
-  "ml.g5.24xlarge",
-  "ml.g5.48xlarge",
-  "ml.g6.xlarge",
-  "ml.g6.2xlarge",
-  "ml.g6.4xlarge",
-  "ml.g6.8xlarge",
-  "ml.g6.16xlarge",
-  "ml.g6.12xlarge",
-  "ml.g6.24xlarge",
-  "ml.g6.48xlarge",
-  "ml.g6e.xlarge",
-  "ml.g6e.2xlarge",
-  "ml.g6e.4xlarge",
-  "ml.g6e.8xlarge",
-  "ml.g6e.16xlarge",
-  "ml.g6e.12xlarge",
-  "ml.g6e.24xlarge",
-  "ml.g6e.48xlarge",
-  "ml.trn1.2xlarge",
-  "ml.trn1.32xlarge",
-  "ml.trn1n.32xlarge",
-  "ml.trn2.48xlarge",
-  "ml.m6i.large",
-  "ml.m6i.xlarge",
-  "ml.m6i.2xlarge",
-  "ml.m6i.4xlarge",
-  "ml.m6i.8xlarge",
-  "ml.m6i.12xlarge",
-  "ml.m6i.16xlarge",
-  "ml.m6i.24xlarge",
-  "ml.m6i.32xlarge",
-  "ml.c6i.xlarge",
-  "ml.c6i.2xlarge",
-  "ml.c6i.8xlarge",
-  "ml.c6i.4xlarge",
-  "ml.c6i.12xlarge",
-  "ml.c6i.16xlarge",
-  "ml.c6i.24xlarge",
-  "ml.c6i.32xlarge",
-  "ml.r5d.large",
-  "ml.r5d.xlarge",
-  "ml.r5d.2xlarge",
-  "ml.r5d.4xlarge",
-  "ml.r5d.8xlarge",
-  "ml.r5d.12xlarge",
-  "ml.r5d.16xlarge",
-  "ml.r5d.24xlarge",
-  "ml.t3.medium",
-  "ml.t3.large",
-  "ml.t3.xlarge",
-  "ml.t3.2xlarge",
-  "ml.r5.large",
-  "ml.r5.xlarge",
-  "ml.r5.2xlarge",
-  "ml.r5.4xlarge",
-  "ml.r5.8xlarge",
-  "ml.r5.12xlarge",
-  "ml.r5.16xlarge",
-  "ml.r5.24xlarge",
-  "ml.p6-b200.48xlarge",
-  "ml.m7i.large",
-  "ml.m7i.xlarge",
-  "ml.m7i.2xlarge",
-  "ml.m7i.4xlarge",
-  "ml.m7i.8xlarge",
-  "ml.m7i.12xlarge",
-  "ml.m7i.16xlarge",
-  "ml.m7i.24xlarge",
-  "ml.m7i.48xlarge",
-  "ml.c7i.large",
-  "ml.c7i.xlarge",
-  "ml.c7i.2xlarge",
-  "ml.c7i.4xlarge",
-  "ml.c7i.8xlarge",
-  "ml.c7i.12xlarge",
-  "ml.c7i.16xlarge",
-  "ml.c7i.24xlarge",
-  "ml.c7i.48xlarge",
-  "ml.r7i.large",
-  "ml.r7i.xlarge",
-  "ml.r7i.2xlarge",
-  "ml.r7i.4xlarge",
-  "ml.r7i.8xlarge",
-  "ml.r7i.12xlarge",
-  "ml.r7i.16xlarge",
-  "ml.r7i.24xlarge",
-  "ml.r7i.48xlarge",
-  "ml.p6e-gb200.36xlarge",
-  "ml.p5.4xlarge",
-  "ml.p6-b300.48xlarge",
-);
+  | "ml.p6-b300.48xlarge"
+  | (string & {});
+export const TrainingInstanceType = S.String;
 export interface InstanceGroup {
   InstanceType?: TrainingInstanceType;
   InstanceCount?: number;
@@ -1581,8 +1409,10 @@ export const ResourceConfig = S.suspend(() =>
 ).annotations({
   identifier: "ResourceConfig",
 }) as any as S.Schema<ResourceConfig>;
-export type HyperParameterTuningAllocationStrategy = "Prioritized";
-export const HyperParameterTuningAllocationStrategy = S.Literal("Prioritized");
+export type HyperParameterTuningAllocationStrategy =
+  | "Prioritized"
+  | (string & {});
+export const HyperParameterTuningAllocationStrategy = S.String;
 export interface HyperParameterTuningInstanceConfig {
   InstanceType?: TrainingInstanceType;
   InstanceCount?: number;
@@ -1717,36 +1547,34 @@ export type VendorGuidance =
   | "NOT_PROVIDED"
   | "STABLE"
   | "TO_BE_ARCHIVED"
-  | "ARCHIVED";
-export const VendorGuidance = S.Literal(
-  "NOT_PROVIDED",
-  "STABLE",
-  "TO_BE_ARCHIVED",
-  "ARCHIVED",
-);
-export type JobType = "TRAINING" | "INFERENCE" | "NOTEBOOK_KERNEL";
-export const JobType = S.Literal("TRAINING", "INFERENCE", "NOTEBOOK_KERNEL");
-export type Processor = "CPU" | "GPU";
-export const Processor = S.Literal("CPU", "GPU");
-export type InferenceExperimentType = "ShadowMode";
-export const InferenceExperimentType = S.Literal("ShadowMode");
-export type RecommendationJobType = "Default" | "Advanced";
-export const RecommendationJobType = S.Literal("Default", "Advanced");
+  | "ARCHIVED"
+  | (string & {});
+export const VendorGuidance = S.String;
+export type JobType =
+  | "TRAINING"
+  | "INFERENCE"
+  | "NOTEBOOK_KERNEL"
+  | (string & {});
+export const JobType = S.String;
+export type Processor = "CPU" | "GPU" | (string & {});
+export const Processor = S.String;
+export type InferenceExperimentType = "ShadowMode" | (string & {});
+export const InferenceExperimentType = S.String;
+export type RecommendationJobType = "Default" | "Advanced" | (string & {});
+export const RecommendationJobType = S.String;
 export type ModelRegistrationMode =
   | "AutoModelRegistrationEnabled"
-  | "AutoModelRegistrationDisabled";
-export const ModelRegistrationMode = S.Literal(
-  "AutoModelRegistrationEnabled",
-  "AutoModelRegistrationDisabled",
-);
-export type AccountDefaultStatus = "ENABLED" | "DISABLED";
-export const AccountDefaultStatus = S.Literal("ENABLED", "DISABLED");
+  | "AutoModelRegistrationDisabled"
+  | (string & {});
+export const ModelRegistrationMode = S.String;
+export type AccountDefaultStatus = "ENABLED" | "DISABLED" | (string & {});
+export const AccountDefaultStatus = S.String;
 export type DefaultDomainIdList = string[];
 export const DefaultDomainIdList = S.Array(S.String);
-export type TrackingServerSize = "Small" | "Medium" | "Large";
-export const TrackingServerSize = S.Literal("Small", "Medium", "Large");
-export type RepositoryAccessMode = "Platform" | "Vpc";
-export const RepositoryAccessMode = S.Literal("Platform", "Vpc");
+export type TrackingServerSize = "Small" | "Medium" | "Large" | (string & {});
+export const TrackingServerSize = S.String;
+export type RepositoryAccessMode = "Platform" | "Vpc" | (string & {});
+export const RepositoryAccessMode = S.String;
 export interface RepositoryAuthConfig {
   RepositoryCredentialsProviderArn?: string;
 }
@@ -1765,12 +1593,12 @@ export const ImageConfig = S.suspend(() =>
     RepositoryAuthConfig: S.optional(RepositoryAuthConfig),
   }),
 ).annotations({ identifier: "ImageConfig" }) as any as S.Schema<ImageConfig>;
-export type ContainerMode = "SingleModel" | "MultiModel";
-export const ContainerMode = S.Literal("SingleModel", "MultiModel");
-export type S3ModelDataType = "S3Prefix" | "S3Object";
-export const S3ModelDataType = S.Literal("S3Prefix", "S3Object");
-export type ModelCompressionType = "None" | "Gzip";
-export const ModelCompressionType = S.Literal("None", "Gzip");
+export type ContainerMode = "SingleModel" | "MultiModel" | (string & {});
+export const ContainerMode = S.String;
+export type S3ModelDataType = "S3Prefix" | "S3Object" | (string & {});
+export const S3ModelDataType = S.String;
+export type ModelCompressionType = "None" | "Gzip" | (string & {});
+export const ModelCompressionType = S.String;
 export interface InferenceHubAccessConfig {
   HubContentArn?: string;
 }
@@ -1830,8 +1658,8 @@ export const EnvironmentMap = S.Record({
   key: S.String,
   value: S.UndefinedOr(S.String),
 });
-export type ModelCacheSetting = "Enabled" | "Disabled";
-export const ModelCacheSetting = S.Literal("Enabled", "Disabled");
+export type ModelCacheSetting = "Enabled" | "Disabled" | (string & {});
+export const ModelCacheSetting = S.String;
 export interface MultiModelConfig {
   ModelCacheSetting?: ModelCacheSetting;
 }
@@ -1876,26 +1704,22 @@ export type ModelCardStatus =
   | "Draft"
   | "PendingReview"
   | "Approved"
-  | "Archived";
-export const ModelCardStatus = S.Literal(
-  "Draft",
-  "PendingReview",
-  "Approved",
-  "Archived",
-);
-export type ModelPackageRegistrationType = "Logged" | "Registered";
-export const ModelPackageRegistrationType = S.Literal("Logged", "Registered");
+  | "Archived"
+  | (string & {});
+export const ModelCardStatus = S.String;
+export type ModelPackageRegistrationType =
+  | "Logged"
+  | "Registered"
+  | (string & {});
+export const ModelPackageRegistrationType = S.String;
 export type ModelApprovalStatus =
   | "Approved"
   | "Rejected"
-  | "PendingManualApproval";
-export const ModelApprovalStatus = S.Literal(
-  "Approved",
-  "Rejected",
-  "PendingManualApproval",
-);
-export type SkipModelValidation = "All" | "None";
-export const SkipModelValidation = S.Literal("All", "None");
+  | "PendingManualApproval"
+  | (string & {});
+export const ModelApprovalStatus = S.String;
+export type SkipModelValidation = "All" | "None" | (string & {});
+export const SkipModelValidation = S.String;
 export type InstanceType =
   | "ml.t2.medium"
   | "ml.t2.large"
@@ -2069,203 +1893,24 @@ export type InstanceType =
   | "ml.g6.12xlarge"
   | "ml.g6.16xlarge"
   | "ml.g6.24xlarge"
-  | "ml.g6.48xlarge";
-export const InstanceType = S.Literal(
-  "ml.t2.medium",
-  "ml.t2.large",
-  "ml.t2.xlarge",
-  "ml.t2.2xlarge",
-  "ml.t3.medium",
-  "ml.t3.large",
-  "ml.t3.xlarge",
-  "ml.t3.2xlarge",
-  "ml.m4.xlarge",
-  "ml.m4.2xlarge",
-  "ml.m4.4xlarge",
-  "ml.m4.10xlarge",
-  "ml.m4.16xlarge",
-  "ml.m5.xlarge",
-  "ml.m5.2xlarge",
-  "ml.m5.4xlarge",
-  "ml.m5.12xlarge",
-  "ml.m5.24xlarge",
-  "ml.m5d.large",
-  "ml.m5d.xlarge",
-  "ml.m5d.2xlarge",
-  "ml.m5d.4xlarge",
-  "ml.m5d.8xlarge",
-  "ml.m5d.12xlarge",
-  "ml.m5d.16xlarge",
-  "ml.m5d.24xlarge",
-  "ml.c4.xlarge",
-  "ml.c4.2xlarge",
-  "ml.c4.4xlarge",
-  "ml.c4.8xlarge",
-  "ml.c5.xlarge",
-  "ml.c5.2xlarge",
-  "ml.c5.4xlarge",
-  "ml.c5.9xlarge",
-  "ml.c5.18xlarge",
-  "ml.c5d.xlarge",
-  "ml.c5d.2xlarge",
-  "ml.c5d.4xlarge",
-  "ml.c5d.9xlarge",
-  "ml.c5d.18xlarge",
-  "ml.p2.xlarge",
-  "ml.p2.8xlarge",
-  "ml.p2.16xlarge",
-  "ml.p3.2xlarge",
-  "ml.p3.8xlarge",
-  "ml.p3.16xlarge",
-  "ml.p3dn.24xlarge",
-  "ml.g4dn.xlarge",
-  "ml.g4dn.2xlarge",
-  "ml.g4dn.4xlarge",
-  "ml.g4dn.8xlarge",
-  "ml.g4dn.12xlarge",
-  "ml.g4dn.16xlarge",
-  "ml.r5.large",
-  "ml.r5.xlarge",
-  "ml.r5.2xlarge",
-  "ml.r5.4xlarge",
-  "ml.r5.8xlarge",
-  "ml.r5.12xlarge",
-  "ml.r5.16xlarge",
-  "ml.r5.24xlarge",
-  "ml.g5.xlarge",
-  "ml.g5.2xlarge",
-  "ml.g5.4xlarge",
-  "ml.g5.8xlarge",
-  "ml.g5.16xlarge",
-  "ml.g5.12xlarge",
-  "ml.g5.24xlarge",
-  "ml.g5.48xlarge",
-  "ml.inf1.xlarge",
-  "ml.inf1.2xlarge",
-  "ml.inf1.6xlarge",
-  "ml.inf1.24xlarge",
-  "ml.trn1.2xlarge",
-  "ml.trn1.32xlarge",
-  "ml.trn1n.32xlarge",
-  "ml.inf2.xlarge",
-  "ml.inf2.8xlarge",
-  "ml.inf2.24xlarge",
-  "ml.inf2.48xlarge",
-  "ml.p4d.24xlarge",
-  "ml.p4de.24xlarge",
-  "ml.p5.48xlarge",
-  "ml.p6-b200.48xlarge",
-  "ml.m6i.large",
-  "ml.m6i.xlarge",
-  "ml.m6i.2xlarge",
-  "ml.m6i.4xlarge",
-  "ml.m6i.8xlarge",
-  "ml.m6i.12xlarge",
-  "ml.m6i.16xlarge",
-  "ml.m6i.24xlarge",
-  "ml.m6i.32xlarge",
-  "ml.m7i.large",
-  "ml.m7i.xlarge",
-  "ml.m7i.2xlarge",
-  "ml.m7i.4xlarge",
-  "ml.m7i.8xlarge",
-  "ml.m7i.12xlarge",
-  "ml.m7i.16xlarge",
-  "ml.m7i.24xlarge",
-  "ml.m7i.48xlarge",
-  "ml.c6i.large",
-  "ml.c6i.xlarge",
-  "ml.c6i.2xlarge",
-  "ml.c6i.4xlarge",
-  "ml.c6i.8xlarge",
-  "ml.c6i.12xlarge",
-  "ml.c6i.16xlarge",
-  "ml.c6i.24xlarge",
-  "ml.c6i.32xlarge",
-  "ml.c7i.large",
-  "ml.c7i.xlarge",
-  "ml.c7i.2xlarge",
-  "ml.c7i.4xlarge",
-  "ml.c7i.8xlarge",
-  "ml.c7i.12xlarge",
-  "ml.c7i.16xlarge",
-  "ml.c7i.24xlarge",
-  "ml.c7i.48xlarge",
-  "ml.r6i.large",
-  "ml.r6i.xlarge",
-  "ml.r6i.2xlarge",
-  "ml.r6i.4xlarge",
-  "ml.r6i.8xlarge",
-  "ml.r6i.12xlarge",
-  "ml.r6i.16xlarge",
-  "ml.r6i.24xlarge",
-  "ml.r6i.32xlarge",
-  "ml.r7i.large",
-  "ml.r7i.xlarge",
-  "ml.r7i.2xlarge",
-  "ml.r7i.4xlarge",
-  "ml.r7i.8xlarge",
-  "ml.r7i.12xlarge",
-  "ml.r7i.16xlarge",
-  "ml.r7i.24xlarge",
-  "ml.r7i.48xlarge",
-  "ml.m6id.large",
-  "ml.m6id.xlarge",
-  "ml.m6id.2xlarge",
-  "ml.m6id.4xlarge",
-  "ml.m6id.8xlarge",
-  "ml.m6id.12xlarge",
-  "ml.m6id.16xlarge",
-  "ml.m6id.24xlarge",
-  "ml.m6id.32xlarge",
-  "ml.c6id.large",
-  "ml.c6id.xlarge",
-  "ml.c6id.2xlarge",
-  "ml.c6id.4xlarge",
-  "ml.c6id.8xlarge",
-  "ml.c6id.12xlarge",
-  "ml.c6id.16xlarge",
-  "ml.c6id.24xlarge",
-  "ml.c6id.32xlarge",
-  "ml.r6id.large",
-  "ml.r6id.xlarge",
-  "ml.r6id.2xlarge",
-  "ml.r6id.4xlarge",
-  "ml.r6id.8xlarge",
-  "ml.r6id.12xlarge",
-  "ml.r6id.16xlarge",
-  "ml.r6id.24xlarge",
-  "ml.r6id.32xlarge",
-  "ml.g6.xlarge",
-  "ml.g6.2xlarge",
-  "ml.g6.4xlarge",
-  "ml.g6.8xlarge",
-  "ml.g6.12xlarge",
-  "ml.g6.16xlarge",
-  "ml.g6.24xlarge",
-  "ml.g6.48xlarge",
-);
+  | "ml.g6.48xlarge"
+  | (string & {});
+export const InstanceType = S.String;
 export type SecurityGroupIds = string[];
 export const SecurityGroupIds = S.Array(S.String);
-export type IPAddressType = "ipv4" | "dualstack";
-export const IPAddressType = S.Literal("ipv4", "dualstack");
-export type DirectInternetAccess = "Enabled" | "Disabled";
-export const DirectInternetAccess = S.Literal("Enabled", "Disabled");
+export type IPAddressType = "ipv4" | "dualstack" | (string & {});
+export const IPAddressType = S.String;
+export type DirectInternetAccess = "Enabled" | "Disabled" | (string & {});
+export const DirectInternetAccess = S.String;
 export type NotebookInstanceAcceleratorType =
   | "ml.eia1.medium"
   | "ml.eia1.large"
   | "ml.eia1.xlarge"
   | "ml.eia2.medium"
   | "ml.eia2.large"
-  | "ml.eia2.xlarge";
-export const NotebookInstanceAcceleratorType = S.Literal(
-  "ml.eia1.medium",
-  "ml.eia1.large",
-  "ml.eia1.xlarge",
-  "ml.eia2.medium",
-  "ml.eia2.large",
-  "ml.eia2.xlarge",
-);
+  | "ml.eia2.xlarge"
+  | (string & {});
+export const NotebookInstanceAcceleratorType = S.String;
 export type NotebookInstanceAcceleratorTypes =
   NotebookInstanceAcceleratorType[];
 export const NotebookInstanceAcceleratorTypes = S.Array(
@@ -2273,8 +1918,8 @@ export const NotebookInstanceAcceleratorTypes = S.Array(
 );
 export type AdditionalCodeRepositoryNamesOrUrls = string[];
 export const AdditionalCodeRepositoryNamesOrUrls = S.Array(S.String);
-export type RootAccess = "Enabled" | "Disabled";
-export const RootAccess = S.Literal("Enabled", "Disabled");
+export type RootAccess = "Enabled" | "Disabled" | (string & {});
+export const RootAccess = S.String;
 export type OptimizationJobDeploymentInstanceType =
   | "ml.p4d.24xlarge"
   | "ml.p4de.24xlarge"
@@ -2311,79 +1956,38 @@ export type OptimizationJobDeploymentInstanceType =
   | "ml.inf2.48xlarge"
   | "ml.trn1.2xlarge"
   | "ml.trn1.32xlarge"
-  | "ml.trn1n.32xlarge";
-export const OptimizationJobDeploymentInstanceType = S.Literal(
-  "ml.p4d.24xlarge",
-  "ml.p4de.24xlarge",
-  "ml.p5.48xlarge",
-  "ml.p5e.48xlarge",
-  "ml.p5en.48xlarge",
-  "ml.g5.xlarge",
-  "ml.g5.2xlarge",
-  "ml.g5.4xlarge",
-  "ml.g5.8xlarge",
-  "ml.g5.12xlarge",
-  "ml.g5.16xlarge",
-  "ml.g5.24xlarge",
-  "ml.g5.48xlarge",
-  "ml.g6.xlarge",
-  "ml.g6.2xlarge",
-  "ml.g6.4xlarge",
-  "ml.g6.8xlarge",
-  "ml.g6.12xlarge",
-  "ml.g6.16xlarge",
-  "ml.g6.24xlarge",
-  "ml.g6.48xlarge",
-  "ml.g6e.xlarge",
-  "ml.g6e.2xlarge",
-  "ml.g6e.4xlarge",
-  "ml.g6e.8xlarge",
-  "ml.g6e.12xlarge",
-  "ml.g6e.16xlarge",
-  "ml.g6e.24xlarge",
-  "ml.g6e.48xlarge",
-  "ml.inf2.xlarge",
-  "ml.inf2.8xlarge",
-  "ml.inf2.24xlarge",
-  "ml.inf2.48xlarge",
-  "ml.trn1.2xlarge",
-  "ml.trn1.32xlarge",
-  "ml.trn1n.32xlarge",
-);
+  | "ml.trn1n.32xlarge"
+  | (string & {});
+export const OptimizationJobDeploymentInstanceType = S.String;
 export type PartnerAppType =
   | "lakera-guard"
   | "comet"
   | "deepchecks-llm-evaluation"
-  | "fiddler";
-export const PartnerAppType = S.Literal(
-  "lakera-guard",
-  "comet",
-  "deepchecks-llm-evaluation",
-  "fiddler",
-);
-export type PartnerAppAuthType = "IAM";
-export const PartnerAppAuthType = S.Literal("IAM");
+  | "fiddler"
+  | (string & {});
+export const PartnerAppType = S.String;
+export type PartnerAppAuthType = "IAM" | (string & {});
+export const PartnerAppAuthType = S.String;
 export type StudioLifecycleConfigAppType =
   | "JupyterServer"
   | "KernelGateway"
   | "CodeEditor"
-  | "JupyterLab";
-export const StudioLifecycleConfigAppType = S.Literal(
-  "JupyterServer",
-  "KernelGateway",
-  "CodeEditor",
-  "JupyterLab",
-);
-export type BatchStrategy = "MultiRecord" | "SingleRecord";
-export const BatchStrategy = S.Literal("MultiRecord", "SingleRecord");
-export type WorkforceIpAddressType = "ipv4" | "dualstack";
-export const WorkforceIpAddressType = S.Literal("ipv4", "dualstack");
+  | "JupyterLab"
+  | (string & {});
+export const StudioLifecycleConfigAppType = S.String;
+export type BatchStrategy = "MultiRecord" | "SingleRecord" | (string & {});
+export const BatchStrategy = S.String;
+export type WorkforceIpAddressType = "ipv4" | "dualstack" | (string & {});
+export const WorkforceIpAddressType = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export type DeviceNames = string[];
 export const DeviceNames = S.Array(S.String);
-export type SagemakerServicecatalogStatus = "Enabled" | "Disabled";
-export const SagemakerServicecatalogStatus = S.Literal("Enabled", "Disabled");
+export type SagemakerServicecatalogStatus =
+  | "Enabled"
+  | "Disabled"
+  | (string & {});
+export const SagemakerServicecatalogStatus = S.String;
 export type ResourceType =
   | "TrainingJob"
   | "Experiment"
@@ -2402,116 +2006,77 @@ export type ResourceType =
   | "Project"
   | "HyperParameterTuningJob"
   | "ModelCard"
-  | "PipelineVersion";
-export const ResourceType = S.Literal(
-  "TrainingJob",
-  "Experiment",
-  "ExperimentTrial",
-  "ExperimentTrialComponent",
-  "Endpoint",
-  "Model",
-  "ModelPackage",
-  "ModelPackageGroup",
-  "Pipeline",
-  "PipelineExecution",
-  "FeatureGroup",
-  "FeatureMetadata",
-  "Image",
-  "ImageVersion",
-  "Project",
-  "HyperParameterTuningJob",
-  "ModelCard",
-  "PipelineVersion",
-);
-export type HubContentSupportStatus = "Supported" | "Deprecated" | "Restricted";
-export const HubContentSupportStatus = S.Literal(
-  "Supported",
-  "Deprecated",
-  "Restricted",
-);
+  | "PipelineVersion"
+  | (string & {});
+export const ResourceType = S.String;
+export type HubContentSupportStatus =
+  | "Supported"
+  | "Deprecated"
+  | "Restricted"
+  | (string & {});
+export const HubContentSupportStatus = S.String;
 export type HubContentSearchKeywordList = string[];
 export const HubContentSearchKeywordList = S.Array(S.String);
-export type SortActionsBy = "Name" | "CreationTime";
-export const SortActionsBy = S.Literal("Name", "CreationTime");
-export type SortOrder = "Ascending" | "Descending";
-export const SortOrder = S.Literal("Ascending", "Descending");
-export type AlgorithmSortBy = "Name" | "CreationTime";
-export const AlgorithmSortBy = S.Literal("Name", "CreationTime");
+export type SortActionsBy = "Name" | "CreationTime" | (string & {});
+export const SortActionsBy = S.String;
+export type SortOrder = "Ascending" | "Descending" | (string & {});
+export const SortOrder = S.String;
+export type AlgorithmSortBy = "Name" | "CreationTime" | (string & {});
+export const AlgorithmSortBy = S.String;
 export type AppImageConfigSortKey =
   | "CreationTime"
   | "LastModifiedTime"
-  | "Name";
-export const AppImageConfigSortKey = S.Literal(
-  "CreationTime",
-  "LastModifiedTime",
-  "Name",
-);
-export type AppSortKey = "CreationTime";
-export const AppSortKey = S.Literal("CreationTime");
-export type SortArtifactsBy = "CreationTime";
-export const SortArtifactsBy = S.Literal("CreationTime");
+  | "Name"
+  | (string & {});
+export const AppImageConfigSortKey = S.String;
+export type AppSortKey = "CreationTime" | (string & {});
+export const AppSortKey = S.String;
+export type SortArtifactsBy = "CreationTime" | (string & {});
+export const SortArtifactsBy = S.String;
 export type SortAssociationsBy =
   | "SourceArn"
   | "DestinationArn"
   | "SourceType"
   | "DestinationType"
-  | "CreationTime";
-export const SortAssociationsBy = S.Literal(
-  "SourceArn",
-  "DestinationArn",
-  "SourceType",
-  "DestinationType",
-  "CreationTime",
-);
+  | "CreationTime"
+  | (string & {});
+export const SortAssociationsBy = S.String;
 export type AutoMLJobStatus =
   | "Completed"
   | "InProgress"
   | "Failed"
   | "Stopped"
-  | "Stopping";
-export const AutoMLJobStatus = S.Literal(
-  "Completed",
-  "InProgress",
-  "Failed",
-  "Stopped",
-  "Stopping",
-);
-export type AutoMLSortOrder = "Ascending" | "Descending";
-export const AutoMLSortOrder = S.Literal("Ascending", "Descending");
-export type AutoMLSortBy = "Name" | "CreationTime" | "Status";
-export const AutoMLSortBy = S.Literal("Name", "CreationTime", "Status");
+  | "Stopping"
+  | (string & {});
+export const AutoMLJobStatus = S.String;
+export type AutoMLSortOrder = "Ascending" | "Descending" | (string & {});
+export const AutoMLSortOrder = S.String;
+export type AutoMLSortBy = "Name" | "CreationTime" | "Status" | (string & {});
+export const AutoMLSortBy = S.String;
 export type CandidateStatus =
   | "Completed"
   | "InProgress"
   | "Failed"
   | "Stopped"
-  | "Stopping";
-export const CandidateStatus = S.Literal(
-  "Completed",
-  "InProgress",
-  "Failed",
-  "Stopped",
-  "Stopping",
-);
+  | "Stopping"
+  | (string & {});
+export const CandidateStatus = S.String;
 export type CandidateSortBy =
   | "CreationTime"
   | "Status"
-  | "FinalObjectiveMetricValue";
-export const CandidateSortBy = S.Literal(
-  "CreationTime",
-  "Status",
-  "FinalObjectiveMetricValue",
-);
-export type EventSortBy = "EventTime";
-export const EventSortBy = S.Literal("EventTime");
-export type ClusterEventResourceType = "Cluster" | "InstanceGroup" | "Instance";
-export const ClusterEventResourceType = S.Literal(
-  "Cluster",
-  "InstanceGroup",
-  "Instance",
-);
-export type ClusterSortBy = "CREATION_TIME" | "NAME";
-export const ClusterSortBy = S.Literal("CREATION_TIME", "NAME");
+  | "FinalObjectiveMetricValue"
+  | (string & {});
+export const CandidateSortBy = S.String;
+export type EventSortBy = "EventTime" | (string & {});
+export const EventSortBy = S.String;
+export type ClusterEventResourceType =
+  | "Cluster"
+  | "InstanceGroup"
+  | "Instance"
+  | (string & {});
+export const ClusterEventResourceType = S.String;
+export type ClusterSortBy = "CREATION_TIME" | "NAME" | (string & {});
+export const ClusterSortBy = S.String;
 export type SchedulerResourceStatus =
   | "Creating"
   | "CreateFailed"
@@ -2524,121 +2089,95 @@ export type SchedulerResourceStatus =
   | "Deleting"
   | "DeleteFailed"
   | "DeleteRollbackFailed"
-  | "Deleted";
-export const SchedulerResourceStatus = S.Literal(
-  "Creating",
-  "CreateFailed",
-  "CreateRollbackFailed",
-  "Created",
-  "Updating",
-  "UpdateFailed",
-  "UpdateRollbackFailed",
-  "Updated",
-  "Deleting",
-  "DeleteFailed",
-  "DeleteRollbackFailed",
-  "Deleted",
-);
-export type SortClusterSchedulerConfigBy = "Name" | "CreationTime" | "Status";
-export const SortClusterSchedulerConfigBy = S.Literal(
-  "Name",
-  "CreationTime",
-  "Status",
-);
-export type CodeRepositorySortBy = "Name" | "CreationTime" | "LastModifiedTime";
-export const CodeRepositorySortBy = S.Literal(
-  "Name",
-  "CreationTime",
-  "LastModifiedTime",
-);
-export type CodeRepositorySortOrder = "Ascending" | "Descending";
-export const CodeRepositorySortOrder = S.Literal("Ascending", "Descending");
+  | "Deleted"
+  | (string & {});
+export const SchedulerResourceStatus = S.String;
+export type SortClusterSchedulerConfigBy =
+  | "Name"
+  | "CreationTime"
+  | "Status"
+  | (string & {});
+export const SortClusterSchedulerConfigBy = S.String;
+export type CodeRepositorySortBy =
+  | "Name"
+  | "CreationTime"
+  | "LastModifiedTime"
+  | (string & {});
+export const CodeRepositorySortBy = S.String;
+export type CodeRepositorySortOrder =
+  | "Ascending"
+  | "Descending"
+  | (string & {});
+export const CodeRepositorySortOrder = S.String;
 export type CompilationJobStatus =
   | "INPROGRESS"
   | "COMPLETED"
   | "FAILED"
   | "STARTING"
   | "STOPPING"
-  | "STOPPED";
-export const CompilationJobStatus = S.Literal(
-  "INPROGRESS",
-  "COMPLETED",
-  "FAILED",
-  "STARTING",
-  "STOPPING",
-  "STOPPED",
-);
-export type ListCompilationJobsSortBy = "Name" | "CreationTime" | "Status";
-export const ListCompilationJobsSortBy = S.Literal(
-  "Name",
-  "CreationTime",
-  "Status",
-);
-export type SortQuotaBy = "Name" | "CreationTime" | "Status" | "ClusterArn";
-export const SortQuotaBy = S.Literal(
-  "Name",
-  "CreationTime",
-  "Status",
-  "ClusterArn",
-);
-export type SortContextsBy = "Name" | "CreationTime";
-export const SortContextsBy = S.Literal("Name", "CreationTime");
-export type MonitoringJobDefinitionSortKey = "Name" | "CreationTime";
-export const MonitoringJobDefinitionSortKey = S.Literal("Name", "CreationTime");
+  | "STOPPED"
+  | (string & {});
+export const CompilationJobStatus = S.String;
+export type ListCompilationJobsSortBy =
+  | "Name"
+  | "CreationTime"
+  | "Status"
+  | (string & {});
+export const ListCompilationJobsSortBy = S.String;
+export type SortQuotaBy =
+  | "Name"
+  | "CreationTime"
+  | "Status"
+  | "ClusterArn"
+  | (string & {});
+export const SortQuotaBy = S.String;
+export type SortContextsBy = "Name" | "CreationTime" | (string & {});
+export const SortContextsBy = S.String;
+export type MonitoringJobDefinitionSortKey =
+  | "Name"
+  | "CreationTime"
+  | (string & {});
+export const MonitoringJobDefinitionSortKey = S.String;
 export type ListDeviceFleetsSortBy =
   | "NAME"
   | "CREATION_TIME"
-  | "LAST_MODIFIED_TIME";
-export const ListDeviceFleetsSortBy = S.Literal(
-  "NAME",
-  "CREATION_TIME",
-  "LAST_MODIFIED_TIME",
-);
+  | "LAST_MODIFIED_TIME"
+  | (string & {});
+export const ListDeviceFleetsSortBy = S.String;
 export type ListEdgeDeploymentPlansSortBy =
   | "NAME"
   | "DEVICE_FLEET_NAME"
   | "CREATION_TIME"
-  | "LAST_MODIFIED_TIME";
-export const ListEdgeDeploymentPlansSortBy = S.Literal(
-  "NAME",
-  "DEVICE_FLEET_NAME",
-  "CREATION_TIME",
-  "LAST_MODIFIED_TIME",
-);
+  | "LAST_MODIFIED_TIME"
+  | (string & {});
+export const ListEdgeDeploymentPlansSortBy = S.String;
 export type EdgePackagingJobStatus =
   | "STARTING"
   | "INPROGRESS"
   | "COMPLETED"
   | "FAILED"
   | "STOPPING"
-  | "STOPPED";
-export const EdgePackagingJobStatus = S.Literal(
-  "STARTING",
-  "INPROGRESS",
-  "COMPLETED",
-  "FAILED",
-  "STOPPING",
-  "STOPPED",
-);
+  | "STOPPED"
+  | (string & {});
+export const EdgePackagingJobStatus = S.String;
 export type ListEdgePackagingJobsSortBy =
   | "NAME"
   | "MODEL_NAME"
   | "CREATION_TIME"
   | "LAST_MODIFIED_TIME"
-  | "STATUS";
-export const ListEdgePackagingJobsSortBy = S.Literal(
-  "NAME",
-  "MODEL_NAME",
-  "CREATION_TIME",
-  "LAST_MODIFIED_TIME",
-  "STATUS",
-);
-export type EndpointConfigSortKey = "Name" | "CreationTime";
-export const EndpointConfigSortKey = S.Literal("Name", "CreationTime");
-export type OrderKey = "Ascending" | "Descending";
-export const OrderKey = S.Literal("Ascending", "Descending");
-export type EndpointSortKey = "Name" | "CreationTime" | "Status";
-export const EndpointSortKey = S.Literal("Name", "CreationTime", "Status");
+  | "STATUS"
+  | (string & {});
+export const ListEdgePackagingJobsSortBy = S.String;
+export type EndpointConfigSortKey = "Name" | "CreationTime" | (string & {});
+export const EndpointConfigSortKey = S.String;
+export type OrderKey = "Ascending" | "Descending" | (string & {});
+export const OrderKey = S.String;
+export type EndpointSortKey =
+  | "Name"
+  | "CreationTime"
+  | "Status"
+  | (string & {});
+export const EndpointSortKey = S.String;
 export type EndpointStatus =
   | "OutOfService"
   | "Creating"
@@ -2648,81 +2187,53 @@ export type EndpointStatus =
   | "InService"
   | "Deleting"
   | "Failed"
-  | "UpdateRollbackFailed";
-export const EndpointStatus = S.Literal(
-  "OutOfService",
-  "Creating",
-  "Updating",
-  "SystemUpdating",
-  "RollingBack",
-  "InService",
-  "Deleting",
-  "Failed",
-  "UpdateRollbackFailed",
-);
-export type SortExperimentsBy = "Name" | "CreationTime";
-export const SortExperimentsBy = S.Literal("Name", "CreationTime");
+  | "UpdateRollbackFailed"
+  | (string & {});
+export const EndpointStatus = S.String;
+export type SortExperimentsBy = "Name" | "CreationTime" | (string & {});
+export const SortExperimentsBy = S.String;
 export type FeatureGroupStatus =
   | "Creating"
   | "Created"
   | "CreateFailed"
   | "Deleting"
-  | "DeleteFailed";
-export const FeatureGroupStatus = S.Literal(
-  "Creating",
-  "Created",
-  "CreateFailed",
-  "Deleting",
-  "DeleteFailed",
-);
-export type OfflineStoreStatusValue = "Active" | "Blocked" | "Disabled";
-export const OfflineStoreStatusValue = S.Literal(
-  "Active",
-  "Blocked",
-  "Disabled",
-);
-export type FeatureGroupSortOrder = "Ascending" | "Descending";
-export const FeatureGroupSortOrder = S.Literal("Ascending", "Descending");
+  | "DeleteFailed"
+  | (string & {});
+export const FeatureGroupStatus = S.String;
+export type OfflineStoreStatusValue =
+  | "Active"
+  | "Blocked"
+  | "Disabled"
+  | (string & {});
+export const OfflineStoreStatusValue = S.String;
+export type FeatureGroupSortOrder = "Ascending" | "Descending" | (string & {});
+export const FeatureGroupSortOrder = S.String;
 export type FeatureGroupSortBy =
   | "Name"
   | "FeatureGroupStatus"
   | "OfflineStoreStatus"
-  | "CreationTime";
-export const FeatureGroupSortBy = S.Literal(
-  "Name",
-  "FeatureGroupStatus",
-  "OfflineStoreStatus",
-  "CreationTime",
-);
+  | "CreationTime"
+  | (string & {});
+export const FeatureGroupSortBy = S.String;
 export type HubContentSortBy =
   | "HubContentName"
   | "CreationTime"
-  | "HubContentStatus";
-export const HubContentSortBy = S.Literal(
-  "HubContentName",
-  "CreationTime",
-  "HubContentStatus",
-);
+  | "HubContentStatus"
+  | (string & {});
+export const HubContentSortBy = S.String;
 export type HubSortBy =
   | "HubName"
   | "CreationTime"
   | "HubStatus"
-  | "AccountIdOwner";
-export const HubSortBy = S.Literal(
-  "HubName",
-  "CreationTime",
-  "HubStatus",
-  "AccountIdOwner",
-);
+  | "AccountIdOwner"
+  | (string & {});
+export const HubSortBy = S.String;
 export type HyperParameterTuningJobSortByOptions =
   | "Name"
   | "Status"
-  | "CreationTime";
-export const HyperParameterTuningJobSortByOptions = S.Literal(
-  "Name",
-  "Status",
-  "CreationTime",
-);
+  | "CreationTime"
+  | (string & {});
+export const HyperParameterTuningJobSortByOptions = S.String;
 export type HyperParameterTuningJobStatus =
   | "Completed"
   | "InProgress"
@@ -2730,54 +2241,39 @@ export type HyperParameterTuningJobStatus =
   | "Stopped"
   | "Stopping"
   | "Deleting"
-  | "DeleteFailed";
-export const HyperParameterTuningJobStatus = S.Literal(
-  "Completed",
-  "InProgress",
-  "Failed",
-  "Stopped",
-  "Stopping",
-  "Deleting",
-  "DeleteFailed",
-);
-export type ImageSortBy = "CREATION_TIME" | "LAST_MODIFIED_TIME" | "IMAGE_NAME";
-export const ImageSortBy = S.Literal(
-  "CREATION_TIME",
-  "LAST_MODIFIED_TIME",
-  "IMAGE_NAME",
-);
-export type ImageSortOrder = "ASCENDING" | "DESCENDING";
-export const ImageSortOrder = S.Literal("ASCENDING", "DESCENDING");
+  | "DeleteFailed"
+  | (string & {});
+export const HyperParameterTuningJobStatus = S.String;
+export type ImageSortBy =
+  | "CREATION_TIME"
+  | "LAST_MODIFIED_TIME"
+  | "IMAGE_NAME"
+  | (string & {});
+export const ImageSortBy = S.String;
+export type ImageSortOrder = "ASCENDING" | "DESCENDING" | (string & {});
+export const ImageSortOrder = S.String;
 export type ImageVersionSortBy =
   | "CREATION_TIME"
   | "LAST_MODIFIED_TIME"
-  | "VERSION";
-export const ImageVersionSortBy = S.Literal(
-  "CREATION_TIME",
-  "LAST_MODIFIED_TIME",
-  "VERSION",
-);
-export type ImageVersionSortOrder = "ASCENDING" | "DESCENDING";
-export const ImageVersionSortOrder = S.Literal("ASCENDING", "DESCENDING");
-export type InferenceComponentSortKey = "Name" | "CreationTime" | "Status";
-export const InferenceComponentSortKey = S.Literal(
-  "Name",
-  "CreationTime",
-  "Status",
-);
+  | "VERSION"
+  | (string & {});
+export const ImageVersionSortBy = S.String;
+export type ImageVersionSortOrder = "ASCENDING" | "DESCENDING" | (string & {});
+export const ImageVersionSortOrder = S.String;
+export type InferenceComponentSortKey =
+  | "Name"
+  | "CreationTime"
+  | "Status"
+  | (string & {});
+export const InferenceComponentSortKey = S.String;
 export type InferenceComponentStatus =
   | "InService"
   | "Creating"
   | "Updating"
   | "Failed"
-  | "Deleting";
-export const InferenceComponentStatus = S.Literal(
-  "InService",
-  "Creating",
-  "Updating",
-  "Failed",
-  "Deleting",
-);
+  | "Deleting"
+  | (string & {});
+export const InferenceComponentStatus = S.String;
 export type InferenceExperimentStatus =
   | "Creating"
   | "Created"
@@ -2786,23 +2282,15 @@ export type InferenceExperimentStatus =
   | "Starting"
   | "Stopping"
   | "Completed"
-  | "Cancelled";
-export const InferenceExperimentStatus = S.Literal(
-  "Creating",
-  "Created",
-  "Updating",
-  "Running",
-  "Starting",
-  "Stopping",
-  "Completed",
-  "Cancelled",
-);
-export type SortInferenceExperimentsBy = "Name" | "CreationTime" | "Status";
-export const SortInferenceExperimentsBy = S.Literal(
-  "Name",
-  "CreationTime",
-  "Status",
-);
+  | "Cancelled"
+  | (string & {});
+export const InferenceExperimentStatus = S.String;
+export type SortInferenceExperimentsBy =
+  | "Name"
+  | "CreationTime"
+  | "Status"
+  | (string & {});
+export const SortInferenceExperimentsBy = S.String;
 export type RecommendationJobStatus =
   | "PENDING"
   | "IN_PROGRESS"
@@ -2811,50 +2299,34 @@ export type RecommendationJobStatus =
   | "STOPPING"
   | "STOPPED"
   | "DELETING"
-  | "DELETED";
-export const RecommendationJobStatus = S.Literal(
-  "PENDING",
-  "IN_PROGRESS",
-  "COMPLETED",
-  "FAILED",
-  "STOPPING",
-  "STOPPED",
-  "DELETING",
-  "DELETED",
-);
+  | "DELETED"
+  | (string & {});
+export const RecommendationJobStatus = S.String;
 export type ListInferenceRecommendationsJobsSortBy =
   | "Name"
   | "CreationTime"
-  | "Status";
-export const ListInferenceRecommendationsJobsSortBy = S.Literal(
-  "Name",
-  "CreationTime",
-  "Status",
-);
-export type RecommendationStepType = "BENCHMARK";
-export const RecommendationStepType = S.Literal("BENCHMARK");
-export type SortBy = "Name" | "CreationTime" | "Status";
-export const SortBy = S.Literal("Name", "CreationTime", "Status");
+  | "Status"
+  | (string & {});
+export const ListInferenceRecommendationsJobsSortBy = S.String;
+export type RecommendationStepType = "BENCHMARK" | (string & {});
+export const RecommendationStepType = S.String;
+export type SortBy = "Name" | "CreationTime" | "Status" | (string & {});
+export const SortBy = S.String;
 export type LabelingJobStatus =
   | "Initializing"
   | "InProgress"
   | "Completed"
   | "Failed"
   | "Stopping"
-  | "Stopped";
-export const LabelingJobStatus = S.Literal(
-  "Initializing",
-  "InProgress",
-  "Completed",
-  "Failed",
-  "Stopping",
-  "Stopped",
-);
-export type ListLabelingJobsForWorkteamSortByOptions = "CreationTime";
-export const ListLabelingJobsForWorkteamSortByOptions =
-  S.Literal("CreationTime");
-export type SortLineageGroupsBy = "Name" | "CreationTime";
-export const SortLineageGroupsBy = S.Literal("Name", "CreationTime");
+  | "Stopped"
+  | (string & {});
+export const LabelingJobStatus = S.String;
+export type ListLabelingJobsForWorkteamSortByOptions =
+  | "CreationTime"
+  | (string & {});
+export const ListLabelingJobsForWorkteamSortByOptions = S.String;
+export type SortLineageGroupsBy = "Name" | "CreationTime" | (string & {});
+export const SortLineageGroupsBy = S.String;
 export type MlflowAppStatus =
   | "Creating"
   | "Created"
@@ -2864,20 +2336,15 @@ export type MlflowAppStatus =
   | "UpdateFailed"
   | "Deleting"
   | "DeleteFailed"
-  | "Deleted";
-export const MlflowAppStatus = S.Literal(
-  "Creating",
-  "Created",
-  "CreateFailed",
-  "Updating",
-  "Updated",
-  "UpdateFailed",
-  "Deleting",
-  "DeleteFailed",
-  "Deleted",
-);
-export type SortMlflowAppBy = "Name" | "CreationTime" | "Status";
-export const SortMlflowAppBy = S.Literal("Name", "CreationTime", "Status");
+  | "Deleted"
+  | (string & {});
+export const MlflowAppStatus = S.String;
+export type SortMlflowAppBy =
+  | "Name"
+  | "CreationTime"
+  | "Status"
+  | (string & {});
+export const SortMlflowAppBy = S.String;
 export type TrackingServerStatus =
   | "Creating"
   | "Created"
@@ -2895,77 +2362,68 @@ export type TrackingServerStatus =
   | "StartFailed"
   | "MaintenanceInProgress"
   | "MaintenanceComplete"
-  | "MaintenanceFailed";
-export const TrackingServerStatus = S.Literal(
-  "Creating",
-  "Created",
-  "CreateFailed",
-  "Updating",
-  "Updated",
-  "UpdateFailed",
-  "Deleting",
-  "DeleteFailed",
-  "Stopping",
-  "Stopped",
-  "StopFailed",
-  "Starting",
-  "Started",
-  "StartFailed",
-  "MaintenanceInProgress",
-  "MaintenanceComplete",
-  "MaintenanceFailed",
-);
-export type SortTrackingServerBy = "Name" | "CreationTime" | "Status";
-export const SortTrackingServerBy = S.Literal("Name", "CreationTime", "Status");
-export type ModelCardExportJobStatus = "InProgress" | "Completed" | "Failed";
-export const ModelCardExportJobStatus = S.Literal(
-  "InProgress",
-  "Completed",
-  "Failed",
-);
-export type ModelCardExportJobSortBy = "Name" | "CreationTime" | "Status";
-export const ModelCardExportJobSortBy = S.Literal(
-  "Name",
-  "CreationTime",
-  "Status",
-);
-export type ModelCardExportJobSortOrder = "Ascending" | "Descending";
-export const ModelCardExportJobSortOrder = S.Literal("Ascending", "Descending");
-export type ModelCardSortBy = "Name" | "CreationTime";
-export const ModelCardSortBy = S.Literal("Name", "CreationTime");
-export type ModelCardSortOrder = "Ascending" | "Descending";
-export const ModelCardSortOrder = S.Literal("Ascending", "Descending");
-export type ModelCardVersionSortBy = "Version";
-export const ModelCardVersionSortBy = S.Literal("Version");
-export type ModelPackageGroupSortBy = "Name" | "CreationTime";
-export const ModelPackageGroupSortBy = S.Literal("Name", "CreationTime");
-export type CrossAccountFilterOption = "SameAccount" | "CrossAccount";
-export const CrossAccountFilterOption = S.Literal(
-  "SameAccount",
-  "CrossAccount",
-);
-export type ModelPackageType = "Versioned" | "Unversioned" | "Both";
-export const ModelPackageType = S.Literal("Versioned", "Unversioned", "Both");
-export type ModelPackageSortBy = "Name" | "CreationTime";
-export const ModelPackageSortBy = S.Literal("Name", "CreationTime");
-export type ModelSortKey = "Name" | "CreationTime";
-export const ModelSortKey = S.Literal("Name", "CreationTime");
-export type MonitoringAlertHistorySortKey = "CreationTime" | "Status";
-export const MonitoringAlertHistorySortKey = S.Literal(
-  "CreationTime",
-  "Status",
-);
-export type MonitoringAlertStatus = "InAlert" | "OK";
-export const MonitoringAlertStatus = S.Literal("InAlert", "OK");
+  | "MaintenanceFailed"
+  | (string & {});
+export const TrackingServerStatus = S.String;
+export type SortTrackingServerBy =
+  | "Name"
+  | "CreationTime"
+  | "Status"
+  | (string & {});
+export const SortTrackingServerBy = S.String;
+export type ModelCardExportJobStatus =
+  | "InProgress"
+  | "Completed"
+  | "Failed"
+  | (string & {});
+export const ModelCardExportJobStatus = S.String;
+export type ModelCardExportJobSortBy =
+  | "Name"
+  | "CreationTime"
+  | "Status"
+  | (string & {});
+export const ModelCardExportJobSortBy = S.String;
+export type ModelCardExportJobSortOrder =
+  | "Ascending"
+  | "Descending"
+  | (string & {});
+export const ModelCardExportJobSortOrder = S.String;
+export type ModelCardSortBy = "Name" | "CreationTime" | (string & {});
+export const ModelCardSortBy = S.String;
+export type ModelCardSortOrder = "Ascending" | "Descending" | (string & {});
+export const ModelCardSortOrder = S.String;
+export type ModelCardVersionSortBy = "Version" | (string & {});
+export const ModelCardVersionSortBy = S.String;
+export type ModelPackageGroupSortBy = "Name" | "CreationTime" | (string & {});
+export const ModelPackageGroupSortBy = S.String;
+export type CrossAccountFilterOption =
+  | "SameAccount"
+  | "CrossAccount"
+  | (string & {});
+export const CrossAccountFilterOption = S.String;
+export type ModelPackageType =
+  | "Versioned"
+  | "Unversioned"
+  | "Both"
+  | (string & {});
+export const ModelPackageType = S.String;
+export type ModelPackageSortBy = "Name" | "CreationTime" | (string & {});
+export const ModelPackageSortBy = S.String;
+export type ModelSortKey = "Name" | "CreationTime" | (string & {});
+export const ModelSortKey = S.String;
+export type MonitoringAlertHistorySortKey =
+  | "CreationTime"
+  | "Status"
+  | (string & {});
+export const MonitoringAlertHistorySortKey = S.String;
+export type MonitoringAlertStatus = "InAlert" | "OK" | (string & {});
+export const MonitoringAlertStatus = S.String;
 export type MonitoringExecutionSortKey =
   | "CreationTime"
   | "ScheduledTime"
-  | "Status";
-export const MonitoringExecutionSortKey = S.Literal(
-  "CreationTime",
-  "ScheduledTime",
-  "Status",
-);
+  | "Status"
+  | (string & {});
+export const MonitoringExecutionSortKey = S.String;
 export type ExecutionStatus =
   | "Pending"
   | "Completed"
@@ -2973,64 +2431,51 @@ export type ExecutionStatus =
   | "InProgress"
   | "Failed"
   | "Stopping"
-  | "Stopped";
-export const ExecutionStatus = S.Literal(
-  "Pending",
-  "Completed",
-  "CompletedWithViolations",
-  "InProgress",
-  "Failed",
-  "Stopping",
-  "Stopped",
-);
+  | "Stopped"
+  | (string & {});
+export const ExecutionStatus = S.String;
 export type MonitoringType =
   | "DataQuality"
   | "ModelQuality"
   | "ModelBias"
-  | "ModelExplainability";
-export const MonitoringType = S.Literal(
-  "DataQuality",
-  "ModelQuality",
-  "ModelBias",
-  "ModelExplainability",
-);
-export type MonitoringScheduleSortKey = "Name" | "CreationTime" | "Status";
-export const MonitoringScheduleSortKey = S.Literal(
-  "Name",
-  "CreationTime",
-  "Status",
-);
-export type ScheduleStatus = "Pending" | "Failed" | "Scheduled" | "Stopped";
-export const ScheduleStatus = S.Literal(
-  "Pending",
-  "Failed",
-  "Scheduled",
-  "Stopped",
-);
+  | "ModelExplainability"
+  | (string & {});
+export const MonitoringType = S.String;
+export type MonitoringScheduleSortKey =
+  | "Name"
+  | "CreationTime"
+  | "Status"
+  | (string & {});
+export const MonitoringScheduleSortKey = S.String;
+export type ScheduleStatus =
+  | "Pending"
+  | "Failed"
+  | "Scheduled"
+  | "Stopped"
+  | (string & {});
+export const ScheduleStatus = S.String;
 export type NotebookInstanceLifecycleConfigSortKey =
   | "Name"
   | "CreationTime"
-  | "LastModifiedTime";
-export const NotebookInstanceLifecycleConfigSortKey = S.Literal(
-  "Name",
-  "CreationTime",
-  "LastModifiedTime",
-);
+  | "LastModifiedTime"
+  | (string & {});
+export const NotebookInstanceLifecycleConfigSortKey = S.String;
 export type NotebookInstanceLifecycleConfigSortOrder =
   | "Ascending"
-  | "Descending";
-export const NotebookInstanceLifecycleConfigSortOrder = S.Literal(
-  "Ascending",
-  "Descending",
-);
-export type NotebookInstanceSortKey = "Name" | "CreationTime" | "Status";
-export const NotebookInstanceSortKey = S.Literal(
-  "Name",
-  "CreationTime",
-  "Status",
-);
-export type NotebookInstanceSortOrder = "Ascending" | "Descending";
-export const NotebookInstanceSortOrder = S.Literal("Ascending", "Descending");
+  | "Descending"
+  | (string & {});
+export const NotebookInstanceLifecycleConfigSortOrder = S.String;
+export type NotebookInstanceSortKey =
+  | "Name"
+  | "CreationTime"
+  | "Status"
+  | (string & {});
+export const NotebookInstanceSortKey = S.String;
+export type NotebookInstanceSortOrder =
+  | "Ascending"
+  | "Descending"
+  | (string & {});
+export const NotebookInstanceSortOrder = S.String;
 export type NotebookInstanceStatus =
   | "Pending"
   | "InService"
@@ -3038,150 +2483,116 @@ export type NotebookInstanceStatus =
   | "Stopped"
   | "Failed"
   | "Deleting"
-  | "Updating";
-export const NotebookInstanceStatus = S.Literal(
-  "Pending",
-  "InService",
-  "Stopping",
-  "Stopped",
-  "Failed",
-  "Deleting",
-  "Updating",
-);
+  | "Updating"
+  | (string & {});
+export const NotebookInstanceStatus = S.String;
 export type OptimizationJobStatus =
   | "INPROGRESS"
   | "COMPLETED"
   | "FAILED"
   | "STARTING"
   | "STOPPING"
-  | "STOPPED";
-export const OptimizationJobStatus = S.Literal(
-  "INPROGRESS",
-  "COMPLETED",
-  "FAILED",
-  "STARTING",
-  "STOPPING",
-  "STOPPED",
-);
-export type ListOptimizationJobsSortBy = "Name" | "CreationTime" | "Status";
-export const ListOptimizationJobsSortBy = S.Literal(
-  "Name",
-  "CreationTime",
-  "Status",
-);
-export type SortPipelineExecutionsBy = "CreationTime" | "PipelineExecutionArn";
-export const SortPipelineExecutionsBy = S.Literal(
-  "CreationTime",
-  "PipelineExecutionArn",
-);
-export type SortPipelinesBy = "Name" | "CreationTime";
-export const SortPipelinesBy = S.Literal("Name", "CreationTime");
+  | "STOPPED"
+  | (string & {});
+export const OptimizationJobStatus = S.String;
+export type ListOptimizationJobsSortBy =
+  | "Name"
+  | "CreationTime"
+  | "Status"
+  | (string & {});
+export const ListOptimizationJobsSortBy = S.String;
+export type SortPipelineExecutionsBy =
+  | "CreationTime"
+  | "PipelineExecutionArn"
+  | (string & {});
+export const SortPipelineExecutionsBy = S.String;
+export type SortPipelinesBy = "Name" | "CreationTime" | (string & {});
+export const SortPipelinesBy = S.String;
 export type ProcessingJobStatus =
   | "InProgress"
   | "Completed"
   | "Failed"
   | "Stopping"
-  | "Stopped";
-export const ProcessingJobStatus = S.Literal(
-  "InProgress",
-  "Completed",
-  "Failed",
-  "Stopping",
-  "Stopped",
-);
-export type ProjectSortBy = "Name" | "CreationTime";
-export const ProjectSortBy = S.Literal("Name", "CreationTime");
-export type ProjectSortOrder = "Ascending" | "Descending";
-export const ProjectSortOrder = S.Literal("Ascending", "Descending");
-export type ResourceCatalogSortOrder = "Ascending" | "Descending";
-export const ResourceCatalogSortOrder = S.Literal("Ascending", "Descending");
-export type ResourceCatalogSortBy = "CreationTime";
-export const ResourceCatalogSortBy = S.Literal("CreationTime");
-export type SpaceSortKey = "CreationTime" | "LastModifiedTime";
-export const SpaceSortKey = S.Literal("CreationTime", "LastModifiedTime");
+  | "Stopped"
+  | (string & {});
+export const ProcessingJobStatus = S.String;
+export type ProjectSortBy = "Name" | "CreationTime" | (string & {});
+export const ProjectSortBy = S.String;
+export type ProjectSortOrder = "Ascending" | "Descending" | (string & {});
+export const ProjectSortOrder = S.String;
+export type ResourceCatalogSortOrder =
+  | "Ascending"
+  | "Descending"
+  | (string & {});
+export const ResourceCatalogSortOrder = S.String;
+export type ResourceCatalogSortBy = "CreationTime" | (string & {});
+export const ResourceCatalogSortBy = S.String;
+export type SpaceSortKey = "CreationTime" | "LastModifiedTime" | (string & {});
+export const SpaceSortKey = S.String;
 export type StudioLifecycleConfigSortKey =
   | "CreationTime"
   | "LastModifiedTime"
-  | "Name";
-export const StudioLifecycleConfigSortKey = S.Literal(
-  "CreationTime",
-  "LastModifiedTime",
-  "Name",
-);
+  | "Name"
+  | (string & {});
+export const StudioLifecycleConfigSortKey = S.String;
 export type TrainingJobStatus =
   | "InProgress"
   | "Completed"
   | "Failed"
   | "Stopping"
   | "Stopped"
-  | "Deleting";
-export const TrainingJobStatus = S.Literal(
-  "InProgress",
-  "Completed",
-  "Failed",
-  "Stopping",
-  "Stopped",
-  "Deleting",
-);
+  | "Deleting"
+  | (string & {});
+export const TrainingJobStatus = S.String;
 export type WarmPoolResourceStatus =
   | "Available"
   | "Terminated"
   | "Reused"
-  | "InUse";
-export const WarmPoolResourceStatus = S.Literal(
-  "Available",
-  "Terminated",
-  "Reused",
-  "InUse",
-);
+  | "InUse"
+  | (string & {});
+export const WarmPoolResourceStatus = S.String;
 export type TrainingJobSortByOptions =
   | "Name"
   | "CreationTime"
   | "Status"
-  | "FinalObjectiveMetricValue";
-export const TrainingJobSortByOptions = S.Literal(
-  "Name",
-  "CreationTime",
-  "Status",
-  "FinalObjectiveMetricValue",
-);
-export type TrainingPlanSortBy = "TrainingPlanName" | "StartTime" | "Status";
-export const TrainingPlanSortBy = S.Literal(
-  "TrainingPlanName",
-  "StartTime",
-  "Status",
-);
-export type TrainingPlanSortOrder = "Ascending" | "Descending";
-export const TrainingPlanSortOrder = S.Literal("Ascending", "Descending");
+  | "FinalObjectiveMetricValue"
+  | (string & {});
+export const TrainingJobSortByOptions = S.String;
+export type TrainingPlanSortBy =
+  | "TrainingPlanName"
+  | "StartTime"
+  | "Status"
+  | (string & {});
+export const TrainingPlanSortBy = S.String;
+export type TrainingPlanSortOrder = "Ascending" | "Descending" | (string & {});
+export const TrainingPlanSortOrder = S.String;
 export type TransformJobStatus =
   | "InProgress"
   | "Completed"
   | "Failed"
   | "Stopping"
-  | "Stopped";
-export const TransformJobStatus = S.Literal(
-  "InProgress",
-  "Completed",
-  "Failed",
-  "Stopping",
-  "Stopped",
-);
-export type SortTrialComponentsBy = "Name" | "CreationTime";
-export const SortTrialComponentsBy = S.Literal("Name", "CreationTime");
-export type SortTrialsBy = "Name" | "CreationTime";
-export const SortTrialsBy = S.Literal("Name", "CreationTime");
-export type UserProfileSortKey = "CreationTime" | "LastModifiedTime";
-export const UserProfileSortKey = S.Literal("CreationTime", "LastModifiedTime");
-export type ListWorkforcesSortByOptions = "Name" | "CreateDate";
-export const ListWorkforcesSortByOptions = S.Literal("Name", "CreateDate");
-export type ListWorkteamsSortByOptions = "Name" | "CreateDate";
-export const ListWorkteamsSortByOptions = S.Literal("Name", "CreateDate");
+  | "Stopped"
+  | (string & {});
+export const TransformJobStatus = S.String;
+export type SortTrialComponentsBy = "Name" | "CreationTime" | (string & {});
+export const SortTrialComponentsBy = S.String;
+export type SortTrialsBy = "Name" | "CreationTime" | (string & {});
+export const SortTrialsBy = S.String;
+export type UserProfileSortKey =
+  | "CreationTime"
+  | "LastModifiedTime"
+  | (string & {});
+export const UserProfileSortKey = S.String;
+export type ListWorkforcesSortByOptions = "Name" | "CreateDate" | (string & {});
+export const ListWorkforcesSortByOptions = S.String;
+export type ListWorkteamsSortByOptions = "Name" | "CreateDate" | (string & {});
+export const ListWorkteamsSortByOptions = S.String;
 export type QueryLineageStartArns = string[];
 export const QueryLineageStartArns = S.Array(S.String);
-export type Direction = "Both" | "Ascendants" | "Descendants";
-export const Direction = S.Literal("Both", "Ascendants", "Descendants");
-export type SearchSortOrder = "Ascending" | "Descending";
-export const SearchSortOrder = S.Literal("Ascending", "Descending");
+export type Direction = "Both" | "Ascendants" | "Descendants" | (string & {});
+export const Direction = S.String;
+export type SearchSortOrder = "Ascending" | "Descending" | (string & {});
+export const SearchSortOrder = S.String;
 export type ReservedCapacityInstanceType =
   | "ml.p4d.24xlarge"
   | "ml.p5.48xlarge"
@@ -3193,44 +2604,30 @@ export type ReservedCapacityInstanceType =
   | "ml.p4de.24xlarge"
   | "ml.p6e-gb200.36xlarge"
   | "ml.p5.4xlarge"
-  | "ml.p6-b300.48xlarge";
-export const ReservedCapacityInstanceType = S.Literal(
-  "ml.p4d.24xlarge",
-  "ml.p5.48xlarge",
-  "ml.p5e.48xlarge",
-  "ml.p5en.48xlarge",
-  "ml.trn1.32xlarge",
-  "ml.trn2.48xlarge",
-  "ml.p6-b200.48xlarge",
-  "ml.p4de.24xlarge",
-  "ml.p6e-gb200.36xlarge",
-  "ml.p5.4xlarge",
-  "ml.p6-b300.48xlarge",
-);
+  | "ml.p6-b300.48xlarge"
+  | (string & {});
+export const ReservedCapacityInstanceType = S.String;
 export type SageMakerResourceName =
   | "training-job"
   | "hyperpod-cluster"
-  | "endpoint";
-export const SageMakerResourceName = S.Literal(
-  "training-job",
-  "hyperpod-cluster",
-  "endpoint",
-);
+  | "endpoint"
+  | (string & {});
+export const SageMakerResourceName = S.String;
 export type SageMakerResourceNames = SageMakerResourceName[];
 export const SageMakerResourceNames = S.Array(SageMakerResourceName);
-export type InferenceExperimentStopDesiredState = "Completed" | "Cancelled";
-export const InferenceExperimentStopDesiredState = S.Literal(
-  "Completed",
-  "Cancelled",
-);
+export type InferenceExperimentStopDesiredState =
+  | "Completed"
+  | "Cancelled"
+  | (string & {});
+export const InferenceExperimentStopDesiredState = S.String;
 export type ListLineageEntityParameterKey = string[];
 export const ListLineageEntityParameterKey = S.Array(S.String);
 export type ClusterInstanceGroupsToDelete = string[];
 export const ClusterInstanceGroupsToDelete = S.Array(S.String);
-export type FeatureType = "Integral" | "Fractional" | "String";
-export const FeatureType = S.Literal("Integral", "Fractional", "String");
-export type CollectionType = "List" | "Set" | "Vector";
-export const CollectionType = S.Literal("List", "Set", "Vector");
+export type FeatureType = "Integral" | "Fractional" | "String" | (string & {});
+export const FeatureType = S.String;
+export type CollectionType = "List" | "Set" | "Vector" | (string & {});
+export const CollectionType = S.String;
 export interface VectorConfig {
   Dimension?: number;
 }
@@ -3427,12 +2824,12 @@ export const BatchReplaceClusterNodesRequest = S.suspend(() =>
 ).annotations({
   identifier: "BatchReplaceClusterNodesRequest",
 }) as any as S.Schema<BatchReplaceClusterNodesRequest>;
-export type DeviceSubsetType = "PERCENTAGE" | "SELECTION" | "NAMECONTAINS";
-export const DeviceSubsetType = S.Literal(
-  "PERCENTAGE",
-  "SELECTION",
-  "NAMECONTAINS",
-);
+export type DeviceSubsetType =
+  | "PERCENTAGE"
+  | "SELECTION"
+  | "NAMECONTAINS"
+  | (string & {});
+export const DeviceSubsetType = S.String;
 export interface DeviceSelectionConfig {
   DeviceSubsetType?: DeviceSubsetType;
   Percentage?: number;
@@ -3449,11 +2846,11 @@ export const DeviceSelectionConfig = S.suspend(() =>
 ).annotations({
   identifier: "DeviceSelectionConfig",
 }) as any as S.Schema<DeviceSelectionConfig>;
-export type FailureHandlingPolicy = "ROLLBACK_ON_FAILURE" | "DO_NOTHING";
-export const FailureHandlingPolicy = S.Literal(
-  "ROLLBACK_ON_FAILURE",
-  "DO_NOTHING",
-);
+export type FailureHandlingPolicy =
+  | "ROLLBACK_ON_FAILURE"
+  | "DO_NOTHING"
+  | (string & {});
+export const FailureHandlingPolicy = S.String;
 export interface EdgeDeploymentConfig {
   FailureHandlingPolicy?: FailureHandlingPolicy;
 }
@@ -3506,8 +2903,8 @@ export const CreateEdgeDeploymentStageResponse = S.suspend(() =>
 ).annotations({
   identifier: "CreateEdgeDeploymentStageResponse",
 }) as any as S.Schema<CreateEdgeDeploymentStageResponse>;
-export type EdgePresetDeploymentType = "GreengrassV2Component";
-export const EdgePresetDeploymentType = S.Literal("GreengrassV2Component");
+export type EdgePresetDeploymentType = "GreengrassV2Component" | (string & {});
+export const EdgePresetDeploymentType = S.String;
 export interface EdgeOutputConfig {
   S3OutputLocation?: string;
   KmsKeyId?: string;
@@ -4007,8 +3404,8 @@ export const CreateTrialRequest = S.suspend(() =>
 ).annotations({
   identifier: "CreateTrialRequest",
 }) as any as S.Schema<CreateTrialRequest>;
-export type NotebookOutputOption = "Allowed" | "Disabled";
-export const NotebookOutputOption = S.Literal("Allowed", "Disabled");
+export type NotebookOutputOption = "Allowed" | "Disabled" | (string & {});
+export const NotebookOutputOption = S.String;
 export interface SharingSettings {
   NotebookOutputOption?: NotebookOutputOption;
   S3OutputPath?: string;
@@ -4186,172 +3583,9 @@ export type AppInstanceType =
   | "ml.r6id.12xlarge"
   | "ml.r6id.16xlarge"
   | "ml.r6id.24xlarge"
-  | "ml.r6id.32xlarge";
-export const AppInstanceType = S.Literal(
-  "system",
-  "ml.t3.micro",
-  "ml.t3.small",
-  "ml.t3.medium",
-  "ml.t3.large",
-  "ml.t3.xlarge",
-  "ml.t3.2xlarge",
-  "ml.m5.large",
-  "ml.m5.xlarge",
-  "ml.m5.2xlarge",
-  "ml.m5.4xlarge",
-  "ml.m5.8xlarge",
-  "ml.m5.12xlarge",
-  "ml.m5.16xlarge",
-  "ml.m5.24xlarge",
-  "ml.m5d.large",
-  "ml.m5d.xlarge",
-  "ml.m5d.2xlarge",
-  "ml.m5d.4xlarge",
-  "ml.m5d.8xlarge",
-  "ml.m5d.12xlarge",
-  "ml.m5d.16xlarge",
-  "ml.m5d.24xlarge",
-  "ml.c5.large",
-  "ml.c5.xlarge",
-  "ml.c5.2xlarge",
-  "ml.c5.4xlarge",
-  "ml.c5.9xlarge",
-  "ml.c5.12xlarge",
-  "ml.c5.18xlarge",
-  "ml.c5.24xlarge",
-  "ml.p3.2xlarge",
-  "ml.p3.8xlarge",
-  "ml.p3.16xlarge",
-  "ml.p3dn.24xlarge",
-  "ml.g4dn.xlarge",
-  "ml.g4dn.2xlarge",
-  "ml.g4dn.4xlarge",
-  "ml.g4dn.8xlarge",
-  "ml.g4dn.12xlarge",
-  "ml.g4dn.16xlarge",
-  "ml.r5.large",
-  "ml.r5.xlarge",
-  "ml.r5.2xlarge",
-  "ml.r5.4xlarge",
-  "ml.r5.8xlarge",
-  "ml.r5.12xlarge",
-  "ml.r5.16xlarge",
-  "ml.r5.24xlarge",
-  "ml.g5.xlarge",
-  "ml.g5.2xlarge",
-  "ml.g5.4xlarge",
-  "ml.g5.8xlarge",
-  "ml.g5.16xlarge",
-  "ml.g5.12xlarge",
-  "ml.g5.24xlarge",
-  "ml.g5.48xlarge",
-  "ml.g6.xlarge",
-  "ml.g6.2xlarge",
-  "ml.g6.4xlarge",
-  "ml.g6.8xlarge",
-  "ml.g6.12xlarge",
-  "ml.g6.16xlarge",
-  "ml.g6.24xlarge",
-  "ml.g6.48xlarge",
-  "ml.g6e.xlarge",
-  "ml.g6e.2xlarge",
-  "ml.g6e.4xlarge",
-  "ml.g6e.8xlarge",
-  "ml.g6e.12xlarge",
-  "ml.g6e.16xlarge",
-  "ml.g6e.24xlarge",
-  "ml.g6e.48xlarge",
-  "ml.geospatial.interactive",
-  "ml.p4d.24xlarge",
-  "ml.p4de.24xlarge",
-  "ml.trn1.2xlarge",
-  "ml.trn1.32xlarge",
-  "ml.trn1n.32xlarge",
-  "ml.p5.48xlarge",
-  "ml.p5en.48xlarge",
-  "ml.p6-b200.48xlarge",
-  "ml.m6i.large",
-  "ml.m6i.xlarge",
-  "ml.m6i.2xlarge",
-  "ml.m6i.4xlarge",
-  "ml.m6i.8xlarge",
-  "ml.m6i.12xlarge",
-  "ml.m6i.16xlarge",
-  "ml.m6i.24xlarge",
-  "ml.m6i.32xlarge",
-  "ml.m7i.large",
-  "ml.m7i.xlarge",
-  "ml.m7i.2xlarge",
-  "ml.m7i.4xlarge",
-  "ml.m7i.8xlarge",
-  "ml.m7i.12xlarge",
-  "ml.m7i.16xlarge",
-  "ml.m7i.24xlarge",
-  "ml.m7i.48xlarge",
-  "ml.c6i.large",
-  "ml.c6i.xlarge",
-  "ml.c6i.2xlarge",
-  "ml.c6i.4xlarge",
-  "ml.c6i.8xlarge",
-  "ml.c6i.12xlarge",
-  "ml.c6i.16xlarge",
-  "ml.c6i.24xlarge",
-  "ml.c6i.32xlarge",
-  "ml.c7i.large",
-  "ml.c7i.xlarge",
-  "ml.c7i.2xlarge",
-  "ml.c7i.4xlarge",
-  "ml.c7i.8xlarge",
-  "ml.c7i.12xlarge",
-  "ml.c7i.16xlarge",
-  "ml.c7i.24xlarge",
-  "ml.c7i.48xlarge",
-  "ml.r6i.large",
-  "ml.r6i.xlarge",
-  "ml.r6i.2xlarge",
-  "ml.r6i.4xlarge",
-  "ml.r6i.8xlarge",
-  "ml.r6i.12xlarge",
-  "ml.r6i.16xlarge",
-  "ml.r6i.24xlarge",
-  "ml.r6i.32xlarge",
-  "ml.r7i.large",
-  "ml.r7i.xlarge",
-  "ml.r7i.2xlarge",
-  "ml.r7i.4xlarge",
-  "ml.r7i.8xlarge",
-  "ml.r7i.12xlarge",
-  "ml.r7i.16xlarge",
-  "ml.r7i.24xlarge",
-  "ml.r7i.48xlarge",
-  "ml.m6id.large",
-  "ml.m6id.xlarge",
-  "ml.m6id.2xlarge",
-  "ml.m6id.4xlarge",
-  "ml.m6id.8xlarge",
-  "ml.m6id.12xlarge",
-  "ml.m6id.16xlarge",
-  "ml.m6id.24xlarge",
-  "ml.m6id.32xlarge",
-  "ml.c6id.large",
-  "ml.c6id.xlarge",
-  "ml.c6id.2xlarge",
-  "ml.c6id.4xlarge",
-  "ml.c6id.8xlarge",
-  "ml.c6id.12xlarge",
-  "ml.c6id.16xlarge",
-  "ml.c6id.24xlarge",
-  "ml.c6id.32xlarge",
-  "ml.r6id.large",
-  "ml.r6id.xlarge",
-  "ml.r6id.2xlarge",
-  "ml.r6id.4xlarge",
-  "ml.r6id.8xlarge",
-  "ml.r6id.12xlarge",
-  "ml.r6id.16xlarge",
-  "ml.r6id.24xlarge",
-  "ml.r6id.32xlarge",
-);
+  | "ml.r6id.32xlarge"
+  | (string & {});
+export const AppInstanceType = S.String;
 export interface ResourceSpec {
   SageMakerImageArn?: string;
   SageMakerImageVersionArn?: string;
@@ -4430,13 +3664,16 @@ export const TensorBoardAppSettings = S.suspend(() =>
 ).annotations({
   identifier: "TensorBoardAppSettings",
 }) as any as S.Schema<TensorBoardAppSettings>;
-export type RStudioServerProAccessStatus = "ENABLED" | "DISABLED";
-export const RStudioServerProAccessStatus = S.Literal("ENABLED", "DISABLED");
-export type RStudioServerProUserGroup = "R_STUDIO_ADMIN" | "R_STUDIO_USER";
-export const RStudioServerProUserGroup = S.Literal(
-  "R_STUDIO_ADMIN",
-  "R_STUDIO_USER",
-);
+export type RStudioServerProAccessStatus =
+  | "ENABLED"
+  | "DISABLED"
+  | (string & {});
+export const RStudioServerProAccessStatus = S.String;
+export type RStudioServerProUserGroup =
+  | "R_STUDIO_ADMIN"
+  | "R_STUDIO_USER"
+  | (string & {});
+export const RStudioServerProUserGroup = S.String;
 export interface RStudioServerProAppSettings {
   AccessStatus?: RStudioServerProAccessStatus;
   UserGroup?: RStudioServerProUserGroup;
@@ -4461,8 +3698,8 @@ export const RSessionAppSettings = S.suspend(() =>
 ).annotations({
   identifier: "RSessionAppSettings",
 }) as any as S.Schema<RSessionAppSettings>;
-export type FeatureStatus = "ENABLED" | "DISABLED";
-export const FeatureStatus = S.Literal("ENABLED", "DISABLED");
+export type FeatureStatus = "ENABLED" | "DISABLED" | (string & {});
+export const FeatureStatus = S.String;
 export interface TimeSeriesForecastingSettings {
   Status?: FeatureStatus;
   AmazonForecastRoleArn?: string;
@@ -4499,8 +3736,8 @@ export const WorkspaceSettings = S.suspend(() =>
 ).annotations({
   identifier: "WorkspaceSettings",
 }) as any as S.Schema<WorkspaceSettings>;
-export type DataSourceName = "SalesforceGenie" | "Snowflake";
-export const DataSourceName = S.Literal("SalesforceGenie", "Snowflake");
+export type DataSourceName = "SalesforceGenie" | "Snowflake" | (string & {});
+export const DataSourceName = S.String;
 export interface IdentityProviderOAuthSetting {
   DataSourceName?: DataSourceName;
   Status?: FeatureStatus;
@@ -4579,8 +3816,8 @@ export const CanvasAppSettings = S.suspend(() =>
 ).annotations({
   identifier: "CanvasAppSettings",
 }) as any as S.Schema<CanvasAppSettings>;
-export type LifecycleManagement = "ENABLED" | "DISABLED";
-export const LifecycleManagement = S.Literal("ENABLED", "DISABLED");
+export type LifecycleManagement = "ENABLED" | "DISABLED" | (string & {});
+export const LifecycleManagement = S.String;
 export interface IdleSettings {
   LifecycleManagement?: LifecycleManagement;
   IdleTimeoutInMinutes?: number;
@@ -4679,8 +3916,8 @@ export const DefaultSpaceStorageSettings = S.suspend(() =>
 ).annotations({
   identifier: "DefaultSpaceStorageSettings",
 }) as any as S.Schema<DefaultSpaceStorageSettings>;
-export type StudioWebPortal = "ENABLED" | "DISABLED";
-export const StudioWebPortal = S.Literal("ENABLED", "DISABLED");
+export type StudioWebPortal = "ENABLED" | "DISABLED" | (string & {});
+export const StudioWebPortal = S.String;
 export interface CustomPosixUserConfig {
   Uid?: number;
   Gid?: number;
@@ -4769,40 +4006,17 @@ export type MlTools =
   | "HyperPodClusters"
   | "RunningInstances"
   | "Datasets"
-  | "Evaluators";
-export const MlTools = S.Literal(
-  "DataWrangler",
-  "FeatureStore",
-  "EmrClusters",
-  "AutoMl",
-  "Experiments",
-  "Training",
-  "ModelEvaluation",
-  "Pipelines",
-  "Models",
-  "JumpStart",
-  "InferenceRecommender",
-  "Endpoints",
-  "Projects",
-  "InferenceOptimization",
-  "PerformanceEvaluation",
-  "LakeraGuard",
-  "Comet",
-  "DeepchecksLLMEvaluation",
-  "Fiddler",
-  "HyperPodClusters",
-  "RunningInstances",
-  "Datasets",
-  "Evaluators",
-);
+  | "Evaluators"
+  | (string & {});
+export const MlTools = S.String;
 export type HiddenMlToolsList = MlTools[];
 export const HiddenMlToolsList = S.Array(MlTools);
 export type HiddenAppTypesList = AppType[];
 export const HiddenAppTypesList = S.Array(AppType);
 export type HiddenInstanceTypesList = AppInstanceType[];
 export const HiddenInstanceTypesList = S.Array(AppInstanceType);
-export type SageMakerImageName = "sagemaker_distribution";
-export const SageMakerImageName = S.Literal("sagemaker_distribution");
+export type SageMakerImageName = "sagemaker_distribution" | (string & {});
+export const SageMakerImageName = S.String;
 export type VersionAliasesList = string[];
 export const VersionAliasesList = S.Array(S.String);
 export interface HiddenSageMakerImage {
@@ -4838,12 +4052,12 @@ export const StudioWebPortalSettings = S.suspend(() =>
 ).annotations({
   identifier: "StudioWebPortalSettings",
 }) as any as S.Schema<StudioWebPortalSettings>;
-export type AutoMountHomeEFS = "Enabled" | "Disabled" | "DefaultAsDomain";
-export const AutoMountHomeEFS = S.Literal(
-  "Enabled",
-  "Disabled",
-  "DefaultAsDomain",
-);
+export type AutoMountHomeEFS =
+  | "Enabled"
+  | "Disabled"
+  | "DefaultAsDomain"
+  | (string & {});
+export const AutoMountHomeEFS = S.String;
 export interface UserSettings {
   ExecutionRole?: string;
   SecurityGroups?: string[];
@@ -5020,13 +4234,9 @@ export type ArtifactSourceIdType =
   | "MD5Hash"
   | "S3ETag"
   | "S3Version"
-  | "Custom";
-export const ArtifactSourceIdType = S.Literal(
-  "MD5Hash",
-  "S3ETag",
-  "S3Version",
-  "Custom",
-);
+  | "Custom"
+  | (string & {});
+export const ArtifactSourceIdType = S.String;
 export interface ArtifactSourceType {
   SourceIdType?: ArtifactSourceIdType;
   Value?: string;
@@ -11829,125 +11039,9 @@ export type ClusterInstanceType =
   | "ml.r7i.16xlarge"
   | "ml.r7i.24xlarge"
   | "ml.r7i.48xlarge"
-  | "ml.p6-b300.48xlarge";
-export const ClusterInstanceType = S.Literal(
-  "ml.p4d.24xlarge",
-  "ml.p4de.24xlarge",
-  "ml.p5.48xlarge",
-  "ml.p5.4xlarge",
-  "ml.p6e-gb200.36xlarge",
-  "ml.trn1.32xlarge",
-  "ml.trn1n.32xlarge",
-  "ml.g5.xlarge",
-  "ml.g5.2xlarge",
-  "ml.g5.4xlarge",
-  "ml.g5.8xlarge",
-  "ml.g5.12xlarge",
-  "ml.g5.16xlarge",
-  "ml.g5.24xlarge",
-  "ml.g5.48xlarge",
-  "ml.c5.large",
-  "ml.c5.xlarge",
-  "ml.c5.2xlarge",
-  "ml.c5.4xlarge",
-  "ml.c5.9xlarge",
-  "ml.c5.12xlarge",
-  "ml.c5.18xlarge",
-  "ml.c5.24xlarge",
-  "ml.c5n.large",
-  "ml.c5n.2xlarge",
-  "ml.c5n.4xlarge",
-  "ml.c5n.9xlarge",
-  "ml.c5n.18xlarge",
-  "ml.m5.large",
-  "ml.m5.xlarge",
-  "ml.m5.2xlarge",
-  "ml.m5.4xlarge",
-  "ml.m5.8xlarge",
-  "ml.m5.12xlarge",
-  "ml.m5.16xlarge",
-  "ml.m5.24xlarge",
-  "ml.t3.medium",
-  "ml.t3.large",
-  "ml.t3.xlarge",
-  "ml.t3.2xlarge",
-  "ml.g6.xlarge",
-  "ml.g6.2xlarge",
-  "ml.g6.4xlarge",
-  "ml.g6.8xlarge",
-  "ml.g6.16xlarge",
-  "ml.g6.12xlarge",
-  "ml.g6.24xlarge",
-  "ml.g6.48xlarge",
-  "ml.gr6.4xlarge",
-  "ml.gr6.8xlarge",
-  "ml.g6e.xlarge",
-  "ml.g6e.2xlarge",
-  "ml.g6e.4xlarge",
-  "ml.g6e.8xlarge",
-  "ml.g6e.16xlarge",
-  "ml.g6e.12xlarge",
-  "ml.g6e.24xlarge",
-  "ml.g6e.48xlarge",
-  "ml.p5e.48xlarge",
-  "ml.p5en.48xlarge",
-  "ml.p6-b200.48xlarge",
-  "ml.trn2.3xlarge",
-  "ml.trn2.48xlarge",
-  "ml.c6i.large",
-  "ml.c6i.xlarge",
-  "ml.c6i.2xlarge",
-  "ml.c6i.4xlarge",
-  "ml.c6i.8xlarge",
-  "ml.c6i.12xlarge",
-  "ml.c6i.16xlarge",
-  "ml.c6i.24xlarge",
-  "ml.c6i.32xlarge",
-  "ml.m6i.large",
-  "ml.m6i.xlarge",
-  "ml.m6i.2xlarge",
-  "ml.m6i.4xlarge",
-  "ml.m6i.8xlarge",
-  "ml.m6i.12xlarge",
-  "ml.m6i.16xlarge",
-  "ml.m6i.24xlarge",
-  "ml.m6i.32xlarge",
-  "ml.r6i.large",
-  "ml.r6i.xlarge",
-  "ml.r6i.2xlarge",
-  "ml.r6i.4xlarge",
-  "ml.r6i.8xlarge",
-  "ml.r6i.12xlarge",
-  "ml.r6i.16xlarge",
-  "ml.r6i.24xlarge",
-  "ml.r6i.32xlarge",
-  "ml.i3en.large",
-  "ml.i3en.xlarge",
-  "ml.i3en.2xlarge",
-  "ml.i3en.3xlarge",
-  "ml.i3en.6xlarge",
-  "ml.i3en.12xlarge",
-  "ml.i3en.24xlarge",
-  "ml.m7i.large",
-  "ml.m7i.xlarge",
-  "ml.m7i.2xlarge",
-  "ml.m7i.4xlarge",
-  "ml.m7i.8xlarge",
-  "ml.m7i.12xlarge",
-  "ml.m7i.16xlarge",
-  "ml.m7i.24xlarge",
-  "ml.m7i.48xlarge",
-  "ml.r7i.large",
-  "ml.r7i.xlarge",
-  "ml.r7i.2xlarge",
-  "ml.r7i.4xlarge",
-  "ml.r7i.8xlarge",
-  "ml.r7i.12xlarge",
-  "ml.r7i.16xlarge",
-  "ml.r7i.24xlarge",
-  "ml.r7i.48xlarge",
-  "ml.p6-b300.48xlarge",
-);
+  | "ml.p6-b300.48xlarge"
+  | (string & {});
+export const ClusterInstanceType = S.String;
 export interface ClusterLifeCycleConfig {
   SourceS3Uri?: string;
   OnCreate?: string;
@@ -11984,18 +11078,18 @@ export type ClusterInstanceStorageConfigs = ClusterInstanceStorageConfig[];
 export const ClusterInstanceStorageConfigs = S.Array(
   ClusterInstanceStorageConfig,
 );
-export type DeepHealthCheckType = "InstanceStress" | "InstanceConnectivity";
-export const DeepHealthCheckType = S.Literal(
-  "InstanceStress",
-  "InstanceConnectivity",
-);
+export type DeepHealthCheckType =
+  | "InstanceStress"
+  | "InstanceConnectivity"
+  | (string & {});
+export const DeepHealthCheckType = S.String;
 export type OnStartDeepHealthChecks = DeepHealthCheckType[];
 export const OnStartDeepHealthChecks = S.Array(DeepHealthCheckType);
-export type NodeUnavailabilityType = "INSTANCE_COUNT" | "CAPACITY_PERCENTAGE";
-export const NodeUnavailabilityType = S.Literal(
-  "INSTANCE_COUNT",
-  "CAPACITY_PERCENTAGE",
-);
+export type NodeUnavailabilityType =
+  | "INSTANCE_COUNT"
+  | "CAPACITY_PERCENTAGE"
+  | (string & {});
+export const NodeUnavailabilityType = S.String;
 export interface CapacitySizeConfig {
   Type?: NodeUnavailabilityType;
   Value?: number;
@@ -12062,12 +11156,9 @@ export const ClusterKubernetesLabels = S.Record({
 export type ClusterKubernetesTaintEffect =
   | "NoSchedule"
   | "PreferNoSchedule"
-  | "NoExecute";
-export const ClusterKubernetesTaintEffect = S.Literal(
-  "NoSchedule",
-  "PreferNoSchedule",
-  "NoExecute",
-);
+  | "NoExecute"
+  | (string & {});
+export const ClusterKubernetesTaintEffect = S.String;
 export interface ClusterKubernetesTaint {
   Key: string;
   Value?: string;
@@ -12214,8 +11305,8 @@ export type ClusterRestrictedInstanceGroupSpecifications =
 export const ClusterRestrictedInstanceGroupSpecifications = S.Array(
   ClusterRestrictedInstanceGroupSpecification,
 );
-export type ClusterConfigMode = "Enable" | "Disable";
-export const ClusterConfigMode = S.Literal("Enable", "Disable");
+export type ClusterConfigMode = "Enable" | "Disable" | (string & {});
+export const ClusterConfigMode = S.String;
 export interface ClusterTieredStorageConfig {
   Mode?: ClusterConfigMode;
   InstanceMemoryAllocationPercentage?: number;
@@ -12228,10 +11319,10 @@ export const ClusterTieredStorageConfig = S.suspend(() =>
 ).annotations({
   identifier: "ClusterTieredStorageConfig",
 }) as any as S.Schema<ClusterTieredStorageConfig>;
-export type ClusterAutoScalingMode = "Enable" | "Disable";
-export const ClusterAutoScalingMode = S.Literal("Enable", "Disable");
-export type ClusterAutoScalerType = "Karpenter";
-export const ClusterAutoScalerType = S.Literal("Karpenter");
+export type ClusterAutoScalingMode = "Enable" | "Disable" | (string & {});
+export const ClusterAutoScalingMode = S.String;
+export type ClusterAutoScalerType = "Karpenter" | (string & {});
+export const ClusterAutoScalerType = S.String;
 export interface ClusterAutoScalingConfig {
   Mode: ClusterAutoScalingMode;
   AutoScalerType?: ClusterAutoScalerType;
@@ -12293,8 +11384,8 @@ export const PriorityClass = S.suspend(() =>
 }) as any as S.Schema<PriorityClass>;
 export type PriorityClassList = PriorityClass[];
 export const PriorityClassList = S.Array(PriorityClass);
-export type FairShare = "Enabled" | "Disabled";
-export const FairShare = S.Literal("Enabled", "Disabled");
+export type FairShare = "Enabled" | "Disabled" | (string & {});
+export const FairShare = S.String;
 export interface SchedulerConfig {
   PriorityClasses?: PriorityClass[];
   FairShare?: FairShare;
@@ -12361,37 +11452,9 @@ export type MIGProfileType =
   | "mig-7g.80gb"
   | "mig-7g.141gb"
   | "mig-7g.180gb"
-  | "mig-7g.186gb";
-export const MIGProfileType = S.Literal(
-  "mig-1g.5gb",
-  "mig-1g.10gb",
-  "mig-1g.18gb",
-  "mig-1g.20gb",
-  "mig-1g.23gb",
-  "mig-1g.35gb",
-  "mig-1g.45gb",
-  "mig-1g.47gb",
-  "mig-2g.10gb",
-  "mig-2g.20gb",
-  "mig-2g.35gb",
-  "mig-2g.45gb",
-  "mig-2g.47gb",
-  "mig-3g.20gb",
-  "mig-3g.40gb",
-  "mig-3g.71gb",
-  "mig-3g.90gb",
-  "mig-3g.93gb",
-  "mig-4g.20gb",
-  "mig-4g.40gb",
-  "mig-4g.71gb",
-  "mig-4g.90gb",
-  "mig-4g.93gb",
-  "mig-7g.40gb",
-  "mig-7g.80gb",
-  "mig-7g.141gb",
-  "mig-7g.180gb",
-  "mig-7g.186gb",
-);
+  | "mig-7g.186gb"
+  | (string & {});
+export const MIGProfileType = S.String;
 export interface AcceleratorPartitionConfig {
   Type?: MIGProfileType;
   Count?: number;
@@ -12425,12 +11488,12 @@ export type ComputeQuotaResourceConfigList = ComputeQuotaResourceConfig[];
 export const ComputeQuotaResourceConfigList = S.Array(
   ComputeQuotaResourceConfig,
 );
-export type ResourceSharingStrategy = "Lend" | "DontLend" | "LendAndBorrow";
-export const ResourceSharingStrategy = S.Literal(
-  "Lend",
-  "DontLend",
-  "LendAndBorrow",
-);
+export type ResourceSharingStrategy =
+  | "Lend"
+  | "DontLend"
+  | "LendAndBorrow"
+  | (string & {});
+export const ResourceSharingStrategy = S.String;
 export interface ResourceSharingConfig {
   Strategy?: ResourceSharingStrategy;
   BorrowLimit?: number;
@@ -12443,8 +11506,8 @@ export const ResourceSharingConfig = S.suspend(() =>
 ).annotations({
   identifier: "ResourceSharingConfig",
 }) as any as S.Schema<ResourceSharingConfig>;
-export type PreemptTeamTasks = "Never" | "LowerPriority";
-export const PreemptTeamTasks = S.Literal("Never", "LowerPriority");
+export type PreemptTeamTasks = "Never" | "LowerPriority" | (string & {});
+export const PreemptTeamTasks = S.String;
 export interface ComputeQuotaConfig {
   ComputeQuotaResources?: ComputeQuotaResourceConfig[];
   ResourceSharingConfig?: ResourceSharingConfig;
@@ -12827,8 +11890,8 @@ export const InferenceExperimentSchedule = S.suspend(() =>
 ).annotations({
   identifier: "InferenceExperimentSchedule",
 }) as any as S.Schema<InferenceExperimentSchedule>;
-export type ModelInfrastructureType = "RealTimeInference";
-export const ModelInfrastructureType = S.Literal("RealTimeInference");
+export type ModelInfrastructureType = "RealTimeInference" | (string & {});
+export const ModelInfrastructureType = S.String;
 export interface RealTimeInferenceConfig {
   InstanceType?: InstanceType;
   InstanceCount?: number;
@@ -13050,8 +12113,11 @@ export interface ModelInput {
 export const ModelInput = S.suspend(() =>
   S.Struct({ DataInputConfig: S.optional(S.String) }),
 ).annotations({ identifier: "ModelInput" }) as any as S.Schema<ModelInput>;
-export type AdditionalS3DataSourceDataType = "S3Object" | "S3Prefix";
-export const AdditionalS3DataSourceDataType = S.Literal("S3Object", "S3Prefix");
+export type AdditionalS3DataSourceDataType =
+  | "S3Object"
+  | "S3Prefix"
+  | (string & {});
+export const AdditionalS3DataSourceDataType = S.String;
 export interface AdditionalS3DataSource {
   S3DataType?: AdditionalS3DataSourceDataType;
   S3Uri?: string;
@@ -13231,117 +12297,9 @@ export type TransformInstanceType =
   | "ml.g6.12xlarge"
   | "ml.g6.16xlarge"
   | "ml.g6.24xlarge"
-  | "ml.g6.48xlarge";
-export const TransformInstanceType = S.Literal(
-  "ml.m4.xlarge",
-  "ml.m4.2xlarge",
-  "ml.m4.4xlarge",
-  "ml.m4.10xlarge",
-  "ml.m4.16xlarge",
-  "ml.c4.xlarge",
-  "ml.c4.2xlarge",
-  "ml.c4.4xlarge",
-  "ml.c4.8xlarge",
-  "ml.p2.xlarge",
-  "ml.p2.8xlarge",
-  "ml.p2.16xlarge",
-  "ml.p3.2xlarge",
-  "ml.p3.8xlarge",
-  "ml.p3.16xlarge",
-  "ml.c5.xlarge",
-  "ml.c5.2xlarge",
-  "ml.c5.4xlarge",
-  "ml.c5.9xlarge",
-  "ml.c5.18xlarge",
-  "ml.m5.large",
-  "ml.m5.xlarge",
-  "ml.m5.2xlarge",
-  "ml.m5.4xlarge",
-  "ml.m5.12xlarge",
-  "ml.m5.24xlarge",
-  "ml.m6i.large",
-  "ml.m6i.xlarge",
-  "ml.m6i.2xlarge",
-  "ml.m6i.4xlarge",
-  "ml.m6i.8xlarge",
-  "ml.m6i.12xlarge",
-  "ml.m6i.16xlarge",
-  "ml.m6i.24xlarge",
-  "ml.m6i.32xlarge",
-  "ml.c6i.large",
-  "ml.c6i.xlarge",
-  "ml.c6i.2xlarge",
-  "ml.c6i.4xlarge",
-  "ml.c6i.8xlarge",
-  "ml.c6i.12xlarge",
-  "ml.c6i.16xlarge",
-  "ml.c6i.24xlarge",
-  "ml.c6i.32xlarge",
-  "ml.r6i.large",
-  "ml.r6i.xlarge",
-  "ml.r6i.2xlarge",
-  "ml.r6i.4xlarge",
-  "ml.r6i.8xlarge",
-  "ml.r6i.12xlarge",
-  "ml.r6i.16xlarge",
-  "ml.r6i.24xlarge",
-  "ml.r6i.32xlarge",
-  "ml.m7i.large",
-  "ml.m7i.xlarge",
-  "ml.m7i.2xlarge",
-  "ml.m7i.4xlarge",
-  "ml.m7i.8xlarge",
-  "ml.m7i.12xlarge",
-  "ml.m7i.16xlarge",
-  "ml.m7i.24xlarge",
-  "ml.m7i.48xlarge",
-  "ml.c7i.large",
-  "ml.c7i.xlarge",
-  "ml.c7i.2xlarge",
-  "ml.c7i.4xlarge",
-  "ml.c7i.8xlarge",
-  "ml.c7i.12xlarge",
-  "ml.c7i.16xlarge",
-  "ml.c7i.24xlarge",
-  "ml.c7i.48xlarge",
-  "ml.r7i.large",
-  "ml.r7i.xlarge",
-  "ml.r7i.2xlarge",
-  "ml.r7i.4xlarge",
-  "ml.r7i.8xlarge",
-  "ml.r7i.12xlarge",
-  "ml.r7i.16xlarge",
-  "ml.r7i.24xlarge",
-  "ml.r7i.48xlarge",
-  "ml.g4dn.xlarge",
-  "ml.g4dn.2xlarge",
-  "ml.g4dn.4xlarge",
-  "ml.g4dn.8xlarge",
-  "ml.g4dn.12xlarge",
-  "ml.g4dn.16xlarge",
-  "ml.g5.xlarge",
-  "ml.g5.2xlarge",
-  "ml.g5.4xlarge",
-  "ml.g5.8xlarge",
-  "ml.g5.12xlarge",
-  "ml.g5.16xlarge",
-  "ml.g5.24xlarge",
-  "ml.g5.48xlarge",
-  "ml.trn1.2xlarge",
-  "ml.trn1.32xlarge",
-  "ml.inf2.xlarge",
-  "ml.inf2.8xlarge",
-  "ml.inf2.24xlarge",
-  "ml.inf2.48xlarge",
-  "ml.g6.xlarge",
-  "ml.g6.2xlarge",
-  "ml.g6.4xlarge",
-  "ml.g6.8xlarge",
-  "ml.g6.12xlarge",
-  "ml.g6.16xlarge",
-  "ml.g6.24xlarge",
-  "ml.g6.48xlarge",
-);
+  | "ml.g6.48xlarge"
+  | (string & {});
+export const TransformInstanceType = S.String;
 export type TransformInstanceTypes = TransformInstanceType[];
 export const TransformInstanceTypes = S.Array(TransformInstanceType);
 export type ProductionVariantInstanceType =
@@ -13608,273 +12566,9 @@ export type ProductionVariantInstanceType =
   | "ml.c6in.32xlarge"
   | "ml.p6-b200.48xlarge"
   | "ml.p6e-gb200.36xlarge"
-  | "ml.p5.4xlarge";
-export const ProductionVariantInstanceType = S.Literal(
-  "ml.t2.medium",
-  "ml.t2.large",
-  "ml.t2.xlarge",
-  "ml.t2.2xlarge",
-  "ml.m4.xlarge",
-  "ml.m4.2xlarge",
-  "ml.m4.4xlarge",
-  "ml.m4.10xlarge",
-  "ml.m4.16xlarge",
-  "ml.m5.large",
-  "ml.m5.xlarge",
-  "ml.m5.2xlarge",
-  "ml.m5.4xlarge",
-  "ml.m5.12xlarge",
-  "ml.m5.24xlarge",
-  "ml.m5d.large",
-  "ml.m5d.xlarge",
-  "ml.m5d.2xlarge",
-  "ml.m5d.4xlarge",
-  "ml.m5d.12xlarge",
-  "ml.m5d.24xlarge",
-  "ml.c4.large",
-  "ml.c4.xlarge",
-  "ml.c4.2xlarge",
-  "ml.c4.4xlarge",
-  "ml.c4.8xlarge",
-  "ml.p2.xlarge",
-  "ml.p2.8xlarge",
-  "ml.p2.16xlarge",
-  "ml.p3.2xlarge",
-  "ml.p3.8xlarge",
-  "ml.p3.16xlarge",
-  "ml.c5.large",
-  "ml.c5.xlarge",
-  "ml.c5.2xlarge",
-  "ml.c5.4xlarge",
-  "ml.c5.9xlarge",
-  "ml.c5.18xlarge",
-  "ml.c5d.large",
-  "ml.c5d.xlarge",
-  "ml.c5d.2xlarge",
-  "ml.c5d.4xlarge",
-  "ml.c5d.9xlarge",
-  "ml.c5d.18xlarge",
-  "ml.g4dn.xlarge",
-  "ml.g4dn.2xlarge",
-  "ml.g4dn.4xlarge",
-  "ml.g4dn.8xlarge",
-  "ml.g4dn.12xlarge",
-  "ml.g4dn.16xlarge",
-  "ml.r5.large",
-  "ml.r5.xlarge",
-  "ml.r5.2xlarge",
-  "ml.r5.4xlarge",
-  "ml.r5.12xlarge",
-  "ml.r5.24xlarge",
-  "ml.r5d.large",
-  "ml.r5d.xlarge",
-  "ml.r5d.2xlarge",
-  "ml.r5d.4xlarge",
-  "ml.r5d.12xlarge",
-  "ml.r5d.24xlarge",
-  "ml.inf1.xlarge",
-  "ml.inf1.2xlarge",
-  "ml.inf1.6xlarge",
-  "ml.inf1.24xlarge",
-  "ml.dl1.24xlarge",
-  "ml.c6i.large",
-  "ml.c6i.xlarge",
-  "ml.c6i.2xlarge",
-  "ml.c6i.4xlarge",
-  "ml.c6i.8xlarge",
-  "ml.c6i.12xlarge",
-  "ml.c6i.16xlarge",
-  "ml.c6i.24xlarge",
-  "ml.c6i.32xlarge",
-  "ml.m6i.large",
-  "ml.m6i.xlarge",
-  "ml.m6i.2xlarge",
-  "ml.m6i.4xlarge",
-  "ml.m6i.8xlarge",
-  "ml.m6i.12xlarge",
-  "ml.m6i.16xlarge",
-  "ml.m6i.24xlarge",
-  "ml.m6i.32xlarge",
-  "ml.r6i.large",
-  "ml.r6i.xlarge",
-  "ml.r6i.2xlarge",
-  "ml.r6i.4xlarge",
-  "ml.r6i.8xlarge",
-  "ml.r6i.12xlarge",
-  "ml.r6i.16xlarge",
-  "ml.r6i.24xlarge",
-  "ml.r6i.32xlarge",
-  "ml.g5.xlarge",
-  "ml.g5.2xlarge",
-  "ml.g5.4xlarge",
-  "ml.g5.8xlarge",
-  "ml.g5.12xlarge",
-  "ml.g5.16xlarge",
-  "ml.g5.24xlarge",
-  "ml.g5.48xlarge",
-  "ml.g6.xlarge",
-  "ml.g6.2xlarge",
-  "ml.g6.4xlarge",
-  "ml.g6.8xlarge",
-  "ml.g6.12xlarge",
-  "ml.g6.16xlarge",
-  "ml.g6.24xlarge",
-  "ml.g6.48xlarge",
-  "ml.r8g.medium",
-  "ml.r8g.large",
-  "ml.r8g.xlarge",
-  "ml.r8g.2xlarge",
-  "ml.r8g.4xlarge",
-  "ml.r8g.8xlarge",
-  "ml.r8g.12xlarge",
-  "ml.r8g.16xlarge",
-  "ml.r8g.24xlarge",
-  "ml.r8g.48xlarge",
-  "ml.g6e.xlarge",
-  "ml.g6e.2xlarge",
-  "ml.g6e.4xlarge",
-  "ml.g6e.8xlarge",
-  "ml.g6e.12xlarge",
-  "ml.g6e.16xlarge",
-  "ml.g6e.24xlarge",
-  "ml.g6e.48xlarge",
-  "ml.p4d.24xlarge",
-  "ml.c7g.large",
-  "ml.c7g.xlarge",
-  "ml.c7g.2xlarge",
-  "ml.c7g.4xlarge",
-  "ml.c7g.8xlarge",
-  "ml.c7g.12xlarge",
-  "ml.c7g.16xlarge",
-  "ml.m6g.large",
-  "ml.m6g.xlarge",
-  "ml.m6g.2xlarge",
-  "ml.m6g.4xlarge",
-  "ml.m6g.8xlarge",
-  "ml.m6g.12xlarge",
-  "ml.m6g.16xlarge",
-  "ml.m6gd.large",
-  "ml.m6gd.xlarge",
-  "ml.m6gd.2xlarge",
-  "ml.m6gd.4xlarge",
-  "ml.m6gd.8xlarge",
-  "ml.m6gd.12xlarge",
-  "ml.m6gd.16xlarge",
-  "ml.c6g.large",
-  "ml.c6g.xlarge",
-  "ml.c6g.2xlarge",
-  "ml.c6g.4xlarge",
-  "ml.c6g.8xlarge",
-  "ml.c6g.12xlarge",
-  "ml.c6g.16xlarge",
-  "ml.c6gd.large",
-  "ml.c6gd.xlarge",
-  "ml.c6gd.2xlarge",
-  "ml.c6gd.4xlarge",
-  "ml.c6gd.8xlarge",
-  "ml.c6gd.12xlarge",
-  "ml.c6gd.16xlarge",
-  "ml.c6gn.large",
-  "ml.c6gn.xlarge",
-  "ml.c6gn.2xlarge",
-  "ml.c6gn.4xlarge",
-  "ml.c6gn.8xlarge",
-  "ml.c6gn.12xlarge",
-  "ml.c6gn.16xlarge",
-  "ml.r6g.large",
-  "ml.r6g.xlarge",
-  "ml.r6g.2xlarge",
-  "ml.r6g.4xlarge",
-  "ml.r6g.8xlarge",
-  "ml.r6g.12xlarge",
-  "ml.r6g.16xlarge",
-  "ml.r6gd.large",
-  "ml.r6gd.xlarge",
-  "ml.r6gd.2xlarge",
-  "ml.r6gd.4xlarge",
-  "ml.r6gd.8xlarge",
-  "ml.r6gd.12xlarge",
-  "ml.r6gd.16xlarge",
-  "ml.p4de.24xlarge",
-  "ml.trn1.2xlarge",
-  "ml.trn1.32xlarge",
-  "ml.trn1n.32xlarge",
-  "ml.trn2.48xlarge",
-  "ml.inf2.xlarge",
-  "ml.inf2.8xlarge",
-  "ml.inf2.24xlarge",
-  "ml.inf2.48xlarge",
-  "ml.p5.48xlarge",
-  "ml.p5e.48xlarge",
-  "ml.p5en.48xlarge",
-  "ml.m7i.large",
-  "ml.m7i.xlarge",
-  "ml.m7i.2xlarge",
-  "ml.m7i.4xlarge",
-  "ml.m7i.8xlarge",
-  "ml.m7i.12xlarge",
-  "ml.m7i.16xlarge",
-  "ml.m7i.24xlarge",
-  "ml.m7i.48xlarge",
-  "ml.c7i.large",
-  "ml.c7i.xlarge",
-  "ml.c7i.2xlarge",
-  "ml.c7i.4xlarge",
-  "ml.c7i.8xlarge",
-  "ml.c7i.12xlarge",
-  "ml.c7i.16xlarge",
-  "ml.c7i.24xlarge",
-  "ml.c7i.48xlarge",
-  "ml.r7i.large",
-  "ml.r7i.xlarge",
-  "ml.r7i.2xlarge",
-  "ml.r7i.4xlarge",
-  "ml.r7i.8xlarge",
-  "ml.r7i.12xlarge",
-  "ml.r7i.16xlarge",
-  "ml.r7i.24xlarge",
-  "ml.r7i.48xlarge",
-  "ml.c8g.medium",
-  "ml.c8g.large",
-  "ml.c8g.xlarge",
-  "ml.c8g.2xlarge",
-  "ml.c8g.4xlarge",
-  "ml.c8g.8xlarge",
-  "ml.c8g.12xlarge",
-  "ml.c8g.16xlarge",
-  "ml.c8g.24xlarge",
-  "ml.c8g.48xlarge",
-  "ml.r7gd.medium",
-  "ml.r7gd.large",
-  "ml.r7gd.xlarge",
-  "ml.r7gd.2xlarge",
-  "ml.r7gd.4xlarge",
-  "ml.r7gd.8xlarge",
-  "ml.r7gd.12xlarge",
-  "ml.r7gd.16xlarge",
-  "ml.m8g.medium",
-  "ml.m8g.large",
-  "ml.m8g.xlarge",
-  "ml.m8g.2xlarge",
-  "ml.m8g.4xlarge",
-  "ml.m8g.8xlarge",
-  "ml.m8g.12xlarge",
-  "ml.m8g.16xlarge",
-  "ml.m8g.24xlarge",
-  "ml.m8g.48xlarge",
-  "ml.c6in.large",
-  "ml.c6in.xlarge",
-  "ml.c6in.2xlarge",
-  "ml.c6in.4xlarge",
-  "ml.c6in.8xlarge",
-  "ml.c6in.12xlarge",
-  "ml.c6in.16xlarge",
-  "ml.c6in.24xlarge",
-  "ml.c6in.32xlarge",
-  "ml.p6-b200.48xlarge",
-  "ml.p6e-gb200.36xlarge",
-  "ml.p5.4xlarge",
-);
+  | "ml.p5.4xlarge"
+  | (string & {});
+export const ProductionVariantInstanceType = S.String;
 export type RealtimeInferenceInstanceTypes = ProductionVariantInstanceType[];
 export const RealtimeInferenceInstanceTypes = S.Array(
   ProductionVariantInstanceType,
@@ -14072,15 +12766,13 @@ export const MonitoringBaselineConfig = S.suspend(() =>
 ).annotations({
   identifier: "MonitoringBaselineConfig",
 }) as any as S.Schema<MonitoringBaselineConfig>;
-export type ProcessingS3InputMode = "Pipe" | "File";
-export const ProcessingS3InputMode = S.Literal("Pipe", "File");
+export type ProcessingS3InputMode = "Pipe" | "File" | (string & {});
+export const ProcessingS3InputMode = S.String;
 export type ProcessingS3DataDistributionType =
   | "FullyReplicated"
-  | "ShardedByS3Key";
-export const ProcessingS3DataDistributionType = S.Literal(
-  "FullyReplicated",
-  "ShardedByS3Key",
-);
+  | "ShardedByS3Key"
+  | (string & {});
+export const ProcessingS3DataDistributionType = S.String;
 export interface EndpointInput {
   EndpointName?: string;
   LocalPath?: string;
@@ -14193,8 +12885,8 @@ export const MonitoringInput = S.suspend(() =>
 }) as any as S.Schema<MonitoringInput>;
 export type MonitoringInputs = MonitoringInput[];
 export const MonitoringInputs = S.Array(MonitoringInput);
-export type ProcessingS3UploadMode = "Continuous" | "EndOfJob";
-export const ProcessingS3UploadMode = S.Literal("Continuous", "EndOfJob");
+export type ProcessingS3UploadMode = "Continuous" | "EndOfJob" | (string & {});
+export const ProcessingS3UploadMode = S.String;
 export interface MonitoringS3Output {
   S3Uri?: string;
   LocalPath?: string;
@@ -14352,130 +13044,9 @@ export type ProcessingInstanceType =
   | "ml.r7i.16xlarge"
   | "ml.r7i.24xlarge"
   | "ml.r7i.48xlarge"
-  | "ml.p5.4xlarge";
-export const ProcessingInstanceType = S.Literal(
-  "ml.t3.medium",
-  "ml.t3.large",
-  "ml.t3.xlarge",
-  "ml.t3.2xlarge",
-  "ml.m4.xlarge",
-  "ml.m4.2xlarge",
-  "ml.m4.4xlarge",
-  "ml.m4.10xlarge",
-  "ml.m4.16xlarge",
-  "ml.c4.xlarge",
-  "ml.c4.2xlarge",
-  "ml.c4.4xlarge",
-  "ml.c4.8xlarge",
-  "ml.p2.xlarge",
-  "ml.p2.8xlarge",
-  "ml.p2.16xlarge",
-  "ml.p3.2xlarge",
-  "ml.p3.8xlarge",
-  "ml.p3.16xlarge",
-  "ml.c5.xlarge",
-  "ml.c5.2xlarge",
-  "ml.c5.4xlarge",
-  "ml.c5.9xlarge",
-  "ml.c5.18xlarge",
-  "ml.m5.large",
-  "ml.m5.xlarge",
-  "ml.m5.2xlarge",
-  "ml.m5.4xlarge",
-  "ml.m5.12xlarge",
-  "ml.m5.24xlarge",
-  "ml.r5.large",
-  "ml.r5.xlarge",
-  "ml.r5.2xlarge",
-  "ml.r5.4xlarge",
-  "ml.r5.8xlarge",
-  "ml.r5.12xlarge",
-  "ml.r5.16xlarge",
-  "ml.r5.24xlarge",
-  "ml.g4dn.xlarge",
-  "ml.g4dn.2xlarge",
-  "ml.g4dn.4xlarge",
-  "ml.g4dn.8xlarge",
-  "ml.g4dn.12xlarge",
-  "ml.g4dn.16xlarge",
-  "ml.g5.xlarge",
-  "ml.g5.2xlarge",
-  "ml.g5.4xlarge",
-  "ml.g5.8xlarge",
-  "ml.g5.16xlarge",
-  "ml.g5.12xlarge",
-  "ml.g5.24xlarge",
-  "ml.g5.48xlarge",
-  "ml.r5d.large",
-  "ml.r5d.xlarge",
-  "ml.r5d.2xlarge",
-  "ml.r5d.4xlarge",
-  "ml.r5d.8xlarge",
-  "ml.r5d.12xlarge",
-  "ml.r5d.16xlarge",
-  "ml.r5d.24xlarge",
-  "ml.g6.xlarge",
-  "ml.g6.2xlarge",
-  "ml.g6.4xlarge",
-  "ml.g6.8xlarge",
-  "ml.g6.12xlarge",
-  "ml.g6.16xlarge",
-  "ml.g6.24xlarge",
-  "ml.g6.48xlarge",
-  "ml.g6e.xlarge",
-  "ml.g6e.2xlarge",
-  "ml.g6e.4xlarge",
-  "ml.g6e.8xlarge",
-  "ml.g6e.12xlarge",
-  "ml.g6e.16xlarge",
-  "ml.g6e.24xlarge",
-  "ml.g6e.48xlarge",
-  "ml.m6i.large",
-  "ml.m6i.xlarge",
-  "ml.m6i.2xlarge",
-  "ml.m6i.4xlarge",
-  "ml.m6i.8xlarge",
-  "ml.m6i.12xlarge",
-  "ml.m6i.16xlarge",
-  "ml.m6i.24xlarge",
-  "ml.m6i.32xlarge",
-  "ml.c6i.xlarge",
-  "ml.c6i.2xlarge",
-  "ml.c6i.4xlarge",
-  "ml.c6i.8xlarge",
-  "ml.c6i.12xlarge",
-  "ml.c6i.16xlarge",
-  "ml.c6i.24xlarge",
-  "ml.c6i.32xlarge",
-  "ml.m7i.large",
-  "ml.m7i.xlarge",
-  "ml.m7i.2xlarge",
-  "ml.m7i.4xlarge",
-  "ml.m7i.8xlarge",
-  "ml.m7i.12xlarge",
-  "ml.m7i.16xlarge",
-  "ml.m7i.24xlarge",
-  "ml.m7i.48xlarge",
-  "ml.c7i.large",
-  "ml.c7i.xlarge",
-  "ml.c7i.2xlarge",
-  "ml.c7i.4xlarge",
-  "ml.c7i.8xlarge",
-  "ml.c7i.12xlarge",
-  "ml.c7i.16xlarge",
-  "ml.c7i.24xlarge",
-  "ml.c7i.48xlarge",
-  "ml.r7i.large",
-  "ml.r7i.xlarge",
-  "ml.r7i.2xlarge",
-  "ml.r7i.4xlarge",
-  "ml.r7i.8xlarge",
-  "ml.r7i.12xlarge",
-  "ml.r7i.16xlarge",
-  "ml.r7i.24xlarge",
-  "ml.r7i.48xlarge",
-  "ml.p5.4xlarge",
-);
+  | "ml.p5.4xlarge"
+  | (string & {});
+export const ProcessingInstanceType = S.String;
 export interface MonitoringClusterConfig {
   InstanceCount?: number;
   InstanceType?: ProcessingInstanceType;
@@ -15084,14 +13655,9 @@ export type TrialComponentPrimaryStatus =
   | "Completed"
   | "Failed"
   | "Stopping"
-  | "Stopped";
-export const TrialComponentPrimaryStatus = S.Literal(
-  "InProgress",
-  "Completed",
-  "Failed",
-  "Stopping",
-  "Stopped",
-);
+  | "Stopped"
+  | (string & {});
+export const TrialComponentPrimaryStatus = S.String;
 export interface TrialComponentStatus {
   PrimaryStatus?: TrialComponentPrimaryStatus;
   Message?: string;
@@ -15335,8 +13901,8 @@ export const NotificationConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "NotificationConfiguration",
 }) as any as S.Schema<NotificationConfiguration>;
-export type EnabledOrDisabled = "Enabled" | "Disabled";
-export const EnabledOrDisabled = S.Literal("Enabled", "Disabled");
+export type EnabledOrDisabled = "Enabled" | "Disabled" | (string & {});
+export const EnabledOrDisabled = S.String;
 export interface IamPolicyConstraints {
   SourceIp?: EnabledOrDisabled;
   VpcSourceIp?: EnabledOrDisabled;
@@ -15393,8 +13959,8 @@ export const UpdateWorkteamRequest = S.suspend(() =>
 }) as any as S.Schema<UpdateWorkteamRequest>;
 export type TrainingInstanceTypes = TrainingInstanceType[];
 export const TrainingInstanceTypes = S.Array(TrainingInstanceType);
-export type AutoMLChannelType = "training" | "validation";
-export const AutoMLChannelType = S.Literal("training", "validation");
+export type AutoMLChannelType = "training" | "validation" | (string & {});
+export const AutoMLChannelType = S.String;
 export type AutoMLMetricEnum =
   | "Accuracy"
   | "MSE"
@@ -15412,32 +13978,15 @@ export type AutoMLMetricEnum =
   | "MAPE"
   | "MASE"
   | "WAPE"
-  | "AverageWeightedQuantileLoss";
-export const AutoMLMetricEnum = S.Literal(
-  "Accuracy",
-  "MSE",
-  "F1",
-  "F1macro",
-  "AUC",
-  "RMSE",
-  "BalancedAccuracy",
-  "R2",
-  "Recall",
-  "RecallMacro",
-  "Precision",
-  "PrecisionMacro",
-  "MAE",
-  "MAPE",
-  "MASE",
-  "WAPE",
-  "AverageWeightedQuantileLoss",
-);
-export type AutoMLMode = "AUTO" | "ENSEMBLING" | "HYPERPARAMETER_TUNING";
-export const AutoMLMode = S.Literal(
-  "AUTO",
-  "ENSEMBLING",
-  "HYPERPARAMETER_TUNING",
-);
+  | "AverageWeightedQuantileLoss"
+  | (string & {});
+export const AutoMLMetricEnum = S.String;
+export type AutoMLMode =
+  | "AUTO"
+  | "ENSEMBLING"
+  | "HYPERPARAMETER_TUNING"
+  | (string & {});
+export const AutoMLMode = S.String;
 export type Framework =
   | "TENSORFLOW"
   | "KERAS"
@@ -15447,18 +13996,9 @@ export type Framework =
   | "XGBOOST"
   | "TFLITE"
   | "DARKNET"
-  | "SKLEARN";
-export const Framework = S.Literal(
-  "TENSORFLOW",
-  "KERAS",
-  "MXNET",
-  "ONNX",
-  "PYTORCH",
-  "XGBOOST",
-  "TFLITE",
-  "DARKNET",
-  "SKLEARN",
-);
+  | "SKLEARN"
+  | (string & {});
+export const Framework = S.String;
 export type TargetDevice =
   | "lambda"
   | "ml_m4"
@@ -15496,83 +14036,36 @@ export type TargetDevice =
   | "x86_win64"
   | "coreml"
   | "jacinto_tda4vm"
-  | "imx8mplus";
-export const TargetDevice = S.Literal(
-  "lambda",
-  "ml_m4",
-  "ml_m5",
-  "ml_m6g",
-  "ml_c4",
-  "ml_c5",
-  "ml_c6g",
-  "ml_p2",
-  "ml_p3",
-  "ml_g4dn",
-  "ml_inf1",
-  "ml_inf2",
-  "ml_trn1",
-  "ml_eia2",
-  "jetson_tx1",
-  "jetson_tx2",
-  "jetson_nano",
-  "jetson_xavier",
-  "rasp3b",
-  "rasp4b",
-  "imx8qm",
-  "deeplens",
-  "rk3399",
-  "rk3288",
-  "aisage",
-  "sbe_c",
-  "qcs605",
-  "qcs603",
-  "sitara_am57x",
-  "amba_cv2",
-  "amba_cv22",
-  "amba_cv25",
-  "x86_win32",
-  "x86_win64",
-  "coreml",
-  "jacinto_tda4vm",
-  "imx8mplus",
-);
+  | "imx8mplus"
+  | (string & {});
+export const TargetDevice = S.String;
 export type NeoVpcSecurityGroupIds = string[];
 export const NeoVpcSecurityGroupIds = S.Array(S.String);
 export type NeoVpcSubnets = string[];
 export const NeoVpcSubnets = S.Array(S.String);
 export type DomainSecurityGroupIds = string[];
 export const DomainSecurityGroupIds = S.Array(S.String);
-export type ExecutionRoleIdentityConfig = "USER_PROFILE_NAME" | "DISABLED";
-export const ExecutionRoleIdentityConfig = S.Literal(
-  "USER_PROFILE_NAME",
-  "DISABLED",
-);
+export type ExecutionRoleIdentityConfig =
+  | "USER_PROFILE_NAME"
+  | "DISABLED"
+  | (string & {});
+export const ExecutionRoleIdentityConfig = S.String;
 export type ProductionVariantAcceleratorType =
   | "ml.eia1.medium"
   | "ml.eia1.large"
   | "ml.eia1.xlarge"
   | "ml.eia2.medium"
   | "ml.eia2.large"
-  | "ml.eia2.xlarge";
-export const ProductionVariantAcceleratorType = S.Literal(
-  "ml.eia1.medium",
-  "ml.eia1.large",
-  "ml.eia1.xlarge",
-  "ml.eia2.medium",
-  "ml.eia2.large",
-  "ml.eia2.xlarge",
-);
+  | "ml.eia2.xlarge"
+  | (string & {});
+export const ProductionVariantAcceleratorType = S.String;
 export type ProductionVariantInferenceAmiVersion =
   | "al2-ami-sagemaker-inference-gpu-2"
   | "al2-ami-sagemaker-inference-gpu-2-1"
   | "al2-ami-sagemaker-inference-gpu-3-1"
-  | "al2-ami-sagemaker-inference-neuron-2";
-export const ProductionVariantInferenceAmiVersion = S.Literal(
-  "al2-ami-sagemaker-inference-gpu-2",
-  "al2-ami-sagemaker-inference-gpu-2-1",
-  "al2-ami-sagemaker-inference-gpu-3-1",
-  "al2-ami-sagemaker-inference-neuron-2",
-);
+  | "al2-ami-sagemaker-inference-neuron-2"
+  | (string & {});
+export const ProductionVariantInferenceAmiVersion = S.String;
 export type MetricPublishFrequencyInSeconds =
   | 10
   | 30
@@ -15590,104 +14083,100 @@ export const MetricPublishFrequencyInSeconds = S.Literal(
   240,
   300,
 );
-export type StorageType = "Standard" | "InMemory";
-export const StorageType = S.Literal("Standard", "InMemory");
-export type TableFormat = "Default" | "Glue" | "Iceberg";
-export const TableFormat = S.Literal("Default", "Glue", "Iceberg");
-export type ThroughputMode = "OnDemand" | "Provisioned";
-export const ThroughputMode = S.Literal("OnDemand", "Provisioned");
+export type StorageType = "Standard" | "InMemory" | (string & {});
+export const StorageType = S.String;
+export type TableFormat = "Default" | "Glue" | "Iceberg" | (string & {});
+export const TableFormat = S.String;
+export type ThroughputMode = "OnDemand" | "Provisioned" | (string & {});
+export const ThroughputMode = S.String;
 export type AwsManagedHumanLoopRequestSource =
   | "AWS/Rekognition/DetectModerationLabels/Image/V3"
-  | "AWS/Textract/AnalyzeDocument/Forms/V1";
-export const AwsManagedHumanLoopRequestSource = S.Literal(
-  "AWS/Rekognition/DetectModerationLabels/Image/V3",
-  "AWS/Textract/AnalyzeDocument/Forms/V1",
-);
+  | "AWS/Textract/AnalyzeDocument/Forms/V1"
+  | (string & {});
+export const AwsManagedHumanLoopRequestSource = S.String;
 export type FlowDefinitionTaskKeywords = string[];
 export const FlowDefinitionTaskKeywords = S.Array(S.String);
 export type HyperParameterTuningJobStrategyType =
   | "Bayesian"
   | "Random"
   | "Hyperband"
-  | "Grid";
-export const HyperParameterTuningJobStrategyType = S.Literal(
-  "Bayesian",
-  "Random",
-  "Hyperband",
-  "Grid",
-);
-export type TrainingJobEarlyStoppingType = "Off" | "Auto";
-export const TrainingJobEarlyStoppingType = S.Literal("Off", "Auto");
+  | "Grid"
+  | (string & {});
+export const HyperParameterTuningJobStrategyType = S.String;
+export type TrainingJobEarlyStoppingType = "Off" | "Auto" | (string & {});
+export const TrainingJobEarlyStoppingType = S.String;
 export type HyperParameterTuningJobWarmStartType =
   | "IdenticalDataAndAlgorithm"
-  | "TransferLearning";
-export const HyperParameterTuningJobWarmStartType = S.Literal(
-  "IdenticalDataAndAlgorithm",
-  "TransferLearning",
-);
-export type AutotuneMode = "Enabled";
-export const AutotuneMode = S.Literal("Enabled");
-export type FlatInvocations = "Continue" | "Stop";
-export const FlatInvocations = S.Literal("Continue", "Stop");
+  | "TransferLearning"
+  | (string & {});
+export const HyperParameterTuningJobWarmStartType = S.String;
+export type AutotuneMode = "Enabled" | (string & {});
+export const AutotuneMode = S.String;
+export type FlatInvocations = "Continue" | "Stop" | (string & {});
+export const FlatInvocations = S.String;
 export type TaskKeywords = string[];
 export const TaskKeywords = S.Array(S.String);
-export type InferenceExecutionMode = "Serial" | "Direct";
-export const InferenceExecutionMode = S.Literal("Serial", "Direct");
+export type InferenceExecutionMode = "Serial" | "Direct" | (string & {});
+export const InferenceExecutionMode = S.String;
 export type MonitoringProblemType =
   | "BinaryClassification"
   | "MulticlassClassification"
-  | "Regression";
-export const MonitoringProblemType = S.Literal(
-  "BinaryClassification",
-  "MulticlassClassification",
-  "Regression",
-);
+  | "Regression"
+  | (string & {});
+export const MonitoringProblemType = S.String;
 export type OptimizationVpcSecurityGroupIds = string[];
 export const OptimizationVpcSecurityGroupIds = S.Array(S.String);
 export type OptimizationVpcSubnets = string[];
 export const OptimizationVpcSubnets = S.Array(S.String);
 export type ContainerArguments = string[];
 export const ContainerArguments = S.Array(S.String);
-export type SharingType = "Private" | "Shared";
-export const SharingType = S.Literal("Private", "Shared");
+export type SharingType = "Private" | "Shared" | (string & {});
+export const SharingType = S.String;
 export type TrainingContainerEntrypoint = string[];
 export const TrainingContainerEntrypoint = S.Array(S.String);
 export type TrainingContainerArguments = string[];
 export const TrainingContainerArguments = S.Array(S.String);
-export type ServerlessJobType = "FineTuning" | "Evaluation";
-export const ServerlessJobType = S.Literal("FineTuning", "Evaluation");
-export type CustomizationTechnique = "SFT" | "DPO" | "RLVR" | "RLAIF";
-export const CustomizationTechnique = S.Literal("SFT", "DPO", "RLVR", "RLAIF");
-export type Peft = "LORA";
-export const Peft = S.Literal("LORA");
+export type ServerlessJobType = "FineTuning" | "Evaluation" | (string & {});
+export const ServerlessJobType = S.String;
+export type CustomizationTechnique =
+  | "SFT"
+  | "DPO"
+  | "RLVR"
+  | "RLAIF"
+  | (string & {});
+export const CustomizationTechnique = S.String;
+export type Peft = "LORA" | (string & {});
+export const Peft = S.String;
 export type EvaluationType =
   | "LLMAJEvaluation"
   | "CustomScorerEvaluation"
-  | "BenchmarkEvaluation";
-export const EvaluationType = S.Literal(
-  "LLMAJEvaluation",
-  "CustomScorerEvaluation",
-  "BenchmarkEvaluation",
-);
-export type SplitType = "None" | "Line" | "RecordIO" | "TFRecord";
-export const SplitType = S.Literal("None", "Line", "RecordIO", "TFRecord");
-export type AssemblyType = "None" | "Line";
-export const AssemblyType = S.Literal("None", "Line");
-export type JoinSource = "Input" | "None";
-export const JoinSource = S.Literal("Input", "None");
-export type RetentionType = "Retain" | "Delete";
-export const RetentionType = S.Literal("Retain", "Delete");
-export type TrainingPlanFilterName = "Status";
-export const TrainingPlanFilterName = S.Literal("Status");
+  | "BenchmarkEvaluation"
+  | (string & {});
+export const EvaluationType = S.String;
+export type SplitType =
+  | "None"
+  | "Line"
+  | "RecordIO"
+  | "TFRecord"
+  | (string & {});
+export const SplitType = S.String;
+export type AssemblyType = "None" | "Line" | (string & {});
+export const AssemblyType = S.String;
+export type JoinSource = "Input" | "None" | (string & {});
+export const JoinSource = S.String;
+export type RetentionType = "Retain" | "Delete" | (string & {});
+export const RetentionType = S.String;
+export type TrainingPlanFilterName = "Status" | (string & {});
+export const TrainingPlanFilterName = S.String;
 export type QueryTypes = string[];
 export const QueryTypes = S.Array(S.String);
-export type LineageType = "TrialComponent" | "Artifact" | "Context" | "Action";
-export const LineageType = S.Literal(
-  "TrialComponent",
-  "Artifact",
-  "Context",
-  "Action",
-);
+export type LineageType =
+  | "TrialComponent"
+  | "Artifact"
+  | "Context"
+  | "Action"
+  | (string & {});
+export const LineageType = S.String;
 export type QueryLineageTypes = LineageType[];
 export const QueryLineageTypes = S.Array(LineageType);
 export type SearchExpressionList = SearchExpression[];
@@ -15696,32 +14185,28 @@ export const SearchExpressionList = S.Array(
     (): S.Schema<SearchExpression, any> => SearchExpression,
   ).annotations({ identifier: "SearchExpression" }),
 ) as any as S.Schema<SearchExpressionList>;
-export type BooleanOperator = "And" | "Or";
-export const BooleanOperator = S.Literal("And", "Or");
-export type ModelVariantAction = "Retain" | "Remove" | "Promote";
-export const ModelVariantAction = S.Literal("Retain", "Remove", "Promote");
+export type BooleanOperator = "And" | "Or" | (string & {});
+export const BooleanOperator = S.String;
+export type ModelVariantAction =
+  | "Retain"
+  | "Remove"
+  | "Promote"
+  | (string & {});
+export const ModelVariantAction = S.String;
 export type VariantPropertyType =
   | "DesiredInstanceCount"
   | "DesiredWeight"
-  | "DataCaptureConfig";
-export const VariantPropertyType = S.Literal(
-  "DesiredInstanceCount",
-  "DesiredWeight",
-  "DataCaptureConfig",
-);
+  | "DataCaptureConfig"
+  | (string & {});
+export const VariantPropertyType = S.String;
 export type VolumeAttachmentStatus =
   | "attaching"
   | "attached"
   | "detaching"
   | "detached"
-  | "busy";
-export const VolumeAttachmentStatus = S.Literal(
-  "attaching",
-  "attached",
-  "detaching",
-  "detached",
-  "busy",
-);
+  | "busy"
+  | (string & {});
+export const VolumeAttachmentStatus = S.String;
 export interface AddClusterNodeSpecification {
   InstanceGroupName: string;
   IncrementTargetCountBy: number;
@@ -15782,12 +14267,9 @@ export const ModelDeployConfig = S.suspend(() =>
 export type AutoMLS3DataType =
   | "ManifestFile"
   | "S3Prefix"
-  | "AugmentedManifestFile";
-export const AutoMLS3DataType = S.Literal(
-  "ManifestFile",
-  "S3Prefix",
-  "AugmentedManifestFile",
-);
+  | "AugmentedManifestFile"
+  | (string & {});
+export const AutoMLS3DataType = S.String;
 export interface AutoMLS3DataSource {
   S3DataType?: AutoMLS3DataType;
   S3Uri?: string;
@@ -16527,27 +15009,17 @@ export type AlgorithmStatus =
   | "InProgress"
   | "Completed"
   | "Failed"
-  | "Deleting";
-export const AlgorithmStatus = S.Literal(
-  "Pending",
-  "InProgress",
-  "Completed",
-  "Failed",
-  "Deleting",
-);
+  | "Deleting"
+  | (string & {});
+export const AlgorithmStatus = S.String;
 export type AppStatus =
   | "Deleted"
   | "Deleting"
   | "Failed"
   | "InService"
-  | "Pending";
-export const AppStatus = S.Literal(
-  "Deleted",
-  "Deleting",
-  "Failed",
-  "InService",
-  "Pending",
-);
+  | "Pending"
+  | (string & {});
+export const AppStatus = S.String;
 export type AutoMLJobSecondaryStatus =
   | "Starting"
   | "MaxCandidatesReached"
@@ -16567,41 +15039,17 @@ export type AutoMLJobSecondaryStatus =
   | "ModelTuning"
   | "GeneratingExplainabilityReport"
   | "TrainingModels"
-  | "PreTraining";
-export const AutoMLJobSecondaryStatus = S.Literal(
-  "Starting",
-  "MaxCandidatesReached",
-  "Failed",
-  "Stopped",
-  "MaxAutoMLJobRuntimeReached",
-  "Stopping",
-  "CandidateDefinitionsGenerated",
-  "Completed",
-  "ExplainabilityError",
-  "DeployingModel",
-  "ModelDeploymentError",
-  "GeneratingModelInsightsReport",
-  "ModelInsightsError",
-  "AnalyzingData",
-  "FeatureEngineering",
-  "ModelTuning",
-  "GeneratingExplainabilityReport",
-  "TrainingModels",
-  "PreTraining",
-);
+  | "PreTraining"
+  | (string & {});
+export const AutoMLJobSecondaryStatus = S.String;
 export type AutoMLProblemTypeConfigName =
   | "ImageClassification"
   | "TextClassification"
   | "TimeSeriesForecasting"
   | "Tabular"
-  | "TextGeneration";
-export const AutoMLProblemTypeConfigName = S.Literal(
-  "ImageClassification",
-  "TextClassification",
-  "TimeSeriesForecasting",
-  "Tabular",
-  "TextGeneration",
-);
+  | "TextGeneration"
+  | (string & {});
+export const AutoMLProblemTypeConfigName = S.String;
 export type ClusterStatus =
   | "Creating"
   | "Deleting"
@@ -16609,16 +15057,9 @@ export type ClusterStatus =
   | "InService"
   | "RollingBack"
   | "SystemUpdating"
-  | "Updating";
-export const ClusterStatus = S.Literal(
-  "Creating",
-  "Deleting",
-  "Failed",
-  "InService",
-  "RollingBack",
-  "SystemUpdating",
-  "Updating",
-);
+  | "Updating"
+  | (string & {});
+export const ClusterStatus = S.String;
 export type DomainStatus =
   | "Deleting"
   | "Failed"
@@ -16626,16 +15067,9 @@ export type DomainStatus =
   | "Pending"
   | "Updating"
   | "Update_Failed"
-  | "Delete_Failed";
-export const DomainStatus = S.Literal(
-  "Deleting",
-  "Failed",
-  "InService",
-  "Pending",
-  "Updating",
-  "Update_Failed",
-  "Delete_Failed",
-);
+  | "Delete_Failed"
+  | (string & {});
+export const DomainStatus = S.String;
 export interface FeatureParameter {
   Key?: string;
   Value?: string;
@@ -16651,13 +15085,9 @@ export type FlowDefinitionStatus =
   | "Initializing"
   | "Active"
   | "Failed"
-  | "Deleting";
-export const FlowDefinitionStatus = S.Literal(
-  "Initializing",
-  "Active",
-  "Failed",
-  "Deleting",
-);
+  | "Deleting"
+  | (string & {});
+export const FlowDefinitionStatus = S.String;
 export type HubStatus =
   | "InService"
   | "Creating"
@@ -16665,16 +15095,9 @@ export type HubStatus =
   | "Deleting"
   | "CreateFailed"
   | "UpdateFailed"
-  | "DeleteFailed";
-export const HubStatus = S.Literal(
-  "InService",
-  "Creating",
-  "Updating",
-  "Deleting",
-  "CreateFailed",
-  "UpdateFailed",
-  "DeleteFailed",
-);
+  | "DeleteFailed"
+  | (string & {});
+export const HubStatus = S.String;
 export type HubContentStatus =
   | "Available"
   | "Importing"
@@ -16682,18 +15105,11 @@ export type HubContentStatus =
   | "ImportFailed"
   | "DeleteFailed"
   | "PendingImport"
-  | "PendingDelete";
-export const HubContentStatus = S.Literal(
-  "Available",
-  "Importing",
-  "Deleting",
-  "ImportFailed",
-  "DeleteFailed",
-  "PendingImport",
-  "PendingDelete",
-);
-export type HumanTaskUiStatus = "Active" | "Deleting";
-export const HumanTaskUiStatus = S.Literal("Active", "Deleting");
+  | "PendingDelete"
+  | (string & {});
+export const HubContentStatus = S.String;
+export type HumanTaskUiStatus = "Active" | "Deleting" | (string & {});
+export const HumanTaskUiStatus = S.String;
 export type ImageStatus =
   | "CREATING"
   | "CREATED"
@@ -16701,92 +15117,57 @@ export type ImageStatus =
   | "UPDATING"
   | "UPDATE_FAILED"
   | "DELETING"
-  | "DELETE_FAILED";
-export const ImageStatus = S.Literal(
-  "CREATING",
-  "CREATED",
-  "CREATE_FAILED",
-  "UPDATING",
-  "UPDATE_FAILED",
-  "DELETING",
-  "DELETE_FAILED",
-);
+  | "DELETE_FAILED"
+  | (string & {});
+export const ImageStatus = S.String;
 export type ImageVersionStatus =
   | "CREATING"
   | "CREATED"
   | "CREATE_FAILED"
   | "DELETING"
-  | "DELETE_FAILED";
-export const ImageVersionStatus = S.Literal(
-  "CREATING",
-  "CREATED",
-  "CREATE_FAILED",
-  "DELETING",
-  "DELETE_FAILED",
-);
+  | "DELETE_FAILED"
+  | (string & {});
+export const ImageVersionStatus = S.String;
 export type MaintenanceStatus =
   | "MaintenanceInProgress"
   | "MaintenanceComplete"
-  | "MaintenanceFailed";
-export const MaintenanceStatus = S.Literal(
-  "MaintenanceInProgress",
-  "MaintenanceComplete",
-  "MaintenanceFailed",
-);
+  | "MaintenanceFailed"
+  | (string & {});
+export const MaintenanceStatus = S.String;
 export type TrackingServerMaintenanceStatus =
   | "MaintenanceInProgress"
   | "MaintenanceComplete"
-  | "MaintenanceFailed";
-export const TrackingServerMaintenanceStatus = S.Literal(
-  "MaintenanceInProgress",
-  "MaintenanceComplete",
-  "MaintenanceFailed",
-);
-export type IsTrackingServerActive = "Active" | "Inactive";
-export const IsTrackingServerActive = S.Literal("Active", "Inactive");
+  | "MaintenanceFailed"
+  | (string & {});
+export const TrackingServerMaintenanceStatus = S.String;
+export type IsTrackingServerActive = "Active" | "Inactive" | (string & {});
+export const IsTrackingServerActive = S.String;
 export type ModelCardProcessingStatus =
   | "DeleteInProgress"
   | "DeletePending"
   | "ContentDeleted"
   | "ExportJobsDeleted"
   | "DeleteCompleted"
-  | "DeleteFailed";
-export const ModelCardProcessingStatus = S.Literal(
-  "DeleteInProgress",
-  "DeletePending",
-  "ContentDeleted",
-  "ExportJobsDeleted",
-  "DeleteCompleted",
-  "DeleteFailed",
-);
+  | "DeleteFailed"
+  | (string & {});
+export const ModelCardProcessingStatus = S.String;
 export type ModelPackageStatus =
   | "Pending"
   | "InProgress"
   | "Completed"
   | "Failed"
-  | "Deleting";
-export const ModelPackageStatus = S.Literal(
-  "Pending",
-  "InProgress",
-  "Completed",
-  "Failed",
-  "Deleting",
-);
+  | "Deleting"
+  | (string & {});
+export const ModelPackageStatus = S.String;
 export type ModelPackageGroupStatus =
   | "Pending"
   | "InProgress"
   | "Completed"
   | "Failed"
   | "Deleting"
-  | "DeleteFailed";
-export const ModelPackageGroupStatus = S.Literal(
-  "Pending",
-  "InProgress",
-  "Completed",
-  "Failed",
-  "Deleting",
-  "DeleteFailed",
-);
+  | "DeleteFailed"
+  | (string & {});
+export const ModelPackageGroupStatus = S.String;
 export type PartnerAppStatus =
   | "Creating"
   | "Updating"
@@ -16794,31 +15175,19 @@ export type PartnerAppStatus =
   | "Available"
   | "Failed"
   | "UpdateFailed"
-  | "Deleted";
-export const PartnerAppStatus = S.Literal(
-  "Creating",
-  "Updating",
-  "Deleting",
-  "Available",
-  "Failed",
-  "UpdateFailed",
-  "Deleted",
-);
-export type PipelineStatus = "Active" | "Deleting";
-export const PipelineStatus = S.Literal("Active", "Deleting");
+  | "Deleted"
+  | (string & {});
+export const PartnerAppStatus = S.String;
+export type PipelineStatus = "Active" | "Deleting" | (string & {});
+export const PipelineStatus = S.String;
 export type PipelineExecutionStatus =
   | "Executing"
   | "Stopping"
   | "Stopped"
   | "Failed"
-  | "Succeeded";
-export const PipelineExecutionStatus = S.Literal(
-  "Executing",
-  "Stopping",
-  "Stopped",
-  "Failed",
-  "Succeeded",
-);
+  | "Succeeded"
+  | (string & {});
+export const PipelineExecutionStatus = S.String;
 export type ProjectStatus =
   | "Pending"
   | "CreateInProgress"
@@ -16829,34 +15198,19 @@ export type ProjectStatus =
   | "DeleteCompleted"
   | "UpdateInProgress"
   | "UpdateCompleted"
-  | "UpdateFailed";
-export const ProjectStatus = S.Literal(
-  "Pending",
-  "CreateInProgress",
-  "CreateCompleted",
-  "CreateFailed",
-  "DeleteInProgress",
-  "DeleteFailed",
-  "DeleteCompleted",
-  "UpdateInProgress",
-  "UpdateCompleted",
-  "UpdateFailed",
-);
-export type ReservedCapacityType = "UltraServer" | "Instance";
-export const ReservedCapacityType = S.Literal("UltraServer", "Instance");
+  | "UpdateFailed"
+  | (string & {});
+export const ProjectStatus = S.String;
+export type ReservedCapacityType = "UltraServer" | "Instance" | (string & {});
+export const ReservedCapacityType = S.String;
 export type ReservedCapacityStatus =
   | "Pending"
   | "Active"
   | "Scheduled"
   | "Expired"
-  | "Failed";
-export const ReservedCapacityStatus = S.Literal(
-  "Pending",
-  "Active",
-  "Scheduled",
-  "Expired",
-  "Failed",
-);
+  | "Failed"
+  | (string & {});
+export const ReservedCapacityStatus = S.String;
 export type SpaceStatus =
   | "Deleting"
   | "Failed"
@@ -16864,16 +15218,9 @@ export type SpaceStatus =
   | "Pending"
   | "Updating"
   | "Update_Failed"
-  | "Delete_Failed";
-export const SpaceStatus = S.Literal(
-  "Deleting",
-  "Failed",
-  "InService",
-  "Pending",
-  "Updating",
-  "Update_Failed",
-  "Delete_Failed",
-);
+  | "Delete_Failed"
+  | (string & {});
+export const SpaceStatus = S.String;
 export type SecondaryStatus =
   | "Starting"
   | "LaunchingMLInstances"
@@ -16891,41 +15238,19 @@ export type SecondaryStatus =
   | "MaxWaitTimeExceeded"
   | "Updating"
   | "Restarting"
-  | "Pending";
-export const SecondaryStatus = S.Literal(
-  "Starting",
-  "LaunchingMLInstances",
-  "PreparingTrainingStack",
-  "Downloading",
-  "DownloadingTrainingImage",
-  "Training",
-  "Uploading",
-  "Stopping",
-  "Stopped",
-  "MaxRuntimeExceeded",
-  "Completed",
-  "Failed",
-  "Interrupted",
-  "MaxWaitTimeExceeded",
-  "Updating",
-  "Restarting",
-  "Pending",
-);
-export type ProfilingStatus = "Enabled" | "Disabled";
-export const ProfilingStatus = S.Literal("Enabled", "Disabled");
+  | "Pending"
+  | (string & {});
+export const SecondaryStatus = S.String;
+export type ProfilingStatus = "Enabled" | "Disabled" | (string & {});
+export const ProfilingStatus = S.String;
 export type TrainingPlanStatus =
   | "Pending"
   | "Active"
   | "Scheduled"
   | "Expired"
-  | "Failed";
-export const TrainingPlanStatus = S.Literal(
-  "Pending",
-  "Active",
-  "Scheduled",
-  "Expired",
-  "Failed",
-);
+  | "Failed"
+  | (string & {});
+export const TrainingPlanStatus = S.String;
 export interface TrialComponentSource {
   SourceArn?: string;
   SourceType?: string;
@@ -16947,16 +15272,9 @@ export type UserProfileStatus =
   | "Pending"
   | "Updating"
   | "Update_Failed"
-  | "Delete_Failed";
-export const UserProfileStatus = S.Literal(
-  "Deleting",
-  "Failed",
-  "InService",
-  "Pending",
-  "Updating",
-  "Update_Failed",
-  "Delete_Failed",
-);
+  | "Delete_Failed"
+  | (string & {});
+export const UserProfileStatus = S.String;
 export interface ScalingPolicyObjective {
   MinInvocationsPerMinute?: number;
   MaxInvocationsPerMinute?: number;
@@ -16969,8 +15287,8 @@ export const ScalingPolicyObjective = S.suspend(() =>
 ).annotations({
   identifier: "ScalingPolicyObjective",
 }) as any as S.Schema<ScalingPolicyObjective>;
-export type AutoMLJobObjectiveType = "Maximize" | "Minimize";
-export const AutoMLJobObjectiveType = S.Literal("Maximize", "Minimize");
+export type AutoMLJobObjectiveType = "Maximize" | "Minimize" | (string & {});
+export const AutoMLJobObjectiveType = S.String;
 export interface FinalAutoMLJobObjectiveMetric {
   Type?: AutoMLJobObjectiveType;
   MetricName?: AutoMLMetricEnum;
@@ -16987,17 +15305,18 @@ export const FinalAutoMLJobObjectiveMetric = S.suspend(() =>
 ).annotations({
   identifier: "FinalAutoMLJobObjectiveMetric",
 }) as any as S.Schema<FinalAutoMLJobObjectiveMetric>;
-export type ObjectiveStatus = "Succeeded" | "Pending" | "Failed";
-export const ObjectiveStatus = S.Literal("Succeeded", "Pending", "Failed");
+export type ObjectiveStatus =
+  | "Succeeded"
+  | "Pending"
+  | "Failed"
+  | (string & {});
+export const ObjectiveStatus = S.String;
 export type CandidateStepType =
   | "AWS::SageMaker::TrainingJob"
   | "AWS::SageMaker::TransformJob"
-  | "AWS::SageMaker::ProcessingJob";
-export const CandidateStepType = S.Literal(
-  "AWS::SageMaker::TrainingJob",
-  "AWS::SageMaker::TransformJob",
-  "AWS::SageMaker::ProcessingJob",
-);
+  | "AWS::SageMaker::ProcessingJob"
+  | (string & {});
+export const CandidateStepType = S.String;
 export interface AutoMLCandidateStep {
   CandidateStepType?: CandidateStepType;
   CandidateStepArn?: string;
@@ -17070,37 +15389,11 @@ export type AutoMLMetricExtendedEnum =
   | "RougeLSum"
   | "Perplexity"
   | "ValidationLoss"
-  | "TrainingLoss";
-export const AutoMLMetricExtendedEnum = S.Literal(
-  "Accuracy",
-  "MSE",
-  "F1",
-  "F1macro",
-  "AUC",
-  "RMSE",
-  "MAE",
-  "R2",
-  "BalancedAccuracy",
-  "Precision",
-  "PrecisionMacro",
-  "Recall",
-  "RecallMacro",
-  "LogLoss",
-  "InferenceLatency",
-  "MAPE",
-  "MASE",
-  "WAPE",
-  "AverageWeightedQuantileLoss",
-  "Rouge1",
-  "Rouge2",
-  "RougeL",
-  "RougeLSum",
-  "Perplexity",
-  "ValidationLoss",
-  "TrainingLoss",
-);
-export type MetricSetSource = "Train" | "Validation" | "Test";
-export const MetricSetSource = S.Literal("Train", "Validation", "Test");
+  | "TrainingLoss"
+  | (string & {});
+export const AutoMLMetricExtendedEnum = S.String;
+export type MetricSetSource = "Train" | "Validation" | "Test" | (string & {});
+export const MetricSetSource = S.String;
 export interface MetricDatum {
   MetricName?: AutoMLMetricEnum;
   StandardMetricName?: AutoMLMetricExtendedEnum;
@@ -17129,8 +15422,8 @@ export const CandidateProperties = S.suspend(() =>
 ).annotations({
   identifier: "CandidateProperties",
 }) as any as S.Schema<CandidateProperties>;
-export type AutoMLProcessingUnit = "CPU" | "GPU";
-export const AutoMLProcessingUnit = S.Literal("CPU", "GPU");
+export type AutoMLProcessingUnit = "CPU" | "GPU" | (string & {});
+export const AutoMLProcessingUnit = S.String;
 export type AutoMLInferenceContainerDefinitions = {
   [key in AutoMLProcessingUnit]?: AutoMLContainerDefinition[];
 };
@@ -17354,14 +15647,9 @@ export type WorkforceStatus =
   | "Updating"
   | "Deleting"
   | "Failed"
-  | "Active";
-export const WorkforceStatus = S.Literal(
-  "Initializing",
-  "Updating",
-  "Deleting",
-  "Failed",
-  "Active",
-);
+  | "Active"
+  | (string & {});
+export const WorkforceStatus = S.String;
 export interface Workforce {
   WorkforceName?: string;
   WorkforceArn?: string;
@@ -17512,14 +15800,9 @@ export type TtlDurationUnit =
   | "Minutes"
   | "Hours"
   | "Days"
-  | "Weeks";
-export const TtlDurationUnit = S.Literal(
-  "Seconds",
-  "Minutes",
-  "Hours",
-  "Days",
-  "Weeks",
-);
+  | "Weeks"
+  | (string & {});
+export const TtlDurationUnit = S.String;
 export interface TtlDuration {
   Unit?: TtlDurationUnit;
   Value?: number;
@@ -17615,69 +15898,59 @@ export type ParameterType =
   | "Integer"
   | "Continuous"
   | "Categorical"
-  | "FreeText";
-export const ParameterType = S.Literal(
-  "Integer",
-  "Continuous",
-  "Categorical",
-  "FreeText",
-);
+  | "FreeText"
+  | (string & {});
+export const ParameterType = S.String;
 export type CompressionTypes = CompressionType[];
 export const CompressionTypes = S.Array(CompressionType);
 export type InputModes = TrainingInputMode[];
 export const InputModes = S.Array(TrainingInputMode);
 export type ForecastQuantiles = string[];
 export const ForecastQuantiles = S.Array(S.String);
-export type TargetPlatformOs = "ANDROID" | "LINUX";
-export const TargetPlatformOs = S.Literal("ANDROID", "LINUX");
+export type TargetPlatformOs = "ANDROID" | "LINUX" | (string & {});
+export const TargetPlatformOs = S.String;
 export type TargetPlatformArch =
   | "X86_64"
   | "X86"
   | "ARM64"
   | "ARM_EABI"
-  | "ARM_EABIHF";
-export const TargetPlatformArch = S.Literal(
-  "X86_64",
-  "X86",
-  "ARM64",
-  "ARM_EABI",
-  "ARM_EABIHF",
-);
+  | "ARM_EABIHF"
+  | (string & {});
+export const TargetPlatformArch = S.String;
 export type TargetPlatformAccelerator =
   | "INTEL_GRAPHICS"
   | "MALI"
   | "NVIDIA"
-  | "NNA";
-export const TargetPlatformAccelerator = S.Literal(
-  "INTEL_GRAPHICS",
-  "MALI",
-  "NVIDIA",
-  "NNA",
-);
+  | "NNA"
+  | (string & {});
+export const TargetPlatformAccelerator = S.String;
 export type VpcOnlyTrustedAccounts = string[];
 export const VpcOnlyTrustedAccounts = S.Array(S.String);
-export type ManagedInstanceScalingStatus = "ENABLED" | "DISABLED";
-export const ManagedInstanceScalingStatus = S.Literal("ENABLED", "DISABLED");
-export type RoutingStrategy = "LEAST_OUTSTANDING_REQUESTS" | "RANDOM";
-export const RoutingStrategy = S.Literal(
-  "LEAST_OUTSTANDING_REQUESTS",
-  "RANDOM",
-);
-export type CapacityReservationPreference = "capacity-reservations-only";
-export const CapacityReservationPreference = S.Literal(
-  "capacity-reservations-only",
-);
-export type CaptureMode = "Input" | "Output" | "InputAndOutput";
-export const CaptureMode = S.Literal("Input", "Output", "InputAndOutput");
-export type TrafficType = "PHASES" | "STAIRS";
-export const TrafficType = S.Literal("PHASES", "STAIRS");
+export type ManagedInstanceScalingStatus =
+  | "ENABLED"
+  | "DISABLED"
+  | (string & {});
+export const ManagedInstanceScalingStatus = S.String;
+export type RoutingStrategy =
+  | "LEAST_OUTSTANDING_REQUESTS"
+  | "RANDOM"
+  | (string & {});
+export const RoutingStrategy = S.String;
+export type CapacityReservationPreference =
+  | "capacity-reservations-only"
+  | (string & {});
+export const CapacityReservationPreference = S.String;
+export type CaptureMode = "Input" | "Output" | "InputAndOutput" | (string & {});
+export const CaptureMode = S.String;
+export type TrafficType = "PHASES" | "STAIRS" | (string & {});
+export const TrafficType = S.String;
 export type RecommendationJobSupportedInstanceTypes = string[];
 export const RecommendationJobSupportedInstanceTypes = S.Array(S.String);
-export type RecommendationJobSupportedEndpointType = "RealTime" | "Serverless";
-export const RecommendationJobSupportedEndpointType = S.Literal(
-  "RealTime",
-  "Serverless",
-);
+export type RecommendationJobSupportedEndpointType =
+  | "RealTime"
+  | "Serverless"
+  | (string & {});
+export const RecommendationJobSupportedEndpointType = S.String;
 export type RecommendationJobSupportedResponseMIMETypes = string[];
 export const RecommendationJobSupportedResponseMIMETypes = S.Array(S.String);
 export type RecommendationJobVpcSecurityGroupIds = string[];
@@ -17686,39 +15959,33 @@ export type RecommendationJobVpcSubnets = string[];
 export const RecommendationJobVpcSubnets = S.Array(S.String);
 export type ContentClassifier =
   | "FreeOfPersonallyIdentifiableInformation"
-  | "FreeOfAdultContent";
-export const ContentClassifier = S.Literal(
-  "FreeOfPersonallyIdentifiableInformation",
-  "FreeOfAdultContent",
-);
+  | "FreeOfAdultContent"
+  | (string & {});
+export const ContentClassifier = S.String;
 export type ContentClassifiers = ContentClassifier[];
 export const ContentClassifiers = S.Array(ContentClassifier);
-export type ModelSpeculativeDecodingTechnique = "EAGLE";
-export const ModelSpeculativeDecodingTechnique = S.Literal("EAGLE");
-export type ProcessingS3DataType = "ManifestFile" | "S3Prefix";
-export const ProcessingS3DataType = S.Literal("ManifestFile", "S3Prefix");
-export type ProcessingS3CompressionType = "None" | "Gzip";
-export const ProcessingS3CompressionType = S.Literal("None", "Gzip");
-export type DataDistributionType = "FullyReplicated" | "ShardedByS3Key";
-export const DataDistributionType = S.Literal(
-  "FullyReplicated",
-  "ShardedByS3Key",
-);
-export type InputMode = "Pipe" | "File";
-export const InputMode = S.Literal("Pipe", "File");
-export type TrainingRepositoryAccessMode = "Platform" | "Vpc";
-export const TrainingRepositoryAccessMode = S.Literal("Platform", "Vpc");
+export type ModelSpeculativeDecodingTechnique = "EAGLE" | (string & {});
+export const ModelSpeculativeDecodingTechnique = S.String;
+export type ProcessingS3DataType = "ManifestFile" | "S3Prefix" | (string & {});
+export const ProcessingS3DataType = S.String;
+export type ProcessingS3CompressionType = "None" | "Gzip" | (string & {});
+export const ProcessingS3CompressionType = S.String;
+export type DataDistributionType =
+  | "FullyReplicated"
+  | "ShardedByS3Key"
+  | (string & {});
+export const DataDistributionType = S.String;
+export type InputMode = "Pipe" | "File" | (string & {});
+export const InputMode = S.String;
+export type TrainingRepositoryAccessMode = "Platform" | "Vpc" | (string & {});
+export const TrainingRepositoryAccessMode = S.String;
 export type ModelMetadataFilterType =
   | "Domain"
   | "Framework"
   | "Task"
-  | "FrameworkVersion";
-export const ModelMetadataFilterType = S.Literal(
-  "Domain",
-  "Framework",
-  "Task",
-  "FrameworkVersion",
-);
+  | "FrameworkVersion"
+  | (string & {});
+export const ModelMetadataFilterType = S.String;
 export type Operator =
   | "Equals"
   | "NotEquals"
@@ -17729,19 +15996,9 @@ export type Operator =
   | "Contains"
   | "Exists"
   | "NotExists"
-  | "In";
-export const Operator = S.Literal(
-  "Equals",
-  "NotEquals",
-  "GreaterThan",
-  "GreaterThanOrEqualTo",
-  "LessThan",
-  "LessThanOrEqualTo",
-  "Contains",
-  "Exists",
-  "NotExists",
-  "In",
-);
+  | "In"
+  | (string & {});
+export const Operator = S.String;
 export interface AddAssociationResponse {
   SourceArn?: string;
   DestinationArn?: string;
@@ -19379,11 +17636,9 @@ export const AsyncInferenceClientConfig = S.suspend(() =>
 }) as any as S.Schema<AsyncInferenceClientConfig>;
 export type AsyncNotificationTopicTypes =
   | "SUCCESS_NOTIFICATION_TOPIC"
-  | "ERROR_NOTIFICATION_TOPIC";
-export const AsyncNotificationTopicTypes = S.Literal(
-  "SUCCESS_NOTIFICATION_TOPIC",
-  "ERROR_NOTIFICATION_TOPIC",
-);
+  | "ERROR_NOTIFICATION_TOPIC"
+  | (string & {});
+export const AsyncNotificationTopicTypes = S.String;
 export type AsyncNotificationTopicTypeList = AsyncNotificationTopicTypes[];
 export const AsyncNotificationTopicTypeList = S.Array(
   AsyncNotificationTopicTypes,
@@ -19434,8 +17689,12 @@ export type ClarifyLabelHeaders = string[];
 export const ClarifyLabelHeaders = S.Array(S.String);
 export type ClarifyFeatureHeaders = string[];
 export const ClarifyFeatureHeaders = S.Array(S.String);
-export type ClarifyFeatureType = "numerical" | "categorical" | "text";
-export const ClarifyFeatureType = S.Literal("numerical", "categorical", "text");
+export type ClarifyFeatureType =
+  | "numerical"
+  | "categorical"
+  | "text"
+  | (string & {});
+export const ClarifyFeatureType = S.String;
 export type ClarifyFeatureTypes = ClarifyFeatureType[];
 export const ClarifyFeatureTypes = S.Array(ClarifyFeatureType);
 export interface ClarifyInferenceConfig {
@@ -19542,75 +17801,15 @@ export type ClarifyTextLanguage =
   | "ur"
   | "yo"
   | "lij"
-  | "xx";
-export const ClarifyTextLanguage = S.Literal(
-  "af",
-  "sq",
-  "ar",
-  "hy",
-  "eu",
-  "bn",
-  "bg",
-  "ca",
-  "zh",
-  "hr",
-  "cs",
-  "da",
-  "nl",
-  "en",
-  "et",
-  "fi",
-  "fr",
-  "de",
-  "el",
-  "gu",
-  "he",
-  "hi",
-  "hu",
-  "is",
-  "id",
-  "ga",
-  "it",
-  "kn",
-  "ky",
-  "lv",
-  "lt",
-  "lb",
-  "mk",
-  "ml",
-  "mr",
-  "ne",
-  "nb",
-  "fa",
-  "pl",
-  "pt",
-  "ro",
-  "ru",
-  "sa",
-  "sr",
-  "tn",
-  "si",
-  "sk",
-  "sl",
-  "es",
-  "sv",
-  "tl",
-  "ta",
-  "tt",
-  "te",
-  "tr",
-  "uk",
-  "ur",
-  "yo",
-  "lij",
-  "xx",
-);
-export type ClarifyTextGranularity = "token" | "sentence" | "paragraph";
-export const ClarifyTextGranularity = S.Literal(
-  "token",
-  "sentence",
-  "paragraph",
-);
+  | "xx"
+  | (string & {});
+export const ClarifyTextLanguage = S.String;
+export type ClarifyTextGranularity =
+  | "token"
+  | "sentence"
+  | "paragraph"
+  | (string & {});
+export const ClarifyTextGranularity = S.String;
 export interface ClarifyTextConfig {
   Language?: ClarifyTextLanguage;
   Granularity?: ClarifyTextGranularity;
@@ -20503,16 +18702,15 @@ export type AthenaResultFormat =
   | "ORC"
   | "AVRO"
   | "JSON"
-  | "TEXTFILE";
-export const AthenaResultFormat = S.Literal(
-  "PARQUET",
-  "ORC",
-  "AVRO",
-  "JSON",
-  "TEXTFILE",
-);
-export type AthenaResultCompressionType = "GZIP" | "SNAPPY" | "ZLIB";
-export const AthenaResultCompressionType = S.Literal("GZIP", "SNAPPY", "ZLIB");
+  | "TEXTFILE"
+  | (string & {});
+export const AthenaResultFormat = S.String;
+export type AthenaResultCompressionType =
+  | "GZIP"
+  | "SNAPPY"
+  | "ZLIB"
+  | (string & {});
+export const AthenaResultCompressionType = S.String;
 export interface AthenaDatasetDefinition {
   Catalog?: string;
   Database?: string;
@@ -20537,21 +18735,16 @@ export const AthenaDatasetDefinition = S.suspend(() =>
 ).annotations({
   identifier: "AthenaDatasetDefinition",
 }) as any as S.Schema<AthenaDatasetDefinition>;
-export type RedshiftResultFormat = "PARQUET" | "CSV";
-export const RedshiftResultFormat = S.Literal("PARQUET", "CSV");
+export type RedshiftResultFormat = "PARQUET" | "CSV" | (string & {});
+export const RedshiftResultFormat = S.String;
 export type RedshiftResultCompressionType =
   | "None"
   | "GZIP"
   | "BZIP2"
   | "ZSTD"
-  | "SNAPPY";
-export const RedshiftResultCompressionType = S.Literal(
-  "None",
-  "GZIP",
-  "BZIP2",
-  "ZSTD",
-  "SNAPPY",
-);
+  | "SNAPPY"
+  | (string & {});
+export const RedshiftResultCompressionType = S.String;
 export interface RedshiftDatasetDefinition {
   ClusterId?: string;
   Database?: string;
@@ -21740,14 +19933,17 @@ export const UpdateContextResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateContextResponse",
 }) as any as S.Schema<UpdateContextResponse>;
-export type TrafficRoutingConfigType = "ALL_AT_ONCE" | "CANARY" | "LINEAR";
-export const TrafficRoutingConfigType = S.Literal(
-  "ALL_AT_ONCE",
-  "CANARY",
-  "LINEAR",
-);
-export type CapacitySizeType = "INSTANCE_COUNT" | "CAPACITY_PERCENT";
-export const CapacitySizeType = S.Literal("INSTANCE_COUNT", "CAPACITY_PERCENT");
+export type TrafficRoutingConfigType =
+  | "ALL_AT_ONCE"
+  | "CANARY"
+  | "LINEAR"
+  | (string & {});
+export const TrafficRoutingConfigType = S.String;
+export type CapacitySizeType =
+  | "INSTANCE_COUNT"
+  | "CAPACITY_PERCENT"
+  | (string & {});
+export const CapacitySizeType = S.String;
 export interface CapacitySize {
   Type?: CapacitySizeType;
   Value?: number;
@@ -22188,34 +20384,23 @@ export const UpdateWorkteamResponse = S.suspend(() =>
 export type BatchDeleteClusterNodesErrorCode =
   | "NodeIdNotFound"
   | "InvalidNodeStatus"
-  | "NodeIdInUse";
-export const BatchDeleteClusterNodesErrorCode = S.Literal(
-  "NodeIdNotFound",
-  "InvalidNodeStatus",
-  "NodeIdInUse",
-);
+  | "NodeIdInUse"
+  | (string & {});
+export const BatchDeleteClusterNodesErrorCode = S.String;
 export type BatchRebootClusterNodesErrorCode =
   | "InstanceIdNotFound"
   | "InvalidInstanceStatus"
   | "InstanceIdInUse"
-  | "InternalServerError";
-export const BatchRebootClusterNodesErrorCode = S.Literal(
-  "InstanceIdNotFound",
-  "InvalidInstanceStatus",
-  "InstanceIdInUse",
-  "InternalServerError",
-);
+  | "InternalServerError"
+  | (string & {});
+export const BatchRebootClusterNodesErrorCode = S.String;
 export type BatchReplaceClusterNodesErrorCode =
   | "InstanceIdNotFound"
   | "InvalidInstanceStatus"
   | "InstanceIdInUse"
-  | "InternalServerError";
-export const BatchReplaceClusterNodesErrorCode = S.Literal(
-  "InstanceIdNotFound",
-  "InvalidInstanceStatus",
-  "InstanceIdInUse",
-  "InternalServerError",
-);
+  | "InternalServerError"
+  | (string & {});
+export const BatchReplaceClusterNodesErrorCode = S.String;
 export interface ChannelSpecification {
   Name?: string;
   Description?: string;
@@ -22294,24 +20479,9 @@ export type AutoMLAlgorithm =
   | "prophet"
   | "npts"
   | "arima"
-  | "ets";
-export const AutoMLAlgorithm = S.Literal(
-  "xgboost",
-  "linear-learner",
-  "mlp",
-  "lightgbm",
-  "catboost",
-  "randomforest",
-  "extra-trees",
-  "nn-torch",
-  "fastai",
-  "cnn-qr",
-  "deepar",
-  "prophet",
-  "npts",
-  "arima",
-  "ets",
-);
+  | "ets"
+  | (string & {});
+export const AutoMLAlgorithm = S.String;
 export type AutoMLAlgorithms = AutoMLAlgorithm[];
 export const AutoMLAlgorithms = S.Array(AutoMLAlgorithm);
 export interface AutoMLAlgorithmConfig {
@@ -22788,78 +20958,52 @@ export type InstanceGroupStatus =
   | "Failed"
   | "Degraded"
   | "SystemUpdating"
-  | "Deleting";
-export const InstanceGroupStatus = S.Literal(
-  "InService",
-  "Creating",
-  "Updating",
-  "Failed",
-  "Degraded",
-  "SystemUpdating",
-  "Deleting",
-);
+  | "Deleting"
+  | (string & {});
+export const InstanceGroupStatus = S.String;
 export type SoftwareUpdateStatus =
   | "Pending"
   | "InProgress"
   | "Succeeded"
   | "Failed"
   | "RollbackInProgress"
-  | "RollbackComplete";
-export const SoftwareUpdateStatus = S.Literal(
-  "Pending",
-  "InProgress",
-  "Succeeded",
-  "Failed",
-  "RollbackInProgress",
-  "RollbackComplete",
-);
+  | "RollbackComplete"
+  | (string & {});
+export const SoftwareUpdateStatus = S.String;
 export type ClusterAutoScalingStatus =
   | "InService"
   | "Failed"
   | "Creating"
-  | "Deleting";
-export const ClusterAutoScalingStatus = S.Literal(
-  "InService",
-  "Failed",
-  "Creating",
-  "Deleting",
-);
-export type ClusterCapacityType = "Spot" | "OnDemand";
-export const ClusterCapacityType = S.Literal("Spot", "OnDemand");
-export type EdgePresetDeploymentStatus = "COMPLETED" | "FAILED";
-export const EdgePresetDeploymentStatus = S.Literal("COMPLETED", "FAILED");
-export type CaptureStatus = "Started" | "Stopped";
-export const CaptureStatus = S.Literal("Started", "Stopped");
-export type LastUpdateStatusValue = "Successful" | "Failed" | "InProgress";
-export const LastUpdateStatusValue = S.Literal(
-  "Successful",
-  "Failed",
-  "InProgress",
-);
+  | "Deleting"
+  | (string & {});
+export const ClusterAutoScalingStatus = S.String;
+export type ClusterCapacityType = "Spot" | "OnDemand" | (string & {});
+export const ClusterCapacityType = S.String;
+export type EdgePresetDeploymentStatus = "COMPLETED" | "FAILED" | (string & {});
+export const EdgePresetDeploymentStatus = S.String;
+export type CaptureStatus = "Started" | "Stopped" | (string & {});
+export const CaptureStatus = S.String;
+export type LastUpdateStatusValue =
+  | "Successful"
+  | "Failed"
+  | "InProgress"
+  | (string & {});
+export const LastUpdateStatusValue = S.String;
 export type ModelVariantStatus =
   | "Creating"
   | "Updating"
   | "InService"
   | "Deleting"
-  | "Deleted";
-export const ModelVariantStatus = S.Literal(
-  "Creating",
-  "Updating",
-  "InService",
-  "Deleting",
-  "Deleted",
-);
+  | "Deleted"
+  | (string & {});
+export const ModelVariantStatus = S.String;
 export type RecommendationStatus =
   | "IN_PROGRESS"
   | "COMPLETED"
   | "FAILED"
-  | "NOT_APPLICABLE";
-export const RecommendationStatus = S.Literal(
-  "IN_PROGRESS",
-  "COMPLETED",
-  "FAILED",
-  "NOT_APPLICABLE",
-);
+  | "NOT_APPLICABLE"
+  | (string & {});
+export const RecommendationStatus = S.String;
 export type ReleaseNotesList = string[];
 export const ReleaseNotesList = S.Array(S.String);
 export type RuleEvaluationStatus =
@@ -22868,15 +21012,9 @@ export type RuleEvaluationStatus =
   | "IssuesFound"
   | "Error"
   | "Stopping"
-  | "Stopped";
-export const RuleEvaluationStatus = S.Literal(
-  "InProgress",
-  "NoIssuesFound",
-  "IssuesFound",
-  "Error",
-  "Stopping",
-  "Stopped",
-);
+  | "Stopped"
+  | (string & {});
+export const RuleEvaluationStatus = S.String;
 export interface PropertyNameQuery {
   PropertyNameHint?: string;
 }
@@ -22909,36 +21047,24 @@ export type StepStatus =
   | "Stopping"
   | "Stopped"
   | "Failed"
-  | "Succeeded";
-export const StepStatus = S.Literal(
-  "Starting",
-  "Executing",
-  "Stopping",
-  "Stopped",
-  "Failed",
-  "Succeeded",
-);
+  | "Succeeded"
+  | (string & {});
+export const StepStatus = S.String;
 export type DeviceDeploymentStatus =
   | "READYTODEPLOY"
   | "INPROGRESS"
   | "DEPLOYED"
   | "FAILED"
   | "STOPPING"
-  | "STOPPED";
-export const DeviceDeploymentStatus = S.Literal(
-  "READYTODEPLOY",
-  "INPROGRESS",
-  "DEPLOYED",
-  "FAILED",
-  "STOPPING",
-  "STOPPED",
-);
-export type UltraServerHealthStatus = "OK" | "Impaired" | "Insufficient-Data";
-export const UltraServerHealthStatus = S.Literal(
-  "OK",
-  "Impaired",
-  "Insufficient-Data",
-);
+  | "STOPPED"
+  | (string & {});
+export const DeviceDeploymentStatus = S.String;
+export type UltraServerHealthStatus =
+  | "OK"
+  | "Impaired"
+  | "Insufficient-Data"
+  | (string & {});
+export const UltraServerHealthStatus = S.String;
 export type QueryProperties = { [key: string]: string | undefined };
 export const QueryProperties = S.Record({
   key: S.String,
@@ -23010,22 +21136,20 @@ export const ProductionVariantServerlessUpdateConfig = S.suspend(() =>
 }) as any as S.Schema<ProductionVariantServerlessUpdateConfig>;
 export type GroupingAttributeNames = string[];
 export const GroupingAttributeNames = S.Array(S.String);
-export type CompleteOnConvergence = "Disabled" | "Enabled";
-export const CompleteOnConvergence = S.Literal("Disabled", "Enabled");
+export type CompleteOnConvergence = "Disabled" | "Enabled" | (string & {});
+export const CompleteOnConvergence = S.String;
 export type RecommendationJobSupportedContentTypes = string[];
 export const RecommendationJobSupportedContentTypes = S.Array(S.String);
-export type ModelSpeculativeDecodingS3DataType = "S3Prefix" | "ManifestFile";
-export const ModelSpeculativeDecodingS3DataType = S.Literal(
-  "S3Prefix",
-  "ManifestFile",
-);
+export type ModelSpeculativeDecodingS3DataType =
+  | "S3Prefix"
+  | "ManifestFile"
+  | (string & {});
+export const ModelSpeculativeDecodingS3DataType = S.String;
 export type InferenceComponentCapacitySizeType =
   | "COPY_COUNT"
-  | "CAPACITY_PERCENT";
-export const InferenceComponentCapacitySizeType = S.Literal(
-  "COPY_COUNT",
-  "CAPACITY_PERCENT",
-);
+  | "CAPACITY_PERCENT"
+  | (string & {});
+export const InferenceComponentCapacitySizeType = S.String;
 export interface BatchDeleteClusterNodesError {
   Code?: BatchDeleteClusterNodesErrorCode;
   Message?: string;
@@ -24267,16 +22391,9 @@ export type ClusterInstanceStatus =
   | "ShuttingDown"
   | "SystemUpdating"
   | "DeepHealthCheckInProgress"
-  | "NotFound";
-export const ClusterInstanceStatus = S.Literal(
-  "Running",
-  "Failure",
-  "Pending",
-  "ShuttingDown",
-  "SystemUpdating",
-  "DeepHealthCheckInProgress",
-  "NotFound",
-);
+  | "NotFound"
+  | (string & {});
+export const ClusterInstanceStatus = S.String;
 export interface ClusterInstanceStatusDetails {
   Status?: ClusterInstanceStatus;
   Message?: string;
@@ -26009,15 +24126,11 @@ export type DetailedAlgorithmStatus =
   | "NotStarted"
   | "InProgress"
   | "Completed"
-  | "Failed";
-export const DetailedAlgorithmStatus = S.Literal(
-  "NotStarted",
-  "InProgress",
-  "Completed",
-  "Failed",
-);
-export type ActiveClusterOperationName = "Scaling";
-export const ActiveClusterOperationName = S.Literal("Scaling");
+  | "Failed"
+  | (string & {});
+export const DetailedAlgorithmStatus = S.String;
+export type ActiveClusterOperationName = "Scaling" | (string & {});
+export const ActiveClusterOperationName = S.String;
 export type StageStatus =
   | "CREATING"
   | "READYTODEPLOY"
@@ -26026,41 +24139,24 @@ export type StageStatus =
   | "DEPLOYED"
   | "FAILED"
   | "STOPPING"
-  | "STOPPED";
-export const StageStatus = S.Literal(
-  "CREATING",
-  "READYTODEPLOY",
-  "STARTING",
-  "INPROGRESS",
-  "DEPLOYED",
-  "FAILED",
-  "STOPPING",
-  "STOPPED",
-);
+  | "STOPPED"
+  | (string & {});
+export const StageStatus = S.String;
 export type VariantStatus =
   | "Creating"
   | "Updating"
   | "Deleting"
   | "ActivatingTraffic"
-  | "Baking";
-export const VariantStatus = S.Literal(
-  "Creating",
-  "Updating",
-  "Deleting",
-  "ActivatingTraffic",
-  "Baking",
-);
+  | "Baking"
+  | (string & {});
+export const VariantStatus = S.String;
 export type DetailedModelPackageStatus =
   | "NotStarted"
   | "InProgress"
   | "Completed"
-  | "Failed";
-export const DetailedModelPackageStatus = S.Literal(
-  "NotStarted",
-  "InProgress",
-  "Completed",
-  "Failed",
-);
+  | "Failed"
+  | (string & {});
+export const DetailedModelPackageStatus = S.String;
 export interface InferenceComponentCapacitySize {
   Type?: InferenceComponentCapacitySizeType;
   Value?: number;
@@ -26215,14 +24311,9 @@ export type AggregationTransformationValue =
   | "avg"
   | "first"
   | "min"
-  | "max";
-export const AggregationTransformationValue = S.Literal(
-  "sum",
-  "avg",
-  "first",
-  "min",
-  "max",
-);
+  | "max"
+  | (string & {});
+export const AggregationTransformationValue = S.String;
 export interface CreateClusterSchedulerConfigRequest {
   Name?: string;
   ClusterArn?: string;
@@ -29147,11 +27238,9 @@ export const UpdateTrainingJobResponse = S.suspend(() =>
 }) as any as S.Schema<UpdateTrainingJobResponse>;
 export type BatchAddClusterNodesErrorCode =
   | "InstanceGroupNotFound"
-  | "InvalidInstanceGroupStatus";
-export const BatchAddClusterNodesErrorCode = S.Literal(
-  "InstanceGroupNotFound",
-  "InvalidInstanceGroupStatus",
-);
+  | "InvalidInstanceGroupStatus"
+  | (string & {});
+export const BatchAddClusterNodesErrorCode = S.String;
 export interface BatchDescribeModelPackageSummary {
   ModelPackageGroupName?: string;
   ModelPackageVersion?: number;
@@ -29855,8 +27944,8 @@ export const CategoricalParameter = S.suspend(() =>
 }) as any as S.Schema<CategoricalParameter>;
 export type CategoricalParameters = CategoricalParameter[];
 export const CategoricalParameters = S.Array(CategoricalParameter);
-export type ConditionOutcome = "True" | "False";
-export const ConditionOutcome = S.Literal("True", "False");
+export type ConditionOutcome = "True" | "False" | (string & {});
+export const ConditionOutcome = S.String;
 export interface NodeAdditionResult {
   NodeLogicalId: string;
   InstanceGroupName: string;
@@ -29965,17 +28054,9 @@ export type FillingType =
   | "frontfill_value"
   | "middlefill_value"
   | "backfill_value"
-  | "futurefill_value";
-export const FillingType = S.Literal(
-  "frontfill",
-  "middlefill",
-  "backfill",
-  "futurefill",
-  "frontfill_value",
-  "middlefill_value",
-  "backfill_value",
-  "futurefill_value",
-);
+  | "futurefill_value"
+  | (string & {});
+export const FillingType = S.String;
 export interface AuthorizedUrl {
   Url?: string;
   LocalPath?: string;
@@ -33030,8 +31111,8 @@ export const MonitoringAlertActions = S.suspend(() =>
 ).annotations({
   identifier: "MonitoringAlertActions",
 }) as any as S.Schema<MonitoringAlertActions>;
-export type Relation = "EqualTo" | "GreaterThanOrEqualTo";
-export const Relation = S.Literal("EqualTo", "GreaterThanOrEqualTo");
+export type Relation = "EqualTo" | "GreaterThanOrEqualTo" | (string & {});
+export const Relation = S.String;
 export type FillingTransformations = {
   [key: string]: { [key: string]: string | undefined } | undefined;
 };
@@ -33132,8 +31213,8 @@ export const AutoMLResolvedAttributes = S.suspend(() =>
 ).annotations({
   identifier: "AutoMLResolvedAttributes",
 }) as any as S.Schema<AutoMLResolvedAttributes>;
-export type CapacityReservationType = "ODCR" | "CRG";
-export const CapacityReservationType = S.Literal("ODCR", "CRG");
+export type CapacityReservationType = "ODCR" | "CRG" | (string & {});
+export const CapacityReservationType = S.String;
 export type EfaEnis = string[];
 export const EfaEnis = S.Array(S.String);
 export interface ProductionVariantSummary {
@@ -35075,14 +33156,9 @@ export type Statistic =
   | "Minimum"
   | "Maximum"
   | "SampleCount"
-  | "Sum";
-export const Statistic = S.Literal(
-  "Average",
-  "Minimum",
-  "Maximum",
-  "SampleCount",
-  "Sum",
-);
+  | "Sum"
+  | (string & {});
+export const Statistic = S.String;
 export interface PipelineExecutionStep {
   StepName?: string;
   StepDisplayName?: string;

@@ -129,17 +129,9 @@ export type JobExecutionStatus =
   | "TIMED_OUT"
   | "REJECTED"
   | "REMOVED"
-  | "CANCELED";
-export const JobExecutionStatus = S.Literal(
-  "QUEUED",
-  "IN_PROGRESS",
-  "SUCCEEDED",
-  "FAILED",
-  "TIMED_OUT",
-  "REJECTED",
-  "REMOVED",
-  "CANCELED",
-);
+  | "CANCELED"
+  | (string & {});
+export const JobExecutionStatus = S.String;
 export interface DescribeJobExecutionRequest {
   jobId: string;
   thingName: string;

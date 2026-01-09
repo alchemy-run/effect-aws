@@ -105,24 +105,18 @@ export type MetricStatistic =
   | "Avg"
   | "Count"
   | "StdDev"
-  | "Last";
-export const MetricStatistic = S.Literal(
-  "Min",
-  "Max",
-  "Avg",
-  "Count",
-  "StdDev",
-  "Last",
-);
-export type Period = "OneMinute" | "FiveMinute" | "OneHour" | "IterationNumber";
-export const Period = S.Literal(
-  "OneMinute",
-  "FiveMinute",
-  "OneHour",
-  "IterationNumber",
-);
-export type XAxisType = "IterationNumber" | "Timestamp";
-export const XAxisType = S.Literal("IterationNumber", "Timestamp");
+  | "Last"
+  | (string & {});
+export const MetricStatistic = S.String;
+export type Period =
+  | "OneMinute"
+  | "FiveMinute"
+  | "OneHour"
+  | "IterationNumber"
+  | (string & {});
+export const Period = S.String;
+export type XAxisType = "IterationNumber" | "Timestamp" | (string & {});
+export const XAxisType = S.String;
 export interface MetricQuery {
   MetricName?: string;
   ResourceArn?: string;
@@ -205,13 +199,9 @@ export type MetricQueryResultStatus =
   | "Complete"
   | "Truncated"
   | "InternalError"
-  | "ValidationError";
-export const MetricQueryResultStatus = S.Literal(
-  "Complete",
-  "Truncated",
-  "InternalError",
-  "ValidationError",
-);
+  | "ValidationError"
+  | (string & {});
+export const MetricQueryResultStatus = S.String;
 export type XAxisValues = number[];
 export const XAxisValues = S.Array(S.Number);
 export type MetricValues = number[];
@@ -220,13 +210,9 @@ export type PutMetricsErrorCode =
   | "METRIC_LIMIT_EXCEEDED"
   | "INTERNAL_ERROR"
   | "VALIDATION_ERROR"
-  | "CONFLICT_ERROR";
-export const PutMetricsErrorCode = S.Literal(
-  "METRIC_LIMIT_EXCEEDED",
-  "INTERNAL_ERROR",
-  "VALIDATION_ERROR",
-  "CONFLICT_ERROR",
-);
+  | "CONFLICT_ERROR"
+  | (string & {});
+export const PutMetricsErrorCode = S.String;
 export interface MetricQueryResult {
   Status?: MetricQueryResultStatus;
   Message?: string;

@@ -95,14 +95,14 @@ export type Message = string;
 export type ExpiresAt = string;
 
 //# Schemas
-export type ExpirationTimeResponse = "Enabled" | "Disabled";
-export const ExpirationTimeResponse = S.Literal("Enabled", "Disabled");
-export type TargetStore = "OnlineStore" | "OfflineStore";
-export const TargetStore = S.Literal("OnlineStore", "OfflineStore");
+export type ExpirationTimeResponse = "Enabled" | "Disabled" | (string & {});
+export const ExpirationTimeResponse = S.String;
+export type TargetStore = "OnlineStore" | "OfflineStore" | (string & {});
+export const TargetStore = S.String;
 export type TargetStores = TargetStore[];
 export const TargetStores = S.Array(TargetStore);
-export type DeletionMode = "SoftDelete" | "HardDelete";
-export const DeletionMode = S.Literal("SoftDelete", "HardDelete");
+export type DeletionMode = "SoftDelete" | "HardDelete" | (string & {});
+export const DeletionMode = S.String;
 export type FeatureNames = string[];
 export const FeatureNames = S.Array(S.String);
 export interface DeleteRecordRequest {
@@ -176,14 +176,9 @@ export type TtlDurationUnit =
   | "Minutes"
   | "Hours"
   | "Days"
-  | "Weeks";
-export const TtlDurationUnit = S.Literal(
-  "Seconds",
-  "Minutes",
-  "Hours",
-  "Days",
-  "Weeks",
-);
+  | "Weeks"
+  | (string & {});
+export const TtlDurationUnit = S.String;
 export interface BatchGetRecordIdentifier {
   FeatureGroupName?: string;
   RecordIdentifiersValueAsString?: string[];

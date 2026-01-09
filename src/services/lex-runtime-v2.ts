@@ -110,8 +110,8 @@ export type ParameterName = string;
 export type RuntimeHintPhrase = string;
 
 //# Schemas
-export type ConversationMode = "AUDIO" | "TEXT";
-export const ConversationMode = S.Literal("AUDIO", "TEXT");
+export type ConversationMode = "AUDIO" | "TEXT" | (string & {});
+export const ConversationMode = S.String;
 export interface DeleteSessionRequest {
   botId: string;
   botAliasId: string;
@@ -174,17 +174,15 @@ export type DialogActionType =
   | "Delegate"
   | "ElicitIntent"
   | "ElicitSlot"
-  | "None";
-export const DialogActionType = S.Literal(
-  "Close",
-  "ConfirmIntent",
-  "Delegate",
-  "ElicitIntent",
-  "ElicitSlot",
-  "None",
-);
-export type StyleType = "Default" | "SpellByLetter" | "SpellByWord";
-export const StyleType = S.Literal("Default", "SpellByLetter", "SpellByWord");
+  | "None"
+  | (string & {});
+export const DialogActionType = S.String;
+export type StyleType =
+  | "Default"
+  | "SpellByLetter"
+  | "SpellByWord"
+  | (string & {});
+export const StyleType = S.String;
 export interface ElicitSubSlot {
   name: string;
   subSlotToElicit?: ElicitSubSlot;
@@ -230,17 +228,11 @@ export type IntentState =
   | "InProgress"
   | "ReadyForFulfillment"
   | "Waiting"
-  | "FulfillmentInProgress";
-export const IntentState = S.Literal(
-  "Failed",
-  "Fulfilled",
-  "InProgress",
-  "ReadyForFulfillment",
-  "Waiting",
-  "FulfillmentInProgress",
-);
-export type ConfirmationState = "Confirmed" | "Denied" | "None";
-export const ConfirmationState = S.Literal("Confirmed", "Denied", "None");
+  | "FulfillmentInProgress"
+  | (string & {});
+export const IntentState = S.String;
+export type ConfirmationState = "Confirmed" | "Denied" | "None" | (string & {});
+export const ConfirmationState = S.String;
 export interface Intent {
   name: string;
   slots?: { [key: string]: Slot | undefined };
@@ -426,13 +418,9 @@ export type MessageContentType =
   | "CustomPayload"
   | "ImageResponseCard"
   | "PlainText"
-  | "SSML";
-export const MessageContentType = S.Literal(
-  "CustomPayload",
-  "ImageResponseCard",
-  "PlainText",
-  "SSML",
-);
+  | "SSML"
+  | (string & {});
+export const MessageContentType = S.String;
 export interface DeleteSessionResponse {
   botId?: string;
   botAliasId?: string;
@@ -487,8 +475,8 @@ export const RecognizeUtteranceResponse = S.suspend(() =>
 ).annotations({
   identifier: "RecognizeUtteranceResponse",
 }) as any as S.Schema<RecognizeUtteranceResponse>;
-export type InterpretationSource = "Bedrock" | "Lex";
-export const InterpretationSource = S.Literal("Bedrock", "Lex");
+export type InterpretationSource = "Bedrock" | "Lex" | (string & {});
+export const InterpretationSource = S.String;
 export interface Button {
   text: string;
   value: string;
@@ -688,15 +676,15 @@ export const StartConversationRequestEventStream = T.InputEventStream(
 ) as any as S.Schema<
   stream.Stream<StartConversationRequestEventStream, Error, never>
 >;
-export type SentimentType = "MIXED" | "NEGATIVE" | "NEUTRAL" | "POSITIVE";
-export const SentimentType = S.Literal(
-  "MIXED",
-  "NEGATIVE",
-  "NEUTRAL",
-  "POSITIVE",
-);
-export type Shape = "Scalar" | "List" | "Composite";
-export const Shape = S.Literal("Scalar", "List", "Composite");
+export type SentimentType =
+  | "MIXED"
+  | "NEGATIVE"
+  | "NEUTRAL"
+  | "POSITIVE"
+  | (string & {});
+export const SentimentType = S.String;
+export type Shape = "Scalar" | "List" | "Composite" | (string & {});
+export const Shape = S.String;
 export type Values = Slot[];
 export const Values = S.Array(
   S.suspend((): S.Schema<Slot, any> => Slot).annotations({
@@ -862,14 +850,11 @@ export const RuntimeHintValuesList = S.Array(RuntimeHintValue);
 export type PlaybackInterruptionReason =
   | "DTMF_START_DETECTED"
   | "TEXT_DETECTED"
-  | "VOICE_START_DETECTED";
-export const PlaybackInterruptionReason = S.Literal(
-  "DTMF_START_DETECTED",
-  "TEXT_DETECTED",
-  "VOICE_START_DETECTED",
-);
-export type InputMode = "Text" | "Speech" | "DTMF";
-export const InputMode = S.Literal("Text", "Speech", "DTMF");
+  | "VOICE_START_DETECTED"
+  | (string & {});
+export const PlaybackInterruptionReason = S.String;
+export type InputMode = "Text" | "Speech" | "DTMF" | (string & {});
+export const InputMode = S.String;
 export interface GetSessionResponse {
   sessionId?: string;
   messages?: Message[];

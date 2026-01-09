@@ -213,16 +213,16 @@ export type QIamActions = string[];
 export const QIamActions = S.Array(S.String);
 export type UserGroups = string[];
 export const UserGroups = S.Array(S.String);
-export type ChatMode = "RETRIEVAL_MODE" | "CREATOR_MODE" | "PLUGIN_MODE";
-export const ChatMode = S.Literal(
-  "RETRIEVAL_MODE",
-  "CREATOR_MODE",
-  "PLUGIN_MODE",
-);
-export type SubscriptionType = "Q_LITE" | "Q_BUSINESS";
-export const SubscriptionType = S.Literal("Q_LITE", "Q_BUSINESS");
-export type OutputFormat = "RAW" | "EXTRACTED";
-export const OutputFormat = S.Literal("RAW", "EXTRACTED");
+export type ChatMode =
+  | "RETRIEVAL_MODE"
+  | "CREATOR_MODE"
+  | "PLUGIN_MODE"
+  | (string & {});
+export const ChatMode = S.String;
+export type SubscriptionType = "Q_LITE" | "Q_BUSINESS" | (string & {});
+export const SubscriptionType = S.String;
+export type OutputFormat = "RAW" | "EXTRACTED" | (string & {});
+export const OutputFormat = S.String;
 export type DataSourceSyncJobStatus =
   | "FAILED"
   | "SUCCEEDED"
@@ -230,16 +230,9 @@ export type DataSourceSyncJobStatus =
   | "INCOMPLETE"
   | "STOPPING"
   | "ABORTED"
-  | "SYNCING_INDEXING";
-export const DataSourceSyncJobStatus = S.Literal(
-  "FAILED",
-  "SUCCEEDED",
-  "SYNCING",
-  "INCOMPLETE",
-  "STOPPING",
-  "ABORTED",
-  "SYNCING_INDEXING",
-);
+  | "SYNCING_INDEXING"
+  | (string & {});
+export const DataSourceSyncJobStatus = S.String;
 export type DataSourceIds = string[];
 export const DataSourceIds = S.Array(S.String);
 export type PluginType =
@@ -259,63 +252,39 @@ export type PluginType =
   | "MICROSOFT_EXCHANGE"
   | "PAGERDUTY_ADVANCE"
   | "SMARTSHEET"
-  | "ASANA";
-export const PluginType = S.Literal(
-  "SERVICE_NOW",
-  "SALESFORCE",
-  "JIRA",
-  "ZENDESK",
-  "CUSTOM",
-  "QUICKSIGHT",
-  "SERVICENOW_NOW_PLATFORM",
-  "JIRA_CLOUD",
-  "SALESFORCE_CRM",
-  "ZENDESK_SUITE",
-  "ATLASSIAN_CONFLUENCE",
-  "GOOGLE_CALENDAR",
-  "MICROSOFT_TEAMS",
-  "MICROSOFT_EXCHANGE",
-  "PAGERDUTY_ADVANCE",
-  "SMARTSHEET",
-  "ASANA",
-);
-export type MembershipType = "INDEX" | "DATASOURCE";
-export const MembershipType = S.Literal("INDEX", "DATASOURCE");
+  | "ASANA"
+  | (string & {});
+export const PluginType = S.String;
+export type MembershipType = "INDEX" | "DATASOURCE" | (string & {});
+export const MembershipType = S.String;
 export type TagKeys = string[];
 export const TagKeys = S.Array(S.String);
 export type ResponseScope =
   | "ENTERPRISE_CONTENT_ONLY"
-  | "EXTENDED_KNOWLEDGE_ENABLED";
-export const ResponseScope = S.Literal(
-  "ENTERPRISE_CONTENT_ONLY",
-  "EXTENDED_KNOWLEDGE_ENABLED",
-);
+  | "EXTENDED_KNOWLEDGE_ENABLED"
+  | (string & {});
+export const ResponseScope = S.String;
 export type IdentityType =
   | "AWS_IAM_IDP_SAML"
   | "AWS_IAM_IDP_OIDC"
   | "AWS_IAM_IDC"
   | "AWS_QUICKSIGHT_IDP"
-  | "ANONYMOUS";
-export const IdentityType = S.Literal(
-  "AWS_IAM_IDP_SAML",
-  "AWS_IAM_IDP_OIDC",
-  "AWS_IAM_IDC",
-  "AWS_QUICKSIGHT_IDP",
-  "ANONYMOUS",
-);
+  | "ANONYMOUS"
+  | (string & {});
+export const IdentityType = S.String;
 export type ClientIdsForOIDC = string[];
 export const ClientIdsForOIDC = S.Array(S.String);
-export type IndexType = "ENTERPRISE" | "STARTER";
-export const IndexType = S.Literal("ENTERPRISE", "STARTER");
-export type PluginState = "ENABLED" | "DISABLED";
-export const PluginState = S.Literal("ENABLED", "DISABLED");
-export type RetrieverType = "NATIVE_INDEX" | "KENDRA_INDEX";
-export const RetrieverType = S.Literal("NATIVE_INDEX", "KENDRA_INDEX");
-export type WebExperienceSamplePromptsControlMode = "ENABLED" | "DISABLED";
-export const WebExperienceSamplePromptsControlMode = S.Literal(
-  "ENABLED",
-  "DISABLED",
-);
+export type IndexType = "ENTERPRISE" | "STARTER" | (string & {});
+export const IndexType = S.String;
+export type PluginState = "ENABLED" | "DISABLED" | (string & {});
+export const PluginState = S.String;
+export type RetrieverType = "NATIVE_INDEX" | "KENDRA_INDEX" | (string & {});
+export const RetrieverType = S.String;
+export type WebExperienceSamplePromptsControlMode =
+  | "ENABLED"
+  | "DISABLED"
+  | (string & {});
+export const WebExperienceSamplePromptsControlMode = S.String;
 export type WebExperienceOrigins = string[];
 export const WebExperienceOrigins = S.Array(S.String);
 export interface CancelSubscriptionRequest {
@@ -1243,8 +1212,8 @@ export interface UntagResourceResponse {}
 export const UntagResourceResponse = S.suspend(() => S.Struct({})).annotations({
   identifier: "UntagResourceResponse",
 }) as any as S.Schema<UntagResourceResponse>;
-export type ResponseConfigurationType = "ALL";
-export const ResponseConfigurationType = S.Literal("ALL");
+export type ResponseConfigurationType = "ALL" | (string & {});
+export const ResponseConfigurationType = S.String;
 export interface InstructionCollection {
   responseLength?: string;
   targetAudience?: string;
@@ -1583,11 +1552,9 @@ export type ActionConfigurationList = ActionConfiguration[];
 export const ActionConfigurationList = S.Array(ActionConfiguration);
 export type DataAccessorAuthenticationType =
   | "AWS_IAM_IDC_TTI"
-  | "AWS_IAM_IDC_AUTH_CODE";
-export const DataAccessorAuthenticationType = S.Literal(
-  "AWS_IAM_IDC_TTI",
-  "AWS_IAM_IDC_AUTH_CODE",
-);
+  | "AWS_IAM_IDC_AUTH_CODE"
+  | (string & {});
+export const DataAccessorAuthenticationType = S.String;
 export interface DataAccessorIdcTrustedTokenIssuerConfiguration {
   idcTrustedTokenIssuerArn: string;
 }
@@ -1840,20 +1807,9 @@ export type DocumentEnrichmentConditionOperator =
   | "NOT_CONTAINS"
   | "EXISTS"
   | "NOT_EXISTS"
-  | "BEGINS_WITH";
-export const DocumentEnrichmentConditionOperator = S.Literal(
-  "GREATER_THAN",
-  "GREATER_THAN_OR_EQUALS",
-  "LESS_THAN",
-  "LESS_THAN_OR_EQUALS",
-  "EQUALS",
-  "NOT_EQUALS",
-  "CONTAINS",
-  "NOT_CONTAINS",
-  "EXISTS",
-  "NOT_EXISTS",
-  "BEGINS_WITH",
-);
+  | "BEGINS_WITH"
+  | (string & {});
+export const DocumentEnrichmentConditionOperator = S.String;
 export interface DocumentAttributeCondition {
   key: string;
   operator: DocumentEnrichmentConditionOperator;
@@ -1868,8 +1824,8 @@ export const DocumentAttributeCondition = S.suspend(() =>
 ).annotations({
   identifier: "DocumentAttributeCondition",
 }) as any as S.Schema<DocumentAttributeCondition>;
-export type AttributeValueOperator = "DELETE";
-export const AttributeValueOperator = S.Literal("DELETE");
+export type AttributeValueOperator = "DELETE" | (string & {});
+export const AttributeValueOperator = S.String;
 export interface DocumentAttributeTarget {
   key: string;
   value?: DocumentAttributeValue;
@@ -1884,8 +1840,8 @@ export const DocumentAttributeTarget = S.suspend(() =>
 ).annotations({
   identifier: "DocumentAttributeTarget",
 }) as any as S.Schema<DocumentAttributeTarget>;
-export type DocumentContentOperator = "DELETE";
-export const DocumentContentOperator = S.Literal("DELETE");
+export type DocumentContentOperator = "DELETE" | (string & {});
+export const DocumentContentOperator = S.String;
 export interface InlineDocumentEnrichmentConfiguration {
   condition?: DocumentAttributeCondition;
   target?: DocumentAttributeTarget;
@@ -1935,8 +1891,8 @@ export const DocumentEnrichmentConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "DocumentEnrichmentConfiguration",
 }) as any as S.Schema<DocumentEnrichmentConfiguration>;
-export type ImageExtractionStatus = "ENABLED" | "DISABLED";
-export const ImageExtractionStatus = S.Literal("ENABLED", "DISABLED");
+export type ImageExtractionStatus = "ENABLED" | "DISABLED" | (string & {});
+export const ImageExtractionStatus = S.String;
 export interface ImageExtractionConfiguration {
   imageExtractionStatus: ImageExtractionStatus;
 }
@@ -1945,8 +1901,8 @@ export const ImageExtractionConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "ImageExtractionConfiguration",
 }) as any as S.Schema<ImageExtractionConfiguration>;
-export type AudioExtractionStatus = "ENABLED" | "DISABLED";
-export const AudioExtractionStatus = S.Literal("ENABLED", "DISABLED");
+export type AudioExtractionStatus = "ENABLED" | "DISABLED" | (string & {});
+export const AudioExtractionStatus = S.String;
 export interface AudioExtractionConfiguration {
   audioExtractionStatus: AudioExtractionStatus;
 }
@@ -1955,8 +1911,8 @@ export const AudioExtractionConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "AudioExtractionConfiguration",
 }) as any as S.Schema<AudioExtractionConfiguration>;
-export type VideoExtractionStatus = "ENABLED" | "DISABLED";
-export const VideoExtractionStatus = S.Literal("ENABLED", "DISABLED");
+export type VideoExtractionStatus = "ENABLED" | "DISABLED" | (string & {});
+export const VideoExtractionStatus = S.String;
 export interface VideoExtractionConfiguration {
   videoExtractionStatus: VideoExtractionStatus;
 }
@@ -2113,8 +2069,8 @@ export const GetPluginRequest = S.suspend(() =>
 ).annotations({
   identifier: "GetPluginRequest",
 }) as any as S.Schema<GetPluginRequest>;
-export type APISchemaType = "OPEN_API_V3";
-export const APISchemaType = S.Literal("OPEN_API_V3");
+export type APISchemaType = "OPEN_API_V3" | (string & {});
+export const APISchemaType = S.String;
 export interface S3 {
   bucket: string;
   key: string;
@@ -2334,23 +2290,14 @@ export type DocumentAttributeBoostingLevel =
   | "HIGH"
   | "VERY_HIGH"
   | "ONE"
-  | "TWO";
-export const DocumentAttributeBoostingLevel = S.Literal(
-  "NONE",
-  "LOW",
-  "MEDIUM",
-  "HIGH",
-  "VERY_HIGH",
-  "ONE",
-  "TWO",
-);
+  | "TWO"
+  | (string & {});
+export const DocumentAttributeBoostingLevel = S.String;
 export type NumberAttributeBoostingType =
   | "PRIORITIZE_LARGER_VALUES"
-  | "PRIORITIZE_SMALLER_VALUES";
-export const NumberAttributeBoostingType = S.Literal(
-  "PRIORITIZE_LARGER_VALUES",
-  "PRIORITIZE_SMALLER_VALUES",
-);
+  | "PRIORITIZE_SMALLER_VALUES"
+  | (string & {});
+export const NumberAttributeBoostingType = S.String;
 export interface NumberAttributeBoostingConfiguration {
   boostingLevel: DocumentAttributeBoostingLevel;
   boostingType?: NumberAttributeBoostingType;
@@ -2372,18 +2319,9 @@ export type StringAttributeValueBoostingLevel =
   | "TWO"
   | "THREE"
   | "FOUR"
-  | "FIVE";
-export const StringAttributeValueBoostingLevel = S.Literal(
-  "LOW",
-  "MEDIUM",
-  "HIGH",
-  "VERY_HIGH",
-  "ONE",
-  "TWO",
-  "THREE",
-  "FOUR",
-  "FIVE",
-);
+  | "FIVE"
+  | (string & {});
+export const StringAttributeValueBoostingLevel = S.String;
 export type StringAttributeValueBoosting = {
   [key: string]: StringAttributeValueBoostingLevel | undefined;
 };
@@ -2674,8 +2612,8 @@ export const ListWebExperiencesRequest = S.suspend(() =>
 ).annotations({
   identifier: "ListWebExperiencesRequest",
 }) as any as S.Schema<ListWebExperiencesRequest>;
-export type PermissionConditionOperator = "StringEquals";
-export const PermissionConditionOperator = S.Literal("StringEquals");
+export type PermissionConditionOperator = "StringEquals" | (string & {});
+export const PermissionConditionOperator = S.String;
 export type PermissionConditionValues = string[];
 export const PermissionConditionValues = S.Array(S.String);
 export type ContentType =
@@ -2690,21 +2628,9 @@ export type ContentType =
   | "MS_EXCEL"
   | "CSV"
   | "JSON"
-  | "MD";
-export const ContentType = S.Literal(
-  "PDF",
-  "HTML",
-  "MS_WORD",
-  "PLAIN_TEXT",
-  "PPT",
-  "RTF",
-  "XML",
-  "XSLT",
-  "MS_EXCEL",
-  "CSV",
-  "JSON",
-  "MD",
-);
+  | "MD"
+  | (string & {});
+export const ContentType = S.String;
 export interface EndOfInputEvent {}
 export const EndOfInputEvent = S.suspend(() => S.Struct({})).annotations({
   identifier: "EndOfInputEvent",
@@ -2715,8 +2641,8 @@ export const AttributeFilters = S.Array(
     identifier: "AttributeFilter",
   }),
 ) as any as S.Schema<AttributeFilters>;
-export type MessageUsefulness = "USEFUL" | "NOT_USEFUL";
-export const MessageUsefulness = S.Literal("USEFUL", "NOT_USEFUL");
+export type MessageUsefulness = "USEFUL" | "NOT_USEFUL" | (string & {});
+export const MessageUsefulness = S.String;
 export type MessageUsefulnessReason =
   | "NOT_FACTUALLY_CORRECT"
   | "HARMFUL_OR_UNSAFE"
@@ -2729,48 +2655,39 @@ export type MessageUsefulnessReason =
   | "NOT_BASED_ON_DOCUMENTS"
   | "NOT_COMPLETE"
   | "NOT_CONCISE"
-  | "OTHER";
-export const MessageUsefulnessReason = S.Literal(
-  "NOT_FACTUALLY_CORRECT",
-  "HARMFUL_OR_UNSAFE",
-  "INCORRECT_OR_MISSING_SOURCES",
-  "NOT_HELPFUL",
-  "FACTUALLY_CORRECT",
-  "COMPLETE",
-  "RELEVANT_SOURCES",
-  "HELPFUL",
-  "NOT_BASED_ON_DOCUMENTS",
-  "NOT_COMPLETE",
-  "NOT_CONCISE",
-  "OTHER",
-);
-export type OrchestrationControl = "ENABLED" | "DISABLED";
-export const OrchestrationControl = S.Literal("ENABLED", "DISABLED");
+  | "OTHER"
+  | (string & {});
+export const MessageUsefulnessReason = S.String;
+export type OrchestrationControl = "ENABLED" | "DISABLED" | (string & {});
+export const OrchestrationControl = S.String;
 export type BlockedPhrases = string[];
 export const BlockedPhrases = S.Array(S.String);
 export type ExampleChatMessages = string[];
 export const ExampleChatMessages = S.Array(S.String);
-export type CreatorModeControl = "ENABLED" | "DISABLED";
-export const CreatorModeControl = S.Literal("ENABLED", "DISABLED");
-export type HallucinationReductionControl = "ENABLED" | "DISABLED";
-export const HallucinationReductionControl = S.Literal("ENABLED", "DISABLED");
-export type AttachmentsControlMode = "ENABLED" | "DISABLED";
-export const AttachmentsControlMode = S.Literal("ENABLED", "DISABLED");
-export type QAppsControlMode = "ENABLED" | "DISABLED";
-export const QAppsControlMode = S.Literal("ENABLED", "DISABLED");
-export type PersonalizationControlMode = "ENABLED" | "DISABLED";
-export const PersonalizationControlMode = S.Literal("ENABLED", "DISABLED");
-export type AutoSubscriptionStatus = "ENABLED" | "DISABLED";
-export const AutoSubscriptionStatus = S.Literal("ENABLED", "DISABLED");
-export type AttributeType = "STRING" | "STRING_LIST" | "NUMBER" | "DATE";
-export const AttributeType = S.Literal(
-  "STRING",
-  "STRING_LIST",
-  "NUMBER",
-  "DATE",
-);
-export type Status = "ENABLED" | "DISABLED";
-export const Status = S.Literal("ENABLED", "DISABLED");
+export type CreatorModeControl = "ENABLED" | "DISABLED" | (string & {});
+export const CreatorModeControl = S.String;
+export type HallucinationReductionControl =
+  | "ENABLED"
+  | "DISABLED"
+  | (string & {});
+export const HallucinationReductionControl = S.String;
+export type AttachmentsControlMode = "ENABLED" | "DISABLED" | (string & {});
+export const AttachmentsControlMode = S.String;
+export type QAppsControlMode = "ENABLED" | "DISABLED" | (string & {});
+export const QAppsControlMode = S.String;
+export type PersonalizationControlMode = "ENABLED" | "DISABLED" | (string & {});
+export const PersonalizationControlMode = S.String;
+export type AutoSubscriptionStatus = "ENABLED" | "DISABLED" | (string & {});
+export const AutoSubscriptionStatus = S.String;
+export type AttributeType =
+  | "STRING"
+  | "STRING_LIST"
+  | "NUMBER"
+  | "DATE"
+  | (string & {});
+export const AttributeType = S.String;
+export type Status = "ENABLED" | "DISABLED" | (string & {});
+export const Status = S.String;
 export type BrowserExtensionList = string[];
 export const BrowserExtensionList = S.Array(S.String);
 export interface PermissionCondition {
@@ -2811,25 +2728,16 @@ export type GroupStatus =
   | "SUCCEEDED"
   | "PROCESSING"
   | "DELETING"
-  | "DELETED";
-export const GroupStatus = S.Literal(
-  "FAILED",
-  "SUCCEEDED",
-  "PROCESSING",
-  "DELETING",
-  "DELETED",
-);
+  | "DELETED"
+  | (string & {});
+export const GroupStatus = S.String;
 export type ErrorCode =
   | "InternalError"
   | "InvalidRequest"
   | "ResourceInactive"
-  | "ResourceNotFound";
-export const ErrorCode = S.Literal(
-  "InternalError",
-  "InvalidRequest",
-  "ResourceInactive",
-  "ResourceNotFound",
-);
+  | "ResourceNotFound"
+  | (string & {});
+export const ErrorCode = S.String;
 export interface ErrorDetail {
   errorMessage?: string;
   errorCode?: ErrorCode;
@@ -2957,14 +2865,9 @@ export type ApplicationStatus =
   | "ACTIVE"
   | "DELETING"
   | "FAILED"
-  | "UPDATING";
-export const ApplicationStatus = S.Literal(
-  "CREATING",
-  "ACTIVE",
-  "DELETING",
-  "FAILED",
-  "UPDATING",
-);
+  | "UPDATING"
+  | (string & {});
+export const ApplicationStatus = S.String;
 export interface AutoSubscriptionConfiguration {
   autoSubscribe: AutoSubscriptionStatus;
   defaultSubscriptionType?: SubscriptionType;
@@ -2990,14 +2893,9 @@ export type IndexStatus =
   | "ACTIVE"
   | "DELETING"
   | "FAILED"
-  | "UPDATING";
-export const IndexStatus = S.Literal(
-  "CREATING",
-  "ACTIVE",
-  "DELETING",
-  "FAILED",
-  "UPDATING",
-);
+  | "UPDATING"
+  | (string & {});
+export const IndexStatus = S.String;
 export interface DocumentAttributeConfiguration {
   name?: string;
   type?: AttributeType;
@@ -3022,15 +2920,9 @@ export type DataSourceStatus =
   | "ACTIVE"
   | "DELETING"
   | "FAILED"
-  | "UPDATING";
-export const DataSourceStatus = S.Literal(
-  "PENDING_CREATION",
-  "CREATING",
-  "ACTIVE",
-  "DELETING",
-  "FAILED",
-  "UPDATING",
-);
+  | "UPDATING"
+  | (string & {});
+export const DataSourceStatus = S.String;
 export type PluginBuildStatus =
   | "READY"
   | "CREATE_IN_PROGRESS"
@@ -3038,18 +2930,11 @@ export type PluginBuildStatus =
   | "UPDATE_IN_PROGRESS"
   | "UPDATE_FAILED"
   | "DELETE_IN_PROGRESS"
-  | "DELETE_FAILED";
-export const PluginBuildStatus = S.Literal(
-  "READY",
-  "CREATE_IN_PROGRESS",
-  "CREATE_FAILED",
-  "UPDATE_IN_PROGRESS",
-  "UPDATE_FAILED",
-  "DELETE_IN_PROGRESS",
-  "DELETE_FAILED",
-);
-export type RetrieverStatus = "CREATING" | "ACTIVE" | "FAILED";
-export const RetrieverStatus = S.Literal("CREATING", "ACTIVE", "FAILED");
+  | "DELETE_FAILED"
+  | (string & {});
+export const PluginBuildStatus = S.String;
+export type RetrieverStatus = "CREATING" | "ACTIVE" | "FAILED" | (string & {});
+export const RetrieverStatus = S.String;
 export interface BrowserExtensionConfiguration {
   enabledBrowserExtensions: string[];
 }
@@ -3079,21 +2964,16 @@ export type WebExperienceStatus =
   | "ACTIVE"
   | "DELETING"
   | "FAILED"
-  | "PENDING_AUTH_CONFIG";
-export const WebExperienceStatus = S.Literal(
-  "CREATING",
-  "ACTIVE",
-  "DELETING",
-  "FAILED",
-  "PENDING_AUTH_CONFIG",
-);
-export type MemberRelation = "AND" | "OR";
-export const MemberRelation = S.Literal("AND", "OR");
-export type RuleType = "CONTENT_BLOCKER_RULE" | "CONTENT_RETRIEVAL_RULE";
-export const RuleType = S.Literal(
-  "CONTENT_BLOCKER_RULE",
-  "CONTENT_RETRIEVAL_RULE",
-);
+  | "PENDING_AUTH_CONFIG"
+  | (string & {});
+export const WebExperienceStatus = S.String;
+export type MemberRelation = "AND" | "OR" | (string & {});
+export const MemberRelation = S.String;
+export type RuleType =
+  | "CONTENT_BLOCKER_RULE"
+  | "CONTENT_RETRIEVAL_RULE"
+  | (string & {});
+export const RuleType = S.String;
 export interface AssociatePermissionRequest {
   applicationId: string;
   statementId: string;
@@ -3875,15 +3755,11 @@ export type ChatResponseConfigurationStatus =
   | "CREATING"
   | "UPDATING"
   | "FAILED"
-  | "ACTIVE";
-export const ChatResponseConfigurationStatus = S.Literal(
-  "CREATING",
-  "UPDATING",
-  "FAILED",
-  "ACTIVE",
-);
-export type AttachmentStatus = "FAILED" | "SUCCESS";
-export const AttachmentStatus = S.Literal("FAILED", "SUCCESS");
+  | "ACTIVE"
+  | (string & {});
+export const ChatResponseConfigurationStatus = S.String;
+export type AttachmentStatus = "FAILED" | "SUCCESS" | (string & {});
+export const AttachmentStatus = S.String;
 export type DocumentStatus =
   | "RECEIVED"
   | "PROCESSING"
@@ -3892,32 +3768,19 @@ export type DocumentStatus =
   | "FAILED"
   | "DELETING"
   | "DELETED"
-  | "DOCUMENT_FAILED_TO_INDEX";
-export const DocumentStatus = S.Literal(
-  "RECEIVED",
-  "PROCESSING",
-  "INDEXED",
-  "UPDATED",
-  "FAILED",
-  "DELETING",
-  "DELETED",
-  "DOCUMENT_FAILED_TO_INDEX",
-);
-export type MessageType = "USER" | "SYSTEM";
-export const MessageType = S.Literal("USER", "SYSTEM");
+  | "DOCUMENT_FAILED_TO_INDEX"
+  | (string & {});
+export const DocumentStatus = S.String;
+export type MessageType = "USER" | "SYSTEM" | (string & {});
+export const MessageType = S.String;
 export type PluginTypeCategory =
   | "Customer relationship management (CRM)"
   | "Project management"
   | "Communication"
   | "Productivity"
-  | "Ticketing and incident management";
-export const PluginTypeCategory = S.Literal(
-  "Customer relationship management (CRM)",
-  "Project management",
-  "Communication",
-  "Productivity",
-  "Ticketing and incident management",
-);
+  | "Ticketing and incident management"
+  | (string & {});
+export const PluginTypeCategory = S.String;
 export interface MemberGroup {
   groupName: string;
   type?: MembershipType;
@@ -5096,8 +4959,8 @@ export const FailedDocument = S.suspend(() =>
 }) as any as S.Schema<FailedDocument>;
 export type FailedDocuments = FailedDocument[];
 export const FailedDocuments = S.Array(FailedDocument);
-export type ReadAccessType = "ALLOW" | "DENY";
-export const ReadAccessType = S.Literal("ALLOW", "DENY");
+export type ReadAccessType = "ALLOW" | "DENY" | (string & {});
+export const ReadAccessType = S.String;
 export type AttachmentsInput = AttachmentInput[];
 export const AttachmentsInput = S.Array(AttachmentInput);
 export interface ActionExecution {
@@ -5270,13 +5133,13 @@ export const ListDataSourceSyncJobsResponse = S.suspend(() =>
 ).annotations({
   identifier: "ListDataSourceSyncJobsResponse",
 }) as any as S.Schema<ListDataSourceSyncJobsResponse>;
-export type ActionPayloadFieldType = "STRING" | "NUMBER" | "ARRAY" | "BOOLEAN";
-export const ActionPayloadFieldType = S.Literal(
-  "STRING",
-  "NUMBER",
-  "ARRAY",
-  "BOOLEAN",
-);
+export type ActionPayloadFieldType =
+  | "STRING"
+  | "NUMBER"
+  | "ARRAY"
+  | "BOOLEAN"
+  | (string & {});
+export const ActionPayloadFieldType = S.String;
 export interface CreateDataAccessorRequest {
   applicationId: string;
   principal: string;
@@ -5458,19 +5321,16 @@ export const SnippetExcerpt = S.suspend(() =>
 ).annotations({
   identifier: "SnippetExcerpt",
 }) as any as S.Schema<SnippetExcerpt>;
-export type AudioExtractionType = "TRANSCRIPT" | "SUMMARY";
-export const AudioExtractionType = S.Literal("TRANSCRIPT", "SUMMARY");
-export type VideoExtractionType = "TRANSCRIPT" | "SUMMARY";
-export const VideoExtractionType = S.Literal("TRANSCRIPT", "SUMMARY");
+export type AudioExtractionType = "TRANSCRIPT" | "SUMMARY" | (string & {});
+export const AudioExtractionType = S.String;
+export type VideoExtractionType = "TRANSCRIPT" | "SUMMARY" | (string & {});
+export const VideoExtractionType = S.String;
 export type ValidationExceptionReason =
   | "CANNOT_PARSE"
   | "FIELD_VALIDATION_FAILED"
-  | "UNKNOWN_OPERATION";
-export const ValidationExceptionReason = S.Literal(
-  "CANNOT_PARSE",
-  "FIELD_VALIDATION_FAILED",
-  "UNKNOWN_OPERATION",
-);
+  | "UNKNOWN_OPERATION"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 export interface AccessControl {
   principals: Principal[];
   memberRelation?: MemberRelation;
@@ -5485,8 +5345,11 @@ export const AccessControl = S.suspend(() =>
 }) as any as S.Schema<AccessControl>;
 export type AccessControls = AccessControl[];
 export const AccessControls = S.Array(AccessControl);
-export type SystemMessageType = "RESPONSE" | "GROUNDED_RESPONSE";
-export const SystemMessageType = S.Literal("RESPONSE", "GROUNDED_RESPONSE");
+export type SystemMessageType =
+  | "RESPONSE"
+  | "GROUNDED_RESPONSE"
+  | (string & {});
+export const SystemMessageType = S.String;
 export interface DocumentAclCondition {
   memberRelation?: MemberRelation;
   users?: DocumentAclUser[];
@@ -5508,14 +5371,9 @@ export type ScoreConfidence =
   | "HIGH"
   | "MEDIUM"
   | "LOW"
-  | "NOT_AVAILABLE";
-export const ScoreConfidence = S.Literal(
-  "VERY_HIGH",
-  "HIGH",
-  "MEDIUM",
-  "LOW",
-  "NOT_AVAILABLE",
-);
+  | "NOT_AVAILABLE"
+  | (string & {});
+export const ScoreConfidence = S.String;
 export interface CreateChatResponseConfigurationResponse {
   chatResponseConfigurationId: string;
   chatResponseConfigurationArn: string;

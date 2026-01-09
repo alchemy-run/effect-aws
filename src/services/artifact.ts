@@ -131,11 +131,11 @@ export const GetAccountSettingsRequest = S.suspend(() =>
 ).annotations({
   identifier: "GetAccountSettingsRequest",
 }) as any as S.Schema<GetAccountSettingsRequest>;
-export type NotificationSubscriptionStatus = "SUBSCRIBED" | "NOT_SUBSCRIBED";
-export const NotificationSubscriptionStatus = S.Literal(
-  "SUBSCRIBED",
-  "NOT_SUBSCRIBED",
-);
+export type NotificationSubscriptionStatus =
+  | "SUBSCRIBED"
+  | "NOT_SUBSCRIBED"
+  | (string & {});
+export const NotificationSubscriptionStatus = S.String;
 export interface PutAccountSettingsRequest {
   notificationSubscriptionStatus?: NotificationSubscriptionStatus;
 }
@@ -331,17 +331,17 @@ export const GetTermForReportResponse = S.suspend(() =>
 ).annotations({
   identifier: "GetTermForReportResponse",
 }) as any as S.Schema<GetTermForReportResponse>;
-export type PublishedState = "PUBLISHED" | "UNPUBLISHED";
-export const PublishedState = S.Literal("PUBLISHED", "UNPUBLISHED");
-export type UploadState = "PROCESSING" | "COMPLETE" | "FAILED" | "FAULT";
-export const UploadState = S.Literal(
-  "PROCESSING",
-  "COMPLETE",
-  "FAILED",
-  "FAULT",
-);
-export type AcceptanceType = "PASSTHROUGH" | "EXPLICIT";
-export const AcceptanceType = S.Literal("PASSTHROUGH", "EXPLICIT");
+export type PublishedState = "PUBLISHED" | "UNPUBLISHED" | (string & {});
+export const PublishedState = S.String;
+export type UploadState =
+  | "PROCESSING"
+  | "COMPLETE"
+  | "FAILED"
+  | "FAULT"
+  | (string & {});
+export const UploadState = S.String;
+export type AcceptanceType = "PASSTHROUGH" | "EXPLICIT" | (string & {});
+export const AcceptanceType = S.String;
 export interface ReportSummary {
   id?: string;
   name?: string;
@@ -394,16 +394,13 @@ export const ListReportVersionsResponse = S.suspend(() =>
 export type CustomerAgreementState =
   | "ACTIVE"
   | "CUSTOMER_TERMINATED"
-  | "AWS_TERMINATED";
-export const CustomerAgreementState = S.Literal(
-  "ACTIVE",
-  "CUSTOMER_TERMINATED",
-  "AWS_TERMINATED",
-);
+  | "AWS_TERMINATED"
+  | (string & {});
+export const CustomerAgreementState = S.String;
 export type AgreementTerms = string[];
 export const AgreementTerms = S.Array(S.String);
-export type AgreementType = "CUSTOM" | "DEFAULT" | "MODIFIED";
-export const AgreementType = S.Literal("CUSTOM", "DEFAULT", "MODIFIED");
+export type AgreementType = "CUSTOM" | "DEFAULT" | "MODIFIED" | (string & {});
+export const AgreementType = S.String;
 export interface CustomerAgreementSummary {
   name?: string;
   arn?: string;

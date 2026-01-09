@@ -211,42 +211,35 @@ export type TagKey = string;
 export type CostCategoryName = string;
 
 //# Schemas
-export type NotificationType = "ACTUAL" | "FORECASTED";
-export const NotificationType = S.Literal("ACTUAL", "FORECASTED");
+export type NotificationType = "ACTUAL" | "FORECASTED" | (string & {});
+export const NotificationType = S.String;
 export type ActionType =
   | "APPLY_IAM_POLICY"
   | "APPLY_SCP_POLICY"
-  | "RUN_SSM_DOCUMENTS";
-export const ActionType = S.Literal(
-  "APPLY_IAM_POLICY",
-  "APPLY_SCP_POLICY",
-  "RUN_SSM_DOCUMENTS",
-);
-export type ApprovalModel = "AUTOMATIC" | "MANUAL";
-export const ApprovalModel = S.Literal("AUTOMATIC", "MANUAL");
+  | "RUN_SSM_DOCUMENTS"
+  | (string & {});
+export const ActionType = S.String;
+export type ApprovalModel = "AUTOMATIC" | "MANUAL" | (string & {});
+export const ApprovalModel = S.String;
 export type ExecutionType =
   | "APPROVE_BUDGET_ACTION"
   | "RETRY_BUDGET_ACTION"
   | "REVERSE_BUDGET_ACTION"
-  | "RESET_BUDGET_ACTION";
-export const ExecutionType = S.Literal(
-  "APPROVE_BUDGET_ACTION",
-  "RETRY_BUDGET_ACTION",
-  "REVERSE_BUDGET_ACTION",
-  "RESET_BUDGET_ACTION",
-);
+  | "RESET_BUDGET_ACTION"
+  | (string & {});
+export const ExecutionType = S.String;
 export type ResourceTagKeyList = string[];
 export const ResourceTagKeyList = S.Array(S.String);
-export type ComparisonOperator = "GREATER_THAN" | "LESS_THAN" | "EQUAL_TO";
-export const ComparisonOperator = S.Literal(
-  "GREATER_THAN",
-  "LESS_THAN",
-  "EQUAL_TO",
-);
-export type ThresholdType = "PERCENTAGE" | "ABSOLUTE_VALUE";
-export const ThresholdType = S.Literal("PERCENTAGE", "ABSOLUTE_VALUE");
-export type NotificationState = "OK" | "ALARM";
-export const NotificationState = S.Literal("OK", "ALARM");
+export type ComparisonOperator =
+  | "GREATER_THAN"
+  | "LESS_THAN"
+  | "EQUAL_TO"
+  | (string & {});
+export const ComparisonOperator = S.String;
+export type ThresholdType = "PERCENTAGE" | "ABSOLUTE_VALUE" | (string & {});
+export const ThresholdType = S.String;
+export type NotificationState = "OK" | "ALARM" | (string & {});
+export const NotificationState = S.String;
 export interface Notification {
   NotificationType: NotificationType;
   ComparisonOperator: ComparisonOperator;
@@ -263,8 +256,8 @@ export const Notification = S.suspend(() =>
     NotificationState: S.optional(NotificationState),
   }),
 ).annotations({ identifier: "Notification" }) as any as S.Schema<Notification>;
-export type SubscriptionType = "SNS" | "EMAIL";
-export const SubscriptionType = S.Literal("SNS", "EMAIL");
+export type SubscriptionType = "SNS" | "EMAIL" | (string & {});
+export const SubscriptionType = S.String;
 export interface Subscriber {
   SubscriptionType: SubscriptionType;
   Address: string | redacted.Redacted<string>;
@@ -660,14 +653,9 @@ export type TimeUnit =
   | "MONTHLY"
   | "QUARTERLY"
   | "ANNUALLY"
-  | "CUSTOM";
-export const TimeUnit = S.Literal(
-  "DAILY",
-  "MONTHLY",
-  "QUARTERLY",
-  "ANNUALLY",
-  "CUSTOM",
-);
+  | "CUSTOM"
+  | (string & {});
+export const TimeUnit = S.String;
 export interface CalculatedSpend {
   ActualSpend: Spend;
   ForecastedSpend?: Spend;
@@ -683,17 +671,11 @@ export type BudgetType =
   | "RI_UTILIZATION"
   | "RI_COVERAGE"
   | "SAVINGS_PLANS_UTILIZATION"
-  | "SAVINGS_PLANS_COVERAGE";
-export const BudgetType = S.Literal(
-  "USAGE",
-  "COST",
-  "RI_UTILIZATION",
-  "RI_COVERAGE",
-  "SAVINGS_PLANS_UTILIZATION",
-  "SAVINGS_PLANS_COVERAGE",
-);
-export type AutoAdjustType = "HISTORICAL" | "FORECAST";
-export const AutoAdjustType = S.Literal("HISTORICAL", "FORECAST");
+  | "SAVINGS_PLANS_COVERAGE"
+  | (string & {});
+export const BudgetType = S.String;
+export type AutoAdjustType = "HISTORICAL" | "FORECAST" | (string & {});
+export const AutoAdjustType = S.String;
 export interface HistoricalOptions {
   BudgetAdjustmentPeriod: number;
   LookBackAvailablePeriods?: number;
@@ -755,42 +737,9 @@ export type Dimension =
   | "PAYMENT_OPTION"
   | "RESERVATION_MODIFIED"
   | "TAG_KEY"
-  | "COST_CATEGORY_NAME";
-export const Dimension = S.Literal(
-  "AZ",
-  "INSTANCE_TYPE",
-  "LINKED_ACCOUNT",
-  "LINKED_ACCOUNT_NAME",
-  "OPERATION",
-  "PURCHASE_TYPE",
-  "REGION",
-  "SERVICE",
-  "SERVICE_CODE",
-  "USAGE_TYPE",
-  "USAGE_TYPE_GROUP",
-  "RECORD_TYPE",
-  "OPERATING_SYSTEM",
-  "TENANCY",
-  "SCOPE",
-  "PLATFORM",
-  "SUBSCRIPTION_ID",
-  "LEGAL_ENTITY_NAME",
-  "INVOICING_ENTITY",
-  "DEPLOYMENT_OPTION",
-  "DATABASE_ENGINE",
-  "CACHE_ENGINE",
-  "INSTANCE_TYPE_FAMILY",
-  "BILLING_ENTITY",
-  "RESERVATION_ID",
-  "RESOURCE_ID",
-  "RIGHTSIZING_TYPE",
-  "SAVINGS_PLANS_TYPE",
-  "SAVINGS_PLAN_ARN",
-  "PAYMENT_OPTION",
-  "RESERVATION_MODIFIED",
-  "TAG_KEY",
-  "COST_CATEGORY_NAME",
-);
+  | "COST_CATEGORY_NAME"
+  | (string & {});
+export const Dimension = S.String;
 export type Values = string[];
 export const Values = S.Array(S.String);
 export type MatchOption =
@@ -801,17 +750,9 @@ export type MatchOption =
   | "CONTAINS"
   | "GREATER_THAN_OR_EQUAL"
   | "CASE_SENSITIVE"
-  | "CASE_INSENSITIVE";
-export const MatchOption = S.Literal(
-  "EQUALS",
-  "ABSENT",
-  "STARTS_WITH",
-  "ENDS_WITH",
-  "CONTAINS",
-  "GREATER_THAN_OR_EQUAL",
-  "CASE_SENSITIVE",
-  "CASE_INSENSITIVE",
-);
+  | "CASE_INSENSITIVE"
+  | (string & {});
+export const MatchOption = S.String;
 export type MatchOptions = MatchOption[];
 export const MatchOptions = S.Array(MatchOption);
 export interface ExpressionDimensionValues {
@@ -888,32 +829,20 @@ export type Metric =
   | "NetAmortizedCost"
   | "UsageQuantity"
   | "NormalizedUsageAmount"
-  | "Hours";
-export const Metric = S.Literal(
-  "BlendedCost",
-  "UnblendedCost",
-  "AmortizedCost",
-  "NetUnblendedCost",
-  "NetAmortizedCost",
-  "UsageQuantity",
-  "NormalizedUsageAmount",
-  "Hours",
-);
+  | "Hours"
+  | (string & {});
+export const Metric = S.String;
 export type Metrics = Metric[];
 export const Metrics = S.Array(Metric);
-export type HealthStatusValue = "HEALTHY" | "UNHEALTHY";
-export const HealthStatusValue = S.Literal("HEALTHY", "UNHEALTHY");
+export type HealthStatusValue = "HEALTHY" | "UNHEALTHY" | (string & {});
+export const HealthStatusValue = S.String;
 export type HealthStatusReason =
   | "BILLING_VIEW_NO_ACCESS"
   | "BILLING_VIEW_UNHEALTHY"
   | "FILTER_INVALID"
-  | "MULTI_YEAR_HISTORICAL_DATA_DISABLED";
-export const HealthStatusReason = S.Literal(
-  "BILLING_VIEW_NO_ACCESS",
-  "BILLING_VIEW_UNHEALTHY",
-  "FILTER_INVALID",
-  "MULTI_YEAR_HISTORICAL_DATA_DISABLED",
-);
+  | "MULTI_YEAR_HISTORICAL_DATA_DISABLED"
+  | (string & {});
+export const HealthStatusReason = S.String;
 export interface HealthStatus {
   Status?: HealthStatusValue;
   StatusReason?: HealthStatusReason;
@@ -1026,11 +955,11 @@ export const ScpActionDefinition = S.suspend(() =>
 ).annotations({
   identifier: "ScpActionDefinition",
 }) as any as S.Schema<ScpActionDefinition>;
-export type ActionSubType = "STOP_EC2_INSTANCES" | "STOP_RDS_INSTANCES";
-export const ActionSubType = S.Literal(
-  "STOP_EC2_INSTANCES",
-  "STOP_RDS_INSTANCES",
-);
+export type ActionSubType =
+  | "STOP_EC2_INSTANCES"
+  | "STOP_RDS_INSTANCES"
+  | (string & {});
+export const ActionSubType = S.String;
 export type InstanceIds = string[];
 export const InstanceIds = S.Array(S.String);
 export interface SsmActionDefinition {
@@ -1162,19 +1091,9 @@ export type ActionStatus =
   | "REVERSE_SUCCESS"
   | "REVERSE_FAILURE"
   | "RESET_IN_PROGRESS"
-  | "RESET_FAILURE";
-export const ActionStatus = S.Literal(
-  "STANDBY",
-  "PENDING",
-  "EXECUTION_IN_PROGRESS",
-  "EXECUTION_SUCCESS",
-  "EXECUTION_FAILURE",
-  "REVERSE_IN_PROGRESS",
-  "REVERSE_SUCCESS",
-  "REVERSE_FAILURE",
-  "RESET_IN_PROGRESS",
-  "RESET_FAILURE",
-);
+  | "RESET_FAILURE"
+  | (string & {});
+export const ActionStatus = S.String;
 export interface Action {
   ActionId: string;
   BudgetName: string;
@@ -1443,14 +1362,9 @@ export type EventType =
   | "CREATE_ACTION"
   | "DELETE_ACTION"
   | "UPDATE_ACTION"
-  | "EXECUTE_ACTION";
-export const EventType = S.Literal(
-  "SYSTEM",
-  "CREATE_ACTION",
-  "DELETE_ACTION",
-  "UPDATE_ACTION",
-  "EXECUTE_ACTION",
-);
+  | "EXECUTE_ACTION"
+  | (string & {});
+export const EventType = S.String;
 export interface BudgetedAndActualAmounts {
   BudgetedAmount?: Spend;
   ActualAmount?: Spend;

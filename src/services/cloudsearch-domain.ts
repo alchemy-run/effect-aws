@@ -107,15 +107,18 @@ export type Adds = number;
 export type Deletes = number;
 
 //# Schemas
-export type QueryParser = "simple" | "structured" | "lucene" | "dismax";
-export const QueryParser = S.Literal(
-  "simple",
-  "structured",
-  "lucene",
-  "dismax",
-);
-export type ContentType = "application/json" | "application/xml";
-export const ContentType = S.Literal("application/json", "application/xml");
+export type QueryParser =
+  | "simple"
+  | "structured"
+  | "lucene"
+  | "dismax"
+  | (string & {});
+export const QueryParser = S.String;
+export type ContentType =
+  | "application/json"
+  | "application/xml"
+  | (string & {});
+export const ContentType = S.String;
 export interface SearchRequest {
   cursor?: string;
   expr?: string;

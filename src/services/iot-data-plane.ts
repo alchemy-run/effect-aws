@@ -142,11 +142,11 @@ export type UserPropertiesBlob = Uint8Array;
 export type PayloadSize = number;
 
 //# Schemas
-export type PayloadFormatIndicator = "UNSPECIFIED_BYTES" | "UTF8_DATA";
-export const PayloadFormatIndicator = S.Literal(
-  "UNSPECIFIED_BYTES",
-  "UTF8_DATA",
-);
+export type PayloadFormatIndicator =
+  | "UNSPECIFIED_BYTES"
+  | "UTF8_DATA"
+  | (string & {});
+export const PayloadFormatIndicator = S.String;
 export interface DeleteConnectionRequest {
   clientId: string;
   cleanSession?: boolean;

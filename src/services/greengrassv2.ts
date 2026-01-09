@@ -209,20 +209,20 @@ export const GetServiceRoleForAccountRequest = S.suspend(() =>
 ).annotations({
   identifier: "GetServiceRoleForAccountRequest",
 }) as any as S.Schema<GetServiceRoleForAccountRequest>;
-export type RecipeOutputFormat = "JSON" | "YAML";
-export const RecipeOutputFormat = S.Literal("JSON", "YAML");
-export type S3EndpointType = "REGIONAL" | "GLOBAL";
-export const S3EndpointType = S.Literal("REGIONAL", "GLOBAL");
-export type IotEndpointType = "fips" | "standard";
-export const IotEndpointType = S.Literal("fips", "standard");
-export type ComponentVisibilityScope = "PRIVATE" | "PUBLIC";
-export const ComponentVisibilityScope = S.Literal("PRIVATE", "PUBLIC");
-export type CoreDeviceStatus = "HEALTHY" | "UNHEALTHY";
-export const CoreDeviceStatus = S.Literal("HEALTHY", "UNHEALTHY");
-export type DeploymentHistoryFilter = "ALL" | "LATEST_ONLY";
-export const DeploymentHistoryFilter = S.Literal("ALL", "LATEST_ONLY");
-export type InstalledComponentTopologyFilter = "ALL" | "ROOT";
-export const InstalledComponentTopologyFilter = S.Literal("ALL", "ROOT");
+export type RecipeOutputFormat = "JSON" | "YAML" | (string & {});
+export const RecipeOutputFormat = S.String;
+export type S3EndpointType = "REGIONAL" | "GLOBAL" | (string & {});
+export const S3EndpointType = S.String;
+export type IotEndpointType = "fips" | "standard" | (string & {});
+export const IotEndpointType = S.String;
+export type ComponentVisibilityScope = "PRIVATE" | "PUBLIC" | (string & {});
+export const ComponentVisibilityScope = S.String;
+export type CoreDeviceStatus = "HEALTHY" | "UNHEALTHY" | (string & {});
+export const CoreDeviceStatus = S.String;
+export type DeploymentHistoryFilter = "ALL" | "LATEST_ONLY" | (string & {});
+export const DeploymentHistoryFilter = S.String;
+export type InstalledComponentTopologyFilter = "ALL" | "ROOT" | (string & {});
+export const InstalledComponentTopologyFilter = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export interface AssociateServiceRoleToAccountRequest {
@@ -776,11 +776,11 @@ export const ComponentPlatform = S.suspend(() =>
 }) as any as S.Schema<ComponentPlatform>;
 export type ComponentPlatformList = ComponentPlatform[];
 export const ComponentPlatformList = S.Array(ComponentPlatform);
-export type DeploymentFailureHandlingPolicy = "ROLLBACK" | "DO_NOTHING";
-export const DeploymentFailureHandlingPolicy = S.Literal(
-  "ROLLBACK",
-  "DO_NOTHING",
-);
+export type DeploymentFailureHandlingPolicy =
+  | "ROLLBACK"
+  | "DO_NOTHING"
+  | (string & {});
+export const DeploymentFailureHandlingPolicy = S.String;
 export interface AssociateClientDeviceWithCoreDeviceEntry {
   thingName: string;
 }
@@ -812,14 +812,9 @@ export type DeploymentStatus =
   | "COMPLETED"
   | "CANCELED"
   | "FAILED"
-  | "INACTIVE";
-export const DeploymentStatus = S.Literal(
-  "ACTIVE",
-  "COMPLETED",
-  "CANCELED",
-  "FAILED",
-  "INACTIVE",
-);
+  | "INACTIVE"
+  | (string & {});
+export const DeploymentStatus = S.String;
 export interface ConnectivityInfo {
   id?: string;
   hostAddress?: string;
@@ -838,17 +833,15 @@ export const ConnectivityInfo = S.suspend(() =>
 }) as any as S.Schema<ConnectivityInfo>;
 export type ConnectivityInfoList = ConnectivityInfo[];
 export const ConnectivityInfoList = S.Array(ConnectivityInfo);
-export type LambdaInputPayloadEncodingType = "json" | "binary";
-export const LambdaInputPayloadEncodingType = S.Literal("json", "binary");
+export type LambdaInputPayloadEncodingType = "json" | "binary" | (string & {});
+export const LambdaInputPayloadEncodingType = S.String;
 export type LambdaExecArgsList = string[];
 export const LambdaExecArgsList = S.Array(S.String);
 export type DeploymentComponentUpdatePolicyAction =
   | "NOTIFY_COMPONENTS"
-  | "SKIP_NOTIFY_COMPONENTS";
-export const DeploymentComponentUpdatePolicyAction = S.Literal(
-  "NOTIFY_COMPONENTS",
-  "SKIP_NOTIFY_COMPONENTS",
-);
+  | "SKIP_NOTIFY_COMPONENTS"
+  | (string & {});
+export const DeploymentComponentUpdatePolicyAction = S.String;
 export interface AssociateServiceRoleToAccountResponse {
   associatedAt?: string;
 }
@@ -1114,15 +1107,11 @@ export type IoTJobExecutionFailureType =
   | "FAILED"
   | "REJECTED"
   | "TIMED_OUT"
-  | "ALL";
-export const IoTJobExecutionFailureType = S.Literal(
-  "FAILED",
-  "REJECTED",
-  "TIMED_OUT",
-  "ALL",
-);
-export type IoTJobAbortAction = "CANCEL";
-export const IoTJobAbortAction = S.Literal("CANCEL");
+  | "ALL"
+  | (string & {});
+export const IoTJobExecutionFailureType = S.String;
+export type IoTJobAbortAction = "CANCEL" | (string & {});
+export const IoTJobAbortAction = S.String;
 export interface IoTJobAbortCriteria {
   failureType: IoTJobExecutionFailureType;
   action: IoTJobAbortAction;
@@ -1246,16 +1235,15 @@ export type CloudComponentState =
   | "INITIATED"
   | "DEPLOYABLE"
   | "FAILED"
-  | "DEPRECATED";
-export const CloudComponentState = S.Literal(
-  "REQUESTED",
-  "INITIATED",
-  "DEPLOYABLE",
-  "FAILED",
-  "DEPRECATED",
-);
-export type VendorGuidance = "ACTIVE" | "DISCONTINUED" | "DELETED";
-export const VendorGuidance = S.Literal("ACTIVE", "DISCONTINUED", "DELETED");
+  | "DEPRECATED"
+  | (string & {});
+export const CloudComponentState = S.String;
+export type VendorGuidance =
+  | "ACTIVE"
+  | "DISCONTINUED"
+  | "DELETED"
+  | (string & {});
+export const VendorGuidance = S.String;
 export type EffectiveDeploymentExecutionStatus =
   | "IN_PROGRESS"
   | "QUEUED"
@@ -1264,17 +1252,9 @@ export type EffectiveDeploymentExecutionStatus =
   | "TIMED_OUT"
   | "CANCELED"
   | "REJECTED"
-  | "SUCCEEDED";
-export const EffectiveDeploymentExecutionStatus = S.Literal(
-  "IN_PROGRESS",
-  "QUEUED",
-  "FAILED",
-  "COMPLETED",
-  "TIMED_OUT",
-  "CANCELED",
-  "REJECTED",
-  "SUCCEEDED",
-);
+  | "SUCCEEDED"
+  | (string & {});
+export const EffectiveDeploymentExecutionStatus = S.String;
 export type InstalledComponentLifecycleState =
   | "NEW"
   | "INSTALLED"
@@ -1283,17 +1263,9 @@ export type InstalledComponentLifecycleState =
   | "STOPPING"
   | "ERRORED"
   | "BROKEN"
-  | "FINISHED";
-export const InstalledComponentLifecycleState = S.Literal(
-  "NEW",
-  "INSTALLED",
-  "STARTING",
-  "RUNNING",
-  "STOPPING",
-  "ERRORED",
-  "BROKEN",
-  "FINISHED",
-);
+  | "FINISHED"
+  | (string & {});
+export const InstalledComponentLifecycleState = S.String;
 export type InstalledComponentLifecycleStatusCodeList = string[];
 export const InstalledComponentLifecycleStatusCodeList = S.Array(S.String);
 export type ComponentVersionRequirementMap = {
@@ -1303,26 +1275,22 @@ export const ComponentVersionRequirementMap = S.Record({
   key: S.String,
   value: S.UndefinedOr(S.String),
 });
-export type ComponentDependencyType = "HARD" | "SOFT";
-export const ComponentDependencyType = S.Literal("HARD", "SOFT");
-export type LambdaEventSourceType = "PUB_SUB" | "IOT_CORE";
-export const LambdaEventSourceType = S.Literal("PUB_SUB", "IOT_CORE");
-export type LambdaIsolationMode = "GreengrassContainer" | "NoContainer";
-export const LambdaIsolationMode = S.Literal(
-  "GreengrassContainer",
-  "NoContainer",
-);
+export type ComponentDependencyType = "HARD" | "SOFT" | (string & {});
+export const ComponentDependencyType = S.String;
+export type LambdaEventSourceType = "PUB_SUB" | "IOT_CORE" | (string & {});
+export const LambdaEventSourceType = S.String;
+export type LambdaIsolationMode =
+  | "GreengrassContainer"
+  | "NoContainer"
+  | (string & {});
+export const LambdaIsolationMode = S.String;
 export type ValidationExceptionReason =
   | "UNKNOWN_OPERATION"
   | "CANNOT_PARSE"
   | "FIELD_VALIDATION_FAILED"
-  | "OTHER";
-export const ValidationExceptionReason = S.Literal(
-  "UNKNOWN_OPERATION",
-  "CANNOT_PARSE",
-  "FIELD_VALIDATION_FAILED",
-  "OTHER",
-);
+  | "OTHER"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 export interface AssociatedClientDevice {
   thingName?: string;
   associationTimestamp?: Date;
@@ -1663,8 +1631,8 @@ export type DisassociateClientDeviceFromCoreDeviceErrorList =
 export const DisassociateClientDeviceFromCoreDeviceErrorList = S.Array(
   DisassociateClientDeviceFromCoreDeviceErrorEntry,
 );
-export type LambdaFilesystemPermission = "ro" | "rw";
-export const LambdaFilesystemPermission = S.Literal("ro", "rw");
+export type LambdaFilesystemPermission = "ro" | "rw" | (string & {});
+export const LambdaFilesystemPermission = S.String;
 export interface CloudComponentStatus {
   componentState?: CloudComponentState;
   message?: string;

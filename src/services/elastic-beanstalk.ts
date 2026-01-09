@@ -254,26 +254,18 @@ export type EnvironmentHealthAttribute =
   | "InstancesHealth"
   | "All"
   | "HealthStatus"
-  | "RefreshedAt";
-export const EnvironmentHealthAttribute = S.Literal(
-  "Status",
-  "Color",
-  "Causes",
-  "ApplicationMetrics",
-  "InstancesHealth",
-  "All",
-  "HealthStatus",
-  "RefreshedAt",
-);
+  | "RefreshedAt"
+  | (string & {});
+export const EnvironmentHealthAttribute = S.String;
 export type EnvironmentHealthAttributes = EnvironmentHealthAttribute[];
 export const EnvironmentHealthAttributes = S.Array(EnvironmentHealthAttribute);
-export type ActionStatus = "Scheduled" | "Pending" | "Running" | "Unknown";
-export const ActionStatus = S.Literal(
-  "Scheduled",
-  "Pending",
-  "Running",
-  "Unknown",
-);
+export type ActionStatus =
+  | "Scheduled"
+  | "Pending"
+  | "Running"
+  | "Unknown"
+  | (string & {});
+export const ActionStatus = S.String;
 export type EnvironmentIdList = string[];
 export const EnvironmentIdList = S.Array(S.String);
 export type EnvironmentNamesList = string[];
@@ -284,15 +276,9 @@ export type EventSeverity =
   | "INFO"
   | "WARN"
   | "ERROR"
-  | "FATAL";
-export const EventSeverity = S.Literal(
-  "TRACE",
-  "DEBUG",
-  "INFO",
-  "WARN",
-  "ERROR",
-  "FATAL",
-);
+  | "FATAL"
+  | (string & {});
+export const EventSeverity = S.String;
 export type InstancesHealthAttribute =
   | "HealthStatus"
   | "Color"
@@ -304,26 +290,15 @@ export type InstancesHealthAttribute =
   | "Deployment"
   | "AvailabilityZone"
   | "InstanceType"
-  | "All";
-export const InstancesHealthAttribute = S.Literal(
-  "HealthStatus",
-  "Color",
-  "Causes",
-  "ApplicationMetrics",
-  "RefreshedAt",
-  "LaunchedAt",
-  "System",
-  "Deployment",
-  "AvailabilityZone",
-  "InstanceType",
-  "All",
-);
+  | "All"
+  | (string & {});
+export const InstancesHealthAttribute = S.String;
 export type InstancesHealthAttributes = InstancesHealthAttribute[];
 export const InstancesHealthAttributes = S.Array(InstancesHealthAttribute);
 export type AvailableSolutionStackNamesList = string[];
 export const AvailableSolutionStackNamesList = S.Array(S.String);
-export type EnvironmentInfoType = "tail" | "bundle";
-export const EnvironmentInfoType = S.Literal("tail", "bundle");
+export type EnvironmentInfoType = "tail" | "bundle" | (string & {});
+export const EnvironmentInfoType = S.String;
 export interface Tag {
   Key?: string;
   Value?: string;
@@ -1445,31 +1420,28 @@ export const ValidateConfigurationSettingsMessage = S.suspend(() =>
 ).annotations({
   identifier: "ValidateConfigurationSettingsMessage",
 }) as any as S.Schema<ValidateConfigurationSettingsMessage>;
-export type SourceType = "Git" | "Zip";
-export const SourceType = S.Literal("Git", "Zip");
-export type SourceRepository = "CodeCommit" | "S3";
-export const SourceRepository = S.Literal("CodeCommit", "S3");
+export type SourceType = "Git" | "Zip" | (string & {});
+export const SourceType = S.String;
+export type SourceRepository = "CodeCommit" | "S3" | (string & {});
+export const SourceRepository = S.String;
 export type ComputeType =
   | "BUILD_GENERAL1_SMALL"
   | "BUILD_GENERAL1_MEDIUM"
-  | "BUILD_GENERAL1_LARGE";
-export const ComputeType = S.Literal(
-  "BUILD_GENERAL1_SMALL",
-  "BUILD_GENERAL1_MEDIUM",
-  "BUILD_GENERAL1_LARGE",
-);
+  | "BUILD_GENERAL1_LARGE"
+  | (string & {});
+export const ComputeType = S.String;
 export type SolutionStackFileTypeList = string[];
 export const SolutionStackFileTypeList = S.Array(S.String);
 export type SearchFilterValues = string[];
 export const SearchFilterValues = S.Array(S.String);
 export type PlatformFilterValueList = string[];
 export const PlatformFilterValueList = S.Array(S.String);
-export type ActionType = "InstanceRefresh" | "PlatformUpdate" | "Unknown";
-export const ActionType = S.Literal(
-  "InstanceRefresh",
-  "PlatformUpdate",
-  "Unknown",
-);
+export type ActionType =
+  | "InstanceRefresh"
+  | "PlatformUpdate"
+  | "Unknown"
+  | (string & {});
+export const ActionType = S.String;
 export type EnvironmentStatus =
   | "Aborting"
   | "Launching"
@@ -1478,19 +1450,16 @@ export type EnvironmentStatus =
   | "LinkingTo"
   | "Ready"
   | "Terminating"
-  | "Terminated";
-export const EnvironmentStatus = S.Literal(
-  "Aborting",
-  "Launching",
-  "Updating",
-  "LinkingFrom",
-  "LinkingTo",
-  "Ready",
-  "Terminating",
-  "Terminated",
-);
-export type EnvironmentHealth = "Green" | "Yellow" | "Red" | "Grey";
-export const EnvironmentHealth = S.Literal("Green", "Yellow", "Red", "Grey");
+  | "Terminated"
+  | (string & {});
+export const EnvironmentStatus = S.String;
+export type EnvironmentHealth =
+  | "Green"
+  | "Yellow"
+  | "Red"
+  | "Grey"
+  | (string & {});
+export const EnvironmentHealth = S.String;
 export type EnvironmentHealthStatus =
   | "NoData"
   | "Unknown"
@@ -1500,18 +1469,9 @@ export type EnvironmentHealthStatus =
   | "Warning"
   | "Degraded"
   | "Severe"
-  | "Suspended";
-export const EnvironmentHealthStatus = S.Literal(
-  "NoData",
-  "Unknown",
-  "Pending",
-  "Ok",
-  "Info",
-  "Warning",
-  "Degraded",
-  "Severe",
-  "Suspended",
-);
+  | "Suspended"
+  | (string & {});
+export const EnvironmentHealthStatus = S.String;
 export interface Listener {
   Protocol?: string;
   Port?: number;
@@ -1653,12 +1613,12 @@ export const SourceConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "SourceConfiguration",
 }) as any as S.Schema<SourceConfiguration>;
-export type ConfigurationDeploymentStatus = "deployed" | "pending" | "failed";
-export const ConfigurationDeploymentStatus = S.Literal(
-  "deployed",
-  "pending",
-  "failed",
-);
+export type ConfigurationDeploymentStatus =
+  | "deployed"
+  | "pending"
+  | "failed"
+  | (string & {});
+export const ConfigurationDeploymentStatus = S.String;
 export interface ConfigurationSettingsDescription {
   SolutionStackName?: string;
   PlatformArn?: string;
@@ -1903,14 +1863,9 @@ export type PlatformStatus =
   | "Failed"
   | "Ready"
   | "Deleting"
-  | "Deleted";
-export const PlatformStatus = S.Literal(
-  "Creating",
-  "Failed",
-  "Ready",
-  "Deleting",
-  "Deleted",
-);
+  | "Deleted"
+  | (string & {});
+export const PlatformStatus = S.String;
 export type SupportedTierList = string[];
 export const SupportedTierList = S.Array(S.String);
 export type SupportedAddonList = string[];
@@ -2088,14 +2043,9 @@ export type ApplicationVersionStatus =
   | "Unprocessed"
   | "Failed"
   | "Processing"
-  | "Building";
-export const ApplicationVersionStatus = S.Literal(
-  "Processed",
-  "Unprocessed",
-  "Failed",
-  "Processing",
-  "Building",
-);
+  | "Building"
+  | (string & {});
+export const ApplicationVersionStatus = S.String;
 export interface ApplicationVersionDescription {
   ApplicationVersionArn?: string;
   ApplicationName?: string;
@@ -2142,8 +2092,8 @@ export const ResourceQuota = S.suspend(() =>
 ).annotations({
   identifier: "ResourceQuota",
 }) as any as S.Schema<ResourceQuota>;
-export type ConfigurationOptionValueType = "Scalar" | "List";
-export const ConfigurationOptionValueType = S.Literal("Scalar", "List");
+export type ConfigurationOptionValueType = "Scalar" | "List" | (string & {});
+export const ConfigurationOptionValueType = S.String;
 export type ConfigurationOptionPossibleValues = string[];
 export const ConfigurationOptionPossibleValues = S.Array(S.String);
 export type FailureType =
@@ -2153,20 +2103,17 @@ export type FailureType =
   | "RollbackSuccessful"
   | "InternalFailure"
   | "InvalidEnvironmentState"
-  | "PermissionsError";
-export const FailureType = S.Literal(
-  "UpdateCancelled",
-  "CancellationFailed",
-  "RollbackFailed",
-  "RollbackSuccessful",
-  "InternalFailure",
-  "InvalidEnvironmentState",
-  "PermissionsError",
-);
-export type ActionHistoryStatus = "Completed" | "Failed" | "Unknown";
-export const ActionHistoryStatus = S.Literal("Completed", "Failed", "Unknown");
-export type ValidationSeverity = "error" | "warning";
-export const ValidationSeverity = S.Literal("error", "warning");
+  | "PermissionsError"
+  | (string & {});
+export const FailureType = S.String;
+export type ActionHistoryStatus =
+  | "Completed"
+  | "Failed"
+  | "Unknown"
+  | (string & {});
+export const ActionHistoryStatus = S.String;
+export type ValidationSeverity = "error" | "warning" | (string & {});
+export const ValidationSeverity = S.String;
 export interface Builder {
   ARN?: string;
 }

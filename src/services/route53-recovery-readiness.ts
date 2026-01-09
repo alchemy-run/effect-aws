@@ -859,13 +859,13 @@ export const UpdateResourceSetRequest = S.suspend(() =>
 ).annotations({
   identifier: "UpdateResourceSetRequest",
 }) as any as S.Schema<UpdateResourceSetRequest>;
-export type Readiness = "READY" | "NOT_READY" | "UNKNOWN" | "NOT_AUTHORIZED";
-export const Readiness = S.Literal(
-  "READY",
-  "NOT_READY",
-  "UNKNOWN",
-  "NOT_AUTHORIZED",
-);
+export type Readiness =
+  | "READY"
+  | "NOT_READY"
+  | "UNKNOWN"
+  | "NOT_AUTHORIZED"
+  | (string & {});
+export const Readiness = S.String;
 export type __listOfCrossAccountAuthorization = string[];
 export const __listOfCrossAccountAuthorization = S.Array(S.String);
 export interface CreateCellRequest {

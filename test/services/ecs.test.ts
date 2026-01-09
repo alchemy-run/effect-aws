@@ -1,5 +1,31 @@
 import { expect } from "@effect/vitest";
-import { Config, Effect, Schedule, Stream } from "effect";
+import { Effect, Schedule, Stream } from "effect";
+import {
+  associateRouteTable,
+  attachInternetGateway,
+  createInternetGateway,
+  createRoute,
+  createRouteTable,
+  createSubnet,
+  createVpc,
+  deleteInternetGateway,
+  deleteRouteTable,
+  deleteSubnet,
+  deleteVpc,
+  DependencyViolation,
+  describeInternetGateways,
+  describeRouteTables,
+  describeSubnets,
+  describeVpcs,
+  detachInternetGateway,
+  disassociateRouteTable,
+  GatewayNotAttached,
+  InvalidAssociationIDNotFound,
+  InvalidInternetGatewayIDNotFound,
+  InvalidRouteTableIDNotFound,
+  InvalidSubnetIDNotFound,
+  InvalidVpcIDNotFound,
+} from "../../src/services/ec2.ts";
 import {
   createCluster,
   deleteCluster,
@@ -19,7 +45,7 @@ import {
   untagResource,
   updateService,
 } from "../../src/services/ecs.ts";
-import { test } from "../test.ts";
+import { afterAll, beforeAll, test } from "../test.ts";
 
 // ============================================================================
 // Retry Helpers
@@ -234,10 +260,259 @@ const withTaskDefinition = <A, E, R>(
     );
   });
 
-// Get a subnet ID from ECS_SUBNET_ID env var (required for run task test)
-const getSubnetId = Config.string("ECS_SUBNET_ID").pipe(
-  Config.withDefault("subnet-05c825514e3958e6c"), // Default to known subnet in test account
+// ============================================================================
+// Networking Infrastructure (shared across tests via beforeAll/afterAll)
+// ============================================================================
+
+interface NetworkingResources {
+  vpcId: string;
+  subnetId: string;
+  internetGatewayId: string;
+  routeTableId: string;
+  routeTableAssociationId: string;
+}
+
+const VPC_NAME = "itty-ecs-test-vpc";
+const SUBNET_NAME = "itty-ecs-test-subnet";
+const IGW_NAME = "itty-ecs-test-igw";
+const RT_NAME = "itty-ecs-test-rt";
+
+// Module-level variable to hold networking resources
+let networking: NetworkingResources;
+
+// Find or create networking infrastructure for Fargate tasks
+const ensureNetworking = Effect.gen(function* () {
+  // Check for existing VPC with our Name tag
+  const existingVpcs = yield* describeVpcs({
+    Filters: [{ Name: "tag:Name", Values: [VPC_NAME] }],
+  });
+
+  let vpcId: string;
+  if (existingVpcs.Vpcs && existingVpcs.Vpcs.length > 0) {
+    vpcId = existingVpcs.Vpcs[0].VpcId!;
+  } else {
+    const vpcResult = yield* createVpc({
+      CidrBlock: "10.0.0.0/16",
+      TagSpecifications: [
+        {
+          ResourceType: "vpc",
+          Tags: [{ Key: "Name", Value: VPC_NAME }],
+        },
+      ],
+    });
+    vpcId = vpcResult.Vpc?.VpcId!;
+    expect(vpcId).toBeDefined();
+  }
+
+  // Check for existing subnet
+  const existingSubnets = yield* describeSubnets({
+    Filters: [
+      { Name: "tag:Name", Values: [SUBNET_NAME] },
+      { Name: "vpc-id", Values: [vpcId] },
+    ],
+  });
+
+  let subnetId: string;
+  if (existingSubnets.Subnets && existingSubnets.Subnets.length > 0) {
+    subnetId = existingSubnets.Subnets[0].SubnetId!;
+  } else {
+    const subnetResult = yield* createSubnet({
+      VpcId: vpcId,
+      CidrBlock: "10.0.1.0/24",
+      TagSpecifications: [
+        {
+          ResourceType: "subnet",
+          Tags: [{ Key: "Name", Value: SUBNET_NAME }],
+        },
+      ],
+    });
+    subnetId = subnetResult.Subnet?.SubnetId!;
+    expect(subnetId).toBeDefined();
+  }
+
+  // Check for existing internet gateway
+  const existingIgws = yield* describeInternetGateways({
+    Filters: [{ Name: "tag:Name", Values: [IGW_NAME] }],
+  });
+
+  let internetGatewayId: string;
+  if (
+    existingIgws.InternetGateways &&
+    existingIgws.InternetGateways.length > 0
+  ) {
+    internetGatewayId = existingIgws.InternetGateways[0].InternetGatewayId!;
+    // Check if already attached to our VPC
+    const attachments = existingIgws.InternetGateways[0].Attachments ?? [];
+    const isAttached = attachments.some((a) => a.VpcId === vpcId);
+    if (!isAttached) {
+      yield* attachInternetGateway({
+        InternetGatewayId: internetGatewayId,
+        VpcId: vpcId,
+      });
+    }
+  } else {
+    const igwResult = yield* createInternetGateway({
+      TagSpecifications: [
+        {
+          ResourceType: "internet-gateway",
+          Tags: [{ Key: "Name", Value: IGW_NAME }],
+        },
+      ],
+    });
+    internetGatewayId = igwResult.InternetGateway?.InternetGatewayId!;
+    expect(internetGatewayId).toBeDefined();
+
+    yield* attachInternetGateway({
+      InternetGatewayId: internetGatewayId,
+      VpcId: vpcId,
+    });
+  }
+
+  // Check for existing route table
+  const existingRts = yield* describeRouteTables({
+    Filters: [
+      { Name: "tag:Name", Values: [RT_NAME] },
+      { Name: "vpc-id", Values: [vpcId] },
+    ],
+  });
+
+  let routeTableId: string;
+  let routeTableAssociationId: string;
+
+  if (existingRts.RouteTables && existingRts.RouteTables.length > 0) {
+    routeTableId = existingRts.RouteTables[0].RouteTableId!;
+    // Find association with our subnet
+    const associations = existingRts.RouteTables[0].Associations ?? [];
+    const subnetAssoc = associations.find((a) => a.SubnetId === subnetId);
+    if (subnetAssoc) {
+      routeTableAssociationId = subnetAssoc.RouteTableAssociationId!;
+    } else {
+      const assocResult = yield* associateRouteTable({
+        RouteTableId: routeTableId,
+        SubnetId: subnetId,
+      });
+      routeTableAssociationId = assocResult.AssociationId!;
+    }
+  } else {
+    const rtResult = yield* createRouteTable({
+      VpcId: vpcId,
+      TagSpecifications: [
+        {
+          ResourceType: "route-table",
+          Tags: [{ Key: "Name", Value: RT_NAME }],
+        },
+      ],
+    });
+    routeTableId = rtResult.RouteTable?.RouteTableId!;
+    expect(routeTableId).toBeDefined();
+
+    // Create route to internet gateway
+    yield* createRoute({
+      RouteTableId: routeTableId,
+      DestinationCidrBlock: "0.0.0.0/0",
+      GatewayId: internetGatewayId,
+    });
+
+    // Associate route table with subnet
+    const assocResult = yield* associateRouteTable({
+      RouteTableId: routeTableId,
+      SubnetId: subnetId,
+    });
+    routeTableAssociationId = assocResult.AssociationId!;
+    expect(routeTableAssociationId).toBeDefined();
+  }
+
+  // Store in module-level variable
+  networking = {
+    vpcId,
+    subnetId,
+    internetGatewayId,
+    routeTableId,
+    routeTableAssociationId,
+  };
+});
+
+// Retry schedule for cleanup operations (handles eventual consistency)
+const cleanupRetry = Schedule.intersect(
+  Schedule.recurs(20),
+  Schedule.exponential("1 second", 2).pipe(
+    Schedule.union(Schedule.spaced("10 seconds")),
+  ),
 );
+
+// Helper: retry on DependencyViolation, succeed on NotFound errors
+const withCleanupRetry = <A, E, R>(
+  effect: Effect.Effect<A, E, R>,
+  notFoundErrors: ReadonlyArray<new () => E>,
+) =>
+  effect.pipe(
+    Effect.retry({
+      while: (err) => err instanceof DependencyViolation,
+      schedule: cleanupRetry,
+    }),
+    Effect.catchIf(
+      (err) => notFoundErrors.some((E) => err instanceof E),
+      () => Effect.void,
+    ),
+  );
+
+// Clean up networking infrastructure
+const cleanupNetworking = Effect.gen(function* () {
+  if (!networking) return;
+
+  // Disassociate route table from subnet
+  yield* withCleanupRetry(
+    disassociateRouteTable({
+      AssociationId: networking.routeTableAssociationId,
+    }),
+    [InvalidAssociationIDNotFound],
+  );
+
+  // Delete route table (may have dependency on subnet association)
+  yield* withCleanupRetry(
+    deleteRouteTable({
+      RouteTableId: networking.routeTableId,
+    }),
+    [InvalidRouteTableIDNotFound],
+  );
+
+  // Detach internet gateway from VPC
+  yield* withCleanupRetry(
+    detachInternetGateway({
+      InternetGatewayId: networking.internetGatewayId,
+      VpcId: networking.vpcId,
+    }),
+    [InvalidInternetGatewayIDNotFound, GatewayNotAttached],
+  );
+
+  // Delete internet gateway
+  yield* withCleanupRetry(
+    deleteInternetGateway({
+      InternetGatewayId: networking.internetGatewayId,
+    }),
+    [InvalidInternetGatewayIDNotFound],
+  );
+
+  // Delete subnet (may have dependency on ENIs from tasks)
+  yield* withCleanupRetry(
+    deleteSubnet({
+      SubnetId: networking.subnetId,
+    }),
+    [InvalidSubnetIDNotFound],
+  );
+
+  // Delete VPC (may have dependency on subnet)
+  yield* withCleanupRetry(
+    deleteVpc({
+      VpcId: networking.vpcId,
+    }),
+    [InvalidVpcIDNotFound],
+  );
+});
+
+// Set up networking before all tests, clean up after
+beforeAll(ensureNetworking);
+afterAll(cleanupNetworking);
 
 // ============================================================================
 // Cluster Lifecycle Tests
@@ -477,9 +752,6 @@ test(
 test(
   "run task and stop task",
   Effect.gen(function* () {
-    // Get subnet from config
-    const subnetId = yield* getSubnetId;
-
     const clusterName = "itty-ecs-run-task-cluster";
     const taskFamily = "itty-ecs-run-task-family";
 
@@ -512,7 +784,7 @@ test(
     const taskDefinitionArn = registerResult.taskDefinition?.taskDefinitionArn;
     expect(taskDefinitionArn).toBeDefined();
 
-    // Cleanup function - always runs
+    // Cleanup function - always runs (networking is cleaned up in afterAll)
     const cleanup = Effect.gen(function* () {
       // Stop all tasks
       yield* stopAllClusterTasks(clusterName);
@@ -533,7 +805,7 @@ test(
         count: 1,
         networkConfiguration: {
           awsvpcConfiguration: {
-            subnets: [subnetId],
+            subnets: [networking.subnetId],
             assignPublicIp: "ENABLED",
           },
         },

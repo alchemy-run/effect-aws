@@ -1098,13 +1098,13 @@ export const ListOrganizationalUnitsRequest = S.suspend(() =>
 ).annotations({
   identifier: "ListOrganizationalUnitsRequest",
 }) as any as S.Schema<ListOrganizationalUnitsRequest>;
-export type AccessStatus = "ENABLED" | "DISABLED" | "PENDING" | "FAILED";
-export const AccessStatus = S.Literal(
-  "ENABLED",
-  "DISABLED",
-  "PENDING",
-  "FAILED",
-);
+export type AccessStatus =
+  | "ENABLED"
+  | "DISABLED"
+  | "PENDING"
+  | "FAILED"
+  | (string & {});
+export const AccessStatus = S.String;
 export type Channels = string[];
 export const Channels = S.Array(S.String);
 export type ManagedRuleArns = string[];

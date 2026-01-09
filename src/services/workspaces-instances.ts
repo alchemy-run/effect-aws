@@ -95,33 +95,20 @@ export type VolumeTypeEnum =
   | "gp2"
   | "sc1"
   | "st1"
-  | "gp3";
-export const VolumeTypeEnum = S.Literal(
-  "standard",
-  "io1",
-  "io2",
-  "gp2",
-  "sc1",
-  "st1",
-  "gp3",
-);
-export type DisassociateModeEnum = "FORCE" | "NO_FORCE";
-export const DisassociateModeEnum = S.Literal("FORCE", "NO_FORCE");
+  | "gp3"
+  | (string & {});
+export const VolumeTypeEnum = S.String;
+export type DisassociateModeEnum = "FORCE" | "NO_FORCE" | (string & {});
+export const DisassociateModeEnum = S.String;
 export type ProvisionStateEnum =
   | "ALLOCATING"
   | "ALLOCATED"
   | "DEALLOCATING"
   | "DEALLOCATED"
   | "ERROR_ALLOCATING"
-  | "ERROR_DEALLOCATING";
-export const ProvisionStateEnum = S.Literal(
-  "ALLOCATING",
-  "ALLOCATED",
-  "DEALLOCATING",
-  "DEALLOCATED",
-  "ERROR_ALLOCATING",
-  "ERROR_DEALLOCATING",
-);
+  | "ERROR_DEALLOCATING"
+  | (string & {});
+export const ProvisionStateEnum = S.String;
 export type ProvisionStates = ProvisionStateEnum[];
 export const ProvisionStates = S.Array(ProvisionStateEnum);
 export type TagKeyList = string[];
@@ -309,13 +296,9 @@ export type ResourceTypeEnum =
   | "instance"
   | "volume"
   | "spot-instances-request"
-  | "network-interface";
-export const ResourceTypeEnum = S.Literal(
-  "instance",
-  "volume",
-  "spot-instances-request",
-  "network-interface",
-);
+  | "network-interface"
+  | (string & {});
+export const ResourceTypeEnum = S.String;
 export type SecurityGroupIds = string[];
 export const SecurityGroupIds = S.Array(S.String);
 export type SecurityGroupNames = string[];
@@ -337,36 +320,41 @@ export const TagSpecifications = S.Array(TagSpecification);
 export type CapacityReservationPreferenceEnum =
   | "capacity-reservations-only"
   | "open"
-  | "none";
-export const CapacityReservationPreferenceEnum = S.Literal(
-  "capacity-reservations-only",
-  "open",
-  "none",
-);
-export type AmdSevSnpEnum = "enabled" | "disabled";
-export const AmdSevSnpEnum = S.Literal("enabled", "disabled");
-export type CpuCreditsEnum = "standard" | "unlimited";
-export const CpuCreditsEnum = S.Literal("standard", "unlimited");
-export type MarketTypeEnum = "spot" | "capacity-block";
-export const MarketTypeEnum = S.Literal("spot", "capacity-block");
-export type AutoRecoveryEnum = "disabled" | "default";
-export const AutoRecoveryEnum = S.Literal("disabled", "default");
-export type HttpEndpointEnum = "enabled" | "disabled";
-export const HttpEndpointEnum = S.Literal("enabled", "disabled");
-export type HttpProtocolIpv6Enum = "enabled" | "disabled";
-export const HttpProtocolIpv6Enum = S.Literal("enabled", "disabled");
-export type HttpTokensEnum = "optional" | "required";
-export const HttpTokensEnum = S.Literal("optional", "required");
-export type InstanceMetadataTagsEnum = "enabled" | "disabled";
-export const InstanceMetadataTagsEnum = S.Literal("enabled", "disabled");
-export type InterfaceTypeEnum = "interface" | "efa" | "efa-only";
-export const InterfaceTypeEnum = S.Literal("interface", "efa", "efa-only");
-export type BandwidthWeightingEnum = "default" | "vpc-1" | "ebs-1";
-export const BandwidthWeightingEnum = S.Literal("default", "vpc-1", "ebs-1");
-export type TenancyEnum = "default" | "dedicated" | "host";
-export const TenancyEnum = S.Literal("default", "dedicated", "host");
-export type HostnameTypeEnum = "ip-name" | "resource-name";
-export const HostnameTypeEnum = S.Literal("ip-name", "resource-name");
+  | "none"
+  | (string & {});
+export const CapacityReservationPreferenceEnum = S.String;
+export type AmdSevSnpEnum = "enabled" | "disabled" | (string & {});
+export const AmdSevSnpEnum = S.String;
+export type CpuCreditsEnum = "standard" | "unlimited" | (string & {});
+export const CpuCreditsEnum = S.String;
+export type MarketTypeEnum = "spot" | "capacity-block" | (string & {});
+export const MarketTypeEnum = S.String;
+export type AutoRecoveryEnum = "disabled" | "default" | (string & {});
+export const AutoRecoveryEnum = S.String;
+export type HttpEndpointEnum = "enabled" | "disabled" | (string & {});
+export const HttpEndpointEnum = S.String;
+export type HttpProtocolIpv6Enum = "enabled" | "disabled" | (string & {});
+export const HttpProtocolIpv6Enum = S.String;
+export type HttpTokensEnum = "optional" | "required" | (string & {});
+export const HttpTokensEnum = S.String;
+export type InstanceMetadataTagsEnum = "enabled" | "disabled" | (string & {});
+export const InstanceMetadataTagsEnum = S.String;
+export type InterfaceTypeEnum =
+  | "interface"
+  | "efa"
+  | "efa-only"
+  | (string & {});
+export const InterfaceTypeEnum = S.String;
+export type BandwidthWeightingEnum =
+  | "default"
+  | "vpc-1"
+  | "ebs-1"
+  | (string & {});
+export const BandwidthWeightingEnum = S.String;
+export type TenancyEnum = "default" | "dedicated" | "host" | (string & {});
+export const TenancyEnum = S.String;
+export type HostnameTypeEnum = "ip-name" | "resource-name" | (string & {});
+export const HostnameTypeEnum = S.String;
 export interface CreateVolumeRequest {
   AvailabilityZone: string;
   ClientToken?: string | redacted.Redacted<string>;
@@ -554,10 +542,13 @@ export const PrivateDnsNameOptionsRequest = S.suspend(() =>
 ).annotations({
   identifier: "PrivateDnsNameOptionsRequest",
 }) as any as S.Schema<PrivateDnsNameOptionsRequest>;
-export type InstanceInterruptionBehaviorEnum = "hibernate" | "stop";
-export const InstanceInterruptionBehaviorEnum = S.Literal("hibernate", "stop");
-export type SpotInstanceTypeEnum = "one-time" | "persistent";
-export const SpotInstanceTypeEnum = S.Literal("one-time", "persistent");
+export type InstanceInterruptionBehaviorEnum =
+  | "hibernate"
+  | "stop"
+  | (string & {});
+export const InstanceInterruptionBehaviorEnum = S.String;
+export type SpotInstanceTypeEnum = "one-time" | "persistent" | (string & {});
+export const SpotInstanceTypeEnum = S.String;
 export interface WorkspaceInstanceError {
   ErrorCode?: string;
   ErrorMessage?: string;
@@ -987,15 +978,9 @@ export type ValidationExceptionReason =
   | "CANNOT_PARSE"
   | "FIELD_VALIDATION_FAILED"
   | "DEPENDENCY_FAILURE"
-  | "OTHER";
-export const ValidationExceptionReason = S.Literal(
-  "UNKNOWN_OPERATION",
-  "UNSUPPORTED_OPERATION",
-  "CANNOT_PARSE",
-  "FIELD_VALIDATION_FAILED",
-  "DEPENDENCY_FAILURE",
-  "OTHER",
-);
+  | "OTHER"
+  | (string & {});
+export const ValidationExceptionReason = S.String;
 export interface CreateWorkspaceInstanceRequest {
   ClientToken?: string | redacted.Redacted<string>;
   Tags?: Tag[];

@@ -284,61 +284,56 @@ export const GetDeliverabilityDashboardOptionsRequest = S.suspend(() =>
 ).annotations({
   identifier: "GetDeliverabilityDashboardOptionsRequest",
 }) as any as S.Schema<GetDeliverabilityDashboardOptionsRequest>;
-export type ScalingMode = "STANDARD" | "MANAGED";
-export const ScalingMode = S.Literal("STANDARD", "MANAGED");
+export type ScalingMode = "STANDARD" | "MANAGED" | (string & {});
+export const ScalingMode = S.String;
 export type BlacklistItemNames = string[];
 export const BlacklistItemNames = S.Array(S.String);
 export type DeliverabilityDashboardAccountStatus =
   | "ACTIVE"
   | "PENDING_EXPIRATION"
-  | "DISABLED";
-export const DeliverabilityDashboardAccountStatus = S.Literal(
-  "ACTIVE",
-  "PENDING_EXPIRATION",
-  "DISABLED",
-);
-export type ReputationEntityType = "RESOURCE";
-export const ReputationEntityType = S.Literal("RESOURCE");
-export type ExportSourceType = "METRICS_DATA" | "MESSAGE_INSIGHTS";
-export const ExportSourceType = S.Literal("METRICS_DATA", "MESSAGE_INSIGHTS");
+  | "DISABLED"
+  | (string & {});
+export const DeliverabilityDashboardAccountStatus = S.String;
+export type ReputationEntityType = "RESOURCE" | (string & {});
+export const ReputationEntityType = S.String;
+export type ExportSourceType =
+  | "METRICS_DATA"
+  | "MESSAGE_INSIGHTS"
+  | (string & {});
+export const ExportSourceType = S.String;
 export type JobStatus =
   | "CREATED"
   | "PROCESSING"
   | "COMPLETED"
   | "FAILED"
-  | "CANCELLED";
-export const JobStatus = S.Literal(
-  "CREATED",
-  "PROCESSING",
-  "COMPLETED",
-  "FAILED",
-  "CANCELLED",
-);
-export type ImportDestinationType = "SUPPRESSION_LIST" | "CONTACT_LIST";
-export const ImportDestinationType = S.Literal(
-  "SUPPRESSION_LIST",
-  "CONTACT_LIST",
-);
-export type SuppressionListReason = "BOUNCE" | "COMPLAINT";
-export const SuppressionListReason = S.Literal("BOUNCE", "COMPLAINT");
+  | "CANCELLED"
+  | (string & {});
+export const JobStatus = S.String;
+export type ImportDestinationType =
+  | "SUPPRESSION_LIST"
+  | "CONTACT_LIST"
+  | (string & {});
+export const ImportDestinationType = S.String;
+export type SuppressionListReason = "BOUNCE" | "COMPLAINT" | (string & {});
+export const SuppressionListReason = S.String;
 export type SuppressionListReasons = SuppressionListReason[];
 export const SuppressionListReasons = S.Array(SuppressionListReason);
-export type MailType = "MARKETING" | "TRANSACTIONAL";
-export const MailType = S.Literal("MARKETING", "TRANSACTIONAL");
-export type ContactLanguage = "EN" | "JA";
-export const ContactLanguage = S.Literal("EN", "JA");
+export type MailType = "MARKETING" | "TRANSACTIONAL" | (string & {});
+export const MailType = S.String;
+export type ContactLanguage = "EN" | "JA" | (string & {});
+export const ContactLanguage = S.String;
 export type AdditionalContactEmailAddresses =
   | string
   | redacted.Redacted<string>[];
 export const AdditionalContactEmailAddresses = S.Array(SensitiveString);
-export type TlsPolicy = "REQUIRE" | "OPTIONAL";
-export const TlsPolicy = S.Literal("REQUIRE", "OPTIONAL");
-export type HttpsPolicy = "REQUIRE" | "REQUIRE_OPEN_ONLY" | "OPTIONAL";
-export const HttpsPolicy = S.Literal(
-  "REQUIRE",
-  "REQUIRE_OPEN_ONLY",
-  "OPTIONAL",
-);
+export type TlsPolicy = "REQUIRE" | "OPTIONAL" | (string & {});
+export const TlsPolicy = S.String;
+export type HttpsPolicy =
+  | "REQUIRE"
+  | "REQUIRE_OPEN_ONLY"
+  | "OPTIONAL"
+  | (string & {});
+export const HttpsPolicy = S.String;
 export type DkimSigningAttributesOrigin =
   | "AWS_SES"
   | "EXTERNAL"
@@ -368,49 +363,24 @@ export type DkimSigningAttributesOrigin =
   | "AWS_SES_AP_SOUTH_2"
   | "AWS_SES_EU_CENTRAL_2"
   | "AWS_SES_AP_SOUTHEAST_5"
-  | "AWS_SES_CA_WEST_1";
-export const DkimSigningAttributesOrigin = S.Literal(
-  "AWS_SES",
-  "EXTERNAL",
-  "AWS_SES_AF_SOUTH_1",
-  "AWS_SES_EU_NORTH_1",
-  "AWS_SES_AP_SOUTH_1",
-  "AWS_SES_EU_WEST_3",
-  "AWS_SES_EU_WEST_2",
-  "AWS_SES_EU_SOUTH_1",
-  "AWS_SES_EU_WEST_1",
-  "AWS_SES_AP_NORTHEAST_3",
-  "AWS_SES_AP_NORTHEAST_2",
-  "AWS_SES_ME_SOUTH_1",
-  "AWS_SES_AP_NORTHEAST_1",
-  "AWS_SES_IL_CENTRAL_1",
-  "AWS_SES_SA_EAST_1",
-  "AWS_SES_CA_CENTRAL_1",
-  "AWS_SES_AP_SOUTHEAST_1",
-  "AWS_SES_AP_SOUTHEAST_2",
-  "AWS_SES_AP_SOUTHEAST_3",
-  "AWS_SES_EU_CENTRAL_1",
-  "AWS_SES_US_EAST_1",
-  "AWS_SES_US_EAST_2",
-  "AWS_SES_US_WEST_1",
-  "AWS_SES_US_WEST_2",
-  "AWS_SES_ME_CENTRAL_1",
-  "AWS_SES_AP_SOUTH_2",
-  "AWS_SES_EU_CENTRAL_2",
-  "AWS_SES_AP_SOUTHEAST_5",
-  "AWS_SES_CA_WEST_1",
-);
-export type BehaviorOnMxFailure = "USE_DEFAULT_VALUE" | "REJECT_MESSAGE";
-export const BehaviorOnMxFailure = S.Literal(
-  "USE_DEFAULT_VALUE",
-  "REJECT_MESSAGE",
-);
+  | "AWS_SES_CA_WEST_1"
+  | (string & {});
+export const DkimSigningAttributesOrigin = S.String;
+export type BehaviorOnMxFailure =
+  | "USE_DEFAULT_VALUE"
+  | "REJECT_MESSAGE"
+  | (string & {});
+export const BehaviorOnMxFailure = S.String;
 export type EmailAddressList = string[];
 export const EmailAddressList = S.Array(S.String);
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
-export type SendingStatus = "ENABLED" | "REINSTATED" | "DISABLED";
-export const SendingStatus = S.Literal("ENABLED", "REINSTATED", "DISABLED");
+export type SendingStatus =
+  | "ENABLED"
+  | "REINSTATED"
+  | "DISABLED"
+  | (string & {});
+export const SendingStatus = S.String;
 export interface CancelExportJobRequest {
   JobId: string;
 }
@@ -1818,8 +1788,8 @@ export const PutAccountSendingAttributesResponse = S.suspend(() =>
 ).annotations({
   identifier: "PutAccountSendingAttributesResponse",
 }) as any as S.Schema<PutAccountSendingAttributesResponse>;
-export type FeatureStatus = "ENABLED" | "DISABLED";
-export const FeatureStatus = S.Literal("ENABLED", "DISABLED");
+export type FeatureStatus = "ENABLED" | "DISABLED" | (string & {});
+export const FeatureStatus = S.String;
 export interface DashboardAttributes {
   EngagementMetrics?: FeatureStatus;
 }
@@ -2291,8 +2261,11 @@ export const PutEmailIdentityDkimAttributesResponse = S.suspend(() =>
 ).annotations({
   identifier: "PutEmailIdentityDkimAttributesResponse",
 }) as any as S.Schema<PutEmailIdentityDkimAttributesResponse>;
-export type DkimSigningKeyLength = "RSA_1024_BIT" | "RSA_2048_BIT";
-export const DkimSigningKeyLength = S.Literal("RSA_1024_BIT", "RSA_2048_BIT");
+export type DkimSigningKeyLength =
+  | "RSA_1024_BIT"
+  | "RSA_2048_BIT"
+  | (string & {});
+export const DkimSigningKeyLength = S.String;
 export interface DkimSigningAttributes {
   DomainSigningSelector?: string;
   DomainSigningPrivateKey?: string | redacted.Redacted<string>;
@@ -2528,19 +2501,9 @@ export type EventType =
   | "CLICK"
   | "RENDERING_FAILURE"
   | "DELIVERY_DELAY"
-  | "SUBSCRIPTION";
-export const EventType = S.Literal(
-  "SEND",
-  "REJECT",
-  "BOUNCE",
-  "COMPLAINT",
-  "DELIVERY",
-  "OPEN",
-  "CLICK",
-  "RENDERING_FAILURE",
-  "DELIVERY_DELAY",
-  "SUBSCRIPTION",
-);
+  | "SUBSCRIPTION"
+  | (string & {});
+export const EventType = S.String;
 export type EventTypes = EventType[];
 export const EventTypes = S.Array(EventType);
 export interface KinesisFirehoseDestination {
@@ -2552,12 +2515,12 @@ export const KinesisFirehoseDestination = S.suspend(() =>
 ).annotations({
   identifier: "KinesisFirehoseDestination",
 }) as any as S.Schema<KinesisFirehoseDestination>;
-export type DimensionValueSource = "MESSAGE_TAG" | "EMAIL_HEADER" | "LINK_TAG";
-export const DimensionValueSource = S.Literal(
-  "MESSAGE_TAG",
-  "EMAIL_HEADER",
-  "LINK_TAG",
-);
+export type DimensionValueSource =
+  | "MESSAGE_TAG"
+  | "EMAIL_HEADER"
+  | "LINK_TAG"
+  | (string & {});
+export const DimensionValueSource = S.String;
 export interface CloudWatchDimensionConfiguration {
   DimensionName: string;
   DimensionValueSource: DimensionValueSource;
@@ -2663,8 +2626,8 @@ export const UpdateConfigurationSetEventDestinationResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateConfigurationSetEventDestinationResponse",
 }) as any as S.Schema<UpdateConfigurationSetEventDestinationResponse>;
-export type SubscriptionStatus = "OPT_IN" | "OPT_OUT";
-export const SubscriptionStatus = S.Literal("OPT_IN", "OPT_OUT");
+export type SubscriptionStatus = "OPT_IN" | "OPT_OUT" | (string & {});
+export const SubscriptionStatus = S.String;
 export interface TopicPreference {
   TopicName: string;
   SubscriptionStatus: SubscriptionStatus;
@@ -2942,8 +2905,8 @@ export const UpdateReputationEntityPolicyResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdateReputationEntityPolicyResponse",
 }) as any as S.Schema<UpdateReputationEntityPolicyResponse>;
-export type MetricNamespace = "VDM";
-export const MetricNamespace = S.Literal("VDM");
+export type MetricNamespace = "VDM" | (string & {});
+export const MetricNamespace = S.String;
 export type Metric =
   | "SEND"
   | "COMPLAINT"
@@ -2954,45 +2917,27 @@ export type Metric =
   | "DELIVERY"
   | "DELIVERY_OPEN"
   | "DELIVERY_CLICK"
-  | "DELIVERY_COMPLAINT";
-export const Metric = S.Literal(
-  "SEND",
-  "COMPLAINT",
-  "PERMANENT_BOUNCE",
-  "TRANSIENT_BOUNCE",
-  "OPEN",
-  "CLICK",
-  "DELIVERY",
-  "DELIVERY_OPEN",
-  "DELIVERY_CLICK",
-  "DELIVERY_COMPLAINT",
-);
-export type DataFormat = "CSV" | "JSON";
-export const DataFormat = S.Literal("CSV", "JSON");
+  | "DELIVERY_COMPLAINT"
+  | (string & {});
+export const Metric = S.String;
+export type DataFormat = "CSV" | "JSON" | (string & {});
+export const DataFormat = S.String;
 export type ListRecommendationsFilterKey =
   | "TYPE"
   | "IMPACT"
   | "STATUS"
-  | "RESOURCE_ARN";
-export const ListRecommendationsFilterKey = S.Literal(
-  "TYPE",
-  "IMPACT",
-  "STATUS",
-  "RESOURCE_ARN",
-);
+  | "RESOURCE_ARN"
+  | (string & {});
+export const ListRecommendationsFilterKey = S.String;
 export type ReputationEntityFilterKey =
   | "ENTITY_TYPE"
   | "REPUTATION_IMPACT"
   | "SENDING_STATUS"
-  | "ENTITY_REFERENCE_PREFIX";
-export const ReputationEntityFilterKey = S.Literal(
-  "ENTITY_TYPE",
-  "REPUTATION_IMPACT",
-  "SENDING_STATUS",
-  "ENTITY_REFERENCE_PREFIX",
-);
-export type ListTenantResourcesFilterKey = "RESOURCE_TYPE";
-export const ListTenantResourcesFilterKey = S.Literal("RESOURCE_TYPE");
+  | "ENTITY_REFERENCE_PREFIX"
+  | (string & {});
+export const ReputationEntityFilterKey = S.String;
+export type ListTenantResourcesFilterKey = "RESOURCE_TYPE" | (string & {});
+export const ListTenantResourcesFilterKey = S.String;
 export interface TrackingOptions {
   CustomRedirectDomain: string;
   HttpsPolicy?: HttpsPolicy;
@@ -3042,12 +2987,9 @@ export const SendingOptions = S.suspend(() =>
 export type SuppressionConfidenceVerdictThreshold =
   | "MEDIUM"
   | "HIGH"
-  | "MANAGED";
-export const SuppressionConfidenceVerdictThreshold = S.Literal(
-  "MEDIUM",
-  "HIGH",
-  "MANAGED",
-);
+  | "MANAGED"
+  | (string & {});
+export const SuppressionConfidenceVerdictThreshold = S.String;
 export interface SuppressionConfidenceThreshold {
   ConfidenceVerdictThreshold: SuppressionConfidenceVerdictThreshold;
 }
@@ -3116,8 +3058,13 @@ export const ImportDataSource = S.suspend(() =>
 ).annotations({
   identifier: "ImportDataSource",
 }) as any as S.Schema<ImportDataSource>;
-export type Status = "CREATING" | "READY" | "FAILED" | "DELETING";
-export const Status = S.Literal("CREATING", "READY", "FAILED", "DELETING");
+export type Status =
+  | "CREATING"
+  | "READY"
+  | "FAILED"
+  | "DELETING"
+  | (string & {});
+export const Status = S.String;
 export interface SendQuota {
   Max24HourSend?: number;
   MaxSendRate?: number;
@@ -3150,8 +3097,12 @@ export const SuppressionAttributes = S.suspend(() =>
 ).annotations({
   identifier: "SuppressionAttributes",
 }) as any as S.Schema<SuppressionAttributes>;
-export type WarmupStatus = "IN_PROGRESS" | "DONE" | "NOT_APPLICABLE";
-export const WarmupStatus = S.Literal("IN_PROGRESS", "DONE", "NOT_APPLICABLE");
+export type WarmupStatus =
+  | "IN_PROGRESS"
+  | "DONE"
+  | "NOT_APPLICABLE"
+  | (string & {});
+export const WarmupStatus = S.String;
 export interface DedicatedIp {
   Ip: string;
   WarmupStatus: WarmupStatus;
@@ -3168,31 +3119,29 @@ export const DedicatedIp = S.suspend(() =>
 ).annotations({ identifier: "DedicatedIp" }) as any as S.Schema<DedicatedIp>;
 export type DedicatedIpList = DedicatedIp[];
 export const DedicatedIpList = S.Array(DedicatedIp);
-export type IdentityType = "EMAIL_ADDRESS" | "DOMAIN" | "MANAGED_DOMAIN";
-export const IdentityType = S.Literal(
-  "EMAIL_ADDRESS",
-  "DOMAIN",
-  "MANAGED_DOMAIN",
-);
+export type IdentityType =
+  | "EMAIL_ADDRESS"
+  | "DOMAIN"
+  | "MANAGED_DOMAIN"
+  | (string & {});
+export const IdentityType = S.String;
 export type VerificationStatus =
   | "PENDING"
   | "SUCCESS"
   | "FAILED"
   | "TEMPORARY_FAILURE"
-  | "NOT_STARTED";
-export const VerificationStatus = S.Literal(
-  "PENDING",
-  "SUCCESS",
-  "FAILED",
-  "TEMPORARY_FAILURE",
-  "NOT_STARTED",
-);
+  | "NOT_STARTED"
+  | (string & {});
+export const VerificationStatus = S.String;
 export type ConfigurationSetNameList = string[];
 export const ConfigurationSetNameList = S.Array(S.String);
 export type ListOfDedicatedIpPools = string[];
 export const ListOfDedicatedIpPools = S.Array(S.String);
-export type DeliverabilityTestStatus = "IN_PROGRESS" | "COMPLETED";
-export const DeliverabilityTestStatus = S.Literal("IN_PROGRESS", "COMPLETED");
+export type DeliverabilityTestStatus =
+  | "IN_PROGRESS"
+  | "COMPLETED"
+  | (string & {});
+export const DeliverabilityTestStatus = S.String;
 export interface DeliverabilityTestReport {
   ReportId?: string;
   ReportName?: string;
@@ -3292,14 +3241,9 @@ export type DkimStatus =
   | "SUCCESS"
   | "FAILED"
   | "TEMPORARY_FAILURE"
-  | "NOT_STARTED";
-export const DkimStatus = S.Literal(
-  "PENDING",
-  "SUCCESS",
-  "FAILED",
-  "TEMPORARY_FAILURE",
-  "NOT_STARTED",
-);
+  | "NOT_STARTED"
+  | (string & {});
+export const DkimStatus = S.String;
 export type DnsTokenList = string[];
 export const DnsTokenList = S.Array(S.String);
 export interface MessageTag {
@@ -3322,17 +3266,17 @@ export const MessageHeader = S.suspend(() =>
 }) as any as S.Schema<MessageHeader>;
 export type MessageHeaderList = MessageHeader[];
 export const MessageHeaderList = S.Array(MessageHeader);
-export type AttachmentContentDisposition = "ATTACHMENT" | "INLINE";
-export const AttachmentContentDisposition = S.Literal("ATTACHMENT", "INLINE");
+export type AttachmentContentDisposition =
+  | "ATTACHMENT"
+  | "INLINE"
+  | (string & {});
+export const AttachmentContentDisposition = S.String;
 export type AttachmentContentTransferEncoding =
   | "BASE64"
   | "QUOTED_PRINTABLE"
-  | "SEVEN_BIT";
-export const AttachmentContentTransferEncoding = S.Literal(
-  "BASE64",
-  "QUOTED_PRINTABLE",
-  "SEVEN_BIT",
-);
+  | "SEVEN_BIT"
+  | (string & {});
+export const AttachmentContentTransferEncoding = S.String;
 export interface Attachment {
   RawContent: Uint8Array;
   ContentDisposition?: AttachmentContentDisposition;
@@ -3405,18 +3349,20 @@ export const ListManagementOptions = S.suspend(() =>
 export type MetricDimensionName =
   | "EMAIL_IDENTITY"
   | "CONFIGURATION_SET"
-  | "ISP";
-export const MetricDimensionName = S.Literal(
-  "EMAIL_IDENTITY",
-  "CONFIGURATION_SET",
-  "ISP",
-);
-export type SuppressionListImportAction = "DELETE" | "PUT";
-export const SuppressionListImportAction = S.Literal("DELETE", "PUT");
-export type ContactListImportAction = "DELETE" | "PUT";
-export const ContactListImportAction = S.Literal("DELETE", "PUT");
-export type ReviewStatus = "PENDING" | "FAILED" | "GRANTED" | "DENIED";
-export const ReviewStatus = S.Literal("PENDING", "FAILED", "GRANTED", "DENIED");
+  | "ISP"
+  | (string & {});
+export const MetricDimensionName = S.String;
+export type SuppressionListImportAction = "DELETE" | "PUT" | (string & {});
+export const SuppressionListImportAction = S.String;
+export type ContactListImportAction = "DELETE" | "PUT" | (string & {});
+export const ContactListImportAction = S.String;
+export type ReviewStatus =
+  | "PENDING"
+  | "FAILED"
+  | "GRANTED"
+  | "DENIED"
+  | (string & {});
+export const ReviewStatus = S.String;
 export interface CreateContactRequest {
   ContactListName: string;
   EmailAddress: string;
@@ -4078,13 +4024,9 @@ export type MailFromDomainStatus =
   | "PENDING"
   | "SUCCESS"
   | "FAILED"
-  | "TEMPORARY_FAILURE";
-export const MailFromDomainStatus = S.Literal(
-  "PENDING",
-  "SUCCESS",
-  "FAILED",
-  "TEMPORARY_FAILURE",
-);
+  | "TEMPORARY_FAILURE"
+  | (string & {});
+export const MailFromDomainStatus = S.String;
 export type VerificationError =
   | "SERVICE_ERROR"
   | "DNS_SERVER_ERROR"
@@ -4095,21 +4037,11 @@ export type VerificationError =
   | "REPLICATION_PRIMARY_NOT_FOUND"
   | "REPLICATION_PRIMARY_BYO_DKIM_NOT_SUPPORTED"
   | "REPLICATION_REPLICA_AS_PRIMARY_NOT_SUPPORTED"
-  | "REPLICATION_PRIMARY_INVALID_REGION";
-export const VerificationError = S.Literal(
-  "SERVICE_ERROR",
-  "DNS_SERVER_ERROR",
-  "HOST_NOT_FOUND",
-  "TYPE_NOT_FOUND",
-  "INVALID_VALUE",
-  "REPLICATION_ACCESS_DENIED",
-  "REPLICATION_PRIMARY_NOT_FOUND",
-  "REPLICATION_PRIMARY_BYO_DKIM_NOT_SUPPORTED",
-  "REPLICATION_REPLICA_AS_PRIMARY_NOT_SUPPORTED",
-  "REPLICATION_PRIMARY_INVALID_REGION",
-);
-export type RecommendationImpact = "LOW" | "HIGH";
-export const RecommendationImpact = S.Literal("LOW", "HIGH");
+  | "REPLICATION_PRIMARY_INVALID_REGION"
+  | (string & {});
+export const VerificationError = S.String;
+export type RecommendationImpact = "LOW" | "HIGH" | (string & {});
+export const RecommendationImpact = S.String;
 export interface TopicFilter {
   TopicName?: string;
   UseDefaultIfPreferenceUnavailable?: boolean;
@@ -4124,8 +4056,8 @@ export type Regions = string[];
 export const Regions = S.Array(S.String);
 export type ExportDimensionValue = string[];
 export const ExportDimensionValue = S.Array(S.String);
-export type MetricAggregation = "RATE" | "VOLUME";
-export const MetricAggregation = S.Literal("RATE", "VOLUME");
+export type MetricAggregation = "RATE" | "VOLUME" | (string & {});
+export const MetricAggregation = S.String;
 export type EmailAddressFilterList = string | redacted.Redacted<string>[];
 export const EmailAddressFilterList = S.Array(SensitiveString);
 export type EmailSubjectFilterList = string | redacted.Redacted<string>[];
@@ -4138,19 +4070,13 @@ export type DeliveryEventType =
   | "TRANSIENT_BOUNCE"
   | "PERMANENT_BOUNCE"
   | "UNDETERMINED_BOUNCE"
-  | "COMPLAINT";
-export const DeliveryEventType = S.Literal(
-  "SEND",
-  "DELIVERY",
-  "TRANSIENT_BOUNCE",
-  "PERMANENT_BOUNCE",
-  "UNDETERMINED_BOUNCE",
-  "COMPLAINT",
-);
+  | "COMPLAINT"
+  | (string & {});
+export const DeliveryEventType = S.String;
 export type LastDeliveryEventList = DeliveryEventType[];
 export const LastDeliveryEventList = S.Array(DeliveryEventType);
-export type EngagementEventType = "OPEN" | "CLICK";
-export const EngagementEventType = S.Literal("OPEN", "CLICK");
+export type EngagementEventType = "OPEN" | "CLICK" | (string & {});
+export const EngagementEventType = S.String;
 export type LastEngagementEventList = EngagementEventType[];
 export const LastEngagementEventList = S.Array(EngagementEventType);
 export interface BatchGetMetricDataQuery {
@@ -4686,12 +4612,12 @@ export const MessageInsightsFilters = S.suspend(() =>
 ).annotations({
   identifier: "MessageInsightsFilters",
 }) as any as S.Schema<MessageInsightsFilters>;
-export type EmailAddressInsightsConfidenceVerdict = "LOW" | "MEDIUM" | "HIGH";
-export const EmailAddressInsightsConfidenceVerdict = S.Literal(
-  "LOW",
-  "MEDIUM",
-  "HIGH",
-);
+export type EmailAddressInsightsConfidenceVerdict =
+  | "LOW"
+  | "MEDIUM"
+  | "HIGH"
+  | (string & {});
+export const EmailAddressInsightsConfidenceVerdict = S.String;
 export interface ReplacementTemplate {
   ReplacementTemplateData?: string;
 }
@@ -5270,28 +5196,17 @@ export type RecommendationType =
   | "COMPLAINT"
   | "BOUNCE"
   | "FEEDBACK_3P"
-  | "IP_LISTING";
-export const RecommendationType = S.Literal(
-  "DKIM",
-  "DMARC",
-  "SPF",
-  "BIMI",
-  "COMPLAINT",
-  "BOUNCE",
-  "FEEDBACK_3P",
-  "IP_LISTING",
-);
-export type RecommendationStatus = "OPEN" | "FIXED";
-export const RecommendationStatus = S.Literal("OPEN", "FIXED");
+  | "IP_LISTING"
+  | (string & {});
+export const RecommendationType = S.String;
+export type RecommendationStatus = "OPEN" | "FIXED" | (string & {});
+export const RecommendationStatus = S.String;
 export type ResourceType =
   | "EMAIL_IDENTITY"
   | "CONFIGURATION_SET"
-  | "EMAIL_TEMPLATE";
-export const ResourceType = S.Literal(
-  "EMAIL_IDENTITY",
-  "CONFIGURATION_SET",
-  "EMAIL_TEMPLATE",
-);
+  | "EMAIL_TEMPLATE"
+  | (string & {});
+export const ResourceType = S.String;
 export interface ReplacementEmailContent {
   ReplacementTemplate?: ReplacementTemplate;
 }
@@ -5578,8 +5493,12 @@ export const GetEmailIdentityResponse = S.suspend(() =>
 ).annotations({
   identifier: "GetEmailIdentityResponse",
 }) as any as S.Schema<GetEmailIdentityResponse>;
-export type BounceType = "UNDETERMINED" | "TRANSIENT" | "PERMANENT";
-export const BounceType = S.Literal("UNDETERMINED", "TRANSIENT", "PERMANENT");
+export type BounceType =
+  | "UNDETERMINED"
+  | "TRANSIENT"
+  | "PERMANENT"
+  | (string & {});
+export const BounceType = S.String;
 export interface GetReputationEntityResponse {
   ReputationEntity?: ReputationEntity;
 }
@@ -5692,8 +5611,11 @@ export const TimestampList = S.Array(
 );
 export type MetricValueList = number[];
 export const MetricValueList = S.Array(S.Number);
-export type QueryErrorCode = "INTERNAL_FAILURE" | "ACCESS_DENIED";
-export const QueryErrorCode = S.Literal("INTERNAL_FAILURE", "ACCESS_DENIED");
+export type QueryErrorCode =
+  | "INTERNAL_FAILURE"
+  | "ACCESS_DENIED"
+  | (string & {});
+export const QueryErrorCode = S.String;
 export interface Bounce {
   BounceType?: BounceType;
   BounceSubType?: string;
@@ -5849,23 +5771,9 @@ export type BulkEmailStatus =
   | "CONFIGURATION_SET_SENDING_PAUSED"
   | "INVALID_PARAMETER"
   | "TRANSIENT_FAILURE"
-  | "FAILED";
-export const BulkEmailStatus = S.Literal(
-  "SUCCESS",
-  "MESSAGE_REJECTED",
-  "MAIL_FROM_DOMAIN_NOT_VERIFIED",
-  "CONFIGURATION_SET_NOT_FOUND",
-  "TEMPLATE_NOT_FOUND",
-  "ACCOUNT_SUSPENDED",
-  "ACCOUNT_THROTTLED",
-  "ACCOUNT_DAILY_QUOTA_EXCEEDED",
-  "INVALID_SENDING_POOL_NAME",
-  "ACCOUNT_SENDING_PAUSED",
-  "CONFIGURATION_SET_SENDING_PAUSED",
-  "INVALID_PARAMETER",
-  "TRANSIENT_FAILURE",
-  "FAILED",
-);
+  | "FAILED"
+  | (string & {});
+export const BulkEmailStatus = S.String;
 export interface EmailInsights {
   Destination?: string | redacted.Redacted<string>;
   Isp?: string;

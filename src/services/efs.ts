@@ -187,32 +187,37 @@ export type AccessPointArn = string;
 export type StatusMessage = string;
 
 //# Schemas
-export type PerformanceMode = "generalPurpose" | "maxIO";
-export const PerformanceMode = S.Literal("generalPurpose", "maxIO");
-export type ThroughputMode = "bursting" | "provisioned" | "elastic";
-export const ThroughputMode = S.Literal("bursting", "provisioned", "elastic");
-export type IpAddressType = "IPV4_ONLY" | "IPV6_ONLY" | "DUAL_STACK";
-export const IpAddressType = S.Literal("IPV4_ONLY", "IPV6_ONLY", "DUAL_STACK");
+export type PerformanceMode = "generalPurpose" | "maxIO" | (string & {});
+export const PerformanceMode = S.String;
+export type ThroughputMode =
+  | "bursting"
+  | "provisioned"
+  | "elastic"
+  | (string & {});
+export const ThroughputMode = S.String;
+export type IpAddressType =
+  | "IPV4_ONLY"
+  | "IPV6_ONLY"
+  | "DUAL_STACK"
+  | (string & {});
+export const IpAddressType = S.String;
 export type SecurityGroups = string[];
 export const SecurityGroups = S.Array(S.String);
-export type DeletionMode = "ALL_CONFIGURATIONS" | "LOCAL_CONFIGURATION_ONLY";
-export const DeletionMode = S.Literal(
-  "ALL_CONFIGURATIONS",
-  "LOCAL_CONFIGURATION_ONLY",
-);
+export type DeletionMode =
+  | "ALL_CONFIGURATIONS"
+  | "LOCAL_CONFIGURATION_ONLY"
+  | (string & {});
+export const DeletionMode = S.String;
 export type TagKeys = string[];
 export const TagKeys = S.Array(S.String);
-export type ResourceIdType = "LONG_ID" | "SHORT_ID";
-export const ResourceIdType = S.Literal("LONG_ID", "SHORT_ID");
+export type ResourceIdType = "LONG_ID" | "SHORT_ID" | (string & {});
+export const ResourceIdType = S.String;
 export type ReplicationOverwriteProtection =
   | "ENABLED"
   | "DISABLED"
-  | "REPLICATING";
-export const ReplicationOverwriteProtection = S.Literal(
-  "ENABLED",
-  "DISABLED",
-  "REPLICATING",
-);
+  | "REPLICATING"
+  | (string & {});
+export const ReplicationOverwriteProtection = S.String;
 export interface Tag {
   Key: string;
   Value: string;
@@ -895,8 +900,13 @@ export const UpdateFileSystemProtectionRequest = S.suspend(() =>
 }) as any as S.Schema<UpdateFileSystemProtectionRequest>;
 export type SecondaryGids = number[];
 export const SecondaryGids = S.Array(S.Number);
-export type Status = "ENABLED" | "ENABLING" | "DISABLED" | "DISABLING";
-export const Status = S.Literal("ENABLED", "ENABLING", "DISABLED", "DISABLING");
+export type Status =
+  | "ENABLED"
+  | "ENABLING"
+  | "DISABLED"
+  | "DISABLING"
+  | (string & {});
+export const Status = S.String;
 export type TransitionToIARules =
   | "AFTER_7_DAYS"
   | "AFTER_14_DAYS"
@@ -906,20 +916,13 @@ export type TransitionToIARules =
   | "AFTER_1_DAY"
   | "AFTER_180_DAYS"
   | "AFTER_270_DAYS"
-  | "AFTER_365_DAYS";
-export const TransitionToIARules = S.Literal(
-  "AFTER_7_DAYS",
-  "AFTER_14_DAYS",
-  "AFTER_30_DAYS",
-  "AFTER_60_DAYS",
-  "AFTER_90_DAYS",
-  "AFTER_1_DAY",
-  "AFTER_180_DAYS",
-  "AFTER_270_DAYS",
-  "AFTER_365_DAYS",
-);
-export type TransitionToPrimaryStorageClassRules = "AFTER_1_ACCESS";
-export const TransitionToPrimaryStorageClassRules = S.Literal("AFTER_1_ACCESS");
+  | "AFTER_365_DAYS"
+  | (string & {});
+export const TransitionToIARules = S.String;
+export type TransitionToPrimaryStorageClassRules =
+  | "AFTER_1_ACCESS"
+  | (string & {});
+export const TransitionToPrimaryStorageClassRules = S.String;
 export type TransitionToArchiveRules =
   | "AFTER_1_DAY"
   | "AFTER_7_DAYS"
@@ -929,18 +932,9 @@ export type TransitionToArchiveRules =
   | "AFTER_90_DAYS"
   | "AFTER_180_DAYS"
   | "AFTER_270_DAYS"
-  | "AFTER_365_DAYS";
-export const TransitionToArchiveRules = S.Literal(
-  "AFTER_1_DAY",
-  "AFTER_7_DAYS",
-  "AFTER_14_DAYS",
-  "AFTER_30_DAYS",
-  "AFTER_60_DAYS",
-  "AFTER_90_DAYS",
-  "AFTER_180_DAYS",
-  "AFTER_270_DAYS",
-  "AFTER_365_DAYS",
-);
+  | "AFTER_365_DAYS"
+  | (string & {});
+export const TransitionToArchiveRules = S.String;
 export interface PosixUser {
   Uid: number;
   Gid: number;
@@ -959,15 +953,9 @@ export type LifeCycleState =
   | "updating"
   | "deleting"
   | "deleted"
-  | "error";
-export const LifeCycleState = S.Literal(
-  "creating",
-  "available",
-  "updating",
-  "deleting",
-  "deleted",
-  "error",
-);
+  | "error"
+  | (string & {});
+export const LifeCycleState = S.String;
 export interface DestinationToCreate {
   Region?: string;
   AvailabilityZoneName?: string;
@@ -1229,8 +1217,8 @@ export const ListTagsForResourceResponse = S.suspend(() =>
 ).annotations({
   identifier: "ListTagsForResourceResponse",
 }) as any as S.Schema<ListTagsForResourceResponse>;
-export type Resource = "FILE_SYSTEM" | "MOUNT_TARGET";
-export const Resource = S.Literal("FILE_SYSTEM", "MOUNT_TARGET");
+export type Resource = "FILE_SYSTEM" | "MOUNT_TARGET" | (string & {});
+export const Resource = S.String;
 export type Resources = Resource[];
 export const Resources = S.Array(Resource);
 export interface ResourceIdPreference {
@@ -1357,15 +1345,9 @@ export type ReplicationStatus =
   | "DELETING"
   | "ERROR"
   | "PAUSED"
-  | "PAUSING";
-export const ReplicationStatus = S.Literal(
-  "ENABLED",
-  "ENABLING",
-  "DELETING",
-  "ERROR",
-  "PAUSED",
-  "PAUSING",
-);
+  | "PAUSING"
+  | (string & {});
+export const ReplicationStatus = S.String;
 export interface CreateAccessPointRequest {
   ClientToken: string;
   Tags?: Tag[];

@@ -181,8 +181,8 @@ export type ThumbnailName = string;
 export type Code = string;
 
 //# Schemas
-export type Platform = "WEB" | "WEB_DYNAMIC" | "WEB_COMPUTE";
-export const Platform = S.Literal("WEB", "WEB_DYNAMIC", "WEB_COMPUTE");
+export type Platform = "WEB" | "WEB_DYNAMIC" | "WEB_COMPUTE" | (string & {});
+export const Platform = S.String;
 export type AutoBranchCreationPatterns = string[];
 export const AutoBranchCreationPatterns = S.Array(S.String);
 export type Stage =
@@ -190,20 +190,20 @@ export type Stage =
   | "BETA"
   | "DEVELOPMENT"
   | "EXPERIMENTAL"
-  | "PULL_REQUEST";
-export const Stage = S.Literal(
-  "PRODUCTION",
-  "BETA",
-  "DEVELOPMENT",
-  "EXPERIMENTAL",
-  "PULL_REQUEST",
-);
+  | "PULL_REQUEST"
+  | (string & {});
+export const Stage = S.String;
 export type AutoSubDomainCreationPatterns = string[];
 export const AutoSubDomainCreationPatterns = S.Array(S.String);
-export type SourceUrlType = "ZIP" | "BUCKET_PREFIX";
-export const SourceUrlType = S.Literal("ZIP", "BUCKET_PREFIX");
-export type JobType = "RELEASE" | "RETRY" | "MANUAL" | "WEB_HOOK";
-export const JobType = S.Literal("RELEASE", "RETRY", "MANUAL", "WEB_HOOK");
+export type SourceUrlType = "ZIP" | "BUCKET_PREFIX" | (string & {});
+export const SourceUrlType = S.String;
+export type JobType =
+  | "RELEASE"
+  | "RETRY"
+  | "MANUAL"
+  | "WEB_HOOK"
+  | (string & {});
+export const JobType = S.String;
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export interface CreateBackendEnvironmentRequest {
@@ -967,23 +967,23 @@ export const AutoBranchCreationConfig = S.suspend(() =>
 ).annotations({
   identifier: "AutoBranchCreationConfig",
 }) as any as S.Schema<AutoBranchCreationConfig>;
-export type BuildComputeType = "STANDARD_8GB" | "LARGE_16GB" | "XLARGE_72GB";
-export const BuildComputeType = S.Literal(
-  "STANDARD_8GB",
-  "LARGE_16GB",
-  "XLARGE_72GB",
-);
+export type BuildComputeType =
+  | "STANDARD_8GB"
+  | "LARGE_16GB"
+  | "XLARGE_72GB"
+  | (string & {});
+export const BuildComputeType = S.String;
 export interface JobConfig {
   buildComputeType: BuildComputeType;
 }
 export const JobConfig = S.suspend(() =>
   S.Struct({ buildComputeType: BuildComputeType }),
 ).annotations({ identifier: "JobConfig" }) as any as S.Schema<JobConfig>;
-export type CacheConfigType = "AMPLIFY_MANAGED" | "AMPLIFY_MANAGED_NO_COOKIES";
-export const CacheConfigType = S.Literal(
-  "AMPLIFY_MANAGED",
-  "AMPLIFY_MANAGED_NO_COOKIES",
-);
+export type CacheConfigType =
+  | "AMPLIFY_MANAGED"
+  | "AMPLIFY_MANAGED_NO_COOKIES"
+  | (string & {});
+export const CacheConfigType = S.String;
 export interface CacheConfig {
   type: CacheConfigType;
 }
@@ -1127,8 +1127,8 @@ export const SubDomainSetting = S.suspend(() =>
 }) as any as S.Schema<SubDomainSetting>;
 export type SubDomainSettings = SubDomainSetting[];
 export const SubDomainSettings = S.Array(SubDomainSetting);
-export type CertificateType = "AMPLIFY_MANAGED" | "CUSTOM";
-export const CertificateType = S.Literal("AMPLIFY_MANAGED", "CUSTOM");
+export type CertificateType = "AMPLIFY_MANAGED" | "CUSTOM" | (string & {});
+export const CertificateType = S.String;
 export interface CertificateSettings {
   type: CertificateType;
   customCertificateArn?: string;
@@ -1218,21 +1218,16 @@ export const ProductionBranch = S.suspend(() =>
 ).annotations({
   identifier: "ProductionBranch",
 }) as any as S.Schema<ProductionBranch>;
-export type RepositoryCloneMethod = "SSH" | "TOKEN" | "SIGV4";
-export const RepositoryCloneMethod = S.Literal("SSH", "TOKEN", "SIGV4");
+export type RepositoryCloneMethod = "SSH" | "TOKEN" | "SIGV4" | (string & {});
+export const RepositoryCloneMethod = S.String;
 export type WafStatus =
   | "ASSOCIATING"
   | "ASSOCIATION_FAILED"
   | "ASSOCIATION_SUCCESS"
   | "DISASSOCIATING"
-  | "DISASSOCIATION_FAILED";
-export const WafStatus = S.Literal(
-  "ASSOCIATING",
-  "ASSOCIATION_FAILED",
-  "ASSOCIATION_SUCCESS",
-  "DISASSOCIATING",
-  "DISASSOCIATION_FAILED",
-);
+  | "DISASSOCIATION_FAILED"
+  | (string & {});
+export const WafStatus = S.String;
 export interface WafConfiguration {
   webAclArn?: string;
   wafStatus?: WafStatus;
@@ -1419,19 +1414,9 @@ export type DomainStatus =
   | "FAILED"
   | "CREATING"
   | "REQUESTING_CERTIFICATE"
-  | "UPDATING";
-export const DomainStatus = S.Literal(
-  "PENDING_VERIFICATION",
-  "IN_PROGRESS",
-  "AVAILABLE",
-  "IMPORTING_CUSTOM_CERTIFICATE",
-  "PENDING_DEPLOYMENT",
-  "AWAITING_APP_CNAME",
-  "FAILED",
-  "CREATING",
-  "REQUESTING_CERTIFICATE",
-  "UPDATING",
-);
+  | "UPDATING"
+  | (string & {});
+export const DomainStatus = S.String;
 export type UpdateStatus =
   | "REQUESTING_CERTIFICATE"
   | "PENDING_VERIFICATION"
@@ -1439,16 +1424,9 @@ export type UpdateStatus =
   | "PENDING_DEPLOYMENT"
   | "AWAITING_APP_CNAME"
   | "UPDATE_COMPLETE"
-  | "UPDATE_FAILED";
-export const UpdateStatus = S.Literal(
-  "REQUESTING_CERTIFICATE",
-  "PENDING_VERIFICATION",
-  "IMPORTING_CUSTOM_CERTIFICATE",
-  "PENDING_DEPLOYMENT",
-  "AWAITING_APP_CNAME",
-  "UPDATE_COMPLETE",
-  "UPDATE_FAILED",
-);
+  | "UPDATE_FAILED"
+  | (string & {});
+export const UpdateStatus = S.String;
 export interface SubDomain {
   subDomainSetting: SubDomainSetting;
   verified: boolean;
@@ -1515,17 +1493,9 @@ export type JobStatus =
   | "FAILED"
   | "SUCCEED"
   | "CANCELLING"
-  | "CANCELLED";
-export const JobStatus = S.Literal(
-  "CREATED",
-  "PENDING",
-  "PROVISIONING",
-  "RUNNING",
-  "FAILED",
-  "SUCCEED",
-  "CANCELLING",
-  "CANCELLED",
-);
+  | "CANCELLED"
+  | (string & {});
+export const JobStatus = S.String;
 export interface JobSummary {
   jobArn: string;
   jobId: string;

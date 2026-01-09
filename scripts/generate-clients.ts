@@ -1503,11 +1503,13 @@ const convertShapeToSchema: (
                   enumValues = [...enumValues, ...enumOverride.add];
                 }
               }
-              // Generate S.Literal schema with all enum values
-              const literals = enumValues.map((v) => `"${v}"`).join(", ");
-              const literalUnion = enumValues.map((v) => `"${v}"`).join(" | ");
-              const typeAlias = `export type ${schemaName} = ${literalUnion};`;
-              const schemaDef = `export const ${schemaName} = S.Literal(${literals});`;
+              // Generate open enum: S.String for parsing, union for intellisense
+              // The (string & {}) pattern preserves autocomplete while allowing any string
+              const literalUnion = enumValues
+                .map((v) => `"${v}"`)
+                .join("\n  | ");
+              const typeAlias = `export type ${schemaName} =\n  | ${literalUnion}\n  | (string & {});`;
+              const schemaDef = `export const ${schemaName} = S.String;`;
               return addAlias(Effect.succeed(`${typeAlias}\n${schemaDef}`), []);
             },
           ),

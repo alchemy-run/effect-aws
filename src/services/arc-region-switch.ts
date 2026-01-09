@@ -166,8 +166,8 @@ export type RoutingControlArn = string;
 export type KubernetesNamespace = string;
 
 //# Schemas
-export type Approval = "approve" | "decline";
-export const Approval = S.Literal("approve", "decline");
+export type Approval = "approve" | "decline" | (string & {});
+export const Approval = S.String;
 export type ExecutionState =
   | "inProgress"
   | "pausedByFailedStep"
@@ -179,44 +179,29 @@ export type ExecutionState =
   | "pendingManualApproval"
   | "failed"
   | "pending"
-  | "completedMonitoringApplicationHealth";
-export const ExecutionState = S.Literal(
-  "inProgress",
-  "pausedByFailedStep",
-  "pausedByOperator",
-  "completed",
-  "completedWithExceptions",
-  "canceled",
-  "planExecutionTimedOut",
-  "pendingManualApproval",
-  "failed",
-  "pending",
-  "completedMonitoringApplicationHealth",
-);
-export type ExecutionAction = "activate" | "deactivate";
-export const ExecutionAction = S.Literal("activate", "deactivate");
-export type ExecutionMode = "graceful" | "ungraceful";
-export const ExecutionMode = S.Literal("graceful", "ungraceful");
+  | "completedMonitoringApplicationHealth"
+  | (string & {});
+export const ExecutionState = S.String;
+export type ExecutionAction = "activate" | "deactivate" | (string & {});
+export const ExecutionAction = S.String;
+export type ExecutionMode = "graceful" | "ungraceful" | (string & {});
+export const ExecutionMode = S.String;
 export type UpdatePlanExecutionAction =
   | "switchToGraceful"
   | "switchToUngraceful"
   | "pause"
-  | "resume";
-export const UpdatePlanExecutionAction = S.Literal(
-  "switchToGraceful",
-  "switchToUngraceful",
-  "pause",
-  "resume",
-);
-export type UpdatePlanExecutionStepAction = "switchToUngraceful" | "skip";
-export const UpdatePlanExecutionStepAction = S.Literal(
-  "switchToUngraceful",
-  "skip",
-);
+  | "resume"
+  | (string & {});
+export const UpdatePlanExecutionAction = S.String;
+export type UpdatePlanExecutionStepAction =
+  | "switchToUngraceful"
+  | "skip"
+  | (string & {});
+export const UpdatePlanExecutionStepAction = S.String;
 export type RegionList = string[];
 export const RegionList = S.Array(S.String);
-export type RecoveryApproach = "activeActive" | "activePassive";
-export const RecoveryApproach = S.Literal("activeActive", "activePassive");
+export type RecoveryApproach = "activeActive" | "activePassive" | (string & {});
+export const RecoveryApproach = S.String;
 export type TagKeys = string[];
 export const TagKeys = S.Array(S.String);
 export interface ApprovePlanExecutionStepRequest {
@@ -507,8 +492,8 @@ export const Steps = S.Array(
     identifier: "Step",
   }),
 ) as any as S.Schema<Steps>;
-export type WorkflowTargetAction = "activate" | "deactivate";
-export const WorkflowTargetAction = S.Literal("activate", "deactivate");
+export type WorkflowTargetAction = "activate" | "deactivate" | (string & {});
+export const WorkflowTargetAction = S.String;
 export interface Workflow {
   steps?: Step[];
   workflowTargetAction: WorkflowTargetAction;
@@ -525,8 +510,8 @@ export const Workflow = S.suspend(() =>
 ).annotations({ identifier: "Workflow" }) as any as S.Schema<Workflow>;
 export type WorkflowList = Workflow[];
 export const WorkflowList = S.Array(Workflow);
-export type AlarmType = "applicationHealth" | "trigger";
-export const AlarmType = S.Literal("applicationHealth", "trigger");
+export type AlarmType = "applicationHealth" | "trigger" | (string & {});
+export const AlarmType = S.String;
 export interface AssociatedAlarm {
   crossAccountRole?: string;
   externalId?: string;
@@ -548,8 +533,8 @@ export const AssociatedAlarmMap = S.Record({
   key: S.String,
   value: S.UndefinedOr(AssociatedAlarm),
 });
-export type AlarmCondition = "red" | "green";
-export const AlarmCondition = S.Literal("red", "green");
+export type AlarmCondition = "red" | "green" | (string & {});
+export const AlarmCondition = S.String;
 export interface TriggerCondition {
   associatedAlarmName: string;
   condition: AlarmCondition;
@@ -755,13 +740,9 @@ export type EvaluationStatus =
   | "passed"
   | "actionRequired"
   | "pendingEvaluation"
-  | "unknown";
-export const EvaluationStatus = S.Literal(
-  "passed",
-  "actionRequired",
-  "pendingEvaluation",
-  "unknown",
-);
+  | "unknown"
+  | (string & {});
+export const EvaluationStatus = S.String;
 export type ExecutionBlockType =
   | "CustomActionLambda"
   | "ManualApproval"
@@ -773,20 +754,9 @@ export type ExecutionBlockType =
   | "ECSServiceScaling"
   | "EKSResourceScaling"
   | "Route53HealthCheck"
-  | "DocumentDb";
-export const ExecutionBlockType = S.Literal(
-  "CustomActionLambda",
-  "ManualApproval",
-  "AuroraGlobalDatabase",
-  "EC2AutoScaling",
-  "ARCRoutingControl",
-  "ARCRegionSwitchPlan",
-  "Parallel",
-  "ECSServiceScaling",
-  "EKSResourceScaling",
-  "Route53HealthCheck",
-  "DocumentDb",
-);
+  | "DocumentDb"
+  | (string & {});
+export const ExecutionBlockType = S.String;
 export interface Plan {
   arn: string;
   description?: string;
@@ -831,12 +801,12 @@ export const GetPlanInRegionResponse = S.suspend(() =>
 ).annotations({
   identifier: "GetPlanInRegionResponse",
 }) as any as S.Schema<GetPlanInRegionResponse>;
-export type Route53HealthCheckStatus = "healthy" | "unhealthy" | "unknown";
-export const Route53HealthCheckStatus = S.Literal(
-  "healthy",
-  "unhealthy",
-  "unknown",
-);
+export type Route53HealthCheckStatus =
+  | "healthy"
+  | "unhealthy"
+  | "unknown"
+  | (string & {});
+export const Route53HealthCheckStatus = S.String;
 export interface Route53HealthCheck {
   hostedZoneId: string;
   recordName: string;
@@ -954,8 +924,8 @@ export const ListTagsForResourceResponse = S.suspend(() =>
 ).annotations({
   identifier: "ListTagsForResourceResponse",
 }) as any as S.Schema<ListTagsForResourceResponse>;
-export type ResourceWarningStatus = "active" | "resolved";
-export const ResourceWarningStatus = S.Literal("active", "resolved");
+export type ResourceWarningStatus = "active" | "resolved" | (string & {});
+export const ResourceWarningStatus = S.String;
 export type StepStatus =
   | "notStarted"
   | "running"
@@ -963,16 +933,9 @@ export type StepStatus =
   | "completed"
   | "canceled"
   | "skipped"
-  | "pendingApproval";
-export const StepStatus = S.Literal(
-  "notStarted",
-  "running",
-  "failed",
-  "completed",
-  "canceled",
-  "skipped",
-  "pendingApproval",
-);
+  | "pendingApproval"
+  | (string & {});
+export const StepStatus = S.String;
 export type ExecutionEventType =
   | "unknown"
   | "executionPending"
@@ -999,35 +962,9 @@ export type ExecutionEventType =
   | "stepPendingApproval"
   | "stepExecutionBehaviorChangedToUngraceful"
   | "stepPendingApplicationHealthMonitor"
-  | "planEvaluationWarning";
-export const ExecutionEventType = S.Literal(
-  "unknown",
-  "executionPending",
-  "executionStarted",
-  "executionSucceeded",
-  "executionFailed",
-  "executionPausing",
-  "executionPaused",
-  "executionCanceling",
-  "executionCanceled",
-  "executionPendingApproval",
-  "executionBehaviorChangedToUngraceful",
-  "executionBehaviorChangedToGraceful",
-  "executionPendingChildPlanManualApproval",
-  "executionSuccessMonitoringApplicationHealth",
-  "stepStarted",
-  "stepUpdate",
-  "stepSucceeded",
-  "stepFailed",
-  "stepSkipped",
-  "stepPausedByError",
-  "stepPausedByOperator",
-  "stepCanceled",
-  "stepPendingApproval",
-  "stepExecutionBehaviorChangedToUngraceful",
-  "stepPendingApplicationHealthMonitor",
-  "planEvaluationWarning",
-);
+  | "planEvaluationWarning"
+  | (string & {});
+export const ExecutionEventType = S.String;
 export type Resources = string[];
 export const Resources = S.Array(S.String);
 export interface StepState {
@@ -1155,41 +1092,37 @@ export const ListRoute53HealthChecksResponse = S.suspend(() =>
 ).annotations({
   identifier: "ListRoute53HealthChecksResponse",
 }) as any as S.Schema<ListRoute53HealthChecksResponse>;
-export type RegionToRunIn = "activatingRegion" | "deactivatingRegion";
-export const RegionToRunIn = S.Literal(
-  "activatingRegion",
-  "deactivatingRegion",
-);
+export type RegionToRunIn =
+  | "activatingRegion"
+  | "deactivatingRegion"
+  | (string & {});
+export const RegionToRunIn = S.String;
 export type Ec2AsgCapacityMonitoringApproach =
   | "sampledMaxInLast24Hours"
-  | "autoscalingMaxInLast24Hours";
-export const Ec2AsgCapacityMonitoringApproach = S.Literal(
-  "sampledMaxInLast24Hours",
-  "autoscalingMaxInLast24Hours",
-);
-export type GlobalAuroraDefaultBehavior = "switchoverOnly" | "failover";
-export const GlobalAuroraDefaultBehavior = S.Literal(
-  "switchoverOnly",
-  "failover",
-);
+  | "autoscalingMaxInLast24Hours"
+  | (string & {});
+export const Ec2AsgCapacityMonitoringApproach = S.String;
+export type GlobalAuroraDefaultBehavior =
+  | "switchoverOnly"
+  | "failover"
+  | (string & {});
+export const GlobalAuroraDefaultBehavior = S.String;
 export type AuroraClusterArns = string[];
 export const AuroraClusterArns = S.Array(S.String);
 export type EcsCapacityMonitoringApproach =
   | "sampledMaxInLast24Hours"
-  | "containerInsightsMaxInLast24Hours";
-export const EcsCapacityMonitoringApproach = S.Literal(
-  "sampledMaxInLast24Hours",
-  "containerInsightsMaxInLast24Hours",
-);
-export type EksCapacityMonitoringApproach = "sampledMaxInLast24Hours";
-export const EksCapacityMonitoringApproach = S.Literal(
-  "sampledMaxInLast24Hours",
-);
-export type DocumentDbDefaultBehavior = "switchoverOnly" | "failover";
-export const DocumentDbDefaultBehavior = S.Literal(
-  "switchoverOnly",
-  "failover",
-);
+  | "containerInsightsMaxInLast24Hours"
+  | (string & {});
+export const EcsCapacityMonitoringApproach = S.String;
+export type EksCapacityMonitoringApproach =
+  | "sampledMaxInLast24Hours"
+  | (string & {});
+export const EksCapacityMonitoringApproach = S.String;
+export type DocumentDbDefaultBehavior =
+  | "switchoverOnly"
+  | "failover"
+  | (string & {});
+export const DocumentDbDefaultBehavior = S.String;
 export type DocumentDbClusterArns = string[];
 export const DocumentDbClusterArns = S.Array(S.String);
 export interface MinimalWorkflow {
@@ -1204,12 +1137,9 @@ export const MinimalWorkflow = S.suspend(() =>
 export type FailedReportErrorCode =
   | "insufficientPermissions"
   | "invalidResource"
-  | "configurationError";
-export const FailedReportErrorCode = S.Literal(
-  "insufficientPermissions",
-  "invalidResource",
-  "configurationError",
-);
+  | "configurationError"
+  | (string & {});
+export const FailedReportErrorCode = S.String;
 export interface ExecutionApprovalConfiguration {
   timeoutMinutes?: number;
   approvalRole: string;
@@ -1267,12 +1197,12 @@ export const ResourceWarning = S.suspend(() =>
 }) as any as S.Schema<ResourceWarning>;
 export type PlanWarnings = ResourceWarning[];
 export const PlanWarnings = S.Array(ResourceWarning);
-export type LambdaUngracefulBehavior = "skip";
-export const LambdaUngracefulBehavior = S.Literal("skip");
-export type GlobalAuroraUngracefulBehavior = "failover";
-export const GlobalAuroraUngracefulBehavior = S.Literal("failover");
-export type DocumentDbUngracefulBehavior = "failover";
-export const DocumentDbUngracefulBehavior = S.Literal("failover");
+export type LambdaUngracefulBehavior = "skip" | (string & {});
+export const LambdaUngracefulBehavior = S.String;
+export type GlobalAuroraUngracefulBehavior = "failover" | (string & {});
+export const GlobalAuroraUngracefulBehavior = S.String;
+export type DocumentDbUngracefulBehavior = "failover" | (string & {});
+export const DocumentDbUngracefulBehavior = S.String;
 export interface S3ReportOutput {
   s3ObjectKey?: string;
 }
@@ -1453,8 +1383,8 @@ export const ReportOutput = S.Union(
   S.Struct({ s3ReportOutput: S3ReportOutput }),
   S.Struct({ failedReportOutput: FailedReportOutput }),
 );
-export type RoutingControlStateChange = "On" | "Off";
-export const RoutingControlStateChange = S.Literal("On", "Off");
+export type RoutingControlStateChange = "On" | "Off" | (string & {});
+export const RoutingControlStateChange = S.String;
 export interface CustomActionLambdaConfiguration {
   timeoutMinutes?: number;
   lambdas: Lambdas[];
