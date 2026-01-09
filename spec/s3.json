@@ -36,8 +36,13 @@
     "putBucketPolicy": {
       "errors": [
         "AccessDenied",
+        "InvalidBucketName",
+        "InvalidDigest",
+        "InvalidRequest",
         "MalformedPolicy",
-        "NoSuchBucket"
+        "NoSuchBucket",
+        "PermanentRedirect",
+        "SignatureDoesNotMatch"
       ]
     },
     "headBucket": {
@@ -48,7 +53,8 @@
     "getBucketPolicy": {
       "errors": [
         "NoSuchBucket",
-        "NoSuchBucketPolicy"
+        "NoSuchBucketPolicy",
+        "SignatureDoesNotMatch"
       ]
     },
     "getBucketTagging": {
@@ -324,7 +330,8 @@
     },
     "deleteBucketPolicy": {
       "errors": [
-        "NoSuchBucket"
+        "NoSuchBucket",
+        "SignatureDoesNotMatch"
       ]
     },
     "getObject": {
@@ -426,6 +433,12 @@
     "uploadPartCopy": {
       "errors": [
         "NoSuchBucket"
+      ]
+    },
+    "getBucketPolicyStatus": {
+      "errors": [
+        "NoSuchBucket",
+        "PermanentRedirect"
       ]
     }
   }

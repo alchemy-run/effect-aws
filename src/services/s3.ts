@@ -11913,12 +11913,32 @@ export class NoSuchBucket extends S.TaggedError<NoSuchBucket>()(
   "NoSuchBucket",
   {},
 ) {}
+export class SignatureDoesNotMatch extends S.TaggedError<SignatureDoesNotMatch>()(
+  "SignatureDoesNotMatch",
+  {},
+) {}
 export class AccessDenied extends S.TaggedError<AccessDenied>()(
   "AccessDenied",
   {},
 ) {}
+export class InvalidBucketName extends S.TaggedError<InvalidBucketName>()(
+  "InvalidBucketName",
+  {},
+) {}
+export class InvalidDigest extends S.TaggedError<InvalidDigest>()(
+  "InvalidDigest",
+  {},
+) {}
+export class InvalidRequest extends S.TaggedError<InvalidRequest>()(
+  "InvalidRequest",
+  {},
+) {}
 export class MalformedPolicy extends S.TaggedError<MalformedPolicy>()(
   "MalformedPolicy",
+  {},
+) {}
+export class PermanentRedirect extends S.TaggedError<PermanentRedirect>()(
+  "PermanentRedirect",
   {},
 ) {}
 export class IdempotencyParameterMismatch extends S.TaggedError<IdempotencyParameterMismatch>()(
@@ -11957,10 +11977,6 @@ export class NoSuchTagSet extends S.TaggedError<NoSuchTagSet>()(
 ) {}
 export class NoSuchWebsiteConfiguration extends S.TaggedError<NoSuchWebsiteConfiguration>()(
   "NoSuchWebsiteConfiguration",
-  {},
-) {}
-export class InvalidRequest extends S.TaggedError<InvalidRequest>()(
-  "InvalidRequest",
   {},
 ) {}
 export class ObjectLockConfigurationNotFoundError extends S.TaggedError<ObjectLockConfigurationNotFoundError>()(
@@ -12009,10 +12025,6 @@ export class IllegalLocationConstraintException extends S.TaggedError<IllegalLoc
 ) {}
 export class InvalidArgument extends S.TaggedError<InvalidArgument>()(
   "InvalidArgument",
-  {},
-) {}
-export class InvalidBucketName extends S.TaggedError<InvalidBucketName>()(
-  "InvalidBucketName",
   {},
 ) {}
 export class InvalidLocationConstraint extends S.TaggedError<InvalidLocationConstraint>()(
@@ -12523,12 +12535,12 @@ export const deleteBucketPolicy: (
   input: DeleteBucketPolicyRequest,
 ) => effect.Effect<
   DeleteBucketPolicyResponse,
-  NoSuchBucket | CommonErrors,
+  NoSuchBucket | SignatureDoesNotMatch | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBucketPolicyRequest,
   output: DeleteBucketPolicyResponse,
-  errors: [NoSuchBucket],
+  errors: [NoSuchBucket, SignatureDoesNotMatch],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -12763,12 +12775,29 @@ export const putBucketPolicy: (
   input: PutBucketPolicyRequest,
 ) => effect.Effect<
   PutBucketPolicyResponse,
-  AccessDenied | MalformedPolicy | NoSuchBucket | CommonErrors,
+  | AccessDenied
+  | InvalidBucketName
+  | InvalidDigest
+  | InvalidRequest
+  | MalformedPolicy
+  | NoSuchBucket
+  | PermanentRedirect
+  | SignatureDoesNotMatch
+  | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBucketPolicyRequest,
   output: PutBucketPolicyResponse,
-  errors: [AccessDenied, MalformedPolicy, NoSuchBucket],
+  errors: [
+    AccessDenied,
+    InvalidBucketName,
+    InvalidDigest,
+    InvalidRequest,
+    MalformedPolicy,
+    NoSuchBucket,
+    PermanentRedirect,
+    SignatureDoesNotMatch,
+  ],
 }));
 /**
  * Renames an existing object in a directory bucket that uses the S3 Express One Zone storage class.
@@ -13826,12 +13855,12 @@ export const getBucketPolicy: (
   input: GetBucketPolicyRequest,
 ) => effect.Effect<
   GetBucketPolicyOutput,
-  NoSuchBucket | NoSuchBucketPolicy | CommonErrors,
+  NoSuchBucket | NoSuchBucketPolicy | SignatureDoesNotMatch | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketPolicyRequest,
   output: GetBucketPolicyOutput,
-  errors: [NoSuchBucket, NoSuchBucketPolicy],
+  errors: [NoSuchBucket, NoSuchBucketPolicy, SignatureDoesNotMatch],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -15710,12 +15739,12 @@ export const getBucketPolicyStatus: (
   input: GetBucketPolicyStatusRequest,
 ) => effect.Effect<
   GetBucketPolicyStatusOutput,
-  CommonErrors,
+  NoSuchBucket | PermanentRedirect | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketPolicyStatusRequest,
   output: GetBucketPolicyStatusOutput,
-  errors: [],
+  errors: [NoSuchBucket, PermanentRedirect],
 }));
 /**
  * Retrieves an object from Amazon S3.
