@@ -69650,8 +69650,20 @@ export class AuthFailure extends S.TaggedError<AuthFailure>()(
   "AuthFailure",
   {},
 ) {}
+export class InvalidAddressNotFound extends S.TaggedError<InvalidAddressNotFound>()(
+  "InvalidAddress.NotFound",
+  {},
+) {}
 export class InvalidAllocationIDNotFound extends S.TaggedError<InvalidAllocationIDNotFound>()(
   "InvalidAllocationID.NotFound",
+  {},
+) {}
+export class InvalidIPAddressInUse extends S.TaggedError<InvalidIPAddressInUse>()(
+  "InvalidIPAddress.InUse",
+  {},
+) {}
+export class AddressLimitExceeded extends S.TaggedError<AddressLimitExceeded>()(
+  "AddressLimitExceeded",
   {},
 ) {}
 export class InvalidAMIIDNotFound extends S.TaggedError<InvalidAMIIDNotFound>()(
@@ -70745,7 +70757,9 @@ export const releaseAddress: (
   ReleaseAddressResponse,
   | AuthFailure
   | DryRunOperation
+  | InvalidAddressNotFound
   | InvalidAllocationIDNotFound
+  | InvalidIPAddressInUse
   | InvalidParameterCombination
   | InvalidParameterValue
   | MissingParameter
@@ -70757,7 +70771,9 @@ export const releaseAddress: (
   errors: [
     AuthFailure,
     DryRunOperation,
+    InvalidAddressNotFound,
     InvalidAllocationIDNotFound,
+    InvalidIPAddressInUse,
     InvalidParameterCombination,
     InvalidParameterValue,
     MissingParameter,
@@ -70979,12 +70995,12 @@ export const allocateAddress: (
   input: AllocateAddressRequest,
 ) => effect.Effect<
   AllocateAddressResult,
-  CommonErrors,
+  AddressLimitExceeded | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AllocateAddressRequest,
   output: AllocateAddressResult,
-  errors: [],
+  errors: [AddressLimitExceeded],
 }));
 /**
  * Allocates a Dedicated Host to your account. At a minimum, specify the supported
@@ -86882,12 +86898,12 @@ export const runInstances: (
   input: RunInstancesRequest,
 ) => effect.Effect<
   Reservation,
-  ParseError | CommonErrors,
+  InvalidAMIIDNotFound | ParseError | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RunInstancesRequest,
   output: Reservation,
-  errors: [ParseError],
+  errors: [InvalidAMIIDNotFound, ParseError],
 }));
 /**
  * Accept a VPC peering connection request. To accept a request, the VPC peering connection must

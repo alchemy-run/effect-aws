@@ -651,7 +651,9 @@
       "errors": [
         "AuthFailure",
         "DryRunOperation",
+        "InvalidAddress.NotFound",
         "InvalidAllocationID.NotFound",
+        "InvalidIPAddress.InUse",
         "InvalidParameterCombination",
         "InvalidParameterValue",
         "MissingParameter"
@@ -737,6 +739,7 @@
     },
     "runInstances": {
       "errors": [
+        "InvalidAMIID.NotFound",
         "ParseError"
       ]
     },
@@ -1163,6 +1166,11 @@
     "modifySecurityGroupRules": {
       "errors": [
         "MissingParameter"
+      ]
+    },
+    "allocateAddress": {
+      "errors": [
+        "AddressLimitExceeded"
       ]
     }
   },
