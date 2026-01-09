@@ -11787,7 +11787,14 @@ export class NoSuchBucket extends S.TaggedError<NoSuchBucket>()(
 ) {}
 export class PermanentRedirect extends S.TaggedError<PermanentRedirect>()(
   "PermanentRedirect",
-  {},
+  {
+    BucketRegion: S.optional(S.String).pipe(
+      T.HttpHeader("x-amz-bucket-region"),
+    ),
+    Endpoint: S.optional(S.String),
+    Bucket: S.optional(S.String),
+    Message: S.optional(S.String),
+  },
 ) {}
 export class SignatureDoesNotMatch extends S.TaggedError<SignatureDoesNotMatch>()(
   "SignatureDoesNotMatch",

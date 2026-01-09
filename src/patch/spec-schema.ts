@@ -82,6 +82,35 @@ export const StructureOverride = S.Struct({
 export type StructureOverride = typeof StructureOverride.Type;
 
 /**
+ * Error member patch - adds a member to an error schema.
+ * Use this for errors not fully documented in Smithy (e.g., PermanentRedirect).
+ */
+export const ErrorMemberPatch = S.Struct({
+  /**
+   * The type of the member (e.g., "string", "boolean", "number")
+   */
+  type: S.String,
+  /**
+   * Whether the field is optional (default: true)
+   */
+  optional: S.optional(S.Boolean),
+  /**
+   * HTTP header to extract this value from (e.g., "x-amz-bucket-region")
+   */
+  httpHeader: S.optional(S.String),
+});
+export type ErrorMemberPatch = typeof ErrorMemberPatch.Type;
+
+/**
+ * Error override - specifies members to add to an error schema
+ */
+export const ErrorOverride = S.Record({
+  key: S.String,
+  value: ErrorMemberPatch,
+});
+export type ErrorOverride = typeof ErrorOverride.Type;
+
+/**
  * All patches for a service
  */
 export const ServiceSpec = S.Struct({
@@ -101,6 +130,12 @@ export const ServiceSpec = S.Struct({
    * or with different casing than documented.
    */
   enums: S.optional(S.Record({ key: S.String, value: EnumOverride })),
+  /**
+   * Map of error names to their member patches.
+   * Use this for errors not fully documented in Smithy models (e.g., PermanentRedirect).
+   * Members can include traits like httpHeader to extract values from response headers.
+   */
+  errors: S.optional(S.Record({ key: S.String, value: ErrorOverride })),
 });
 export type ServiceSpec = typeof ServiceSpec.Type;
 

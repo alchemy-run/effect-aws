@@ -507,5 +507,26 @@
         "PermanentRedirect"
       ]
     }
+  },
+  "errors": {
+    "PermanentRedirect": {
+      "BucketRegion": {
+        "type": "string",
+        "optional": true,
+        "httpHeader": "x-amz-bucket-region"
+      },
+      "Endpoint": {
+        "type": "string",
+        "optional": true
+      },
+      "Bucket": {
+        "type": "string",
+        "optional": true
+      },
+      "Message": {
+        "type": "string",
+        "optional": true
+      }
+    }
   }
 }

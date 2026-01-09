@@ -224,6 +224,8 @@ export type ExceptionLevel = "DEBUG" | (string & {});
 export const ExceptionLevel = S.String;
 export type TargetIdList = string[];
 export const TargetIdList = S.Array(S.String);
+export type MemoryView = "full" | "without_decryption" | (string & {});
+export const MemoryView = S.String;
 export type CredentialProviderVendorType =
   | "GoogleOauth2"
   | "GithubOauth2"
@@ -1901,9 +1903,13 @@ export const UpdateGatewayTargetRequest = S.suspend(() =>
 }) as any as S.Schema<UpdateGatewayTargetRequest>;
 export interface GetMemoryInput {
   memoryId: string;
+  view?: MemoryView;
 }
 export const GetMemoryInput = S.suspend(() =>
-  S.Struct({ memoryId: S.String.pipe(T.HttpLabel("memoryId")) }).pipe(
+  S.Struct({
+    memoryId: S.String.pipe(T.HttpLabel("memoryId")),
+    view: S.optional(MemoryView).pipe(T.HttpQuery("view")),
+  }).pipe(
     T.all(
       T.Http({ method: "GET", uri: "/memories/{memoryId}/details" }),
       svc,

@@ -15,8 +15,25 @@
  * - EC2 instances
  * - Elastic IPs
  * - Network interfaces
- * - VPCs (with dependencies: subnets, internet gateways, NAT gateways, route tables, security groups)
+ * - VPCs (with dependencies in correct deletion order):
+ *   - VPC Endpoints
+ *   - NAT Gateways (waits for deletion)
+ *   - VPN Connections
+ *   - VPN Gateways (detach + delete)
+ *   - VPC Peering Connections
+ *   - Transit Gateway VPC Attachments
+ *   - Internet Gateways (detach + delete)
+ *   - Egress-Only Internet Gateways
+ *   - Carrier Gateways (Wavelength zones)
+ *   - Network Interfaces
+ *   - Subnets
+ *   - Route Tables (except main)
+ *   - Network ACLs (except default)
+ *   - Security Groups (except default)
  * - IAM roles (optionally, with --iam flag)
+ *
+ * Cleans resources in: us-east-1, us-west-2
+ * IAM is global and cleaned once.
  *
  * Usage:
  *   bun aws:clean                    # Clean against real AWS
@@ -30,6 +47,7 @@ import { Command, Options } from "@effect/cli";
 import { FetchHttpClient } from "@effect/platform";
 import { NodeContext, NodeRuntime } from "@effect/platform-node";
 import {
+  Chunk,
   Console,
   Effect,
   Layer,
@@ -37,6 +55,7 @@ import {
   LogLevel,
   Option,
   Ref,
+  Schedule,
   Stream,
 } from "effect";
 import * as Credentials from "../src/credentials.ts";
@@ -61,23 +80,40 @@ import {
 } from "../src/services/appsync.ts";
 import { deleteTable, listTables } from "../src/services/dynamodb.ts";
 import {
+  deleteCarrierGateway,
+  deleteEgressOnlyInternetGateway,
   deleteInternetGateway,
   deleteNatGateway,
+  deleteNetworkAcl,
   deleteNetworkInterface,
   deleteRouteTable,
   deleteSecurityGroup,
   deleteSubnet,
+  deleteTransitGatewayVpcAttachment,
   deleteVpc,
+  deleteVpcEndpoints,
+  deleteVpcPeeringConnection,
+  deleteVpnConnection,
+  deleteVpnGateway,
   describeAddresses,
+  describeCarrierGateways,
+  describeEgressOnlyInternetGateways,
   describeInstances,
   describeInternetGateways,
   describeNatGateways,
+  describeNetworkAcls,
   describeNetworkInterfaces,
   describeRouteTables,
   describeSecurityGroups,
   describeSubnets,
+  describeTransitGatewayVpcAttachments,
+  describeVpcEndpoints,
+  describeVpcPeeringConnections,
   describeVpcs,
+  describeVpnConnections,
+  describeVpnGateways,
   detachInternetGateway,
+  detachVpnGateway,
   disassociateRouteTable,
   releaseAddress,
   terminateInstances,
@@ -224,6 +260,33 @@ const emptyBucket = (bucket: string) =>
     }
   });
 
+/**
+ * Process a single bucket, handling cross-region redirects.
+ * If PermanentRedirect is received, retry with the correct region.
+ */
+const processBucket = (bucket: string) =>
+  Effect.gen(function* () {
+    yield* emptyBucket(bucket);
+    yield* deleteBucket({ Bucket: bucket });
+  }).pipe(
+    Effect.catchTag("PermanentRedirect", (err) =>
+      Effect.gen(function* () {
+        if (!err.BucketRegion) {
+          return yield* Effect.fail(err);
+        }
+        yield* warn(
+          `Bucket ${bucket} is in region ${err.BucketRegion}, retrying...`,
+        );
+        yield* emptyBucket(bucket).pipe(
+          Effect.provideService(Region, err.BucketRegion),
+        );
+        yield* deleteBucket({ Bucket: bucket }).pipe(
+          Effect.provideService(Region, err.BucketRegion),
+        );
+      }),
+    ),
+  );
+
 const cleanS3 = Effect.gen(function* () {
   const { dryRun, prefix } = yield* getConfig;
   yield* log("📦", "Cleaning S3 buckets...");
@@ -245,8 +308,7 @@ const cleanS3 = Effect.gen(function* () {
       yield* log("  📋", `Would delete bucket: ${bucket.Name}`);
     } else {
       yield* log("  🗑️", `Deleting bucket: ${bucket.Name}`);
-      yield* emptyBucket(bucket.Name);
-      yield* deleteBucket({ Bucket: bucket.Name });
+      yield* processBucket(bucket.Name);
     }
   }
 
@@ -858,6 +920,519 @@ const cleanNetworkInterfaces = Effect.gen(function* () {
 // VPC Cleanup (most complex due to dependencies)
 // ============================================================================
 
+/**
+ * Wait for all NAT Gateways in a VPC to be deleted.
+ * NAT Gateways take time to delete (can take several minutes).
+ */
+const waitForNatGatewaysDeletion = (vpcId: string) =>
+  Effect.gen(function* () {
+    const checkDeleted = Effect.gen(function* () {
+      const natGateways = yield* describeNatGateways({
+        Filter: [
+          { Name: "vpc-id", Values: [vpcId] },
+          { Name: "state", Values: ["pending", "available", "deleting"] },
+        ],
+      });
+
+      const pending = (natGateways.NatGateways ?? []).filter(
+        (nat) => nat.State !== "deleted",
+      );
+
+      if (pending.length > 0) {
+        yield* Effect.fail(
+          new Error(`Waiting for ${pending.length} NAT Gateways to delete`),
+        );
+      }
+    });
+
+    yield* checkDeleted.pipe(
+      Effect.retry(
+        Schedule.exponential("2 seconds").pipe(
+          Schedule.union(Schedule.spaced("30 seconds")),
+          Schedule.intersect(Schedule.recurs(20)), // Max ~5 minutes
+        ),
+      ),
+      Effect.catchAll(() =>
+        warn("NAT Gateways still deleting, continuing anyway..."),
+      ),
+    );
+  });
+
+/**
+ * Delete a single VPC and all its dependencies in the correct order.
+ * Handles DependencyViolation with retries.
+ */
+const deleteVpcWithDependencies = (vpcId: string, nameTag: string) =>
+  Effect.gen(function* () {
+    yield* log("  🗑️", `Deleting VPC: ${vpcId} (${nameTag})`);
+
+    // 1. Delete VPC Endpoints
+    const vpcEndpoints = yield* describeVpcEndpoints
+      .pages({
+        Filters: [{ Name: "vpc-id", Values: [vpcId] }],
+      })
+      .pipe(
+        Stream.flatMap((page) => Stream.fromIterable(page.VpcEndpoints ?? [])),
+        Stream.runCollect,
+        Effect.map(Chunk.toArray),
+      );
+
+    const endpointIds = vpcEndpoints
+      .map((ep) => ep.VpcEndpointId)
+      .filter((id): id is string => !!id);
+
+    if (endpointIds.length > 0) {
+      yield* log("    🗑️", `Deleting ${endpointIds.length} VPC Endpoints...`);
+      yield* deleteVpcEndpoints({ VpcEndpointIds: endpointIds });
+    }
+
+    // 2. Delete NAT Gateways (initiate deletion)
+    const natGateways = yield* describeNatGateways({
+      Filter: [{ Name: "vpc-id", Values: [vpcId] }],
+    });
+
+    for (const nat of natGateways.NatGateways ?? []) {
+      if (nat.NatGatewayId && nat.State !== "deleted") {
+        yield* log("    🗑️", `Deleting NAT Gateway: ${nat.NatGatewayId}`);
+        yield* deleteNatGateway({ NatGatewayId: nat.NatGatewayId });
+      }
+    }
+
+    // 3. Wait for NAT Gateways to be fully deleted (they block subnet deletion)
+    if ((natGateways.NatGateways ?? []).length > 0) {
+      yield* log("    ⏳", "Waiting for NAT Gateways to be deleted...");
+      yield* waitForNatGatewaysDeletion(vpcId);
+    }
+
+    // 4. Get VPN Gateways attached to this VPC (exclude deleted ones)
+    const vpnGateways = yield* describeVpnGateways({
+      Filters: [
+        { Name: "attachment.vpc-id", Values: [vpcId] },
+        { Name: "state", Values: ["pending", "available"] },
+      ],
+    });
+
+    // 5. Delete VPN Connections for each VPN Gateway (must be done before detaching)
+    for (const vgw of vpnGateways.VpnGateways ?? []) {
+      if (!vgw.VpnGatewayId) continue;
+
+      const vpnConnections = yield* describeVpnConnections({
+        Filters: [{ Name: "vpn-gateway-id", Values: [vgw.VpnGatewayId] }],
+      });
+
+      for (const vpnConn of vpnConnections.VpnConnections ?? []) {
+        if (vpnConn.VpnConnectionId && vpnConn.State !== "deleted") {
+          yield* log(
+            "    🗑️",
+            `Deleting VPN Connection: ${vpnConn.VpnConnectionId}`,
+          );
+          yield* deleteVpnConnection({
+            VpnConnectionId: vpnConn.VpnConnectionId,
+          });
+        }
+      }
+    }
+
+    // 6. Detach and delete VPN Gateways
+    for (const vgw of vpnGateways.VpnGateways ?? []) {
+      if (!vgw.VpnGatewayId) continue;
+
+      // Skip deleted/deleting gateways
+      if (vgw.State === "deleted" || vgw.State === "deleting") {
+        yield* log(
+          "    ⚠️",
+          `VPN Gateway ${vgw.VpnGatewayId} already ${vgw.State}, skipping`,
+        );
+        continue;
+      }
+
+      // Check if actually attached to this VPC
+      const attachment = vgw.VpcAttachments?.find((a) => a.VpcId === vpcId);
+      if (attachment?.State === "attached") {
+        yield* log("    🗑️", `Detaching VPN Gateway: ${vgw.VpnGatewayId}`);
+        yield* detachVpnGateway({
+          VpnGatewayId: vgw.VpnGatewayId,
+          VpcId: vpcId,
+        }).pipe(
+          Effect.catchTag("IncorrectState", () =>
+            log(
+              "    ⚠️",
+              `VPN Gateway ${vgw.VpnGatewayId} not in attachable state, skipping detach`,
+            ),
+          ),
+          Effect.catchTag("DependencyViolation", () =>
+            log(
+              "    ⚠️",
+              `VPN Gateway ${vgw.VpnGatewayId} has dependencies, skipping detach`,
+            ),
+          ),
+          Effect.catchTag("InvalidVpnGatewayID.NotFound", () =>
+            log(
+              "    ⚠️",
+              `VPN Gateway ${vgw.VpnGatewayId} not found, already deleted`,
+            ),
+          ),
+        );
+      } else {
+        yield* log(
+          "    ⚠️",
+          `VPN Gateway ${vgw.VpnGatewayId} not attached (state: ${attachment?.State ?? "none"})`,
+        );
+      }
+
+      yield* deleteVpnGateway({ VpnGatewayId: vgw.VpnGatewayId }).pipe(
+        Effect.catchTag("IncorrectState", () =>
+          log(
+            "    ⚠️",
+            `VPN Gateway ${vgw.VpnGatewayId} not in deletable state, skipping`,
+          ),
+        ),
+        Effect.catchTag("InvalidVpnGatewayID.NotFound", () =>
+          log(
+            "    ⚠️",
+            `VPN Gateway ${vgw.VpnGatewayId} not found, already deleted`,
+          ),
+        ),
+      );
+    }
+
+    // 7. Delete VPC Peering Connections (as requester)
+    const peeringAsRequester = yield* describeVpcPeeringConnections
+      .pages({
+        Filters: [{ Name: "requester-vpc-info.vpc-id", Values: [vpcId] }],
+      })
+      .pipe(
+        Stream.flatMap((page) =>
+          Stream.fromIterable(page.VpcPeeringConnections ?? []),
+        ),
+        Stream.runCollect,
+      );
+
+    for (const peering of peeringAsRequester) {
+      if (
+        peering.VpcPeeringConnectionId &&
+        peering.Status?.Code !== "deleted"
+      ) {
+        yield* log(
+          "    🗑️",
+          `Deleting VPC Peering: ${peering.VpcPeeringConnectionId}`,
+        );
+        yield* deleteVpcPeeringConnection({
+          VpcPeeringConnectionId: peering.VpcPeeringConnectionId,
+        });
+      }
+    }
+
+    // 7. Delete VPC Peering Connections (as accepter)
+    const peeringAsAccepter = yield* describeVpcPeeringConnections
+      .pages({
+        Filters: [{ Name: "accepter-vpc-info.vpc-id", Values: [vpcId] }],
+      })
+      .pipe(
+        Stream.flatMap((page) =>
+          Stream.fromIterable(page.VpcPeeringConnections ?? []),
+        ),
+        Stream.runCollect,
+      );
+
+    for (const peering of peeringAsAccepter) {
+      if (
+        peering.VpcPeeringConnectionId &&
+        peering.Status?.Code !== "deleted"
+      ) {
+        yield* log(
+          "    🗑️",
+          `Deleting VPC Peering: ${peering.VpcPeeringConnectionId}`,
+        );
+        yield* deleteVpcPeeringConnection({
+          VpcPeeringConnectionId: peering.VpcPeeringConnectionId,
+        });
+      }
+    }
+
+    // 8. Delete Transit Gateway VPC Attachments
+    const tgwAttachments = yield* describeTransitGatewayVpcAttachments
+      .pages({
+        Filters: [{ Name: "vpc-id", Values: [vpcId] }],
+      })
+      .pipe(
+        Stream.flatMap((page) =>
+          Stream.fromIterable(page.TransitGatewayVpcAttachments ?? []),
+        ),
+        Stream.runCollect,
+        Effect.map(Chunk.toArray),
+      );
+
+    for (const attachment of tgwAttachments) {
+      if (
+        attachment.TransitGatewayAttachmentId &&
+        attachment.State !== "deleted" &&
+        attachment.State !== "deleting"
+      ) {
+        yield* log(
+          "    🗑️",
+          `Deleting Transit Gateway Attachment: ${attachment.TransitGatewayAttachmentId}`,
+        );
+        yield* deleteTransitGatewayVpcAttachment({
+          TransitGatewayAttachmentId: attachment.TransitGatewayAttachmentId,
+        });
+      }
+    }
+
+    // 9. Detach and delete Internet Gateways
+    const igws = yield* describeInternetGateways({
+      Filters: [{ Name: "attachment.vpc-id", Values: [vpcId] }],
+    });
+
+    yield* log(
+      "    ℹ️",
+      `Found ${igws.InternetGateways?.length ?? 0} internet gateways`,
+    );
+
+    for (const igw of igws.InternetGateways ?? []) {
+      if (igw.InternetGatewayId) {
+        yield* log("    🗑️", `Detaching IGW: ${igw.InternetGatewayId}`);
+        yield* detachInternetGateway({
+          InternetGatewayId: igw.InternetGatewayId,
+          VpcId: vpcId,
+        });
+        yield* deleteInternetGateway({
+          InternetGatewayId: igw.InternetGatewayId,
+        });
+      }
+    }
+
+    // 9. Delete Egress-Only Internet Gateways (IPv6)
+    const eigws = yield* describeEgressOnlyInternetGateways.pages({}).pipe(
+      Stream.flatMap((page) =>
+        Stream.fromIterable(page.EgressOnlyInternetGateways ?? []),
+      ),
+      Stream.filter((eigw) => eigw.Attachments?.some((a) => a.VpcId === vpcId)),
+      Stream.runCollect,
+      Effect.map(Chunk.toArray),
+    );
+
+    for (const eigw of eigws) {
+      if (eigw.EgressOnlyInternetGatewayId) {
+        yield* log(
+          "    🗑️",
+          `Deleting Egress-Only IGW: ${eigw.EgressOnlyInternetGatewayId}`,
+        );
+        yield* deleteEgressOnlyInternetGateway({
+          EgressOnlyInternetGatewayId: eigw.EgressOnlyInternetGatewayId,
+        });
+      }
+    }
+
+    // 10. Delete Carrier Gateways (Wavelength zones)
+    const carrierGateways = yield* describeCarrierGateways
+      .pages({
+        Filters: [{ Name: "vpc-id", Values: [vpcId] }],
+      })
+      .pipe(
+        Stream.flatMap((page) =>
+          Stream.fromIterable(page.CarrierGateways ?? []),
+        ),
+        Stream.runCollect,
+        Effect.map(Chunk.toArray),
+      );
+
+    yield* log("    ℹ️", `Found ${carrierGateways.length} carrier gateways`);
+
+    for (const cgw of carrierGateways) {
+      if (cgw.CarrierGatewayId) {
+        yield* log(
+          "    🗑️",
+          `Deleting Carrier Gateway: ${cgw.CarrierGatewayId}`,
+        );
+        yield* deleteCarrierGateway({
+          CarrierGatewayId: cgw.CarrierGatewayId,
+        });
+      }
+    }
+
+    // 11. Delete Network Interfaces (detached ones only)
+    const enis = yield* describeNetworkInterfaces
+      .pages({
+        Filters: [{ Name: "vpc-id", Values: [vpcId] }],
+      })
+      .pipe(
+        Stream.flatMap((page) =>
+          Stream.fromIterable(page.NetworkInterfaces ?? []),
+        ),
+        Stream.runCollect,
+      );
+
+    yield* log("    ℹ️", `Found ${enis.length} network interfaces`);
+
+    for (const eni of enis) {
+      if (!eni.NetworkInterfaceId) continue;
+      // Skip attached interfaces (can't delete while attached)
+      if (eni.Attachment?.Status === "attached") {
+        yield* log(
+          "    ⚠️",
+          `Skipping attached ENI: ${eni.NetworkInterfaceId} (${eni.Description ?? "no description"})`,
+        );
+        continue;
+      }
+
+      yield* log(
+        "    🗑️",
+        `Deleting Network Interface: ${eni.NetworkInterfaceId}`,
+      );
+      yield* deleteNetworkInterface({
+        NetworkInterfaceId: eni.NetworkInterfaceId,
+      });
+    }
+
+    // 10. Delete Subnets (with retry for DependencyViolation)
+    const subnets = yield* describeSubnets({
+      Filters: [{ Name: "vpc-id", Values: [vpcId] }],
+    });
+
+    yield* log("    ℹ️", `Found ${subnets.Subnets?.length ?? 0} subnets`);
+
+    for (const subnet of subnets.Subnets ?? []) {
+      if (subnet.SubnetId) {
+        yield* log("    🗑️", `Deleting Subnet: ${subnet.SubnetId}`);
+        yield* deleteSubnet({ SubnetId: subnet.SubnetId }).pipe(
+          Effect.retry(
+            Schedule.exponential("1 second").pipe(
+              Schedule.intersect(Schedule.recurs(5)),
+              Schedule.whileInput(
+                (err: { _tag?: string }) => err._tag === "DependencyViolation",
+              ),
+            ),
+          ),
+          Effect.catchTag("DependencyViolation", () =>
+            log(
+              "    ⚠️",
+              `Subnet ${subnet.SubnetId} has dependencies, skipping`,
+            ),
+          ),
+        );
+      }
+    }
+
+    // 11. Delete Route Tables (except main)
+    const routeTables = yield* describeRouteTables({
+      Filters: [{ Name: "vpc-id", Values: [vpcId] }],
+    });
+
+    yield* log(
+      "    ℹ️",
+      `Found ${routeTables.RouteTables?.length ?? 0} route tables`,
+    );
+
+    for (const rt of routeTables.RouteTables ?? []) {
+      if (!rt.RouteTableId) continue;
+
+      // Skip main route table (gets deleted with VPC)
+      const isMain = rt.Associations?.some((a) => a.Main);
+      if (isMain) {
+        yield* log("    ℹ️", `Skipping main route table: ${rt.RouteTableId}`);
+        continue;
+      }
+
+      // Disassociate from subnets first
+      for (const assoc of rt.Associations ?? []) {
+        if (assoc.RouteTableAssociationId && !assoc.Main) {
+          yield* disassociateRouteTable({
+            AssociationId: assoc.RouteTableAssociationId,
+          });
+        }
+      }
+
+      yield* log("    🗑️", `Deleting Route Table: ${rt.RouteTableId}`);
+      yield* deleteRouteTable({ RouteTableId: rt.RouteTableId });
+    }
+
+    // 12. Delete Network ACLs (except default)
+    const networkAcls = yield* describeNetworkAcls
+      .pages({
+        Filters: [{ Name: "vpc-id", Values: [vpcId] }],
+      })
+      .pipe(
+        Stream.flatMap((page) => Stream.fromIterable(page.NetworkAcls ?? [])),
+        Stream.runCollect,
+        Effect.map(Chunk.toArray),
+      );
+
+    yield* log("    ℹ️", `Found ${networkAcls.length} network ACLs`);
+
+    for (const acl of networkAcls) {
+      if (!acl.NetworkAclId) continue;
+      if (acl.IsDefault) {
+        yield* log(
+          "    ℹ️",
+          `Skipping default network ACL: ${acl.NetworkAclId}`,
+        );
+        continue;
+      }
+
+      yield* log("    🗑️", `Deleting Network ACL: ${acl.NetworkAclId}`);
+      yield* deleteNetworkAcl({ NetworkAclId: acl.NetworkAclId });
+    }
+
+    // 13. Delete Security Groups (except default) with retry for cross-references
+    const securityGroups = yield* describeSecurityGroups({
+      Filters: [{ Name: "vpc-id", Values: [vpcId] }],
+    });
+
+    yield* log(
+      "    ℹ️",
+      `Found ${securityGroups.SecurityGroups?.length ?? 0} security groups`,
+    );
+
+    const sgsToDelete = (securityGroups.SecurityGroups ?? []).filter(
+      (sg) => sg.GroupId && sg.GroupName !== "default",
+    );
+
+    // Log skipped default security groups
+    for (const sg of securityGroups.SecurityGroups ?? []) {
+      if (sg.GroupName === "default") {
+        yield* log("    ℹ️", `Skipping default security group: ${sg.GroupId}`);
+      }
+    }
+
+    for (const sg of sgsToDelete) {
+      if (!sg.GroupId) continue;
+
+      yield* log("    🗑️", `Deleting Security Group: ${sg.GroupId}`);
+      yield* deleteSecurityGroup({ GroupId: sg.GroupId }).pipe(
+        Effect.retry(
+          Schedule.exponential("1 second").pipe(
+            Schedule.intersect(Schedule.recurs(5)),
+            Schedule.whileInput(
+              (err: { _tag?: string }) => err._tag === "DependencyViolation",
+            ),
+          ),
+        ),
+        Effect.catchTag("DependencyViolation", () =>
+          log(
+            "    ⚠️",
+            `Security Group ${sg.GroupId} has dependencies, skipping`,
+          ),
+        ),
+      );
+    }
+
+    // 14. Finally delete the VPC
+    yield* deleteVpc({ VpcId: vpcId }).pipe(
+      Effect.retry(
+        Schedule.exponential("1 second").pipe(
+          Schedule.intersect(Schedule.recurs(5)),
+          Schedule.whileInput(
+            (err: { _tag?: string }) => err._tag === "DependencyViolation",
+          ),
+        ),
+      ),
+      Effect.catchTag("DependencyViolation", () =>
+        log("    ⚠️", `VPC ${vpcId} has remaining dependencies, skipping`),
+      ),
+    );
+  });
+
 const cleanVPC = Effect.gen(function* () {
   const { dryRun, prefix } = yield* getConfig;
   yield* log("🌐", "Cleaning VPCs...");
@@ -873,7 +1448,10 @@ const cleanVPC = Effect.gen(function* () {
       if (!vpc.VpcId) continue;
 
       // Skip default VPC
-      if (vpc.IsDefault) continue;
+      if (vpc.IsDefault) {
+        yield* log("  ℹ️", `Skipping default VPC: ${vpc.VpcId}`);
+        continue;
+      }
 
       // Check prefix against VPC name tag
       const nameTag = vpc.Tags?.find((t) => t.Key === "Name")?.Value ?? "";
@@ -898,89 +1476,7 @@ const cleanVPC = Effect.gen(function* () {
       continue;
     }
 
-    yield* log("  🗑️", `Deleting VPC: ${vpc.vpcId} (${vpc.nameTag})`);
-
-    // 1. Delete NAT Gateways
-    const natGateways = yield* describeNatGateways({
-      Filter: [{ Name: "vpc-id", Values: [vpc.vpcId] }],
-    });
-
-    for (const nat of natGateways.NatGateways ?? []) {
-      if (nat.NatGatewayId && nat.State !== "deleted") {
-        yield* log("    🗑️", `Deleting NAT Gateway: ${nat.NatGatewayId}`);
-        yield* deleteNatGateway({ NatGatewayId: nat.NatGatewayId });
-      }
-    }
-
-    // 2. Detach and delete Internet Gateways
-    const igws = yield* describeInternetGateways({
-      Filters: [{ Name: "attachment.vpc-id", Values: [vpc.vpcId] }],
-    });
-
-    for (const igw of igws.InternetGateways ?? []) {
-      if (igw.InternetGatewayId) {
-        yield* log("    🗑️", `Detaching IGW: ${igw.InternetGatewayId}`);
-        yield* detachInternetGateway({
-          InternetGatewayId: igw.InternetGatewayId,
-          VpcId: vpc.vpcId,
-        });
-        yield* deleteInternetGateway({
-          InternetGatewayId: igw.InternetGatewayId,
-        });
-      }
-    }
-
-    // 3. Delete Subnets
-    const subnets = yield* describeSubnets({
-      Filters: [{ Name: "vpc-id", Values: [vpc.vpcId] }],
-    });
-
-    for (const subnet of subnets.Subnets ?? []) {
-      if (subnet.SubnetId) {
-        yield* log("    🗑️", `Deleting Subnet: ${subnet.SubnetId}`);
-        yield* deleteSubnet({ SubnetId: subnet.SubnetId });
-      }
-    }
-
-    // 4. Delete Route Tables (except main)
-    const routeTables = yield* describeRouteTables({
-      Filters: [{ Name: "vpc-id", Values: [vpc.vpcId] }],
-    });
-
-    for (const rt of routeTables.RouteTables ?? []) {
-      if (!rt.RouteTableId) continue;
-
-      // Skip main route table
-      const isMain = rt.Associations?.some((a) => a.Main);
-      if (isMain) continue;
-
-      // Disassociate from subnets first
-      for (const assoc of rt.Associations ?? []) {
-        if (assoc.RouteTableAssociationId && !assoc.Main) {
-          yield* disassociateRouteTable({
-            AssociationId: assoc.RouteTableAssociationId,
-          });
-        }
-      }
-
-      yield* log("    🗑️", `Deleting Route Table: ${rt.RouteTableId}`);
-      yield* deleteRouteTable({ RouteTableId: rt.RouteTableId });
-    }
-
-    // 5. Delete Security Groups (except default)
-    const securityGroups = yield* describeSecurityGroups({
-      Filters: [{ Name: "vpc-id", Values: [vpc.vpcId] }],
-    });
-
-    for (const sg of securityGroups.SecurityGroups ?? []) {
-      if (!sg.GroupId || sg.GroupName === "default") continue;
-
-      yield* log("    🗑️", `Deleting Security Group: ${sg.GroupId}`);
-      yield* deleteSecurityGroup({ GroupId: sg.GroupId });
-    }
-
-    // 6. Finally delete the VPC
-    yield* deleteVpc({ VpcId: vpc.vpcId });
+    yield* deleteVpcWithDependencies(vpc.vpcId, vpc.nameTag);
   }
 
   yield* log("  ✓", `Processed ${toDelete.length} VPCs`);
@@ -1110,22 +1606,37 @@ const cleanCommand = Command.make(
         yield* Console.log("☁️  Running against real AWS\n");
       }
 
-      // Run all cleanups
-      yield* cleanS3;
-      yield* cleanLambda;
-      yield* cleanECS;
-      yield* cleanSQS;
-      yield* cleanSNS;
-      yield* cleanDynamoDB;
-      yield* cleanAPIGateway;
-      yield* cleanAPIGatewayV2;
-      yield* cleanAppSync;
-      // EC2 resources must be cleaned before VPC
-      yield* cleanEC2Instances;
-      yield* cleanElasticIPs;
-      yield* cleanNetworkInterfaces;
-      yield* cleanVPC;
-      yield* cleanIAM;
+      // Regions to clean
+      const regions = ["us-east-1", "us-west-2"];
+
+      const cleanRegion = Effect.fnUntraced(function* (region: string) {
+        yield* Console.log(`\n🌍 Cleaning region: ${region}\n`);
+        yield* Console.log("─".repeat(40));
+
+        yield* cleanS3;
+        yield* cleanLambda;
+        yield* cleanECS;
+        yield* cleanSQS;
+        yield* cleanSNS;
+        yield* cleanDynamoDB;
+        yield* cleanAPIGateway;
+        yield* cleanAPIGatewayV2;
+        yield* cleanAppSync;
+        // EC2 resources must be cleaned before VPC
+        yield* cleanEC2Instances;
+        yield* cleanElasticIPs;
+        yield* cleanNetworkInterfaces;
+        yield* cleanVPC;
+      });
+
+      for (const region of regions) {
+        yield* cleanRegion(region).pipe(Effect.provideService(Region, region));
+      }
+
+      // IAM is global, only run once
+      yield* Console.log("\n🌍 Cleaning global resources (IAM)\n");
+      yield* Console.log("─".repeat(40));
+      yield* cleanIAM.pipe(Effect.provideService(Region, "us-east-1"));
 
       yield* Console.log("\n✨ Cleanup complete!");
     }),
@@ -1168,7 +1679,6 @@ cli(process.argv).pipe(
   Retry.transient,
   Effect.provide(platform),
   Effect.provide(awsLayer),
-  Effect.provideService(Region, "us-east-1"),
   Logger.withMinimumLogLevel(
     process.env.DEBUG ? LogLevel.Debug : LogLevel.Info,
   ),

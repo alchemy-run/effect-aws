@@ -2467,12 +2467,20 @@ export interface MediaPackageOutputDestinationSettings {
   ChannelId?: string;
   ChannelGroup?: string;
   ChannelName?: string;
+  ChannelEndpointId?: string;
+  MediaPackageRegionName?: string;
 }
 export const MediaPackageOutputDestinationSettings = S.suspend(() =>
   S.Struct({
     ChannelId: S.optional(S.String).pipe(T.JsonName("channelId")),
     ChannelGroup: S.optional(S.String).pipe(T.JsonName("channelGroup")),
     ChannelName: S.optional(S.String).pipe(T.JsonName("channelName")),
+    ChannelEndpointId: S.optional(S.String).pipe(
+      T.JsonName("channelEndpointId"),
+    ),
+    MediaPackageRegionName: S.optional(S.String).pipe(
+      T.JsonName("mediaPackageRegionName"),
+    ),
   }),
 ).annotations({
   identifier: "MediaPackageOutputDestinationSettings",
@@ -6362,6 +6370,23 @@ export type CmafTimedMetadataPassthrough =
   | "ENABLED"
   | (string & {});
 export const CmafTimedMetadataPassthrough = S.String;
+export interface MediaPackageAdditionalDestinations {
+  Destination?: OutputLocationRef;
+}
+export const MediaPackageAdditionalDestinations = S.suspend(() =>
+  S.Struct({
+    Destination: S.optional(OutputLocationRef)
+      .pipe(T.JsonName("destination"))
+      .annotations({ identifier: "OutputLocationRef" }),
+  }),
+).annotations({
+  identifier: "MediaPackageAdditionalDestinations",
+}) as any as S.Schema<MediaPackageAdditionalDestinations>;
+export type __listOfMediaPackageAdditionalDestinations =
+  MediaPackageAdditionalDestinations[];
+export const __listOfMediaPackageAdditionalDestinations = S.Array(
+  MediaPackageAdditionalDestinations,
+);
 export interface MediaPackageV2GroupSettings {
   CaptionLanguageMappings?: CaptionLanguageMapping[];
   Id3Behavior?: CmafId3Behavior;
@@ -6373,6 +6398,7 @@ export interface MediaPackageV2GroupSettings {
   TimedMetadataId3Frame?: CmafTimedMetadataId3Frame;
   TimedMetadataId3Period?: number;
   TimedMetadataPassthrough?: CmafTimedMetadataPassthrough;
+  AdditionalDestinations?: MediaPackageAdditionalDestinations[];
 }
 export const MediaPackageV2GroupSettings = S.suspend(() =>
   S.Struct({
@@ -6398,6 +6424,9 @@ export const MediaPackageV2GroupSettings = S.suspend(() =>
     TimedMetadataPassthrough: S.optional(CmafTimedMetadataPassthrough).pipe(
       T.JsonName("timedMetadataPassthrough"),
     ),
+    AdditionalDestinations: S.optional(
+      __listOfMediaPackageAdditionalDestinations,
+    ).pipe(T.JsonName("additionalDestinations")),
   }),
 ).annotations({
   identifier: "MediaPackageV2GroupSettings",
@@ -9512,6 +9541,9 @@ export interface DescribeChannelResponse {
               LanguageCode: __stringMin3Max3;
               LanguageDescription: __stringMin1;
             })[];
+            AdditionalDestinations: (MediaPackageAdditionalDestinations & {
+              Destination: OutputLocationRef;
+            })[];
           };
         };
         MsSmoothGroupSettings: MsSmoothGroupSettings & {
@@ -11489,6 +11521,9 @@ export interface RestartChannelPipelinesResponse {
               LanguageCode: __stringMin3Max3;
               LanguageDescription: __stringMin1;
             })[];
+            AdditionalDestinations: (MediaPackageAdditionalDestinations & {
+              Destination: OutputLocationRef;
+            })[];
           };
         };
         MsSmoothGroupSettings: MsSmoothGroupSettings & {
@@ -11824,6 +11859,9 @@ export interface StartChannelResponse {
               CaptionChannel: __integerMin1Max4;
               LanguageCode: __stringMin3Max3;
               LanguageDescription: __stringMin1;
+            })[];
+            AdditionalDestinations: (MediaPackageAdditionalDestinations & {
+              Destination: OutputLocationRef;
             })[];
           };
         };
@@ -12474,6 +12512,9 @@ export interface StopChannelResponse {
               CaptionChannel: __integerMin1Max4;
               LanguageCode: __stringMin3Max3;
               LanguageDescription: __stringMin1;
+            })[];
+            AdditionalDestinations: (MediaPackageAdditionalDestinations & {
+              Destination: OutputLocationRef;
             })[];
           };
         };
@@ -15323,6 +15364,9 @@ export interface UpdateChannelResponse {
                 LanguageCode: __stringMin3Max3;
                 LanguageDescription: __stringMin1;
               })[];
+              AdditionalDestinations: (MediaPackageAdditionalDestinations & {
+                Destination: OutputLocationRef;
+              })[];
             };
           };
           MsSmoothGroupSettings: MsSmoothGroupSettings & {
@@ -15597,6 +15641,9 @@ export interface UpdateChannelClassResponse {
                 CaptionChannel: __integerMin1Max4;
                 LanguageCode: __stringMin3Max3;
                 LanguageDescription: __stringMin1;
+              })[];
+              AdditionalDestinations: (MediaPackageAdditionalDestinations & {
+                Destination: OutputLocationRef;
               })[];
             };
           };
@@ -16328,6 +16375,9 @@ export interface DeleteChannelResponse {
               CaptionChannel: __integerMin1Max4;
               LanguageCode: __stringMin3Max3;
               LanguageDescription: __stringMin1;
+            })[];
+            AdditionalDestinations: (MediaPackageAdditionalDestinations & {
+              Destination: OutputLocationRef;
             })[];
           };
         };
@@ -17326,6 +17376,9 @@ export interface CreateChannelResponse {
                 CaptionChannel: __integerMin1Max4;
                 LanguageCode: __stringMin3Max3;
                 LanguageDescription: __stringMin1;
+              })[];
+              AdditionalDestinations: (MediaPackageAdditionalDestinations & {
+                Destination: OutputLocationRef;
               })[];
             };
           };

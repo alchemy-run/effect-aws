@@ -86,6 +86,33 @@ bun tsgo -b                              # Check the typescript types
 - 1:1 with Smithy traits — all traits flow into generated code
 - Protocol tests use real schemas from `src/services/*.ts`
 
+## ERROR PATCHING
+
+AWS Smithy models often omit errors that operations can actually throw. When you encounter an unknown/untyped error at runtime:
+
+1. **Identify the error** — Note the error tag (e.g., `InvalidVpnGatewayID.NotFound`)
+2. **Update the spec file** — Add the error to `spec/{service}.json`:
+   ```json
+   {
+     "operations": {
+       "detachVpnGateway": {
+         "errors": ["IncorrectState", "InvalidVpnGatewayID.NotFound", "DependencyViolation"]
+       }
+     }
+   }
+   ```
+3. **Regenerate the client** — Run `bun generate --sdk {service}`
+4. **Use typed error handling** — Now you can use `Effect.catchTag("ErrorName", ...)`
+
+**Spec schema:** See `src/patch/spec-schema.ts` for the full schema. Supports:
+- `operations.{name}.errors` — Add errors to operation error unions
+- `operations.{name}.aliases` — Map error names (e.g., "Error" → "ErrorException")
+- `structures.{name}.members` — Override member optionality
+- `enums.{name}.add/replace` — Fix enum values AWS returns but doesn't document
+- `errors.{name}` — Add members to error schemas (e.g., httpHeader extraction)
+
+**Error naming:** Use the exact AWS error code with dots (e.g., `InvalidVpcID.NotFound`). The generator converts dots appropriately for TypeScript identifiers.
+
 ## EXPLORING SMITHY MODELS
 
 Models are too large for context. Explore with:

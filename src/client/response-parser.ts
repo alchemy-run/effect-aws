@@ -14,8 +14,8 @@ import * as Effect from "effect/Effect";
 import * as ParseResult from "effect/ParseResult";
 import * as Schema from "effect/Schema";
 import { COMMON_ERRORS, UnknownAwsError } from "../errors.ts";
-import { getAwsQueryError, getProtocol } from "../traits.ts";
-import { getIdentifier } from "../util/ast.ts";
+import { getAwsQueryError, getHttpHeader, getProtocol } from "../traits.ts";
+import { getIdentifier, getPropertySignatures } from "../util/ast.ts";
 import type { Operation } from "./operation.ts";
 import type { Protocol, ProtocolHandler } from "./protocol.ts";
 import type { Response } from "./response.ts";
@@ -124,6 +124,19 @@ export const makeResponseParser = <A>(
     const errorSchema = errorSchemas.get(errorCode);
 
     if (errorSchema) {
+      // Extract headers for error members with HttpHeader traits
+      // This handles error fields not in the body (e.g., x-amz-bucket-region)
+      const errorProps = getPropertySignatures(errorSchema.ast);
+      for (const prop of errorProps) {
+        const headerName = getHttpHeader(prop);
+        if (headerName) {
+          const headerValue = response.headers[headerName.toLowerCase()];
+          if (headerValue !== undefined) {
+            (data as Record<string, unknown>)[String(prop.name)] = headerValue;
+          }
+        }
+      }
+
       // Get the schema identifier to use as _tag (may differ from wire errorCode)
       // e.g., wire code "EntityAlreadyExists" maps to schema tag "EntityAlreadyExistsException"
       const schemaTag = getIdentifier(errorSchema.ast) ?? errorCode;

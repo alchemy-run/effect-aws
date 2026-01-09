@@ -70469,12 +70469,15 @@ export const detachVpnGateway: (
   input: DetachVpnGatewayRequest,
 ) => effect.Effect<
   DetachVpnGatewayResponse,
-  InvalidVpnGatewayIDNotFound | CommonErrors,
+  | DependencyViolation
+  | IncorrectState
+  | InvalidVpnGatewayIDNotFound
+  | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetachVpnGatewayRequest,
   output: DetachVpnGatewayResponse,
-  errors: [InvalidVpnGatewayIDNotFound],
+  errors: [DependencyViolation, IncorrectState, InvalidVpnGatewayIDNotFound],
 }));
 /**
  * Disables a virtual private gateway (VGW) from propagating routes to a specified route

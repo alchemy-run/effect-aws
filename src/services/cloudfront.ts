@@ -9795,8 +9795,8 @@ export class IllegalUpdate extends S.TaggedError<IllegalUpdate>()(
   "IllegalUpdate",
   { Message: S.optional(S.String) },
 ).pipe(C.withBadRequestError) {}
-export class EntityNotFound extends S.TaggedError<EntityNotFound>()(
-  "EntityNotFound",
+export class EntityLimitExceeded extends S.TaggedError<EntityLimitExceeded>()(
+  "EntityLimitExceeded",
   { Message: S.optional(S.String) },
 ).pipe(C.withBadRequestError) {}
 export class NoSuchResource extends S.TaggedError<NoSuchResource>()(
@@ -9805,6 +9805,10 @@ export class NoSuchResource extends S.TaggedError<NoSuchResource>()(
 ).pipe(C.withBadRequestError) {}
 export class NoSuchFunctionExists extends S.TaggedError<NoSuchFunctionExists>()(
   "NoSuchFunctionExists",
+  { Message: S.optional(S.String) },
+).pipe(C.withBadRequestError) {}
+export class EntityNotFound extends S.TaggedError<EntityNotFound>()(
+  "EntityNotFound",
   { Message: S.optional(S.String) },
 ).pipe(C.withBadRequestError) {}
 export class NoSuchCachePolicy extends S.TaggedError<NoSuchCachePolicy>()(
@@ -9943,10 +9947,6 @@ export class TestFunctionFailed extends S.TaggedError<TestFunctionFailed>()(
   "TestFunctionFailed",
   { Message: S.optional(S.String) },
 ).pipe(C.withServerError) {}
-export class EntityLimitExceeded extends S.TaggedError<EntityLimitExceeded>()(
-  "EntityLimitExceeded",
-  { Message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
 export class FieldLevelEncryptionProfileSizeExceeded extends S.TaggedError<FieldLevelEncryptionProfileSizeExceeded>()(
   "FieldLevelEncryptionProfileSizeExceeded",
   { Message: S.optional(S.String) },
@@ -10000,6 +10000,10 @@ export class TooManyDistributionCNAMEs extends S.TaggedError<TooManyDistribution
 ).pipe(C.withBadRequestError) {}
 export class PublicKeyAlreadyExists extends S.TaggedError<PublicKeyAlreadyExists>()(
   "PublicKeyAlreadyExists",
+  { Message: S.optional(S.String) },
+).pipe(C.withConflictError) {}
+export class InvalidAssociation extends S.TaggedError<InvalidAssociation>()(
+  "InvalidAssociation",
   { Message: S.optional(S.String) },
 ).pipe(C.withConflictError) {}
 export class IllegalFieldLevelEncryptionConfigAssociationWithCacheBehavior extends S.TaggedError<IllegalFieldLevelEncryptionConfigAssociationWithCacheBehavior>()(
@@ -10090,10 +10094,6 @@ export class RealtimeLogConfigInUse extends S.TaggedError<RealtimeLogConfigInUse
   "RealtimeLogConfigInUse",
   { Message: S.optional(S.String) },
 ).pipe(C.withBadRequestError) {}
-export class InvalidAssociation extends S.TaggedError<InvalidAssociation>()(
-  "InvalidAssociation",
-  { Message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
 export class InvalidDefaultRootObject extends S.TaggedError<InvalidDefaultRootObject>()(
   "InvalidDefaultRootObject",
   { Message: S.optional(S.String) },
@@ -10705,6 +10705,22 @@ export const verifyDnsConfiguration: (
   errors: [AccessDenied, EntityNotFound, InvalidArgument],
 }));
 /**
+ * Gets a key group configuration.
+ *
+ * To get a key group configuration, you must provide the key group's identifier. If the key group is referenced in a distribution's cache behavior, you can get the key group's identifier using `ListDistributions` or `GetDistribution`. If the key group is not referenced in a cache behavior, you can get the identifier using `ListKeyGroups`.
+ */
+export const getKeyGroupConfig: (
+  input: GetKeyGroupConfigRequest,
+) => effect.Effect<
+  GetKeyGroupConfigResult,
+  NoSuchResource | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
+> = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  input: GetKeyGroupConfigRequest,
+  output: GetKeyGroupConfigResult,
+  errors: [NoSuchResource],
+}));
+/**
  * Gets information about a connection group.
  */
 export const getConnectionGroup: (
@@ -10853,22 +10869,6 @@ export const listInvalidationsForDistributionTenant: {
     items: "InvalidationList.Items",
     pageSize: "MaxItems",
   } as const,
-}));
-/**
- * Gets a key group configuration.
- *
- * To get a key group configuration, you must provide the key group's identifier. If the key group is referenced in a distribution's cache behavior, you can get the key group's identifier using `ListDistributions` or `GetDistribution`. If the key group is not referenced in a cache behavior, you can get the identifier using `ListKeyGroups`.
- */
-export const getKeyGroupConfig: (
-  input: GetKeyGroupConfigRequest,
-) => effect.Effect<
-  GetKeyGroupConfigResult,
-  NoSuchResource | CommonErrors,
-  Credentials | Region | HttpClient.HttpClient
-> = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetKeyGroupConfigRequest,
-  output: GetKeyGroupConfigResult,
-  errors: [NoSuchResource],
 }));
 /**
  * Gets a cache policy, including the following metadata:
@@ -11856,49 +11856,6 @@ export const updateOriginAccessControl: (
   ],
 }));
 /**
- * Gets information about a specific invalidation for a distribution tenant.
- */
-export const getInvalidationForDistributionTenant: (
-  input: GetInvalidationForDistributionTenantRequest,
-) => effect.Effect<
-  GetInvalidationForDistributionTenantResult,
-  AccessDenied | EntityNotFound | NoSuchInvalidation | CommonErrors,
-  Credentials | Region | HttpClient.HttpClient
-> = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetInvalidationForDistributionTenantRequest,
-  output: GetInvalidationForDistributionTenantResult,
-  errors: [AccessDenied, EntityNotFound, NoSuchInvalidation],
-}));
-/**
- * Updates a connection function.
- */
-export const updateConnectionFunction: (
-  input: UpdateConnectionFunctionRequest,
-) => effect.Effect<
-  UpdateConnectionFunctionResult,
-  | AccessDenied
-  | EntityNotFound
-  | EntitySizeLimitExceeded
-  | InvalidArgument
-  | InvalidIfMatchVersion
-  | PreconditionFailed
-  | UnsupportedOperation
-  | CommonErrors,
-  Credentials | Region | HttpClient.HttpClient
-> = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: UpdateConnectionFunctionRequest,
-  output: UpdateConnectionFunctionResult,
-  errors: [
-    AccessDenied,
-    EntityNotFound,
-    EntitySizeLimitExceeded,
-    InvalidArgument,
-    InvalidIfMatchVersion,
-    PreconditionFailed,
-    UnsupportedOperation,
-  ],
-}));
-/**
  * Tests a connection function.
  */
 export const testConnectionFunction: (
@@ -11983,6 +11940,43 @@ export const updatePublicKey: (
     InvalidIfMatchVersion,
     NoSuchPublicKey,
     PreconditionFailed,
+  ],
+}));
+/**
+ * Update an Amazon CloudFront VPC origin in your account.
+ */
+export const updateVpcOrigin: (
+  input: UpdateVpcOriginRequest,
+) => effect.Effect<
+  UpdateVpcOriginResult,
+  | AccessDenied
+  | CannotUpdateEntityWhileInUse
+  | EntityAlreadyExists
+  | EntityLimitExceeded
+  | EntityNotFound
+  | IllegalUpdate
+  | InconsistentQuantities
+  | InvalidArgument
+  | InvalidIfMatchVersion
+  | PreconditionFailed
+  | UnsupportedOperation
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
+> = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  input: UpdateVpcOriginRequest,
+  output: UpdateVpcOriginResult,
+  errors: [
+    AccessDenied,
+    CannotUpdateEntityWhileInUse,
+    EntityAlreadyExists,
+    EntityLimitExceeded,
+    EntityNotFound,
+    IllegalUpdate,
+    InconsistentQuantities,
+    InvalidArgument,
+    InvalidIfMatchVersion,
+    PreconditionFailed,
+    UnsupportedOperation,
   ],
 }));
 /**
@@ -12097,6 +12091,7 @@ export const associateDistributionWebACL: (
 ) => effect.Effect<
   AssociateDistributionWebACLResult,
   | AccessDenied
+  | EntityLimitExceeded
   | EntityNotFound
   | InvalidArgument
   | InvalidIfMatchVersion
@@ -12108,6 +12103,7 @@ export const associateDistributionWebACL: (
   output: AssociateDistributionWebACLResult,
   errors: [
     AccessDenied,
+    EntityLimitExceeded,
     EntityNotFound,
     InvalidArgument,
     InvalidIfMatchVersion,
@@ -12115,28 +12111,32 @@ export const associateDistributionWebACL: (
   ],
 }));
 /**
- * Disassociates a distribution tenant from the WAF web ACL.
+ * Deletes a CloudFront function.
+ *
+ * You cannot delete a function if it's associated with a cache behavior. First, update your distributions to remove the function association from all cache behaviors, then delete the function.
+ *
+ * To delete a function, you must provide the function's name and version (`ETag` value). To get these values, you can use `ListFunctions` and `DescribeFunction`.
  */
-export const disassociateDistributionTenantWebACL: (
-  input: DisassociateDistributionTenantWebACLRequest,
+export const deleteFunction: (
+  input: DeleteFunctionRequest,
 ) => effect.Effect<
-  DisassociateDistributionTenantWebACLResult,
-  | AccessDenied
-  | EntityNotFound
-  | InvalidArgument
+  DeleteFunctionResponse,
+  | FunctionInUse
   | InvalidIfMatchVersion
+  | NoSuchFunctionExists
   | PreconditionFailed
+  | UnsupportedOperation
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DisassociateDistributionTenantWebACLRequest,
-  output: DisassociateDistributionTenantWebACLResult,
+  input: DeleteFunctionRequest,
+  output: DeleteFunctionResponse,
   errors: [
-    AccessDenied,
-    EntityNotFound,
-    InvalidArgument,
+    FunctionInUse,
     InvalidIfMatchVersion,
+    NoSuchFunctionExists,
     PreconditionFailed,
+    UnsupportedOperation,
   ],
 }));
 /**
@@ -12358,32 +12358,30 @@ export const deleteResourcePolicy: (
   ],
 }));
 /**
- * Deletes a CloudFront function.
- *
- * You cannot delete a function if it's associated with a cache behavior. First, update your distributions to remove the function association from all cache behaviors, then delete the function.
- *
- * To delete a function, you must provide the function's name and version (`ETag` value). To get these values, you can use `ListFunctions` and `DescribeFunction`.
+ * Associates the WAF web ACL with a distribution tenant.
  */
-export const deleteFunction: (
-  input: DeleteFunctionRequest,
+export const associateDistributionTenantWebACL: (
+  input: AssociateDistributionTenantWebACLRequest,
 ) => effect.Effect<
-  DeleteFunctionResponse,
-  | FunctionInUse
+  AssociateDistributionTenantWebACLResult,
+  | AccessDenied
+  | EntityLimitExceeded
+  | EntityNotFound
+  | InvalidArgument
   | InvalidIfMatchVersion
-  | NoSuchFunctionExists
   | PreconditionFailed
-  | UnsupportedOperation
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DeleteFunctionRequest,
-  output: DeleteFunctionResponse,
+  input: AssociateDistributionTenantWebACLRequest,
+  output: AssociateDistributionTenantWebACLResult,
   errors: [
-    FunctionInUse,
+    AccessDenied,
+    EntityLimitExceeded,
+    EntityNotFound,
+    InvalidArgument,
     InvalidIfMatchVersion,
-    NoSuchFunctionExists,
     PreconditionFailed,
-    UnsupportedOperation,
   ],
 }));
 /**
@@ -12416,12 +12414,12 @@ export const publishFunction: (
   ],
 }));
 /**
- * Associates the WAF web ACL with a distribution tenant.
+ * Disassociates a distribution tenant from the WAF web ACL.
  */
-export const associateDistributionTenantWebACL: (
-  input: AssociateDistributionTenantWebACLRequest,
+export const disassociateDistributionTenantWebACL: (
+  input: DisassociateDistributionTenantWebACLRequest,
 ) => effect.Effect<
-  AssociateDistributionTenantWebACLResult,
+  DisassociateDistributionTenantWebACLResult,
   | AccessDenied
   | EntityNotFound
   | InvalidArgument
@@ -12430,8 +12428,8 @@ export const associateDistributionTenantWebACL: (
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: AssociateDistributionTenantWebACLRequest,
-  output: AssociateDistributionTenantWebACLResult,
+  input: DisassociateDistributionTenantWebACLRequest,
+  output: DisassociateDistributionTenantWebACLResult,
   errors: [
     AccessDenied,
     EntityNotFound,
@@ -12707,6 +12705,22 @@ export const listKeyValueStores: {
   } as const,
 }));
 /**
+ * Gets the code of a CloudFront function. To get configuration information and metadata about a function, use `DescribeFunction`.
+ *
+ * To get a function's code, you must provide the function's name and stage. To get these values, you can use `ListFunctions`.
+ */
+export const getFunction: (
+  input: GetFunctionRequest,
+) => effect.Effect<
+  GetFunctionResult,
+  NoSuchFunctionExists | UnsupportedOperation | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
+> = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  input: GetFunctionRequest,
+  output: GetFunctionResult,
+  errors: [NoSuchFunctionExists, UnsupportedOperation],
+}));
+/**
  * Gets a connection function.
  */
 export const getConnectionFunction: (
@@ -12793,22 +12807,6 @@ export const listDistributionsByVpcOriginId: (
   errors: [AccessDenied, EntityNotFound, InvalidArgument, UnsupportedOperation],
 }));
 /**
- * Gets the code of a CloudFront function. To get configuration information and metadata about a function, use `DescribeFunction`.
- *
- * To get a function's code, you must provide the function's name and stage. To get these values, you can use `ListFunctions`.
- */
-export const getFunction: (
-  input: GetFunctionRequest,
-) => effect.Effect<
-  GetFunctionResult,
-  NoSuchFunctionExists | UnsupportedOperation | CommonErrors,
-  Credentials | Region | HttpClient.HttpClient
-> = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetFunctionRequest,
-  output: GetFunctionResult,
-  errors: [NoSuchFunctionExists, UnsupportedOperation],
-}));
-/**
  * Describes a connection function.
  */
 export const describeConnectionFunction: (
@@ -12843,6 +12841,49 @@ export const describeKeyValueStore: (
   input: DescribeKeyValueStoreRequest,
   output: DescribeKeyValueStoreResult,
   errors: [AccessDenied, EntityNotFound, InvalidArgument, UnsupportedOperation],
+}));
+/**
+ * Gets information about a specific invalidation for a distribution tenant.
+ */
+export const getInvalidationForDistributionTenant: (
+  input: GetInvalidationForDistributionTenantRequest,
+) => effect.Effect<
+  GetInvalidationForDistributionTenantResult,
+  AccessDenied | EntityNotFound | NoSuchInvalidation | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
+> = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  input: GetInvalidationForDistributionTenantRequest,
+  output: GetInvalidationForDistributionTenantResult,
+  errors: [AccessDenied, EntityNotFound, NoSuchInvalidation],
+}));
+/**
+ * Updates a connection function.
+ */
+export const updateConnectionFunction: (
+  input: UpdateConnectionFunctionRequest,
+) => effect.Effect<
+  UpdateConnectionFunctionResult,
+  | AccessDenied
+  | EntityNotFound
+  | EntitySizeLimitExceeded
+  | InvalidArgument
+  | InvalidIfMatchVersion
+  | PreconditionFailed
+  | UnsupportedOperation
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
+> = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  input: UpdateConnectionFunctionRequest,
+  output: UpdateConnectionFunctionResult,
+  errors: [
+    AccessDenied,
+    EntityNotFound,
+    EntitySizeLimitExceeded,
+    InvalidArgument,
+    InvalidIfMatchVersion,
+    PreconditionFailed,
+    UnsupportedOperation,
+  ],
 }));
 /**
  * Gets information about whether additional CloudWatch metrics are enabled for the specified CloudFront distribution.
@@ -13000,68 +13041,51 @@ export const getRealtimeLogConfig: (
   errors: [AccessDenied, InvalidArgument, NoSuchRealtimeLogConfig],
 }));
 /**
- * Update an Amazon CloudFront VPC origin in your account.
+ * Updates a distribution tenant.
  */
-export const updateVpcOrigin: (
-  input: UpdateVpcOriginRequest,
+export const updateDistributionTenant: (
+  input: UpdateDistributionTenantRequest,
 ) => effect.Effect<
-  UpdateVpcOriginResult,
+  UpdateDistributionTenantResult,
   | AccessDenied
-  | CannotUpdateEntityWhileInUse
+  | CNAMEAlreadyExists
   | EntityAlreadyExists
   | EntityLimitExceeded
   | EntityNotFound
-  | IllegalUpdate
-  | InconsistentQuantities
   | InvalidArgument
+  | InvalidAssociation
   | InvalidIfMatchVersion
   | PreconditionFailed
-  | UnsupportedOperation
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: UpdateVpcOriginRequest,
-  output: UpdateVpcOriginResult,
+  input: UpdateDistributionTenantRequest,
+  output: UpdateDistributionTenantResult,
   errors: [
     AccessDenied,
-    CannotUpdateEntityWhileInUse,
+    CNAMEAlreadyExists,
     EntityAlreadyExists,
     EntityLimitExceeded,
     EntityNotFound,
-    IllegalUpdate,
-    InconsistentQuantities,
     InvalidArgument,
+    InvalidAssociation,
     InvalidIfMatchVersion,
     PreconditionFailed,
-    UnsupportedOperation,
   ],
 }));
 /**
- * Creates a connection group.
+ * Get the information about an invalidation.
  */
-export const createConnectionGroup: (
-  input: CreateConnectionGroupRequest,
+export const getInvalidation: (
+  input: GetInvalidationRequest,
 ) => effect.Effect<
-  CreateConnectionGroupResult,
-  | AccessDenied
-  | EntityAlreadyExists
-  | EntityLimitExceeded
-  | EntityNotFound
-  | InvalidArgument
-  | InvalidTagging
-  | CommonErrors,
+  GetInvalidationResult,
+  AccessDenied | NoSuchDistribution | NoSuchInvalidation | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: CreateConnectionGroupRequest,
-  output: CreateConnectionGroupResult,
-  errors: [
-    AccessDenied,
-    EntityAlreadyExists,
-    EntityLimitExceeded,
-    EntityNotFound,
-    InvalidArgument,
-    InvalidTagging,
-  ],
+  input: GetInvalidationRequest,
+  output: GetInvalidationResult,
+  errors: [AccessDenied, NoSuchDistribution, NoSuchInvalidation],
 }));
 /**
  * Specifies the key value store resource to add to your account. In your account, the key value store names must be unique. You can also import key value store data in JSON format from an S3 bucket by providing a valid `ImportSource` that you own.
@@ -13088,6 +13112,92 @@ export const createKeyValueStore: (
     EntitySizeLimitExceeded,
     InvalidArgument,
     UnsupportedOperation,
+  ],
+}));
+/**
+ * Disables additional CloudWatch metrics for the specified CloudFront distribution.
+ */
+export const deleteMonitoringSubscription: (
+  input: DeleteMonitoringSubscriptionRequest,
+) => effect.Effect<
+  DeleteMonitoringSubscriptionResult,
+  | AccessDenied
+  | NoSuchDistribution
+  | NoSuchMonitoringSubscription
+  | UnsupportedOperation
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
+> = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  input: DeleteMonitoringSubscriptionRequest,
+  output: DeleteMonitoringSubscriptionResult,
+  errors: [
+    AccessDenied,
+    NoSuchDistribution,
+    NoSuchMonitoringSubscription,
+    UnsupportedOperation,
+  ],
+}));
+/**
+ * Remove tags from a CloudFront resource. For more information, see Tagging a distribution in the *Amazon CloudFront Developer Guide*.
+ */
+export const untagResource: (
+  input: UntagResourceRequest,
+) => effect.Effect<
+  UntagResourceResponse,
+  | AccessDenied
+  | InvalidArgument
+  | InvalidTagging
+  | NoSuchResource
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
+> = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  input: UntagResourceRequest,
+  output: UntagResourceResponse,
+  errors: [AccessDenied, InvalidArgument, InvalidTagging, NoSuchResource],
+}));
+/**
+ * Add tags to a CloudFront resource. For more information, see Tagging a distribution in the *Amazon CloudFront Developer Guide*.
+ */
+export const tagResource: (
+  input: TagResourceRequest,
+) => effect.Effect<
+  TagResourceResponse,
+  | AccessDenied
+  | InvalidArgument
+  | InvalidTagging
+  | NoSuchResource
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
+> = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  input: TagResourceRequest,
+  output: TagResourceResponse,
+  errors: [AccessDenied, InvalidArgument, InvalidTagging, NoSuchResource],
+}));
+/**
+ * Creates a connection group.
+ */
+export const createConnectionGroup: (
+  input: CreateConnectionGroupRequest,
+) => effect.Effect<
+  CreateConnectionGroupResult,
+  | AccessDenied
+  | EntityAlreadyExists
+  | EntityLimitExceeded
+  | EntityNotFound
+  | InvalidArgument
+  | InvalidTagging
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
+> = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  input: CreateConnectionGroupRequest,
+  output: CreateConnectionGroupResult,
+  errors: [
+    AccessDenied,
+    EntityAlreadyExists,
+    EntityLimitExceeded,
+    EntityNotFound,
+    InvalidArgument,
+    InvalidTagging,
   ],
 }));
 /**
@@ -13174,77 +13284,35 @@ export const createVpcOrigin: (
   ],
 }));
 /**
- * Get the information about an invalidation.
+ * Creates a distribution tenant.
  */
-export const getInvalidation: (
-  input: GetInvalidationRequest,
+export const createDistributionTenant: (
+  input: CreateDistributionTenantRequest,
 ) => effect.Effect<
-  GetInvalidationResult,
-  AccessDenied | NoSuchDistribution | NoSuchInvalidation | CommonErrors,
-  Credentials | Region | HttpClient.HttpClient
-> = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetInvalidationRequest,
-  output: GetInvalidationResult,
-  errors: [AccessDenied, NoSuchDistribution, NoSuchInvalidation],
-}));
-/**
- * Disables additional CloudWatch metrics for the specified CloudFront distribution.
- */
-export const deleteMonitoringSubscription: (
-  input: DeleteMonitoringSubscriptionRequest,
-) => effect.Effect<
-  DeleteMonitoringSubscriptionResult,
+  CreateDistributionTenantResult,
   | AccessDenied
-  | NoSuchDistribution
-  | NoSuchMonitoringSubscription
-  | UnsupportedOperation
+  | CNAMEAlreadyExists
+  | EntityAlreadyExists
+  | EntityLimitExceeded
+  | EntityNotFound
+  | InvalidArgument
+  | InvalidAssociation
+  | InvalidTagging
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DeleteMonitoringSubscriptionRequest,
-  output: DeleteMonitoringSubscriptionResult,
+  input: CreateDistributionTenantRequest,
+  output: CreateDistributionTenantResult,
   errors: [
     AccessDenied,
-    NoSuchDistribution,
-    NoSuchMonitoringSubscription,
-    UnsupportedOperation,
+    CNAMEAlreadyExists,
+    EntityAlreadyExists,
+    EntityLimitExceeded,
+    EntityNotFound,
+    InvalidArgument,
+    InvalidAssociation,
+    InvalidTagging,
   ],
-}));
-/**
- * Remove tags from a CloudFront resource. For more information, see Tagging a distribution in the *Amazon CloudFront Developer Guide*.
- */
-export const untagResource: (
-  input: UntagResourceRequest,
-) => effect.Effect<
-  UntagResourceResponse,
-  | AccessDenied
-  | InvalidArgument
-  | InvalidTagging
-  | NoSuchResource
-  | CommonErrors,
-  Credentials | Region | HttpClient.HttpClient
-> = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: UntagResourceRequest,
-  output: UntagResourceResponse,
-  errors: [AccessDenied, InvalidArgument, InvalidTagging, NoSuchResource],
-}));
-/**
- * Add tags to a CloudFront resource. For more information, see Tagging a distribution in the *Amazon CloudFront Developer Guide*.
- */
-export const tagResource: (
-  input: TagResourceRequest,
-) => effect.Effect<
-  TagResourceResponse,
-  | AccessDenied
-  | InvalidArgument
-  | InvalidTagging
-  | NoSuchResource
-  | CommonErrors,
-  Credentials | Region | HttpClient.HttpClient
-> = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: TagResourceRequest,
-  output: TagResourceResponse,
-  errors: [AccessDenied, InvalidArgument, InvalidTagging, NoSuchResource],
 }));
 /**
  * Creates a connection function.
@@ -13658,39 +13726,6 @@ export const deleteRealtimeLogConfig: (
   ],
 }));
 /**
- * Updates a distribution tenant.
- */
-export const updateDistributionTenant: (
-  input: UpdateDistributionTenantRequest,
-) => effect.Effect<
-  UpdateDistributionTenantResult,
-  | AccessDenied
-  | CNAMEAlreadyExists
-  | EntityAlreadyExists
-  | EntityLimitExceeded
-  | EntityNotFound
-  | InvalidArgument
-  | InvalidAssociation
-  | InvalidIfMatchVersion
-  | PreconditionFailed
-  | CommonErrors,
-  Credentials | Region | HttpClient.HttpClient
-> = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: UpdateDistributionTenantRequest,
-  output: UpdateDistributionTenantResult,
-  errors: [
-    AccessDenied,
-    CNAMEAlreadyExists,
-    EntityAlreadyExists,
-    EntityLimitExceeded,
-    EntityNotFound,
-    InvalidArgument,
-    InvalidAssociation,
-    InvalidIfMatchVersion,
-    PreconditionFailed,
-  ],
-}));
-/**
  * Creates a new origin access identity. If you're using Amazon S3 for your origin, you can use an origin access identity to require users to access your content using a CloudFront URL instead of the Amazon S3 URL. For more information about how to use origin access identities, see Serving Private Content through CloudFront in the *Amazon CloudFront Developer Guide*.
  */
 export const createCloudFrontOriginAccessIdentity: (
@@ -13819,37 +13854,6 @@ export const createKeyGroup: (
     KeyGroupAlreadyExists,
     TooManyKeyGroups,
     TooManyPublicKeysInKeyGroup,
-  ],
-}));
-/**
- * Creates a distribution tenant.
- */
-export const createDistributionTenant: (
-  input: CreateDistributionTenantRequest,
-) => effect.Effect<
-  CreateDistributionTenantResult,
-  | AccessDenied
-  | CNAMEAlreadyExists
-  | EntityAlreadyExists
-  | EntityLimitExceeded
-  | EntityNotFound
-  | InvalidArgument
-  | InvalidAssociation
-  | InvalidTagging
-  | CommonErrors,
-  Credentials | Region | HttpClient.HttpClient
-> = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: CreateDistributionTenantRequest,
-  output: CreateDistributionTenantResult,
-  errors: [
-    AccessDenied,
-    CNAMEAlreadyExists,
-    EntityAlreadyExists,
-    EntityLimitExceeded,
-    EntityNotFound,
-    InvalidArgument,
-    InvalidAssociation,
-    InvalidTagging,
   ],
 }));
 /**
@@ -14483,6 +14487,7 @@ export const updateDistributionWithStagingConfig: (
   UpdateDistributionWithStagingConfigResult,
   | AccessDenied
   | CNAMEAlreadyExists
+  | EntityLimitExceeded
   | EntityNotFound
   | IllegalFieldLevelEncryptionConfigAssociationWithCacheBehavior
   | IllegalUpdate
@@ -14551,6 +14556,7 @@ export const updateDistributionWithStagingConfig: (
   errors: [
     AccessDenied,
     CNAMEAlreadyExists,
+    EntityLimitExceeded,
     EntityNotFound,
     IllegalFieldLevelEncryptionConfigAssociationWithCacheBehavior,
     IllegalUpdate,

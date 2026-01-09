@@ -2231,9 +2231,50 @@ const addError = Effect.fn(function* (error: {
   const sdkFile = yield* SdkFile;
   const existingErrors = yield* Ref.get(sdkFile.errors);
   if (!existingErrors.some((e) => e.name === error.name)) {
-    // Get the inline fields from errorFields map
+    // Get the inline fields from errorFields map (from Smithy model)
     const errorFieldsMap = yield* Ref.get(sdkFile.errorFields);
-    const fields = errorFieldsMap.get(error.name) ?? "{}";
+    let fields = errorFieldsMap.get(error.name) ?? "{}";
+
+    // Check for error member patches from spec file
+    const errorPatches = sdkFile.serviceSpec.errors?.[error.name];
+    if (errorPatches) {
+      // Generate fields from patches
+      const patchedFields: string[] = [];
+      for (const [memberName, patch] of Object.entries(errorPatches)) {
+        const traits: string[] = [];
+        if (patch.httpHeader) {
+          traits.push(`T.HttpHeader("${patch.httpHeader}")`);
+        }
+        // Map type string to Schema type
+        let schemaType: string;
+        switch (patch.type) {
+          case "boolean":
+            schemaType = "S.Boolean";
+            break;
+          case "number":
+            schemaType = "S.Number";
+            break;
+          default:
+            schemaType = "S.String";
+        }
+        // Wrap in optional if needed (default: true)
+        const optionalWrapped =
+          patch.optional !== false ? `S.optional(${schemaType})` : schemaType;
+        // Add traits via pipe if any
+        const withTraits =
+          traits.length > 0
+            ? `${optionalWrapped}.pipe(${traits.join(", ")})`
+            : optionalWrapped;
+        patchedFields.push(`${memberName}: ${withTraits}`);
+      }
+      // Merge patched fields with existing fields
+      if (fields === "{}") {
+        fields = `{${patchedFields.join(", ")}}`;
+      } else {
+        // Insert patched fields into existing fields object
+        fields = fields.replace(/^\{/, `{${patchedFields.join(", ")}, `);
+      }
+    }
 
     // Get error traits for annotations
     const errorTraits = sdkFile.errorShapeIds.get(error.shapeId);
