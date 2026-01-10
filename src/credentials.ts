@@ -74,34 +74,91 @@ export const fromAwsCredentialIdentity = (identity: AwsCredentialIdentity) =>
     expiration: identity.expiration?.getTime(),
   });
 
-const createLayer = (provider: (config: {}) => AwsCredentialIdentityProvider) =>
+type ProviderName =
+  | "env"
+  | "ini"
+  | "chain"
+  | "container"
+  | "http"
+  | "process"
+  | "token-file";
+
+const providerHints = (
+  provider: ProviderName,
+): ReadonlyArray<string> | undefined => {
+  switch (provider) {
+    case "env":
+      return [
+        "Set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY (and AWS_SESSION_TOKEN if needed).",
+      ];
+    case "ini":
+      return ["Check ~/.aws/credentials and ~/.aws/config for the profile."];
+    case "chain":
+      return [
+        "Configure at least one credential source for the default chain.",
+        "If using SSO, run `aws sso login` for the profile.",
+      ];
+    case "container":
+      return ["Ensure a container credential endpoint is available."];
+    case "http":
+      return ["Ensure the configured credential endpoint is reachable."];
+    case "process":
+      return [
+        "Set AWS_CREDENTIAL_PROCESS to a valid command and ensure it exits successfully.",
+      ];
+    case "token-file":
+      return [
+        "Set AWS_WEB_IDENTITY_TOKEN_FILE and ensure the file is readable.",
+      ];
+    default:
+      return;
+  }
+};
+
+export const _providerHints = providerHints;
+
+const createLayer = (
+  provider: (config: {}) => AwsCredentialIdentityProvider,
+  providerName: ProviderName,
+) =>
   Layer.effect(
     Credentials,
     Effect.gen(function* () {
-      return fromAwsCredentialIdentity(
-        yield* Effect.promise(() => provider({})()),
-      );
+      const hints = providerHints(providerName);
+      const identity = yield* Effect.tryPromise({
+        try: () => provider({})(),
+        catch: (cause) =>
+          new AwsCredentialProviderError({
+            message: `Failed to resolve credentials from ${providerName}.`,
+            provider: providerName,
+            cause,
+            hints,
+          }),
+      });
+      return fromAwsCredentialIdentity(identity);
     }),
   );
 
 export const fromCredentials = (credentials: AwsCredentialIdentity) =>
   Layer.succeed(Credentials, fromAwsCredentialIdentity(credentials));
 
-export const fromEnv = () => createLayer(_fromEnv);
+export const fromEnv = () => createLayer(_fromEnv, "env");
 
-export const fromChain = () => createLayer(() => _fromNodeProviderChain());
+export const fromChain = () =>
+  createLayer(() => _fromNodeProviderChain(), "chain");
 
 // export const fromSSO = () => createLayer(_fromSSO);
 
-export const fromIni = () => createLayer(_fromIni);
+export const fromIni = () => createLayer(_fromIni, "ini");
 
-export const fromContainerMetadata = () => createLayer(_fromContainerMetadata);
+export const fromContainerMetadata = () =>
+  createLayer(_fromContainerMetadata, "container");
 
-export const fromHttp = () => createLayer(_fromHttp);
+export const fromHttp = () => createLayer(_fromHttp, "http");
 
-export const fromProcess = () => createLayer(_fromProcess);
+export const fromProcess = () => createLayer(_fromProcess, "process");
 
-export const fromTokenFile = () => createLayer(_fromTokenFile);
+export const fromTokenFile = () => createLayer(_fromTokenFile, "token-file");
 
 export const ssoRegion = (region: string) => Layer.succeed(SsoRegion, region);
 
@@ -165,6 +222,15 @@ export class ExpiredSSOToken extends Data.TaggedError(
 )<{
   message: string;
   profile: string;
+}> {}
+
+export class AwsCredentialProviderError extends Data.TaggedError(
+  "AWS::CredentialProviderError",
+)<{
+  message: string;
+  provider: string;
+  cause?: unknown;
+  hints?: ReadonlyArray<string>;
 }> {}
 
 export interface AwsProfileConfig {
