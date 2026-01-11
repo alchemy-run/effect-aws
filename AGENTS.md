@@ -130,7 +130,7 @@ AWS Smithy models often omit errors that operations can actually throw. When you
    {
      "operations": {
        "detachVpnGateway": {
-         "errors": ["IncorrectState", "InvalidVpnGatewayID.NotFound", "DependencyViolation"]
+         "errors": ["RequestLimitExceeded","IncorrectState", "InvalidVpnGatewayID.NotFound", "DependencyViolation"]
        }
      }
    }

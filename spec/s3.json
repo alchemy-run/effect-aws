@@ -2,6 +2,7 @@
   "operations": {
     "createBucket": {
       "errors": [
+        "RequestLimitExceeded",
         "IllegalLocationConstraintException",
         "InvalidArgument",
         "InvalidBucketName",
@@ -10,6 +11,7 @@
     },
     "deleteBucket": {
       "errors": [
+        "RequestLimitExceeded",
         "BucketNotEmpty",
         "NoSuchBucket",
         "PermanentRedirect"
@@ -17,6 +19,7 @@
     },
     "putBucketLifecycleConfiguration": {
       "errors": [
+        "RequestLimitExceeded",
         "InvalidRequest",
         "MalformedXML",
         "NoSuchBucket",
@@ -25,12 +28,14 @@
     },
     "putBucketReplication": {
       "errors": [
+        "RequestLimitExceeded",
         "InvalidRequest",
         "NoSuchBucket"
       ]
     },
     "putObjectLockConfiguration": {
       "errors": [
+        "RequestLimitExceeded",
         "InvalidBucketState",
         "NoSuchBucket",
         "PermanentRedirect"
@@ -38,6 +43,7 @@
     },
     "putBucketPolicy": {
       "errors": [
+        "RequestLimitExceeded",
         "AccessDenied",
         "InvalidBucketName",
         "InvalidDigest",
@@ -50,11 +56,13 @@
     },
     "headBucket": {
       "errors": [
+        "RequestLimitExceeded",
         "ParseError"
       ]
     },
     "getBucketPolicy": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket",
         "NoSuchBucketPolicy",
         "PermanentRedirect",
@@ -63,6 +71,7 @@
     },
     "getBucketTagging": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket",
         "NoSuchTagSet",
         "PermanentRedirect"
@@ -70,17 +79,20 @@
     },
     "putBucketTagging": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket",
         "PermanentRedirect"
       ]
     },
     "deleteBucketTagging": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket"
       ]
     },
     "getBucketLifecycleConfiguration": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket",
         "NoSuchLifecycleConfiguration",
         "PermanentRedirect"
@@ -88,18 +100,21 @@
     },
     "putBucketVersioning": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket",
         "PermanentRedirect"
       ]
     },
     "putBucketCors": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket",
         "PermanentRedirect"
       ]
     },
     "getBucketCors": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket",
         "NoSuchCORSConfiguration",
         "PermanentRedirect"
@@ -107,40 +122,47 @@
     },
     "deleteBucketCors": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket"
       ]
     },
     "putBucketEncryption": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket",
         "PermanentRedirect"
       ]
     },
     "putBucketAcl": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket",
         "PermanentRedirect"
       ]
     },
     "deleteObject": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket",
         "PermanentRedirect"
       ]
     },
     "putObject": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket",
         "PermanentRedirect"
       ]
     },
     "deleteBucketEncryption": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket"
       ]
     },
     "getBucketEncryption": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket",
         "ParseError",
         "PermanentRedirect"
@@ -148,59 +170,69 @@
     },
     "getBucketAcl": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket",
         "PermanentRedirect"
       ]
     },
     "getBucketVersioning": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket",
         "PermanentRedirect"
       ]
     },
     "getBucketLocation": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket"
       ]
     },
     "getBucketLogging": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket",
         "PermanentRedirect"
       ]
     },
     "getBucketAccelerateConfiguration": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket",
         "PermanentRedirect"
       ]
     },
     "getBucketRequestPayment": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket",
         "PermanentRedirect"
       ]
     },
     "putBucketLogging": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket",
         "PermanentRedirect"
       ]
     },
     "putBucketAccelerateConfiguration": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket",
         "PermanentRedirect"
       ]
     },
     "putBucketRequestPayment": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket",
         "PermanentRedirect"
       ]
     },
     "getPublicAccessBlock": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket",
         "NoSuchPublicAccessBlockConfiguration",
         "PermanentRedirect"
@@ -208,113 +240,134 @@
     },
     "putPublicAccessBlock": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket",
         "PermanentRedirect"
       ]
     },
     "deletePublicAccessBlock": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket"
       ]
     },
     "putBucketNotificationConfiguration": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket"
       ]
     },
     "getBucketNotificationConfiguration": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket"
       ]
     },
     "getBucketAnalyticsConfiguration": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket",
         "NoSuchConfiguration"
       ]
     },
     "deleteBucketAnalyticsConfiguration": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket"
       ]
     },
     "listBucketAnalyticsConfigurations": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket"
       ]
     },
     "putBucketMetricsConfiguration": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket"
       ]
     },
     "getBucketMetricsConfiguration": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket",
         "NoSuchConfiguration"
       ]
     },
     "deleteBucketMetricsConfiguration": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket"
       ]
     },
     "listBucketMetricsConfigurations": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket"
       ]
     },
     "putBucketInventoryConfiguration": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket"
       ]
     },
     "getBucketInventoryConfiguration": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket",
         "NoSuchConfiguration"
       ]
     },
     "deleteBucketInventoryConfiguration": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket"
       ]
     },
     "listBucketInventoryConfigurations": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket"
       ]
     },
     "getBucketReplication": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket",
         "ReplicationConfigurationNotFoundError"
       ]
     },
     "deleteBucketReplication": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket"
       ]
     },
     "putBucketOwnershipControls": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket"
       ]
     },
     "getBucketOwnershipControls": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket",
         "OwnershipControlsNotFoundError"
       ]
     },
     "putBucketWebsite": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket",
         "PermanentRedirect"
       ]
     },
     "getBucketWebsite": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket",
         "NoSuchWebsiteConfiguration",
         "PermanentRedirect"
@@ -322,16 +375,19 @@
     },
     "deleteBucketOwnershipControls": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket"
       ]
     },
     "deleteBucketWebsite": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket"
       ]
     },
     "getObjectLockConfiguration": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket",
         "ObjectLockConfigurationNotFoundError",
         "PermanentRedirect"
@@ -339,27 +395,32 @@
     },
     "putBucketIntelligentTieringConfiguration": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket"
       ]
     },
     "getBucketIntelligentTieringConfiguration": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket",
         "NoSuchConfiguration"
       ]
     },
     "deleteBucketIntelligentTieringConfiguration": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket"
       ]
     },
     "listBucketIntelligentTieringConfigurations": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket"
       ]
     },
     "deleteBucketPolicy": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket",
         "PermanentRedirect",
         "SignatureDoesNotMatch"
@@ -367,23 +428,27 @@
     },
     "getObject": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket",
         "PermanentRedirect"
       ]
     },
     "headObject": {
       "errors": [
+        "RequestLimitExceeded",
         "ParseError"
       ]
     },
     "getObjectAcl": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket",
         "PermanentRedirect"
       ]
     },
     "getObjectTagging": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket",
         "NoSuchKey",
         "PermanentRedirect"
@@ -391,151 +456,179 @@
     },
     "deleteObjectTagging": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchKey",
         "PermanentRedirect"
       ]
     },
     "putObjectTagging": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchKey",
         "PermanentRedirect"
       ]
     },
     "getObjectRetention": {
       "errors": [
+        "RequestLimitExceeded",
         "InvalidRequest"
       ]
     },
     "putObjectRetention": {
       "errors": [
+        "RequestLimitExceeded",
         "InvalidRequest"
       ]
     },
     "getObjectLegalHold": {
       "errors": [
+        "RequestLimitExceeded",
         "InvalidRequest"
       ]
     },
     "putObjectLegalHold": {
       "errors": [
+        "RequestLimitExceeded",
         "MalformedXML"
       ]
     },
     "listMultipartUploads": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket",
         "PermanentRedirect"
       ]
     },
     "listObjectVersions": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket",
         "PermanentRedirect"
       ]
     },
     "createMultipartUpload": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket",
         "PermanentRedirect"
       ]
     },
     "copyObject": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket",
         "PermanentRedirect"
       ]
     },
     "uploadPart": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket",
         "PermanentRedirect"
       ]
     },
     "listParts": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket"
       ]
     },
     "abortMultipartUpload": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket"
       ]
     },
     "deleteObjects": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket",
         "PermanentRedirect"
       ]
     },
     "restoreObject": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchKey",
         "PermanentRedirect"
       ]
     },
     "uploadPartCopy": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket"
       ]
     },
     "getBucketPolicyStatus": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket",
         "PermanentRedirect"
       ]
     },
     "listBuckets": {
       "errors": [
+        "RequestLimitExceeded",
         "RequestError"
       ]
     },
     "listObjectsV2": {
       "errors": [
+        "RequestLimitExceeded",
         "PermanentRedirect"
       ]
     },
     "listObjects": {
       "errors": [
+        "RequestLimitExceeded",
         "PermanentRedirect"
       ]
     },
     "putObjectAcl": {
       "errors": [
+        "RequestLimitExceeded",
         "PermanentRedirect"
       ]
     },
     "selectObjectContent": {
       "errors": [
+        "RequestLimitExceeded",
         "PermanentRedirect"
       ]
     },
     "deleteBucketLifecycle": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket"
       ]
     },
     "deleteBucketMetadataConfiguration": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket"
       ]
     },
     "deleteBucketMetadataTableConfiguration": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket"
       ]
     },
     "getBucketAbac": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket"
       ]
     },
     "getBucketMetadataConfiguration": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket"
       ]
     },
     "getBucketMetadataTableConfiguration": {
       "errors": [
+        "RequestLimitExceeded",
         "NoSuchBucket"
       ]
     }

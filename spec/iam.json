@@ -2,6 +2,7 @@
   "operations": {
     "listServiceSpecificCredentials": {
       "errors": [
+        "RequestLimitExceeded",
         "InvalidInput"
       ]
     }

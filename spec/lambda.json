@@ -1,205 +1,248 @@
 {
   "enums": {
     "LastUpdateStatusReasonCode": {
-      "add": ["Creating"]
+      "add": [
+        "Creating"
+      ]
     },
     "StateReasonCode": {
-      "add": ["Creating"]
+      "add": [
+        "Creating"
+      ]
     }
   },
   "operations": {
     "createEventSourceMapping": {
       "errors": [
+        "RequestLimitExceeded",
         "ResourceInUseException"
       ]
     },
     "putFunctionEventInvokeConfig": {
       "errors": [
+        "RequestLimitExceeded",
         "ParseError"
       ]
     },
     "getFunctionEventInvokeConfig": {
       "errors": [
+        "RequestLimitExceeded",
         "ParseError"
       ]
     },
     "deleteFunctionEventInvokeConfig": {
       "errors": [
+        "RequestLimitExceeded",
         "ParseError"
       ]
     },
     "putFunctionConcurrency": {
       "errors": [
+        "RequestLimitExceeded",
         "ParseError"
       ]
     },
     "deleteFunctionConcurrency": {
       "errors": [
+        "RequestLimitExceeded",
         "ParseError"
       ]
     },
     "putProvisionedConcurrencyConfig": {
       "errors": [
+        "RequestLimitExceeded",
         "ParseError"
       ]
     },
     "deleteProvisionedConcurrencyConfig": {
       "errors": [
+        "RequestLimitExceeded",
         "ParseError"
       ]
     },
     "updateFunctionCode": {
       "errors": [
+        "RequestLimitExceeded",
         "ParseError"
       ]
     },
     "updateFunctionConfiguration": {
       "errors": [
+        "RequestLimitExceeded",
         "ParseError"
       ]
     },
     "listFunctionEventInvokeConfigs": {
       "errors": [
+        "RequestLimitExceeded",
         "ParseError"
       ]
     },
     "createAlias": {
       "errors": [
+        "RequestLimitExceeded",
         "ParseError"
       ]
     },
     "updateAlias": {
       "errors": [
+        "RequestLimitExceeded",
         "ParseError"
       ]
     },
     "deleteAlias": {
       "errors": [
+        "RequestLimitExceeded",
         "ResourceNotFoundException"
       ]
     },
     "publishLayerVersion": {
       "errors": [
+        "RequestLimitExceeded",
         "ParseError"
       ]
     },
     "deleteLayerVersion": {
       "errors": [
+        "RequestLimitExceeded",
         "ParseError"
       ]
     },
     "getLayerVersion": {
       "errors": [
+        "RequestLimitExceeded",
         "ParseError"
       ]
     },
     "addLayerVersionPermission": {
       "errors": [
+        "RequestLimitExceeded",
         "ParseError"
       ]
     },
     "removeLayerVersionPermission": {
       "errors": [
+        "RequestLimitExceeded",
         "ParseError"
       ]
     },
     "addPermission": {
       "errors": [
+        "RequestLimitExceeded",
         "ParseError"
       ]
     },
     "publishVersion": {
       "errors": [
+        "RequestLimitExceeded",
         "ParseError"
       ]
     },
     "createFunctionUrlConfig": {
       "errors": [
+        "RequestLimitExceeded",
         "ParseError"
       ]
     },
     "updateFunctionUrlConfig": {
       "errors": [
+        "RequestLimitExceeded",
         "ParseError"
       ]
     },
     "deleteFunctionUrlConfig": {
       "errors": [
+        "RequestLimitExceeded",
         "ParseError"
       ]
     },
     "deleteCodeSigningConfig": {
       "errors": [
+        "RequestLimitExceeded",
         "ParseError"
       ]
     },
     "putFunctionCodeSigningConfig": {
       "errors": [
+        "RequestLimitExceeded",
         "ParseError"
       ]
     },
     "tagResource": {
       "errors": [
+        "RequestLimitExceeded",
         "ParseError"
       ]
     },
     "untagResource": {
       "errors": [
+        "RequestLimitExceeded",
         "ParseError"
       ]
     },
     "listTags": {
       "errors": [
+        "RequestLimitExceeded",
         "ParseError"
       ]
     },
     "invoke": {
       "errors": [
+        "RequestLimitExceeded",
         "ParseError"
       ]
     },
     "getCodeSigningConfig": {
       "errors": [
+        "RequestLimitExceeded",
         "ParseError"
       ]
     },
     "getFunctionConcurrency": {
       "errors": [
+        "RequestLimitExceeded",
         "ParseError"
       ]
     },
     "getProvisionedConcurrencyConfig": {
       "errors": [
+        "RequestLimitExceeded",
         "ParseError"
       ]
     },
     "listProvisionedConcurrencyConfigs": {
       "errors": [
+        "RequestLimitExceeded",
         "ParseError"
       ]
     },
     "listLayerVersions": {
       "errors": [
+        "RequestLimitExceeded",
         "ParseError"
       ]
     },
     "getLayerVersionPolicy": {
       "errors": [
+        "RequestLimitExceeded",
         "ParseError"
       ]
     },
     "getFunctionRecursionConfig": {
       "errors": [
+        "RequestLimitExceeded",
         "ParseError"
       ]
     },
     "putFunctionRecursionConfig": {
       "errors": [
+        "RequestLimitExceeded",
         "ParseError"
       ]
     },
     "updateEventSourceMapping": {
       "errors": [
+        "RequestLimitExceeded",
         "ParseError"
       ]
     }
