@@ -2338,6 +2338,16 @@ const addError = Effect.fn(function* (error: {
       }
     }
 
+    // Apply categories from spec file's errorCategories (exactly as specified)
+    const specCategories =
+      sdkFile.serviceSpec.errorCategories?.[error.name] ?? [];
+    for (const cat of specCategories) {
+      const categoryDecorator = `C.with${cat}`;
+      if (!categories.includes(categoryDecorator)) {
+        categories.push(categoryDecorator);
+      }
+    }
+
     // Build the annotations argument (supports multiple via T.all)
     let annotationsArg = "";
     if (annotations.length === 1) {

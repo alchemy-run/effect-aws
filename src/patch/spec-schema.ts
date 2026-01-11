@@ -1,11 +1,30 @@
 import { FileSystem, Path } from "@effect/platform";
 import * as Effect from "effect/Effect";
 import * as S from "effect/Schema";
+import * as C from "../category.ts";
 
 /**
  * Schema for service error patches discovered by the AI agent.
  * These are stored in spec/{service}.json and applied during client generation.
  */
+
+/**
+ * Schema for error category strings.
+ * Uses the existing Category constants from src/category.ts.
+ */
+export const CategorySchema = S.Literal(
+  C.ThrottlingError,
+  C.RetryableError,
+  C.ServerError,
+  C.AuthError,
+  C.BadRequestError,
+  C.TimeoutError,
+  C.ConflictError,
+  C.QuotaError,
+  C.NetworkError,
+  C.AbortedError,
+);
+export type CategorySchema = typeof CategorySchema.Type;
 
 /**
  * Error alias - maps an error tag to an alternative name
@@ -136,6 +155,15 @@ export const ServiceSpec = S.Struct({
    * Members can include traits like httpHeader to extract values from response headers.
    */
   errors: S.optional(S.Record({ key: S.String, value: ErrorOverride })),
+  /**
+   * Map of error names to their categories.
+   * Use this to add categories (like ThrottlingError) to errors that don't have
+   * the @retryable trait in the Smithy model but should be treated as retryable.
+   * Categories are applied globally to the error class, not per-operation.
+   */
+  errorCategories: S.optional(
+    S.Record({ key: S.String, value: S.Array(CategorySchema) }),
+  ),
 });
 export type ServiceSpec = typeof ServiceSpec.Type;
 

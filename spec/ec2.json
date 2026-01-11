@@ -1,4 +1,9 @@
 {
+  "errorCategories": {
+    "RequestLimitExceeded": [
+      "ThrottlingError"
+    ]
+  },
   "operations": {
     "createVpc": {
       "errors": [

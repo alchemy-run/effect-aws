@@ -1128,6 +1128,10 @@ export class ReceiptHandleIsInvalid extends S.TaggedError<ReceiptHandleIsInvalid
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ReceiptHandleIsInvalid", httpResponseCode: 404 }),
 ).pipe(C.withBadRequestError) {}
+export class RequestLimitExceeded extends S.TaggedError<RequestLimitExceeded>()(
+  "RequestLimitExceeded",
+  {},
+) {}
 export class InvalidParameterValueException extends S.TaggedError<InvalidParameterValueException>()(
   "InvalidParameterValueException",
   {},
@@ -1356,6 +1360,7 @@ export const cancelMessageMoveTask: (
   | RequestThrottled
   | ResourceNotFoundException
   | UnsupportedOperation
+  | RequestLimitExceeded
   | InvalidParameterValueException
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -1368,6 +1373,7 @@ export const cancelMessageMoveTask: (
     RequestThrottled,
     ResourceNotFoundException,
     UnsupportedOperation,
+    RequestLimitExceeded,
     InvalidParameterValueException,
   ],
 }));
@@ -1397,6 +1403,7 @@ export const startMessageMoveTask: (
   | RequestThrottled
   | ResourceNotFoundException
   | UnsupportedOperation
+  | RequestLimitExceeded
   | CommonServiceException
   | InvalidParameterValueException
   | CommonErrors,
@@ -1410,6 +1417,7 @@ export const startMessageMoveTask: (
     RequestThrottled,
     ResourceNotFoundException,
     UnsupportedOperation,
+    RequestLimitExceeded,
     CommonServiceException,
     InvalidParameterValueException,
   ],
@@ -1443,6 +1451,7 @@ export const setQueueAttributes: (
   | QueueDoesNotExist
   | RequestThrottled
   | UnsupportedOperation
+  | RequestLimitExceeded
   | CommonServiceException
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -1458,6 +1467,7 @@ export const setQueueAttributes: (
     QueueDoesNotExist,
     RequestThrottled,
     UnsupportedOperation,
+    RequestLimitExceeded,
     CommonServiceException,
   ],
 }));
@@ -1919,6 +1929,7 @@ export const listMessageMoveTasks: (
   | RequestThrottled
   | ResourceNotFoundException
   | UnsupportedOperation
+  | RequestLimitExceeded
   | InvalidParameterValueException
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -1931,6 +1942,7 @@ export const listMessageMoveTasks: (
     RequestThrottled,
     ResourceNotFoundException,
     UnsupportedOperation,
+    RequestLimitExceeded,
     InvalidParameterValueException,
   ],
 }));
@@ -2043,6 +2055,7 @@ export const createQueue: (
   | QueueNameExists
   | RequestThrottled
   | UnsupportedOperation
+  | RequestLimitExceeded
   | InvalidParameterValueException
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -2058,6 +2071,7 @@ export const createQueue: (
     QueueNameExists,
     RequestThrottled,
     UnsupportedOperation,
+    RequestLimitExceeded,
     InvalidParameterValueException,
   ],
 }));
@@ -2198,6 +2212,7 @@ export const receiveMessage: (
   | QueueDoesNotExist
   | RequestThrottled
   | UnsupportedOperation
+  | RequestLimitExceeded
   | InvalidParameterValueException
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -2218,6 +2233,7 @@ export const receiveMessage: (
     QueueDoesNotExist,
     RequestThrottled,
     UnsupportedOperation,
+    RequestLimitExceeded,
     InvalidParameterValueException,
   ],
 }));
@@ -2265,6 +2281,7 @@ export const sendMessageBatch: (
   | RequestThrottled
   | TooManyEntriesInBatchRequest
   | UnsupportedOperation
+  | RequestLimitExceeded
   | InvalidParameterValueException
   | ParseError
   | CommonErrors,
@@ -2290,6 +2307,7 @@ export const sendMessageBatch: (
     RequestThrottled,
     TooManyEntriesInBatchRequest,
     UnsupportedOperation,
+    RequestLimitExceeded,
     InvalidParameterValueException,
     ParseError,
   ],
@@ -2320,6 +2338,7 @@ export const sendMessage: (
   | QueueDoesNotExist
   | RequestThrottled
   | UnsupportedOperation
+  | RequestLimitExceeded
   | InvalidParameterValueException
   | MissingRequiredParameterException
   | CommonErrors,
@@ -2341,6 +2360,7 @@ export const sendMessage: (
     QueueDoesNotExist,
     RequestThrottled,
     UnsupportedOperation,
+    RequestLimitExceeded,
     InvalidParameterValueException,
     MissingRequiredParameterException,
   ],

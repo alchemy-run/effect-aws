@@ -11777,6 +11777,10 @@ export const SelectObjectContentOutput = S.suspend(() =>
 }) as any as S.Schema<SelectObjectContentOutput>;
 
 //# Errors
+export class RequestLimitExceeded extends S.TaggedError<RequestLimitExceeded>()(
+  "RequestLimitExceeded",
+  {},
+) {}
 export class BucketNotEmpty extends S.TaggedError<BucketNotEmpty>()(
   "BucketNotEmpty",
   {},
@@ -11971,12 +11975,21 @@ export const deleteBucket: (
   input: DeleteBucketRequest,
 ) => effect.Effect<
   DeleteBucketResponse,
-  BucketNotEmpty | NoSuchBucket | PermanentRedirect | CommonErrors,
+  | RequestLimitExceeded
+  | BucketNotEmpty
+  | NoSuchBucket
+  | PermanentRedirect
+  | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBucketRequest,
   output: DeleteBucketResponse,
-  errors: [BucketNotEmpty, NoSuchBucket, PermanentRedirect],
+  errors: [
+    RequestLimitExceeded,
+    BucketNotEmpty,
+    NoSuchBucket,
+    PermanentRedirect,
+  ],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -12006,12 +12019,12 @@ export const deleteBucketAnalyticsConfiguration: (
   input: DeleteBucketAnalyticsConfigurationRequest,
 ) => effect.Effect<
   DeleteBucketAnalyticsConfigurationResponse,
-  NoSuchBucket | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBucketAnalyticsConfigurationRequest,
   output: DeleteBucketAnalyticsConfigurationResponse,
-  errors: [NoSuchBucket],
+  errors: [RequestLimitExceeded, NoSuchBucket],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -12036,12 +12049,12 @@ export const deleteBucketCors: (
   input: DeleteBucketCorsRequest,
 ) => effect.Effect<
   DeleteBucketCorsResponse,
-  NoSuchBucket | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBucketCorsRequest,
   output: DeleteBucketCorsResponse,
-  errors: [NoSuchBucket],
+  errors: [RequestLimitExceeded, NoSuchBucket],
 }));
 /**
  * This implementation of the DELETE action resets the default encryption for the bucket as server-side
@@ -12085,12 +12098,12 @@ export const deleteBucketEncryption: (
   input: DeleteBucketEncryptionRequest,
 ) => effect.Effect<
   DeleteBucketEncryptionResponse,
-  NoSuchBucket | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBucketEncryptionRequest,
   output: DeleteBucketEncryptionResponse,
-  errors: [NoSuchBucket],
+  errors: [RequestLimitExceeded, NoSuchBucket],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -12117,12 +12130,12 @@ export const deleteBucketIntelligentTieringConfiguration: (
   input: DeleteBucketIntelligentTieringConfigurationRequest,
 ) => effect.Effect<
   DeleteBucketIntelligentTieringConfigurationResponse,
-  NoSuchBucket | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBucketIntelligentTieringConfigurationRequest,
   output: DeleteBucketIntelligentTieringConfigurationResponse,
-  errors: [NoSuchBucket],
+  errors: [RequestLimitExceeded, NoSuchBucket],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -12150,12 +12163,12 @@ export const deleteBucketInventoryConfiguration: (
   input: DeleteBucketInventoryConfigurationRequest,
 ) => effect.Effect<
   DeleteBucketInventoryConfigurationResponse,
-  NoSuchBucket | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBucketInventoryConfigurationRequest,
   output: DeleteBucketInventoryConfigurationResponse,
-  errors: [NoSuchBucket],
+  errors: [RequestLimitExceeded, NoSuchBucket],
 }));
 /**
  * Deletes the lifecycle configuration from the specified bucket. Amazon S3 removes all the lifecycle
@@ -12210,12 +12223,12 @@ export const deleteBucketLifecycle: (
   input: DeleteBucketLifecycleRequest,
 ) => effect.Effect<
   DeleteBucketLifecycleResponse,
-  NoSuchBucket | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBucketLifecycleRequest,
   output: DeleteBucketLifecycleResponse,
-  errors: [NoSuchBucket],
+  errors: [RequestLimitExceeded, NoSuchBucket],
 }));
 /**
  * Deletes an S3 Metadata configuration from a general purpose bucket. For more information, see
@@ -12252,12 +12265,12 @@ export const deleteBucketMetadataConfiguration: (
   input: DeleteBucketMetadataConfigurationRequest,
 ) => effect.Effect<
   DeleteBucketMetadataConfigurationResponse,
-  NoSuchBucket | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBucketMetadataConfigurationRequest,
   output: DeleteBucketMetadataConfigurationResponse,
-  errors: [NoSuchBucket],
+  errors: [RequestLimitExceeded, NoSuchBucket],
 }));
 /**
  * We recommend that you delete your S3 Metadata configurations by using the V2
@@ -12300,12 +12313,12 @@ export const deleteBucketMetadataTableConfiguration: (
   input: DeleteBucketMetadataTableConfigurationRequest,
 ) => effect.Effect<
   DeleteBucketMetadataTableConfigurationResponse,
-  NoSuchBucket | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBucketMetadataTableConfigurationRequest,
   output: DeleteBucketMetadataTableConfigurationResponse,
-  errors: [NoSuchBucket],
+  errors: [RequestLimitExceeded, NoSuchBucket],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -12337,12 +12350,12 @@ export const deleteBucketMetricsConfiguration: (
   input: DeleteBucketMetricsConfigurationRequest,
 ) => effect.Effect<
   DeleteBucketMetricsConfigurationResponse,
-  NoSuchBucket | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBucketMetricsConfigurationRequest,
   output: DeleteBucketMetricsConfigurationResponse,
-  errors: [NoSuchBucket],
+  errors: [RequestLimitExceeded, NoSuchBucket],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -12366,12 +12379,12 @@ export const deleteBucketOwnershipControls: (
   input: DeleteBucketOwnershipControlsRequest,
 ) => effect.Effect<
   DeleteBucketOwnershipControlsResponse,
-  NoSuchBucket | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBucketOwnershipControlsRequest,
   output: DeleteBucketOwnershipControlsResponse,
-  errors: [NoSuchBucket],
+  errors: [RequestLimitExceeded, NoSuchBucket],
 }));
 /**
  * Deletes the policy of a specified bucket.
@@ -12426,12 +12439,21 @@ export const deleteBucketPolicy: (
   input: DeleteBucketPolicyRequest,
 ) => effect.Effect<
   DeleteBucketPolicyResponse,
-  NoSuchBucket | PermanentRedirect | SignatureDoesNotMatch | CommonErrors,
+  | RequestLimitExceeded
+  | NoSuchBucket
+  | PermanentRedirect
+  | SignatureDoesNotMatch
+  | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBucketPolicyRequest,
   output: DeleteBucketPolicyResponse,
-  errors: [NoSuchBucket, PermanentRedirect, SignatureDoesNotMatch],
+  errors: [
+    RequestLimitExceeded,
+    NoSuchBucket,
+    PermanentRedirect,
+    SignatureDoesNotMatch,
+  ],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -12460,12 +12482,12 @@ export const deleteBucketReplication: (
   input: DeleteBucketReplicationRequest,
 ) => effect.Effect<
   DeleteBucketReplicationResponse,
-  NoSuchBucket | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBucketReplicationRequest,
   output: DeleteBucketReplicationResponse,
-  errors: [NoSuchBucket],
+  errors: [RequestLimitExceeded, NoSuchBucket],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -12489,12 +12511,12 @@ export const deleteBucketTagging: (
   input: DeleteBucketTaggingRequest,
 ) => effect.Effect<
   DeleteBucketTaggingResponse,
-  NoSuchBucket | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBucketTaggingRequest,
   output: DeleteBucketTaggingResponse,
-  errors: [NoSuchBucket],
+  errors: [RequestLimitExceeded, NoSuchBucket],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -12524,12 +12546,12 @@ export const deleteBucketWebsite: (
   input: DeleteBucketWebsiteRequest,
 ) => effect.Effect<
   DeleteBucketWebsiteResponse,
-  NoSuchBucket | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBucketWebsiteRequest,
   output: DeleteBucketWebsiteResponse,
-  errors: [NoSuchBucket],
+  errors: [RequestLimitExceeded, NoSuchBucket],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -12558,12 +12580,12 @@ export const deletePublicAccessBlock: (
   input: DeletePublicAccessBlockRequest,
 ) => effect.Effect<
   DeletePublicAccessBlockResponse,
-  NoSuchBucket | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePublicAccessBlockRequest,
   output: DeletePublicAccessBlockResponse,
-  errors: [NoSuchBucket],
+  errors: [RequestLimitExceeded, NoSuchBucket],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -12598,12 +12620,12 @@ export const getBucketNotificationConfiguration: (
   input: GetBucketNotificationConfigurationRequest,
 ) => effect.Effect<
   NotificationConfiguration,
-  NoSuchBucket | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketNotificationConfigurationRequest,
   output: NotificationConfiguration,
-  errors: [NoSuchBucket],
+  errors: [RequestLimitExceeded, NoSuchBucket],
 }));
 /**
  * Applies an Amazon S3 bucket policy to an Amazon S3 bucket.
@@ -12666,6 +12688,7 @@ export const putBucketPolicy: (
   input: PutBucketPolicyRequest,
 ) => effect.Effect<
   PutBucketPolicyResponse,
+  | RequestLimitExceeded
   | AccessDenied
   | InvalidBucketName
   | InvalidDigest
@@ -12680,6 +12703,7 @@ export const putBucketPolicy: (
   input: PutBucketPolicyRequest,
   output: PutBucketPolicyResponse,
   errors: [
+    RequestLimitExceeded,
     AccessDenied,
     InvalidBucketName,
     InvalidDigest,
@@ -12858,12 +12882,12 @@ export const abortMultipartUpload: (
   input: AbortMultipartUploadRequest,
 ) => effect.Effect<
   AbortMultipartUploadOutput,
-  NoSuchUpload | NoSuchBucket | CommonErrors,
+  NoSuchUpload | RequestLimitExceeded | NoSuchBucket | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AbortMultipartUploadRequest,
   output: AbortMultipartUploadOutput,
-  errors: [NoSuchUpload, NoSuchBucket],
+  errors: [NoSuchUpload, RequestLimitExceeded, NoSuchBucket],
 }));
 /**
  * End of support notice: As of October 1, 2025, Amazon S3 has discontinued support for Email Grantee Access Control Lists (ACLs). If you attempt to use an Email Grantee ACL in a request after October 1, 2025,
@@ -13043,12 +13067,12 @@ export const createMultipartUpload: (
   input: CreateMultipartUploadRequest,
 ) => effect.Effect<
   CreateMultipartUploadOutput,
-  NoSuchBucket | PermanentRedirect | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | PermanentRedirect | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateMultipartUploadRequest,
   output: CreateMultipartUploadOutput,
-  errors: [NoSuchBucket, PermanentRedirect],
+  errors: [RequestLimitExceeded, NoSuchBucket, PermanentRedirect],
 }));
 /**
  * Removes an object from a bucket. The behavior depends on the bucket's versioning state:
@@ -13144,12 +13168,12 @@ export const deleteObject: (
   input: DeleteObjectRequest,
 ) => effect.Effect<
   DeleteObjectOutput,
-  NoSuchBucket | PermanentRedirect | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | PermanentRedirect | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteObjectRequest,
   output: DeleteObjectOutput,
-  errors: [NoSuchBucket, PermanentRedirect],
+  errors: [RequestLimitExceeded, NoSuchBucket, PermanentRedirect],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -13176,12 +13200,12 @@ export const deleteObjectTagging: (
   input: DeleteObjectTaggingRequest,
 ) => effect.Effect<
   DeleteObjectTaggingOutput,
-  NoSuchKey | PermanentRedirect | CommonErrors,
+  RequestLimitExceeded | NoSuchKey | PermanentRedirect | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteObjectTaggingRequest,
   output: DeleteObjectTaggingOutput,
-  errors: [NoSuchKey, PermanentRedirect],
+  errors: [RequestLimitExceeded, NoSuchKey, PermanentRedirect],
 }));
 /**
  * Returns the attribute-based access control (ABAC) property of the general purpose bucket. If ABAC is enabled on your bucket, you can use tags on the bucket for access control. For more information, see Enabling ABAC in general purpose buckets.
@@ -13190,12 +13214,12 @@ export const getBucketAbac: (
   input: GetBucketAbacRequest,
 ) => effect.Effect<
   GetBucketAbacOutput,
-  NoSuchBucket | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketAbacRequest,
   output: GetBucketAbacOutput,
-  errors: [NoSuchBucket],
+  errors: [RequestLimitExceeded, NoSuchBucket],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -13230,12 +13254,12 @@ export const getBucketAccelerateConfiguration: (
   input: GetBucketAccelerateConfigurationRequest,
 ) => effect.Effect<
   GetBucketAccelerateConfigurationOutput,
-  NoSuchBucket | PermanentRedirect | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | PermanentRedirect | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketAccelerateConfigurationRequest,
   output: GetBucketAccelerateConfigurationOutput,
-  errors: [NoSuchBucket, PermanentRedirect],
+  errors: [RequestLimitExceeded, NoSuchBucket, PermanentRedirect],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -13268,12 +13292,12 @@ export const getBucketAcl: (
   input: GetBucketAclRequest,
 ) => effect.Effect<
   GetBucketAclOutput,
-  NoSuchBucket | PermanentRedirect | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | PermanentRedirect | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketAclRequest,
   output: GetBucketAclOutput,
-  errors: [NoSuchBucket, PermanentRedirect],
+  errors: [RequestLimitExceeded, NoSuchBucket, PermanentRedirect],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -13303,12 +13327,12 @@ export const getBucketAnalyticsConfiguration: (
   input: GetBucketAnalyticsConfigurationRequest,
 ) => effect.Effect<
   GetBucketAnalyticsConfigurationOutput,
-  NoSuchBucket | NoSuchConfiguration | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | NoSuchConfiguration | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketAnalyticsConfigurationRequest,
   output: GetBucketAnalyticsConfigurationOutput,
-  errors: [NoSuchBucket, NoSuchConfiguration],
+  errors: [RequestLimitExceeded, NoSuchBucket, NoSuchConfiguration],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -13340,12 +13364,21 @@ export const getBucketCors: (
   input: GetBucketCorsRequest,
 ) => effect.Effect<
   GetBucketCorsOutput,
-  NoSuchBucket | NoSuchCORSConfiguration | PermanentRedirect | CommonErrors,
+  | RequestLimitExceeded
+  | NoSuchBucket
+  | NoSuchCORSConfiguration
+  | PermanentRedirect
+  | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketCorsRequest,
   output: GetBucketCorsOutput,
-  errors: [NoSuchBucket, NoSuchCORSConfiguration, PermanentRedirect],
+  errors: [
+    RequestLimitExceeded,
+    NoSuchBucket,
+    NoSuchCORSConfiguration,
+    PermanentRedirect,
+  ],
 }));
 /**
  * Returns the default encryption configuration for an Amazon S3 bucket. By default, all buckets have a
@@ -13389,12 +13422,16 @@ export const getBucketEncryption: (
   input: GetBucketEncryptionRequest,
 ) => effect.Effect<
   GetBucketEncryptionOutput,
-  NoSuchBucket | ParseError | PermanentRedirect | CommonErrors,
+  | RequestLimitExceeded
+  | NoSuchBucket
+  | ParseError
+  | PermanentRedirect
+  | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketEncryptionRequest,
   output: GetBucketEncryptionOutput,
-  errors: [NoSuchBucket, ParseError, PermanentRedirect],
+  errors: [RequestLimitExceeded, NoSuchBucket, ParseError, PermanentRedirect],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -13421,12 +13458,12 @@ export const getBucketIntelligentTieringConfiguration: (
   input: GetBucketIntelligentTieringConfigurationRequest,
 ) => effect.Effect<
   GetBucketIntelligentTieringConfigurationOutput,
-  NoSuchBucket | NoSuchConfiguration | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | NoSuchConfiguration | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketIntelligentTieringConfigurationRequest,
   output: GetBucketIntelligentTieringConfigurationOutput,
-  errors: [NoSuchBucket, NoSuchConfiguration],
+  errors: [RequestLimitExceeded, NoSuchBucket, NoSuchConfiguration],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -13455,12 +13492,12 @@ export const getBucketInventoryConfiguration: (
   input: GetBucketInventoryConfigurationRequest,
 ) => effect.Effect<
   GetBucketInventoryConfigurationOutput,
-  NoSuchBucket | NoSuchConfiguration | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | NoSuchConfiguration | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketInventoryConfigurationRequest,
   output: GetBucketInventoryConfigurationOutput,
-  errors: [NoSuchBucket, NoSuchConfiguration],
+  errors: [RequestLimitExceeded, NoSuchBucket, NoSuchConfiguration],
 }));
 /**
  * Returns the lifecycle configuration information set on the bucket. For information about lifecycle
@@ -13532,6 +13569,7 @@ export const getBucketLifecycleConfiguration: (
   input: GetBucketLifecycleConfigurationRequest,
 ) => effect.Effect<
   GetBucketLifecycleConfigurationOutput,
+  | RequestLimitExceeded
   | NoSuchBucket
   | NoSuchLifecycleConfiguration
   | PermanentRedirect
@@ -13540,7 +13578,12 @@ export const getBucketLifecycleConfiguration: (
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketLifecycleConfigurationRequest,
   output: GetBucketLifecycleConfigurationOutput,
-  errors: [NoSuchBucket, NoSuchLifecycleConfiguration, PermanentRedirect],
+  errors: [
+    RequestLimitExceeded,
+    NoSuchBucket,
+    NoSuchLifecycleConfiguration,
+    PermanentRedirect,
+  ],
 }));
 /**
  * Using the `GetBucketLocation` operation is no longer a best practice. To return the
@@ -13581,12 +13624,12 @@ export const getBucketLocation: (
   input: GetBucketLocationRequest,
 ) => effect.Effect<
   GetBucketLocationOutput,
-  NoSuchBucket | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketLocationRequest,
   output: GetBucketLocationOutput,
-  errors: [NoSuchBucket],
+  errors: [RequestLimitExceeded, NoSuchBucket],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -13606,12 +13649,12 @@ export const getBucketLogging: (
   input: GetBucketLoggingRequest,
 ) => effect.Effect<
   GetBucketLoggingOutput,
-  NoSuchBucket | PermanentRedirect | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | PermanentRedirect | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketLoggingRequest,
   output: GetBucketLoggingOutput,
-  errors: [NoSuchBucket, PermanentRedirect],
+  errors: [RequestLimitExceeded, NoSuchBucket, PermanentRedirect],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -13644,12 +13687,12 @@ export const getBucketMetricsConfiguration: (
   input: GetBucketMetricsConfigurationRequest,
 ) => effect.Effect<
   GetBucketMetricsConfigurationOutput,
-  NoSuchBucket | NoSuchConfiguration | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | NoSuchConfiguration | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketMetricsConfigurationRequest,
   output: GetBucketMetricsConfigurationOutput,
-  errors: [NoSuchBucket, NoSuchConfiguration],
+  errors: [RequestLimitExceeded, NoSuchBucket, NoSuchConfiguration],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -13683,12 +13726,15 @@ export const getBucketOwnershipControls: (
   input: GetBucketOwnershipControlsRequest,
 ) => effect.Effect<
   GetBucketOwnershipControlsOutput,
-  NoSuchBucket | OwnershipControlsNotFoundError | CommonErrors,
+  | RequestLimitExceeded
+  | NoSuchBucket
+  | OwnershipControlsNotFoundError
+  | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketOwnershipControlsRequest,
   output: GetBucketOwnershipControlsOutput,
-  errors: [NoSuchBucket, OwnershipControlsNotFoundError],
+  errors: [RequestLimitExceeded, NoSuchBucket, OwnershipControlsNotFoundError],
 }));
 /**
  * Returns the policy of a specified bucket.
@@ -13749,6 +13795,7 @@ export const getBucketPolicy: (
   input: GetBucketPolicyRequest,
 ) => effect.Effect<
   GetBucketPolicyOutput,
+  | RequestLimitExceeded
   | NoSuchBucket
   | NoSuchBucketPolicy
   | PermanentRedirect
@@ -13759,6 +13806,7 @@ export const getBucketPolicy: (
   input: GetBucketPolicyRequest,
   output: GetBucketPolicyOutput,
   errors: [
+    RequestLimitExceeded,
     NoSuchBucket,
     NoSuchBucketPolicy,
     PermanentRedirect,
@@ -13799,12 +13847,19 @@ export const getBucketReplication: (
   input: GetBucketReplicationRequest,
 ) => effect.Effect<
   GetBucketReplicationOutput,
-  NoSuchBucket | ReplicationConfigurationNotFoundError | CommonErrors,
+  | RequestLimitExceeded
+  | NoSuchBucket
+  | ReplicationConfigurationNotFoundError
+  | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketReplicationRequest,
   output: GetBucketReplicationOutput,
-  errors: [NoSuchBucket, ReplicationConfigurationNotFoundError],
+  errors: [
+    RequestLimitExceeded,
+    NoSuchBucket,
+    ReplicationConfigurationNotFoundError,
+  ],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -13822,12 +13877,12 @@ export const getBucketRequestPayment: (
   input: GetBucketRequestPaymentRequest,
 ) => effect.Effect<
   GetBucketRequestPaymentOutput,
-  NoSuchBucket | PermanentRedirect | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | PermanentRedirect | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketRequestPaymentRequest,
   output: GetBucketRequestPaymentOutput,
-  errors: [NoSuchBucket, PermanentRedirect],
+  errors: [RequestLimitExceeded, NoSuchBucket, PermanentRedirect],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -13857,12 +13912,16 @@ export const getBucketTagging: (
   input: GetBucketTaggingRequest,
 ) => effect.Effect<
   GetBucketTaggingOutput,
-  NoSuchBucket | NoSuchTagSet | PermanentRedirect | CommonErrors,
+  | RequestLimitExceeded
+  | NoSuchBucket
+  | NoSuchTagSet
+  | PermanentRedirect
+  | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketTaggingRequest,
   output: GetBucketTaggingOutput,
-  errors: [NoSuchBucket, NoSuchTagSet, PermanentRedirect],
+  errors: [RequestLimitExceeded, NoSuchBucket, NoSuchTagSet, PermanentRedirect],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -13889,12 +13948,12 @@ export const getBucketVersioning: (
   input: GetBucketVersioningRequest,
 ) => effect.Effect<
   GetBucketVersioningOutput,
-  NoSuchBucket | PermanentRedirect | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | PermanentRedirect | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketVersioningRequest,
   output: GetBucketVersioningOutput,
-  errors: [NoSuchBucket, PermanentRedirect],
+  errors: [RequestLimitExceeded, NoSuchBucket, PermanentRedirect],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -13919,12 +13978,21 @@ export const getBucketWebsite: (
   input: GetBucketWebsiteRequest,
 ) => effect.Effect<
   GetBucketWebsiteOutput,
-  NoSuchBucket | NoSuchWebsiteConfiguration | PermanentRedirect | CommonErrors,
+  | RequestLimitExceeded
+  | NoSuchBucket
+  | NoSuchWebsiteConfiguration
+  | PermanentRedirect
+  | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketWebsiteRequest,
   output: GetBucketWebsiteOutput,
-  errors: [NoSuchBucket, NoSuchWebsiteConfiguration, PermanentRedirect],
+  errors: [
+    RequestLimitExceeded,
+    NoSuchBucket,
+    NoSuchWebsiteConfiguration,
+    PermanentRedirect,
+  ],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -13960,12 +14028,16 @@ export const getObjectAcl: (
   input: GetObjectAclRequest,
 ) => effect.Effect<
   GetObjectAclOutput,
-  NoSuchKey | NoSuchBucket | PermanentRedirect | CommonErrors,
+  | NoSuchKey
+  | RequestLimitExceeded
+  | NoSuchBucket
+  | PermanentRedirect
+  | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetObjectAclRequest,
   output: GetObjectAclOutput,
-  errors: [NoSuchKey, NoSuchBucket, PermanentRedirect],
+  errors: [NoSuchKey, RequestLimitExceeded, NoSuchBucket, PermanentRedirect],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -13984,12 +14056,12 @@ export const getObjectLegalHold: (
   input: GetObjectLegalHoldRequest,
 ) => effect.Effect<
   GetObjectLegalHoldOutput,
-  InvalidRequest | CommonErrors,
+  RequestLimitExceeded | InvalidRequest | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetObjectLegalHoldRequest,
   output: GetObjectLegalHoldOutput,
-  errors: [InvalidRequest],
+  errors: [RequestLimitExceeded, InvalidRequest],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -14008,6 +14080,7 @@ export const getObjectLockConfiguration: (
   input: GetObjectLockConfigurationRequest,
 ) => effect.Effect<
   GetObjectLockConfigurationOutput,
+  | RequestLimitExceeded
   | NoSuchBucket
   | ObjectLockConfigurationNotFoundError
   | PermanentRedirect
@@ -14017,6 +14090,7 @@ export const getObjectLockConfiguration: (
   input: GetObjectLockConfigurationRequest,
   output: GetObjectLockConfigurationOutput,
   errors: [
+    RequestLimitExceeded,
     NoSuchBucket,
     ObjectLockConfigurationNotFoundError,
     PermanentRedirect,
@@ -14039,12 +14113,12 @@ export const getObjectRetention: (
   input: GetObjectRetentionRequest,
 ) => effect.Effect<
   GetObjectRetentionOutput,
-  InvalidRequest | CommonErrors,
+  RequestLimitExceeded | InvalidRequest | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetObjectRetentionRequest,
   output: GetObjectRetentionOutput,
-  errors: [InvalidRequest],
+  errors: [RequestLimitExceeded, InvalidRequest],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -14076,12 +14150,16 @@ export const getObjectTagging: (
   input: GetObjectTaggingRequest,
 ) => effect.Effect<
   GetObjectTaggingOutput,
-  NoSuchBucket | NoSuchKey | PermanentRedirect | CommonErrors,
+  | RequestLimitExceeded
+  | NoSuchBucket
+  | NoSuchKey
+  | PermanentRedirect
+  | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetObjectTaggingRequest,
   output: GetObjectTaggingOutput,
-  errors: [NoSuchBucket, NoSuchKey, PermanentRedirect],
+  errors: [RequestLimitExceeded, NoSuchBucket, NoSuchKey, PermanentRedirect],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -14150,6 +14228,7 @@ export const getPublicAccessBlock: (
   input: GetPublicAccessBlockRequest,
 ) => effect.Effect<
   GetPublicAccessBlockOutput,
+  | RequestLimitExceeded
   | NoSuchBucket
   | NoSuchPublicAccessBlockConfiguration
   | PermanentRedirect
@@ -14159,6 +14238,7 @@ export const getPublicAccessBlock: (
   input: GetPublicAccessBlockRequest,
   output: GetPublicAccessBlockOutput,
   errors: [
+    RequestLimitExceeded,
     NoSuchBucket,
     NoSuchPublicAccessBlockConfiguration,
     PermanentRedirect,
@@ -14230,12 +14310,12 @@ export const headBucket: (
   input: HeadBucketRequest,
 ) => effect.Effect<
   HeadBucketOutput,
-  NotFound | ParseError | CommonErrors,
+  NotFound | RequestLimitExceeded | ParseError | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: HeadBucketRequest,
   output: HeadBucketOutput,
-  errors: [NotFound, ParseError],
+  errors: [NotFound, RequestLimitExceeded, ParseError],
 }));
 /**
  * The `HEAD` operation retrieves metadata from an object without returning the object
@@ -14349,12 +14429,12 @@ export const headObject: (
   input: HeadObjectRequest,
 ) => effect.Effect<
   HeadObjectOutput,
-  NotFound | ParseError | CommonErrors,
+  NotFound | RequestLimitExceeded | ParseError | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: HeadObjectRequest,
   output: HeadObjectOutput,
-  errors: [NotFound, ParseError],
+  errors: [NotFound, RequestLimitExceeded, ParseError],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -14392,12 +14472,12 @@ export const listBucketAnalyticsConfigurations: (
   input: ListBucketAnalyticsConfigurationsRequest,
 ) => effect.Effect<
   ListBucketAnalyticsConfigurationsOutput,
-  NoSuchBucket | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListBucketAnalyticsConfigurationsRequest,
   output: ListBucketAnalyticsConfigurationsOutput,
-  errors: [NoSuchBucket],
+  errors: [RequestLimitExceeded, NoSuchBucket],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -14424,12 +14504,12 @@ export const listBucketIntelligentTieringConfigurations: (
   input: ListBucketIntelligentTieringConfigurationsRequest,
 ) => effect.Effect<
   ListBucketIntelligentTieringConfigurationsOutput,
-  NoSuchBucket | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListBucketIntelligentTieringConfigurationsRequest,
   output: ListBucketIntelligentTieringConfigurationsOutput,
-  errors: [NoSuchBucket],
+  errors: [RequestLimitExceeded, NoSuchBucket],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -14465,12 +14545,12 @@ export const listBucketInventoryConfigurations: (
   input: ListBucketInventoryConfigurationsRequest,
 ) => effect.Effect<
   ListBucketInventoryConfigurationsOutput,
-  NoSuchBucket | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListBucketInventoryConfigurationsRequest,
   output: ListBucketInventoryConfigurationsOutput,
-  errors: [NoSuchBucket],
+  errors: [RequestLimitExceeded, NoSuchBucket],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -14508,12 +14588,12 @@ export const listBucketMetricsConfigurations: (
   input: ListBucketMetricsConfigurationsRequest,
 ) => effect.Effect<
   ListBucketMetricsConfigurationsOutput,
-  NoSuchBucket | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListBucketMetricsConfigurationsRequest,
   output: ListBucketMetricsConfigurationsOutput,
-  errors: [NoSuchBucket],
+  errors: [RequestLimitExceeded, NoSuchBucket],
 }));
 /**
  * Returns a list of all Amazon S3 directory buckets owned by the authenticated sender of the request. For
@@ -14646,27 +14726,27 @@ export const listObjectsV2: {
     input: ListObjectsV2Request,
   ): effect.Effect<
     ListObjectsV2Output,
-    NoSuchBucket | PermanentRedirect | CommonErrors,
+    NoSuchBucket | RequestLimitExceeded | PermanentRedirect | CommonErrors,
     Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListObjectsV2Request,
   ) => stream.Stream<
     ListObjectsV2Output,
-    NoSuchBucket | PermanentRedirect | CommonErrors,
+    NoSuchBucket | RequestLimitExceeded | PermanentRedirect | CommonErrors,
     Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListObjectsV2Request,
   ) => stream.Stream<
     unknown,
-    NoSuchBucket | PermanentRedirect | CommonErrors,
+    NoSuchBucket | RequestLimitExceeded | PermanentRedirect | CommonErrors,
     Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListObjectsV2Request,
   output: ListObjectsV2Output,
-  errors: [NoSuchBucket, PermanentRedirect],
+  errors: [NoSuchBucket, RequestLimitExceeded, PermanentRedirect],
   pagination: {
     inputToken: "ContinuationToken",
     outputToken: "NextContinuationToken",
@@ -14727,12 +14807,12 @@ export const putBucketAccelerateConfiguration: (
   input: PutBucketAccelerateConfigurationRequest,
 ) => effect.Effect<
   PutBucketAccelerateConfigurationResponse,
-  NoSuchBucket | PermanentRedirect | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | PermanentRedirect | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBucketAccelerateConfigurationRequest,
   output: PutBucketAccelerateConfigurationResponse,
-  errors: [NoSuchBucket, PermanentRedirect],
+  errors: [RequestLimitExceeded, NoSuchBucket, PermanentRedirect],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -14754,12 +14834,12 @@ export const putBucketRequestPayment: (
   input: PutBucketRequestPaymentRequest,
 ) => effect.Effect<
   PutBucketRequestPaymentResponse,
-  NoSuchBucket | PermanentRedirect | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | PermanentRedirect | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBucketRequestPaymentRequest,
   output: PutBucketRequestPaymentResponse,
-  errors: [NoSuchBucket, PermanentRedirect],
+  errors: [RequestLimitExceeded, NoSuchBucket, PermanentRedirect],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -14807,12 +14887,12 @@ export const putBucketTagging: (
   input: PutBucketTaggingRequest,
 ) => effect.Effect<
   PutBucketTaggingResponse,
-  NoSuchBucket | PermanentRedirect | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | PermanentRedirect | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBucketTaggingRequest,
   output: PutBucketTaggingResponse,
-  errors: [NoSuchBucket, PermanentRedirect],
+  errors: [RequestLimitExceeded, NoSuchBucket, PermanentRedirect],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -14861,12 +14941,12 @@ export const putBucketVersioning: (
   input: PutBucketVersioningRequest,
 ) => effect.Effect<
   PutBucketVersioningResponse,
-  NoSuchBucket | PermanentRedirect | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | PermanentRedirect | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBucketVersioningRequest,
   output: PutBucketVersioningResponse,
-  errors: [NoSuchBucket, PermanentRedirect],
+  errors: [RequestLimitExceeded, NoSuchBucket, PermanentRedirect],
 }));
 /**
  * End of support notice: As of October 1, 2025, Amazon S3 has discontinued support for Email Grantee Access Control Lists (ACLs). If you attempt to use an Email Grantee ACL in a request after October 1, 2025,
@@ -14987,6 +15067,7 @@ export const putObject: (
   | InvalidRequest
   | InvalidWriteOffset
   | TooManyParts
+  | RequestLimitExceeded
   | NoSuchBucket
   | PermanentRedirect
   | CommonErrors,
@@ -14999,6 +15080,7 @@ export const putObject: (
     InvalidRequest,
     InvalidWriteOffset,
     TooManyParts,
+    RequestLimitExceeded,
     NoSuchBucket,
     PermanentRedirect,
   ],
@@ -15150,12 +15232,12 @@ export const putObjectAcl: (
   input: PutObjectAclRequest,
 ) => effect.Effect<
   PutObjectAclOutput,
-  NoSuchKey | PermanentRedirect | CommonErrors,
+  NoSuchKey | RequestLimitExceeded | PermanentRedirect | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutObjectAclRequest,
   output: PutObjectAclOutput,
-  errors: [NoSuchKey, PermanentRedirect],
+  errors: [NoSuchKey, RequestLimitExceeded, PermanentRedirect],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -15201,12 +15283,12 @@ export const putObjectTagging: (
   input: PutObjectTaggingRequest,
 ) => effect.Effect<
   PutObjectTaggingOutput,
-  NoSuchKey | PermanentRedirect | CommonErrors,
+  RequestLimitExceeded | NoSuchKey | PermanentRedirect | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutObjectTaggingRequest,
   output: PutObjectTaggingOutput,
-  errors: [NoSuchKey, PermanentRedirect],
+  errors: [RequestLimitExceeded, NoSuchKey, PermanentRedirect],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -15242,12 +15324,12 @@ export const putPublicAccessBlock: (
   input: PutPublicAccessBlockRequest,
 ) => effect.Effect<
   PutPublicAccessBlockResponse,
-  NoSuchBucket | PermanentRedirect | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | PermanentRedirect | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutPublicAccessBlockRequest,
   output: PutPublicAccessBlockResponse,
-  errors: [NoSuchBucket, PermanentRedirect],
+  errors: [RequestLimitExceeded, NoSuchBucket, PermanentRedirect],
 }));
 /**
  * Uploads a part in a multipart upload.
@@ -15393,12 +15475,12 @@ export const uploadPart: (
   input: UploadPartRequest,
 ) => effect.Effect<
   UploadPartOutput,
-  NoSuchBucket | PermanentRedirect | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | PermanentRedirect | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UploadPartRequest,
   output: UploadPartOutput,
-  errors: [NoSuchBucket, PermanentRedirect],
+  errors: [RequestLimitExceeded, NoSuchBucket, PermanentRedirect],
 }));
 /**
  * Creates an S3 Metadata V2 metadata configuration for a general purpose bucket. For more information, see
@@ -15658,12 +15740,12 @@ export const getBucketPolicyStatus: (
   input: GetBucketPolicyStatusRequest,
 ) => effect.Effect<
   GetBucketPolicyStatusOutput,
-  NoSuchBucket | PermanentRedirect | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | PermanentRedirect | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketPolicyStatusRequest,
   output: GetBucketPolicyStatusOutput,
-  errors: [NoSuchBucket, PermanentRedirect],
+  errors: [RequestLimitExceeded, NoSuchBucket, PermanentRedirect],
 }));
 /**
  * Retrieves an object from Amazon S3.
@@ -15803,6 +15885,7 @@ export const getObject: (
   GetObjectOutput,
   | InvalidObjectState
   | NoSuchKey
+  | RequestLimitExceeded
   | NoSuchBucket
   | PermanentRedirect
   | CommonErrors,
@@ -15810,7 +15893,13 @@ export const getObject: (
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetObjectRequest,
   output: GetObjectOutput,
-  errors: [InvalidObjectState, NoSuchKey, NoSuchBucket, PermanentRedirect],
+  errors: [
+    InvalidObjectState,
+    NoSuchKey,
+    RequestLimitExceeded,
+    NoSuchBucket,
+    PermanentRedirect,
+  ],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -15835,27 +15924,27 @@ export const listBuckets: {
     input: ListBucketsRequest,
   ): effect.Effect<
     ListBucketsOutput,
-    RequestError | CommonErrors,
+    RequestLimitExceeded | RequestError | CommonErrors,
     Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListBucketsRequest,
   ) => stream.Stream<
     ListBucketsOutput,
-    RequestError | CommonErrors,
+    RequestLimitExceeded | RequestError | CommonErrors,
     Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListBucketsRequest,
   ) => stream.Stream<
     Bucket,
-    RequestError | CommonErrors,
+    RequestLimitExceeded | RequestError | CommonErrors,
     Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListBucketsRequest,
   output: ListBucketsOutput,
-  errors: [RequestError],
+  errors: [RequestLimitExceeded, RequestError],
   pagination: {
     inputToken: "ContinuationToken",
     outputToken: "ContinuationToken",
@@ -15954,12 +16043,12 @@ export const listMultipartUploads: (
   input: ListMultipartUploadsRequest,
 ) => effect.Effect<
   ListMultipartUploadsOutput,
-  NoSuchBucket | PermanentRedirect | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | PermanentRedirect | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListMultipartUploadsRequest,
   output: ListMultipartUploadsOutput,
-  errors: [NoSuchBucket, PermanentRedirect],
+  errors: [RequestLimitExceeded, NoSuchBucket, PermanentRedirect],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -15991,12 +16080,12 @@ export const listObjectVersions: (
   input: ListObjectVersionsRequest,
 ) => effect.Effect<
   ListObjectVersionsOutput,
-  NoSuchBucket | PermanentRedirect | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | PermanentRedirect | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListObjectVersionsRequest,
   output: ListObjectVersionsOutput,
-  errors: [NoSuchBucket, PermanentRedirect],
+  errors: [RequestLimitExceeded, NoSuchBucket, PermanentRedirect],
 }));
 /**
  * Lists the parts that have been uploaded for a specific multipart upload.
@@ -16065,27 +16154,27 @@ export const listParts: {
     input: ListPartsRequest,
   ): effect.Effect<
     ListPartsOutput,
-    NoSuchBucket | CommonErrors,
+    RequestLimitExceeded | NoSuchBucket | CommonErrors,
     Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListPartsRequest,
   ) => stream.Stream<
     ListPartsOutput,
-    NoSuchBucket | CommonErrors,
+    RequestLimitExceeded | NoSuchBucket | CommonErrors,
     Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListPartsRequest,
   ) => stream.Stream<
     Part,
-    NoSuchBucket | CommonErrors,
+    RequestLimitExceeded | NoSuchBucket | CommonErrors,
     Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPartsRequest,
   output: ListPartsOutput,
-  errors: [NoSuchBucket],
+  errors: [RequestLimitExceeded, NoSuchBucket],
   pagination: {
     inputToken: "PartNumberMarker",
     outputToken: "NextPartNumberMarker",
@@ -16143,12 +16232,12 @@ export const putBucketCors: (
   input: PutBucketCorsRequest,
 ) => effect.Effect<
   PutBucketCorsResponse,
-  NoSuchBucket | PermanentRedirect | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | PermanentRedirect | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBucketCorsRequest,
   output: PutBucketCorsResponse,
-  errors: [NoSuchBucket, PermanentRedirect],
+  errors: [RequestLimitExceeded, NoSuchBucket, PermanentRedirect],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -16171,12 +16260,12 @@ export const putBucketOwnershipControls: (
   input: PutBucketOwnershipControlsRequest,
 ) => effect.Effect<
   PutBucketOwnershipControlsResponse,
-  NoSuchBucket | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBucketOwnershipControlsRequest,
   output: PutBucketOwnershipControlsResponse,
-  errors: [NoSuchBucket],
+  errors: [RequestLimitExceeded, NoSuchBucket],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -16191,12 +16280,12 @@ export const putObjectLegalHold: (
   input: PutObjectLegalHoldRequest,
 ) => effect.Effect<
   PutObjectLegalHoldOutput,
-  MalformedXML | CommonErrors,
+  RequestLimitExceeded | MalformedXML | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutObjectLegalHoldRequest,
   output: PutObjectLegalHoldOutput,
-  errors: [MalformedXML],
+  errors: [RequestLimitExceeded, MalformedXML],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -16214,12 +16303,12 @@ export const putObjectRetention: (
   input: PutObjectRetentionRequest,
 ) => effect.Effect<
   PutObjectRetentionOutput,
-  InvalidRequest | CommonErrors,
+  RequestLimitExceeded | InvalidRequest | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutObjectRetentionRequest,
   output: PutObjectRetentionOutput,
-  errors: [InvalidRequest],
+  errors: [RequestLimitExceeded, InvalidRequest],
 }));
 /**
  * Enables or disables a live inventory table for an S3 Metadata configuration on a general
@@ -16477,12 +16566,12 @@ export const uploadPartCopy: (
   input: UploadPartCopyRequest,
 ) => effect.Effect<
   UploadPartCopyOutput,
-  NoSuchBucket | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UploadPartCopyRequest,
   output: UploadPartCopyOutput,
-  errors: [NoSuchBucket],
+  errors: [RequestLimitExceeded, NoSuchBucket],
 }));
 /**
  * Completes a multipart upload by assembling previously uploaded parts.
@@ -16772,12 +16861,21 @@ export const copyObject: (
   input: CopyObjectRequest,
 ) => effect.Effect<
   CopyObjectOutput,
-  ObjectNotInActiveTierError | NoSuchBucket | PermanentRedirect | CommonErrors,
+  | ObjectNotInActiveTierError
+  | RequestLimitExceeded
+  | NoSuchBucket
+  | PermanentRedirect
+  | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CopyObjectRequest,
   output: CopyObjectOutput,
-  errors: [ObjectNotInActiveTierError, NoSuchBucket, PermanentRedirect],
+  errors: [
+    ObjectNotInActiveTierError,
+    RequestLimitExceeded,
+    NoSuchBucket,
+    PermanentRedirect,
+  ],
 }));
 /**
  * This action creates an Amazon S3 bucket. To create an Amazon S3 on Outposts bucket, see
@@ -16890,6 +16988,7 @@ export const createBucket: (
   CreateBucketOutput,
   | BucketAlreadyExists
   | BucketAlreadyOwnedByYou
+  | RequestLimitExceeded
   | IllegalLocationConstraintException
   | InvalidArgument
   | InvalidBucketName
@@ -16902,6 +17001,7 @@ export const createBucket: (
   errors: [
     BucketAlreadyExists,
     BucketAlreadyOwnedByYou,
+    RequestLimitExceeded,
     IllegalLocationConstraintException,
     InvalidArgument,
     InvalidBucketName,
@@ -17089,12 +17189,12 @@ export const listObjects: (
   input: ListObjectsRequest,
 ) => effect.Effect<
   ListObjectsOutput,
-  NoSuchBucket | PermanentRedirect | CommonErrors,
+  NoSuchBucket | RequestLimitExceeded | PermanentRedirect | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListObjectsRequest,
   output: ListObjectsOutput,
-  errors: [NoSuchBucket, PermanentRedirect],
+  errors: [NoSuchBucket, RequestLimitExceeded, PermanentRedirect],
 }));
 /**
  * End of support notice: As of October 1, 2025, Amazon S3 has discontinued support for Email Grantee Access Control Lists (ACLs). If you attempt to use an Email Grantee ACL in a request after October 1, 2025,
@@ -17245,12 +17345,12 @@ export const putBucketAcl: (
   input: PutBucketAclRequest,
 ) => effect.Effect<
   PutBucketAclResponse,
-  NoSuchBucket | PermanentRedirect | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | PermanentRedirect | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBucketAclRequest,
   output: PutBucketAclResponse,
-  errors: [NoSuchBucket, PermanentRedirect],
+  errors: [RequestLimitExceeded, NoSuchBucket, PermanentRedirect],
 }));
 /**
  * This operation configures default encryption and Amazon S3 Bucket Keys for an existing bucket. You can also block encryption types using this operation.
@@ -17341,12 +17441,12 @@ export const putBucketEncryption: (
   input: PutBucketEncryptionRequest,
 ) => effect.Effect<
   PutBucketEncryptionResponse,
-  NoSuchBucket | PermanentRedirect | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | PermanentRedirect | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBucketEncryptionRequest,
   output: PutBucketEncryptionResponse,
-  errors: [NoSuchBucket, PermanentRedirect],
+  errors: [RequestLimitExceeded, NoSuchBucket, PermanentRedirect],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -17399,12 +17499,12 @@ export const putBucketIntelligentTieringConfiguration: (
   input: PutBucketIntelligentTieringConfigurationRequest,
 ) => effect.Effect<
   PutBucketIntelligentTieringConfigurationResponse,
-  NoSuchBucket | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBucketIntelligentTieringConfigurationRequest,
   output: PutBucketIntelligentTieringConfigurationResponse,
-  errors: [NoSuchBucket],
+  errors: [RequestLimitExceeded, NoSuchBucket],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -17445,12 +17545,12 @@ export const putBucketMetricsConfiguration: (
   input: PutBucketMetricsConfigurationRequest,
 ) => effect.Effect<
   PutBucketMetricsConfigurationResponse,
-  NoSuchBucket | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBucketMetricsConfigurationRequest,
   output: PutBucketMetricsConfigurationResponse,
-  errors: [NoSuchBucket],
+  errors: [RequestLimitExceeded, NoSuchBucket],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -17527,12 +17627,12 @@ export const putBucketWebsite: (
   input: PutBucketWebsiteRequest,
 ) => effect.Effect<
   PutBucketWebsiteResponse,
-  NoSuchBucket | PermanentRedirect | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | PermanentRedirect | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBucketWebsiteRequest,
   output: PutBucketWebsiteResponse,
-  errors: [NoSuchBucket, PermanentRedirect],
+  errors: [RequestLimitExceeded, NoSuchBucket, PermanentRedirect],
 }));
 /**
  * This operation enables you to delete multiple objects from a bucket using a single HTTP request. If
@@ -17630,12 +17730,12 @@ export const deleteObjects: (
   input: DeleteObjectsRequest,
 ) => effect.Effect<
   DeleteObjectsOutput,
-  NoSuchBucket | PermanentRedirect | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | PermanentRedirect | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteObjectsRequest,
   output: DeleteObjectsOutput,
-  errors: [NoSuchBucket, PermanentRedirect],
+  errors: [RequestLimitExceeded, NoSuchBucket, PermanentRedirect],
 }));
 /**
  * Retrieves the S3 Metadata configuration for a general purpose bucket. For more information, see
@@ -17671,12 +17771,12 @@ export const getBucketMetadataConfiguration: (
   input: GetBucketMetadataConfigurationRequest,
 ) => effect.Effect<
   GetBucketMetadataConfigurationOutput,
-  NoSuchBucket | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketMetadataConfigurationRequest,
   output: GetBucketMetadataConfigurationOutput,
-  errors: [NoSuchBucket],
+  errors: [RequestLimitExceeded, NoSuchBucket],
 }));
 /**
  * We recommend that you retrieve your S3 Metadata configurations by using the V2
@@ -17718,12 +17818,12 @@ export const getBucketMetadataTableConfiguration: (
   input: GetBucketMetadataTableConfigurationRequest,
 ) => effect.Effect<
   GetBucketMetadataTableConfigurationOutput,
-  NoSuchBucket | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketMetadataTableConfigurationRequest,
   output: GetBucketMetadataTableConfigurationOutput,
-  errors: [NoSuchBucket],
+  errors: [RequestLimitExceeded, NoSuchBucket],
 }));
 /**
  * End of support notice: As of October 1, 2025, Amazon S3 has discontinued support for Email Grantee Access Control Lists (ACLs). If you attempt to use an Email Grantee ACL in a request after October 1, 2025,
@@ -17797,12 +17897,12 @@ export const putBucketLogging: (
   input: PutBucketLoggingRequest,
 ) => effect.Effect<
   PutBucketLoggingResponse,
-  NoSuchBucket | PermanentRedirect | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | PermanentRedirect | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBucketLoggingRequest,
   output: PutBucketLoggingResponse,
-  errors: [NoSuchBucket, PermanentRedirect],
+  errors: [RequestLimitExceeded, NoSuchBucket, PermanentRedirect],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -17827,12 +17927,21 @@ export const putObjectLockConfiguration: (
   input: PutObjectLockConfigurationRequest,
 ) => effect.Effect<
   PutObjectLockConfigurationOutput,
-  InvalidBucketState | NoSuchBucket | PermanentRedirect | CommonErrors,
+  | RequestLimitExceeded
+  | InvalidBucketState
+  | NoSuchBucket
+  | PermanentRedirect
+  | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutObjectLockConfigurationRequest,
   output: PutObjectLockConfigurationOutput,
-  errors: [InvalidBucketState, NoSuchBucket, PermanentRedirect],
+  errors: [
+    RequestLimitExceeded,
+    InvalidBucketState,
+    NoSuchBucket,
+    PermanentRedirect,
+  ],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -17984,12 +18093,12 @@ export const putBucketInventoryConfiguration: (
   input: PutBucketInventoryConfigurationRequest,
 ) => effect.Effect<
   PutBucketInventoryConfigurationResponse,
-  NoSuchBucket | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBucketInventoryConfigurationRequest,
   output: PutBucketInventoryConfigurationResponse,
-  errors: [NoSuchBucket],
+  errors: [RequestLimitExceeded, NoSuchBucket],
 }));
 /**
  * Creates a new lifecycle configuration for the bucket or replaces an existing lifecycle
@@ -18091,6 +18200,7 @@ export const putBucketLifecycleConfiguration: (
   input: PutBucketLifecycleConfigurationRequest,
 ) => effect.Effect<
   PutBucketLifecycleConfigurationOutput,
+  | RequestLimitExceeded
   | InvalidRequest
   | MalformedXML
   | NoSuchBucket
@@ -18100,7 +18210,13 @@ export const putBucketLifecycleConfiguration: (
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBucketLifecycleConfigurationRequest,
   output: PutBucketLifecycleConfigurationOutput,
-  errors: [InvalidRequest, MalformedXML, NoSuchBucket, PermanentRedirect],
+  errors: [
+    RequestLimitExceeded,
+    InvalidRequest,
+    MalformedXML,
+    NoSuchBucket,
+    PermanentRedirect,
+  ],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -18159,12 +18275,12 @@ export const putBucketNotificationConfiguration: (
   input: PutBucketNotificationConfigurationRequest,
 ) => effect.Effect<
   PutBucketNotificationConfigurationResponse,
-  NoSuchBucket | CommonErrors,
+  RequestLimitExceeded | NoSuchBucket | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBucketNotificationConfigurationRequest,
   output: PutBucketNotificationConfigurationResponse,
-  errors: [NoSuchBucket],
+  errors: [RequestLimitExceeded, NoSuchBucket],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -18231,12 +18347,12 @@ export const putBucketReplication: (
   input: PutBucketReplicationRequest,
 ) => effect.Effect<
   PutBucketReplicationResponse,
-  InvalidRequest | NoSuchBucket | CommonErrors,
+  RequestLimitExceeded | InvalidRequest | NoSuchBucket | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBucketReplicationRequest,
   output: PutBucketReplicationResponse,
-  errors: [InvalidRequest, NoSuchBucket],
+  errors: [RequestLimitExceeded, InvalidRequest, NoSuchBucket],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -18382,12 +18498,21 @@ export const restoreObject: (
   input: RestoreObjectRequest,
 ) => effect.Effect<
   RestoreObjectOutput,
-  ObjectAlreadyInActiveTierError | NoSuchKey | PermanentRedirect | CommonErrors,
+  | ObjectAlreadyInActiveTierError
+  | RequestLimitExceeded
+  | NoSuchKey
+  | PermanentRedirect
+  | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RestoreObjectRequest,
   output: RestoreObjectOutput,
-  errors: [ObjectAlreadyInActiveTierError, NoSuchKey, PermanentRedirect],
+  errors: [
+    ObjectAlreadyInActiveTierError,
+    RequestLimitExceeded,
+    NoSuchKey,
+    PermanentRedirect,
+  ],
 }));
 /**
  * This operation is not supported for directory buckets.
@@ -18484,10 +18609,10 @@ export const selectObjectContent: (
   input: SelectObjectContentRequest,
 ) => effect.Effect<
   SelectObjectContentOutput,
-  PermanentRedirect | CommonErrors,
+  RequestLimitExceeded | PermanentRedirect | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SelectObjectContentRequest,
   output: SelectObjectContentOutput,
-  errors: [PermanentRedirect],
+  errors: [RequestLimitExceeded, PermanentRedirect],
 }));

@@ -69512,7 +69512,7 @@ export const ModifySpotFleetRequestResponse = S.suspend(() =>
 export class RequestLimitExceeded extends S.TaggedError<RequestLimitExceeded>()(
   "RequestLimitExceeded",
   {},
-) {}
+).pipe(C.withThrottlingError) {}
 export class InvalidDhcpOptionsIdMalformed extends S.TaggedError<InvalidDhcpOptionsIdMalformed>()(
   "InvalidDhcpOptionsId.Malformed",
   {},

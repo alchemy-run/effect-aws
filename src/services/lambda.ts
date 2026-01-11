@@ -5456,6 +5456,10 @@ export class TooManyRequestsException extends S.TaggedError<TooManyRequestsExcep
     Reason: S.optional(ThrottleReason),
   },
 ).pipe(C.withThrottlingError) {}
+export class RequestLimitExceeded extends S.TaggedError<RequestLimitExceeded>()(
+  "RequestLimitExceeded",
+  {},
+) {}
 export class ParseError extends S.TaggedError<ParseError>()("ParseError", {}) {}
 export class ProvisionedConcurrencyConfigNotFoundException extends S.TaggedError<ProvisionedConcurrencyConfigNotFoundException>()(
   "ProvisionedConcurrencyConfigNotFoundException",
@@ -5644,12 +5648,21 @@ export const deleteLayerVersion: (
   input: DeleteLayerVersionRequest,
 ) => effect.Effect<
   DeleteLayerVersionResponse,
-  ServiceException | TooManyRequestsException | ParseError | CommonErrors,
+  | ServiceException
+  | TooManyRequestsException
+  | RequestLimitExceeded
+  | ParseError
+  | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteLayerVersionRequest,
   output: DeleteLayerVersionResponse,
-  errors: [ServiceException, TooManyRequestsException, ParseError],
+  errors: [
+    ServiceException,
+    TooManyRequestsException,
+    RequestLimitExceeded,
+    ParseError,
+  ],
 }));
 /**
  * Returns information about a version of an Lambda layer, with a link to download the layer archive that's valid for 10 minutes.
@@ -5662,6 +5675,7 @@ export const getLayerVersion: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
+  | RequestLimitExceeded
   | ParseError
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -5673,6 +5687,7 @@ export const getLayerVersion: (
     ResourceNotFoundException,
     ServiceException,
     TooManyRequestsException,
+    RequestLimitExceeded,
     ParseError,
   ],
 }));
@@ -5690,6 +5705,7 @@ export const publishLayerVersion: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
+  | RequestLimitExceeded
   | ParseError
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -5702,6 +5718,7 @@ export const publishLayerVersion: (
     ResourceNotFoundException,
     ServiceException,
     TooManyRequestsException,
+    RequestLimitExceeded,
     ParseError,
   ],
 }));
@@ -5717,6 +5734,7 @@ export const getProvisionedConcurrencyConfig: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
+  | RequestLimitExceeded
   | ParseError
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -5729,6 +5747,7 @@ export const getProvisionedConcurrencyConfig: (
     ResourceNotFoundException,
     ServiceException,
     TooManyRequestsException,
+    RequestLimitExceeded,
     ParseError,
   ],
 }));
@@ -5791,6 +5810,7 @@ export const updateEventSourceMapping: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
+  | RequestLimitExceeded
   | ParseError
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -5804,6 +5824,7 @@ export const updateEventSourceMapping: (
     ResourceNotFoundException,
     ServiceException,
     TooManyRequestsException,
+    RequestLimitExceeded,
     ParseError,
   ],
 }));
@@ -5820,6 +5841,7 @@ export const updateAlias: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
+  | RequestLimitExceeded
   | ParseError
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -5833,6 +5855,7 @@ export const updateAlias: (
     ResourceNotFoundException,
     ServiceException,
     TooManyRequestsException,
+    RequestLimitExceeded,
     ParseError,
   ],
 }));
@@ -5850,6 +5873,7 @@ export const listFunctionEventInvokeConfigs: {
     | ResourceNotFoundException
     | ServiceException
     | TooManyRequestsException
+    | RequestLimitExceeded
     | ParseError
     | CommonErrors,
     Credentials | Region | HttpClient.HttpClient
@@ -5862,6 +5886,7 @@ export const listFunctionEventInvokeConfigs: {
     | ResourceNotFoundException
     | ServiceException
     | TooManyRequestsException
+    | RequestLimitExceeded
     | ParseError
     | CommonErrors,
     Credentials | Region | HttpClient.HttpClient
@@ -5874,6 +5899,7 @@ export const listFunctionEventInvokeConfigs: {
     | ResourceNotFoundException
     | ServiceException
     | TooManyRequestsException
+    | RequestLimitExceeded
     | ParseError
     | CommonErrors,
     Credentials | Region | HttpClient.HttpClient
@@ -5886,6 +5912,7 @@ export const listFunctionEventInvokeConfigs: {
     ResourceNotFoundException,
     ServiceException,
     TooManyRequestsException,
+    RequestLimitExceeded,
     ParseError,
   ],
   pagination: {
@@ -5906,6 +5933,7 @@ export const listTags: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
+  | RequestLimitExceeded
   | ParseError
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -5917,6 +5945,7 @@ export const listTags: (
     ResourceNotFoundException,
     ServiceException,
     TooManyRequestsException,
+    RequestLimitExceeded,
     ParseError,
   ],
 }));
@@ -5953,6 +5982,7 @@ export const getCodeSigningConfig: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | ServiceException
+  | RequestLimitExceeded
   | ParseError
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -5963,6 +5993,7 @@ export const getCodeSigningConfig: (
     InvalidParameterValueException,
     ResourceNotFoundException,
     ServiceException,
+    RequestLimitExceeded,
     ParseError,
   ],
 }));
@@ -6100,6 +6131,7 @@ export const deleteFunctionUrlConfig: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
+  | RequestLimitExceeded
   | ParseError
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -6111,6 +6143,7 @@ export const deleteFunctionUrlConfig: (
     ResourceNotFoundException,
     ServiceException,
     TooManyRequestsException,
+    RequestLimitExceeded,
     ParseError,
   ],
 }));
@@ -6125,6 +6158,7 @@ export const getFunctionConcurrency: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
+  | RequestLimitExceeded
   | ParseError
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -6136,6 +6170,7 @@ export const getFunctionConcurrency: (
     ResourceNotFoundException,
     ServiceException,
     TooManyRequestsException,
+    RequestLimitExceeded,
     ParseError,
   ],
 }));
@@ -6178,6 +6213,7 @@ export const putFunctionConcurrency: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
+  | RequestLimitExceeded
   | ParseError
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -6190,6 +6226,7 @@ export const putFunctionConcurrency: (
     ResourceNotFoundException,
     ServiceException,
     TooManyRequestsException,
+    RequestLimitExceeded,
     ParseError,
   ],
 }));
@@ -6205,6 +6242,7 @@ export const updateFunctionUrlConfig: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
+  | RequestLimitExceeded
   | ParseError
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -6217,6 +6255,7 @@ export const updateFunctionUrlConfig: (
     ResourceNotFoundException,
     ServiceException,
     TooManyRequestsException,
+    RequestLimitExceeded,
     ParseError,
   ],
 }));
@@ -6254,6 +6293,7 @@ export const getFunctionRecursionConfig: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
+  | RequestLimitExceeded
   | ParseError
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -6265,6 +6305,7 @@ export const getFunctionRecursionConfig: (
     ResourceNotFoundException,
     ServiceException,
     TooManyRequestsException,
+    RequestLimitExceeded,
     ParseError,
   ],
 }));
@@ -6350,6 +6391,7 @@ export const putFunctionCodeSigningConfig: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
+  | RequestLimitExceeded
   | ParseError
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -6363,6 +6405,7 @@ export const putFunctionCodeSigningConfig: (
     ResourceNotFoundException,
     ServiceException,
     TooManyRequestsException,
+    RequestLimitExceeded,
     ParseError,
   ],
 }));
@@ -6382,6 +6425,7 @@ export const putFunctionRecursionConfig: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
+  | RequestLimitExceeded
   | ParseError
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -6394,6 +6438,7 @@ export const putFunctionRecursionConfig: (
     ResourceNotFoundException,
     ServiceException,
     TooManyRequestsException,
+    RequestLimitExceeded,
     ParseError,
   ],
 }));
@@ -6562,6 +6607,7 @@ export const getLayerVersionPolicy: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
+  | RequestLimitExceeded
   | ParseError
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -6573,6 +6619,7 @@ export const getLayerVersionPolicy: (
     ResourceNotFoundException,
     ServiceException,
     TooManyRequestsException,
+    RequestLimitExceeded,
     ParseError,
   ],
 }));
@@ -6588,6 +6635,7 @@ export const putProvisionedConcurrencyConfig: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
+  | RequestLimitExceeded
   | ParseError
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -6600,6 +6648,7 @@ export const putProvisionedConcurrencyConfig: (
     ResourceNotFoundException,
     ServiceException,
     TooManyRequestsException,
+    RequestLimitExceeded,
     ParseError,
   ],
 }));
@@ -6615,6 +6664,7 @@ export const untagResource: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
+  | RequestLimitExceeded
   | ParseError
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -6627,6 +6677,7 @@ export const untagResource: (
     ResourceNotFoundException,
     ServiceException,
     TooManyRequestsException,
+    RequestLimitExceeded,
     ParseError,
   ],
 }));
@@ -6668,6 +6719,7 @@ export const deleteCodeSigningConfig: (
   | ResourceConflictException
   | ResourceNotFoundException
   | ServiceException
+  | RequestLimitExceeded
   | ParseError
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -6679,6 +6731,7 @@ export const deleteCodeSigningConfig: (
     ResourceConflictException,
     ResourceNotFoundException,
     ServiceException,
+    RequestLimitExceeded,
     ParseError,
   ],
 }));
@@ -6694,6 +6747,7 @@ export const deleteFunctionConcurrency: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
+  | RequestLimitExceeded
   | ParseError
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -6706,6 +6760,7 @@ export const deleteFunctionConcurrency: (
     ResourceNotFoundException,
     ServiceException,
     TooManyRequestsException,
+    RequestLimitExceeded,
     ParseError,
   ],
 }));
@@ -6769,6 +6824,7 @@ export const deleteProvisionedConcurrencyConfig: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
+  | RequestLimitExceeded
   | ParseError
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -6781,6 +6837,7 @@ export const deleteProvisionedConcurrencyConfig: (
     ResourceNotFoundException,
     ServiceException,
     TooManyRequestsException,
+    RequestLimitExceeded,
     ParseError,
   ],
 }));
@@ -6827,6 +6884,7 @@ export const deleteFunctionEventInvokeConfig: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
+  | RequestLimitExceeded
   | ParseError
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -6839,6 +6897,7 @@ export const deleteFunctionEventInvokeConfig: (
     ResourceNotFoundException,
     ServiceException,
     TooManyRequestsException,
+    RequestLimitExceeded,
     ParseError,
   ],
 }));
@@ -6854,6 +6913,7 @@ export const tagResource: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
+  | RequestLimitExceeded
   | ParseError
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -6866,6 +6926,7 @@ export const tagResource: (
     ResourceNotFoundException,
     ServiceException,
     TooManyRequestsException,
+    RequestLimitExceeded,
     ParseError,
   ],
 }));
@@ -6987,6 +7048,7 @@ export const addPermission: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
+  | RequestLimitExceeded
   | ParseError
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -7001,6 +7063,7 @@ export const addPermission: (
     ResourceNotFoundException,
     ServiceException,
     TooManyRequestsException,
+    RequestLimitExceeded,
     ParseError,
   ],
 }));
@@ -7015,6 +7078,7 @@ export const deleteAlias: (
   | ResourceConflictException
   | ServiceException
   | TooManyRequestsException
+  | RequestLimitExceeded
   | ResourceNotFoundException
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -7026,6 +7090,7 @@ export const deleteAlias: (
     ResourceConflictException,
     ServiceException,
     TooManyRequestsException,
+    RequestLimitExceeded,
     ResourceNotFoundException,
   ],
 }));
@@ -7227,6 +7292,7 @@ export const getFunctionEventInvokeConfig: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
+  | RequestLimitExceeded
   | ParseError
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -7238,6 +7304,7 @@ export const getFunctionEventInvokeConfig: (
     ResourceNotFoundException,
     ServiceException,
     TooManyRequestsException,
+    RequestLimitExceeded,
     ParseError,
   ],
 }));
@@ -7312,6 +7379,7 @@ export const putFunctionEventInvokeConfig: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
+  | RequestLimitExceeded
   | ParseError
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -7324,6 +7392,7 @@ export const putFunctionEventInvokeConfig: (
     ResourceNotFoundException,
     ServiceException,
     TooManyRequestsException,
+    RequestLimitExceeded,
     ParseError,
   ],
 }));
@@ -7438,6 +7507,7 @@ export const createFunctionUrlConfig: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
+  | RequestLimitExceeded
   | ParseError
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -7450,6 +7520,7 @@ export const createFunctionUrlConfig: (
     ResourceNotFoundException,
     ServiceException,
     TooManyRequestsException,
+    RequestLimitExceeded,
     ParseError,
   ],
 }));
@@ -7518,6 +7589,7 @@ export const listProvisionedConcurrencyConfigs: {
     | ResourceNotFoundException
     | ServiceException
     | TooManyRequestsException
+    | RequestLimitExceeded
     | ParseError
     | CommonErrors,
     Credentials | Region | HttpClient.HttpClient
@@ -7530,6 +7602,7 @@ export const listProvisionedConcurrencyConfigs: {
     | ResourceNotFoundException
     | ServiceException
     | TooManyRequestsException
+    | RequestLimitExceeded
     | ParseError
     | CommonErrors,
     Credentials | Region | HttpClient.HttpClient
@@ -7542,6 +7615,7 @@ export const listProvisionedConcurrencyConfigs: {
     | ResourceNotFoundException
     | ServiceException
     | TooManyRequestsException
+    | RequestLimitExceeded
     | ParseError
     | CommonErrors,
     Credentials | Region | HttpClient.HttpClient
@@ -7554,6 +7628,7 @@ export const listProvisionedConcurrencyConfigs: {
     ResourceNotFoundException,
     ServiceException,
     TooManyRequestsException,
+    RequestLimitExceeded,
     ParseError,
   ],
   pagination: {
@@ -7625,6 +7700,7 @@ export const createAlias: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
+  | RequestLimitExceeded
   | ParseError
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -7637,6 +7713,7 @@ export const createAlias: (
     ResourceNotFoundException,
     ServiceException,
     TooManyRequestsException,
+    RequestLimitExceeded,
     ParseError,
   ],
 }));
@@ -7701,6 +7778,7 @@ export const listLayerVersions: {
     | ResourceNotFoundException
     | ServiceException
     | TooManyRequestsException
+    | RequestLimitExceeded
     | ParseError
     | CommonErrors,
     Credentials | Region | HttpClient.HttpClient
@@ -7713,6 +7791,7 @@ export const listLayerVersions: {
     | ResourceNotFoundException
     | ServiceException
     | TooManyRequestsException
+    | RequestLimitExceeded
     | ParseError
     | CommonErrors,
     Credentials | Region | HttpClient.HttpClient
@@ -7725,6 +7804,7 @@ export const listLayerVersions: {
     | ResourceNotFoundException
     | ServiceException
     | TooManyRequestsException
+    | RequestLimitExceeded
     | ParseError
     | CommonErrors,
     Credentials | Region | HttpClient.HttpClient
@@ -7737,6 +7817,7 @@ export const listLayerVersions: {
     ResourceNotFoundException,
     ServiceException,
     TooManyRequestsException,
+    RequestLimitExceeded,
     ParseError,
   ],
   pagination: {
@@ -7787,6 +7868,7 @@ export const removeLayerVersionPermission: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
+  | RequestLimitExceeded
   | ParseError
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -7799,6 +7881,7 @@ export const removeLayerVersionPermission: (
     ResourceNotFoundException,
     ServiceException,
     TooManyRequestsException,
+    RequestLimitExceeded,
     ParseError,
   ],
 }));
@@ -7846,6 +7929,7 @@ export const publishVersion: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
+  | RequestLimitExceeded
   | ParseError
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -7861,6 +7945,7 @@ export const publishVersion: (
     ResourceNotFoundException,
     ServiceException,
     TooManyRequestsException,
+    RequestLimitExceeded,
     ParseError,
   ],
 }));
@@ -7880,6 +7965,7 @@ export const addLayerVersionPermission: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
+  | RequestLimitExceeded
   | ParseError
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -7894,6 +7980,7 @@ export const addLayerVersionPermission: (
     ResourceNotFoundException,
     ServiceException,
     TooManyRequestsException,
+    RequestLimitExceeded,
     ParseError,
   ],
 }));
@@ -8006,6 +8093,7 @@ export const createEventSourceMapping: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
+  | RequestLimitExceeded
   | ResourceInUseException
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -8018,6 +8106,7 @@ export const createEventSourceMapping: (
     ResourceNotFoundException,
     ServiceException,
     TooManyRequestsException,
+    RequestLimitExceeded,
     ResourceInUseException,
   ],
 }));
@@ -8043,6 +8132,7 @@ export const updateFunctionConfiguration: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
+  | RequestLimitExceeded
   | ParseError
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -8059,6 +8149,7 @@ export const updateFunctionConfiguration: (
     ResourceNotFoundException,
     ServiceException,
     TooManyRequestsException,
+    RequestLimitExceeded,
     ParseError,
   ],
 }));
@@ -8171,6 +8262,7 @@ export const updateFunctionCode: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
+  | RequestLimitExceeded
   | ParseError
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -8188,6 +8280,7 @@ export const updateFunctionCode: (
     ResourceNotFoundException,
     ServiceException,
     TooManyRequestsException,
+    RequestLimitExceeded,
     ParseError,
   ],
 }));
@@ -8348,6 +8441,7 @@ export const invoke: (
   | SubnetIPAddressLimitReachedException
   | TooManyRequestsException
   | UnsupportedMediaTypeException
+  | RequestLimitExceeded
   | ParseError
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -8388,6 +8482,7 @@ export const invoke: (
     SubnetIPAddressLimitReachedException,
     TooManyRequestsException,
     UnsupportedMediaTypeException,
+    RequestLimitExceeded,
     ParseError,
   ],
 }));

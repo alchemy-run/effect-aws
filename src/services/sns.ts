@@ -1591,6 +1591,10 @@ export class ThrottledException extends S.TaggedError<ThrottledException>()(
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "Throttled", httpResponseCode: 429 }),
 ).pipe(C.withThrottlingError) {}
+export class RequestLimitExceeded extends S.TaggedError<RequestLimitExceeded>()(
+  "RequestLimitExceeded",
+  {},
+) {}
 export class InvalidClientTokenId extends S.TaggedError<InvalidClientTokenId>()(
   "InvalidClientTokenId",
   {},
@@ -2123,6 +2127,7 @@ export const deleteEndpoint: (
   | AuthorizationErrorException
   | InternalErrorException
   | InvalidParameterException
+  | RequestLimitExceeded
   | InvalidClientTokenId
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -2133,6 +2138,7 @@ export const deleteEndpoint: (
     AuthorizationErrorException,
     InternalErrorException,
     InvalidParameterException,
+    RequestLimitExceeded,
     InvalidClientTokenId,
   ],
 }));
@@ -2149,6 +2155,7 @@ export const deletePlatformApplication: (
   | AuthorizationErrorException
   | InternalErrorException
   | InvalidParameterException
+  | RequestLimitExceeded
   | InvalidClientTokenId
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -2159,6 +2166,7 @@ export const deletePlatformApplication: (
     AuthorizationErrorException,
     InternalErrorException,
     InvalidParameterException,
+    RequestLimitExceeded,
     InvalidClientTokenId,
   ],
 }));
@@ -2237,6 +2245,7 @@ export const addPermission: (
   | InternalErrorException
   | InvalidParameterException
   | NotFoundException
+  | RequestLimitExceeded
   | InvalidClientTokenId
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -2248,6 +2257,7 @@ export const addPermission: (
     InternalErrorException,
     InvalidParameterException,
     NotFoundException,
+    RequestLimitExceeded,
     InvalidClientTokenId,
   ],
 }));
@@ -2399,6 +2409,7 @@ export const listEndpointsByPlatformApplication: {
     | InternalErrorException
     | InvalidParameterException
     | NotFoundException
+    | RequestLimitExceeded
     | InvalidClientTokenId
     | CommonErrors,
     Credentials | Region | HttpClient.HttpClient
@@ -2411,6 +2422,7 @@ export const listEndpointsByPlatformApplication: {
     | InternalErrorException
     | InvalidParameterException
     | NotFoundException
+    | RequestLimitExceeded
     | InvalidClientTokenId
     | CommonErrors,
     Credentials | Region | HttpClient.HttpClient
@@ -2423,6 +2435,7 @@ export const listEndpointsByPlatformApplication: {
     | InternalErrorException
     | InvalidParameterException
     | NotFoundException
+    | RequestLimitExceeded
     | InvalidClientTokenId
     | CommonErrors,
     Credentials | Region | HttpClient.HttpClient
@@ -2435,6 +2448,7 @@ export const listEndpointsByPlatformApplication: {
     InternalErrorException,
     InvalidParameterException,
     NotFoundException,
+    RequestLimitExceeded,
     InvalidClientTokenId,
   ],
   pagination: {
@@ -2468,6 +2482,7 @@ export const createPlatformEndpoint: (
   | InternalErrorException
   | InvalidParameterException
   | NotFoundException
+  | RequestLimitExceeded
   | InvalidClientTokenId
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -2479,6 +2494,7 @@ export const createPlatformEndpoint: (
     InternalErrorException,
     InvalidParameterException,
     NotFoundException,
+    RequestLimitExceeded,
     InvalidClientTokenId,
   ],
 }));
@@ -2495,6 +2511,7 @@ export const getEndpointAttributes: (
   | InternalErrorException
   | InvalidParameterException
   | NotFoundException
+  | RequestLimitExceeded
   | InvalidClientTokenId
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -2506,6 +2523,7 @@ export const getEndpointAttributes: (
     InternalErrorException,
     InvalidParameterException,
     NotFoundException,
+    RequestLimitExceeded,
     InvalidClientTokenId,
   ],
 }));
@@ -2522,6 +2540,7 @@ export const getPlatformApplicationAttributes: (
   | InternalErrorException
   | InvalidParameterException
   | NotFoundException
+  | RequestLimitExceeded
   | InvalidClientTokenId
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -2533,6 +2552,7 @@ export const getPlatformApplicationAttributes: (
     InternalErrorException,
     InvalidParameterException,
     NotFoundException,
+    RequestLimitExceeded,
     InvalidClientTokenId,
   ],
 }));
@@ -2576,6 +2596,7 @@ export const listSubscriptionsByTopic: {
     | InternalErrorException
     | InvalidParameterException
     | NotFoundException
+    | RequestLimitExceeded
     | InvalidClientTokenId
     | CommonErrors,
     Credentials | Region | HttpClient.HttpClient
@@ -2588,6 +2609,7 @@ export const listSubscriptionsByTopic: {
     | InternalErrorException
     | InvalidParameterException
     | NotFoundException
+    | RequestLimitExceeded
     | InvalidClientTokenId
     | CommonErrors,
     Credentials | Region | HttpClient.HttpClient
@@ -2600,6 +2622,7 @@ export const listSubscriptionsByTopic: {
     | InternalErrorException
     | InvalidParameterException
     | NotFoundException
+    | RequestLimitExceeded
     | InvalidClientTokenId
     | CommonErrors,
     Credentials | Region | HttpClient.HttpClient
@@ -2612,6 +2635,7 @@ export const listSubscriptionsByTopic: {
     InternalErrorException,
     InvalidParameterException,
     NotFoundException,
+    RequestLimitExceeded,
     InvalidClientTokenId,
   ],
   pagination: {
@@ -2635,6 +2659,7 @@ export const removePermission: (
   | InternalErrorException
   | InvalidParameterException
   | NotFoundException
+  | RequestLimitExceeded
   | InvalidClientTokenId
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -2646,6 +2671,7 @@ export const removePermission: (
     InternalErrorException,
     InvalidParameterException,
     NotFoundException,
+    RequestLimitExceeded,
     InvalidClientTokenId,
   ],
 }));
@@ -2662,6 +2688,7 @@ export const setEndpointAttributes: (
   | InternalErrorException
   | InvalidParameterException
   | NotFoundException
+  | RequestLimitExceeded
   | InvalidClientTokenId
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -2673,6 +2700,7 @@ export const setEndpointAttributes: (
     InternalErrorException,
     InvalidParameterException,
     NotFoundException,
+    RequestLimitExceeded,
     InvalidClientTokenId,
   ],
 }));
@@ -2691,6 +2719,7 @@ export const setPlatformApplicationAttributes: (
   | InternalErrorException
   | InvalidParameterException
   | NotFoundException
+  | RequestLimitExceeded
   | InvalidClientTokenId
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -2702,6 +2731,7 @@ export const setPlatformApplicationAttributes: (
     InternalErrorException,
     InvalidParameterException,
     NotFoundException,
+    RequestLimitExceeded,
     InvalidClientTokenId,
   ],
 }));
@@ -2718,6 +2748,7 @@ export const getDataProtectionPolicy: (
   | InvalidParameterException
   | InvalidSecurityException
   | NotFoundException
+  | RequestLimitExceeded
   | InvalidClientTokenId
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -2730,6 +2761,7 @@ export const getDataProtectionPolicy: (
     InvalidParameterException,
     InvalidSecurityException,
     NotFoundException,
+    RequestLimitExceeded,
     InvalidClientTokenId,
   ],
 }));
@@ -2746,6 +2778,7 @@ export const getTopicAttributes: (
   | InvalidParameterException
   | InvalidSecurityException
   | NotFoundException
+  | RequestLimitExceeded
   | InvalidClientTokenId
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -2758,6 +2791,7 @@ export const getTopicAttributes: (
     InvalidParameterException,
     InvalidSecurityException,
     NotFoundException,
+    RequestLimitExceeded,
     InvalidClientTokenId,
   ],
 }));
@@ -2774,6 +2808,7 @@ export const putDataProtectionPolicy: (
   | InvalidParameterException
   | InvalidSecurityException
   | NotFoundException
+  | RequestLimitExceeded
   | InvalidClientTokenId
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -2786,6 +2821,7 @@ export const putDataProtectionPolicy: (
     InvalidParameterException,
     InvalidSecurityException,
     NotFoundException,
+    RequestLimitExceeded,
     InvalidClientTokenId,
   ],
 }));
@@ -2805,6 +2841,7 @@ export const setTopicAttributes: (
   | InvalidParameterException
   | InvalidSecurityException
   | NotFoundException
+  | RequestLimitExceeded
   | InvalidClientTokenId
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -2817,6 +2854,7 @@ export const setTopicAttributes: (
     InvalidParameterException,
     InvalidSecurityException,
     NotFoundException,
+    RequestLimitExceeded,
     InvalidClientTokenId,
   ],
 }));
@@ -2902,6 +2940,7 @@ export const listTagsForResource: (
   | InvalidParameterException
   | ResourceNotFoundException
   | TagPolicyException
+  | RequestLimitExceeded
   | InvalidClientTokenId
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -2914,6 +2953,7 @@ export const listTagsForResource: (
     InvalidParameterException,
     ResourceNotFoundException,
     TagPolicyException,
+    RequestLimitExceeded,
     InvalidClientTokenId,
   ],
 }));
@@ -3037,6 +3077,7 @@ export const deleteTopic: (
   | NotFoundException
   | StaleTagException
   | TagPolicyException
+  | RequestLimitExceeded
   | InvalidClientTokenId
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -3052,6 +3093,7 @@ export const deleteTopic: (
     NotFoundException,
     StaleTagException,
     TagPolicyException,
+    RequestLimitExceeded,
     InvalidClientTokenId,
   ],
 }));
@@ -3077,6 +3119,7 @@ export const subscribe: (
   | NotFoundException
   | ReplayLimitExceededException
   | SubscriptionLimitExceededException
+  | RequestLimitExceeded
   | InvalidClientTokenId
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -3092,6 +3135,7 @@ export const subscribe: (
     NotFoundException,
     ReplayLimitExceededException,
     SubscriptionLimitExceededException,
+    RequestLimitExceeded,
     InvalidClientTokenId,
   ],
 }));
@@ -3158,6 +3202,7 @@ export const tagResource: (
   | StaleTagException
   | TagLimitExceededException
   | TagPolicyException
+  | RequestLimitExceeded
   | InvalidClientTokenId
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -3172,6 +3217,7 @@ export const tagResource: (
     StaleTagException,
     TagLimitExceededException,
     TagPolicyException,
+    RequestLimitExceeded,
     InvalidClientTokenId,
   ],
 }));
@@ -3190,6 +3236,7 @@ export const untagResource: (
   | StaleTagException
   | TagLimitExceededException
   | TagPolicyException
+  | RequestLimitExceeded
   | InvalidClientTokenId
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -3204,6 +3251,7 @@ export const untagResource: (
     StaleTagException,
     TagLimitExceededException,
     TagPolicyException,
+    RequestLimitExceeded,
     InvalidClientTokenId,
   ],
 }));
@@ -3286,6 +3334,7 @@ export const publish: (
   | NotFoundException
   | PlatformApplicationDisabledException
   | ValidationException
+  | RequestLimitExceeded
   | InvalidClientTokenId
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
@@ -3308,6 +3357,7 @@ export const publish: (
     NotFoundException,
     PlatformApplicationDisabledException,
     ValidationException,
+    RequestLimitExceeded,
     InvalidClientTokenId,
   ],
 }));
