@@ -26,8 +26,8 @@
     "localstack:clean": "DISTILLED_AWS_DEBUG=1 bun run scripts/localstack-clean.ts",
     "setup": "bun run scripts/setup.ts",
     "symlink": "bun run scripts/symlink.ts",
-    "test": "bun vitest run ./test",
-    "test:scripts": "bun vitest run ./scripts"
+    "test": "DISTILLED_AWS_DEBUG=1 bun vitest run ./test",
+    "test:scripts": "DISTILLED_AWS_DEBUG=1bun vitest run ./scripts"
   },
   "exports": {
     "./*": {

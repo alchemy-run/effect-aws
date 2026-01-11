@@ -72853,24 +72853,26 @@ export const deleteEgressOnlyInternetGateway: (
   input: DeleteEgressOnlyInternetGatewayRequest,
 ) => effect.Effect<
   DeleteEgressOnlyInternetGatewayResult,
-  | RequestLimitExceeded
+  | DependencyViolation
   | DryRunOperation
-  | InvalidGatewayIDNotFound
   | InvalidEgressOnlyInternetGatewayIdNotFound
+  | InvalidGatewayIDNotFound
   | MalformedGatewayIDNotFound
   | MissingParameter
+  | RequestLimitExceeded
   | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteEgressOnlyInternetGatewayRequest,
   output: DeleteEgressOnlyInternetGatewayResult,
   errors: [
-    RequestLimitExceeded,
+    DependencyViolation,
     DryRunOperation,
-    InvalidGatewayIDNotFound,
     InvalidEgressOnlyInternetGatewayIdNotFound,
+    InvalidGatewayIDNotFound,
     MalformedGatewayIDNotFound,
     MissingParameter,
+    RequestLimitExceeded,
   ],
 }));
 /**

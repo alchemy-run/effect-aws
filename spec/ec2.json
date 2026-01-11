@@ -344,12 +344,13 @@
     },
     "deleteEgressOnlyInternetGateway": {
       "errors": [
-        "RequestLimitExceeded",
+        "DependencyViolation",
         "DryRunOperation",
-        "InvalidGatewayID.NotFound",
         "InvalidEgressOnlyInternetGatewayId.NotFound",
+        "InvalidGatewayID.NotFound",
         "MalformedGatewayID.NotFound",
-        "MissingParameter"
+        "MissingParameter",
+        "RequestLimitExceeded"
       ]
     },
     "createVpnGateway": {
