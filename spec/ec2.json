@@ -218,6 +218,7 @@
     },
     "deleteVpcEndpoints": {
       "errors": [
+        "InvalidVpcEndpointId.NotFound",
         "ParseError"
       ]
     },

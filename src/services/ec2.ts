@@ -73529,12 +73529,12 @@ export const deleteVpcEndpoints: (
   input: DeleteVpcEndpointsRequest,
 ) => effect.Effect<
   DeleteVpcEndpointsResult,
-  ParseError | CommonErrors,
+  InvalidVpcEndpointIdNotFound | ParseError | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVpcEndpointsRequest,
   output: DeleteVpcEndpointsResult,
-  errors: [ParseError],
+  errors: [InvalidVpcEndpointIdNotFound, ParseError],
 }));
 /**
  * Deletes the specified VPC endpoint service configurations. Before you can delete
