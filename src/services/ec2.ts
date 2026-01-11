@@ -69730,6 +69730,10 @@ export class InvalidRoleArnMalformed extends S.TaggedError<InvalidRoleArnMalform
   "InvalidRoleArn.Malformed",
   {},
 ) {}
+export class NatGatewayMalformed extends S.TaggedError<NatGatewayMalformed>()(
+  "NatGatewayMalformed",
+  {},
+) {}
 export class NatGatewayNotFound extends S.TaggedError<NatGatewayNotFound>()(
   "NatGatewayNotFound",
   {},
@@ -69909,10 +69913,6 @@ export class InvalidLocalGatewayVirtualInterfaceGroupIDMalformed extends S.Tagge
 ) {}
 export class InvalidLocalGatewayVirtualInterfaceGroupIDNotFound extends S.TaggedError<InvalidLocalGatewayVirtualInterfaceGroupIDNotFound>()(
   "InvalidLocalGatewayVirtualInterfaceGroupID.NotFound",
-  {},
-) {}
-export class NatGatewayMalformed extends S.TaggedError<NatGatewayMalformed>()(
-  "NatGatewayMalformed",
   {},
 ) {}
 export class InvalidNetworkInsightsAccessScopeIdNotFound extends S.TaggedError<InvalidNetworkInsightsAccessScopeIdNotFound>()(
@@ -70452,6 +70452,7 @@ export const attachInternetGateway: (
   input: AttachInternetGatewayRequest,
 ) => effect.Effect<
   AttachInternetGatewayResponse,
+  | InvalidVpcIDNotFound
   | InvalidInternetGatewayIDNotFound
   | InvalidInternetGatewayIdMalformed
   | InvalidVpcIdMalformed
@@ -70461,6 +70462,7 @@ export const attachInternetGateway: (
   input: AttachInternetGatewayRequest,
   output: AttachInternetGatewayResponse,
   errors: [
+    InvalidVpcIDNotFound,
     InvalidInternetGatewayIDNotFound,
     InvalidInternetGatewayIdMalformed,
     InvalidVpcIdMalformed,
@@ -70591,6 +70593,7 @@ export const deleteNetworkAcl: (
   input: DeleteNetworkAclRequest,
 ) => effect.Effect<
   DeleteNetworkAclResponse,
+  | DependencyViolation
   | DryRunOperation
   | InvalidNetworkAclIDNotFound
   | InvalidNetworkAclIdMalformed
@@ -70602,6 +70605,7 @@ export const deleteNetworkAcl: (
   input: DeleteNetworkAclRequest,
   output: DeleteNetworkAclResponse,
   errors: [
+    DependencyViolation,
     DryRunOperation,
     InvalidNetworkAclIDNotFound,
     InvalidNetworkAclIdMalformed,
@@ -70932,6 +70936,7 @@ export const detachInternetGateway: (
   input: DetachInternetGatewayRequest,
 ) => effect.Effect<
   DetachInternetGatewayResponse,
+  | DependencyViolation
   | GatewayNotAttached
   | InvalidInternetGatewayIDNotFound
   | InvalidInternetGatewayIdMalformed
@@ -70942,6 +70947,7 @@ export const detachInternetGateway: (
   input: DetachInternetGatewayRequest,
   output: DetachInternetGatewayResponse,
   errors: [
+    DependencyViolation,
     GatewayNotAttached,
     InvalidInternetGatewayIDNotFound,
     InvalidInternetGatewayIdMalformed,
@@ -70955,6 +70961,7 @@ export const detachNetworkInterface: (
   input: DetachNetworkInterfaceRequest,
 ) => effect.Effect<
   DetachNetworkInterfaceResponse,
+  | DependencyViolation
   | InvalidAttachmentIDNotFound
   | InvalidNetworkInterfaceAttachmentIdMalformed
   | CommonErrors,
@@ -70963,6 +70970,7 @@ export const detachNetworkInterface: (
   input: DetachNetworkInterfaceRequest,
   output: DetachNetworkInterfaceResponse,
   errors: [
+    DependencyViolation,
     InvalidAttachmentIDNotFound,
     InvalidNetworkInterfaceAttachmentIdMalformed,
   ],
@@ -70990,12 +70998,21 @@ export const detachVolume: (
   input: DetachVolumeRequest,
 ) => effect.Effect<
   VolumeAttachment,
-  IncorrectState | InvalidParameterValue | InvalidVolumeNotFound | CommonErrors,
+  | DependencyViolation
+  | IncorrectState
+  | InvalidParameterValue
+  | InvalidVolumeNotFound
+  | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetachVolumeRequest,
   output: VolumeAttachment,
-  errors: [IncorrectState, InvalidParameterValue, InvalidVolumeNotFound],
+  errors: [
+    DependencyViolation,
+    IncorrectState,
+    InvalidParameterValue,
+    InvalidVolumeNotFound,
+  ],
 }));
 /**
  * Detaches a virtual private gateway from a VPC. You do this if you're planning to turn
@@ -71738,12 +71755,12 @@ export const associateNatGatewayAddress: (
   input: AssociateNatGatewayAddressRequest,
 ) => effect.Effect<
   AssociateNatGatewayAddressResult,
-  MissingParameter | NatGatewayNotFound | CommonErrors,
+  MissingParameter | NatGatewayMalformed | NatGatewayNotFound | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateNatGatewayAddressRequest,
   output: AssociateNatGatewayAddressResult,
-  errors: [MissingParameter, NatGatewayNotFound],
+  errors: [MissingParameter, NatGatewayMalformed, NatGatewayNotFound],
 }));
 /**
  * Associates a security group with another VPC in the same Region. This enables you to use the same security group with network interfaces and instances in the specified VPC.
@@ -72946,6 +72963,7 @@ export const deleteNatGateway: (
   | InvalidParameter
   | MissingParameter
   | NatGatewayMalformed
+  | NatGatewayNotFound
   | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
@@ -72956,6 +72974,7 @@ export const deleteNatGateway: (
     InvalidParameter,
     MissingParameter,
     NatGatewayMalformed,
+    NatGatewayNotFound,
   ],
 }));
 /**
@@ -76180,6 +76199,7 @@ export const detachClassicLinkVpc: (
   input: DetachClassicLinkVpcRequest,
 ) => effect.Effect<
   DetachClassicLinkVpcResult,
+  | DependencyViolation
   | InvalidInstanceIDMalformed
   | InvalidVpcIDNotFound
   | MissingParameter
@@ -76188,7 +76208,12 @@ export const detachClassicLinkVpc: (
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetachClassicLinkVpcRequest,
   output: DetachClassicLinkVpcResult,
-  errors: [InvalidInstanceIDMalformed, InvalidVpcIDNotFound, MissingParameter],
+  errors: [
+    DependencyViolation,
+    InvalidInstanceIDMalformed,
+    InvalidVpcIDNotFound,
+    MissingParameter,
+  ],
 }));
 /**
  * Detaches the specified Amazon Web Services Verified Access trust provider from the specified Amazon Web Services Verified Access instance.
@@ -76197,12 +76222,12 @@ export const detachVerifiedAccessTrustProvider: (
   input: DetachVerifiedAccessTrustProviderRequest,
 ) => effect.Effect<
   DetachVerifiedAccessTrustProviderResult,
-  InvalidVerifiedAccessInstanceIdNotFound | CommonErrors,
+  DependencyViolation | InvalidVerifiedAccessInstanceIdNotFound | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetachVerifiedAccessTrustProviderRequest,
   output: DetachVerifiedAccessTrustProviderResult,
-  errors: [InvalidVerifiedAccessInstanceIdNotFound],
+  errors: [DependencyViolation, InvalidVerifiedAccessInstanceIdNotFound],
 }));
 /**
  * Disables Elastic IP address transfer. For more information, see Transfer Elastic IP addresses in the *Amazon VPC User Guide*.
@@ -76637,12 +76662,12 @@ export const disassociateNatGatewayAddress: (
   input: DisassociateNatGatewayAddressRequest,
 ) => effect.Effect<
   DisassociateNatGatewayAddressResult,
-  MissingParameter | NatGatewayNotFound | CommonErrors,
+  MissingParameter | NatGatewayMalformed | NatGatewayNotFound | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateNatGatewayAddressRequest,
   output: DisassociateNatGatewayAddressResult,
-  errors: [MissingParameter, NatGatewayNotFound],
+  errors: [MissingParameter, NatGatewayMalformed, NatGatewayNotFound],
 }));
 /**
  * Disassociates a route server from a VPC.
@@ -80056,6 +80081,7 @@ export const associateRouteTable: (
   | InvalidPublicIpv4PoolIDMalformed
   | InvalidPublicIpv4PoolIDNotFound
   | InvalidRouteTableIDNotFound
+  | InvalidSubnetIDNotFound
   | MissingParameter
   | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
@@ -80069,6 +80095,7 @@ export const associateRouteTable: (
     InvalidPublicIpv4PoolIDMalformed,
     InvalidPublicIpv4PoolIDNotFound,
     InvalidRouteTableIDNotFound,
+    InvalidSubnetIDNotFound,
     MissingParameter,
   ],
 }));
@@ -83732,12 +83759,12 @@ export const disassociateInstanceEventWindow: (
   input: DisassociateInstanceEventWindowRequest,
 ) => effect.Effect<
   DisassociateInstanceEventWindowResult,
-  MissingParameter | CommonErrors,
+  DependencyViolation | MissingParameter | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateInstanceEventWindowRequest,
   output: DisassociateInstanceEventWindowResult,
-  errors: [MissingParameter],
+  errors: [DependencyViolation, MissingParameter],
 }));
 /**
  * When you enable Windows fast launch for a Windows AMI, images are pre-provisioned, using
@@ -85312,6 +85339,7 @@ export const revokeSecurityGroupEgress: (
   | InvalidGroupIdMalformed
   | InvalidParameterValue
   | InvalidPrefixListIDNotFound
+  | InvalidPermissionNotFound
   | InvalidSecurityGroupRuleIdMalformed
   | MissingParameter
   | UnknownParameter
@@ -85325,6 +85353,7 @@ export const revokeSecurityGroupEgress: (
     InvalidGroupIdMalformed,
     InvalidParameterValue,
     InvalidPrefixListIDNotFound,
+    InvalidPermissionNotFound,
     InvalidSecurityGroupRuleIdMalformed,
     MissingParameter,
     UnknownParameter,
@@ -87205,6 +87234,7 @@ export const describeNatGateways: {
     | FilterLimitExceeded
     | InvalidParameter
     | NatGatewayMalformed
+    | NatGatewayNotFound
     | ParseError
     | CommonErrors,
     Credentials | Rgn | HttpClient.HttpClient
@@ -87217,6 +87247,7 @@ export const describeNatGateways: {
     | FilterLimitExceeded
     | InvalidParameter
     | NatGatewayMalformed
+    | NatGatewayNotFound
     | ParseError
     | CommonErrors,
     Credentials | Rgn | HttpClient.HttpClient
@@ -87229,6 +87260,7 @@ export const describeNatGateways: {
     | FilterLimitExceeded
     | InvalidParameter
     | NatGatewayMalformed
+    | NatGatewayNotFound
     | ParseError
     | CommonErrors,
     Credentials | Rgn | HttpClient.HttpClient
@@ -87241,6 +87273,7 @@ export const describeNatGateways: {
     FilterLimitExceeded,
     InvalidParameter,
     NatGatewayMalformed,
+    NatGatewayNotFound,
     ParseError,
   ],
   pagination: {

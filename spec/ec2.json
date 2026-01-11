@@ -48,6 +48,7 @@
     },
     "attachInternetGateway": {
       "errors": [
+        "InvalidVpcID.NotFound",
         "InvalidInternetGatewayID.NotFound",
         "InvalidInternetGatewayId.Malformed",
         "InvalidVpcId.Malformed"
@@ -55,6 +56,7 @@
     },
     "detachInternetGateway": {
       "errors": [
+        "DependencyViolation",
         "Gateway.NotAttached",
         "InvalidInternetGatewayID.NotFound",
         "InvalidInternetGatewayId.Malformed",
@@ -140,6 +142,7 @@
     },
     "deleteNetworkAcl": {
       "errors": [
+        "DependencyViolation",
         "DryRunOperation",
         "InvalidNetworkAclID.NotFound",
         "InvalidNetworkAclId.Malformed",
@@ -184,6 +187,7 @@
         "InvalidPublicIpv4PoolID.Malformed",
         "InvalidPublicIpv4PoolID.NotFound",
         "InvalidRouteTableID.NotFound",
+        "InvalidSubnetID.NotFound",
         "MissingParameter"
       ]
     },
@@ -199,6 +203,7 @@
         "FilterLimitExceeded",
         "InvalidParameter",
         "NatGatewayMalformed",
+        "NatGatewayNotFound",
         "ParseError"
       ]
     },
@@ -422,6 +427,7 @@
         "InvalidGroupId.Malformed",
         "InvalidParameterValue",
         "InvalidPrefixListID.NotFound",
+        "InvalidPermission.NotFound",
         "InvalidSecurityGroupRuleId.Malformed",
         "MissingParameter",
         "UnknownParameter"
@@ -621,6 +627,7 @@
     },
     "detachNetworkInterface": {
       "errors": [
+        "DependencyViolation",
         "InvalidAttachmentID.NotFound",
         "InvalidNetworkInterfaceAttachmentId.Malformed"
       ]
@@ -862,6 +869,7 @@
     },
     "detachVolume": {
       "errors": [
+        "DependencyViolation",
         "IncorrectState",
         "InvalidParameterValue",
         "InvalidVolume.NotFound"
@@ -1070,7 +1078,8 @@
         "DryRunOperation",
         "InvalidParameter",
         "MissingParameter",
-        "NatGatewayMalformed"
+        "NatGatewayMalformed",
+        "NatGatewayNotFound"
       ]
     },
     "deleteClientVpnEndpoint": {
@@ -1632,12 +1641,14 @@
     "associateNatGatewayAddress": {
       "errors": [
         "MissingParameter",
+        "NatGatewayMalformed",
         "NatGatewayNotFound"
       ]
     },
     "disassociateNatGatewayAddress": {
       "errors": [
         "MissingParameter",
+        "NatGatewayMalformed",
         "NatGatewayNotFound"
       ]
     },
@@ -1687,6 +1698,7 @@
     },
     "detachClassicLinkVpc": {
       "errors": [
+        "DependencyViolation",
         "InvalidInstanceID.Malformed",
         "InvalidVpcID.NotFound",
         "MissingParameter"
@@ -2440,6 +2452,7 @@
     },
     "detachVerifiedAccessTrustProvider": {
       "errors": [
+        "DependencyViolation",
         "InvalidVerifiedAccessInstanceId.NotFound"
       ]
     },
@@ -2502,6 +2515,7 @@
     },
     "disassociateInstanceEventWindow": {
       "errors": [
+        "DependencyViolation",
         "MissingParameter"
       ]
     },
