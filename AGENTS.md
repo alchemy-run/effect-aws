@@ -162,7 +162,10 @@ LOCAL=1 bun vitest run ./test/services/s3.test.ts # LocalStack
 **Code:**
 - `const` arrow functions, `Effect.gen` + `pipe`, avoid explicit `return`
 - `Effect.retry` + `Schedule` instead of loops/sleeps
-- Commits: `feat:`, `fix:`, `chore:`, `refactor:`, `docs:`, `test:`
+
+**Commits & PRs:**
+- Use conventional commits: `feat:`, `fix:`, `chore:`, `refactor:`, `docs:`, `test:`
+- PR titles MUST use conventional commit format (e.g., `feat: add error categories`)
 
 **Testing:**
 - Use `expect` from `@effect/vitest` — NOT `Effect.fail`
