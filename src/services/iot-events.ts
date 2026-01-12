@@ -1891,7 +1891,7 @@ export class ResourceAlreadyExistsException extends S.TaggedError<ResourceAlread
     resourceId: S.optional(S.String),
     resourceArn: S.optional(S.String),
   },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   { message: S.optional(S.String) },

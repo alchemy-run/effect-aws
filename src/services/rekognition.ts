@@ -4628,7 +4628,7 @@ export class AccessDeniedException extends S.TaggedError<AccessDeniedException>(
     Code: S.optional(S.String),
     Logref: S.optional(S.String),
   },
-) {}
+).pipe(C.withAuthError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   {
@@ -4767,7 +4767,7 @@ export class ResourceAlreadyExistsException extends S.TaggedError<ResourceAlread
     Code: S.optional(S.String),
     Logref: S.optional(S.String),
   },
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   {

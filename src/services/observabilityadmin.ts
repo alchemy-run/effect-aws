@@ -1913,7 +1913,7 @@ export class AccessDeniedException extends S.TaggedError<AccessDeniedException>(
     Message: S.optional(S.String),
     amznErrorType: S.optional(S.String).pipe(T.HttpHeader("x-amzn-ErrorType")),
   },
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAuthError) {}
 export class InternalServerException extends S.TaggedError<InternalServerException>()(
   "InternalServerException",
   {

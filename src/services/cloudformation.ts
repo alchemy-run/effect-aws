@@ -6239,7 +6239,7 @@ export class TokenAlreadyExistsException extends S.TaggedError<TokenAlreadyExist
     code: "TokenAlreadyExistsException",
     httpResponseCode: 400,
   }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class CFNRegistryException extends S.TaggedError<CFNRegistryException>()(
   "CFNRegistryException",
   { Message: S.optional(S.String) },
@@ -6280,7 +6280,7 @@ export class AlreadyExistsException extends S.TaggedError<AlreadyExistsException
   "AlreadyExistsException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "AlreadyExistsException", httpResponseCode: 400 }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class TypeNotFoundException extends S.TaggedError<TypeNotFoundException>()(
   "TypeNotFoundException",
   { Message: S.optional(S.String) },
@@ -6298,7 +6298,7 @@ export class OperationIdAlreadyExistsException extends S.TaggedError<OperationId
     code: "OperationIdAlreadyExistsException",
     httpResponseCode: 409,
   }),
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class StackSetNotEmptyException extends S.TaggedError<StackSetNotEmptyException>()(
   "StackSetNotEmptyException",
   { Message: S.optional(S.String) },
@@ -6391,7 +6391,7 @@ export class NameAlreadyExistsException extends S.TaggedError<NameAlreadyExistsE
     code: "NameAlreadyExistsException",
     httpResponseCode: 409,
   }),
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class ResourceScanLimitExceededException extends S.TaggedError<ResourceScanLimitExceededException>()(
   "ResourceScanLimitExceededException",
   { Message: S.optional(S.String) },

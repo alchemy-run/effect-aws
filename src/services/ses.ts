@@ -2883,7 +2883,7 @@ export class AlreadyExistsException extends S.TaggedError<AlreadyExistsException
   "AlreadyExistsException",
   { Name: S.optional(S.String), message: S.optional(S.String) },
   T.AwsQueryError({ code: "AlreadyExists", httpResponseCode: 400 }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class CustomVerificationEmailInvalidContentException extends S.TaggedError<CustomVerificationEmailInvalidContentException>()(
   "CustomVerificationEmailInvalidContentException",
   { message: S.optional(S.String) },
@@ -2942,7 +2942,7 @@ export class ConfigurationSetAlreadyExistsException extends S.TaggedError<Config
     code: "ConfigurationSetAlreadyExists",
     httpResponseCode: 400,
   }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class CustomVerificationEmailTemplateAlreadyExistsException extends S.TaggedError<CustomVerificationEmailTemplateAlreadyExistsException>()(
   "CustomVerificationEmailTemplateAlreadyExistsException",
   {
@@ -2953,7 +2953,7 @@ export class CustomVerificationEmailTemplateAlreadyExistsException extends S.Tag
     code: "CustomVerificationEmailTemplateAlreadyExists",
     httpResponseCode: 400,
   }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class CustomVerificationEmailTemplateDoesNotExistException extends S.TaggedError<CustomVerificationEmailTemplateDoesNotExistException>()(
   "CustomVerificationEmailTemplateDoesNotExistException",
   {
@@ -3068,7 +3068,7 @@ export class TrackingOptionsAlreadyExistsException extends S.TaggedError<Trackin
     code: "TrackingOptionsAlreadyExistsException",
     httpResponseCode: 400,
   }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class EventDestinationAlreadyExistsException extends S.TaggedError<EventDestinationAlreadyExistsException>()(
   "EventDestinationAlreadyExistsException",
   {
@@ -3080,7 +3080,7 @@ export class EventDestinationAlreadyExistsException extends S.TaggedError<EventD
     code: "EventDestinationAlreadyExists",
     httpResponseCode: 400,
   }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class MessageRejected extends S.TaggedError<MessageRejected>()(
   "MessageRejected",
   { message: S.optional(S.String) },

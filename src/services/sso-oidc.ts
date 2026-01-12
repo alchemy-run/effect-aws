@@ -362,7 +362,7 @@ export class AccessDeniedException extends S.TaggedError<AccessDeniedException>(
     reason: S.optional(AccessDeniedExceptionReason),
     error_description: S.optional(S.String),
   },
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAuthError) {}
 export class InternalServerException extends S.TaggedError<InternalServerException>()(
   "InternalServerException",
   { error: S.optional(S.String), error_description: S.optional(S.String) },
@@ -419,7 +419,7 @@ export class InvalidRequestRegionException extends S.TaggedError<InvalidRequestR
 export class UnauthorizedClientException extends S.TaggedError<UnauthorizedClientException>()(
   "UnauthorizedClientException",
   { error: S.optional(S.String), error_description: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAuthError) {}
 export class UnsupportedGrantTypeException extends S.TaggedError<UnsupportedGrantTypeException>()(
   "UnsupportedGrantTypeException",
   { error: S.optional(S.String), error_description: S.optional(S.String) },

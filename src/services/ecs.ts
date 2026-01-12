@@ -5994,7 +5994,7 @@ export class ClientException extends S.TaggedError<ClientException>()(
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class ClusterNotFoundException extends S.TaggedError<ClusterNotFoundException>()(
   "ClusterNotFoundException",
   { message: S.optional(S.String) },

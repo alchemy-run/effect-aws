@@ -5797,7 +5797,7 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
 export class ResourceAlreadyExistsException extends S.TaggedError<ResourceAlreadyExistsException>()(
   "ResourceAlreadyExistsException",
   { message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class SlotNotAvailableException extends S.TaggedError<SlotNotAvailableException>()(
   "SlotNotAvailableException",
   { SlotSuggestions: S.optional(SlotList), message: S.optional(S.String) },

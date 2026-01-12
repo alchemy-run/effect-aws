@@ -1094,7 +1094,7 @@ export class ServiceException extends S.TaggedError<ServiceException>()(
 export class ResourceAlreadyExistsException extends S.TaggedError<ResourceAlreadyExistsException>()(
   "ResourceAlreadyExistsException",
   { Message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class OrganizationNotInAllFeaturesModeException extends S.TaggedError<OrganizationNotInAllFeaturesModeException>()(
   "OrganizationNotInAllFeaturesModeException",
   { Message: S.optional(S.String) },

@@ -3035,7 +3035,7 @@ export class LimitExceededException extends S.TaggedError<LimitExceededException
 export class ResourceAlreadyExistsException extends S.TaggedError<ResourceAlreadyExistsException>()(
   "ResourceAlreadyExistsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class PolicyLengthExceededException extends S.TaggedError<PolicyLengthExceededException>()(
   "PolicyLengthExceededException",
   { message: S.optional(S.String) },

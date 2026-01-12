@@ -69557,7 +69557,7 @@ export class InvalidCustomerGatewayIdMalformed extends S.TaggedError<InvalidCust
 export class DependencyViolation extends S.TaggedError<DependencyViolation>()(
   "DependencyViolation",
   {},
-) {}
+).pipe(C.withDependencyViolationError) {}
 export class InvalidDhcpOptionIDNotFound extends S.TaggedError<InvalidDhcpOptionIDNotFound>()(
   "InvalidDhcpOptionID.NotFound",
   {},
@@ -69589,7 +69589,7 @@ export class InvalidNetworkAclEntryNotFound extends S.TaggedError<InvalidNetwork
 export class InvalidNetworkInterfaceInUse extends S.TaggedError<InvalidNetworkInterfaceInUse>()(
   "InvalidNetworkInterface.InUse",
   {},
-) {}
+).pipe(C.withDependencyViolationError) {}
 export class InvalidNetworkInterfaceIDNotFound extends S.TaggedError<InvalidNetworkInterfaceIDNotFound>()(
   "InvalidNetworkInterfaceID.NotFound",
   {},
@@ -69689,7 +69689,7 @@ export class InvalidInstanceIDNotFound extends S.TaggedError<InvalidInstanceIDNo
 export class AuthFailure extends S.TaggedError<AuthFailure>()(
   "AuthFailure",
   {},
-) {}
+).pipe(C.withAuthError) {}
 export class InvalidAddressNotFound extends S.TaggedError<InvalidAddressNotFound>()(
   "InvalidAddress.NotFound",
   {},
@@ -69701,7 +69701,7 @@ export class InvalidAllocationIDNotFound extends S.TaggedError<InvalidAllocation
 export class InvalidIPAddressInUse extends S.TaggedError<InvalidIPAddressInUse>()(
   "InvalidIPAddress.InUse",
   {},
-) {}
+).pipe(C.withDependencyViolationError) {}
 export class InvalidAMIIDMalformed extends S.TaggedError<InvalidAMIIDMalformed>()(
   "InvalidAMIID.Malformed",
   {},
@@ -69717,7 +69717,7 @@ export class InvalidCapacityReservationIdMalformed extends S.TaggedError<Invalid
 export class AddressLimitExceeded extends S.TaggedError<AddressLimitExceeded>()(
   "AddressLimitExceeded",
   {},
-) {}
+).pipe(C.withThrottlingError) {}
 export class InvalidHostConfiguration extends S.TaggedError<InvalidHostConfiguration>()(
   "InvalidHostConfiguration",
   {},
@@ -69773,7 +69773,7 @@ export class InvalidCapacityReservationIdNotFound extends S.TaggedError<InvalidC
 export class InvalidKeyPairDuplicate extends S.TaggedError<InvalidKeyPairDuplicate>()(
   "InvalidKeyPair.Duplicate",
   {},
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class InvalidGatewayIDNotFound extends S.TaggedError<InvalidGatewayIDNotFound>()(
   "InvalidGatewayID.NotFound",
   {},
@@ -69789,7 +69789,7 @@ export class InvalidVpcEndpointIdNotFound extends S.TaggedError<InvalidVpcEndpoi
 export class InvalidGroupDuplicate extends S.TaggedError<InvalidGroupDuplicate>()(
   "InvalidGroup.Duplicate",
   {},
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class VPCIdNotSpecified extends S.TaggedError<VPCIdNotSpecified>()(
   "VPCIdNotSpecified",
   {},
@@ -69798,7 +69798,7 @@ export class ParseError extends S.TaggedError<ParseError>()("ParseError", {}) {}
 export class VerifiedAccessInstanceLimitExceeded extends S.TaggedError<VerifiedAccessInstanceLimitExceeded>()(
   "VerifiedAccessInstanceLimitExceeded",
   {},
-) {}
+).pipe(C.withThrottlingError) {}
 export class InvalidCapacityManagerDataExportIdMalformed extends S.TaggedError<InvalidCapacityManagerDataExportIdMalformed>()(
   "InvalidCapacityManagerDataExportId.Malformed",
   {},
@@ -70218,11 +70218,11 @@ export class InvalidPermissionNotFound extends S.TaggedError<InvalidPermissionNo
 export class DeclarativePoliciesAccessDenied extends S.TaggedError<DeclarativePoliciesAccessDenied>()(
   "DeclarativePoliciesAccessDenied",
   {},
-) {}
+).pipe(C.withAuthError) {}
 export class IdempotentParameterMismatch extends S.TaggedError<IdempotentParameterMismatch>()(
   "IdempotentParameterMismatch",
   {},
-) {}
+).pipe(C.withConflictError) {}
 export class InvalidAddressMalformed extends S.TaggedError<InvalidAddressMalformed>()(
   "InvalidAddress.Malformed",
   {},
@@ -70254,15 +70254,15 @@ export class InvalidLocalGatewayRouteTableIDMalformed extends S.TaggedError<Inva
 export class DefaultVpcAlreadyExists extends S.TaggedError<DefaultVpcAlreadyExists>()(
   "DefaultVpcAlreadyExists",
   {},
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class InternetGatewayLimitExceeded extends S.TaggedError<InternetGatewayLimitExceeded>()(
   "InternetGatewayLimitExceeded",
   {},
-) {}
+).pipe(C.withThrottlingError) {}
 export class ResourceLimitExceeded extends S.TaggedError<ResourceLimitExceeded>()(
   "ResourceLimitExceeded",
   {},
-) {}
+).pipe(C.withThrottlingError) {}
 export class InvalidLocalGatewayIDNotFound extends S.TaggedError<InvalidLocalGatewayIDNotFound>()(
   "InvalidLocalGatewayID.NotFound",
   {},
@@ -70278,7 +70278,7 @@ export class InvalidRouteServerIdNotAssociated extends S.TaggedError<InvalidRout
 export class TransitGatewayLimitExceeded extends S.TaggedError<TransitGatewayLimitExceeded>()(
   "TransitGatewayLimitExceeded",
   {},
-) {}
+).pipe(C.withThrottlingError) {}
 export class InvalidTransitGatewayIDMalformed extends S.TaggedError<InvalidTransitGatewayIDMalformed>()(
   "InvalidTransitGatewayID.Malformed",
   {},
@@ -70290,7 +70290,7 @@ export class InvalidZoneNotFound extends S.TaggedError<InvalidZoneNotFound>()(
 export class VpcLimitExceeded extends S.TaggedError<VpcLimitExceeded>()(
   "VpcLimitExceeded",
   {},
-) {}
+).pipe(C.withThrottlingError) {}
 export class InvalidServiceName extends S.TaggedError<InvalidServiceName>()(
   "InvalidServiceName",
   {},
@@ -70338,7 +70338,7 @@ export class InvalidServiceLinkVirtualInterfaceIDMalformed extends S.TaggedError
 export class UnauthorizedOperation extends S.TaggedError<UnauthorizedOperation>()(
   "UnauthorizedOperation",
   {},
-) {}
+).pipe(C.withAuthError) {}
 export class InvalidIpv6PoolIDMalformed extends S.TaggedError<InvalidIpv6PoolIDMalformed>()(
   "InvalidIpv6PoolID.Malformed",
   {},
@@ -70362,7 +70362,7 @@ export class UnknownParameter extends S.TaggedError<UnknownParameter>()(
 export class CidrConflict extends S.TaggedError<CidrConflict>()(
   "CidrConflict",
   {},
-) {}
+).pipe(C.withConflictError) {}
 export class InvalidInput extends S.TaggedError<InvalidInput>()(
   "InvalidInput",
   {},
@@ -70374,7 +70374,7 @@ export class Unsupported extends S.TaggedError<Unsupported>()(
 export class DefaultSubnetAlreadyExistsInAvailabilityZone extends S.TaggedError<DefaultSubnetAlreadyExistsInAvailabilityZone>()(
   "DefaultSubnetAlreadyExistsInAvailabilityZone",
   {},
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class InvalidLocalGatewayIDMalformed extends S.TaggedError<InvalidLocalGatewayIDMalformed>()(
   "InvalidLocalGatewayID.Malformed",
   {},
@@ -70402,7 +70402,7 @@ export class InvalidIpv6PoolIDNotFound extends S.TaggedError<InvalidIpv6PoolIDNo
 export class FilterLimitExceeded extends S.TaggedError<FilterLimitExceeded>()(
   "FilterLimitExceeded",
   {},
-) {}
+).pipe(C.withThrottlingError) {}
 export class MissingRequiredParameter extends S.TaggedError<MissingRequiredParameter>()(
   "MissingRequiredParameter",
   {},

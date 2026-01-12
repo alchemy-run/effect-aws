@@ -1249,7 +1249,7 @@ export class RepositoryCatalogDataNotFoundException extends S.TaggedError<Reposi
 export class ImageAlreadyExistsException extends S.TaggedError<ImageAlreadyExistsException>()(
   "ImageAlreadyExistsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class LimitExceededException extends S.TaggedError<LimitExceededException>()(
   "LimitExceededException",
   { message: S.optional(S.String) },
@@ -1265,7 +1265,7 @@ export class TooManyTagsException extends S.TaggedError<TooManyTagsException>()(
 export class LayerAlreadyExistsException extends S.TaggedError<LayerAlreadyExistsException>()(
   "LayerAlreadyExistsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class ImageDigestDoesNotMatchException extends S.TaggedError<ImageDigestDoesNotMatchException>()(
   "ImageDigestDoesNotMatchException",
   { message: S.optional(S.String) },
@@ -1277,7 +1277,7 @@ export class UploadNotFoundException extends S.TaggedError<UploadNotFoundExcepti
 export class RepositoryAlreadyExistsException extends S.TaggedError<RepositoryAlreadyExistsException>()(
   "RepositoryAlreadyExistsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class LayerPartTooSmallException extends S.TaggedError<LayerPartTooSmallException>()(
   "LayerPartTooSmallException",
   { message: S.optional(S.String) },
@@ -1285,7 +1285,7 @@ export class LayerPartTooSmallException extends S.TaggedError<LayerPartTooSmallE
 export class ImageTagAlreadyExistsException extends S.TaggedError<ImageTagAlreadyExistsException>()(
   "ImageTagAlreadyExistsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class LayersNotFoundException extends S.TaggedError<LayersNotFoundException>()(
   "LayersNotFoundException",
   { message: S.optional(S.String) },

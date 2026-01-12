@@ -828,7 +828,7 @@ export const ListProgressUpdateStreamsResult = S.suspend(() =>
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class DryRunOperation extends S.TaggedError<DryRunOperation>()(
   "DryRunOperation",
   { Message: S.optional(S.String) },
@@ -856,7 +856,7 @@ export class PolicyErrorException extends S.TaggedError<PolicyErrorException>()(
 export class ServiceUnavailableException extends S.TaggedError<ServiceUnavailableException>()(
   "ServiceUnavailableException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withServerError) {}
 export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   {
@@ -867,7 +867,7 @@ export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
 export class UnauthorizedOperation extends S.TaggedError<UnauthorizedOperation>()(
   "UnauthorizedOperation",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 
 //# Operations
 /**

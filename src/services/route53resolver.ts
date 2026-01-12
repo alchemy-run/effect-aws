@@ -2561,7 +2561,7 @@ export class InternalServiceErrorException extends S.TaggedError<InternalService
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class InvalidParameterException extends S.TaggedError<InvalidParameterException>()(
   "InvalidParameterException",
   { Message: S.String, FieldName: S.optional(S.String) },

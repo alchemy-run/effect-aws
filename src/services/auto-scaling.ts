@@ -4488,7 +4488,7 @@ export class AlreadyExistsFault extends S.TaggedError<AlreadyExistsFault>()(
   "AlreadyExistsFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "AlreadyExists", httpResponseCode: 400 }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class LimitExceededFault extends S.TaggedError<LimitExceededFault>()(
   "LimitExceededFault",
   { message: S.optional(S.String) },

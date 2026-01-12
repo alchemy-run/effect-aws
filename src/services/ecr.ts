@@ -3746,11 +3746,11 @@ export class LimitExceededException extends S.TaggedError<LimitExceededException
 export class ImageAlreadyExistsException extends S.TaggedError<ImageAlreadyExistsException>()(
   "ImageAlreadyExistsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class ExclusionAlreadyExistsException extends S.TaggedError<ExclusionAlreadyExistsException>()(
   "ExclusionAlreadyExistsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class ImageArchivedException extends S.TaggedError<ImageArchivedException>()(
   "ImageArchivedException",
   { message: S.optional(S.String) },
@@ -3832,7 +3832,7 @@ export class RepositoryNotEmptyException extends S.TaggedError<RepositoryNotEmpt
 export class PullThroughCacheRuleAlreadyExistsException extends S.TaggedError<PullThroughCacheRuleAlreadyExistsException>()(
   "PullThroughCacheRuleAlreadyExistsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class UnableToGetUpstreamImageException extends S.TaggedError<UnableToGetUpstreamImageException>()(
   "UnableToGetUpstreamImageException",
   { message: S.optional(S.String) },
@@ -3840,7 +3840,7 @@ export class UnableToGetUpstreamImageException extends S.TaggedError<UnableToGet
 export class TemplateAlreadyExistsException extends S.TaggedError<TemplateAlreadyExistsException>()(
   "TemplateAlreadyExistsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class UnsupportedImageTypeException extends S.TaggedError<UnsupportedImageTypeException>()(
   "UnsupportedImageTypeException",
   { message: S.optional(S.String) },
@@ -3848,11 +3848,11 @@ export class UnsupportedImageTypeException extends S.TaggedError<UnsupportedImag
 export class RepositoryAlreadyExistsException extends S.TaggedError<RepositoryAlreadyExistsException>()(
   "RepositoryAlreadyExistsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class LayerAlreadyExistsException extends S.TaggedError<LayerAlreadyExistsException>()(
   "LayerAlreadyExistsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class UnableToGetUpstreamLayerException extends S.TaggedError<UnableToGetUpstreamLayerException>()(
   "UnableToGetUpstreamLayerException",
   { message: S.optional(S.String) },
@@ -3860,7 +3860,7 @@ export class UnableToGetUpstreamLayerException extends S.TaggedError<UnableToGet
 export class ImageTagAlreadyExistsException extends S.TaggedError<ImageTagAlreadyExistsException>()(
   "ImageTagAlreadyExistsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class BlockedByOrganizationPolicyException extends S.TaggedError<BlockedByOrganizationPolicyException>()(
   "BlockedByOrganizationPolicyException",
   { message: S.optional(S.String) },

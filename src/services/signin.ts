@@ -215,7 +215,7 @@ export const OAuth2ErrorCode = S.String;
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { error: OAuth2ErrorCode, message: S.String },
-) {}
+).pipe(C.withAuthError) {}
 export class InternalServerException extends S.TaggedError<InternalServerException>()(
   "InternalServerException",
   { error: OAuth2ErrorCode, message: S.String },

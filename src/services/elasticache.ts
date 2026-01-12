@@ -4734,7 +4734,7 @@ export class CacheSubnetGroupInUse extends S.TaggedError<CacheSubnetGroupInUse>(
   "CacheSubnetGroupInUse",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "CacheSubnetGroupInUse", httpResponseCode: 400 }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withDependencyViolationError) {}
 export class InvalidParameterCombinationException extends S.TaggedError<InvalidParameterCombinationException>()(
   "InvalidParameterCombinationException",
   { message: S.optional(S.String) },
@@ -4768,7 +4768,7 @@ export class CacheSecurityGroupAlreadyExistsFault extends S.TaggedError<CacheSec
     code: "CacheSecurityGroupAlreadyExists",
     httpResponseCode: 400,
   }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class DuplicateUserNameFault extends S.TaggedError<DuplicateUserNameFault>()(
   "DuplicateUserNameFault",
   { message: S.optional(S.String) },
@@ -4842,7 +4842,7 @@ export class ReservedCacheNodeAlreadyExistsFault extends S.TaggedError<ReservedC
     code: "ReservedCacheNodeAlreadyExists",
     httpResponseCode: 404,
   }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class AuthorizationNotFoundFault extends S.TaggedError<AuthorizationNotFoundFault>()(
   "AuthorizationNotFoundFault",
   { message: S.optional(S.String) },
@@ -4931,7 +4931,7 @@ export class CacheParameterGroupAlreadyExistsFault extends S.TaggedError<CachePa
     code: "CacheParameterGroupAlreadyExists",
     httpResponseCode: 400,
   }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class CacheSecurityGroupQuotaExceededFault extends S.TaggedError<CacheSecurityGroupQuotaExceededFault>()(
   "CacheSecurityGroupQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -5013,7 +5013,7 @@ export class SnapshotAlreadyExistsFault extends S.TaggedError<SnapshotAlreadyExi
     code: "SnapshotAlreadyExistsFault",
     httpResponseCode: 400,
   }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class InvalidKMSKeyFault extends S.TaggedError<InvalidKMSKeyFault>()(
   "InvalidKMSKeyFault",
   { message: S.optional(S.String) },
@@ -5026,7 +5026,7 @@ export class ServerlessCacheSnapshotAlreadyExistsFault extends S.TaggedError<Ser
     code: "ServerlessCacheSnapshotAlreadyExistsFault",
     httpResponseCode: 400,
   }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class TagQuotaPerResourceExceeded extends S.TaggedError<TagQuotaPerResourceExceeded>()(
   "TagQuotaPerResourceExceeded",
   { message: S.optional(S.String) },
@@ -5055,7 +5055,7 @@ export class AuthorizationAlreadyExistsFault extends S.TaggedError<Authorization
     code: "AuthorizationAlreadyExists",
     httpResponseCode: 400,
   }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class CacheParameterGroupQuotaExceededFault extends S.TaggedError<CacheParameterGroupQuotaExceededFault>()(
   "CacheParameterGroupQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -5071,7 +5071,7 @@ export class GlobalReplicationGroupAlreadyExistsFault extends S.TaggedError<Glob
     code: "GlobalReplicationGroupAlreadyExistsFault",
     httpResponseCode: 400,
   }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class ServerlessCacheAlreadyExistsFault extends S.TaggedError<ServerlessCacheAlreadyExistsFault>()(
   "ServerlessCacheAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -5079,7 +5079,7 @@ export class ServerlessCacheAlreadyExistsFault extends S.TaggedError<ServerlessC
     code: "ServerlessCacheAlreadyExistsFault",
     httpResponseCode: 400,
   }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class ReservedCacheNodeNotFoundFault extends S.TaggedError<ReservedCacheNodeNotFoundFault>()(
   "ReservedCacheNodeNotFoundFault",
   { message: S.optional(S.String) },
@@ -5102,7 +5102,7 @@ export class UserAlreadyExistsFault extends S.TaggedError<UserAlreadyExistsFault
   "UserAlreadyExistsFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "UserAlreadyExists", httpResponseCode: 400 }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class SnapshotQuotaExceededFault extends S.TaggedError<SnapshotQuotaExceededFault>()(
   "SnapshotQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -5144,12 +5144,12 @@ export class UserGroupAlreadyExistsFault extends S.TaggedError<UserGroupAlreadyE
   "UserGroupAlreadyExistsFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "UserGroupAlreadyExists", httpResponseCode: 400 }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class CacheClusterAlreadyExistsFault extends S.TaggedError<CacheClusterAlreadyExistsFault>()(
   "CacheClusterAlreadyExistsFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "CacheClusterAlreadyExists", httpResponseCode: 400 }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class CacheSubnetGroupAlreadyExistsFault extends S.TaggedError<CacheSubnetGroupAlreadyExistsFault>()(
   "CacheSubnetGroupAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -5157,7 +5157,7 @@ export class CacheSubnetGroupAlreadyExistsFault extends S.TaggedError<CacheSubne
     code: "CacheSubnetGroupAlreadyExists",
     httpResponseCode: 400,
   }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class ServerlessCacheQuotaForCustomerExceededFault extends S.TaggedError<ServerlessCacheQuotaForCustomerExceededFault>()(
   "ServerlessCacheQuotaForCustomerExceededFault",
   { message: S.optional(S.String) },
@@ -5170,7 +5170,7 @@ export class SubnetInUse extends S.TaggedError<SubnetInUse>()(
   "SubnetInUse",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "SubnetInUse", httpResponseCode: 400 }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withDependencyViolationError) {}
 export class TagNotFoundFault extends S.TaggedError<TagNotFoundFault>()(
   "TagNotFoundFault",
   { message: S.optional(S.String) },
@@ -5235,7 +5235,7 @@ export class ReplicationGroupAlreadyExistsFault extends S.TaggedError<Replicatio
     code: "ReplicationGroupAlreadyExists",
     httpResponseCode: 400,
   }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 
 //# Operations
 /**

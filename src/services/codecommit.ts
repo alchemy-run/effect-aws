@@ -4109,7 +4109,7 @@ export class CommitMessageLengthExceededException extends S.TaggedError<CommitMe
 export class EncryptionKeyAccessDeniedException extends S.TaggedError<EncryptionKeyAccessDeniedException>()(
   "EncryptionKeyAccessDeniedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class BeforeCommitIdAndAfterCommitIdAreSameException extends S.TaggedError<BeforeCommitIdAndAfterCommitIdAreSameException>()(
   "BeforeCommitIdAndAfterCommitIdAreSameException",
   { message: S.optional(S.String) },
@@ -4133,7 +4133,7 @@ export class ApprovalRuleTemplateContentRequiredException extends S.TaggedError<
 export class ApprovalRuleTemplateNameAlreadyExistsException extends S.TaggedError<ApprovalRuleTemplateNameAlreadyExistsException>()(
   "ApprovalRuleTemplateNameAlreadyExistsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class CommentContentRequiredException extends S.TaggedError<CommentContentRequiredException>()(
   "CommentContentRequiredException",
   { message: S.optional(S.String) },
@@ -4245,7 +4245,7 @@ export class CommitIdsLimitExceededException extends S.TaggedError<CommitIdsLimi
 export class ApprovalRuleNameAlreadyExistsException extends S.TaggedError<ApprovalRuleNameAlreadyExistsException>()(
   "ApprovalRuleNameAlreadyExistsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class InvalidSortByException extends S.TaggedError<InvalidSortByException>()(
   "InvalidSortByException",
   { message: S.optional(S.String) },

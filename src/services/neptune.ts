@@ -4093,7 +4093,7 @@ export class DBClusterRoleAlreadyExistsFault extends S.TaggedError<DBClusterRole
     code: "DBClusterRoleAlreadyExists",
     httpResponseCode: 400,
   }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class DBInstanceNotFoundFault extends S.TaggedError<DBInstanceNotFoundFault>()(
   "DBInstanceNotFoundFault",
   { message: S.optional(S.String) },
@@ -4106,7 +4106,7 @@ export class DBClusterEndpointAlreadyExistsFault extends S.TaggedError<DBCluster
     code: "DBClusterEndpointAlreadyExistsFault",
     httpResponseCode: 400,
   }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class DBParameterGroupAlreadyExistsFault extends S.TaggedError<DBParameterGroupAlreadyExistsFault>()(
   "DBParameterGroupAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -4114,7 +4114,7 @@ export class DBParameterGroupAlreadyExistsFault extends S.TaggedError<DBParamete
     code: "DBParameterGroupAlreadyExists",
     httpResponseCode: 400,
   }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class DBClusterSnapshotAlreadyExistsFault extends S.TaggedError<DBClusterSnapshotAlreadyExistsFault>()(
   "DBClusterSnapshotAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -4122,7 +4122,7 @@ export class DBClusterSnapshotAlreadyExistsFault extends S.TaggedError<DBCluster
     code: "DBClusterSnapshotAlreadyExistsFault",
     httpResponseCode: 400,
   }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class EventSubscriptionQuotaExceededFault extends S.TaggedError<EventSubscriptionQuotaExceededFault>()(
   "EventSubscriptionQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -4222,7 +4222,7 @@ export class DBClusterAlreadyExistsFault extends S.TaggedError<DBClusterAlreadyE
     code: "DBClusterAlreadyExistsFault",
     httpResponseCode: 400,
   }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class DBClusterRoleNotFoundFault extends S.TaggedError<DBClusterRoleNotFoundFault>()(
   "DBClusterRoleNotFoundFault",
   { message: S.optional(S.String) },
@@ -4321,7 +4321,7 @@ export class DBSnapshotAlreadyExistsFault extends S.TaggedError<DBSnapshotAlread
   "DBSnapshotAlreadyExistsFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "DBSnapshotAlreadyExists", httpResponseCode: 400 }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class SnapshotQuotaExceededFault extends S.TaggedError<SnapshotQuotaExceededFault>()(
   "SnapshotQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -4334,7 +4334,7 @@ export class DBSubnetGroupAlreadyExistsFault extends S.TaggedError<DBSubnetGroup
     code: "DBSubnetGroupAlreadyExists",
     httpResponseCode: 400,
   }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class SNSNoAuthorizationFault extends S.TaggedError<SNSNoAuthorizationFault>()(
   "SNSNoAuthorizationFault",
   { message: S.optional(S.String) },
@@ -4347,12 +4347,12 @@ export class GlobalClusterAlreadyExistsFault extends S.TaggedError<GlobalCluster
     code: "GlobalClusterAlreadyExistsFault",
     httpResponseCode: 400,
   }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class DBInstanceAlreadyExistsFault extends S.TaggedError<DBInstanceAlreadyExistsFault>()(
   "DBInstanceAlreadyExistsFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "DBInstanceAlreadyExists", httpResponseCode: 400 }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class InvalidSubnet extends S.TaggedError<InvalidSubnet>()(
   "InvalidSubnet",
   { message: S.optional(S.String) },
@@ -4417,7 +4417,7 @@ export class SubnetAlreadyInUse extends S.TaggedError<SubnetAlreadyInUse>()(
   "SubnetAlreadyInUse",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "SubnetAlreadyInUse", httpResponseCode: 400 }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withDependencyViolationError) {}
 export class InsufficientDBClusterCapacityFault extends S.TaggedError<InsufficientDBClusterCapacityFault>()(
   "InsufficientDBClusterCapacityFault",
   { message: S.optional(S.String) },

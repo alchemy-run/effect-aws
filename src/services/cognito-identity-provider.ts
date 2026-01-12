@@ -6002,7 +6002,7 @@ export const SetRiskConfigurationResponse = S.suspend(() =>
 export class InternalErrorException extends S.TaggedError<InternalErrorException>()(
   "InternalErrorException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withServerError) {}
 export class AliasExistsException extends S.TaggedError<AliasExistsException>()(
   "AliasExistsException",
   { message: S.optional(S.String) },

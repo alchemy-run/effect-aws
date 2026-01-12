@@ -2569,7 +2569,7 @@ export class AlreadyExistsException extends S.TaggedError<AlreadyExistsException
   "AlreadyExistsException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "AlreadyExists", httpResponseCode: 409 }),
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class DependencyTimeoutException extends S.TaggedError<DependencyTimeoutException>()(
   "DependencyTimeoutException",
   { message: S.optional(S.String) },

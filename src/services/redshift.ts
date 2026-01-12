@@ -7395,7 +7395,7 @@ export class IntegrationAlreadyExistsFault extends S.TaggedError<IntegrationAlre
     code: "IntegrationAlreadyExistsFault",
     httpResponseCode: 400,
   }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class InvalidScheduleFault extends S.TaggedError<InvalidScheduleFault>()(
   "InvalidScheduleFault",
   { message: S.optional(S.String) },
@@ -7418,7 +7418,7 @@ export class EndpointAuthorizationAlreadyExistsFault extends S.TaggedError<Endpo
     code: "EndpointAuthorizationAlreadyExists",
     httpResponseCode: 400,
   }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class BatchModifyClusterSnapshotsLimitExceededFault extends S.TaggedError<BatchModifyClusterSnapshotsLimitExceededFault>()(
   "BatchModifyClusterSnapshotsLimitExceededFault",
   { message: S.optional(S.String) },
@@ -7434,7 +7434,7 @@ export class ClusterSnapshotAlreadyExistsFault extends S.TaggedError<ClusterSnap
     code: "ClusterSnapshotAlreadyExists",
     httpResponseCode: 400,
   }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class AuthenticationProfileAlreadyExistsFault extends S.TaggedError<AuthenticationProfileAlreadyExistsFault>()(
   "AuthenticationProfileAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -7442,7 +7442,7 @@ export class AuthenticationProfileAlreadyExistsFault extends S.TaggedError<Authe
     code: "AuthenticationProfileAlreadyExistsFault",
     httpResponseCode: 400,
   }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class ClusterSecurityGroupAlreadyExistsFault extends S.TaggedError<ClusterSecurityGroupAlreadyExistsFault>()(
   "ClusterSecurityGroupAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -7450,7 +7450,7 @@ export class ClusterSecurityGroupAlreadyExistsFault extends S.TaggedError<Cluste
     code: "ClusterSecurityGroupAlreadyExists",
     httpResponseCode: 400,
   }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class CustomCnameAssociationFault extends S.TaggedError<CustomCnameAssociationFault>()(
   "CustomCnameAssociationFault",
   { message: S.optional(S.String) },
@@ -7529,12 +7529,12 @@ export class DependentServiceUnavailableFault extends S.TaggedError<DependentSer
     code: "DependentServiceUnavailableFault",
     httpResponseCode: 400,
   }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withServerError) {}
 export class UnauthorizedOperation extends S.TaggedError<UnauthorizedOperation>()(
   "UnauthorizedOperation",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "UnauthorizedOperation", httpResponseCode: 400 }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAuthError) {}
 export class SnapshotCopyGrantNotFoundFault extends S.TaggedError<SnapshotCopyGrantNotFoundFault>()(
   "SnapshotCopyGrantNotFoundFault",
   { message: S.optional(S.String) },
@@ -7593,7 +7593,7 @@ export class ClusterAlreadyExistsFault extends S.TaggedError<ClusterAlreadyExist
   "ClusterAlreadyExistsFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ClusterAlreadyExists", httpResponseCode: 400 }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class ClusterOnLatestRevisionFault extends S.TaggedError<ClusterOnLatestRevisionFault>()(
   "ClusterOnLatestRevisionFault",
   { message: S.optional(S.String) },
@@ -7632,7 +7632,7 @@ export class ReservedNodeAlreadyExistsFault extends S.TaggedError<ReservedNodeAl
   "ReservedNodeAlreadyExistsFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ReservedNodeAlreadyExists", httpResponseCode: 404 }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class ConflictPolicyUpdateFault extends S.TaggedError<ConflictPolicyUpdateFault>()(
   "ConflictPolicyUpdateFault",
   { message: S.optional(S.String) },
@@ -7726,7 +7726,7 @@ export class ClusterParameterGroupAlreadyExistsFault extends S.TaggedError<Clust
     code: "ClusterParameterGroupAlreadyExists",
     httpResponseCode: 400,
   }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class ClusterSecurityGroupQuotaExceededFault extends S.TaggedError<ClusterSecurityGroupQuotaExceededFault>()(
   "ClusterSecurityGroupQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -7750,7 +7750,7 @@ export class HsmClientCertificateAlreadyExistsFault extends S.TaggedError<HsmCli
     code: "HsmClientCertificateAlreadyExistsFault",
     httpResponseCode: 400,
   }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class HsmConfigurationAlreadyExistsFault extends S.TaggedError<HsmConfigurationAlreadyExistsFault>()(
   "HsmConfigurationAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -7758,7 +7758,7 @@ export class HsmConfigurationAlreadyExistsFault extends S.TaggedError<HsmConfigu
     code: "HsmConfigurationAlreadyExistsFault",
     httpResponseCode: 400,
   }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class ScheduledActionAlreadyExistsFault extends S.TaggedError<ScheduledActionAlreadyExistsFault>()(
   "ScheduledActionAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -7766,7 +7766,7 @@ export class ScheduledActionAlreadyExistsFault extends S.TaggedError<ScheduledAc
     code: "ScheduledActionAlreadyExists",
     httpResponseCode: 400,
   }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class ScheduleDefinitionTypeUnsupportedFault extends S.TaggedError<ScheduleDefinitionTypeUnsupportedFault>()(
   "ScheduleDefinitionTypeUnsupportedFault",
   { message: S.optional(S.String) },
@@ -7938,7 +7938,7 @@ export class UsageLimitAlreadyExistsFault extends S.TaggedError<UsageLimitAlread
   "UsageLimitAlreadyExistsFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "UsageLimitAlreadyExists", httpResponseCode: 400 }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class SnapshotCopyGrantAlreadyExistsFault extends S.TaggedError<SnapshotCopyGrantAlreadyExistsFault>()(
   "SnapshotCopyGrantAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -7946,7 +7946,7 @@ export class SnapshotCopyGrantAlreadyExistsFault extends S.TaggedError<SnapshotC
     code: "SnapshotCopyGrantAlreadyExistsFault",
     httpResponseCode: 400,
   }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class IncompatibleOrderableOptions extends S.TaggedError<IncompatibleOrderableOptions>()(
   "IncompatibleOrderableOptions",
   { message: S.optional(S.String) },
@@ -7972,7 +7972,7 @@ export class AuthorizationAlreadyExistsFault extends S.TaggedError<Authorization
     code: "AuthorizationAlreadyExists",
     httpResponseCode: 400,
   }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class ClusterParameterGroupQuotaExceededFault extends S.TaggedError<ClusterParameterGroupQuotaExceededFault>()(
   "ClusterParameterGroupQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -7988,7 +7988,7 @@ export class ClusterSubnetGroupAlreadyExistsFault extends S.TaggedError<ClusterS
     code: "ClusterSubnetGroupAlreadyExists",
     httpResponseCode: 400,
   }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class AccessToClusterDeniedFault extends S.TaggedError<AccessToClusterDeniedFault>()(
   "AccessToClusterDeniedFault",
   { message: S.optional(S.String) },
@@ -8025,7 +8025,7 @@ export class SnapshotScheduleAlreadyExistsFault extends S.TaggedError<SnapshotSc
     code: "SnapshotScheduleAlreadyExists",
     httpResponseCode: 400,
   }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class InvalidS3KeyPrefixFault extends S.TaggedError<InvalidS3KeyPrefixFault>()(
   "InvalidS3KeyPrefixFault",
   { message: S.optional(S.String) },
@@ -8098,7 +8098,7 @@ export class SubnetAlreadyInUse extends S.TaggedError<SubnetAlreadyInUse>()(
   "SubnetAlreadyInUse",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "SubnetAlreadyInUse", httpResponseCode: 400 }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withDependencyViolationError) {}
 export class AuthorizationQuotaExceededFault extends S.TaggedError<AuthorizationQuotaExceededFault>()(
   "AuthorizationQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -8119,7 +8119,7 @@ export class EndpointAlreadyExistsFault extends S.TaggedError<EndpointAlreadyExi
   "EndpointAlreadyExistsFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "EndpointAlreadyExists", httpResponseCode: 400 }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class RedshiftIdcApplicationAlreadyExistsFault extends S.TaggedError<RedshiftIdcApplicationAlreadyExistsFault>()(
   "RedshiftIdcApplicationAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -8127,7 +8127,7 @@ export class RedshiftIdcApplicationAlreadyExistsFault extends S.TaggedError<Reds
     code: "RedshiftIdcApplicationAlreadyExists",
     httpResponseCode: 400,
   }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class SnapshotScheduleQuotaExceededFault extends S.TaggedError<SnapshotScheduleQuotaExceededFault>()(
   "SnapshotScheduleQuotaExceededFault",
   { message: S.optional(S.String) },

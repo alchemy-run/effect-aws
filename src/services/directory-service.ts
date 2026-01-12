@@ -3873,7 +3873,7 @@ export class CertificateDoesNotExistException extends S.TaggedError<CertificateD
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class AuthenticationFailedException extends S.TaggedError<AuthenticationFailedException>()(
   "AuthenticationFailedException",
   { Message: S.optional(S.String), RequestId: S.optional(S.String) },
@@ -3885,7 +3885,7 @@ export class EntityDoesNotExistException extends S.TaggedError<EntityDoesNotExis
 export class EntityAlreadyExistsException extends S.TaggedError<EntityAlreadyExistsException>()(
   "EntityAlreadyExistsException",
   { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class DirectoryLimitExceededException extends S.TaggedError<DirectoryLimitExceededException>()(
   "DirectoryLimitExceededException",
   { Message: S.optional(S.String), RequestId: S.optional(S.String) },
@@ -3929,7 +3929,7 @@ export class InvalidNextTokenException extends S.TaggedError<InvalidNextTokenExc
 export class CertificateAlreadyExistsException extends S.TaggedError<CertificateAlreadyExistsException>()(
   "CertificateAlreadyExistsException",
   { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class DirectoryNotSharedException extends S.TaggedError<DirectoryNotSharedException>()(
   "DirectoryNotSharedException",
   { Message: S.optional(S.String), RequestId: S.optional(S.String) },

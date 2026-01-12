@@ -1209,7 +1209,7 @@ export class LockoutPreventedException extends S.TaggedError<LockoutPreventedExc
 export class PermissionAlreadyExistsException extends S.TaggedError<PermissionAlreadyExistsException>()(
   "PermissionAlreadyExistsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class TooManyTagsException extends S.TaggedError<TooManyTagsException>()(
   "TooManyTagsException",
   { message: S.optional(S.String) },

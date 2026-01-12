@@ -1996,7 +1996,7 @@ export class InvalidArgumentException extends S.TaggedError<InvalidArgumentExcep
 export class EndpointGroupAlreadyExistsException extends S.TaggedError<EndpointGroupAlreadyExistsException>()(
   "EndpointGroupAlreadyExistsException",
   { Message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class IncorrectCidrStateException extends S.TaggedError<IncorrectCidrStateException>()(
   "IncorrectCidrStateException",
   { Message: S.optional(S.String) },
@@ -2008,7 +2008,7 @@ export class EndpointNotFoundException extends S.TaggedError<EndpointNotFoundExc
 export class EndpointAlreadyExistsException extends S.TaggedError<EndpointAlreadyExistsException>()(
   "EndpointAlreadyExistsException",
   { Message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class LimitExceededException extends S.TaggedError<LimitExceededException>()(
   "LimitExceededException",
   { Message: S.optional(S.String) },

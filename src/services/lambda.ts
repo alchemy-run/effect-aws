@@ -5459,7 +5459,7 @@ export class TooManyRequestsException extends S.TaggedError<TooManyRequestsExcep
 export class RequestLimitExceeded extends S.TaggedError<RequestLimitExceeded>()(
   "RequestLimitExceeded",
   {},
-) {}
+).pipe(C.withThrottlingError) {}
 export class ParseError extends S.TaggedError<ParseError>()("ParseError", {}) {}
 export class ProvisionedConcurrencyConfigNotFoundException extends S.TaggedError<ProvisionedConcurrencyConfigNotFoundException>()(
   "ProvisionedConcurrencyConfigNotFoundException",
@@ -5480,7 +5480,7 @@ export class InvalidCodeSignatureException extends S.TaggedError<InvalidCodeSign
 export class EC2AccessDeniedException extends S.TaggedError<EC2AccessDeniedException>()(
   "EC2AccessDeniedException",
   { Type: S.optional(S.String), Message: S.optional(S.String) },
-).pipe(C.withServerError) {}
+).pipe(C.withServerError, C.withAuthError) {}
 export class InvalidRuntimeException extends S.TaggedError<InvalidRuntimeException>()(
   "InvalidRuntimeException",
   { Type: S.optional(S.String), Message: S.optional(S.String) },
@@ -5536,7 +5536,7 @@ export class InvalidZipFileException extends S.TaggedError<InvalidZipFileExcepti
 export class KMSAccessDeniedException extends S.TaggedError<KMSAccessDeniedException>()(
   "KMSAccessDeniedException",
   { Type: S.optional(S.String), Message: S.optional(S.String) },
-).pipe(C.withServerError) {}
+).pipe(C.withServerError, C.withAuthError) {}
 export class KMSDisabledException extends S.TaggedError<KMSDisabledException>()(
   "KMSDisabledException",
   { Type: S.optional(S.String), Message: S.optional(S.String) },

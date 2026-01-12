@@ -525,6 +525,10 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
     Reason: S.optional(ValidationExceptionReason),
   },
 ).pipe(C.withBadRequestError) {}
+export class InvalidSignatureException extends S.TaggedError<InvalidSignatureException>()(
+  "InvalidSignatureException",
+  {},
+) {}
 
 //# Operations
 /**
@@ -547,6 +551,7 @@ export const completeSnapshot: (
   | ResourceNotFoundException
   | ServiceQuotaExceededException
   | ValidationException
+  | InvalidSignatureException
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
@@ -559,6 +564,7 @@ export const completeSnapshot: (
     ResourceNotFoundException,
     ServiceQuotaExceededException,
     ValidationException,
+    InvalidSignatureException,
   ],
 }));
 /**
@@ -786,6 +792,7 @@ export const putSnapshotBlock: (
   | ResourceNotFoundException
   | ServiceQuotaExceededException
   | ValidationException
+  | InvalidSignatureException
   | CommonErrors,
   Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
@@ -798,5 +805,6 @@ export const putSnapshotBlock: (
     ResourceNotFoundException,
     ServiceQuotaExceededException,
     ValidationException,
+    InvalidSignatureException,
   ],
 }));

@@ -2881,7 +2881,7 @@ export const GetViolationDetailsResponse = S.suspend(() =>
 export class InternalErrorException extends S.TaggedError<InternalErrorException>()(
   "InternalErrorException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withServerError) {}
 export class InvalidOperationException extends S.TaggedError<InvalidOperationException>()(
   "InvalidOperationException",
   { Message: S.optional(S.String) },

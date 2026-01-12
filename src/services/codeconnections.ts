@@ -1138,7 +1138,7 @@ export class RetryLatestCommitFailedException extends S.TaggedError<RetryLatestC
 export class ResourceAlreadyExistsException extends S.TaggedError<ResourceAlreadyExistsException>()(
   "ResourceAlreadyExistsException",
   { Message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class SyncConfigurationStillExistsException extends S.TaggedError<SyncConfigurationStillExistsException>()(
   "SyncConfigurationStillExistsException",
   { Message: S.optional(S.String) },

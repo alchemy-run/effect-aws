@@ -1120,7 +1120,7 @@ export class ClusterAlreadyExistsFault extends S.TaggedError<ClusterAlreadyExist
   "ClusterAlreadyExistsFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ClusterAlreadyExists", httpResponseCode: 400 }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class InvalidClusterStateFault extends S.TaggedError<InvalidClusterStateFault>()(
   "InvalidClusterStateFault",
   { message: S.optional(S.String) },
@@ -1174,12 +1174,12 @@ export class SubnetGroupAlreadyExistsFault extends S.TaggedError<SubnetGroupAlre
   "SubnetGroupAlreadyExistsFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "SubnetGroupAlreadyExists", httpResponseCode: 400 }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class SubnetInUse extends S.TaggedError<SubnetInUse>()(
   "SubnetInUse",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "SubnetInUse", httpResponseCode: 400 }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withDependencyViolationError) {}
 export class InvalidVPCNetworkStateFault extends S.TaggedError<InvalidVPCNetworkStateFault>()(
   "InvalidVPCNetworkStateFault",
   { message: S.optional(S.String) },
@@ -1205,7 +1205,7 @@ export class ParameterGroupAlreadyExistsFault extends S.TaggedError<ParameterGro
     code: "ParameterGroupAlreadyExists",
     httpResponseCode: 400,
   }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class TagQuotaPerResourceExceeded extends S.TaggedError<TagQuotaPerResourceExceeded>()(
   "TagQuotaPerResourceExceeded",
   { message: S.optional(S.String) },

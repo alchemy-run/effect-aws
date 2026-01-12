@@ -6277,7 +6277,7 @@ export class ServiceUnavailableException extends S.TaggedError<ServiceUnavailabl
     Type: S.optional(S.String),
     Context: S.optional(S.String),
   },
-) {}
+).pipe(C.withServerError) {}
 export class AlreadyExistsException extends S.TaggedError<AlreadyExistsException>()(
   "AlreadyExistsException",
   {
@@ -6288,7 +6288,7 @@ export class AlreadyExistsException extends S.TaggedError<AlreadyExistsException
     Type: S.optional(S.String),
     Context: S.optional(S.String),
   },
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class MissingParameterValueException extends S.TaggedError<MissingParameterValueException>()(
   "MissingParameterValueException",
   {

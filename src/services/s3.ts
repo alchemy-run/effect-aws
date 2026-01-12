@@ -11780,7 +11780,7 @@ export const SelectObjectContentOutput = S.suspend(() =>
 export class RequestLimitExceeded extends S.TaggedError<RequestLimitExceeded>()(
   "RequestLimitExceeded",
   {},
-) {}
+).pipe(C.withThrottlingError) {}
 export class BucketNotEmpty extends S.TaggedError<BucketNotEmpty>()(
   "BucketNotEmpty",
   {},
@@ -11803,11 +11803,11 @@ export class PermanentRedirect extends S.TaggedError<PermanentRedirect>()(
 export class SignatureDoesNotMatch extends S.TaggedError<SignatureDoesNotMatch>()(
   "SignatureDoesNotMatch",
   {},
-) {}
+).pipe(C.withAuthError) {}
 export class AccessDenied extends S.TaggedError<AccessDenied>()(
   "AccessDenied",
   {},
-) {}
+).pipe(C.withAuthError) {}
 export class InvalidBucketName extends S.TaggedError<InvalidBucketName>()(
   "InvalidBucketName",
   {},
@@ -11909,7 +11909,7 @@ export class ObjectNotInActiveTierError extends S.TaggedError<ObjectNotInActiveT
 export class BucketAlreadyExists extends S.TaggedError<BucketAlreadyExists>()(
   "BucketAlreadyExists",
   {},
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class BucketAlreadyOwnedByYou extends S.TaggedError<BucketAlreadyOwnedByYou>()(
   "BucketAlreadyOwnedByYou",
   {},

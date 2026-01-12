@@ -3175,7 +3175,7 @@ export class MetadataException extends S.TaggedError<MetadataException>()(
 export class SessionAlreadyExistsException extends S.TaggedError<SessionAlreadyExistsException>()(
   "SessionAlreadyExistsException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withAlreadyExistsError) {}
 
 //# Operations
 /**

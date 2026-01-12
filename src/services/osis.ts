@@ -1243,7 +1243,7 @@ export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundExc
 export class ResourceAlreadyExistsException extends S.TaggedError<ResourceAlreadyExistsException>()(
   "ResourceAlreadyExistsException",
   { message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 
 //# Operations
 /**

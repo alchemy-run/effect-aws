@@ -4387,7 +4387,7 @@ export const CheckCapacityResponse = S.suspend(() =>
 export class WAFInternalErrorException extends S.TaggedError<WAFInternalErrorException>()(
   "WAFInternalErrorException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withServerError) {}
 export class WAFAssociatedItemException extends S.TaggedError<WAFAssociatedItemException>()(
   "WAFAssociatedItemException",
   { Message: S.optional(S.String) },
@@ -4459,7 +4459,7 @@ export class WAFUnavailableEntityException extends S.TaggedError<WAFUnavailableE
 export class WAFTagOperationInternalErrorException extends S.TaggedError<WAFTagOperationInternalErrorException>()(
   "WAFTagOperationInternalErrorException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withServerError) {}
 export class WAFSubscriptionNotFoundException extends S.TaggedError<WAFSubscriptionNotFoundException>()(
   "WAFSubscriptionNotFoundException",
   { Message: S.optional(S.String) },

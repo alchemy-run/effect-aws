@@ -2994,7 +2994,7 @@ export class InvalidInputException extends S.TaggedError<InvalidInputException>(
 export class AlreadyExistsException extends S.TaggedError<AlreadyExistsException>()(
   "AlreadyExistsException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class GlueEncryptionException extends S.TaggedError<GlueEncryptionException>()(
   "GlueEncryptionException",
   { Message: S.optional(S.String) },

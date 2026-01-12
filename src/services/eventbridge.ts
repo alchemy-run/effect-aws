@@ -3631,7 +3631,7 @@ export class LimitExceededException extends S.TaggedError<LimitExceededException
 export class ResourceAlreadyExistsException extends S.TaggedError<ResourceAlreadyExistsException>()(
   "ResourceAlreadyExistsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class PolicyLengthExceededException extends S.TaggedError<PolicyLengthExceededException>()(
   "PolicyLengthExceededException",
   { message: S.optional(S.String) },
@@ -3639,7 +3639,7 @@ export class PolicyLengthExceededException extends S.TaggedError<PolicyLengthExc
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   { message: S.optional(S.String) },

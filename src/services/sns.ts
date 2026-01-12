@@ -1594,11 +1594,11 @@ export class ThrottledException extends S.TaggedError<ThrottledException>()(
 export class RequestLimitExceeded extends S.TaggedError<RequestLimitExceeded>()(
   "RequestLimitExceeded",
   {},
-) {}
+).pipe(C.withThrottlingError) {}
 export class InvalidClientTokenId extends S.TaggedError<InvalidClientTokenId>()(
   "InvalidClientTokenId",
   {},
-) {}
+).pipe(C.withAuthError) {}
 export class NotFoundException extends S.TaggedError<NotFoundException>()(
   "NotFoundException",
   { message: S.optional(S.String) },
@@ -1677,7 +1677,7 @@ export class KMSAccessDeniedException extends S.TaggedError<KMSAccessDeniedExcep
   "KMSAccessDeniedException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "KMSAccessDenied", httpResponseCode: 400 }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAuthError) {}
 export class EmptyBatchRequestException extends S.TaggedError<EmptyBatchRequestException>()(
   "EmptyBatchRequestException",
   { message: S.optional(S.String) },

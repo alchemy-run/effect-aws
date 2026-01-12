@@ -5038,7 +5038,7 @@ export const DescribeWorkspaceDirectoriesResult = S.suspend(() =>
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class InvalidParameterValuesException extends S.TaggedError<InvalidParameterValuesException>()(
   "InvalidParameterValuesException",
   { message: S.optional(S.String) },
@@ -5082,7 +5082,7 @@ export class ResourceAssociatedException extends S.TaggedError<ResourceAssociate
 export class ResourceAlreadyExistsException extends S.TaggedError<ResourceAlreadyExistsException>()(
   "ResourceAlreadyExistsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class ApplicationNotSupportedException extends S.TaggedError<ApplicationNotSupportedException>()(
   "ApplicationNotSupportedException",
   {},

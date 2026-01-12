@@ -7050,7 +7050,7 @@ export class EntityAlreadyExistsException extends S.TaggedError<EntityAlreadyExi
   "EntityAlreadyExistsException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "EntityAlreadyExists", httpResponseCode: 409 }),
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class InvalidInputException extends S.TaggedError<InvalidInputException>()(
   "InvalidInputException",
   { message: S.optional(S.String) },
@@ -7212,7 +7212,7 @@ export class InvalidPublicKeyException extends S.TaggedError<InvalidPublicKeyExc
 export class RequestLimitExceeded extends S.TaggedError<RequestLimitExceeded>()(
   "RequestLimitExceeded",
   {},
-) {}
+).pipe(C.withThrottlingError) {}
 export class InvalidInput extends S.TaggedError<InvalidInput>()(
   "InvalidInput",
   {},

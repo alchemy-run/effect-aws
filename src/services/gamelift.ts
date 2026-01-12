@@ -7423,7 +7423,7 @@ export class GameSessionFullException extends S.TaggedError<GameSessionFullExcep
 export class UnauthorizedException extends S.TaggedError<UnauthorizedException>()(
   "UnauthorizedException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class UnsupportedRegionException extends S.TaggedError<UnsupportedRegionException>()(
   "UnsupportedRegionException",
   { Message: S.optional(S.String) },

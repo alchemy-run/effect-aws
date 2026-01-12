@@ -5062,7 +5062,7 @@ export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundExc
 export class GlobalTableAlreadyExistsException extends S.TaggedError<GlobalTableAlreadyExistsException>()(
   "GlobalTableAlreadyExistsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class ExportNotFoundException extends S.TaggedError<ExportNotFoundException>()(
   "ExportNotFoundException",
   { message: S.optional(S.String) },
@@ -5118,7 +5118,7 @@ export class ImportConflictException extends S.TaggedError<ImportConflictExcepti
 export class ReplicaAlreadyExistsException extends S.TaggedError<ReplicaAlreadyExistsException>()(
   "ReplicaAlreadyExistsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class ResourceInUseException extends S.TaggedError<ResourceInUseException>()(
   "ResourceInUseException",
   { message: S.optional(S.String) },
@@ -5137,7 +5137,7 @@ export class ProvisionedThroughputExceededException extends S.TaggedError<Provis
 export class TableAlreadyExistsException extends S.TaggedError<TableAlreadyExistsException>()(
   "TableAlreadyExistsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class TableInUseException extends S.TaggedError<TableInUseException>()(
   "TableInUseException",
   { message: S.optional(S.String) },
@@ -5148,7 +5148,7 @@ export class RequestLimitExceeded extends S.TaggedError<RequestLimitExceeded>()(
     message: S.optional(S.String),
     ThrottlingReasons: S.optional(ThrottlingReasonList),
   },
-) {}
+).pipe(C.withThrottlingError) {}
 export class ItemCollectionSizeLimitExceededException extends S.TaggedError<ItemCollectionSizeLimitExceededException>()(
   "ItemCollectionSizeLimitExceededException",
   { message: S.optional(S.String) },

@@ -2,9 +2,11 @@ import * as Effect from "effect/Effect";
 import * as Predicate from "effect/Predicate";
 
 export const AbortedError = "AbortedError";
+export const AlreadyExistsError = "AlreadyExistsError";
 export const AuthError = "AuthError";
 export const BadRequestError = "BadRequestError";
 export const ConflictError = "ConflictError";
+export const DependencyViolationError = "DependencyViolationError";
 export const NetworkError = "NetworkError";
 export const QuotaError = "QuotaError";
 export const RetryableError = "RetryableError";
@@ -14,9 +16,11 @@ export const TimeoutError = "TimeoutError";
 
 export type Category =
   | typeof AbortedError
+  | typeof AlreadyExistsError
   | typeof AuthError
   | typeof BadRequestError
   | typeof ConflictError
+  | typeof DependencyViolationError
   | typeof NetworkError
   | typeof QuotaError
   | typeof RetryableError
@@ -114,9 +118,13 @@ export const catchCategory =
 // ============================================================================
 
 export const withAbortedError = withCategory(AbortedError);
+export const withAlreadyExistsError = withCategory(AlreadyExistsError);
 export const withAuthError = withCategory(AuthError);
 export const withBadRequestError = withCategory(BadRequestError);
 export const withConflictError = withCategory(ConflictError);
+export const withDependencyViolationError = withCategory(
+  DependencyViolationError,
+);
 export const withNetworkError = withCategory(NetworkError);
 export const withQuotaError = withCategory(QuotaError);
 export const withRetryableError = withCategory(RetryableError);
@@ -145,6 +153,9 @@ export const hasCategory = (error: unknown, category: Category): boolean => {
 export const isAbortedError = (error: unknown): boolean =>
   hasCategory(error, AbortedError);
 
+export const isAlreadyExistsError = (error: unknown): boolean =>
+  hasCategory(error, AlreadyExistsError);
+
 export const isAuthError = (error: unknown): boolean =>
   hasCategory(error, AuthError);
 
@@ -153,6 +164,9 @@ export const isBadRequestError = (error: unknown): boolean =>
 
 export const isConflictError = (error: unknown): boolean =>
   hasCategory(error, ConflictError);
+
+export const isDependencyViolationError = (error: unknown): boolean =>
+  hasCategory(error, DependencyViolationError);
 
 export const isNetworkError = (error: unknown): boolean =>
   hasCategory(error, NetworkError);
@@ -212,11 +226,17 @@ export { catchErrors as catch };
 
 export const catchAbortedError = makeCatcher(AbortedError);
 
+export const catchAlreadyExistsError = makeCatcher(AlreadyExistsError);
+
 export const catchAuthError = makeCatcher(AuthError);
 
 export const catchBadRequestError = makeCatcher(BadRequestError);
 
 export const catchConflictError = makeCatcher(ConflictError);
+
+export const catchDependencyViolationError = makeCatcher(
+  DependencyViolationError,
+);
 
 export const catchNetworkError = makeCatcher(NetworkError);
 

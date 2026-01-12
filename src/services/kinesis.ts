@@ -2359,7 +2359,7 @@ export const SubscribeToShardOutput = S.suspend(() =>
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class InvalidArgumentException extends S.TaggedError<InvalidArgumentException>()(
   "InvalidArgumentException",
   { message: S.optional(S.String) },
@@ -2383,7 +2383,7 @@ export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundExc
 export class KMSAccessDeniedException extends S.TaggedError<KMSAccessDeniedException>()(
   "KMSAccessDeniedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class ProvisionedThroughputExceededException extends S.TaggedError<ProvisionedThroughputExceededException>()(
   "ProvisionedThroughputExceededException",
   { message: S.optional(S.String) },

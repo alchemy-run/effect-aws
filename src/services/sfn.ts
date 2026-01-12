@@ -2757,11 +2757,11 @@ export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExc
 export class KmsAccessDeniedException extends S.TaggedError<KmsAccessDeniedException>()(
   "KmsAccessDeniedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class ExecutionAlreadyExists extends S.TaggedError<ExecutionAlreadyExists>()(
   "ExecutionAlreadyExists",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class InvalidDefinition extends S.TaggedError<InvalidDefinition>()(
   "InvalidDefinition",
   { message: S.optional(S.String) },
@@ -2780,7 +2780,7 @@ export class TaskDoesNotExist extends S.TaggedError<TaskDoesNotExist>()(
 export class ActivityAlreadyExists extends S.TaggedError<ActivityAlreadyExists>()(
   "ActivityAlreadyExists",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class InvalidName extends S.TaggedError<InvalidName>()("InvalidName", {
   message: S.optional(S.String),
 }) {}
@@ -2799,7 +2799,7 @@ export class KmsInvalidStateException extends S.TaggedError<KmsInvalidStateExcep
 export class ExecutionLimitExceeded extends S.TaggedError<ExecutionLimitExceeded>()(
   "ExecutionLimitExceeded",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withThrottlingError) {}
 export class InvalidExecutionInput extends S.TaggedError<InvalidExecutionInput>()(
   "InvalidExecutionInput",
   { message: S.optional(S.String) },
@@ -2815,7 +2815,7 @@ export class TooManyTags extends S.TaggedError<TooManyTags>()("TooManyTags", {
 export class ActivityWorkerLimitExceeded extends S.TaggedError<ActivityWorkerLimitExceeded>()(
   "ActivityWorkerLimitExceeded",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withThrottlingError) {}
 export class TaskTimedOut extends S.TaggedError<TaskTimedOut>()(
   "TaskTimedOut",
   { message: S.optional(S.String) },
@@ -2823,7 +2823,7 @@ export class TaskTimedOut extends S.TaggedError<TaskTimedOut>()(
 export class ActivityLimitExceeded extends S.TaggedError<ActivityLimitExceeded>()(
   "ActivityLimitExceeded",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withThrottlingError) {}
 export class StateMachineTypeNotSupported extends S.TaggedError<StateMachineTypeNotSupported>()(
   "StateMachineTypeNotSupported",
   { message: S.optional(S.String) },
@@ -2851,11 +2851,11 @@ export class MissingRequiredParameter extends S.TaggedError<MissingRequiredParam
 export class StateMachineAlreadyExists extends S.TaggedError<StateMachineAlreadyExists>()(
   "StateMachineAlreadyExists",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class StateMachineLimitExceeded extends S.TaggedError<StateMachineLimitExceeded>()(
   "StateMachineLimitExceeded",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withThrottlingError) {}
 
 //# Operations
 /**

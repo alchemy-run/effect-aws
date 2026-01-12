@@ -3399,7 +3399,7 @@ export class ChannelAlreadyExistsException extends S.TaggedError<ChannelAlreadyE
   "ChannelAlreadyExistsException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ChannelAlreadyExists", httpResponseCode: 400 }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class EventDataStoreNotFoundException extends S.TaggedError<EventDataStoreNotFoundException>()(
   "EventDataStoreNotFoundException",
   { Message: S.optional(S.String) },
@@ -3510,7 +3510,7 @@ export class EventDataStoreAlreadyExistsException extends S.TaggedError<EventDat
     code: "EventDataStoreAlreadyExists",
     httpResponseCode: 400,
   }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class GenerateResponseException extends S.TaggedError<GenerateResponseException>()(
   "GenerateResponseException",
   { Message: S.optional(S.String) },
@@ -3808,7 +3808,7 @@ export class TrailAlreadyExistsException extends S.TaggedError<TrailAlreadyExist
   "TrailAlreadyExistsException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "TrailAlreadyExists", httpResponseCode: 400 }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 
 //# Operations
 /**

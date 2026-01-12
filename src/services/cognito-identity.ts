@@ -1038,7 +1038,7 @@ export const SetIdentityPoolRolesResponse = S.suspend(() =>
 export class InternalErrorException extends S.TaggedError<InternalErrorException>()(
   "InternalErrorException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withServerError) {}
 export class ExternalServiceException extends S.TaggedError<ExternalServiceException>()(
   "ExternalServiceException",
   { message: S.optional(S.String) },

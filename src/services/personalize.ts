@@ -3393,7 +3393,7 @@ export class InvalidNextTokenException extends S.TaggedError<InvalidNextTokenExc
 export class ResourceAlreadyExistsException extends S.TaggedError<ResourceAlreadyExistsException>()(
   "ResourceAlreadyExistsException",
   { message: S.optional(S.String) },
-).pipe(C.withAuthError) {}
+).pipe(C.withAuthError, C.withAlreadyExistsError) {}
 export class LimitExceededException extends S.TaggedError<LimitExceededException>()(
   "LimitExceededException",
   { message: S.optional(S.String) },

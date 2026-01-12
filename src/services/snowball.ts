@@ -1467,7 +1467,7 @@ export class InvalidAddressException extends S.TaggedError<InvalidAddressExcepti
 export class ReturnShippingLabelAlreadyExistsException extends S.TaggedError<ReturnShippingLabelAlreadyExistsException>()(
   "ReturnShippingLabelAlreadyExistsException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class UnsupportedAddressException extends S.TaggedError<UnsupportedAddressException>()(
   "UnsupportedAddressException",
   { Message: S.optional(S.String) },

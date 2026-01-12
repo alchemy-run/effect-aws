@@ -1491,7 +1491,7 @@ export class IncorrectMountTargetState extends S.TaggedError<IncorrectMountTarge
 export class FileSystemInUse extends S.TaggedError<FileSystemInUse>()(
   "FileSystemInUse",
   { ErrorCode: S.String, Message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withDependencyViolationError) {}
 export class DependencyTimeout extends S.TaggedError<DependencyTimeout>()(
   "DependencyTimeout",
   { ErrorCode: S.String, Message: S.optional(S.String) },
@@ -1507,7 +1507,7 @@ export class AccessPointAlreadyExists extends S.TaggedError<AccessPointAlreadyEx
     Message: S.optional(S.String),
     AccessPointId: S.String,
   },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class FileSystemAlreadyExists extends S.TaggedError<FileSystemAlreadyExists>()(
   "FileSystemAlreadyExists",
   {
@@ -1515,7 +1515,7 @@ export class FileSystemAlreadyExists extends S.TaggedError<FileSystemAlreadyExis
     Message: S.optional(S.String),
     FileSystemId: S.String,
   },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class MountTargetNotFound extends S.TaggedError<MountTargetNotFound>()(
   "MountTargetNotFound",
   { ErrorCode: S.String, Message: S.optional(S.String) },
@@ -1523,7 +1523,7 @@ export class MountTargetNotFound extends S.TaggedError<MountTargetNotFound>()(
 export class FileSystemLimitExceeded extends S.TaggedError<FileSystemLimitExceeded>()(
   "FileSystemLimitExceeded",
   { ErrorCode: S.String, Message: S.optional(S.String) },
-).pipe(C.withAuthError) {}
+).pipe(C.withAuthError, C.withThrottlingError) {}
 export class PolicyNotFound extends S.TaggedError<PolicyNotFound>()(
   "PolicyNotFound",
   { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
@@ -1539,7 +1539,7 @@ export class ReplicationNotFound extends S.TaggedError<ReplicationNotFound>()(
 export class AccessPointLimitExceeded extends S.TaggedError<AccessPointLimitExceeded>()(
   "AccessPointLimitExceeded",
   { ErrorCode: S.String, Message: S.optional(S.String) },
-).pipe(C.withAuthError) {}
+).pipe(C.withAuthError, C.withThrottlingError) {}
 export class ValidationException extends S.TaggedError<ValidationException>()(
   "ValidationException",
   { ErrorCode: S.String, Message: S.optional(S.String) },
@@ -1547,7 +1547,7 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
 export class SecurityGroupLimitExceeded extends S.TaggedError<SecurityGroupLimitExceeded>()(
   "SecurityGroupLimitExceeded",
   { ErrorCode: S.String, Message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withThrottlingError) {}
 export class InsufficientThroughputCapacity extends S.TaggedError<InsufficientThroughputCapacity>()(
   "InsufficientThroughputCapacity",
   { ErrorCode: S.String, Message: S.optional(S.String) },
@@ -1559,7 +1559,7 @@ export class InvalidPolicyException extends S.TaggedError<InvalidPolicyException
 export class IpAddressInUse extends S.TaggedError<IpAddressInUse>()(
   "IpAddressInUse",
   { ErrorCode: S.String, Message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withDependencyViolationError) {}
 export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
@@ -1571,7 +1571,7 @@ export class SecurityGroupNotFound extends S.TaggedError<SecurityGroupNotFound>(
 export class ThroughputLimitExceeded extends S.TaggedError<ThroughputLimitExceeded>()(
   "ThroughputLimitExceeded",
   { ErrorCode: S.String, Message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withThrottlingError) {}
 export class MountTargetConflict extends S.TaggedError<MountTargetConflict>()(
   "MountTargetConflict",
   { ErrorCode: S.String, Message: S.optional(S.String) },
@@ -1579,7 +1579,7 @@ export class MountTargetConflict extends S.TaggedError<MountTargetConflict>()(
 export class ReplicationAlreadyExists extends S.TaggedError<ReplicationAlreadyExists>()(
   "ReplicationAlreadyExists",
   { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class UnsupportedAvailabilityZone extends S.TaggedError<UnsupportedAvailabilityZone>()(
   "UnsupportedAvailabilityZone",
   { ErrorCode: S.String, Message: S.optional(S.String) },
@@ -1587,7 +1587,7 @@ export class UnsupportedAvailabilityZone extends S.TaggedError<UnsupportedAvaila
 export class NetworkInterfaceLimitExceeded extends S.TaggedError<NetworkInterfaceLimitExceeded>()(
   "NetworkInterfaceLimitExceeded",
   { ErrorCode: S.String, Message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withThrottlingError) {}
 export class TooManyRequests extends S.TaggedError<TooManyRequests>()(
   "TooManyRequests",
   { ErrorCode: S.String, Message: S.optional(S.String) },

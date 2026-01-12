@@ -7405,7 +7405,7 @@ export class InternalServiceException extends S.TaggedError<InternalServiceExcep
 export class BucketAlreadyExists extends S.TaggedError<BucketAlreadyExists>()(
   "BucketAlreadyExists",
   {},
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class BucketAlreadyOwnedByYou extends S.TaggedError<BucketAlreadyOwnedByYou>()(
   "BucketAlreadyOwnedByYou",
   {},

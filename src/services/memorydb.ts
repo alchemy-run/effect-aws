@@ -2672,7 +2672,7 @@ export class ACLAlreadyExistsFault extends S.TaggedError<ACLAlreadyExistsFault>(
   "ACLAlreadyExistsFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ACLAlreadyExists", httpResponseCode: 400 }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class MultiRegionClusterNotFoundFault extends S.TaggedError<MultiRegionClusterNotFoundFault>()(
   "MultiRegionClusterNotFoundFault",
   { message: S.optional(S.String) },
@@ -2705,7 +2705,7 @@ export class SubnetInUse extends S.TaggedError<SubnetInUse>()(
   "SubnetInUse",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "SubnetInUse", httpResponseCode: 400 }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withDependencyViolationError) {}
 export class MultiRegionParameterGroupNotFoundFault extends S.TaggedError<MultiRegionParameterGroupNotFoundFault>()(
   "MultiRegionParameterGroupNotFoundFault",
   { message: S.optional(S.String) },
@@ -2736,7 +2736,7 @@ export class ReservedNodeAlreadyExistsFault extends S.TaggedError<ReservedNodeAl
   "ReservedNodeAlreadyExistsFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ReservedNodeAlreadyExists", httpResponseCode: 404 }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class ServiceUpdateNotFoundFault extends S.TaggedError<ServiceUpdateNotFoundFault>()(
   "ServiceUpdateNotFoundFault",
   { message: S.optional(S.String) },
@@ -2760,7 +2760,7 @@ export class SnapshotAlreadyExistsFault extends S.TaggedError<SnapshotAlreadyExi
     code: "SnapshotAlreadyExistsFault",
     httpResponseCode: 400,
   }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class ParameterGroupAlreadyExistsFault extends S.TaggedError<ParameterGroupAlreadyExistsFault>()(
   "ParameterGroupAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -2768,7 +2768,7 @@ export class ParameterGroupAlreadyExistsFault extends S.TaggedError<ParameterGro
     code: "ParameterGroupAlreadyExists",
     httpResponseCode: 400,
   }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class MultiRegionClusterAlreadyExistsFault extends S.TaggedError<MultiRegionClusterAlreadyExistsFault>()(
   "MultiRegionClusterAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -2776,7 +2776,7 @@ export class MultiRegionClusterAlreadyExistsFault extends S.TaggedError<MultiReg
     code: "MultiRegionClusterAlreadyExistsFault",
     httpResponseCode: 400,
   }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class ACLQuotaExceededFault extends S.TaggedError<ACLQuotaExceededFault>()(
   "ACLQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -2786,7 +2786,7 @@ export class SubnetGroupAlreadyExistsFault extends S.TaggedError<SubnetGroupAlre
   "SubnetGroupAlreadyExistsFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "SubnetGroupAlreadyExists", httpResponseCode: 400 }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class InvalidNodeStateFault extends S.TaggedError<InvalidNodeStateFault>()(
   "InvalidNodeStateFault",
   { message: S.optional(S.String) },
@@ -2806,7 +2806,7 @@ export class UserAlreadyExistsFault extends S.TaggedError<UserAlreadyExistsFault
   "UserAlreadyExistsFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "UserAlreadyExists", httpResponseCode: 400 }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class TagNotFoundFault extends S.TaggedError<TagNotFoundFault>()(
   "TagNotFoundFault",
   { message: S.optional(S.String) },
@@ -2837,7 +2837,7 @@ export class ClusterAlreadyExistsFault extends S.TaggedError<ClusterAlreadyExist
   "ClusterAlreadyExistsFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ClusterAlreadyExists", httpResponseCode: 400 }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class SubnetGroupQuotaExceededFault extends S.TaggedError<SubnetGroupQuotaExceededFault>()(
   "SubnetGroupQuotaExceededFault",
   { message: S.optional(S.String) },

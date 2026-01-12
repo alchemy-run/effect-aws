@@ -7702,7 +7702,7 @@ export const DescribeRecommendationsResponse = S.suspend(() =>
 export class AccessDeniedFault extends S.TaggedError<AccessDeniedFault>()(
   "AccessDeniedFault",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class InvalidResourceStateFault extends S.TaggedError<InvalidResourceStateFault>()(
   "InvalidResourceStateFault",
   { message: S.optional(S.String) },
@@ -7730,7 +7730,7 @@ export class InvalidCertificateFault extends S.TaggedError<InvalidCertificateFau
 export class KMSAccessDeniedFault extends S.TaggedError<KMSAccessDeniedFault>()(
   "KMSAccessDeniedFault",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class InsufficientResourceCapacityFault extends S.TaggedError<InsufficientResourceCapacityFault>()(
   "InsufficientResourceCapacityFault",
   { message: S.optional(S.String) },
@@ -7754,7 +7754,7 @@ export class KMSDisabledFault extends S.TaggedError<KMSDisabledFault>()(
 export class ResourceAlreadyExistsFault extends S.TaggedError<ResourceAlreadyExistsFault>()(
   "ResourceAlreadyExistsFault",
   { message: S.optional(S.String), resourceArn: S.optional(S.String) },
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class ReplicationSubnetGroupDoesNotCoverEnoughAZs extends S.TaggedError<ReplicationSubnetGroupDoesNotCoverEnoughAZs>()(
   "ReplicationSubnetGroupDoesNotCoverEnoughAZs",
   { message: S.optional(S.String) },
@@ -7762,7 +7762,7 @@ export class ReplicationSubnetGroupDoesNotCoverEnoughAZs extends S.TaggedError<R
 export class S3AccessDeniedFault extends S.TaggedError<S3AccessDeniedFault>()(
   "S3AccessDeniedFault",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class KMSInvalidStateFault extends S.TaggedError<KMSInvalidStateFault>()(
   "KMSInvalidStateFault",
   { message: S.optional(S.String) },
@@ -7774,7 +7774,7 @@ export class StorageQuotaExceededFault extends S.TaggedError<StorageQuotaExceede
 export class SubnetAlreadyInUse extends S.TaggedError<SubnetAlreadyInUse>()(
   "SubnetAlreadyInUse",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withDependencyViolationError) {}
 export class S3ResourceNotFoundFault extends S.TaggedError<S3ResourceNotFoundFault>()(
   "S3ResourceNotFoundFault",
   { message: S.optional(S.String) },

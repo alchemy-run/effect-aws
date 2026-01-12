@@ -355,7 +355,7 @@ export const ModifyReportDefinitionResponse = S.suspend(() =>
 export class InternalErrorException extends S.TaggedError<InternalErrorException>()(
   "InternalErrorException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withServerError) {}
 export class DuplicateReportNameException extends S.TaggedError<DuplicateReportNameException>()(
   "DuplicateReportNameException",
   { Message: S.optional(S.String) },

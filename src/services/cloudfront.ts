@@ -9786,7 +9786,7 @@ export class AccessDenied extends S.TaggedError<AccessDenied>()(
 export class FunctionInUse extends S.TaggedError<FunctionInUse>()(
   "FunctionInUse",
   { Message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withDependencyViolationError) {}
 export class InvalidIfMatchVersion extends S.TaggedError<InvalidIfMatchVersion>()(
   "InvalidIfMatchVersion",
   { Message: S.optional(S.String) },
@@ -9798,7 +9798,7 @@ export class IllegalUpdate extends S.TaggedError<IllegalUpdate>()(
 export class EntityLimitExceeded extends S.TaggedError<EntityLimitExceeded>()(
   "EntityLimitExceeded",
   { Message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withThrottlingError) {}
 export class NoSuchResource extends S.TaggedError<NoSuchResource>()(
   "NoSuchResource",
   { Message: S.optional(S.String) },
@@ -9862,11 +9862,11 @@ export class InvalidArgument extends S.TaggedError<InvalidArgument>()(
 export class CachePolicyAlreadyExists extends S.TaggedError<CachePolicyAlreadyExists>()(
   "CachePolicyAlreadyExists",
   { Message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class EntityAlreadyExists extends S.TaggedError<EntityAlreadyExists>()(
   "EntityAlreadyExists",
   { Message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class InconsistentQuantities extends S.TaggedError<InconsistentQuantities>()(
   "InconsistentQuantities",
   { Message: S.optional(S.String) },
@@ -9874,15 +9874,15 @@ export class InconsistentQuantities extends S.TaggedError<InconsistentQuantities
 export class CNAMEAlreadyExists extends S.TaggedError<CNAMEAlreadyExists>()(
   "CNAMEAlreadyExists",
   { Message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class FieldLevelEncryptionProfileAlreadyExists extends S.TaggedError<FieldLevelEncryptionProfileAlreadyExists>()(
   "FieldLevelEncryptionProfileAlreadyExists",
   { Message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class FunctionSizeLimitExceeded extends S.TaggedError<FunctionSizeLimitExceeded>()(
   "FunctionSizeLimitExceeded",
   { Message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withThrottlingError) {}
 export class CannotChangeImmutablePublicKeyFields extends S.TaggedError<CannotChangeImmutablePublicKeyFields>()(
   "CannotChangeImmutablePublicKeyFields",
   { Message: S.optional(S.String) },
@@ -9890,23 +9890,23 @@ export class CannotChangeImmutablePublicKeyFields extends S.TaggedError<CannotCh
 export class CannotUpdateEntityWhileInUse extends S.TaggedError<CannotUpdateEntityWhileInUse>()(
   "CannotUpdateEntityWhileInUse",
   { Message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withDependencyViolationError) {}
 export class CannotDeleteEntityWhileInUse extends S.TaggedError<CannotDeleteEntityWhileInUse>()(
   "CannotDeleteEntityWhileInUse",
   { Message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withDependencyViolationError) {}
 export class CachePolicyInUse extends S.TaggedError<CachePolicyInUse>()(
   "CachePolicyInUse",
   { Message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withDependencyViolationError) {}
 export class CloudFrontOriginAccessIdentityInUse extends S.TaggedError<CloudFrontOriginAccessIdentityInUse>()(
   "CloudFrontOriginAccessIdentityInUse",
   { Message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withDependencyViolationError) {}
 export class ContinuousDeploymentPolicyInUse extends S.TaggedError<ContinuousDeploymentPolicyInUse>()(
   "ContinuousDeploymentPolicyInUse",
   { Message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withDependencyViolationError) {}
 export class DistributionNotDisabled extends S.TaggedError<DistributionNotDisabled>()(
   "DistributionNotDisabled",
   { Message: S.optional(S.String) },
@@ -9914,11 +9914,11 @@ export class DistributionNotDisabled extends S.TaggedError<DistributionNotDisabl
 export class FieldLevelEncryptionConfigInUse extends S.TaggedError<FieldLevelEncryptionConfigInUse>()(
   "FieldLevelEncryptionConfigInUse",
   { Message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withDependencyViolationError) {}
 export class FieldLevelEncryptionProfileInUse extends S.TaggedError<FieldLevelEncryptionProfileInUse>()(
   "FieldLevelEncryptionProfileInUse",
   { Message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withDependencyViolationError) {}
 export class IllegalDelete extends S.TaggedError<IllegalDelete>()(
   "IllegalDelete",
   { Message: S.optional(S.String) },
@@ -9926,7 +9926,7 @@ export class IllegalDelete extends S.TaggedError<IllegalDelete>()(
 export class CloudFrontOriginAccessIdentityAlreadyExists extends S.TaggedError<CloudFrontOriginAccessIdentityAlreadyExists>()(
   "CloudFrontOriginAccessIdentityAlreadyExists",
   { Message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class BatchTooLarge extends S.TaggedError<BatchTooLarge>()(
   "BatchTooLarge",
   { Message: S.optional(S.String) },
@@ -9954,18 +9954,18 @@ export class FieldLevelEncryptionProfileSizeExceeded extends S.TaggedError<Field
 export class OriginRequestPolicyInUse extends S.TaggedError<OriginRequestPolicyInUse>()(
   "OriginRequestPolicyInUse",
   { Message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withDependencyViolationError) {}
 export class MissingBody extends S.TaggedError<MissingBody>()("MissingBody", {
   Message: S.optional(S.String),
 }).pipe(C.withBadRequestError) {}
 export class OriginAccessControlAlreadyExists extends S.TaggedError<OriginAccessControlAlreadyExists>()(
   "OriginAccessControlAlreadyExists",
   { Message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class OriginRequestPolicyAlreadyExists extends S.TaggedError<OriginRequestPolicyAlreadyExists>()(
   "OriginRequestPolicyAlreadyExists",
   { Message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class NoSuchInvalidation extends S.TaggedError<NoSuchInvalidation>()(
   "NoSuchInvalidation",
   { Message: S.optional(S.String) },
@@ -9973,7 +9973,7 @@ export class NoSuchInvalidation extends S.TaggedError<NoSuchInvalidation>()(
 export class EntitySizeLimitExceeded extends S.TaggedError<EntitySizeLimitExceeded>()(
   "EntitySizeLimitExceeded",
   { Message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withThrottlingError) {}
 export class NoSuchMonitoringSubscription extends S.TaggedError<NoSuchMonitoringSubscription>()(
   "NoSuchMonitoringSubscription",
   { Message: S.optional(S.String) },
@@ -9981,7 +9981,7 @@ export class NoSuchMonitoringSubscription extends S.TaggedError<NoSuchMonitoring
 export class OriginAccessControlInUse extends S.TaggedError<OriginAccessControlInUse>()(
   "OriginAccessControlInUse",
   { Message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withDependencyViolationError) {}
 export class InvalidWebACLId extends S.TaggedError<InvalidWebACLId>()(
   "InvalidWebACLId",
   { Message: S.optional(S.String) },
@@ -9993,7 +9993,7 @@ export class InvalidTagging extends S.TaggedError<InvalidTagging>()(
 export class KeyGroupAlreadyExists extends S.TaggedError<KeyGroupAlreadyExists>()(
   "KeyGroupAlreadyExists",
   { Message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class TooManyDistributionCNAMEs extends S.TaggedError<TooManyDistributionCNAMEs>()(
   "TooManyDistributionCNAMEs",
   { Message: S.optional(S.String) },
@@ -10001,7 +10001,7 @@ export class TooManyDistributionCNAMEs extends S.TaggedError<TooManyDistribution
 export class PublicKeyAlreadyExists extends S.TaggedError<PublicKeyAlreadyExists>()(
   "PublicKeyAlreadyExists",
   { Message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class InvalidAssociation extends S.TaggedError<InvalidAssociation>()(
   "InvalidAssociation",
   { Message: S.optional(S.String) },
@@ -10017,7 +10017,7 @@ export class InvalidOriginAccessControl extends S.TaggedError<InvalidOriginAcces
 export class DistributionAlreadyExists extends S.TaggedError<DistributionAlreadyExists>()(
   "DistributionAlreadyExists",
   { Message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class InvalidOrigin extends S.TaggedError<InvalidOrigin>()(
   "InvalidOrigin",
   { Message: S.optional(S.String) },
@@ -10025,19 +10025,19 @@ export class InvalidOrigin extends S.TaggedError<InvalidOrigin>()(
 export class FunctionAlreadyExists extends S.TaggedError<FunctionAlreadyExists>()(
   "FunctionAlreadyExists",
   { Message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class MonitoringSubscriptionAlreadyExists extends S.TaggedError<MonitoringSubscriptionAlreadyExists>()(
   "MonitoringSubscriptionAlreadyExists",
   { Message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class RealtimeLogConfigAlreadyExists extends S.TaggedError<RealtimeLogConfigAlreadyExists>()(
   "RealtimeLogConfigAlreadyExists",
   { Message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class ResourceInUse extends S.TaggedError<ResourceInUse>()(
   "ResourceInUse",
   { Message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withDependencyViolationError) {}
 export class TooManyFieldLevelEncryptionEncryptionEntities extends S.TaggedError<TooManyFieldLevelEncryptionEncryptionEntities>()(
   "TooManyFieldLevelEncryptionEncryptionEntities",
   { Message: S.optional(S.String) },
@@ -10053,7 +10053,7 @@ export class TooManyInvalidationsInProgress extends S.TaggedError<TooManyInvalid
 export class StagingDistributionInUse extends S.TaggedError<StagingDistributionInUse>()(
   "StagingDistributionInUse",
   { Message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withDependencyViolationError) {}
 export class QueryArgProfileEmpty extends S.TaggedError<QueryArgProfileEmpty>()(
   "QueryArgProfileEmpty",
   { Message: S.optional(S.String) },
@@ -10061,7 +10061,7 @@ export class QueryArgProfileEmpty extends S.TaggedError<QueryArgProfileEmpty>()(
 export class ResponseHeadersPolicyAlreadyExists extends S.TaggedError<ResponseHeadersPolicyAlreadyExists>()(
   "ResponseHeadersPolicyAlreadyExists",
   { Message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class ResourceNotDisabled extends S.TaggedError<ResourceNotDisabled>()(
   "ResourceNotDisabled",
   { Message: S.optional(S.String) },
@@ -10069,7 +10069,7 @@ export class ResourceNotDisabled extends S.TaggedError<ResourceNotDisabled>()(
 export class PublicKeyInUse extends S.TaggedError<PublicKeyInUse>()(
   "PublicKeyInUse",
   { Message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withDependencyViolationError) {}
 export class StreamingDistributionNotDisabled extends S.TaggedError<StreamingDistributionNotDisabled>()(
   "StreamingDistributionNotDisabled",
   { Message: S.optional(S.String) },
@@ -10081,7 +10081,7 @@ export class TooManyCookiesInCachePolicy extends S.TaggedError<TooManyCookiesInC
 export class ResponseHeadersPolicyInUse extends S.TaggedError<ResponseHeadersPolicyInUse>()(
   "ResponseHeadersPolicyInUse",
   { Message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withDependencyViolationError) {}
 export class TooManyPublicKeysInKeyGroup extends S.TaggedError<TooManyPublicKeysInKeyGroup>()(
   "TooManyPublicKeysInKeyGroup",
   { Message: S.optional(S.String) },
@@ -10093,7 +10093,7 @@ export class TooManyPublicKeys extends S.TaggedError<TooManyPublicKeys>()(
 export class RealtimeLogConfigInUse extends S.TaggedError<RealtimeLogConfigInUse>()(
   "RealtimeLogConfigInUse",
   { Message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withDependencyViolationError) {}
 export class InvalidDefaultRootObject extends S.TaggedError<InvalidDefaultRootObject>()(
   "InvalidDefaultRootObject",
   { Message: S.optional(S.String) },
@@ -10165,15 +10165,15 @@ export class InvalidDomainNameForOriginAccessControl extends S.TaggedError<Inval
 export class StreamingDistributionAlreadyExists extends S.TaggedError<StreamingDistributionAlreadyExists>()(
   "StreamingDistributionAlreadyExists",
   { Message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class ContinuousDeploymentPolicyAlreadyExists extends S.TaggedError<ContinuousDeploymentPolicyAlreadyExists>()(
   "ContinuousDeploymentPolicyAlreadyExists",
   { Message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class FieldLevelEncryptionConfigAlreadyExists extends S.TaggedError<FieldLevelEncryptionConfigAlreadyExists>()(
   "FieldLevelEncryptionConfigAlreadyExists",
   { Message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class TooManyQueryStringsInOriginRequestPolicy extends S.TaggedError<TooManyQueryStringsInOriginRequestPolicy>()(
   "TooManyQueryStringsInOriginRequestPolicy",
   { Message: S.optional(S.String) },

@@ -34999,7 +34999,7 @@ export const SearchResponse = S.suspend(() =>
 export class ResourceLimitExceeded extends S.TaggedError<ResourceLimitExceeded>()(
   "ResourceLimitExceeded",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withThrottlingError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { Message: S.optional(S.String) },
@@ -35007,7 +35007,7 @@ export class ConflictException extends S.TaggedError<ConflictException>()(
 export class ResourceInUse extends S.TaggedError<ResourceInUse>()(
   "ResourceInUse",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withDependencyViolationError) {}
 export class ResourceNotFound extends S.TaggedError<ResourceNotFound>()(
   "ResourceNotFound",
   { Message: S.optional(S.String) },

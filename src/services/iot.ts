@@ -14587,7 +14587,7 @@ export class ResourceAlreadyExistsException extends S.TaggedError<ResourceAlread
     resourceId: S.optional(S.String),
     resourceArn: S.optional(S.String),
   },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   { message: S.optional(S.String) },
@@ -14631,7 +14631,7 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
 export class TaskAlreadyExistsException extends S.TaggedError<TaskAlreadyExistsException>()(
   "TaskAlreadyExistsException",
   { message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class VersionConflictException extends S.TaggedError<VersionConflictException>()(
   "VersionConflictException",
   { message: S.optional(S.String) },

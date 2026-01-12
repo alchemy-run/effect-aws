@@ -752,7 +752,7 @@ export const DeleteClusterResponse = S.suspend(() =>
 export class CloudHsmAccessDeniedException extends S.TaggedError<CloudHsmAccessDeniedException>()(
   "CloudHsmAccessDeniedException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class CloudHsmInternalFailureException extends S.TaggedError<CloudHsmInternalFailureException>()(
   "CloudHsmInternalFailureException",
   { Message: S.optional(S.String) },

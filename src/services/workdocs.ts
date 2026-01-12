@@ -2688,7 +2688,7 @@ export class InvalidOperationException extends S.TaggedError<InvalidOperationExc
 export class EntityAlreadyExistsException extends S.TaggedError<EntityAlreadyExistsException>()(
   "EntityAlreadyExistsException",
   { Message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class ProhibitedStateException extends S.TaggedError<ProhibitedStateException>()(
   "ProhibitedStateException",
   { Message: S.optional(S.String) },
@@ -2708,7 +2708,7 @@ export class InvalidCommentOperationException extends S.TaggedError<InvalidComme
 export class UnauthorizedResourceAccessException extends S.TaggedError<UnauthorizedResourceAccessException>()(
   "UnauthorizedResourceAccessException",
   { Message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAuthError) {}
 export class IllegalUserStateException extends S.TaggedError<IllegalUserStateException>()(
   "IllegalUserStateException",
   { Message: S.optional(S.String) },

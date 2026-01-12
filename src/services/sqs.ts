@@ -1110,7 +1110,7 @@ export class KmsAccessDenied extends S.TaggedError<KmsAccessDenied>()(
   "KmsAccessDenied",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "KMS.AccessDeniedException", httpResponseCode: 400 }),
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAuthError) {}
 export class InvalidMessageContents extends S.TaggedError<InvalidMessageContents>()(
   "InvalidMessageContents",
   { message: S.optional(S.String) },
@@ -1131,7 +1131,7 @@ export class ReceiptHandleIsInvalid extends S.TaggedError<ReceiptHandleIsInvalid
 export class RequestLimitExceeded extends S.TaggedError<RequestLimitExceeded>()(
   "RequestLimitExceeded",
   {},
-) {}
+).pipe(C.withThrottlingError) {}
 export class InvalidParameterValueException extends S.TaggedError<InvalidParameterValueException>()(
   "InvalidParameterValueException",
   {},

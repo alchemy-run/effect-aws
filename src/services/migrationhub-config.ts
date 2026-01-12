@@ -218,7 +218,7 @@ export const DescribeHomeRegionControlsResult = S.suspend(() =>
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class InternalServerError extends S.TaggedError<InternalServerError>()(
   "InternalServerError",
   { Message: S.optional(S.String) },
@@ -234,7 +234,7 @@ export class InvalidInputException extends S.TaggedError<InvalidInputException>(
 export class ServiceUnavailableException extends S.TaggedError<ServiceUnavailableException>()(
   "ServiceUnavailableException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withServerError) {}
 export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   {

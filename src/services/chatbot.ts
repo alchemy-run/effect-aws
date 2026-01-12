@@ -1608,7 +1608,7 @@ export class ListMicrosoftTeamsUserIdentitiesException extends S.TaggedError<Lis
 export class ServiceUnavailableException extends S.TaggedError<ServiceUnavailableException>()(
   "ServiceUnavailableException",
   { message: S.optional(S.String) },
-).pipe(C.withThrottlingError) {}
+).pipe(C.withThrottlingError, C.withServerError) {}
 export class ListTeamsChannelConfigurationsException extends S.TaggedError<ListTeamsChannelConfigurationsException>()(
   "ListTeamsChannelConfigurationsException",
   { Message: S.optional(S.String) },

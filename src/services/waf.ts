@@ -3518,7 +3518,7 @@ export const GetSampledRequestsResponse = S.suspend(() =>
 export class WAFInternalErrorException extends S.TaggedError<WAFInternalErrorException>()(
   "WAFInternalErrorException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withServerError) {}
 export class WAFInvalidAccountException extends S.TaggedError<WAFInvalidAccountException>()(
   "WAFInvalidAccountException",
   {},
@@ -3586,7 +3586,7 @@ export class WAFLimitsExceededException extends S.TaggedError<WAFLimitsExceededE
 export class WAFTagOperationInternalErrorException extends S.TaggedError<WAFTagOperationInternalErrorException>()(
   "WAFTagOperationInternalErrorException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withServerError) {}
 export class WAFServiceLinkedRoleErrorException extends S.TaggedError<WAFServiceLinkedRoleErrorException>()(
   "WAFServiceLinkedRoleErrorException",
   { message: S.optional(S.String) },

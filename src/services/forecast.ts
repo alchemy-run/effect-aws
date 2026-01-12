@@ -3062,7 +3062,7 @@ export class InvalidNextTokenException extends S.TaggedError<InvalidNextTokenExc
 export class ResourceAlreadyExistsException extends S.TaggedError<ResourceAlreadyExistsException>()(
   "ResourceAlreadyExistsException",
   { Message: S.optional(S.String) },
-).pipe(C.withAuthError) {}
+).pipe(C.withAuthError, C.withAlreadyExistsError) {}
 
 //# Operations
 /**

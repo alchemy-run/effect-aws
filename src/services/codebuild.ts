@@ -3493,7 +3493,7 @@ export class OAuthProviderException extends S.TaggedError<OAuthProviderException
 export class ResourceAlreadyExistsException extends S.TaggedError<ResourceAlreadyExistsException>()(
   "ResourceAlreadyExistsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAlreadyExistsError) {}
 
 //# Operations
 /**

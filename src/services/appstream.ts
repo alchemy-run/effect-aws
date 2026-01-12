@@ -3985,11 +3985,11 @@ export class OperationNotPermittedException extends S.TaggedError<OperationNotPe
 export class ResourceAlreadyExistsException extends S.TaggedError<ResourceAlreadyExistsException>()(
   "ResourceAlreadyExistsException",
   { Message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class EntitlementAlreadyExistsException extends S.TaggedError<EntitlementAlreadyExistsException>()(
   "EntitlementAlreadyExistsException",
   { Message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class RequestLimitExceededException extends S.TaggedError<RequestLimitExceededException>()(
   "RequestLimitExceededException",
   { Message: S.optional(S.String) },

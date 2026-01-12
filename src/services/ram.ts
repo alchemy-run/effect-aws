@@ -1938,7 +1938,7 @@ export class PermissionAlreadyExistsException extends S.TaggedError<PermissionAl
     code: "PermissionAlreadyExistsException",
     httpResponseCode: 409,
   }),
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class UnmatchedPolicyPermissionException extends S.TaggedError<UnmatchedPolicyPermissionException>()(
   "UnmatchedPolicyPermissionException",
   { message: S.String },

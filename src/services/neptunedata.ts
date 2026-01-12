@@ -2155,7 +2155,7 @@ export class TooManyRequestsException extends S.TaggedError<TooManyRequestsExcep
 export class LoadUrlAccessDeniedException extends S.TaggedError<LoadUrlAccessDeniedException>()(
   "LoadUrlAccessDeniedException",
   { detailedMessage: S.String, requestId: S.String, code: S.String },
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAuthError) {}
 export class MemoryLimitExceededException extends S.TaggedError<MemoryLimitExceededException>()(
   "MemoryLimitExceededException",
   { detailedMessage: S.String, requestId: S.String, code: S.String },

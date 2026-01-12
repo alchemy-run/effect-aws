@@ -6281,7 +6281,7 @@ export class NoSuchDeliveryChannelException extends S.TaggedError<NoSuchDelivery
 export class OrganizationAccessDeniedException extends S.TaggedError<OrganizationAccessDeniedException>()(
   "OrganizationAccessDeniedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class NoSuchRemediationConfigurationException extends S.TaggedError<NoSuchRemediationConfigurationException>()(
   "NoSuchRemediationConfigurationException",
   { message: S.optional(S.String) },
@@ -6361,7 +6361,7 @@ export class ResourceConcurrentModificationException extends S.TaggedError<Resou
 export class IdempotentParameterMismatch extends S.TaggedError<IdempotentParameterMismatch>()(
   "IdempotentParameterMismatch",
   { message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withConflictError) {}
 export class NoSuchRemediationExceptionException extends S.TaggedError<NoSuchRemediationExceptionException>()(
   "NoSuchRemediationExceptionException",
   { message: S.optional(S.String) },

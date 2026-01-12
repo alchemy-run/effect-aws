@@ -1889,7 +1889,7 @@ export class InvalidInput extends S.TaggedError<InvalidInput>()(
 export class DomainLimitExceeded extends S.TaggedError<DomainLimitExceeded>()(
   "DomainLimitExceeded",
   { message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withThrottlingError) {}
 export class DuplicateRequest extends S.TaggedError<DuplicateRequest>()(
   "DuplicateRequest",
   { requestId: S.optional(S.String), message: S.optional(S.String) },
@@ -1897,7 +1897,7 @@ export class DuplicateRequest extends S.TaggedError<DuplicateRequest>()(
 export class OperationLimitExceeded extends S.TaggedError<OperationLimitExceeded>()(
   "OperationLimitExceeded",
   { message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withThrottlingError) {}
 export class UnsupportedTLD extends S.TaggedError<UnsupportedTLD>()(
   "UnsupportedTLD",
   { message: S.optional(S.String) },
@@ -1909,7 +1909,7 @@ export class TLDRulesViolation extends S.TaggedError<TLDRulesViolation>()(
 export class DnssecLimitExceeded extends S.TaggedError<DnssecLimitExceeded>()(
   "DnssecLimitExceeded",
   { message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withThrottlingError) {}
 
 //# Operations
 /**

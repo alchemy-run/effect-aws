@@ -16256,7 +16256,7 @@ export const CreateJobResponse = S.suspend(() =>
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class EntityNotFoundException extends S.TaggedError<EntityNotFoundException>()(
   "EntityNotFoundException",
   {
@@ -16267,7 +16267,7 @@ export class EntityNotFoundException extends S.TaggedError<EntityNotFoundExcepti
 export class AlreadyExistsException extends S.TaggedError<AlreadyExistsException>()(
   "AlreadyExistsException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class CrawlerRunningException extends S.TaggedError<CrawlerRunningException>()(
   "CrawlerRunningException",
   { Message: S.optional(S.String) },
@@ -16388,7 +16388,7 @@ export class FederatedResourceAlreadyExistsException extends S.TaggedError<Feder
     Message: S.optional(S.String),
     AssociatedGlueResource: S.optional(S.String),
   },
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class SchedulerTransitioningException extends S.TaggedError<SchedulerTransitioningException>()(
   "SchedulerTransitioningException",
   { Message: S.optional(S.String) },

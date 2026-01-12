@@ -3241,7 +3241,7 @@ export class LimitExceededFault extends S.TaggedError<LimitExceededFault>()(
 export class DomainAlreadyExistsFault extends S.TaggedError<DomainAlreadyExistsFault>()(
   "DomainAlreadyExistsFault",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class TypeDeprecatedFault extends S.TaggedError<TypeDeprecatedFault>()(
   "TypeDeprecatedFault",
   { message: S.optional(S.String) },
@@ -3253,7 +3253,7 @@ export class UnknownResourceFault extends S.TaggedError<UnknownResourceFault>()(
 export class TypeAlreadyExistsFault extends S.TaggedError<TypeAlreadyExistsFault>()(
   "TypeAlreadyExistsFault",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class DefaultUndefinedFault extends S.TaggedError<DefaultUndefinedFault>()(
   "DefaultUndefinedFault",
   { message: S.optional(S.String) },

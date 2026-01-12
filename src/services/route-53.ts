@@ -3856,7 +3856,7 @@ export class CidrCollectionInUseException extends S.TaggedError<CidrCollectionIn
 export class HealthCheckInUse extends S.TaggedError<HealthCheckInUse>()(
   "HealthCheckInUse",
   { message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withDependencyViolationError) {}
 export class ConcurrentModification extends S.TaggedError<ConcurrentModification>()(
   "ConcurrentModification",
   { message: S.optional(S.String) },
@@ -3864,7 +3864,7 @@ export class ConcurrentModification extends S.TaggedError<ConcurrentModification
 export class DelegationSetInUse extends S.TaggedError<DelegationSetInUse>()(
   "DelegationSetInUse",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withDependencyViolationError) {}
 export class InvalidInput extends S.TaggedError<InvalidInput>()(
   "InvalidInput",
   { message: S.optional(S.String) },
@@ -3952,11 +3952,11 @@ export class CidrBlockInUseException extends S.TaggedError<CidrBlockInUseExcepti
 export class CidrCollectionAlreadyExistsException extends S.TaggedError<CidrCollectionAlreadyExistsException>()(
   "CidrCollectionAlreadyExistsException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class HealthCheckAlreadyExists extends S.TaggedError<HealthCheckAlreadyExists>()(
   "HealthCheckAlreadyExists",
   { message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class InvalidArgument extends S.TaggedError<InvalidArgument>()(
   "InvalidArgument",
   { message: S.optional(S.String) },
@@ -4016,7 +4016,7 @@ export class TooManyVPCAssociationAuthorizations extends S.TaggedError<TooManyVP
 export class TrafficPolicyInUse extends S.TaggedError<TrafficPolicyInUse>()(
   "TrafficPolicyInUse",
   { message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withDependencyViolationError) {}
 export class TooManyTrafficPolicyInstances extends S.TaggedError<TooManyTrafficPolicyInstances>()(
   "TooManyTrafficPolicyInstances",
   { message: S.optional(S.String) },
@@ -4080,11 +4080,11 @@ export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
 export class TrafficPolicyInstanceAlreadyExists extends S.TaggedError<TrafficPolicyInstanceAlreadyExists>()(
   "TrafficPolicyInstanceAlreadyExists",
   { message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class TrafficPolicyAlreadyExists extends S.TaggedError<TrafficPolicyAlreadyExists>()(
   "TrafficPolicyAlreadyExists",
   { message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class NoSuchKeySigningKey extends S.TaggedError<NoSuchKeySigningKey>()(
   "NoSuchKeySigningKey",
   { message: S.optional(S.String) },
@@ -4100,19 +4100,19 @@ export class PublicZoneVPCAssociation extends S.TaggedError<PublicZoneVPCAssocia
 export class KeySigningKeyAlreadyExists extends S.TaggedError<KeySigningKeyAlreadyExists>()(
   "KeySigningKeyAlreadyExists",
   { message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class QueryLoggingConfigAlreadyExists extends S.TaggedError<QueryLoggingConfigAlreadyExists>()(
   "QueryLoggingConfigAlreadyExists",
   { message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class HostedZoneAlreadyExists extends S.TaggedError<HostedZoneAlreadyExists>()(
   "HostedZoneAlreadyExists",
   { message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 export class KeySigningKeyInUse extends S.TaggedError<KeySigningKeyInUse>()(
   "KeySigningKeyInUse",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withDependencyViolationError) {}
 export class HostedZoneNotFound extends S.TaggedError<HostedZoneNotFound>()(
   "HostedZoneNotFound",
   { message: S.optional(S.String) },

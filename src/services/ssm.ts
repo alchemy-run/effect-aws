@@ -10829,7 +10829,7 @@ export class DocumentLimitExceeded extends S.TaggedError<DocumentLimitExceeded>(
   "DocumentLimitExceeded",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "DocumentLimitExceeded", httpResponseCode: 400 }),
-) {}
+).pipe(C.withThrottlingError) {}
 export class AutomationExecutionNotFoundException extends S.TaggedError<AutomationExecutionNotFoundException>()(
   "AutomationExecutionNotFoundException",
   { Message: S.optional(S.String) },
@@ -10860,7 +10860,7 @@ export class IdempotentParameterMismatch extends S.TaggedError<IdempotentParamet
     code: "IdempotentParameterMismatch",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withConflictError) {}
 export class InvalidDocument extends S.TaggedError<InvalidDocument>()(
   "InvalidDocument",
   { Message: S.optional(S.String) },
@@ -10929,7 +10929,7 @@ export class AlreadyExistsException extends S.TaggedError<AlreadyExistsException
   "AlreadyExistsException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "AlreadyExistsException", httpResponseCode: 400 }),
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class ServiceSettingNotFound extends S.TaggedError<ServiceSettingNotFound>()(
   "ServiceSettingNotFound",
   { Message: S.optional(S.String) },
@@ -10938,7 +10938,7 @@ export class ServiceSettingNotFound extends S.TaggedError<ServiceSettingNotFound
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { Message: S.String },
-) {}
+).pipe(C.withAuthError) {}
 export class AutomationDefinitionNotFoundException extends S.TaggedError<AutomationDefinitionNotFoundException>()(
   "AutomationDefinitionNotFoundException",
   { Message: S.optional(S.String) },
@@ -10962,7 +10962,7 @@ export class AssociationVersionLimitExceeded extends S.TaggedError<AssociationVe
     code: "AssociationVersionLimitExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withThrottlingError) {}
 export class StatusUnchanged extends S.TaggedError<StatusUnchanged>()(
   "StatusUnchanged",
   {},
@@ -10975,7 +10975,7 @@ export class DocumentVersionLimitExceeded extends S.TaggedError<DocumentVersionL
     code: "DocumentVersionLimitExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withThrottlingError) {}
 export class InvalidActivation extends S.TaggedError<InvalidActivation>()(
   "InvalidActivation",
   { Message: S.optional(S.String) },
@@ -11017,7 +11017,7 @@ export class OpsItemAccessDeniedException extends S.TaggedError<OpsItemAccessDen
     code: "OpsItemAccessDeniedException",
     httpResponseCode: 403,
   }),
-) {}
+).pipe(C.withAuthError) {}
 export class ResourceDataSyncConflictException extends S.TaggedError<ResourceDataSyncConflictException>()(
   "ResourceDataSyncConflictException",
   { Message: S.optional(S.String) },
@@ -11058,17 +11058,17 @@ export class AssociationAlreadyExists extends S.TaggedError<AssociationAlreadyEx
   "AssociationAlreadyExists",
   {},
   T.AwsQueryError({ code: "AssociationAlreadyExists", httpResponseCode: 400 }),
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class AssociationLimitExceeded extends S.TaggedError<AssociationLimitExceeded>()(
   "AssociationLimitExceeded",
   {},
   T.AwsQueryError({ code: "AssociationLimitExceeded", httpResponseCode: 400 }),
-) {}
+).pipe(C.withThrottlingError) {}
 export class DocumentAlreadyExists extends S.TaggedError<DocumentAlreadyExists>()(
   "DocumentAlreadyExists",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "DocumentAlreadyExists", httpResponseCode: 400 }),
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class ResourceLimitExceededException extends S.TaggedError<ResourceLimitExceededException>()(
   "ResourceLimitExceededException",
   { Message: S.optional(S.String) },
@@ -11125,7 +11125,7 @@ export class ParameterVersionLabelLimitExceeded extends S.TaggedError<ParameterV
     code: "ParameterVersionLabelLimitExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withThrottlingError) {}
 export class InvalidTypeNameException extends S.TaggedError<InvalidTypeNameException>()(
   "InvalidTypeNameException",
   { Message: S.optional(S.String) },
@@ -11222,7 +11222,7 @@ export class OpsItemAlreadyExistsException extends S.TaggedError<OpsItemAlreadyE
     code: "OpsItemAlreadyExistsException",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class TargetInUseException extends S.TaggedError<TargetInUseException>()(
   "TargetInUseException",
   { Message: S.optional(S.String) },
@@ -11279,7 +11279,7 @@ export class OpsMetadataAlreadyExistsException extends S.TaggedError<OpsMetadata
     code: "OpsMetadataAlreadyExistsException",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class ResourceDataSyncAlreadyExistsException extends S.TaggedError<ResourceDataSyncAlreadyExistsException>()(
   "ResourceDataSyncAlreadyExistsException",
   { SyncName: S.optional(S.String) },
@@ -11287,7 +11287,7 @@ export class ResourceDataSyncAlreadyExistsException extends S.TaggedError<Resour
     code: "ResourceDataSyncAlreadyExists",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class InvalidDeleteInventoryParametersException extends S.TaggedError<InvalidDeleteInventoryParametersException>()(
   "InvalidDeleteInventoryParametersException",
   { Message: S.optional(S.String) },
@@ -11454,7 +11454,7 @@ export class OpsItemRelatedItemAlreadyExistsException extends S.TaggedError<OpsI
     code: "OpsItemRelatedItemAlreadyExistsException",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class MaxDocumentSizeExceeded extends S.TaggedError<MaxDocumentSizeExceeded>()(
   "MaxDocumentSizeExceeded",
   { Message: S.optional(S.String) },
@@ -11644,7 +11644,7 @@ export class ParameterAlreadyExists extends S.TaggedError<ParameterAlreadyExists
   "ParameterAlreadyExists",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ParameterAlreadyExists", httpResponseCode: 400 }),
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class UnsupportedInventorySchemaVersionException extends S.TaggedError<UnsupportedInventorySchemaVersionException>()(
   "UnsupportedInventorySchemaVersionException",
   { Message: S.optional(S.String) },
@@ -11657,7 +11657,7 @@ export class ParameterLimitExceeded extends S.TaggedError<ParameterLimitExceeded
   "ParameterLimitExceeded",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ParameterLimitExceeded", httpResponseCode: 429 }),
-) {}
+).pipe(C.withThrottlingError) {}
 export class ParameterMaxVersionLimitExceeded extends S.TaggedError<ParameterMaxVersionLimitExceeded>()(
   "ParameterMaxVersionLimitExceeded",
   { message: S.optional(S.String) },
@@ -11665,7 +11665,7 @@ export class ParameterMaxVersionLimitExceeded extends S.TaggedError<ParameterMax
     code: "ParameterMaxVersionLimitExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withThrottlingError) {}
 export class ParameterPatternMismatchException extends S.TaggedError<ParameterPatternMismatchException>()(
   "ParameterPatternMismatchException",
   { message: S.optional(S.String) },

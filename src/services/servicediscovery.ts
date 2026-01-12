@@ -1442,7 +1442,7 @@ export class DuplicateRequest extends S.TaggedError<DuplicateRequest>()(
 export class ResourceInUse extends S.TaggedError<ResourceInUse>()(
   "ResourceInUse",
   { Message: S.optional(S.String) },
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withDependencyViolationError) {}
 export class NamespaceNotFound extends S.TaggedError<NamespaceNotFound>()(
   "NamespaceNotFound",
   { Message: S.optional(S.String) },
@@ -1470,7 +1470,7 @@ export class RequestLimitExceeded extends S.TaggedError<RequestLimitExceeded>()(
 export class ResourceLimitExceeded extends S.TaggedError<ResourceLimitExceeded>()(
   "ResourceLimitExceeded",
   { Message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withThrottlingError) {}
 export class NamespaceAlreadyExists extends S.TaggedError<NamespaceAlreadyExists>()(
   "NamespaceAlreadyExists",
   {
@@ -1478,7 +1478,7 @@ export class NamespaceAlreadyExists extends S.TaggedError<NamespaceAlreadyExists
     CreatorRequestId: S.optional(S.String),
     NamespaceId: S.optional(S.String),
   },
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class TooManyTagsException extends S.TaggedError<TooManyTagsException>()(
   "TooManyTagsException",
   { Message: S.optional(S.String), ResourceName: S.optional(S.String) },
@@ -1495,7 +1495,7 @@ export class ServiceAlreadyExists extends S.TaggedError<ServiceAlreadyExists>()(
     ServiceId: S.optional(S.String),
     ServiceArn: S.optional(S.String),
   },
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 
 //# Operations
 /**

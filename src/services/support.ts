@@ -1088,7 +1088,7 @@ export class CaseIdNotFound extends S.TaggedError<CaseIdNotFound>()(
 export class AttachmentLimitExceeded extends S.TaggedError<AttachmentLimitExceeded>()(
   "AttachmentLimitExceeded",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withThrottlingError) {}
 export class AttachmentSetIdNotFound extends S.TaggedError<AttachmentSetIdNotFound>()(
   "AttachmentSetIdNotFound",
   { message: S.optional(S.String) },
@@ -1096,7 +1096,7 @@ export class AttachmentSetIdNotFound extends S.TaggedError<AttachmentSetIdNotFou
 export class DescribeAttachmentLimitExceeded extends S.TaggedError<DescribeAttachmentLimitExceeded>()(
   "DescribeAttachmentLimitExceeded",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withThrottlingError) {}
 export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   { message: S.optional(S.String) },
@@ -1105,11 +1105,11 @@ export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
 export class CaseCreationLimitExceeded extends S.TaggedError<CaseCreationLimitExceeded>()(
   "CaseCreationLimitExceeded",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withThrottlingError) {}
 export class AttachmentSetSizeLimitExceeded extends S.TaggedError<AttachmentSetSizeLimitExceeded>()(
   "AttachmentSetSizeLimitExceeded",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withThrottlingError) {}
 
 //# Operations
 /**

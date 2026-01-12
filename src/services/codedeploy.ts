@@ -2833,7 +2833,7 @@ export class InstanceLimitExceededException extends S.TaggedError<InstanceLimitE
 export class ApplicationAlreadyExistsException extends S.TaggedError<ApplicationAlreadyExistsException>()(
   "ApplicationAlreadyExistsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class DeploymentDoesNotExistException extends S.TaggedError<DeploymentDoesNotExistException>()(
   "DeploymentDoesNotExistException",
   { message: S.optional(S.String) },
@@ -2953,7 +2953,7 @@ export class InvalidComputePlatformException extends S.TaggedError<InvalidComput
 export class DeploymentGroupAlreadyExistsException extends S.TaggedError<DeploymentGroupAlreadyExistsException>()(
   "DeploymentGroupAlreadyExistsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class DeploymentIsNotInReadyStateException extends S.TaggedError<DeploymentIsNotInReadyStateException>()(
   "DeploymentIsNotInReadyStateException",
   { message: S.optional(S.String) },
@@ -2961,7 +2961,7 @@ export class DeploymentIsNotInReadyStateException extends S.TaggedError<Deployme
 export class DeploymentConfigAlreadyExistsException extends S.TaggedError<DeploymentConfigAlreadyExistsException>()(
   "DeploymentConfigAlreadyExistsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class InvalidOperationException extends S.TaggedError<InvalidOperationException>()(
   "InvalidOperationException",
   { message: S.optional(S.String) },

@@ -1455,7 +1455,7 @@ export class ResourceAlreadyExistsException extends S.TaggedError<ResourceAlread
   "ResourceAlreadyExistsException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ResourceAlreadyExists", httpResponseCode: 409 }),
-).pipe(C.withConflictError) {}
+).pipe(C.withConflictError, C.withAlreadyExistsError) {}
 
 //# Operations
 /**

@@ -5531,7 +5531,7 @@ export class S3AccessPointAttachmentNotFound extends S.TaggedError<S3AccessPoint
 export class ServiceLimitExceeded extends S.TaggedError<ServiceLimitExceeded>()(
   "ServiceLimitExceeded",
   { Limit: S.optional(ServiceLimit), Message: S.optional(S.String) },
-) {}
+).pipe(C.withThrottlingError) {}
 export class DataRepositoryTaskNotFound extends S.TaggedError<DataRepositoryTaskNotFound>()(
   "DataRepositoryTaskNotFound",
   { Message: S.optional(S.String) },

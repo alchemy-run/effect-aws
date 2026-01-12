@@ -1578,15 +1578,15 @@ export const DescribeSubscriptionResponse = S.suspend(() =>
 export class InternalErrorException extends S.TaggedError<InternalErrorException>()(
   "InternalErrorException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withServerError) {}
 export class AccessDeniedForDependencyException extends S.TaggedError<AccessDeniedForDependencyException>()(
   "AccessDeniedForDependencyException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class ResourceAlreadyExistsException extends S.TaggedError<ResourceAlreadyExistsException>()(
   "ResourceAlreadyExistsException",
   { message: S.optional(S.String), resourceType: S.optional(S.String) },
-) {}
+).pipe(C.withAlreadyExistsError) {}
 export class OptimisticLockException extends S.TaggedError<OptimisticLockException>()(
   "OptimisticLockException",
   { message: S.optional(S.String) },
@@ -1634,7 +1634,7 @@ export class LimitsExceededException extends S.TaggedError<LimitsExceededExcepti
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 
 //# Operations
 /**

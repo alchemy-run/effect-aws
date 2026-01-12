@@ -3852,7 +3852,7 @@ export class DirectoryNotEnabledException extends S.TaggedError<DirectoryNotEnab
 export class DirectoryAlreadyExistsException extends S.TaggedError<DirectoryAlreadyExistsException>()(
   "DirectoryAlreadyExistsException",
   { Message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class InternalServiceException extends S.TaggedError<InternalServiceException>()(
   "InternalServiceException",
   { Message: S.optional(S.String) },
@@ -3884,7 +3884,7 @@ export class InvalidArnException extends S.TaggedError<InvalidArnException>()(
 export class FacetAlreadyExistsException extends S.TaggedError<FacetAlreadyExistsException>()(
   "FacetAlreadyExistsException",
   { Message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class DirectoryNotDisabledException extends S.TaggedError<DirectoryNotDisabledException>()(
   "DirectoryNotDisabledException",
   { Message: S.optional(S.String) },
@@ -3964,7 +3964,7 @@ export class BatchWriteException extends S.TaggedError<BatchWriteException>()(
 export class SchemaAlreadyExistsException extends S.TaggedError<SchemaAlreadyExistsException>()(
   "SchemaAlreadyExistsException",
   { Message: S.optional(S.String) },
-).pipe(C.withBadRequestError) {}
+).pipe(C.withBadRequestError, C.withAlreadyExistsError) {}
 export class ValidationException extends S.TaggedError<ValidationException>()(
   "ValidationException",
   { Message: S.optional(S.String) },
