@@ -1773,6 +1773,26 @@ test(
 // HEAD requests returning 404) are properly handled and return typed errors.
 
 test(
+  "headObject returns NotFound for non-existent bucket",
+  Effect.gen(function* () {
+    // Try to HEAD a key in a bucket that doesn't exist
+    const result = yield* headObject({
+      Bucket: "itty-s3-bucket-that-definitely-does-not-exist-" + Date.now(),
+      Key: "some-key.txt",
+    }).pipe(
+      Effect.map(() => "found" as const),
+      Effect.catchTag("NotFound", () => Effect.succeed("not-found" as const)),
+      Effect.catchAll((e) => {
+        console.error("Caught unexpected error:", e);
+        return Effect.succeed("error: " + (e as any)?._tag);
+      }),
+    );
+
+    expect(result).toEqual("not-found");
+  }),
+);
+
+test(
   "headObject returns NotFound for non-existent key",
   withBucket("itty-s3-head-notfound", (bucket) =>
     Effect.gen(function* () {

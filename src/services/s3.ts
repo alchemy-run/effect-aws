@@ -11787,7 +11787,7 @@ export class BucketNotEmpty extends S.TaggedError<BucketNotEmpty>()(
 ) {}
 export class NoSuchBucket extends S.TaggedError<NoSuchBucket>()(
   "NoSuchBucket",
-  {},
+  { Message: S.optional(S.String), BucketName: S.optional(S.String) },
 ) {}
 export class PermanentRedirect extends S.TaggedError<PermanentRedirect>()(
   "PermanentRedirect",
@@ -14314,12 +14314,12 @@ export const headBucket: (
   input: HeadBucketRequest,
 ) => effect.Effect<
   HeadBucketOutput,
-  NotFound | RequestLimitExceeded | ParseError | CommonErrors,
+  NotFound | RequestLimitExceeded | ParseError | NoSuchBucket | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: HeadBucketRequest,
   output: HeadBucketOutput,
-  errors: [NotFound, RequestLimitExceeded, ParseError],
+  errors: [NotFound, RequestLimitExceeded, ParseError, NoSuchBucket],
 }));
 /**
  * The `HEAD` operation retrieves metadata from an object without returning the object

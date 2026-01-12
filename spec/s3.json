@@ -57,7 +57,8 @@
     "headBucket": {
       "errors": [
         "RequestLimitExceeded",
-        "ParseError"
+        "ParseError",
+        "NoSuchBucket"
       ]
     },
     "getBucketPolicy": {
@@ -637,6 +638,16 @@
     }
   },
   "errors": {
+    "NoSuchBucket": {
+      "Message": {
+        "type": "string",
+        "optional": true
+      },
+      "BucketName": {
+        "type": "string",
+        "optional": true
+      }
+    },
     "PermanentRedirect": {
       "BucketRegion": {
         "type": "string",
