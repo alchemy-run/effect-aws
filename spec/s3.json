@@ -144,7 +144,8 @@
       "errors": [
         "RequestLimitExceeded",
         "NoSuchBucket",
-        "PermanentRedirect"
+        "PermanentRedirect",
+        "NotFound"
       ]
     },
     "putObject": {
@@ -436,7 +437,8 @@
     "headObject": {
       "errors": [
         "RequestLimitExceeded",
-        "ParseError"
+        "ParseError",
+        "NotFound"
       ]
     },
     "getObjectAcl": {
@@ -536,7 +538,8 @@
     "abortMultipartUpload": {
       "errors": [
         "RequestLimitExceeded",
-        "NoSuchBucket"
+        "NoSuchBucket",
+        "NotFound"
       ]
     },
     "deleteObjects": {

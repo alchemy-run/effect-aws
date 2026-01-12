@@ -11832,6 +11832,7 @@ export class NoSuchUpload extends S.TaggedError<NoSuchUpload>()(
   "NoSuchUpload",
   {},
 ).pipe(C.withBadRequestError) {}
+export class NotFound extends S.TaggedError<NotFound>()("NotFound", {}) {}
 export class NoSuchKey extends S.TaggedError<NoSuchKey>()("NoSuchKey", {}) {}
 export class NoSuchConfiguration extends S.TaggedError<NoSuchConfiguration>()(
   "NoSuchConfiguration",
@@ -11874,7 +11875,6 @@ export class NoSuchPublicAccessBlockConfiguration extends S.TaggedError<NoSuchPu
   "NoSuchPublicAccessBlockConfiguration",
   {},
 ) {}
-export class NotFound extends S.TaggedError<NotFound>()("NotFound", {}) {}
 export class EncryptionTypeMismatch extends S.TaggedError<EncryptionTypeMismatch>()(
   "EncryptionTypeMismatch",
   {},
@@ -12882,12 +12882,12 @@ export const abortMultipartUpload: (
   input: AbortMultipartUploadRequest,
 ) => effect.Effect<
   AbortMultipartUploadOutput,
-  NoSuchUpload | RequestLimitExceeded | NoSuchBucket | CommonErrors,
+  NoSuchUpload | RequestLimitExceeded | NoSuchBucket | NotFound | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AbortMultipartUploadRequest,
   output: AbortMultipartUploadOutput,
-  errors: [NoSuchUpload, RequestLimitExceeded, NoSuchBucket],
+  errors: [NoSuchUpload, RequestLimitExceeded, NoSuchBucket, NotFound],
 }));
 /**
  * End of support notice: As of October 1, 2025, Amazon S3 has discontinued support for Email Grantee Access Control Lists (ACLs). If you attempt to use an Email Grantee ACL in a request after October 1, 2025,
@@ -13168,12 +13168,16 @@ export const deleteObject: (
   input: DeleteObjectRequest,
 ) => effect.Effect<
   DeleteObjectOutput,
-  RequestLimitExceeded | NoSuchBucket | PermanentRedirect | CommonErrors,
+  | RequestLimitExceeded
+  | NoSuchBucket
+  | PermanentRedirect
+  | NotFound
+  | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteObjectRequest,
   output: DeleteObjectOutput,
-  errors: [RequestLimitExceeded, NoSuchBucket, PermanentRedirect],
+  errors: [RequestLimitExceeded, NoSuchBucket, PermanentRedirect, NotFound],
 }));
 /**
  * This operation is not supported for directory buckets.

@@ -314,7 +314,22 @@ export const restXmlProtocol: Protocol = (
       const bodyText = yield* readStreamAsText(response.body);
 
       if (!bodyText) {
-        return yield* new ParseError({ message: "Empty error response body" });
+        // S3 HEAD requests and some other operations return empty body on error
+        // Derive error code from HTTP status code
+        const statusCodeMap: Record<number, string> = {
+          400: "BadRequest",
+          403: "AccessDenied",
+          404: "NotFound",
+          405: "MethodNotAllowed",
+          409: "Conflict",
+          412: "PreconditionFailed",
+          416: "InvalidRange",
+          500: "InternalError",
+          503: "ServiceUnavailable",
+        };
+        const errorCode =
+          statusCodeMap[response.status] ?? `HttpError${response.status}`;
+        return { errorCode, data: {} };
       }
 
       // Check if this is an HTML error response (e.g., S3 503 Slow Down)

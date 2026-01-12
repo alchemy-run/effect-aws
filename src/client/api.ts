@@ -83,6 +83,8 @@ export const make = <Op extends Operation>(
     // Resolve endpoint and adjust request path if needed
     let endpoint: string;
     let resolvedRequest = request;
+    let signingRegion = region; // Default to context region
+    let signingServiceName = serviceName; // Default to service name from sigv4 trait
     const customEndpoint = yield* Effect.serviceOption(Endpoint.Endpoint);
 
     if (Option.isSome(customEndpoint)) {
@@ -97,6 +99,22 @@ export const make = <Op extends Operation>(
       });
       endpoint = resolved.endpoint.url;
       resolvedRequest = resolved.request;
+
+      // Extract signing region from endpoint authSchemes if present
+      // Global services like IAM return a specific signingRegion (e.g., us-east-1)
+      const authSchemes = resolved.endpoint.properties?.authSchemes as
+        | Array<{
+            name?: string;
+            signingName?: string;
+            signingRegion?: string;
+          }>
+        | undefined;
+      if (authSchemes?.[0]?.signingRegion) {
+        signingRegion = authSchemes[0].signingRegion;
+      }
+      if (authSchemes?.[0]?.signingName) {
+        signingServiceName = authSchemes[0].signingName;
+      }
     } else {
       // Fallback to static endpoint
       endpoint = `https://${serviceName}.${region}.amazonaws.com`;
@@ -163,8 +181,8 @@ export const make = <Op extends Operation>(
       sessionToken: credentials.sessionToken
         ? Redacted.value(credentials.sessionToken)
         : undefined,
-      service: serviceName,
-      region,
+      service: signingServiceName,
+      region: signingRegion,
     });
     const signedRequest = yield* Effect.promise(() => signer.sign());
 

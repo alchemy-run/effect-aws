@@ -35,6 +35,7 @@ import {
   getObject,
   getPublicAccessBlock,
   headBucket,
+  headObject,
   listBuckets,
   listObjectsV2,
   listObjectVersions,
@@ -1761,6 +1762,133 @@ test(
         objectKeys.map((key) => deleteObject({ Bucket: bucket, Key: key })),
         { concurrency: 5 },
       );
+    }),
+  ),
+);
+
+// ============================================================================
+// Empty Body Error Handling Tests
+// ============================================================================
+// These tests verify that S3 operations that return empty body errors (like
+// HEAD requests returning 404) are properly handled and return typed errors.
+
+test(
+  "headObject returns NotFound for non-existent key",
+  withBucket("itty-s3-head-notfound", (bucket) =>
+    Effect.gen(function* () {
+      // Try to HEAD a key that doesn't exist
+      const result = yield* headObject({
+        Bucket: bucket,
+        Key: "this-key-does-not-exist.txt",
+      }).pipe(
+        Effect.map(() => "found" as const),
+        Effect.catchTag("NotFound", () => Effect.succeed("not-found" as const)),
+      );
+
+      expect(result).toEqual("not-found");
+    }),
+  ),
+);
+
+test(
+  "headObject returns object metadata for existing key",
+  withBucket("itty-s3-head-exists", (bucket) =>
+    Effect.gen(function* () {
+      const testKey = "test-head-object.txt";
+      const testContent = "Hello, HEAD!";
+
+      // Put an object
+      yield* putObject({
+        Bucket: bucket,
+        Key: testKey,
+        Body: testContent,
+        ContentType: "text/plain",
+      });
+
+      // HEAD the object - should succeed
+      const result = yield* headObject({
+        Bucket: bucket,
+        Key: testKey,
+      });
+
+      expect(result.ContentType).toEqual("text/plain");
+      expect(result.ContentLength).toEqual(testContent.length);
+      expect(result.ETag).toBeDefined();
+
+      // Cleanup
+      yield* deleteObject({ Bucket: bucket, Key: testKey });
+    }),
+  ),
+);
+
+test(
+  "deleteObject succeeds for non-existent key (S3 is idempotent)",
+  withBucket("itty-s3-delete-idempotent", (bucket) =>
+    Effect.gen(function* () {
+      // Delete a key that doesn't exist - should succeed (S3 delete is idempotent)
+      yield* deleteObject({
+        Bucket: bucket,
+        Key: "this-key-never-existed.txt",
+      });
+
+      // If we get here without error, the test passes
+      // S3 delete is designed to be idempotent - deleting non-existent objects succeeds
+    }),
+  ),
+);
+
+test(
+  "abortMultipartUpload handles non-existent upload",
+  withBucket("itty-s3-abort-notfound", (bucket) =>
+    Effect.gen(function* () {
+      // Try to abort a multipart upload that doesn't exist
+      // S3 returns 404 NoSuchUpload for this case
+      const result = yield* abortMultipartUpload({
+        Bucket: bucket,
+        Key: "non-existent-upload.txt",
+        UploadId: "fake-upload-id-that-does-not-exist",
+      }).pipe(
+        Effect.map(() => "aborted" as const),
+        // S3 returns NoSuchUpload for non-existent upload IDs
+        Effect.catchTag("NoSuchUpload", () =>
+          Effect.succeed("no-such-upload" as const),
+        ),
+        // Also handle NotFound in case the error comes through that way
+        Effect.catchTag("NotFound", () => Effect.succeed("not-found" as const)),
+      );
+
+      // Either "no-such-upload" or "not-found" is acceptable
+      expect(["no-such-upload", "not-found"]).toContain(result);
+    }),
+  ),
+);
+
+test(
+  "abortMultipartUpload succeeds for existing upload",
+  withBucket("itty-s3-abort-existing", (bucket) =>
+    Effect.gen(function* () {
+      const testKey = "test-abort-upload.txt";
+
+      // Create a multipart upload
+      const initResult = yield* createMultipartUpload({
+        Bucket: bucket,
+        Key: testKey,
+        ContentType: "text/plain",
+      });
+
+      expect(initResult.UploadId).toBeDefined();
+      const uploadId = initResult.UploadId!;
+
+      // Abort the upload - should succeed without throwing
+      yield* abortMultipartUpload({
+        Bucket: bucket,
+        Key: testKey,
+        UploadId: uploadId,
+      });
+
+      // Note: S3 abortMultipartUpload is idempotent - aborting an already
+      // aborted upload succeeds. This is by design for reliability.
+      // We verify the abort succeeded by confirming it doesn't throw.
     }),
   ),
 );
