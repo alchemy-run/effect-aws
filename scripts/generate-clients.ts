@@ -2223,6 +2223,64 @@ const convertShapeToSchema: (
   return deferredValue;
 });
 
+/**
+ * Infer error categories from error name patterns.
+ * These heuristics supplement HTTP status code-based categorization.
+ *
+ * Note: Error names are sanitized (dots removed) before this is called:
+ *   "InvalidNetworkInterface.InUse" → "InvalidNetworkInterfaceInUse"
+ *   "InvalidKeyPair.Duplicate" → "InvalidKeyPairDuplicate"
+ */
+function inferCategoriesFromName(errorName: string): string[] {
+  const categories: string[] = [];
+  const name = errorName.toLowerCase();
+
+  // DependencyViolationError - resource can't be deleted/modified because something depends on it
+  if (
+    name === "dependencyviolation" ||
+    name.endsWith("inuse") // InvalidNetworkInterfaceInUse, ResourceInUseException
+  ) {
+    categories.push("C.withDependencyViolationError");
+  }
+
+  // AlreadyExistsError - trying to create something that already exists
+  if (
+    name.includes("alreadyexists") || // DefaultVpcAlreadyExists
+    name.endsWith("duplicate") // InvalidKeyPairDuplicate
+  ) {
+    categories.push("C.withAlreadyExistsError");
+  }
+
+  // ConflictError - general conflicts (not dependency or already-exists)
+  if (name === "cidrconflict" || name === "idempotentparametermismatch") {
+    categories.push("C.withConflictError");
+  }
+
+  // AuthError patterns - access denied, unauthorized, auth failures
+  if (
+    name.includes("accessdenied") || // AccessDenied, DeclarativePoliciesAccessDenied
+    name.includes("unauthorized") || // UnauthorizedOperation
+    name === "authfailure" ||
+    name === "invalidclienttokenid" ||
+    name === "signaturedoesnotmatch"
+  ) {
+    categories.push("C.withAuthError");
+  }
+
+  // ThrottlingError patterns - rate/quota limits exceeded
+  if (name.endsWith("limitexceeded")) {
+    // VpcLimitExceeded, RequestLimitExceeded
+    categories.push("C.withThrottlingError");
+  }
+
+  // ServerError patterns - internal errors, service unavailable
+  if (name.includes("internalerror") || name.includes("serviceunavailable")) {
+    categories.push("C.withServerError");
+  }
+
+  return categories;
+}
+
 const addError = Effect.fn(function* (error: {
   name: string;
   shapeId: string;
@@ -2345,6 +2403,14 @@ const addError = Effect.fn(function* (error: {
       const categoryDecorator = `C.with${cat}`;
       if (!categories.includes(categoryDecorator)) {
         categories.push(categoryDecorator);
+      }
+    }
+
+    // Infer additional categories from error name patterns
+    const inferredCategories = inferCategoriesFromName(error.name);
+    for (const cat of inferredCategories) {
+      if (!categories.includes(cat)) {
+        categories.push(cat);
       }
     }
 
