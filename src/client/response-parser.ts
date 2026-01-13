@@ -26,6 +26,10 @@ export interface ResponseParserOptions {
   protocol?: Protocol;
   /** Skip schema validation - returns raw deserialized response */
   skipValidation?: boolean;
+  /** AWS service SDK ID for error context (e.g., "S3", "DynamoDB") */
+  service?: string;
+  /** Operation name for error context (e.g., "createBucket", "putObject") */
+  operation?: string;
 }
 
 export type ResponseParser<A, R> = (
@@ -149,7 +153,12 @@ export const makeResponseParser = <A>(
     }
 
     return yield* Effect.fail(
-      new UnknownAwsError({ errorTag: errorCode, errorData: data }),
+      new UnknownAwsError({
+        errorTag: errorCode,
+        errorData: data,
+        service: options?.service,
+        operation: options?.operation,
+      }),
     );
   });
 };

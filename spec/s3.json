@@ -439,7 +439,8 @@
       "errors": [
         "RequestLimitExceeded",
         "ParseError",
-        "NotFound"
+        "NotFound",
+        "NoSuchBucket"
       ]
     },
     "getObjectAcl": {

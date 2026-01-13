@@ -97,6 +97,10 @@ export class UnknownAwsError extends S.TaggedError<UnknownAwsError>()(
   {
     errorTag: S.String,
     errorData: S.Any,
+    /** The AWS service SDK ID (e.g., "S3", "DynamoDB") */
+    service: S.optional(S.String),
+    /** The operation name (e.g., "createBucket", "putObject") */
+    operation: S.optional(S.String),
   },
 ) {}
 

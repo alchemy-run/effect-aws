@@ -14433,12 +14433,12 @@ export const headObject: (
   input: HeadObjectRequest,
 ) => effect.Effect<
   HeadObjectOutput,
-  NotFound | RequestLimitExceeded | ParseError | CommonErrors,
+  NotFound | RequestLimitExceeded | ParseError | NoSuchBucket | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: HeadObjectRequest,
   output: HeadObjectOutput,
-  errors: [NotFound, RequestLimitExceeded, ParseError],
+  errors: [NotFound, RequestLimitExceeded, ParseError, NoSuchBucket],
 }));
 /**
  * This operation is not supported for directory buckets.

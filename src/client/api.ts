@@ -32,22 +32,26 @@ export const make = <Op extends Operation>(
   const init = () => {
     const inputAst = op.input.ast;
 
+    // Extract metadata for error recording (DISTILLED_AWS_DEBUG) and error context
+    const serviceSdkId = getAwsApiService(inputAst)?.sdkId;
+    const operationName = getIdentifier(inputAst)?.replace(
+      /(?:Request|Input)$/,
+      "",
+    );
+
     // Create request builder and response parser (preprocessing done once)
     const buildRequest = makeRequestBuilder(op);
-    const parseResponse = makeResponseParser(op, options);
+    const parseResponse = makeResponseParser(op, {
+      ...options,
+      service: serviceSdkId,
+      operation: operationName,
+    });
 
     // Get SigV4 service name from annotations
     const sigv4 = getAwsAuthSigv4(inputAst);
 
     // Create rules resolver (if rule set available)
     const resolveEndpoint = makeEndpointResolver(op);
-
-    // Extract metadata for error recording (DISTILLED_AWS_DEBUG)
-    const serviceSdkId = getAwsApiService(inputAst)?.sdkId;
-    const operationName = getIdentifier(inputAst)?.replace(
-      /(?:Request|Input)$/,
-      "",
-    );
 
     return {
       buildRequest,
