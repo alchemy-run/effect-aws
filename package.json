@@ -56,9 +56,9 @@
       "default": "./lib/region.js"
     },
     "./Retry": {
-      "types": "./lib/retry-policy.d.ts",
-      "bun": "./src/retry-policy.ts",
-      "default": "./lib/retry-policy.js"
+      "types": "./lib/retry.d.ts",
+      "bun": "./src/retry.ts",
+      "default": "./lib/retry.js"
     },
     "./Sensitive": {
       "types": "./lib/sensitive.d.ts",
