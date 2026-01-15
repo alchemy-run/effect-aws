@@ -1,116 +1,54 @@
 {
-  "name": "distilled-aws",
-  "module": "index.ts",
-  "version": "0.0.22",
+  "name": "distilled",
+  "private": true,
   "type": "module",
-  "publishConfig": {
-    "access": "public"
-  },
-  "sideEffects": false,
-  "files": [
-    "src",
-    "lib"
-  ],
   "scripts": {
-    "clean:aws": "DISTILLED_AWS_DEBUG=1 bun run scripts/topology-clean.ts",
-    "build:clean": "bun run install:clean && bun run build",
-    "bump": "bun run ./scripts/bump.ts",
-    "build": "bun generate && bun oxfmt ./src/services/* && tsgo -b",
-    "bundle:report": "bun run scripts/bundle-size-report.ts",
-    "clean": "git clean -fqdx -e .env",
-    "find": "DISTILLED_AWS_DEBUG=1 bun run scripts/find-errors/index.ts",
-    "find:errors": "bun run scripts/find-errors.ts",
-    "format": "bun oxfmt ./scripts ./src ./test",
-    "generate": "bun run scripts/generate-clients.ts",
-    "install:clean": "bun run clean && bun install",
-    "localstack:clean": "DISTILLED_AWS_DEBUG=1 bun run scripts/localstack-clean.ts",
-    "setup": "bun run scripts/setup.ts",
-    "symlink": "bun run scripts/symlink.ts",
-    "test": "DISTILLED_AWS_DEBUG=1 bun vitest run ./test",
-    "test:scripts": "DISTILLED_AWS_DEBUG=1bun vitest run ./scripts"
+    "build": "bun tsgo -b"
   },
-  "exports": {
-    "./*": {
-      "types": "./lib/services/*.d.ts",
-      "bun": "./src/services/*.ts",
-      "default": "./lib/services/*.js"
-    },
-    "./Category": {
-      "types": "./lib/category.d.ts",
-      "bun": "./src/category.ts",
-      "default": "./lib/category.js"
-    },
-    "./Credentials": {
-      "types": "./lib/credentials.d.ts",
-      "bun": "./src/credentials.ts",
-      "default": "./lib/credentials.js"
-    },
-    "./Errors": {
-      "types": "./lib/errors.d.ts",
-      "bun": "./src/errors.ts",
-      "default": "./lib/errors.js"
-    },
-    "./Region": {
-      "types": "./lib/region.d.ts",
-      "bun": "./src/region.ts",
-      "default": "./lib/region.js"
-    },
-    "./Retry": {
-      "types": "./lib/retry.d.ts",
-      "bun": "./src/retry.ts",
-      "default": "./lib/retry.js"
-    },
-    "./Sensitive": {
-      "types": "./lib/sensitive.d.ts",
-      "bun": "./src/sensitive.ts",
-      "default": "./lib/sensitive.js"
-    },
-    "./Traits": {
-      "types": "./lib/traits.d.ts",
-      "bun": "./src/traits.ts",
-      "default": "./lib/traits.js"
-    },
-    ".": {
-      "types": "./lib/index.d.ts",
-      "bun": "./src/index.ts",
-      "default": "./lib/index.js"
+  "workspaces": {
+    "packages": [
+      "distilled-*",
+      "distilled.cloud"
+    ],
+    "catalog": {
+      "@effect/ai-anthropic": "latest",
+      "@effect/ai-openai": "latest",
+      "@effect/ai": "latest",
+      "@effect/cli": "latest",
+      "@effect/cluster": "latest",
+      "@effect/experimental": "latest",
+      "@effect/platform": "latest",
+      "@effect/platform-bun": "latest",
+      "@effect/platform-node": "latest",
+      "@effect/rpc": "latest",
+      "@effect/sql": "latest",
+      "@effect/vitest": "latest",
+      "@effect/workflow": "latest",
+      "@rsbuild/core": "latest",
+      "@opentui/core": "latest",
+      "@opentui/solid": "latest",
+      "@types/bun": "latest",
+      "@types/node": "latest",
+      "@typescript/native-preview": "^7.0.0-dev.20251230.1",
+      "diff": "^8.0.2",
+      "effect": "latest",
+      "fast-json-patch": "^3.1.1",
+      "fast-xml-parser": "^5.3.2",
+      "jsonc-parser": "^3.3.1",
+      "oxfmt": "0.21.0",
+      "oxlint": "1.36.0",
+      "pathe": "^2.0.3",
+      "typescript": "^5",
+      "vitest": "latest",
+      "web-tree-sitter": "latest"
     }
   },
-  "peerDependencies": {
-    "effect": "latest",
-    "@effect/platform": "latest"
-  },
-  "dependencies": {
-    "@aws-crypto/crc32": "^5.2.0",
-    "@aws-sdk/credential-providers": "^3.933.0",
-    "@smithy/util-base64": "^4.3.0",
-    "aws4fetch": "^1.0.20",
-    "fast-xml-parser": "^5.3.2"
-  },
   "devDependencies": {
-    "@effect/ai": "^0.33.2",
-    "@effect/ai-anthropic": "^0.23.0",
-    "@effect/ai-openai": "^0.37.1",
-    "@effect/cli": "^0.73.0",
-    "@effect/cluster": "latest",
-    "@effect/experimental": "latest",
-    "@effect/platform-bun": "latest",
-    "@effect/platform-node": "latest",
-    "@effect/rpc": "latest",
-    "@effect/sql": "latest",
-    "@effect/vitest": "latest",
-    "@effect/workflow": "latest",
-    "@rsbuild/core": "^1.6.7",
-    "@types/archiver": "^7.0.0",
-    "@types/bun": "latest",
-    "@types/node": "^24.10.1",
-    "@typescript/native-preview": "^7.0.0-dev.20251230.1",
-    "archiver": "^7.0.1",
-    "dedent": "^1.7.0",
-    "effect": "latest",
-    "oxfmt": "0.21.0",
-    "oxlint": "1.36.0",
-    "pathe": "^2.0.3",
-    "typescript": "^5"
+    "@types/bun": "catalog:",
+    "@types/node": "catalog:",
+    "@typescript/native-preview": "catalog:",
+    "typescript": "catalog:",
+    "oxfmt": "catalog:",
+    "oxlint": "catalog:"
   }
 }

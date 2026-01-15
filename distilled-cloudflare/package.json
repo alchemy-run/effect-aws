@@ -1,0 +1,47 @@
+{
+  "name": "distilled-cloudflare",
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "download:env": "doppler secrets download --no-file --format env > .env",
+    "generate": "bun scripts/generate-clients.ts && bun format",
+    "test:watch": "vitest watch",
+    "test": "vitest run",
+    "typecheck": "tsc -b",
+    "format": "oxfmt './src' './test' './scripts'"
+  },
+  "dependencies": {
+    "effect": "catalog:",
+    "@effect/platform": "catalog:"
+  },
+  "devDependencies": {
+    "@effect/cli": "catalog:",
+    "@effect/platform-node": "catalog:",
+    "@effect/vitest": "catalog:",
+    "@types/bun": "catalog:",
+    "fast-json-patch": "catalog:",
+    "jsonc-parser": "catalog:",
+    "oxfmt": "catalog:",
+    "vitest": "catalog:"
+  },
+  "exports": {
+    "./*": {
+      "bun": "./src/services/*.ts"
+    },
+    "./Auth": {
+      "bun": "./src/auth.ts"
+    },
+    "./Category": {
+      "bun": "./src/category.ts"
+    },
+    "./Errors": {
+      "bun": "./src/errors.ts"
+    },
+    "./Traits": {
+      "bun": "./src/traits.ts"
+    },
+    ".": {
+      "bun": "./src/index.ts"
+    }
+  }
+}

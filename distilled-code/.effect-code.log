@@ -1,0 +1,56 @@
+=== Effect Code Log Started 2026-01-13T23:33:51.661Z ===
+[2026-01-13T23:33:51.691Z] [TUI] Creating TUI controller
+[2026-01-13T23:35:24.735Z] [App] handleSubmit called
+[2026-01-13T23:35:24.735Z] [App] handleSubmit value | {"value":"what is in this project?"}
+[2026-01-13T23:35:24.736Z] [TUI] onMessage called | {"message":"what is in this project?"}
+[2026-01-13T23:35:24.746Z] [ChatBridge] sendUserMessage called | {"content":"what is in this project?"}
+[2026-01-13T23:35:24.747Z] [ChatBridge] Emitted user message | {"id":"msg-1768347324746-1"}
+[2026-01-13T23:35:24.747Z] [ChatBridge] Created assistant message placeholder | {"id":"msg-1768347324747-2"}
+[2026-01-13T23:35:24.747Z] [ChatBridge] Agentic loop iteration | {"iteration":1}
+[2026-01-13T23:35:24.747Z] [ChatBridge] Starting streamText | {"promptLength":24}
+[2026-01-13T23:35:26.173Z] [ChatBridge] Text streaming started | {"id":"part-1768347326173-2"}
+[2026-01-13T23:35:26.870Z] [ChatBridge] Text streaming ended
+[2026-01-13T23:35:27.304Z] [ChatBridge] Tool call starting | {"name":"glob","id":"toolu_01XGnLXghbBYRqMDToQzmnPy"}
+[2026-01-13T23:35:27.485Z] [ChatBridge] Tool result | {"name":"glob","id":"toolu_01XGnLXghbBYRqMDToQzmnPy","isFailure":false}
+[2026-01-13T23:35:27.485Z] [ChatBridge] Stream finished | {"reason":"tool-calls","usage":{"inputTokens":2267,"outputTokens":94,"totalTokens":2361}}
+[2026-01-13T23:35:27.487Z] [ChatBridge] Continuing agentic loop | {"toolCount":1}
+[2026-01-13T23:35:27.488Z] [ChatBridge] Agentic loop iteration | {"iteration":2}
+[2026-01-13T23:35:27.488Z] [ChatBridge] Starting streamText | {"promptLength":2232}
+[2026-01-13T23:35:30.108Z] [ChatBridge] Tool call starting | {"name":"read","id":"toolu_018QLiqW8J8rHoKnRNuuoR1x"}
+[2026-01-13T23:35:30.110Z] [ChatBridge] Tool result | {"name":"read","id":"toolu_018QLiqW8J8rHoKnRNuuoR1x","isFailure":false}
+[2026-01-13T23:35:30.663Z] [ChatBridge] Tool call starting | {"name":"read","id":"toolu_01VrGhipf8mA5ntezWL6jiEA"}
+[2026-01-13T23:35:30.664Z] [ChatBridge] Tool result | {"name":"read","id":"toolu_01VrGhipf8mA5ntezWL6jiEA","isFailure":false}
+[2026-01-13T23:35:31.184Z] [ChatBridge] Tool call starting | {"name":"read","id":"toolu_013dJxPWKyuSnXaxdcjgyXez"}
+[2026-01-13T23:35:31.188Z] [ChatBridge] ERROR: streamText error | File not found: /Users/samgoodwin/workspaces/effect-code/README.md
+[2026-01-13T23:35:31.188Z] [ChatBridge] Continuing agentic loop | {"toolCount":3}
+[2026-01-13T23:35:31.188Z] [ChatBridge] Agentic loop iteration | {"iteration":3}
+[2026-01-13T23:35:31.188Z] [ChatBridge] Starting streamText | {"promptLength":5157}
+[2026-01-13T23:35:34.273Z] [ChatBridge] Tool call starting | {"name":"read","id":"toolu_018Fndwxq9crYdjA6CQXoY4k"}
+[2026-01-13T23:35:34.274Z] [ChatBridge] Tool result | {"name":"read","id":"toolu_018Fndwxq9crYdjA6CQXoY4k","isFailure":false}
+[2026-01-13T23:35:35.023Z] [ChatBridge] Tool call starting | {"name":"read","id":"toolu_01G7b58duBLbZczM6z2K5Xeg"}
+[2026-01-13T23:35:35.025Z] [ChatBridge] Tool result | {"name":"read","id":"toolu_01G7b58duBLbZczM6z2K5Xeg","isFailure":false}
+[2026-01-13T23:35:35.680Z] [ChatBridge] Tool call starting | {"name":"glob","id":"toolu_01SPHp3o3b3RsiBFt2QUXqkQ"}
+[2026-01-13T23:35:35.696Z] [ChatBridge] Tool result | {"name":"glob","id":"toolu_01SPHp3o3b3RsiBFt2QUXqkQ","isFailure":false}
+[2026-01-13T23:35:35.696Z] [ChatBridge] Stream finished | {"reason":"tool-calls","usage":{"inputTokens":4073,"outputTokens":266,"totalTokens":4339}}
+[2026-01-13T23:35:35.697Z] [ChatBridge] Continuing agentic loop | {"toolCount":3}
+[2026-01-13T23:35:35.697Z] [ChatBridge] Agentic loop iteration | {"iteration":4}
+[2026-01-13T23:35:35.697Z] [ChatBridge] Starting streamText | {"promptLength":9713}
+[2026-01-13T23:35:38.874Z] [ChatBridge] Tool call starting | {"name":"read","id":"toolu_01E1auEwZjShsRuj6pPrMQJo"}
+[2026-01-13T23:35:38.874Z] [ChatBridge] Tool result | {"name":"read","id":"toolu_01E1auEwZjShsRuj6pPrMQJo","isFailure":false}
+[2026-01-13T23:35:39.669Z] [ChatBridge] Tool call starting | {"name":"read","id":"toolu_01YACnxYHQ8f45aPersRZMs2"}
+[2026-01-13T23:35:39.670Z] [ChatBridge] Tool result | {"name":"read","id":"toolu_01YACnxYHQ8f45aPersRZMs2","isFailure":false}
+[2026-01-13T23:35:39.682Z] [ChatBridge] Stream finished | {"reason":"tool-calls","usage":{"inputTokens":5562,"outputTokens":197,"totalTokens":5759}}
+[2026-01-13T23:35:39.683Z] [ChatBridge] Continuing agentic loop | {"toolCount":2}
+[2026-01-13T23:35:39.683Z] [ChatBridge] Agentic loop iteration | {"iteration":5}
+[2026-01-13T23:35:39.683Z] [ChatBridge] Starting streamText | {"promptLength":13792}
+[2026-01-13T23:35:42.409Z] [ChatBridge] Tool call starting | {"name":"read","id":"toolu_01RLFwXdyhv3xsoqqqbajveb"}
+[2026-01-13T23:35:42.410Z] [ChatBridge] Tool result | {"name":"read","id":"toolu_01RLFwXdyhv3xsoqqqbajveb","isFailure":false}
+[2026-01-13T23:35:43.294Z] [ChatBridge] Tool call starting | {"name":"read","id":"toolu_01NmZJwawTeJLFcsbX4gxk4s"}
+[2026-01-13T23:35:43.295Z] [ChatBridge] Tool result | {"name":"read","id":"toolu_01NmZJwawTeJLFcsbX4gxk4s","isFailure":false}
+[2026-01-13T23:35:43.973Z] [ChatBridge] Tool call starting | {"name":"read","id":"toolu_01JCG84918ETEuMJuQ9B1XKc"}
+[2026-01-13T23:35:43.974Z] [ChatBridge] Tool result | {"name":"read","id":"toolu_01JCG84918ETEuMJuQ9B1XKc","isFailure":false}
+[2026-01-13T23:35:44.005Z] [ChatBridge] Stream finished | {"reason":"tool-calls","usage":{"inputTokens":6622,"outputTokens":288,"totalTokens":6910}}
+[2026-01-13T23:35:44.007Z] [ChatBridge] Continuing agentic loop | {"toolCount":3}
+[2026-01-13T23:35:44.007Z] [ChatBridge] Agentic loop iteration | {"iteration":6}
+[2026-01-13T23:35:44.007Z] [ChatBridge] Starting streamText | {"promptLength":19881}
+[2026-01-13T23:35:45.146Z] [ChatBridge] Text streaming started | {"id":"part-1768347345146-15"}

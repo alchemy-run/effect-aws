@@ -1,0 +1,193 @@
+---
+const problems = [
+	{
+		icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+			<circle cx="12" cy="12" r="10"/>
+			<line x1="12" y1="8" x2="12" y2="12"/>
+			<line x1="12" y1="16" x2="12.01" y2="16"/>
+		</svg>`,
+		title: 'Missing Error Codes',
+		description: 'APIs return cryptic error codes that aren\'t in the documentation. You only discover them in production.',
+	},
+	{
+		icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+			<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+			<polyline points="14 2 14 8 20 8"/>
+			<line x1="9" y1="15" x2="15" y2="15"/>
+		</svg>`,
+		title: 'Incomplete Specs',
+		description: 'OpenAPI and Smithy specs are missing properties, wrong types, or outdated. The docs lie.',
+	},
+	{
+		icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+			<polyline points="4 17 10 11 4 5"/>
+			<line x1="12" y1="19" x2="20" y2="19"/>
+		</svg>`,
+		title: 'Runtime Surprises',
+		description: 'Errors you can\'t catch because they\'re not in the types. Your "exhaustive" switch statement isn\'t.',
+	},
+	{
+		icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+			<rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+			<line x1="3" y1="9" x2="21" y2="9"/>
+			<line x1="9" y1="21" x2="9" y2="9"/>
+		</svg>`,
+		title: 'Bundle Bloat',
+		description: 'Import one function, bundle hundreds. Class-based SDKs can\'t tree-shake.',
+	},
+];
+---
+
+<section class="problem-section">
+	<div class="container">
+		<div class="section-header">
+			<p class="section-eyebrow">The Problem</p>
+			<h2 class="section-title">
+				Cloud APIs are <span class="gradient-text">notoriously under-documented</span>
+			</h2>
+			<p class="section-subtitle">
+				Every cloud provider ships incomplete specs. Errors are discovered at runtime, not compile time.
+			</p>
+		</div>
+		
+		<div class="problems-grid">
+			{problems.map((problem) => (
+				<div class="problem-card">
+					<div class="problem-icon" set:html={problem.icon} />
+					<h3 class="problem-title">{problem.title}</h3>
+					<p class="problem-description">{problem.description}</p>
+				</div>
+			))}
+		</div>
+	</div>
+</section>
+
+<style>
+	.problem-section {
+		padding: 3rem 0;
+	}
+	
+	.container {
+		max-width: var(--max-width);
+		margin: 0 auto;
+		padding: 0 1rem;
+	}
+	
+	.section-header {
+		text-align: center;
+		margin-bottom: 2rem;
+	}
+	
+	.section-eyebrow {
+		font-size: 0.75rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		color: var(--color-accent-purple);
+		margin-bottom: 0.5rem;
+	}
+	
+	.section-title {
+		font-size: 1.75rem;
+		font-weight: 700;
+		margin-bottom: 0.75rem;
+	}
+	
+	.section-subtitle {
+		font-size: 1rem;
+		color: var(--color-text-secondary);
+		max-width: 600px;
+		margin: 0 auto;
+	}
+	
+	.problems-grid {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+	
+	.problem-card {
+		padding: 1.25rem;
+		background: var(--color-surface);
+		border: 1px solid var(--color-border);
+		border-radius: 0.75rem;
+	}
+	
+	.problem-icon {
+		width: 40px;
+		height: 40px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: rgba(168, 85, 247, 0.1);
+		border-radius: 0.5rem;
+		color: var(--color-accent-purple);
+		margin-bottom: 0.75rem;
+	}
+	
+	.problem-title {
+		font-size: 1rem;
+		font-weight: 600;
+		margin-bottom: 0.375rem;
+	}
+	
+	.problem-description {
+		font-size: 0.875rem;
+		color: var(--color-text-secondary);
+		line-height: 1.5;
+	}
+
+	@media (min-width: 768px) {
+		.problem-section {
+			padding: 6rem 0;
+		}
+		
+		.container {
+			padding: 0 1.5rem;
+		}
+		
+		.section-header {
+			margin-bottom: 4rem;
+		}
+		
+		.section-eyebrow {
+			font-size: 0.875rem;
+			margin-bottom: 1rem;
+		}
+		
+		.section-title {
+			font-size: 2.5rem;
+			margin-bottom: 1rem;
+		}
+		
+		.section-subtitle {
+			font-size: 1.125rem;
+		}
+		
+		.problems-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+			gap: 1.5rem;
+		}
+		
+		.problem-card {
+			padding: 1.5rem;
+		}
+		
+		.problem-icon {
+			width: 48px;
+			height: 48px;
+			margin-bottom: 1rem;
+		}
+		
+		.problem-title {
+			font-size: 1.125rem;
+			margin-bottom: 0.5rem;
+		}
+		
+		.problem-description {
+			font-size: 0.9375rem;
+			line-height: 1.6;
+		}
+	}
+</style>

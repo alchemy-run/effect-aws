@@ -7,5 +7,10 @@
         "noEmit": true,
         "outDir": "./lib",
         "rootDir": "."
-    }
+    },
+    "references": [
+        {
+            "path": "./tsconfig.lib.json"
+        }
+    ]
 }

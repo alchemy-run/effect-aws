@@ -1,0 +1,249 @@
+---
+---
+
+<section class="mission-section">
+	<div class="container">
+		<div class="mission-content">
+			<p class="section-eyebrow">The Mission</p>
+			<h2 class="section-title">
+				Documenting the world's APIs <span class="gradient-text">for AI</span>
+			</h2>
+			<p class="mission-description">
+				Type-safe, tagged error specs aren't just good for developers—they're essential for AI code generation.
+			</p>
+			<p class="mission-description">
+				distilled SDKs are built to power <a href="https://alchemy.run" class="alchemy-link">alchemy.run</a>—next-generation Infrastructure-as-Code in native TypeScript. When AI generates infrastructure code, it needs to know every possible error and how to handle it.
+			</p>
+			<p class="mission-description">
+				Proper error tags mean sound, reliable tooling. No more hallucinated error handling. No more runtime surprises.
+			</p>
+			
+			<div class="cta-group">
+				<a href="https://alchemy.run" class="btn btn-primary" target="_blank" rel="noopener">
+					Explore alchemy.run
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<path d="M7 17L17 7M17 7H7M17 7V17"/>
+					</svg>
+				</a>
+			</div>
+		</div>
+		
+		<div class="mission-visual">
+			<div class="visual-box">
+				<div class="visual-header">
+					<span class="visual-title">AI-Ready Specs</span>
+				</div>
+				<div class="visual-content">
+					<div class="visual-item">
+						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+							<polyline points="20 6 9 17 4 12"/>
+						</svg>
+						<span>Exhaustive error unions</span>
+					</div>
+					<div class="visual-item">
+						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+							<polyline points="20 6 9 17 4 12"/>
+						</svg>
+						<span>Typed request/response schemas</span>
+					</div>
+					<div class="visual-item">
+						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+							<polyline points="20 6 9 17 4 12"/>
+						</svg>
+						<span>Patched and verified specs</span>
+					</div>
+					<div class="visual-item">
+						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+							<polyline points="20 6 9 17 4 12"/>
+						</svg>
+						<span>Reliable code generation</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	.mission-section {
+		padding: 3rem 0;
+		background: linear-gradient(180deg, transparent 0%, rgba(16, 185, 129, 0.03) 50%, transparent 100%);
+	}
+	
+	.container {
+		max-width: var(--max-width);
+		margin: 0 auto;
+		padding: 0 1rem;
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+		align-items: stretch;
+	}
+	
+	.section-eyebrow {
+		font-size: 0.75rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		color: var(--color-accent-green);
+		margin-bottom: 0.5rem;
+	}
+	
+	.section-title {
+		font-size: 1.75rem;
+		font-weight: 700;
+		margin-bottom: 1rem;
+	}
+	
+	.mission-description {
+		font-size: 1rem;
+		color: var(--color-text-secondary);
+		line-height: 1.6;
+		margin-bottom: 0.75rem;
+	}
+	
+	.alchemy-link {
+		color: var(--color-accent-green);
+		font-weight: 500;
+		text-decoration: underline;
+		text-underline-offset: 2px;
+		transition: color 0.2s;
+	}
+	
+	.alchemy-link:hover {
+		color: var(--color-accent-purple);
+	}
+	
+	.cta-group {
+		margin-top: 1.5rem;
+	}
+	
+	.btn {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+		padding: 0.875rem 1.5rem;
+		border-radius: 0.5rem;
+		font-weight: 500;
+		font-size: 1rem;
+		transition: all 0.2s ease;
+		width: 100%;
+	}
+	
+	.btn-primary {
+		background: linear-gradient(135deg, var(--color-gradient-start), var(--color-gradient-end));
+		color: white;
+	}
+	
+	.btn-primary:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 8px 30px rgba(147, 51, 234, 0.3);
+	}
+	
+	.mission-visual {
+		display: flex;
+		justify-content: center;
+	}
+	
+	.visual-box {
+		background: var(--color-surface);
+		border: 1px solid var(--color-border);
+		border-radius: 1rem;
+		overflow: hidden;
+		width: 100%;
+		box-shadow: 0 0 60px rgba(16, 185, 129, 0.1);
+	}
+	
+	.visual-header {
+		padding: 0.75rem 1rem;
+		background: rgba(0, 0, 0, 0.3);
+		border-bottom: 1px solid var(--color-border);
+	}
+	
+	.visual-title {
+		font-weight: 600;
+		font-size: 0.875rem;
+	}
+	
+	.visual-content {
+		padding: 1rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+	}
+	
+	.visual-item {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		color: var(--color-text-secondary);
+		font-size: 0.875rem;
+	}
+	
+	.visual-item svg {
+		color: var(--color-accent-green);
+		flex-shrink: 0;
+	}
+
+	@media (min-width: 768px) {
+		.mission-section {
+			padding: 6rem 0;
+		}
+		
+		.container {
+			padding: 0 1.5rem;
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 4rem;
+			align-items: center;
+		}
+		
+		.section-eyebrow {
+			font-size: 0.875rem;
+			margin-bottom: 1rem;
+		}
+		
+		.section-title {
+			font-size: 2.5rem;
+			margin-bottom: 1.5rem;
+		}
+		
+		.mission-description {
+			font-size: 1.0625rem;
+			line-height: 1.7;
+			margin-bottom: 1rem;
+		}
+		
+		.cta-group {
+			margin-top: 2rem;
+		}
+		
+		.btn {
+			width: auto;
+		}
+		
+		.visual-box {
+			max-width: 400px;
+		}
+		
+		.visual-header {
+			padding: 1rem 1.5rem;
+		}
+		
+		.visual-title {
+			font-size: 0.9375rem;
+		}
+		
+		.visual-content {
+			padding: 1.5rem;
+			gap: 1rem;
+		}
+		
+		.visual-item {
+			gap: 0.75rem;
+			font-size: 0.9375rem;
+		}
+	}
+
+</style>

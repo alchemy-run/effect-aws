@@ -1,0 +1,81 @@
+---
+import { Code } from 'astro:components';
+import type { BuiltinLanguage } from 'shiki';
+import { distilledTheme } from '../lib/shiki-theme';
+
+interface Props {
+	code: string;
+	lang?: BuiltinLanguage;
+	filename?: string;
+}
+
+const { code, lang = 'typescript', filename } = Astro.props;
+---
+
+<div class="code-block">
+	{filename && (
+		<div class="code-header">
+			<span class="filename">{filename}</span>
+		</div>
+	)}
+	<div class="code-content">
+		<Code code={code} lang={lang} theme={distilledTheme} />
+	</div>
+</div>
+
+<style>
+	.code-block {
+		background: var(--color-surface);
+		border: 1px solid var(--color-border);
+		border-radius: 0.75rem;
+		overflow: hidden;
+		box-shadow: 0 0 30px rgba(147, 51, 234, 0.1);
+	}
+	
+	.code-header {
+		padding: 0.5rem 0.75rem;
+		background: rgba(0, 0, 0, 0.3);
+		border-bottom: 1px solid var(--color-border);
+	}
+	
+	.filename {
+		font-family: var(--font-mono);
+		font-size: 0.75rem;
+		color: var(--color-text-secondary);
+	}
+	
+	.code-content {
+		padding: 1rem;
+		overflow-x: auto;
+	}
+	
+	.code-content :global(pre) {
+		margin: 0;
+		background: transparent !important;
+	}
+	
+	.code-content :global(code) {
+		font-family: var(--font-mono);
+		font-size: 0.75rem;
+		line-height: 1.6;
+	}
+
+	@media (min-width: 768px) {
+		.code-header {
+			padding: 0.75rem 1rem;
+		}
+		
+		.filename {
+			font-size: 0.8125rem;
+		}
+		
+		.code-content {
+			padding: 1.25rem;
+		}
+		
+		.code-content :global(code) {
+			font-size: 0.875rem;
+			line-height: 1.7;
+		}
+	}
+</style>

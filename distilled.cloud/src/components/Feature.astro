@@ -1,0 +1,139 @@
+---
+import CodeBlock from './CodeBlock.astro';
+
+interface Props {
+	title: string;
+	description: string;
+	code: string;
+	bullets: string[];
+	reverse?: boolean;
+}
+
+const { title, description, code, bullets, reverse = false } = Astro.props;
+---
+
+<div class:list={["feature", { reverse }]}>
+	<div class="feature-content">
+		<h3 class="feature-title">{title}</h3>
+		<p class="feature-description">{description}</p>
+		<ul class="feature-bullets">
+			{bullets.map((bullet) => (
+				<li>
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<polyline points="20 6 9 17 4 12"/>
+					</svg>
+					{bullet}
+				</li>
+			))}
+		</ul>
+	</div>
+	<div class="feature-code">
+		<CodeBlock code={code} />
+	</div>
+</div>
+
+<style>
+	.feature {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+		align-items: stretch;
+	}
+	
+	.feature.reverse {
+		/* No reversal on mobile - always content first */
+	}
+	
+	.feature-content {
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+	}
+	
+	.feature-title {
+		font-size: 1.5rem;
+		font-weight: 700;
+		background: linear-gradient(135deg, var(--color-text-primary), var(--color-text-secondary));
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+	}
+	
+	.feature-description {
+		font-size: 1rem;
+		color: var(--color-text-secondary);
+		line-height: 1.6;
+	}
+	
+	.feature-bullets {
+		list-style: none;
+		padding: 0;
+		margin: 0.5rem 0 0 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+	
+	.feature-bullets li {
+		display: flex;
+		align-items: flex-start;
+		gap: 0.5rem;
+		color: var(--color-text-secondary);
+		font-size: 0.875rem;
+	}
+	
+	.feature-bullets svg {
+		color: var(--color-accent-green);
+		flex-shrink: 0;
+		margin-top: 0.125rem;
+	}
+	
+	.feature-code {
+		width: 100%;
+	}
+
+	@media (min-width: 768px) {
+		.feature {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 4rem;
+			align-items: center;
+		}
+		
+		.feature.reverse {
+			direction: rtl;
+		}
+		
+		.feature.reverse > * {
+			direction: ltr;
+		}
+		
+		.feature-content {
+			gap: 1rem;
+		}
+		
+		.feature-title {
+			font-size: 1.75rem;
+		}
+		
+		.feature-description {
+			font-size: 1.0625rem;
+			line-height: 1.7;
+		}
+		
+		.feature-bullets {
+			gap: 0.75rem;
+		}
+		
+		.feature-bullets li {
+			align-items: center;
+			gap: 0.75rem;
+			font-size: 0.9375rem;
+		}
+		
+		.feature-bullets svg {
+			margin-top: 0;
+		}
+	}
+
+</style>

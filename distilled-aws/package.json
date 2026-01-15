@@ -1,0 +1,110 @@
+{
+  "name": "distilled-aws",
+  "module": "index.ts",
+  "version": "0.0.22",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "sideEffects": false,
+  "files": [
+    "src",
+    "lib"
+  ],
+  "scripts": {
+    "clean:aws": "DISTILLED_AWS_DEBUG=1 bun run scripts/topology-clean.ts",
+    "build:clean": "bun run install:clean && bun run build",
+    "bump": "bun run ./scripts/bump.ts",
+    "build": "bun generate && bun oxfmt ./src/services/* && tsgo -b",
+    "bundle:report": "bun run scripts/bundle-size-report.ts",
+    "clean": "git clean -fqdx -e .env",
+    "find": "DISTILLED_AWS_DEBUG=1 bun run scripts/find-errors/index.ts",
+    "find:errors": "bun run scripts/find-errors.ts",
+    "format": "bun oxfmt ./scripts ./src ./test",
+    "generate": "bun run scripts/generate-clients.ts",
+    "install:clean": "bun run clean && bun install",
+    "localstack:clean": "DISTILLED_AWS_DEBUG=1 bun run scripts/localstack-clean.ts",
+    "setup": "bun run scripts/setup.ts",
+    "symlink": "bun run scripts/symlink.ts",
+    "test": "DISTILLED_AWS_DEBUG=1 bun vitest run ./test",
+    "test:scripts": "DISTILLED_AWS_DEBUG=1bun vitest run ./scripts"
+  },
+  "exports": {
+    "./*": {
+      "types": "./lib/services/*.d.ts",
+      "bun": "./src/services/*.ts",
+      "default": "./lib/services/*.js"
+    },
+    "./Category": {
+      "types": "./lib/category.d.ts",
+      "bun": "./src/category.ts",
+      "default": "./lib/category.js"
+    },
+    "./Credentials": {
+      "types": "./lib/credentials.d.ts",
+      "bun": "./src/credentials.ts",
+      "default": "./lib/credentials.js"
+    },
+    "./Errors": {
+      "types": "./lib/errors.d.ts",
+      "bun": "./src/errors.ts",
+      "default": "./lib/errors.js"
+    },
+    "./Region": {
+      "types": "./lib/region.d.ts",
+      "bun": "./src/region.ts",
+      "default": "./lib/region.js"
+    },
+    "./Retry": {
+      "types": "./lib/retry.d.ts",
+      "bun": "./src/retry.ts",
+      "default": "./lib/retry.js"
+    },
+    "./Sensitive": {
+      "types": "./lib/sensitive.d.ts",
+      "bun": "./src/sensitive.ts",
+      "default": "./lib/sensitive.js"
+    },
+    "./Traits": {
+      "types": "./lib/traits.d.ts",
+      "bun": "./src/traits.ts",
+      "default": "./lib/traits.js"
+    },
+    ".": {
+      "types": "./lib/index.d.ts",
+      "bun": "./src/index.ts",
+      "default": "./lib/index.js"
+    }
+  },
+  "peerDependencies": {
+    "effect": "latest",
+    "@effect/platform": "latest"
+  },
+  "dependencies": {
+    "@aws-crypto/crc32": "^5.2.0",
+    "@aws-sdk/credential-providers": "^3.933.0",
+    "@smithy/util-base64": "^4.3.0",
+    "aws4fetch": "^1.0.20",
+    "fast-xml-parser": "catalog:"
+  },
+  "devDependencies": {
+    "@effect/ai": "catalog:",
+    "@effect/ai-anthropic": "catalog:",
+    "@effect/ai-openai": "catalog:",
+    "@effect/cli": "catalog:",
+    "@effect/cluster": "catalog:",
+    "@effect/experimental": "catalog:",
+    "@effect/platform-bun": "catalog:",
+    "@effect/platform-node": "catalog:",
+    "@effect/rpc": "catalog:",
+    "@effect/sql": "catalog:",
+    "@effect/vitest": "catalog:",
+    "@effect/workflow": "catalog:",
+    "@rsbuild/core": "catalog:",
+    "@types/archiver": "^7.0.0",
+    "archiver": "^7.0.1",
+    "dedent": "^1.7.0",
+    "effect": "catalog:",
+    "pathe": "catalog:"
+  }
+}

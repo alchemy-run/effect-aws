@@ -1,0 +1,127 @@
+---
+interface Props {
+	title?: string;
+	description?: string;
+}
+
+const { 
+	title = "distilled.cloud - Effect-native Cloud SDKs",
+	description = "Type-safe, tree-shakeable cloud SDKs with tagged errors. Built for Effect and designed to power AI code generation."
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" type="image/png" href="/potion.png" />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="description" content={description} />
+		<meta name="theme-color" content="#09090b" />
+		
+		<!-- Open Graph -->
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content="https://distilled.cloud" />
+		<meta property="og:image" content="https://distilled.cloud/og-image.svg" />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		
+		<!-- Twitter -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content="https://distilled.cloud/og-image.svg" />
+		
+		<title>{title}</title>
+		
+		<!-- Fonts -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+	</head>
+	<body>
+		<slot />
+	</body>
+</html>
+
+<style is:global>
+	:root {
+		/* Colors */
+		--color-bg: #09090b;
+		--color-surface: #18181b;
+		--color-border: #27272a;
+		--color-text-primary: #fafafa;
+		--color-text-secondary: #a1a1aa;
+		--color-accent-purple: #a855f7;
+		--color-accent-green: #34d399;
+		--color-gradient-start: #9333ea;
+		--color-gradient-end: #10b981;
+		
+		/* Typography */
+		--font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+		--font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, monospace;
+		
+		/* Spacing */
+		--max-width: 1200px;
+		--section-padding: 6rem 1.5rem;
+	}
+	
+	*, *::before, *::after {
+		box-sizing: border-box;
+	}
+	
+	html {
+		font-family: var(--font-sans);
+		background-color: var(--color-bg);
+		color: var(--color-text-primary);
+		scroll-behavior: smooth;
+	}
+	
+	body {
+		margin: 0;
+		min-height: 100vh;
+		line-height: 1.6;
+	}
+	
+	h1, h2, h3, h4, h5, h6 {
+		margin: 0;
+		line-height: 1.2;
+		font-weight: 700;
+	}
+	
+	p {
+		margin: 0;
+	}
+	
+	a {
+		color: inherit;
+		text-decoration: none;
+	}
+	
+	code {
+		font-family: var(--font-mono);
+	}
+	
+	/* Gradient text utility */
+	.gradient-text {
+		background: linear-gradient(135deg, var(--color-gradient-start), var(--color-gradient-end));
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+	}
+	
+	/* Container utility */
+	.container {
+		max-width: var(--max-width);
+		margin: 0 auto;
+		padding: 0 1.5rem;
+	}
+	
+	/* Section utility */
+	.section {
+		padding: var(--section-padding);
+	}
+</style>

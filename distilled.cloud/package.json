@@ -1,0 +1,26 @@
+{
+  "type": "module",
+  "name": "distilled-cloud",
+  "version": "0.0.1",
+  "scripts": {
+    "astro": "astro",
+    "build": "astro check && astro build",
+    "deploy": "alchemy deploy",
+    "destroy": "alchemy destroy",
+    "dev": "alchemy dev",
+    "download:env": "doppler secrets download --no-file --format env > .env",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "astro": "^5.10.0",
+    "libsodium-wrappers": "^0.8.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.6",
+    "@astrojs/cloudflare": "^12.6.0",
+    "@cloudflare/workers-types": "^4.20250805.0",
+    "alchemy": "^0.83.1",
+    "miniflare": "^4.20250617.3",
+    "typescript": "^5.8.3"
+  }
+}

@@ -2,13 +2,13 @@
   "files": [],
   "references": [
     {
-      "path": "./tsconfig.lib.json"
+      "path": "./distilled-aws/tsconfig.json"
     },
     {
-      "path": "./tsconfig.scripts.json"
+      "path": "./distilled-cloudflare/tsconfig.json"
     },
     {
-      "path": "./tsconfig.test.json"
+      "path": "./distilled-code/tsconfig.json"
     },
   ]
 }

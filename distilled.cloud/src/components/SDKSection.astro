@@ -1,0 +1,130 @@
+---
+import SDKCard from './SDKCard.astro';
+
+const sdks = [
+	{
+		name: 'distilled-aws',
+		description: 'Complete AWS SDK with typed errors for S3, Lambda, DynamoDB, SQS, and 200+ services. Every API includes documented and undocumented error codes.',
+		repo: 'alchemy-run/distilled-aws',
+		icon: 'aws' as const,
+	},
+	{
+		name: 'distilled-cloudflare',
+		description: 'Cloudflare API client for Workers, R2, KV, D1, Queues, and more. Patched OpenAPI spec with complete error coverage.',
+		repo: 'alchemy-run/distilled-cloudflare',
+		icon: 'cloudflare' as const,
+	},
+	{
+		name: 'distilled-planetscale',
+		description: 'PlanetScale MySQL serverless database client. Type-safe queries with proper connection and query error handling.',
+		repo: 'alchemy-run/distilled-planetscale',
+		icon: 'planetscale' as const,
+	},
+	{
+		name: 'distilled-neon',
+		description: 'Neon serverless Postgres client. Branching, autoscaling, and type-safe database operations with complete error coverage.',
+		repo: 'alchemy-run/distilled-neon',
+		icon: 'neon' as const,
+		comingSoon: true,
+	},
+	{
+		name: 'distilled-azure',
+		description: 'Azure cloud services SDK. Blob Storage, Functions, Cosmos DB, and more with tagged errors.',
+		repo: 'alchemy-run/distilled-azure',
+		icon: 'azure' as const,
+		comingSoon: true,
+	},
+	{
+		name: 'distilled-gcp',
+		description: 'Google Cloud Platform SDK. Cloud Storage, Cloud Functions, BigQuery, and Firestore with typed error handling.',
+		repo: 'alchemy-run/distilled-gcp',
+		icon: 'gcp' as const,
+		comingSoon: true,
+	},
+];
+---
+
+<section id="sdks" class="sdk-section">
+	<div class="container">
+		<div class="section-header">
+			<h2 class="section-title">
+				<span class="gradient-text">SDKs</span>
+			</h2>
+			<p class="section-subtitle">
+				Effect-native clients for major cloud providers, with tagged errors and tree-shakeable imports.
+			</p>
+		</div>
+		
+		<div class="sdk-grid">
+			{sdks.map((sdk) => (
+				<SDKCard {...sdk} />
+			))}
+		</div>
+	</div>
+</section>
+
+<style>
+	.sdk-section {
+		padding: 3rem 0;
+	}
+	
+	.container {
+		max-width: var(--max-width);
+		margin: 0 auto;
+		padding: 0 1rem;
+	}
+	
+	.section-header {
+		text-align: center;
+		margin-bottom: 2rem;
+	}
+	
+	.section-title {
+		font-size: 1.75rem;
+		font-weight: 700;
+		margin-bottom: 0.5rem;
+	}
+	
+	.section-subtitle {
+		font-size: 1rem;
+		color: var(--color-text-secondary);
+		max-width: 600px;
+		margin: 0 auto;
+	}
+	
+	.sdk-grid {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	@media (min-width: 768px) {
+		.sdk-section {
+			padding: 6rem 0;
+		}
+		
+		.container {
+			padding: 0 1.5rem;
+		}
+		
+		.section-header {
+			margin-bottom: 4rem;
+		}
+		
+		.section-title {
+			font-size: 2.5rem;
+			margin-bottom: 1rem;
+		}
+		
+		.section-subtitle {
+			font-size: 1.125rem;
+		}
+		
+		.sdk-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+			gap: 1.5rem;
+		}
+	}
+
+</style>

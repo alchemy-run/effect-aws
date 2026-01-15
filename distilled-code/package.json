@@ -1,0 +1,31 @@
+{
+  "name": "distilled-code",
+  "version": "0.0.1",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "bin": {
+    "effect-code": "./src/index.ts"
+  },
+  "scripts": {
+    "tui": "bun run src/index.ts tui",
+    "generate": "bun run src/index.ts generate",
+    "download:env": "doppler secrets download --no-file --format env > .env"
+  },
+  "dependencies": {
+    "@effect/ai": "catalog:",
+    "@effect/ai-anthropic": "catalog:",
+    "@effect/ai-openai": "catalog:",
+    "@effect/cli": "catalog:",
+    "@effect/experimental": "catalog:",
+    "@effect/platform": "catalog:",
+    "@effect/platform-node": "catalog:",
+    "@opentui/core": "catalog:",
+    "@opentui/solid": "catalog:",
+    "diff": "catalog:",
+    "effect": "catalog:",
+    "solid-js": "^1.9.10",
+    "web-tree-sitter": "catalog:"
+  }
+}

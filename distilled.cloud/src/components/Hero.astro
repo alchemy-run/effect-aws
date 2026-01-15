@@ -1,0 +1,318 @@
+---
+import { Code } from 'astro:components';
+import { distilledTheme } from '../lib/shiki-theme';
+
+const codeExample = `import * as S3 from "distilled-aws/s3"
+
+const bucket = yield* S3.getBucket({
+  Bucket: "my-bucket"
+}).pipe(
+  Effect.catchTag("NoSuchBucket", () =>
+    Effect.void
+  )
+)`;
+---
+
+<section class="hero">
+	<div class="hero-bg"></div>
+	<div class="container">
+		<div class="hero-content">
+			<h1 class="title">
+				distilled<span class="accent">.cloud</span>
+			</h1>
+			<p class="tagline">Effect-native SDKs for cloud providers</p>
+			<p class="subtitle">Tagged errors. Retry policies. Streaming pagination.</p>
+			
+			<div class="cta-buttons">
+				<a href="#sdks" class="btn btn-primary">
+					Explore SDKs
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<path d="M7 17L17 7M17 7H7M17 7V17"/>
+					</svg>
+				</a>
+				<a href="https://github.com/alchemy-run" class="btn btn-secondary" target="_blank" rel="noopener">
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+						<path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+					</svg>
+					GitHub
+				</a>
+			</div>
+		</div>
+		
+		<div class="hero-visual">
+			<div class="code-preview">
+				<div class="code-header">
+					<span class="dot red"></span>
+					<span class="dot yellow"></span>
+					<span class="dot green"></span>
+				</div>
+				<div class="code-content">
+					<Code code={codeExample} lang="typescript" theme={distilledTheme} />
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	.hero {
+		min-height: 100svh;
+		display: flex;
+		align-items: center;
+		padding: 3rem 0;
+		position: relative;
+	}
+	
+	.hero-bg {
+		position: absolute;
+		inset: 0;
+		overflow: hidden;
+		pointer-events: none;
+	}
+	
+	.hero-bg::before {
+		content: '';
+		position: absolute;
+		top: -50%;
+		left: -50%;
+		width: 200%;
+		height: 200%;
+		background: radial-gradient(ellipse at 30% 20%, rgba(147, 51, 234, 0.15) 0%, transparent 50%),
+					radial-gradient(ellipse at 70% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
+	}
+	
+	.container {
+		max-width: var(--max-width);
+		margin: 0 auto;
+		padding: 0 1rem;
+		display: flex;
+		flex-direction: column;
+		gap: 2.5rem;
+		align-items: center;
+		position: relative;
+		z-index: 1;
+	}
+	
+	.hero-content {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		text-align: center;
+	}
+	
+	.title {
+		font-size: 2.5rem;
+		font-weight: 700;
+		letter-spacing: -0.02em;
+	}
+	
+	.accent {
+		background: linear-gradient(135deg, var(--color-gradient-start), var(--color-gradient-end));
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+	}
+	
+	.tagline {
+		font-size: 1.125rem;
+		color: var(--color-text-secondary);
+		font-weight: 500;
+	}
+	
+	.subtitle {
+		font-size: 1rem;
+		color: var(--color-text-secondary);
+		opacity: 0.8;
+	}
+	
+	.cta-buttons {
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+		margin-top: 0.5rem;
+		width: 100%;
+	}
+	
+	.btn {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+		padding: 0.875rem 1.5rem;
+		border-radius: 0.5rem;
+		font-weight: 500;
+		font-size: 1rem;
+		transition: all 0.2s ease;
+	}
+	
+	.btn-primary {
+		background: linear-gradient(135deg, var(--color-gradient-start), var(--color-gradient-end));
+		color: white;
+	}
+	
+	.btn-primary:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 8px 30px rgba(147, 51, 234, 0.3);
+	}
+	
+	.btn-secondary {
+		background: var(--color-surface);
+		border: 1px solid var(--color-border);
+		color: var(--color-text-primary);
+	}
+	
+	.btn-secondary:hover {
+		border-color: var(--color-accent-purple);
+		background: rgba(168, 85, 247, 0.1);
+	}
+	
+	.hero-visual {
+		display: flex;
+		justify-content: center;
+		width: 100%;
+	}
+	
+	.code-preview {
+		background: var(--color-surface);
+		border: 1px solid var(--color-border);
+		border-radius: 0.75rem;
+		overflow: hidden;
+		width: 100%;
+		box-shadow: 0 0 60px rgba(147, 51, 234, 0.15);
+	}
+	
+	.code-header {
+		display: flex;
+		gap: 0.5rem;
+		padding: 0.75rem 1rem;
+		background: rgba(0, 0, 0, 0.3);
+		border-bottom: 1px solid var(--color-border);
+	}
+	
+	.dot {
+		width: 12px;
+		height: 12px;
+		border-radius: 50%;
+	}
+	
+	.dot.red { background: #ff5f57; }
+	.dot.yellow { background: #febc2e; }
+	.dot.green { background: #28c840; }
+	
+	.code-content {
+		padding: 1rem;
+		overflow-x: auto;
+	}
+	
+	.code-content :global(pre) {
+		margin: 0;
+		background: transparent !important;
+	}
+	
+	.code-content :global(code) {
+		font-family: var(--font-mono);
+		font-size: 0.75rem;
+		line-height: 1.6;
+	}
+
+	/* Tablet portrait - stacked but larger */
+	@media (min-width: 768px) {
+		.hero {
+			padding: 5rem 0;
+		}
+		
+		.container {
+			padding: 0 3rem;
+			gap: 3rem;
+			max-width: 720px;
+		}
+		
+		.hero-content {
+			gap: 1.25rem;
+		}
+		
+		.title {
+			font-size: 4rem;
+		}
+		
+		.tagline {
+			font-size: 1.5rem;
+		}
+		
+		.subtitle {
+			font-size: 1.125rem;
+		}
+		
+		.cta-buttons {
+			flex-direction: row;
+			justify-content: center;
+			width: auto;
+			gap: 1rem;
+			margin-top: 1rem;
+		}
+		
+		.code-preview {
+			max-width: 100%;
+		}
+		
+		.code-content {
+			padding: 1.5rem;
+		}
+		
+		.code-content :global(code) {
+			font-size: 0.875rem;
+			line-height: 1.7;
+		}
+	}
+	
+	/* Desktop - side by side (above iPad Pro portrait) */
+	@media (min-width: 1100px) {
+		.hero {
+			padding: 6rem 0;
+		}
+		
+		.container {
+			padding: 0 1.5rem;
+			max-width: var(--max-width);
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 4rem;
+		}
+		
+		.hero-content {
+			gap: 1.5rem;
+			text-align: left;
+		}
+		
+		.title {
+			justify-content: flex-start;
+			font-size: clamp(3rem, 5vw, 5rem);
+		}
+		
+		.tagline {
+			font-size: 1.5rem;
+		}
+		
+		.subtitle {
+			font-size: 1.125rem;
+		}
+		
+		.cta-buttons {
+			justify-content: flex-start;
+			margin-top: 1rem;
+		}
+		
+		.code-preview {
+			max-width: 500px;
+		}
+		
+		.code-content {
+			padding: 1.5rem;
+		}
+		
+		.code-content :global(code) {
+			font-size: 0.875rem;
+			line-height: 1.7;
+		}
+	}
+</style>

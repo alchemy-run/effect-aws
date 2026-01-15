@@ -1,0 +1,180 @@
+---
+import Feature from './Feature.astro';
+
+const features = [
+	{
+		title: 'Tagged Errors',
+		description: 'Every API operation has properly typed, discriminated error unions. No more guessing what went wrong.',
+		code: `const bucket = yield* S3.getBucket({
+  Bucket: "my-bucket"
+}).pipe(
+  Effect.catchTag("NoSuchBucket", () =>
+    Effect.succeed(null)
+  ),
+  Effect.catchTag("AccessDenied", () =>
+    Effect.fail(new AuthError())
+  )
+)`,
+		bullets: [
+			'Specs patched to include undocumented errors',
+			'Exhaustive error handling with catchTag',
+			'IDE autocomplete for all error tags',
+		],
+	},
+	{
+		title: 'Retry Policies',
+		description: 'Declarative, composable retry logic with type-safe schedules. Handle transient failures without callback hell.',
+		code: `const result = yield* S3.getObject({
+  Bucket: "my-bucket",
+  Key: "data.json"
+}).pipe(
+  Effect.retry({
+    while: (e) => e._tag === "SlowDown",
+    schedule: Schedule.exponential("100 millis")
+  }),
+  Effect.timeout("5 seconds")
+)`,
+		bullets: [
+			'Exponential backoff, jitter, and more',
+			'Retry only on specific error tags',
+			'Compose schedules for complex policies',
+		],
+	},
+	{
+		title: 'Streaming Pagination',
+		description: 'Paginated APIs return Effect Streams. No manual token juggling—just iterate.',
+		code: `// Stream all pages
+yield* S3.listObjectsV2
+  .pages({ Bucket: "my-bucket" })
+  .pipe(Stream.runForEach(Console.log))
+
+// Or stream individual items
+yield* DynamoDB.scan
+  .items({ TableName: "users" })
+  .pipe(Stream.runCollect)`,
+		bullets: [
+			'.pages() streams full response objects',
+			'.items() streams individual items',
+			'Lazy evaluation—fetch only what you need',
+		],
+	},
+	{
+		title: 'Streaming I/O',
+		description: 'Upload and download with Effect Streams. Process data as it flows without buffering entire payloads.',
+		code: `// Upload a stream
+yield* S3.putObject({
+  Bucket: "my-bucket",
+  Key: "large-file.bin",
+  Body: Stream.fromIterable(chunks),
+})
+
+// Download as a stream
+const { Body } = yield* S3.getObject({ ... })
+const text = yield* Body.pipe(
+  Stream.decodeText(),
+  Stream.mkString
+)`,
+		bullets: [
+			'Stream<Uint8Array> for uploads and downloads',
+			'Composable with all Stream operators',
+			'Backpressure handled automatically',
+		],
+	},
+	{
+		title: 'Tree-Shakeable',
+		description: 'No monolithic client classes. Import only what you need—your bundle stays lean.',
+		code: `// Only bundles getBucket and createBucket
+import * as S3 from "distilled-aws/s3"
+
+// NOT this:
+// import { S3Client } from "@aws-sdk/client-s3"
+// new S3Client() bundles ALL 100+ operations`,
+		bullets: [
+			'Module-scoped functions, not class methods',
+			'Config via Effect Layers, not constructors',
+			'Perfect for serverless and edge runtimes',
+		],
+	},
+];
+---
+
+<section class="features-section">
+	<div class="container">
+		<div class="section-header">
+			<h2 class="section-title">
+				Why <span class="gradient-text">distilled</span>?
+			</h2>
+		<p class="section-subtitle">
+			Effect-native cloud SDKs for modern TypeScript
+		</p>
+		</div>
+		
+		<div class="features-list">
+			{features.map((feature, index) => (
+				<Feature {...feature} reverse={index % 2 === 1} />
+			))}
+		</div>
+	</div>
+</section>
+
+<style>
+	.features-section {
+		padding: 3rem 0;
+		background: linear-gradient(180deg, transparent 0%, rgba(147, 51, 234, 0.03) 50%, transparent 100%);
+	}
+	
+	.container {
+		max-width: var(--max-width);
+		margin: 0 auto;
+		padding: 0 1rem;
+	}
+	
+	.section-header {
+		text-align: center;
+		margin-bottom: 2.5rem;
+	}
+	
+	.section-title {
+		font-size: 1.75rem;
+		font-weight: 700;
+		margin-bottom: 0.5rem;
+	}
+	
+	.section-subtitle {
+		font-size: 1rem;
+		color: var(--color-text-secondary);
+	}
+	
+	.features-list {
+		display: flex;
+		flex-direction: column;
+		gap: 3rem;
+	}
+
+	@media (min-width: 768px) {
+		.features-section {
+			padding: 6rem 0;
+		}
+		
+		.container {
+			padding: 0 1.5rem;
+		}
+		
+		.section-header {
+			margin-bottom: 5rem;
+		}
+		
+		.section-title {
+			font-size: 2.5rem;
+			margin-bottom: 1rem;
+		}
+		
+		.section-subtitle {
+			font-size: 1.125rem;
+		}
+		
+		.features-list {
+			gap: 6rem;
+		}
+	}
+</style>
