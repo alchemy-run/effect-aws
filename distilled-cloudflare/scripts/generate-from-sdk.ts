@@ -568,7 +568,18 @@ function generateOperationSchema(
   // Generate explicitly typed API function
   const errorsArray =
     errorClassNames.length > 0 ? `[${errorClassNames.join(", ")}]` : "[]";
-  lines.push(`export const ${normalizedOpName} = API.make(() => ({`);
+  const errorUnion =
+    errorClassNames.length > 0
+      ? `CommonErrors | ${errorClassNames.join(" | ")}`
+      : "CommonErrors";
+
+  lines.push(`export const ${normalizedOpName}: (`);
+  lines.push(`  input: ${requestTypeName},`);
+  lines.push(`) => Effect.Effect<`);
+  lines.push(`  ${responseTypeName},`);
+  lines.push(`  ${errorUnion},`);
+  lines.push(`  ApiToken | HttpClient.HttpClient`);
+  lines.push(`> = API.make(() => ({`);
   lines.push(`  input: ${requestTypeName},`);
   lines.push(`  output: ${responseTypeName},`);
   lines.push(`  errors: ${errorsArray},`);
@@ -776,6 +787,7 @@ function generateServiceFile(
   lines.push(`import * as T from "../traits.ts";`);
   lines.push(`import type { ApiToken } from "../auth.ts";`);
   lines.push(`import {`);
+  lines.push(`  type CommonErrors,`);
   lines.push(`  UnknownCloudflareError,`);
   lines.push(`  CloudflareNetworkError,`);
   lines.push(`  CloudflareHttpError,`);

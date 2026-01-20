@@ -7,11 +7,7 @@
 
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
-import {
-  CloudflareError,
-  CloudflareHttpError,
-  UnknownCloudflareError,
-} from "../errors.ts";
+import { CloudflareHttpError, UnknownCloudflareError } from "../errors.ts";
 import * as T from "../traits.ts";
 
 /**
@@ -244,10 +240,7 @@ export const parseResponse = <O>(
   },
   outputSchema: Schema.Schema<O, unknown>,
   errorSchemas: Map<string, Schema.Schema.AnyNoContext>,
-): Effect.Effect<
-  O,
-  CloudflareError | UnknownCloudflareError | CloudflareHttpError
-> =>
+): Effect.Effect<O, UnknownCloudflareError | CloudflareHttpError> =>
   Effect.gen(function* () {
     // Read body as bytes
     const reader = response.body.getReader();
@@ -309,7 +302,10 @@ export const parseResponse = <O>(
       const error = errors[0];
       if (!error) {
         return yield* Effect.fail(
-          new CloudflareError({ code: 0, message: "Unknown error" }),
+          new UnknownCloudflareError({
+            message:
+              "There were zero errors when success: false, this is totally unexpected",
+          }),
         );
       }
 
@@ -338,10 +334,13 @@ export const parseResponse = <O>(
         ).pipe(
           Effect.mapError(
             () =>
-              new CloudflareError({ code: errorCode, message: errorMessage }),
+              new UnknownCloudflareError({
+                code: errorCode,
+                message: errorMessage,
+              }),
           ),
         );
-        return yield* Effect.fail(decodeResult as CloudflareError);
+        return yield* Effect.fail(decodeResult as UnknownCloudflareError);
       }
 
       // Unknown error - record for discovery
@@ -349,27 +348,18 @@ export const parseResponse = <O>(
         new UnknownCloudflareError({
           code: errorCode,
           message: errorMessage,
-          errorCode: String(errorCode),
         }),
       );
     }
 
-    // Build the response object that matches the output schema structure
-    // The output schema expects { result: T, result_info?: ... }
-    const responseObject: Record<string, unknown> = {
-      result: json.result,
-    };
-
-    // Only add result_info if it exists
-    if (json.result_info) {
-      responseObject.result_info = json.result_info;
-    }
-
-    // Decode the result using the output schema
+    // Decode the result directly using the output schema
+    // The output schema represents the unwrapped result type (not the Cloudflare envelope)
     // Use onExcessProperty: "ignore" to allow unknown fields from the API
+    // Use propertyOrder: "none" to handle snake_case → camelCase mappings via fromKey
     const result = yield* Schema.decodeUnknown(outputSchema, {
       onExcessProperty: "ignore",
-    })(responseObject).pipe(
+      propertyOrder: "none",
+    })(json.result ?? {}).pipe(
       Effect.mapError(
         () =>
           new CloudflareHttpError({

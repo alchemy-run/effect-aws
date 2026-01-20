@@ -5,7 +5,7 @@
  * Handles request building, authentication, response parsing, and retries.
  */
 
-import { HttpClient, HttpClientRequest, HttpBody } from "@effect/platform";
+import { HttpBody, HttpClient, HttpClientRequest } from "@effect/platform";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
@@ -17,10 +17,9 @@ import * as Stream from "effect/Stream";
 
 import { ApiToken } from "../auth.ts";
 import {
-  CloudflareError,
+  CloudflareHttpError,
   CloudflareNetworkError,
   UnknownCloudflareError,
-  CloudflareHttpError,
 } from "../errors.ts";
 import { Retry, makeDefault } from "../retry.ts";
 import * as T from "../traits.ts";
@@ -106,10 +105,7 @@ export const make = <
     payload: Input,
   ): Effect.Effect<
     Output,
-    | CloudflareError
-    | UnknownCloudflareError
-    | CloudflareNetworkError
-    | CloudflareHttpError,
+    UnknownCloudflareError | CloudflareNetworkError | CloudflareHttpError,
     ApiToken | HttpClient.HttpClient
   > =>
     Effect.gen(function* () {

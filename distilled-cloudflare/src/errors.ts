@@ -23,28 +23,14 @@ export class CloudflareErrorInfo extends Schema.Class<CloudflareErrorInfo>(
 }) {}
 
 /**
- * Base tagged error for all Cloudflare API errors.
- * Contains the error code and message from the API response.
- */
-export class CloudflareError extends Schema.TaggedError<CloudflareError>()(
-  "CloudflareError",
-  {
-    code: Schema.Number,
-    message: Schema.String,
-  },
-) {}
-
-/**
  * Unknown Cloudflare error - returned when an error code is not recognized.
  * Contains the raw error code for later cataloging.
  */
 export class UnknownCloudflareError extends Schema.TaggedError<UnknownCloudflareError>()(
   "UnknownCloudflareError",
   {
-    code: Schema.Number,
+    code: Schema.optional(Schema.Number),
     message: Schema.String,
-    /** The error code as a string for error discovery tooling */
-    errorCode: Schema.String,
   },
 ) {}
 
@@ -75,7 +61,6 @@ export class CloudflareHttpError extends Schema.TaggedError<CloudflareHttpError>
  * Common errors that can occur on any Cloudflare API operation.
  */
 export type CommonErrors =
-  | CloudflareError
   | UnknownCloudflareError
   | CloudflareNetworkError
   | CloudflareHttpError;
