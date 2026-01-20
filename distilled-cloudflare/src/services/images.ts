@@ -16,6 +16,7 @@ import {
   CloudflareNetworkError,
   CloudflareHttpError,
 } from "../errors.ts";
+import { UploadableSchema } from "../schemas.ts";
 
 // =============================================================================
 // V1
@@ -75,7 +76,7 @@ export interface CreateV1Request {
   /** Body param: Can set the creator field with an internal user ID. */
   creator?: string;
   /** Body param: An image binary data. Only needed when type is uploading a file. */
-  file?: unknown;
+  file?: File | Blob;
   /** Body param: User modifiable key-value store. Can use used for keeping references to another system of record for managing images. */
   metadata?: unknown;
   /** Body param: Indicates whether the image requires a signature token for the access. */
@@ -88,12 +89,16 @@ export const CreateV1Request = Schema.Struct({
   accountId: Schema.String.pipe(T.HttpPath("account_id")),
   id: Schema.optional(Schema.String),
   creator: Schema.optional(Schema.String),
-  file: Schema.optional(Schema.Unknown),
+  file: Schema.optional(UploadableSchema.pipe(T.HttpFormDataFile())),
   metadata: Schema.optional(Schema.Unknown),
   requireSignedURLs: Schema.optional(Schema.Boolean),
   url: Schema.optional(Schema.String),
 }).pipe(
-  T.Http({ method: "POST", path: "/accounts/{account_id}/images/v1" }),
+  T.Http({
+    method: "POST",
+    path: "/accounts/{account_id}/images/v1",
+    contentType: "multipart",
+  }),
 ) as unknown as Schema.Schema<CreateV1Request>;
 
 export interface CreateV1Response {

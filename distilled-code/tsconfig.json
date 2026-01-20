@@ -1,15 +1,40 @@
 {
-  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ],
   "compilerOptions": {
-    "skipLibCheck": true,
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "target": "ES2022",
-    "lib": ["ES2022", "DOM"],
-    "strict": true,
+    "rootDir": "./src",
+    "outDir": "./lib",
+    // Enable latest features
+    "lib": [
+      "ESNext",
+      "DOM"
+    ],
+    "target": "ESNext",
+    "moduleDetection": "force",
+    "allowJs": true,
+    "esModuleInterop": true,
+    // Bundler mode
+    "module": "Preserve",
+    "moduleResolution": "Bundler",
     "allowImportingTsExtensions": true,
-    "noEmit": true,
-    "jsx": "preserve",
-    "jsxImportSource": "@opentui/solid"
+    "rewriteRelativeImportExtensions": true,
+    "verbatimModuleSyntax": true,
+    // Best practices
+    "strict": true,
+    "skipLibCheck": true,
+    "noFallthroughCasesInSwitch": true,
+    // Some stricter flags (disabled by default)
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noPropertyAccessFromIndexSignature": false,
+    "noImplicitThis": true,
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+    "noErrorTruncation": true,
+    "jsx": "react-jsx",
+    // "jsxImportSource": "@opentui/solid"
   }
 }

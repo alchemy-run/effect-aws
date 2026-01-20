@@ -16,6 +16,7 @@ import {
   CloudflareNetworkError,
   CloudflareHttpError,
 } from "../errors.ts";
+import { UploadableSchema } from "../schemas.ts";
 
 // =============================================================================
 // ByIdsIndex
@@ -230,7 +231,7 @@ export interface InsertIndexRequest {
   /** Query param: Behavior for ndjson parse failures. */
   unparsableBehavior?: "error" | "discard";
   /** Body param: ndjson file containing vectors to insert. */
-  body: unknown;
+  body: File | Blob;
 }
 
 export const InsertIndexRequest = Schema.Struct({
@@ -239,11 +240,12 @@ export const InsertIndexRequest = Schema.Struct({
   unparsableBehavior: Schema.optional(Schema.Literal("error", "discard")).pipe(
     T.HttpQuery("'unparsable-behavior'"),
   ),
-  body: Schema.Unknown,
+  body: UploadableSchema.pipe(T.HttpFormDataFile()),
 }).pipe(
   T.Http({
     method: "POST",
     path: "/accounts/{account_id}/vectorize/v2/indexes/{indexName}/insert",
+    contentType: "multipart",
   }),
 ) as unknown as Schema.Schema<InsertIndexRequest>;
 
@@ -307,7 +309,7 @@ export interface UpsertIndexRequest {
   /** Query param: Behavior for ndjson parse failures. */
   unparsableBehavior?: "error" | "discard";
   /** Body param: ndjson file containing vectors to upsert. */
-  body: unknown;
+  body: File | Blob;
 }
 
 export const UpsertIndexRequest = Schema.Struct({
@@ -316,11 +318,12 @@ export const UpsertIndexRequest = Schema.Struct({
   unparsableBehavior: Schema.optional(Schema.Literal("error", "discard")).pipe(
     T.HttpQuery("'unparsable-behavior'"),
   ),
-  body: Schema.Unknown,
+  body: UploadableSchema.pipe(T.HttpFormDataFile()),
 }).pipe(
   T.Http({
     method: "POST",
     path: "/accounts/{account_id}/vectorize/v2/indexes/{indexName}/upsert",
+    contentType: "multipart",
   }),
 ) as unknown as Schema.Schema<UpsertIndexRequest>;
 

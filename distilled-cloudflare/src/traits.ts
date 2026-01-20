@@ -407,6 +407,38 @@ export const httpErrorMessageSymbol = Symbol.for(
 export const HttpErrorMessage = (pattern: string) =>
   makeAnnotation(httpErrorMessageSymbol, pattern);
 
+/** Expression-based error matchers - array of matchers from patch files */
+export const httpErrorMatchersSymbol = Symbol.for(
+  "distilled-cloudflare/http-error-matchers",
+);
+
+/**
+ * Matcher structure used in HttpErrorMatchers trait.
+ * Matches the ErrorMatcher type from expr.ts for use in annotations.
+ */
+export interface ErrorMatcherAnnotation {
+  code: number;
+  status?: number;
+  message?: { includes?: string; matches?: string };
+}
+
+/**
+ * Apply error matchers from a patch file to an error schema.
+ *
+ * @example
+ * ```typescript
+ * export class NoSuchBucket extends Schema.TaggedError<NoSuchBucket>()(
+ *   "NoSuchBucket",
+ *   { code: Schema.Number, message: Schema.String }
+ * ).pipe(T.HttpErrorMatchers([
+ *   { code: 10006 },
+ *   { code: 10000, message: { includes: "bucket not found" } }
+ * ])) {}
+ * ```
+ */
+export const HttpErrorMatchers = (matchers: ErrorMatcherAnnotation[]) =>
+  makeAnnotation(httpErrorMatchersSymbol, matchers);
+
 // =============================================================================
 // Error Trait Helpers
 // =============================================================================
@@ -422,6 +454,11 @@ export const getHttpErrorStatus = (ast: AST.AST): number | undefined =>
 
 export const getHttpErrorMessage = (ast: AST.AST): string | undefined =>
   getAnnotationUnwrap<string>(ast, httpErrorMessageSymbol);
+
+export const getHttpErrorMatchers = (
+  ast: AST.AST,
+): ErrorMatcherAnnotation[] | undefined =>
+  getAnnotationUnwrap<ErrorMatcherAnnotation[]>(ast, httpErrorMatchersSymbol);
 
 // =============================================================================
 // Response Type Traits

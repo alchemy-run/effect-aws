@@ -41,12 +41,50 @@ interface MatchedError {
 }
 
 /**
+ * Check if an error matches an expression-based matcher.
+ */
+function matchesExpression(
+  matcher: T.ErrorMatcherAnnotation,
+  code: number,
+  status: number,
+  message: string,
+): boolean {
+  // Code must match
+  if (matcher.code !== code) return false;
+
+  // Status must match if specified
+  if (matcher.status !== undefined && matcher.status !== status) return false;
+
+  // Message must match if specified
+  if (matcher.message !== undefined) {
+    if (matcher.message.includes !== undefined) {
+      if (!message.includes(matcher.message.includes)) return false;
+    }
+    if (matcher.message.matches !== undefined) {
+      if (!new RegExp(matcher.message.matches).test(message)) return false;
+    }
+  }
+
+  return true;
+}
+
+/**
+ * Calculate specificity score for a matcher.
+ * Higher score = more specific match.
+ */
+function matcherSpecificity(matcher: T.ErrorMatcherAnnotation): number {
+  let score = 1; // Base score for code match
+  if (matcher.status !== undefined) score += 1;
+  if (matcher.message !== undefined) score += 1;
+  return score;
+}
+
+/**
  * Find matching error schema using annotations from the schema AST.
  *
- * Matches errors based on:
- * 1. Error code (required) - T.HttpErrorCode or T.HttpErrorCodes annotation
- * 2. HTTP status (optional) - T.HttpErrorStatus annotation
- * 3. Message pattern (optional) - T.HttpErrorMessage annotation (substring match)
+ * Matches errors using two mechanisms:
+ * 1. Expression-based matchers (T.HttpErrorMatchers) - new, preferred
+ * 2. Legacy annotations (T.HttpErrorCode, T.HttpErrorCodes, etc.) - backwards compatible
  *
  * More specific matches (with status and/or message) take priority.
  */
@@ -60,8 +98,24 @@ function findMatchingError(
   let bestScore = 0;
 
   for (const [name, schema] of errorSchemas) {
-    // Read annotations from schema AST
     const ast = schema.ast;
+
+    // Try new expression-based matchers first
+    const matchers = T.getHttpErrorMatchers(ast);
+    if (matchers && matchers.length > 0) {
+      for (const matcher of matchers) {
+        if (matchesExpression(matcher, code, status, message)) {
+          const score = matcherSpecificity(matcher);
+          if (score > bestScore) {
+            bestScore = score;
+            bestMatch = { schema, tag: name };
+          }
+        }
+      }
+      continue; // Skip legacy matching if using new matchers
+    }
+
+    // Fall back to legacy annotations for backwards compatibility
     const expectedCodes = T.getHttpErrorCodes(ast);
     const expectedCode = T.getHttpErrorCode(ast);
     const expectedStatus = T.getHttpErrorStatus(ast);

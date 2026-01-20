@@ -1715,10 +1715,10 @@ export const PatchWafPackageRuleRequest = Schema.Struct({
 export type PatchWafPackageRuleResponse =
   | {
       id: string;
-      allowedModes: ("off" | "on")[];
+      allowedModes: ("on" | "off")[];
       description: string;
       group: unknown;
-      mode: "off" | "on";
+      mode: "on" | "off";
       packageId: string;
       priority: string;
     }
@@ -1737,26 +1737,17 @@ export type PatchWafPackageRuleResponse =
       mode: "default" | "disable" | "simulate" | "block" | "challenge";
       packageId: string;
       priority: string;
-    }
-  | {
-      id: string;
-      allowedModes: ("on" | "off")[];
-      description: string;
-      group: unknown;
-      mode: "on" | "off";
-      packageId: string;
-      priority: string;
     };
 
 export const PatchWafPackageRuleResponse = Schema.Union(
   Schema.Struct({
     id: Schema.String,
-    allowedModes: Schema.Array(Schema.Literal("off", "on")).pipe(
+    allowedModes: Schema.Array(Schema.Literal("on", "off")).pipe(
       T.JsonName("allowed_modes"),
     ),
     description: Schema.String,
     group: Schema.Unknown,
-    mode: Schema.Literal("off", "on"),
+    mode: Schema.Literal("on", "off"),
     packageId: Schema.String.pipe(T.JsonName("package_id")),
     priority: Schema.String,
   }),
@@ -1780,17 +1771,6 @@ export const PatchWafPackageRuleResponse = Schema.Union(
       "block",
       "challenge",
     ),
-    packageId: Schema.String.pipe(T.JsonName("package_id")),
-    priority: Schema.String,
-  }),
-  Schema.Struct({
-    id: Schema.String,
-    allowedModes: Schema.Array(Schema.Literal("on", "off")).pipe(
-      T.JsonName("allowed_modes"),
-    ),
-    description: Schema.String,
-    group: Schema.Unknown,
-    mode: Schema.Literal("on", "off"),
     packageId: Schema.String.pipe(T.JsonName("package_id")),
     priority: Schema.String,
   }),

@@ -16,6 +16,7 @@ import {
   CloudflareNetworkError,
   CloudflareHttpError,
 } from "../errors.ts";
+import { UploadableSchema } from "../schemas.ts";
 
 // =============================================================================
 // BrandProtection
@@ -68,7 +69,7 @@ export interface CreateLogoRequest {
   /** Query param: */
   threshold?: number;
   /** Body param: */
-  image?: unknown;
+  image?: File | Blob;
 }
 
 export const CreateLogoRequest = Schema.Struct({
@@ -76,11 +77,12 @@ export const CreateLogoRequest = Schema.Struct({
   matchType: Schema.optional(Schema.String).pipe(T.HttpQuery("match_type")),
   tag: Schema.optional(Schema.String).pipe(T.HttpQuery("tag")),
   threshold: Schema.optional(Schema.Number).pipe(T.HttpQuery("threshold")),
-  image: Schema.optional(Schema.Unknown),
+  image: Schema.optional(UploadableSchema.pipe(T.HttpFormDataFile())),
 }).pipe(
   T.Http({
     method: "POST",
     path: "/accounts/{account_id}/brand-protection/logos",
+    contentType: "multipart",
   }),
 ) as unknown as Schema.Schema<CreateLogoRequest>;
 

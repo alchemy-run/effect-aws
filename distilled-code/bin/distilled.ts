@@ -113,11 +113,11 @@ const mainCommand = Command.make(
               ? `Agents matching "${patternValue}":\n`
               : "Configured agents:\n",
           );
-          for (const { key, metadata } of agents) {
-            const desc = metadata?.description
-              ? ` - ${metadata.description}`
-              : "";
-            yield* Console.log(`  ${key}${desc}`);
+          const sortedAgents = [...agents].sort((a, b) =>
+            a.key.localeCompare(b.key),
+          );
+          for (const { key } of sortedAgents) {
+            yield* Console.log(`  ${key}`);
           }
           yield* Console.log();
         }
@@ -210,7 +210,7 @@ const resolveAgents = (
     return Effect.succeed([]);
   }
   if (Effect.isEffect(agents)) {
-    return agents;
+    return agents as Effect.Effect<AgentDefinition[]>;
   }
   return Effect.succeed(agents);
 };

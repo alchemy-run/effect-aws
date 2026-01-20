@@ -1,2 +1,4 @@
 .distilled
 node_modules
+**/*.tsbuildinfo
+lib/

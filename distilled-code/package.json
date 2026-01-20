@@ -8,6 +8,13 @@
   "publishConfig": {
     "access": "public"
   },
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "bun": "./src/index.ts",
+      "default": "./lib/index.js"
+    }
+  },
   "scripts": {
     "distilled": "bun run bin/distilled.ts",
     "test": "vitest run",

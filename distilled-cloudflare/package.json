@@ -24,7 +24,7 @@
   },
   "scripts": {
     "download:env": "doppler secrets download --no-file --format env > .env",
-    "generate": "bun scripts/generate-clients.ts && bun format",
+    "generate": "bun scripts/generate-from-sdk.ts",
     "test:watch": "vitest watch",
     "test": "vitest run",
     "typecheck": "tsc -b",

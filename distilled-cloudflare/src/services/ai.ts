@@ -16,6 +16,7 @@ import {
   CloudflareNetworkError,
   CloudflareHttpError,
 } from "../errors.ts";
+import { UploadableSchema } from "../schemas.ts";
 
 // =============================================================================
 // Ai
@@ -33,7 +34,8 @@ export const RunAiRequest = Schema.Struct({
 
 export type RunAiResponse =
   | { label?: string; score?: number }[]
-  | unknown
+  | File
+  | Blob
   | { audio?: string }
   | { data?: number[][]; shape?: number[] }
   | {
@@ -67,7 +69,7 @@ export const RunAiResponse = Schema.Union(
       score: Schema.optional(Schema.Number),
     }),
   ),
-  Schema.Unknown,
+  UploadableSchema.pipe(T.HttpFormDataFile()),
   Schema.Struct({
     audio: Schema.optional(Schema.String),
   }),
@@ -242,7 +244,7 @@ export interface CreateFinetuneAssetRequest {
   /** Path param: */
   accountId: string;
   /** Body param: */
-  file?: unknown;
+  file?: File | Blob;
   /** Body param: */
   fileName?: string;
 }
@@ -250,12 +252,13 @@ export interface CreateFinetuneAssetRequest {
 export const CreateFinetuneAssetRequest = Schema.Struct({
   finetuneId: Schema.String.pipe(T.HttpPath("finetuneId")),
   accountId: Schema.String.pipe(T.HttpPath("account_id")),
-  file: Schema.optional(Schema.Unknown),
+  file: Schema.optional(UploadableSchema.pipe(T.HttpFormDataFile())),
   fileName: Schema.optional(Schema.String).pipe(T.JsonName("file_name")),
 }).pipe(
   T.Http({
     method: "POST",
     path: "/accounts/{account_id}/ai/finetunes/{finetuneId}/finetune-assets",
+    contentType: "multipart",
   }),
 ) as unknown as Schema.Schema<CreateFinetuneAssetRequest>;
 

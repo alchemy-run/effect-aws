@@ -16,6 +16,7 @@ import {
   CloudflareNetworkError,
   CloudflareHttpError,
 } from "../errors.ts";
+import { UploadableSchema } from "../schemas.ts";
 
 // =============================================================================
 // BinaryStorage
@@ -52,16 +53,17 @@ export interface CreateBinaryStorageRequest {
   /** Path param: Account ID. */
   accountId: string;
   /** Body param: The binary file content to upload. */
-  file: unknown;
+  file: File | Blob;
 }
 
 export const CreateBinaryStorageRequest = Schema.Struct({
   accountId: Schema.String.pipe(T.HttpPath("account_id")),
-  file: Schema.Unknown,
+  file: UploadableSchema.pipe(T.HttpFormDataFile()),
 }).pipe(
   T.Http({
     method: "POST",
     path: "/accounts/{account_id}/cloudforce-one/binary",
+    contentType: "multipart",
   }),
 ) as unknown as Schema.Schema<CreateBinaryStorageRequest>;
 

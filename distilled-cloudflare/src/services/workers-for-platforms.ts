@@ -16,6 +16,7 @@ import {
   CloudflareNetworkError,
   CloudflareHttpError,
 } from "../errors.ts";
+import { UploadableSchema } from "../schemas.ts";
 
 // =============================================================================
 // DispatchNamespace
@@ -343,7 +344,7 @@ export interface PutDispatchNamespaceScriptRequest {
     usageModel?: "standard" | "bundled" | "unbound";
   };
   /** Body param: An array of modules (often JavaScript files) comprising a Worker script. At least one module must be present and referenced in the metadata as `main_module` or `body_part` by filename.<br/ */
-  files?: unknown[];
+  files?: (File | Blob)[];
 }
 
 export const PutDispatchNamespaceScriptRequest = Schema.Struct({
@@ -653,11 +654,14 @@ export const PutDispatchNamespaceScriptRequest = Schema.Struct({
       Schema.Literal("standard", "bundled", "unbound"),
     ).pipe(T.JsonName("usage_model")),
   }),
-  files: Schema.optional(Schema.Array(Schema.Unknown)),
+  files: Schema.optional(
+    Schema.Array(UploadableSchema.pipe(T.HttpFormDataFile())),
+  ),
 }).pipe(
   T.Http({
     method: "PUT",
     path: "/accounts/{account_id}/workers/dispatch/namespaces/{dispatchNamespace}/scripts/{scriptName}",
+    contentType: "multipart",
   }),
 ) as unknown as Schema.Schema<PutDispatchNamespaceScriptRequest>;
 
@@ -897,7 +901,7 @@ export interface PutDispatchNamespaceScriptContentRequest {
   /** Body param: JSON-encoded metadata about the uploaded parts and Worker configuration. */
   metadata: unknown;
   /** Body param: An array of modules (often JavaScript files) comprising a Worker script. At least one module must be present and referenced in the metadata as `main_module` or `body_part` by filename.<br/ */
-  files?: unknown[];
+  files?: (File | Blob)[];
 }
 
 export const PutDispatchNamespaceScriptContentRequest = Schema.Struct({
@@ -911,11 +915,14 @@ export const PutDispatchNamespaceScriptContentRequest = Schema.Struct({
     T.HttpHeader("'CF-WORKER-MAIN-MODULE-PART'"),
   ),
   metadata: Schema.Unknown,
-  files: Schema.optional(Schema.Array(Schema.Unknown)),
+  files: Schema.optional(
+    Schema.Array(UploadableSchema.pipe(T.HttpFormDataFile())),
+  ),
 }).pipe(
   T.Http({
     method: "PUT",
     path: "/accounts/{account_id}/workers/dispatch/namespaces/{dispatchNamespace}/scripts/{scriptName}/content",
+    contentType: "multipart",
   }),
 ) as unknown as Schema.Schema<PutDispatchNamespaceScriptContentRequest>;
 

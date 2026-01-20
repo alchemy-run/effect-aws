@@ -55,7 +55,7 @@ export interface PutCertificatePackCertificateResponse {
   ssl: {
     id?: string;
     bundleMethod?: "ubiquitous" | "optimal" | "force";
-    certificateAuthority?: "google" | "lets_encrypt" | "ssl_com" | "digicert";
+    certificateAuthority?: "digicert" | "google" | "lets_encrypt" | "ssl_com";
     customCertificate?: string;
     customCsrId?: string;
     customKey?: string;
@@ -149,7 +149,7 @@ export const PutCertificatePackCertificateResponse = Schema.Struct({
       Schema.Literal("ubiquitous", "optimal", "force"),
     ).pipe(T.JsonName("bundle_method")),
     certificateAuthority: Schema.optional(
-      Schema.Literal("google", "lets_encrypt", "ssl_com", "digicert"),
+      Schema.Literal("digicert", "google", "lets_encrypt", "ssl_com"),
     ).pipe(T.JsonName("certificate_authority")),
     customCertificate: Schema.optional(Schema.String).pipe(
       T.JsonName("custom_certificate"),
@@ -347,7 +347,7 @@ export interface GetCustomHostnameResponse {
   ssl: {
     id?: string;
     bundleMethod?: "ubiquitous" | "optimal" | "force";
-    certificateAuthority?: "google" | "lets_encrypt" | "ssl_com" | "digicert";
+    certificateAuthority?: "digicert" | "google" | "lets_encrypt" | "ssl_com";
     customCertificate?: string;
     customCsrId?: string;
     customKey?: string;
@@ -441,7 +441,7 @@ export const GetCustomHostnameResponse = Schema.Struct({
       Schema.Literal("ubiquitous", "optimal", "force"),
     ).pipe(T.JsonName("bundle_method")),
     certificateAuthority: Schema.optional(
-      Schema.Literal("google", "lets_encrypt", "ssl_com", "digicert"),
+      Schema.Literal("digicert", "google", "lets_encrypt", "ssl_com"),
     ).pipe(T.JsonName("certificate_authority")),
     customCertificate: Schema.optional(Schema.String).pipe(
       T.JsonName("custom_certificate"),
@@ -584,7 +584,7 @@ export interface CreateCustomHostnameRequest {
   /** Body param: SSL properties used when creating the custom hostname. */
   ssl: {
     bundleMethod?: "ubiquitous" | "optimal" | "force";
-    certificateAuthority?: "google" | "lets_encrypt" | "ssl_com" | "digicert";
+    certificateAuthority?: "digicert" | "google" | "lets_encrypt" | "ssl_com";
     cloudflareBranding?: boolean;
     customCertBundle?: { customCertificate: string; customKey: string }[];
     customCertificate?: string;
@@ -612,7 +612,7 @@ export const CreateCustomHostnameRequest = Schema.Struct({
       Schema.Literal("ubiquitous", "optimal", "force"),
     ).pipe(T.JsonName("bundle_method")),
     certificateAuthority: Schema.optional(
-      Schema.Literal("google", "lets_encrypt", "ssl_com", "digicert"),
+      Schema.Literal("digicert", "google", "lets_encrypt", "ssl_com"),
     ).pipe(T.JsonName("certificate_authority")),
     cloudflareBranding: Schema.optional(Schema.Boolean).pipe(
       T.JsonName("cloudflare_branding"),
@@ -663,7 +663,7 @@ export interface CreateCustomHostnameResponse {
   ssl: {
     id?: string;
     bundleMethod?: "ubiquitous" | "optimal" | "force";
-    certificateAuthority?: "google" | "lets_encrypt" | "ssl_com" | "digicert";
+    certificateAuthority?: "digicert" | "google" | "lets_encrypt" | "ssl_com";
     customCertificate?: string;
     customCsrId?: string;
     customKey?: string;
@@ -757,7 +757,7 @@ export const CreateCustomHostnameResponse = Schema.Struct({
       Schema.Literal("ubiquitous", "optimal", "force"),
     ).pipe(T.JsonName("bundle_method")),
     certificateAuthority: Schema.optional(
-      Schema.Literal("google", "lets_encrypt", "ssl_com", "digicert"),
+      Schema.Literal("digicert", "google", "lets_encrypt", "ssl_com"),
     ).pipe(T.JsonName("certificate_authority")),
     customCertificate: Schema.optional(Schema.String).pipe(
       T.JsonName("custom_certificate"),
@@ -905,7 +905,7 @@ export interface PatchCustomHostnameRequest {
   /** Body param: SSL properties used when creating the custom hostname. */
   ssl?: {
     bundleMethod?: "ubiquitous" | "optimal" | "force";
-    certificateAuthority?: "google" | "lets_encrypt" | "ssl_com" | "digicert";
+    certificateAuthority?: "digicert" | "google" | "lets_encrypt" | "ssl_com";
     cloudflareBranding?: boolean;
     customCertBundle?: { customCertificate: string; customKey: string }[];
     customCertificate?: string;
@@ -941,7 +941,7 @@ export const PatchCustomHostnameRequest = Schema.Struct({
         Schema.Literal("ubiquitous", "optimal", "force"),
       ).pipe(T.JsonName("bundle_method")),
       certificateAuthority: Schema.optional(
-        Schema.Literal("google", "lets_encrypt", "ssl_com", "digicert"),
+        Schema.Literal("digicert", "google", "lets_encrypt", "ssl_com"),
       ).pipe(T.JsonName("certificate_authority")),
       cloudflareBranding: Schema.optional(Schema.Boolean).pipe(
         T.JsonName("cloudflare_branding"),
@@ -993,7 +993,7 @@ export interface PatchCustomHostnameResponse {
   ssl: {
     id?: string;
     bundleMethod?: "ubiquitous" | "optimal" | "force";
-    certificateAuthority?: "google" | "lets_encrypt" | "ssl_com" | "digicert";
+    certificateAuthority?: "digicert" | "google" | "lets_encrypt" | "ssl_com";
     customCertificate?: string;
     customCsrId?: string;
     customKey?: string;
@@ -1087,7 +1087,7 @@ export const PatchCustomHostnameResponse = Schema.Struct({
       Schema.Literal("ubiquitous", "optimal", "force"),
     ).pipe(T.JsonName("bundle_method")),
     certificateAuthority: Schema.optional(
-      Schema.Literal("google", "lets_encrypt", "ssl_com", "digicert"),
+      Schema.Literal("digicert", "google", "lets_encrypt", "ssl_com"),
     ).pipe(T.JsonName("certificate_authority")),
     customCertificate: Schema.optional(Schema.String).pipe(
       T.JsonName("custom_certificate"),

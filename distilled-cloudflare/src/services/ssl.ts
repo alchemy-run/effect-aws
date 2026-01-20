@@ -135,7 +135,6 @@ export interface CreateCertificatePackResponse {
   hosts?: string[];
   /** Status of certificate pack. */
   status?:
-    | "active"
     | "initializing"
     | "pending_validation"
     | "deleted"
@@ -144,6 +143,7 @@ export interface CreateCertificatePackResponse {
     | "pending_deletion"
     | "pending_expiration"
     | "expired"
+    | "active"
     | "initializing_timed_out"
     | "validation_timed_out"
     | "issuance_timed_out"
@@ -193,7 +193,6 @@ export const CreateCertificatePackResponse = Schema.Struct({
   hosts: Schema.optional(Schema.Array(Schema.String)),
   status: Schema.optional(
     Schema.Literal(
-      "active",
       "initializing",
       "pending_validation",
       "deleted",
@@ -202,6 +201,7 @@ export const CreateCertificatePackResponse = Schema.Struct({
       "pending_deletion",
       "pending_expiration",
       "expired",
+      "active",
       "initializing_timed_out",
       "validation_timed_out",
       "issuance_timed_out",
@@ -292,7 +292,6 @@ export interface PatchCertificatePackResponse {
   hosts?: string[];
   /** Status of certificate pack. */
   status?:
-    | "active"
     | "initializing"
     | "pending_validation"
     | "deleted"
@@ -301,6 +300,7 @@ export interface PatchCertificatePackResponse {
     | "pending_deletion"
     | "pending_expiration"
     | "expired"
+    | "active"
     | "initializing_timed_out"
     | "validation_timed_out"
     | "issuance_timed_out"
@@ -350,7 +350,6 @@ export const PatchCertificatePackResponse = Schema.Struct({
   hosts: Schema.optional(Schema.Array(Schema.String)),
   status: Schema.optional(
     Schema.Literal(
-      "active",
       "initializing",
       "pending_validation",
       "deleted",
@@ -359,6 +358,7 @@ export const PatchCertificatePackResponse = Schema.Struct({
       "pending_deletion",
       "pending_expiration",
       "expired",
+      "active",
       "initializing_timed_out",
       "validation_timed_out",
       "issuance_timed_out",

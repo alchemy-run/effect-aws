@@ -21,9 +21,7 @@ export interface AgentMetadata {
  * An agent definition - defines what toolkit the agent uses.
  * Agents are spawned at runtime, not in the config.
  */
-export interface AgentDefinition<
-  Tools extends Record<string, Tool.Any> = Record<string, Tool.Any>,
-> {
+export interface AgentDefinition<Tools extends Record<string, Tool.Any> = any> {
   /**
    * Unique key for the agent (e.g., "api/listTodos", "test/unit")
    */

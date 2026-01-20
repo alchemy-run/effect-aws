@@ -16,6 +16,7 @@ import {
   CloudflareNetworkError,
   CloudflareHttpError,
 } from "../errors.ts";
+import { UploadableSchema } from "../schemas.ts";
 
 // =============================================================================
 // Configuration
@@ -1139,7 +1140,7 @@ export interface CreateUserSchemaRequest {
   /** Path param: Identifier. */
   zoneId: string;
   /** Body param: Schema file bytes */
-  file: unknown;
+  file: File | Blob;
   /** Body param: Kind of schema */
   kind: "openapi_v3";
   /** Body param: Name of the schema */
@@ -1150,14 +1151,18 @@ export interface CreateUserSchemaRequest {
 
 export const CreateUserSchemaRequest = Schema.Struct({
   zoneId: Schema.String.pipe(T.HttpPath("zone_id")),
-  file: Schema.Unknown,
+  file: UploadableSchema.pipe(T.HttpFormDataFile()),
   kind: Schema.Literal("openapi_v3"),
   name: Schema.optional(Schema.String),
   validationEnabled: Schema.optional(Schema.Literal(true, false)).pipe(
     T.JsonName("validation_enabled"),
   ),
 }).pipe(
-  T.Http({ method: "POST", path: "/zones/{zone_id}/api_gateway/user_schemas" }),
+  T.Http({
+    method: "POST",
+    path: "/zones/{zone_id}/api_gateway/user_schemas",
+    contentType: "multipart",
+  }),
 ) as unknown as Schema.Schema<CreateUserSchemaRequest>;
 
 export interface CreateUserSchemaResponse {

@@ -18,30 +18,36 @@ bun tsc -b                                # Type check
 ```
 cloudflare-typescript/src/resources/*.ts → Generator → src/services/*.ts → Runtime
               ↓                               ↓              ↓               ↓
-        SDK Source Code            spec/{service}.json  Schemas + Traits  Response Parser
+        SDK Source Code      patch/{service}/{op}.json  Schemas + Traits  Response Parser
 ```
 
-**Generator:** `scripts/generate-from-sdk.ts`
+**Generator:** `scripts/generate-from-sdk.ts` (uses `scripts/parse.ts` + `scripts/model.ts`)
 
-1. Parses TypeScript AST from `cloudflare-typescript/src/resources/`
+1. Parses TypeScript AST from `cloudflare-typescript/src/resources/` (`parse.ts`)
 2. Extracts operations from SDK class methods (get, post, put, patch, delete)
-3. Resolves types from SDK params/response interfaces
-4. Loads error definitions from `spec/{service}.json`
+3. Builds a type registry and resolves types from SDK params/response interfaces (`model.ts`)
+4. Loads error patches from `patch/{service}/{operation}.json` (one file per operation)
 5. Generates Effect Schema request/response types with trait annotations
-6. Outputs to `src/services/{service}.ts`
+6. Generates error classes with `T.HttpErrorMatchers` trait from patches
+7. Outputs to `src/services/{service}.ts`
 
 ## Key Files
 
-| File                              | Purpose                                                 |
-| --------------------------------- | ------------------------------------------------------- |
-| `scripts/generate-from-sdk.ts`    | Code generator (parses SDK source)                      |
-| `spec/{service}.json`             | Error definitions and per-operation error assignments   |
-| `src/services/{service}.ts`       | Generated client (DO NOT EDIT)                          |
-| `src/client/request-builder.ts`   | Builds HTTP requests from annotated schemas             |
-| `src/client/response-parser.ts`   | Parses responses and matches errors                     |
-| `src/traits.ts`                   | Schema annotations for HTTP bindings and error matching |
-| `src/schemas.ts`                  | Common schemas (file uploads, etc.)                     |
-| `test/services/{service}.test.ts` | Tests that drive error discovery                        |
+| File                                     | Purpose                                                 |
+| ---------------------------------------- | ------------------------------------------------------- |
+| `scripts/generate-from-sdk.ts`           | Code generator entrypoint                               |
+| `scripts/parse.ts`                       | AST parsing + operation discovery                       |
+| `scripts/model.ts`                       | Type registry + type resolution helpers                 |
+| `patch/{service}/{operation}.json`       | Error patches per operation (expression DSL)            |
+| `src/expr.ts`                            | Expression DSL types for error matching                 |
+| `src/services/{service}.ts`              | Generated client (DO NOT EDIT)                          |
+| `src/client/request-builder.ts`          | Builds HTTP requests from annotated schemas             |
+| `src/client/response-parser.ts`          | Parses responses and matches errors                     |
+| `src/traits.ts`                          | Schema annotations for HTTP bindings and error matching |
+| `src/schemas.ts`                         | Common schemas (file uploads, etc.)                     |
+| `distilled.config.ts`                    | Agent definitions for test generation                   |
+| `test/services/{service}/helpers.ts`     | Test helpers (withBucket, withQueue, etc.)              |
+| `test/services/{service}/{op}.test.ts`   | Tests per operation                                     |
 
 ## Traits
 
@@ -55,49 +61,82 @@ HTTP bindings and error matching as Schema annotations:
 | `T.JsonName(name)`                       | JSON serialization key (for camelCase → snake_case) |
 | `T.Http({ method, path, contentType? })` | Operation-level HTTP metadata                       |
 | `T.HttpFormDataFile()`                   | File upload in multipart form                       |
-| `T.HttpErrorCode(code)`                  | Match error by single code                          |
-| `T.HttpErrorCodes([...])`                | Match error by multiple codes                       |
-| `T.HttpErrorStatus(status)`              | Match error by HTTP status                          |
-| `T.HttpErrorMessage(pattern)`            | Match error by message substring                    |
+| `T.HttpErrorMatchers([...])`             | Expression-based error matching (preferred)         |
+| `T.HttpErrorCode(code)`                  | Match error by single code (legacy)                 |
+| `T.HttpErrorCodes([...])`                | Match error by multiple codes (legacy)              |
+| `T.HttpErrorStatus(status)`              | Match error by HTTP status (legacy)                 |
+| `T.HttpErrorMessage(pattern)`            | Match error by message substring (legacy)           |
 
 ## Error Patching
+
+Patches are stored per-operation at `patch/{service}/{operation}.json` using an expression DSL.
+
+### Workflow
 
 When you see `UnknownCloudflareError`:
 
 1. Extract the error code from the failure:
 
    ```bash
-   DEBUG=1 bun vitest run ./test/services/r2.test.ts -t "CORS"
+   DEBUG=1 bun vitest run ./test/services/r2/getBucket.test.ts
    ```
 
-2. Add to `spec/{service}.json`:
+2. Create or update `patch/{service}/{operation}.json`:
 
    ```json
    {
      "errors": {
-       "NoSuchBucket": { "code": 10006, "status": 404 },
-       "NoCorsConfiguration": { "code": 10059 }
-     },
-     "operations": {
-       "getBucketCorsPolicy": {
-         "errors": { "NoSuchBucket": {}, "NoCorsConfiguration": {} }
-       }
+       "NoSuchBucket": [
+         { "code": 10006 }
+       ]
      }
    }
    ```
 
 3. Regenerate: `bun generate --service {service}`
 
-**Error Matching Options:**
+4. Import the new error class in your test and verify.
 
-| Field     | Description                               |
-| --------- | ----------------------------------------- |
-| `code`    | Single Cloudflare error code              |
-| `codes`   | Array of codes that map to the same error |
-| `status`  | HTTP status code (for disambiguation)     |
-| `message` | Substring match on error message          |
+### Expression DSL
 
-**Matching priority:** code + status + message > code + status > code only
+Each error tag maps to an array of matchers. The error is matched if ANY matcher matches.
+
+```json
+{
+  "errors": {
+    "NoSuchBucket": [
+      { "code": 10006 }
+    ],
+    "NoCorsConfiguration": [
+      { "code": 10059 },
+      { "code": 10000, "message": { "includes": "CORS configuration not found" } }
+    ],
+    "BucketAlreadyExists": [
+      { "code": 10002, "status": 409 }
+    ],
+    "InvalidBucketName": [
+      { "code": 10001, "message": { "matches": "bucket name .* is invalid" } }
+    ]
+  }
+}
+```
+
+**Matcher Fields:**
+
+| Field     | Required | Description                               |
+| --------- | -------- | ----------------------------------------- |
+| `code`    | Yes      | Cloudflare error code                     |
+| `status`  | No       | HTTP status code (for disambiguation)     |
+| `message` | No       | Message matcher object                    |
+
+**Message Matcher Options:**
+
+| Field      | Description                    |
+| ---------- | ------------------------------ |
+| `includes` | Message must contain substring |
+| `matches`  | Message must match regex       |
+
+**Matching Priority:** code + status + message > code + status > code + message > code only
 
 ## Generator Details
 
@@ -168,7 +207,7 @@ flowchart TD
     A[Write Test] --> B[Run Test]
     B --> C{Result?}
     C -->|Pass| D[Next Test]
-    C -->|UnknownCloudflareError| E["Add to spec/service.json"]
+    C -->|UnknownCloudflareError| E["Create/update patch/{service}/{op}.json"]
     C -->|Type Error| F[Fix generator or test]
     E --> G[Regenerate]
     F --> G
@@ -187,9 +226,51 @@ flowchart TD
 
 Do NOT stop for:
 
-- `UnknownCloudflareError` → Add to spec and continue
+- `UnknownCloudflareError` → Add to patch and continue
 - Type errors → Fix and continue
 - Flaky tests → Add retry logic and continue
+
+## Test Generation with distilled-code
+
+Tests are generated using distilled-code agents. The `distilled.config.ts` defines one agent per operation.
+
+### Running Agents
+
+```bash
+# List all agents
+distilled --list
+
+# Run a specific agent
+distilled "r2/getBucket" "Complete the test implementation"
+
+# Run all agents for a service
+distilled "r2/*" "Complete the test implementations"
+```
+
+### Skeleton Generation
+
+When the config runs, it generates skeleton files before spawning agents:
+
+**Test skeleton** (`test/services/{service}/{operation}.test.ts`):
+- Correct imports already in place
+- Describe blocks for success and error cases
+- TODO comments guiding implementation
+- Example error test structure in comments
+
+**Helpers skeleton** (`test/services/{service}/helpers.ts`):
+- withXYZ helper patterns for each resource
+- Cleanup-first pattern for idempotency
+- Effect.ensuring for guaranteed cleanup
+
+### Agent Workflow
+
+1. Agent reads the skeleton (structure already correct)
+2. Fills in happy path tests, removing `.skip`
+3. Runs tests to discover errors
+4. Creates/updates patch file with discovered error codes
+5. Runs `bun generate --service {service}` to regenerate
+6. Imports new error class and adds error tests
+7. Repeats until all tests pass
 
 ## Environment
 
