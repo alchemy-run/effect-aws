@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -39,7 +40,13 @@ export type CreateAbuseReportResponse = string;
 export const CreateAbuseReportResponse =
   Schema.String as unknown as Schema.Schema<CreateAbuseReportResponse>;
 
-export const createAbuseReport = API.make(() => ({
+export const createAbuseReport: (
+  input: CreateAbuseReportRequest,
+) => Effect.Effect<
+  CreateAbuseReportResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateAbuseReportRequest,
   output: CreateAbuseReportResponse,
   errors: [],

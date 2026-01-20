@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -59,7 +60,13 @@ export const GetSecurityTXTResponse = Schema.Struct({
   preferredLanguages: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<GetSecurityTXTResponse>;
 
-export const getSecurityTXT = API.make(() => ({
+export const getSecurityTXT: (
+  input: GetSecurityTXTRequest,
+) => Effect.Effect<
+  GetSecurityTXTResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetSecurityTXTRequest,
   output: GetSecurityTXTResponse,
   errors: [],
@@ -155,7 +162,13 @@ export const PutSecurityTXTResponse = Schema.Struct({
   success: Schema.Literal(true),
 }) as unknown as Schema.Schema<PutSecurityTXTResponse>;
 
-export const putSecurityTXT = API.make(() => ({
+export const putSecurityTXT: (
+  input: PutSecurityTXTRequest,
+) => Effect.Effect<
+  PutSecurityTXTResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutSecurityTXTRequest,
   output: PutSecurityTXTResponse,
   errors: [],
@@ -224,7 +237,13 @@ export const DeleteSecurityTXTResponse = Schema.Struct({
   success: Schema.Literal(true),
 }) as unknown as Schema.Schema<DeleteSecurityTXTResponse>;
 
-export const deleteSecurityTXT = API.make(() => ({
+export const deleteSecurityTXT: (
+  input: DeleteSecurityTXTRequest,
+) => Effect.Effect<
+  DeleteSecurityTXTResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteSecurityTXTRequest,
   output: DeleteSecurityTXTResponse,
   errors: [],

@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -117,7 +118,13 @@ export const GetClientCertificateResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<GetClientCertificateResponse>;
 
-export const getClientCertificate = API.make(() => ({
+export const getClientCertificate: (
+  input: GetClientCertificateRequest,
+) => Effect.Effect<
+  GetClientCertificateResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetClientCertificateRequest,
   output: GetClientCertificateResponse,
   errors: [],
@@ -220,7 +227,13 @@ export const CreateClientCertificateResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<CreateClientCertificateResponse>;
 
-export const createClientCertificate = API.make(() => ({
+export const createClientCertificate: (
+  input: CreateClientCertificateRequest,
+) => Effect.Effect<
+  CreateClientCertificateResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateClientCertificateRequest,
   output: CreateClientCertificateResponse,
   errors: [],
@@ -322,7 +335,13 @@ export const PatchClientCertificateResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<PatchClientCertificateResponse>;
 
-export const patchClientCertificate = API.make(() => ({
+export const patchClientCertificate: (
+  input: PatchClientCertificateRequest,
+) => Effect.Effect<
+  PatchClientCertificateResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchClientCertificateRequest,
   output: PatchClientCertificateResponse,
   errors: [],
@@ -424,7 +443,13 @@ export const DeleteClientCertificateResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<DeleteClientCertificateResponse>;
 
-export const deleteClientCertificate = API.make(() => ({
+export const deleteClientCertificate: (
+  input: DeleteClientCertificateRequest,
+) => Effect.Effect<
+  DeleteClientCertificateResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteClientCertificateRequest,
   output: DeleteClientCertificateResponse,
   errors: [],

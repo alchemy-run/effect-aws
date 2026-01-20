@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -271,7 +272,13 @@ export const GetInvestigateResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<GetInvestigateResponse>;
 
-export const getInvestigate = API.make(() => ({
+export const getInvestigate: (
+  input: GetInvestigateRequest,
+) => Effect.Effect<
+  GetInvestigateResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetInvestigateRequest,
   output: GetInvestigateResponse,
   errors: [],
@@ -458,7 +465,13 @@ export const GetInvestigateDetectionResponse = Schema.Struct({
   ).pipe(T.JsonName("final_disposition")),
 }) as unknown as Schema.Schema<GetInvestigateDetectionResponse>;
 
-export const getInvestigateDetection = API.make(() => ({
+export const getInvestigateDetection: (
+  input: GetInvestigateDetectionRequest,
+) => Effect.Effect<
+  GetInvestigateDetectionResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetInvestigateDetectionRequest,
   output: GetInvestigateDetectionResponse,
   errors: [],
@@ -493,7 +506,13 @@ export const GetInvestigatePreviewResponse = Schema.Struct({
   screenshot: Schema.String,
 }) as unknown as Schema.Schema<GetInvestigatePreviewResponse>;
 
-export const getInvestigatePreview = API.make(() => ({
+export const getInvestigatePreview: (
+  input: GetInvestigatePreviewRequest,
+) => Effect.Effect<
+  GetInvestigatePreviewResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetInvestigatePreviewRequest,
   output: GetInvestigatePreviewResponse,
   errors: [],
@@ -525,7 +544,13 @@ export const CreateInvestigatePreviewResponse = Schema.Struct({
   screenshot: Schema.String,
 }) as unknown as Schema.Schema<CreateInvestigatePreviewResponse>;
 
-export const createInvestigatePreview = API.make(() => ({
+export const createInvestigatePreview: (
+  input: CreateInvestigatePreviewRequest,
+) => Effect.Effect<
+  CreateInvestigatePreviewResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateInvestigatePreviewRequest,
   output: CreateInvestigatePreviewResponse,
   errors: [],
@@ -560,7 +585,13 @@ export const GetInvestigateRawResponse = Schema.Struct({
   raw: Schema.String,
 }) as unknown as Schema.Schema<GetInvestigateRawResponse>;
 
-export const getInvestigateRaw = API.make(() => ({
+export const getInvestigateRaw: (
+  input: GetInvestigateRawRequest,
+) => Effect.Effect<
+  GetInvestigateRawResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetInvestigateRawRequest,
   output: GetInvestigateRawResponse,
   errors: [],
@@ -615,7 +646,13 @@ export type CreateInvestigateReclassifyResponse = unknown;
 export const CreateInvestigateReclassifyResponse =
   Schema.Unknown as unknown as Schema.Schema<CreateInvestigateReclassifyResponse>;
 
-export const createInvestigateReclassify = API.make(() => ({
+export const createInvestigateReclassify: (
+  input: CreateInvestigateReclassifyRequest,
+) => Effect.Effect<
+  CreateInvestigateReclassifyResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateInvestigateReclassifyRequest,
   output: CreateInvestigateReclassifyResponse,
   errors: [],
@@ -685,7 +722,13 @@ export const GetInvestigateTraceResponse = Schema.Struct({
   }),
 }) as unknown as Schema.Schema<GetInvestigateTraceResponse>;
 
-export const getInvestigateTrace = API.make(() => ({
+export const getInvestigateTrace: (
+  input: GetInvestigateTraceRequest,
+) => Effect.Effect<
+  GetInvestigateTraceResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetInvestigateTraceRequest,
   output: GetInvestigateTraceResponse,
   errors: [],
@@ -755,7 +798,13 @@ export const GetSettingAllowPolicyResponse = Schema.Struct({
   isSpoof: Schema.optional(Schema.Boolean).pipe(T.JsonName("is_spoof")),
 }) as unknown as Schema.Schema<GetSettingAllowPolicyResponse>;
 
-export const getSettingAllowPolicy = API.make(() => ({
+export const getSettingAllowPolicy: (
+  input: GetSettingAllowPolicyRequest,
+) => Effect.Effect<
+  GetSettingAllowPolicyResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetSettingAllowPolicyRequest,
   output: GetSettingAllowPolicyResponse,
   errors: [],
@@ -854,7 +903,13 @@ export const CreateSettingAllowPolicyResponse = Schema.Struct({
   isSpoof: Schema.optional(Schema.Boolean).pipe(T.JsonName("is_spoof")),
 }) as unknown as Schema.Schema<CreateSettingAllowPolicyResponse>;
 
-export const createSettingAllowPolicy = API.make(() => ({
+export const createSettingAllowPolicy: (
+  input: CreateSettingAllowPolicyRequest,
+) => Effect.Effect<
+  CreateSettingAllowPolicyResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateSettingAllowPolicyRequest,
   output: CreateSettingAllowPolicyResponse,
   errors: [],
@@ -962,7 +1017,13 @@ export const PatchSettingAllowPolicyResponse = Schema.Struct({
   isSpoof: Schema.optional(Schema.Boolean).pipe(T.JsonName("is_spoof")),
 }) as unknown as Schema.Schema<PatchSettingAllowPolicyResponse>;
 
-export const patchSettingAllowPolicy = API.make(() => ({
+export const patchSettingAllowPolicy: (
+  input: PatchSettingAllowPolicyRequest,
+) => Effect.Effect<
+  PatchSettingAllowPolicyResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchSettingAllowPolicyRequest,
   output: PatchSettingAllowPolicyResponse,
   errors: [],
@@ -993,7 +1054,13 @@ export const DeleteSettingAllowPolicyResponse = Schema.Struct({
   id: Schema.Number,
 }) as unknown as Schema.Schema<DeleteSettingAllowPolicyResponse>;
 
-export const deleteSettingAllowPolicy = API.make(() => ({
+export const deleteSettingAllowPolicy: (
+  input: DeleteSettingAllowPolicyRequest,
+) => Effect.Effect<
+  DeleteSettingAllowPolicyResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteSettingAllowPolicyRequest,
   output: DeleteSettingAllowPolicyResponse,
   errors: [],
@@ -1042,7 +1109,13 @@ export const GetSettingBlockSenderResponse = Schema.Struct({
   comments: Schema.optional(Schema.Union(Schema.String, Schema.Null)),
 }) as unknown as Schema.Schema<GetSettingBlockSenderResponse>;
 
-export const getSettingBlockSender = API.make(() => ({
+export const getSettingBlockSender: (
+  input: GetSettingBlockSenderRequest,
+) => Effect.Effect<
+  GetSettingBlockSenderResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetSettingBlockSenderRequest,
   output: GetSettingBlockSenderResponse,
   errors: [],
@@ -1099,7 +1172,13 @@ export const CreateSettingBlockSenderResponse = Schema.Struct({
   comments: Schema.optional(Schema.Union(Schema.String, Schema.Null)),
 }) as unknown as Schema.Schema<CreateSettingBlockSenderResponse>;
 
-export const createSettingBlockSender = API.make(() => ({
+export const createSettingBlockSender: (
+  input: CreateSettingBlockSenderRequest,
+) => Effect.Effect<
+  CreateSettingBlockSenderResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateSettingBlockSenderRequest,
   output: CreateSettingBlockSenderResponse,
   errors: [],
@@ -1166,7 +1245,13 @@ export const PatchSettingBlockSenderResponse = Schema.Struct({
   comments: Schema.optional(Schema.Union(Schema.String, Schema.Null)),
 }) as unknown as Schema.Schema<PatchSettingBlockSenderResponse>;
 
-export const patchSettingBlockSender = API.make(() => ({
+export const patchSettingBlockSender: (
+  input: PatchSettingBlockSenderRequest,
+) => Effect.Effect<
+  PatchSettingBlockSenderResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchSettingBlockSenderRequest,
   output: PatchSettingBlockSenderResponse,
   errors: [],
@@ -1197,7 +1282,13 @@ export const DeleteSettingBlockSenderResponse = Schema.Struct({
   id: Schema.Number,
 }) as unknown as Schema.Schema<DeleteSettingBlockSenderResponse>;
 
-export const deleteSettingBlockSender = API.make(() => ({
+export const deleteSettingBlockSender: (
+  input: DeleteSettingBlockSenderRequest,
+) => Effect.Effect<
+  DeleteSettingBlockSenderResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteSettingBlockSenderRequest,
   output: DeleteSettingBlockSenderResponse,
   errors: [],
@@ -1366,7 +1457,13 @@ export const GetSettingDomainResponse = Schema.Struct({
   ).pipe(T.JsonName("spf_status")),
 }) as unknown as Schema.Schema<GetSettingDomainResponse>;
 
-export const getSettingDomain = API.make(() => ({
+export const getSettingDomain: (
+  input: GetSettingDomainRequest,
+) => Effect.Effect<
+  GetSettingDomainResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetSettingDomainRequest,
   output: GetSettingDomainResponse,
   errors: [],
@@ -1612,7 +1709,13 @@ export const PatchSettingDomainResponse = Schema.Struct({
   ).pipe(T.JsonName("spf_status")),
 }) as unknown as Schema.Schema<PatchSettingDomainResponse>;
 
-export const patchSettingDomain = API.make(() => ({
+export const patchSettingDomain: (
+  input: PatchSettingDomainRequest,
+) => Effect.Effect<
+  PatchSettingDomainResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchSettingDomainRequest,
   output: PatchSettingDomainResponse,
   errors: [],
@@ -1643,7 +1746,13 @@ export const DeleteSettingDomainResponse = Schema.Struct({
   id: Schema.Number,
 }) as unknown as Schema.Schema<DeleteSettingDomainResponse>;
 
-export const deleteSettingDomain = API.make(() => ({
+export const deleteSettingDomain: (
+  input: DeleteSettingDomainRequest,
+) => Effect.Effect<
+  DeleteSettingDomainResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteSettingDomainRequest,
   output: DeleteSettingDomainResponse,
   errors: [],
@@ -1704,7 +1813,13 @@ export const GetSettingImpersonationRegistryResponse = Schema.Struct({
   provenance: Schema.optional(Schema.Union(Schema.String, Schema.Null)),
 }) as unknown as Schema.Schema<GetSettingImpersonationRegistryResponse>;
 
-export const getSettingImpersonationRegistry = API.make(() => ({
+export const getSettingImpersonationRegistry: (
+  input: GetSettingImpersonationRegistryRequest,
+) => Effect.Effect<
+  GetSettingImpersonationRegistryResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetSettingImpersonationRegistryRequest,
   output: GetSettingImpersonationRegistryResponse,
   errors: [],
@@ -1768,7 +1883,13 @@ export const CreateSettingImpersonationRegistryResponse = Schema.Struct({
   provenance: Schema.optional(Schema.Union(Schema.String, Schema.Null)),
 }) as unknown as Schema.Schema<CreateSettingImpersonationRegistryResponse>;
 
-export const createSettingImpersonationRegistry = API.make(() => ({
+export const createSettingImpersonationRegistry: (
+  input: CreateSettingImpersonationRegistryRequest,
+) => Effect.Effect<
+  CreateSettingImpersonationRegistryResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateSettingImpersonationRegistryRequest,
   output: CreateSettingImpersonationRegistryResponse,
   errors: [],
@@ -1836,7 +1957,13 @@ export const PatchSettingImpersonationRegistryResponse = Schema.Struct({
   provenance: Schema.optional(Schema.Union(Schema.String, Schema.Null)),
 }) as unknown as Schema.Schema<PatchSettingImpersonationRegistryResponse>;
 
-export const patchSettingImpersonationRegistry = API.make(() => ({
+export const patchSettingImpersonationRegistry: (
+  input: PatchSettingImpersonationRegistryRequest,
+) => Effect.Effect<
+  PatchSettingImpersonationRegistryResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchSettingImpersonationRegistryRequest,
   output: PatchSettingImpersonationRegistryResponse,
   errors: [],
@@ -1866,7 +1993,13 @@ export const DeleteSettingImpersonationRegistryResponse = Schema.Struct({
   id: Schema.Number,
 }) as unknown as Schema.Schema<DeleteSettingImpersonationRegistryResponse>;
 
-export const deleteSettingImpersonationRegistry = API.make(() => ({
+export const deleteSettingImpersonationRegistry: (
+  input: DeleteSettingImpersonationRegistryRequest,
+) => Effect.Effect<
+  DeleteSettingImpersonationRegistryResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteSettingImpersonationRegistryRequest,
   output: DeleteSettingImpersonationRegistryResponse,
   errors: [],
@@ -1917,7 +2050,13 @@ export const GetSettingTrustedDomainResponse = Schema.Struct({
   comments: Schema.optional(Schema.Union(Schema.String, Schema.Null)),
 }) as unknown as Schema.Schema<GetSettingTrustedDomainResponse>;
 
-export const getSettingTrustedDomain = API.make(() => ({
+export const getSettingTrustedDomain: (
+  input: GetSettingTrustedDomainRequest,
+) => Effect.Effect<
+  GetSettingTrustedDomainResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetSettingTrustedDomainRequest,
   output: GetSettingTrustedDomainResponse,
   errors: [],
@@ -1979,7 +2118,13 @@ export const CreateSettingTrustedDomainResponse = Schema.Union(
   ),
 ) as unknown as Schema.Schema<CreateSettingTrustedDomainResponse>;
 
-export const createSettingTrustedDomain = API.make(() => ({
+export const createSettingTrustedDomain: (
+  input: CreateSettingTrustedDomainRequest,
+) => Effect.Effect<
+  CreateSettingTrustedDomainResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateSettingTrustedDomainRequest,
   output: CreateSettingTrustedDomainResponse,
   errors: [],
@@ -2043,7 +2188,13 @@ export const PatchSettingTrustedDomainResponse = Schema.Struct({
   comments: Schema.optional(Schema.Union(Schema.String, Schema.Null)),
 }) as unknown as Schema.Schema<PatchSettingTrustedDomainResponse>;
 
-export const patchSettingTrustedDomain = API.make(() => ({
+export const patchSettingTrustedDomain: (
+  input: PatchSettingTrustedDomainRequest,
+) => Effect.Effect<
+  PatchSettingTrustedDomainResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchSettingTrustedDomainRequest,
   output: PatchSettingTrustedDomainResponse,
   errors: [],
@@ -2074,7 +2225,13 @@ export const DeleteSettingTrustedDomainResponse = Schema.Struct({
   id: Schema.Number,
 }) as unknown as Schema.Schema<DeleteSettingTrustedDomainResponse>;
 
-export const deleteSettingTrustedDomain = API.make(() => ({
+export const deleteSettingTrustedDomain: (
+  input: DeleteSettingTrustedDomainRequest,
+) => Effect.Effect<
+  DeleteSettingTrustedDomainResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteSettingTrustedDomainRequest,
   output: DeleteSettingTrustedDomainResponse,
   errors: [],

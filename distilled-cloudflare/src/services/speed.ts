@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -107,7 +108,13 @@ export const ListAvailabilitiesResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<ListAvailabilitiesResponse>;
 
-export const listAvailabilities = API.make(() => ({
+export const listAvailabilities: (
+  input: ListAvailabilitiesRequest,
+) => Effect.Effect<
+  ListAvailabilitiesResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: ListAvailabilitiesRequest,
   output: ListAvailabilitiesResponse,
   errors: [],
@@ -201,7 +208,13 @@ export type TrendPageResponse = unknown;
 export const TrendPageResponse =
   Schema.Unknown as unknown as Schema.Schema<TrendPageResponse>;
 
-export const trendPage = API.make(() => ({
+export const trendPage: (
+  input: TrendPageRequest,
+) => Effect.Effect<
+  TrendPageResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: TrendPageRequest,
   output: TrendPageResponse,
   errors: [],
@@ -255,7 +268,13 @@ export const GetPageTestResponse = Schema.Struct({
   url: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<GetPageTestResponse>;
 
-export const getPageTest = API.make(() => ({
+export const getPageTest: (
+  input: GetPageTestRequest,
+) => Effect.Effect<
+  GetPageTestResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetPageTestRequest,
   output: GetPageTestResponse,
   errors: [],
@@ -351,7 +370,13 @@ export const CreatePageTestResponse = Schema.Struct({
   url: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<CreatePageTestResponse>;
 
-export const createPageTest = API.make(() => ({
+export const createPageTest: (
+  input: CreatePageTestRequest,
+) => Effect.Effect<
+  CreatePageTestResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreatePageTestRequest,
   output: CreatePageTestResponse,
   errors: [],
@@ -430,7 +455,13 @@ export const DeletePageTestResponse = Schema.Struct({
   count: Schema.optional(Schema.Number),
 }) as unknown as Schema.Schema<DeletePageTestResponse>;
 
-export const deletePageTest = API.make(() => ({
+export const deletePageTest: (
+  input: DeletePageTestRequest,
+) => Effect.Effect<
+  DeletePageTestResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeletePageTestRequest,
   output: DeletePageTestResponse,
   errors: [],
@@ -561,7 +592,13 @@ export const GetScheduleResponse = Schema.Struct({
   url: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<GetScheduleResponse>;
 
-export const getSchedule = API.make(() => ({
+export const getSchedule: (
+  input: GetScheduleRequest,
+) => Effect.Effect<
+  GetScheduleResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetScheduleRequest,
   output: GetScheduleResponse,
   errors: [],
@@ -694,7 +731,13 @@ export const CreateScheduleResponse = Schema.Struct({
   test: Schema.optional(Schema.Unknown),
 }) as unknown as Schema.Schema<CreateScheduleResponse>;
 
-export const createSchedule = API.make(() => ({
+export const createSchedule: (
+  input: CreateScheduleRequest,
+) => Effect.Effect<
+  CreateScheduleResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateScheduleRequest,
   output: CreateScheduleResponse,
   errors: [],
@@ -773,7 +816,13 @@ export const DeleteScheduleResponse = Schema.Struct({
   count: Schema.optional(Schema.Number),
 }) as unknown as Schema.Schema<DeleteScheduleResponse>;
 
-export const deleteSchedule = API.make(() => ({
+export const deleteSchedule: (
+  input: DeleteScheduleRequest,
+) => Effect.Effect<
+  DeleteScheduleResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteScheduleRequest,
   output: DeleteScheduleResponse,
   errors: [],

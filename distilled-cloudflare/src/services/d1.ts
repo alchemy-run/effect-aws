@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -42,7 +43,13 @@ export type GetDatabaseResponse = unknown;
 export const GetDatabaseResponse =
   Schema.Unknown as unknown as Schema.Schema<GetDatabaseResponse>;
 
-export const getDatabase = API.make(() => ({
+export const getDatabase: (
+  input: GetDatabaseRequest,
+) => Effect.Effect<
+  GetDatabaseResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetDatabaseRequest,
   output: GetDatabaseResponse,
   errors: [],
@@ -72,7 +79,13 @@ export type CreateDatabaseResponse = unknown;
 export const CreateDatabaseResponse =
   Schema.Unknown as unknown as Schema.Schema<CreateDatabaseResponse>;
 
-export const createDatabase = API.make(() => ({
+export const createDatabase: (
+  input: CreateDatabaseRequest,
+) => Effect.Effect<
+  CreateDatabaseResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateDatabaseRequest,
   output: CreateDatabaseResponse,
   errors: [],
@@ -104,7 +117,13 @@ export type UpdateDatabaseResponse = unknown;
 export const UpdateDatabaseResponse =
   Schema.Unknown as unknown as Schema.Schema<UpdateDatabaseResponse>;
 
-export const updateDatabase = API.make(() => ({
+export const updateDatabase: (
+  input: UpdateDatabaseRequest,
+) => Effect.Effect<
+  UpdateDatabaseResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateDatabaseRequest,
   output: UpdateDatabaseResponse,
   errors: [],
@@ -138,7 +157,13 @@ export type PatchDatabaseResponse = unknown;
 export const PatchDatabaseResponse =
   Schema.Unknown as unknown as Schema.Schema<PatchDatabaseResponse>;
 
-export const patchDatabase = API.make(() => ({
+export const patchDatabase: (
+  input: PatchDatabaseRequest,
+) => Effect.Effect<
+  PatchDatabaseResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchDatabaseRequest,
   output: PatchDatabaseResponse,
   errors: [],
@@ -165,7 +190,13 @@ export type DeleteDatabaseResponse = unknown;
 export const DeleteDatabaseResponse =
   Schema.Unknown as unknown as Schema.Schema<DeleteDatabaseResponse>;
 
-export const deleteDatabase = API.make(() => ({
+export const deleteDatabase: (
+  input: DeleteDatabaseRequest,
+) => Effect.Effect<
+  DeleteDatabaseResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteDatabaseRequest,
   output: DeleteDatabaseResponse,
   errors: [],
@@ -233,7 +264,13 @@ export const ExportDatabaseResponse = Schema.Struct({
   type: Schema.optional(Schema.Literal("export")),
 }) as unknown as Schema.Schema<ExportDatabaseResponse>;
 
-export const exportDatabase = API.make(() => ({
+export const exportDatabase: (
+  input: ExportDatabaseRequest,
+) => Effect.Effect<
+  ExportDatabaseResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: ExportDatabaseRequest,
   output: ExportDatabaseResponse,
   errors: [],
@@ -340,7 +377,13 @@ export const ImportDatabaseResponse = Schema.Struct({
   uploadUrl: Schema.optional(Schema.String).pipe(T.JsonName("upload_url")),
 }) as unknown as Schema.Schema<ImportDatabaseResponse>;
 
-export const importDatabase = API.make(() => ({
+export const importDatabase: (
+  input: ImportDatabaseRequest,
+) => Effect.Effect<
+  ImportDatabaseResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: ImportDatabaseRequest,
   output: ImportDatabaseResponse,
   errors: [],

@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -78,7 +79,13 @@ export const GetKeylessCertificateResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<GetKeylessCertificateResponse>;
 
-export const getKeylessCertificate = API.make(() => ({
+export const getKeylessCertificate: (
+  input: GetKeylessCertificateRequest,
+) => Effect.Effect<
+  GetKeylessCertificateResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetKeylessCertificateRequest,
   output: GetKeylessCertificateResponse,
   errors: [],
@@ -161,7 +168,13 @@ export const CreateKeylessCertificateResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<CreateKeylessCertificateResponse>;
 
-export const createKeylessCertificate = API.make(() => ({
+export const createKeylessCertificate: (
+  input: CreateKeylessCertificateRequest,
+) => Effect.Effect<
+  CreateKeylessCertificateResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateKeylessCertificateRequest,
   output: CreateKeylessCertificateResponse,
   errors: [],
@@ -244,7 +257,13 @@ export const PatchKeylessCertificateResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<PatchKeylessCertificateResponse>;
 
-export const patchKeylessCertificate = API.make(() => ({
+export const patchKeylessCertificate: (
+  input: PatchKeylessCertificateRequest,
+) => Effect.Effect<
+  PatchKeylessCertificateResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchKeylessCertificateRequest,
   output: PatchKeylessCertificateResponse,
   errors: [],
@@ -275,7 +294,13 @@ export const DeleteKeylessCertificateResponse = Schema.Struct({
   id: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<DeleteKeylessCertificateResponse>;
 
-export const deleteKeylessCertificate = API.make(() => ({
+export const deleteKeylessCertificate: (
+  input: DeleteKeylessCertificateRequest,
+) => Effect.Effect<
+  DeleteKeylessCertificateResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteKeylessCertificateRequest,
   output: DeleteKeylessCertificateResponse,
   errors: [],

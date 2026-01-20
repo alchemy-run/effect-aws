@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -59,7 +60,13 @@ export const GetAnalyticAggregateCurrentResponse = Schema.Array(
   }),
 ) as unknown as Schema.Schema<GetAnalyticAggregateCurrentResponse>;
 
-export const getAnalyticAggregateCurrent = API.make(() => ({
+export const getAnalyticAggregateCurrent: (
+  input: GetAnalyticAggregateCurrentRequest,
+) => Effect.Effect<
+  GetAnalyticAggregateCurrentResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetAnalyticAggregateCurrentRequest,
   output: GetAnalyticAggregateCurrentResponse,
   errors: [],
@@ -222,7 +229,13 @@ export const GetAnalyticEventBytimeResponse = Schema.Struct({
   ).pipe(T.JsonName("time_intervals")),
 }) as unknown as Schema.Schema<GetAnalyticEventBytimeResponse>;
 
-export const getAnalyticEventBytime = API.make(() => ({
+export const getAnalyticEventBytime: (
+  input: GetAnalyticEventBytimeRequest,
+) => Effect.Effect<
+  GetAnalyticEventBytimeResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetAnalyticEventBytimeRequest,
   output: GetAnalyticEventBytimeResponse,
   errors: [],
@@ -365,7 +378,13 @@ export const GetAnalyticEventSummaryResponse = Schema.Struct({
   ).pipe(T.JsonName("time_intervals")),
 }) as unknown as Schema.Schema<GetAnalyticEventSummaryResponse>;
 
-export const getAnalyticEventSummary = API.make(() => ({
+export const getAnalyticEventSummary: (
+  input: GetAnalyticEventSummaryRequest,
+) => Effect.Effect<
+  GetAnalyticEventSummaryResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetAnalyticEventSummaryRequest,
   output: GetAnalyticEventSummaryResponse,
   errors: [],
@@ -453,7 +472,13 @@ export const GetAppResponse = Schema.Union(
   }),
 ) as unknown as Schema.Schema<GetAppResponse>;
 
-export const getApp = API.make(() => ({
+export const getApp: (
+  input: GetAppRequest,
+) => Effect.Effect<
+  GetAppResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetAppRequest,
   output: GetAppResponse,
   errors: [],
@@ -530,7 +555,13 @@ export const CreateAppResponse = Schema.Union(
   }),
 ) as unknown as Schema.Schema<CreateAppResponse>;
 
-export const createApp = API.make(() => ({
+export const createApp: (
+  input: CreateAppRequest,
+) => Effect.Effect<
+  CreateAppResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateAppRequest,
   output: CreateAppResponse,
   errors: [],
@@ -611,7 +642,13 @@ export const UpdateAppResponse = Schema.Union(
   }),
 ) as unknown as Schema.Schema<UpdateAppResponse>;
 
-export const updateApp = API.make(() => ({
+export const updateApp: (
+  input: UpdateAppRequest,
+) => Effect.Effect<
+  UpdateAppResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateAppRequest,
   output: UpdateAppResponse,
   errors: [],
@@ -635,7 +672,13 @@ export type DeleteAppResponse = unknown;
 export const DeleteAppResponse =
   Schema.Unknown as unknown as Schema.Schema<DeleteAppResponse>;
 
-export const deleteApp = API.make(() => ({
+export const deleteApp: (
+  input: DeleteAppRequest,
+) => Effect.Effect<
+  DeleteAppResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteAppRequest,
   output: DeleteAppResponse,
   errors: [],

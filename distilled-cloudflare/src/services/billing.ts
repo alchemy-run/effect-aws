@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -151,7 +152,13 @@ export const GetProfileResponse = Schema.Struct({
   zipcode: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<GetProfileResponse>;
 
-export const getProfile = API.make(() => ({
+export const getProfile: (
+  input: GetProfileRequest,
+) => Effect.Effect<
+  GetProfileResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetProfileRequest,
   output: GetProfileResponse,
   errors: [],

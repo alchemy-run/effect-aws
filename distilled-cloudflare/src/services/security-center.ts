@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -92,7 +93,13 @@ export const DismissInsightResponse = Schema.Struct({
   success: Schema.Literal(true),
 }) as unknown as Schema.Schema<DismissInsightResponse>;
 
-export const dismissInsight = API.make(() => ({
+export const dismissInsight: (
+  input: DismissInsightRequest,
+) => Effect.Effect<
+  DismissInsightResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DismissInsightRequest,
   output: DismissInsightResponse,
   errors: [],
@@ -120,7 +127,13 @@ export const GetInsightClassResponse = Schema.Array(
   }),
 ) as unknown as Schema.Schema<GetInsightClassResponse>;
 
-export const getInsightClass = API.make(() => ({
+export const getInsightClass: (
+  input: GetInsightClassRequest,
+) => Effect.Effect<
+  GetInsightClassResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetInsightClassRequest,
   output: GetInsightClassResponse,
   errors: [],
@@ -148,7 +161,13 @@ export const GetInsightSeverityResponse = Schema.Array(
   }),
 ) as unknown as Schema.Schema<GetInsightSeverityResponse>;
 
-export const getInsightSeverity = API.make(() => ({
+export const getInsightSeverity: (
+  input: GetInsightSeverityRequest,
+) => Effect.Effect<
+  GetInsightSeverityResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetInsightSeverityRequest,
   output: GetInsightSeverityResponse,
   errors: [],
@@ -176,7 +195,13 @@ export const GetInsightTypeResponse = Schema.Array(
   }),
 ) as unknown as Schema.Schema<GetInsightTypeResponse>;
 
-export const getInsightType = API.make(() => ({
+export const getInsightType: (
+  input: GetInsightTypeRequest,
+) => Effect.Effect<
+  GetInsightTypeResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetInsightTypeRequest,
   output: GetInsightTypeResponse,
   errors: [],

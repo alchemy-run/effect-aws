@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -72,7 +73,13 @@ export const ListManagedTransformsResponse = Schema.Struct({
   ).pipe(T.JsonName("managed_response_headers")),
 }) as unknown as Schema.Schema<ListManagedTransformsResponse>;
 
-export const listManagedTransforms = API.make(() => ({
+export const listManagedTransforms: (
+  input: ListManagedTransformsRequest,
+) => Effect.Effect<
+  ListManagedTransformsResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: ListManagedTransformsRequest,
   output: ListManagedTransformsResponse,
   errors: [],
@@ -145,7 +152,13 @@ export const PatchManagedTransformResponse = Schema.Struct({
   ).pipe(T.JsonName("managed_response_headers")),
 }) as unknown as Schema.Schema<PatchManagedTransformResponse>;
 
-export const patchManagedTransform = API.make(() => ({
+export const patchManagedTransform: (
+  input: PatchManagedTransformRequest,
+) => Effect.Effect<
+  PatchManagedTransformResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchManagedTransformRequest,
   output: PatchManagedTransformResponse,
   errors: [],
@@ -167,7 +180,13 @@ export type DeleteManagedTransformResponse = unknown;
 export const DeleteManagedTransformResponse =
   Schema.Unknown as unknown as Schema.Schema<DeleteManagedTransformResponse>;
 
-export const deleteManagedTransform = API.make(() => ({
+export const deleteManagedTransform: (
+  input: DeleteManagedTransformRequest,
+) => Effect.Effect<
+  DeleteManagedTransformResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteManagedTransformRequest,
   output: DeleteManagedTransformResponse,
   errors: [],

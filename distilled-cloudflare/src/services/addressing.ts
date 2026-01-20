@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -93,7 +94,13 @@ export const GetAddressMapResponse = Schema.Struct({
   modifiedAt: Schema.optional(Schema.String).pipe(T.JsonName("modified_at")),
 }) as unknown as Schema.Schema<GetAddressMapResponse>;
 
-export const getAddressMap = API.make(() => ({
+export const getAddressMap: (
+  input: GetAddressMapRequest,
+) => Effect.Effect<
+  GetAddressMapResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetAddressMapRequest,
   output: GetAddressMapResponse,
   errors: [],
@@ -188,7 +195,13 @@ export const CreateAddressMapResponse = Schema.Struct({
   modifiedAt: Schema.optional(Schema.String).pipe(T.JsonName("modified_at")),
 }) as unknown as Schema.Schema<CreateAddressMapResponse>;
 
-export const createAddressMap = API.make(() => ({
+export const createAddressMap: (
+  input: CreateAddressMapRequest,
+) => Effect.Effect<
+  CreateAddressMapResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateAddressMapRequest,
   output: CreateAddressMapResponse,
   errors: [],
@@ -253,7 +266,13 @@ export const PatchAddressMapResponse = Schema.Struct({
   modifiedAt: Schema.optional(Schema.String).pipe(T.JsonName("modified_at")),
 }) as unknown as Schema.Schema<PatchAddressMapResponse>;
 
-export const patchAddressMap = API.make(() => ({
+export const patchAddressMap: (
+  input: PatchAddressMapRequest,
+) => Effect.Effect<
+  PatchAddressMapResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchAddressMapRequest,
   output: PatchAddressMapResponse,
   errors: [],
@@ -340,7 +359,13 @@ export const DeleteAddressMapResponse = Schema.Struct({
   ).pipe(T.JsonName("result_info")),
 }) as unknown as Schema.Schema<DeleteAddressMapResponse>;
 
-export const deleteAddressMap = API.make(() => ({
+export const deleteAddressMap: (
+  input: DeleteAddressMapRequest,
+) => Effect.Effect<
+  DeleteAddressMapResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteAddressMapRequest,
   output: DeleteAddressMapResponse,
   errors: [],
@@ -434,7 +459,13 @@ export const PutAddressMapAccountResponse = Schema.Struct({
   ).pipe(T.JsonName("result_info")),
 }) as unknown as Schema.Schema<PutAddressMapAccountResponse>;
 
-export const putAddressMapAccount = API.make(() => ({
+export const putAddressMapAccount: (
+  input: PutAddressMapAccountRequest,
+) => Effect.Effect<
+  PutAddressMapAccountResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutAddressMapAccountRequest,
   output: PutAddressMapAccountResponse,
   errors: [],
@@ -521,7 +552,13 @@ export const DeleteAddressMapAccountResponse = Schema.Struct({
   ).pipe(T.JsonName("result_info")),
 }) as unknown as Schema.Schema<DeleteAddressMapAccountResponse>;
 
-export const deleteAddressMapAccount = API.make(() => ({
+export const deleteAddressMapAccount: (
+  input: DeleteAddressMapAccountRequest,
+) => Effect.Effect<
+  DeleteAddressMapAccountResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteAddressMapAccountRequest,
   output: DeleteAddressMapAccountResponse,
   errors: [],
@@ -617,7 +654,13 @@ export const PutAddressMapIpResponse = Schema.Struct({
   ).pipe(T.JsonName("result_info")),
 }) as unknown as Schema.Schema<PutAddressMapIpResponse>;
 
-export const putAddressMapIp = API.make(() => ({
+export const putAddressMapIp: (
+  input: PutAddressMapIpRequest,
+) => Effect.Effect<
+  PutAddressMapIpResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutAddressMapIpRequest,
   output: PutAddressMapIpResponse,
   errors: [],
@@ -706,7 +749,13 @@ export const DeleteAddressMapIpResponse = Schema.Struct({
   ).pipe(T.JsonName("result_info")),
 }) as unknown as Schema.Schema<DeleteAddressMapIpResponse>;
 
-export const deleteAddressMapIp = API.make(() => ({
+export const deleteAddressMapIp: (
+  input: DeleteAddressMapIpRequest,
+) => Effect.Effect<
+  DeleteAddressMapIpResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteAddressMapIpRequest,
   output: DeleteAddressMapIpResponse,
   errors: [],
@@ -803,7 +852,13 @@ export const PutAddressMapZoneResponse = Schema.Struct({
   ).pipe(T.JsonName("result_info")),
 }) as unknown as Schema.Schema<PutAddressMapZoneResponse>;
 
-export const putAddressMapZone = API.make(() => ({
+export const putAddressMapZone: (
+  input: PutAddressMapZoneRequest,
+) => Effect.Effect<
+  PutAddressMapZoneResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutAddressMapZoneRequest,
   output: PutAddressMapZoneResponse,
   errors: [],
@@ -893,7 +948,13 @@ export const DeleteAddressMapZoneResponse = Schema.Struct({
   ).pipe(T.JsonName("result_info")),
 }) as unknown as Schema.Schema<DeleteAddressMapZoneResponse>;
 
-export const deleteAddressMapZone = API.make(() => ({
+export const deleteAddressMapZone: (
+  input: DeleteAddressMapZoneRequest,
+) => Effect.Effect<
+  DeleteAddressMapZoneResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteAddressMapZoneRequest,
   output: DeleteAddressMapZoneResponse,
   errors: [],
@@ -926,7 +987,13 @@ export type GetLoaDocumentResponse = unknown;
 export const GetLoaDocumentResponse =
   Schema.Unknown as unknown as Schema.Schema<GetLoaDocumentResponse>;
 
-export const getLoaDocument = API.make(() => ({
+export const getLoaDocument: (
+  input: GetLoaDocumentRequest,
+) => Effect.Effect<
+  GetLoaDocumentResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetLoaDocumentRequest,
   output: GetLoaDocumentResponse,
   errors: [],
@@ -977,7 +1044,13 @@ export const CreateLoaDocumentResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<CreateLoaDocumentResponse>;
 
-export const createLoaDocument = API.make(() => ({
+export const createLoaDocument: (
+  input: CreateLoaDocumentRequest,
+) => Effect.Effect<
+  CreateLoaDocumentResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateLoaDocumentRequest,
   output: CreateLoaDocumentResponse,
   errors: [],
@@ -1054,7 +1127,13 @@ export const GetPrefixResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<GetPrefixResponse>;
 
-export const getPrefix = API.make(() => ({
+export const getPrefix: (
+  input: GetPrefixRequest,
+) => Effect.Effect<
+  GetPrefixResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetPrefixRequest,
   output: GetPrefixResponse,
   errors: [],
@@ -1136,7 +1215,13 @@ export const CreatePrefixResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<CreatePrefixResponse>;
 
-export const createPrefix = API.make(() => ({
+export const createPrefix: (
+  input: CreatePrefixRequest,
+) => Effect.Effect<
+  CreatePrefixResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreatePrefixRequest,
   output: CreatePrefixResponse,
   errors: [],
@@ -1212,7 +1297,13 @@ export const PatchPrefixResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<PatchPrefixResponse>;
 
-export const patchPrefix = API.make(() => ({
+export const patchPrefix: (
+  input: PatchPrefixRequest,
+) => Effect.Effect<
+  PatchPrefixResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchPrefixRequest,
   output: PatchPrefixResponse,
   errors: [],
@@ -1299,7 +1390,13 @@ export const DeletePrefixResponse = Schema.Struct({
   ).pipe(T.JsonName("result_info")),
 }) as unknown as Schema.Schema<DeletePrefixResponse>;
 
-export const deletePrefix = API.make(() => ({
+export const deletePrefix: (
+  input: DeletePrefixRequest,
+) => Effect.Effect<
+  DeletePrefixResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeletePrefixRequest,
   output: DeletePrefixResponse,
   errors: [],
@@ -1339,7 +1436,13 @@ export const GetPrefixAdvertisementStatusResponse = Schema.Struct({
   ).pipe(T.JsonName("advertised_modified_at")),
 }) as unknown as Schema.Schema<GetPrefixAdvertisementStatusResponse>;
 
-export const getPrefixAdvertisementStatus = API.make(() => ({
+export const getPrefixAdvertisementStatus: (
+  input: GetPrefixAdvertisementStatusRequest,
+) => Effect.Effect<
+  GetPrefixAdvertisementStatusResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetPrefixAdvertisementStatusRequest,
   output: GetPrefixAdvertisementStatusResponse,
   errors: [],
@@ -1378,7 +1481,13 @@ export const PatchPrefixAdvertisementStatusResponse = Schema.Struct({
   ).pipe(T.JsonName("advertised_modified_at")),
 }) as unknown as Schema.Schema<PatchPrefixAdvertisementStatusResponse>;
 
-export const patchPrefixAdvertisementStatus = API.make(() => ({
+export const patchPrefixAdvertisementStatus: (
+  input: PatchPrefixAdvertisementStatusRequest,
+) => Effect.Effect<
+  PatchPrefixAdvertisementStatusResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchPrefixAdvertisementStatusRequest,
   output: PatchPrefixAdvertisementStatusResponse,
   errors: [],
@@ -1464,7 +1573,13 @@ export const GetPrefixBgpPrefixResponse = Schema.Struct({
   ).pipe(T.JsonName("on_demand")),
 }) as unknown as Schema.Schema<GetPrefixBgpPrefixResponse>;
 
-export const getPrefixBgpPrefix = API.make(() => ({
+export const getPrefixBgpPrefix: (
+  input: GetPrefixBgpPrefixRequest,
+) => Effect.Effect<
+  GetPrefixBgpPrefixResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetPrefixBgpPrefixRequest,
   output: GetPrefixBgpPrefixResponse,
   errors: [],
@@ -1547,7 +1662,13 @@ export const CreatePrefixBgpPrefixResponse = Schema.Struct({
   ).pipe(T.JsonName("on_demand")),
 }) as unknown as Schema.Schema<CreatePrefixBgpPrefixResponse>;
 
-export const createPrefixBgpPrefix = API.make(() => ({
+export const createPrefixBgpPrefix: (
+  input: CreatePrefixBgpPrefixRequest,
+) => Effect.Effect<
+  CreatePrefixBgpPrefixResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreatePrefixBgpPrefixRequest,
   output: CreatePrefixBgpPrefixResponse,
   errors: [],
@@ -1646,7 +1767,13 @@ export const PatchPrefixBgpPrefixResponse = Schema.Struct({
   ).pipe(T.JsonName("on_demand")),
 }) as unknown as Schema.Schema<PatchPrefixBgpPrefixResponse>;
 
-export const patchPrefixBgpPrefix = API.make(() => ({
+export const patchPrefixBgpPrefix: (
+  input: PatchPrefixBgpPrefixRequest,
+) => Effect.Effect<
+  PatchPrefixBgpPrefixResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchPrefixBgpPrefixRequest,
   output: PatchPrefixBgpPrefixResponse,
   errors: [],
@@ -1704,7 +1831,13 @@ export const CreatePrefixDelegationResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<CreatePrefixDelegationResponse>;
 
-export const createPrefixDelegation = API.make(() => ({
+export const createPrefixDelegation: (
+  input: CreatePrefixDelegationRequest,
+) => Effect.Effect<
+  CreatePrefixDelegationResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreatePrefixDelegationRequest,
   output: CreatePrefixDelegationResponse,
   errors: [],
@@ -1737,7 +1870,13 @@ export const DeletePrefixDelegationResponse = Schema.Struct({
   id: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<DeletePrefixDelegationResponse>;
 
-export const deletePrefixDelegation = API.make(() => ({
+export const deletePrefixDelegation: (
+  input: DeletePrefixDelegationRequest,
+) => Effect.Effect<
+  DeletePrefixDelegationResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeletePrefixDelegationRequest,
   output: DeletePrefixDelegationResponse,
   errors: [],
@@ -1790,7 +1929,13 @@ export const GetPrefixServiceBindingResponse = Schema.Struct({
   serviceName: Schema.optional(Schema.String).pipe(T.JsonName("service_name")),
 }) as unknown as Schema.Schema<GetPrefixServiceBindingResponse>;
 
-export const getPrefixServiceBinding = API.make(() => ({
+export const getPrefixServiceBinding: (
+  input: GetPrefixServiceBindingRequest,
+) => Effect.Effect<
+  GetPrefixServiceBindingResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetPrefixServiceBindingRequest,
   output: GetPrefixServiceBindingResponse,
   errors: [],
@@ -1843,7 +1988,13 @@ export const CreatePrefixServiceBindingResponse = Schema.Struct({
   serviceName: Schema.optional(Schema.String).pipe(T.JsonName("service_name")),
 }) as unknown as Schema.Schema<CreatePrefixServiceBindingResponse>;
 
-export const createPrefixServiceBinding = API.make(() => ({
+export const createPrefixServiceBinding: (
+  input: CreatePrefixServiceBindingRequest,
+) => Effect.Effect<
+  CreatePrefixServiceBindingResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreatePrefixServiceBindingRequest,
   output: CreatePrefixServiceBindingResponse,
   errors: [],
@@ -1916,7 +2067,13 @@ export const DeletePrefixServiceBindingResponse = Schema.Struct({
   success: Schema.Literal(true),
 }) as unknown as Schema.Schema<DeletePrefixServiceBindingResponse>;
 
-export const deletePrefixServiceBinding = API.make(() => ({
+export const deletePrefixServiceBinding: (
+  input: DeletePrefixServiceBindingRequest,
+) => Effect.Effect<
+  DeletePrefixServiceBindingResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeletePrefixServiceBindingRequest,
   output: DeletePrefixServiceBindingResponse,
   errors: [],
@@ -1960,7 +2117,13 @@ export const GetRegionalHostnameResponse = Schema.Struct({
   routing: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<GetRegionalHostnameResponse>;
 
-export const getRegionalHostname = API.make(() => ({
+export const getRegionalHostname: (
+  input: GetRegionalHostnameRequest,
+) => Effect.Effect<
+  GetRegionalHostnameResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetRegionalHostnameRequest,
   output: GetRegionalHostnameResponse,
   errors: [],
@@ -2007,7 +2170,13 @@ export const CreateRegionalHostnameResponse = Schema.Struct({
   routing: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<CreateRegionalHostnameResponse>;
 
-export const createRegionalHostname = API.make(() => ({
+export const createRegionalHostname: (
+  input: CreateRegionalHostnameRequest,
+) => Effect.Effect<
+  CreateRegionalHostnameResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateRegionalHostnameRequest,
   output: CreateRegionalHostnameResponse,
   errors: [],
@@ -2050,7 +2219,13 @@ export const PatchRegionalHostnameResponse = Schema.Struct({
   routing: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<PatchRegionalHostnameResponse>;
 
-export const patchRegionalHostname = API.make(() => ({
+export const patchRegionalHostname: (
+  input: PatchRegionalHostnameRequest,
+) => Effect.Effect<
+  PatchRegionalHostnameResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchRegionalHostnameRequest,
   output: PatchRegionalHostnameResponse,
   errors: [],
@@ -2121,7 +2296,13 @@ export const DeleteRegionalHostnameResponse = Schema.Struct({
   success: Schema.Literal(true),
 }) as unknown as Schema.Schema<DeleteRegionalHostnameResponse>;
 
-export const deleteRegionalHostname = API.make(() => ({
+export const deleteRegionalHostname: (
+  input: DeleteRegionalHostnameRequest,
+) => Effect.Effect<
+  DeleteRegionalHostnameResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteRegionalHostnameRequest,
   output: DeleteRegionalHostnameResponse,
   errors: [],

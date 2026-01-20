@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -65,7 +66,13 @@ export const GetSchemaResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<GetSchemaResponse>;
 
-export const getSchema = API.make(() => ({
+export const getSchema: (
+  input: GetSchemaRequest,
+) => Effect.Effect<
+  GetSchemaResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetSchemaRequest,
   output: GetSchemaResponse,
   errors: [],
@@ -122,7 +129,13 @@ export const CreateSchemaResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<CreateSchemaResponse>;
 
-export const createSchema = API.make(() => ({
+export const createSchema: (
+  input: CreateSchemaRequest,
+) => Effect.Effect<
+  CreateSchemaResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateSchemaRequest,
   output: CreateSchemaResponse,
   errors: [],
@@ -174,7 +187,13 @@ export const PatchSchemaResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<PatchSchemaResponse>;
 
-export const patchSchema = API.make(() => ({
+export const patchSchema: (
+  input: PatchSchemaRequest,
+) => Effect.Effect<
+  PatchSchemaResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchSchemaRequest,
   output: PatchSchemaResponse,
   errors: [],
@@ -205,7 +224,13 @@ export const DeleteSchemaResponse = Schema.Struct({
   schemaId: Schema.String.pipe(T.JsonName("schema_id")),
 }) as unknown as Schema.Schema<DeleteSchemaResponse>;
 
-export const deleteSchema = API.make(() => ({
+export const deleteSchema: (
+  input: DeleteSchemaRequest,
+) => Effect.Effect<
+  DeleteSchemaResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteSchemaRequest,
   output: DeleteSchemaResponse,
   errors: [],
@@ -247,7 +272,13 @@ export const GetSettingResponse = Schema.Struct({
   ).pipe(T.JsonName("validation_override_mitigation_action")),
 }) as unknown as Schema.Schema<GetSettingResponse>;
 
-export const getSetting = API.make(() => ({
+export const getSetting: (
+  input: GetSettingRequest,
+) => Effect.Effect<
+  GetSettingResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetSettingRequest,
   output: GetSettingResponse,
   errors: [],
@@ -297,7 +328,13 @@ export const PutSettingResponse = Schema.Struct({
   ).pipe(T.JsonName("validation_override_mitigation_action")),
 }) as unknown as Schema.Schema<PutSettingResponse>;
 
-export const putSetting = API.make(() => ({
+export const putSetting: (
+  input: PutSettingRequest,
+) => Effect.Effect<
+  PutSettingResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutSettingRequest,
   output: PutSettingResponse,
   errors: [],
@@ -345,7 +382,13 @@ export const PatchSettingResponse = Schema.Struct({
   ).pipe(T.JsonName("validation_override_mitigation_action")),
 }) as unknown as Schema.Schema<PatchSettingResponse>;
 
-export const patchSetting = API.make(() => ({
+export const patchSetting: (
+  input: PatchSettingRequest,
+) => Effect.Effect<
+  PatchSettingResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchSettingRequest,
   output: PatchSettingResponse,
   errors: [],
@@ -385,7 +428,13 @@ export const GetSettingOperationResponse = Schema.Struct({
   operationId: Schema.String.pipe(T.JsonName("operation_id")),
 }) as unknown as Schema.Schema<GetSettingOperationResponse>;
 
-export const getSettingOperation = API.make(() => ({
+export const getSettingOperation: (
+  input: GetSettingOperationRequest,
+) => Effect.Effect<
+  GetSettingOperationResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetSettingOperationRequest,
   output: GetSettingOperationResponse,
   errors: [],
@@ -429,7 +478,13 @@ export const PutSettingOperationResponse = Schema.Struct({
   operationId: Schema.String.pipe(T.JsonName("operation_id")),
 }) as unknown as Schema.Schema<PutSettingOperationResponse>;
 
-export const putSettingOperation = API.make(() => ({
+export const putSettingOperation: (
+  input: PutSettingOperationRequest,
+) => Effect.Effect<
+  PutSettingOperationResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutSettingOperationRequest,
   output: PutSettingOperationResponse,
   errors: [],
@@ -460,7 +515,13 @@ export const DeleteSettingOperationResponse = Schema.Struct({
   operationId: Schema.optional(Schema.String).pipe(T.JsonName("operation_id")),
 }) as unknown as Schema.Schema<DeleteSettingOperationResponse>;
 
-export const deleteSettingOperation = API.make(() => ({
+export const deleteSettingOperation: (
+  input: DeleteSettingOperationRequest,
+) => Effect.Effect<
+  DeleteSettingOperationResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteSettingOperationRequest,
   output: DeleteSettingOperationResponse,
   errors: [],
@@ -489,7 +550,13 @@ export const BulkPatchSettingOperationsResponse = Schema.Struct(
   {},
 ) as unknown as Schema.Schema<BulkPatchSettingOperationsResponse>;
 
-export const bulkPatchSettingOperations = API.make(() => ({
+export const bulkPatchSettingOperations: (
+  input: BulkPatchSettingOperationsRequest,
+) => Effect.Effect<
+  BulkPatchSettingOperationsResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: BulkPatchSettingOperationsRequest,
   output: BulkPatchSettingOperationsResponse,
   errors: [],

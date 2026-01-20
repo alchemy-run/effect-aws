@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -728,7 +729,13 @@ export const DiscoverAllCloudIntegrationResponse = Schema.Struct({
   success: Schema.Boolean,
 }) as unknown as Schema.Schema<DiscoverAllCloudIntegrationResponse>;
 
-export const discoverAllCloudIntegration = API.make(() => ({
+export const discoverAllCloudIntegration: (
+  input: DiscoverAllCloudIntegrationRequest,
+) => Effect.Effect<
+  DiscoverAllCloudIntegrationResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DiscoverAllCloudIntegrationRequest,
   output: DiscoverAllCloudIntegrationResponse,
   errors: [],
@@ -791,7 +798,13 @@ export const GetCatalogSyncResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<GetCatalogSyncResponse>;
 
-export const getCatalogSync = API.make(() => ({
+export const getCatalogSync: (
+  input: GetCatalogSyncRequest,
+) => Effect.Effect<
+  GetCatalogSyncResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetCatalogSyncRequest,
   output: GetCatalogSyncResponse,
   errors: [],
@@ -869,7 +882,13 @@ export const CreateCatalogSyncResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<CreateCatalogSyncResponse>;
 
-export const createCatalogSync = API.make(() => ({
+export const createCatalogSync: (
+  input: CreateCatalogSyncRequest,
+) => Effect.Effect<
+  CreateCatalogSyncResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateCatalogSyncRequest,
   output: CreateCatalogSyncResponse,
   errors: [],
@@ -943,7 +962,13 @@ export const UpdateCatalogSyncResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<UpdateCatalogSyncResponse>;
 
-export const updateCatalogSync = API.make(() => ({
+export const updateCatalogSync: (
+  input: UpdateCatalogSyncRequest,
+) => Effect.Effect<
+  UpdateCatalogSyncResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateCatalogSyncRequest,
   output: UpdateCatalogSyncResponse,
   errors: [],
@@ -1017,7 +1042,13 @@ export const PatchCatalogSyncResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<PatchCatalogSyncResponse>;
 
-export const patchCatalogSync = API.make(() => ({
+export const patchCatalogSync: (
+  input: PatchCatalogSyncRequest,
+) => Effect.Effect<
+  PatchCatalogSyncResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchCatalogSyncRequest,
   output: PatchCatalogSyncResponse,
   errors: [],
@@ -1052,7 +1083,13 @@ export const DeleteCatalogSyncResponse = Schema.Struct({
   id: Schema.String,
 }) as unknown as Schema.Schema<DeleteCatalogSyncResponse>;
 
-export const deleteCatalogSync = API.make(() => ({
+export const deleteCatalogSync: (
+  input: DeleteCatalogSyncRequest,
+) => Effect.Effect<
+  DeleteCatalogSyncResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteCatalogSyncRequest,
   output: DeleteCatalogSyncResponse,
   errors: [],
@@ -1078,7 +1115,13 @@ export type RefreshCatalogSyncResponse = string;
 export const RefreshCatalogSyncResponse =
   Schema.String as unknown as Schema.Schema<RefreshCatalogSyncResponse>;
 
-export const refreshCatalogSync = API.make(() => ({
+export const refreshCatalogSync: (
+  input: RefreshCatalogSyncRequest,
+) => Effect.Effect<
+  RefreshCatalogSyncResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: RefreshCatalogSyncRequest,
   output: RefreshCatalogSyncResponse,
   errors: [],
@@ -1265,7 +1308,13 @@ export const GetCloudIntegrationResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<GetCloudIntegrationResponse>;
 
-export const getCloudIntegration = API.make(() => ({
+export const getCloudIntegration: (
+  input: GetCloudIntegrationRequest,
+) => Effect.Effect<
+  GetCloudIntegrationResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetCloudIntegrationRequest,
   output: GetCloudIntegrationResponse,
   errors: [],
@@ -1457,7 +1506,13 @@ export const CreateCloudIntegrationResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<CreateCloudIntegrationResponse>;
 
-export const createCloudIntegration = API.make(() => ({
+export const createCloudIntegration: (
+  input: CreateCloudIntegrationRequest,
+) => Effect.Effect<
+  CreateCloudIntegrationResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateCloudIntegrationRequest,
   output: CreateCloudIntegrationResponse,
   errors: [],
@@ -1668,7 +1723,13 @@ export const UpdateCloudIntegrationResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<UpdateCloudIntegrationResponse>;
 
-export const updateCloudIntegration = API.make(() => ({
+export const updateCloudIntegration: (
+  input: UpdateCloudIntegrationRequest,
+) => Effect.Effect<
+  UpdateCloudIntegrationResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateCloudIntegrationRequest,
   output: UpdateCloudIntegrationResponse,
   errors: [],
@@ -1879,7 +1940,13 @@ export const PatchCloudIntegrationResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<PatchCloudIntegrationResponse>;
 
-export const patchCloudIntegration = API.make(() => ({
+export const patchCloudIntegration: (
+  input: PatchCloudIntegrationRequest,
+) => Effect.Effect<
+  PatchCloudIntegrationResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchCloudIntegrationRequest,
   output: PatchCloudIntegrationResponse,
   errors: [],
@@ -1908,7 +1975,13 @@ export const DeleteCloudIntegrationResponse = Schema.Struct({
   id: Schema.String,
 }) as unknown as Schema.Schema<DeleteCloudIntegrationResponse>;
 
-export const deleteCloudIntegration = API.make(() => ({
+export const deleteCloudIntegration: (
+  input: DeleteCloudIntegrationRequest,
+) => Effect.Effect<
+  DeleteCloudIntegrationResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteCloudIntegrationRequest,
   output: DeleteCloudIntegrationResponse,
   errors: [],
@@ -2627,7 +2700,13 @@ export const DiscoverCloudIntegrationResponse = Schema.Struct({
   success: Schema.Boolean,
 }) as unknown as Schema.Schema<DiscoverCloudIntegrationResponse>;
 
-export const discoverCloudIntegration = API.make(() => ({
+export const discoverCloudIntegration: (
+  input: DiscoverCloudIntegrationRequest,
+) => Effect.Effect<
+  DiscoverCloudIntegrationResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DiscoverCloudIntegrationRequest,
   output: DiscoverCloudIntegrationResponse,
   errors: [],
@@ -3012,7 +3091,13 @@ export const GetOnRampResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<GetOnRampResponse>;
 
-export const getOnRamp = API.make(() => ({
+export const getOnRamp: (
+  input: GetOnRampRequest,
+) => Effect.Effect<
+  GetOnRampResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetOnRampRequest,
   output: GetOnRampResponse,
   errors: [],
@@ -3438,7 +3523,13 @@ export const CreateOnRampResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<CreateOnRampResponse>;
 
-export const createOnRamp = API.make(() => ({
+export const createOnRamp: (
+  input: CreateOnRampRequest,
+) => Effect.Effect<
+  CreateOnRampResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateOnRampRequest,
   output: CreateOnRampResponse,
   errors: [],
@@ -3842,7 +3933,13 @@ export const UpdateOnRampResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<UpdateOnRampResponse>;
 
-export const updateOnRamp = API.make(() => ({
+export const updateOnRamp: (
+  input: UpdateOnRampRequest,
+) => Effect.Effect<
+  UpdateOnRampResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateOnRampRequest,
   output: UpdateOnRampResponse,
   errors: [],
@@ -4246,7 +4343,13 @@ export const PatchOnRampResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<PatchOnRampResponse>;
 
-export const patchOnRamp = API.make(() => ({
+export const patchOnRamp: (
+  input: PatchOnRampRequest,
+) => Effect.Effect<
+  PatchOnRampResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchOnRampRequest,
   output: PatchOnRampResponse,
   errors: [],
@@ -4282,7 +4385,13 @@ export const DeleteOnRampResponse = Schema.Struct({
   id: Schema.String,
 }) as unknown as Schema.Schema<DeleteOnRampResponse>;
 
-export const deleteOnRamp = API.make(() => ({
+export const deleteOnRamp: (
+  input: DeleteOnRampRequest,
+) => Effect.Effect<
+  DeleteOnRampResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteOnRampRequest,
   output: DeleteOnRampResponse,
   errors: [],
@@ -4997,7 +5106,13 @@ export const ApplyOnRampResponse = Schema.Struct({
   success: Schema.Boolean,
 }) as unknown as Schema.Schema<ApplyOnRampResponse>;
 
-export const applyOnRamp = API.make(() => ({
+export const applyOnRamp: (
+  input: ApplyOnRampRequest,
+) => Effect.Effect<
+  ApplyOnRampResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: ApplyOnRampRequest,
   output: ApplyOnRampResponse,
   errors: [],
@@ -5023,7 +5138,13 @@ export type ExportOnRampResponse = unknown;
 export const ExportOnRampResponse =
   Schema.Unknown as unknown as Schema.Schema<ExportOnRampResponse>;
 
-export const exportOnRamp = API.make(() => ({
+export const exportOnRamp: (
+  input: ExportOnRampRequest,
+) => Effect.Effect<
+  ExportOnRampResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: ExportOnRampRequest,
   output: ExportOnRampResponse,
   errors: [],
@@ -5738,7 +5859,13 @@ export const PlanOnRampResponse = Schema.Struct({
   success: Schema.Boolean,
 }) as unknown as Schema.Schema<PlanOnRampResponse>;
 
-export const planOnRamp = API.make(() => ({
+export const planOnRamp: (
+  input: PlanOnRampRequest,
+) => Effect.Effect<
+  PlanOnRampResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PlanOnRampRequest,
   output: PlanOnRampResponse,
   errors: [],
@@ -5769,7 +5896,13 @@ export const ListOnRampAddressSpacesResponse = Schema.Struct({
   prefixes: Schema.Array(Schema.String),
 }) as unknown as Schema.Schema<ListOnRampAddressSpacesResponse>;
 
-export const listOnRampAddressSpaces = API.make(() => ({
+export const listOnRampAddressSpaces: (
+  input: ListOnRampAddressSpacesRequest,
+) => Effect.Effect<
+  ListOnRampAddressSpacesResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: ListOnRampAddressSpacesRequest,
   output: ListOnRampAddressSpacesResponse,
   errors: [],
@@ -5800,7 +5933,13 @@ export const PutOnRampAddressSpaceResponse = Schema.Struct({
   prefixes: Schema.Array(Schema.String),
 }) as unknown as Schema.Schema<PutOnRampAddressSpaceResponse>;
 
-export const putOnRampAddressSpace = API.make(() => ({
+export const putOnRampAddressSpace: (
+  input: PutOnRampAddressSpaceRequest,
+) => Effect.Effect<
+  PutOnRampAddressSpaceResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutOnRampAddressSpaceRequest,
   output: PutOnRampAddressSpaceResponse,
   errors: [],
@@ -5831,7 +5970,13 @@ export const PatchOnRampAddressSpaceResponse = Schema.Struct({
   prefixes: Schema.Array(Schema.String),
 }) as unknown as Schema.Schema<PatchOnRampAddressSpaceResponse>;
 
-export const patchOnRampAddressSpace = API.make(() => ({
+export const patchOnRampAddressSpace: (
+  input: PatchOnRampAddressSpaceRequest,
+) => Effect.Effect<
+  PatchOnRampAddressSpaceResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchOnRampAddressSpaceRequest,
   output: PatchOnRampAddressSpaceResponse,
   errors: [],
@@ -5863,7 +6008,13 @@ export type PolicyPreviewResourceResponse = string;
 export const PolicyPreviewResourceResponse =
   Schema.String as unknown as Schema.Schema<PolicyPreviewResourceResponse>;
 
-export const policyPreviewResource = API.make(() => ({
+export const policyPreviewResource: (
+  input: PolicyPreviewResourceRequest,
+) => Effect.Effect<
+  PolicyPreviewResourceResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PolicyPreviewResourceRequest,
   output: PolicyPreviewResourceResponse,
   errors: [],
@@ -6668,7 +6819,13 @@ export const GetResourceResponse = Schema.Struct({
   ).pipe(T.JsonName("managed_by")),
 }) as unknown as Schema.Schema<GetResourceResponse>;
 
-export const getResource = API.make(() => ({
+export const getResource: (
+  input: GetResourceRequest,
+) => Effect.Effect<
+  GetResourceResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetResourceRequest,
   output: GetResourceResponse,
   errors: [],
@@ -6846,7 +7003,13 @@ export type ExportResourceResponse = unknown;
 export const ExportResourceResponse =
   Schema.Unknown as unknown as Schema.Schema<ExportResourceResponse>;
 
-export const exportResource = API.make(() => ({
+export const exportResource: (
+  input: ExportResourceRequest,
+) => Effect.Effect<
+  ExportResourceResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: ExportResourceRequest,
   output: ExportResourceResponse,
   errors: [],
@@ -6903,7 +7066,13 @@ export const InitialSetupCloudIntegrationResponse = Schema.Union(
   }),
 ) as unknown as Schema.Schema<InitialSetupCloudIntegrationResponse>;
 
-export const initialSetupCloudIntegration = API.make(() => ({
+export const initialSetupCloudIntegration: (
+  input: InitialSetupCloudIntegrationRequest,
+) => Effect.Effect<
+  InitialSetupCloudIntegrationResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: InitialSetupCloudIntegrationRequest,
   output: InitialSetupCloudIntegrationResponse,
   errors: [],

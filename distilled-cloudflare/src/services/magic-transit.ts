@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -51,7 +52,13 @@ export type CreateAppResponse = unknown;
 export const CreateAppResponse =
   Schema.Unknown as unknown as Schema.Schema<CreateAppResponse>;
 
-export const createApp = API.make(() => ({
+export const createApp: (
+  input: CreateAppRequest,
+) => Effect.Effect<
+  CreateAppResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateAppRequest,
   output: CreateAppResponse,
   errors: [],
@@ -92,7 +99,13 @@ export type UpdateAppResponse = unknown;
 export const UpdateAppResponse =
   Schema.Unknown as unknown as Schema.Schema<UpdateAppResponse>;
 
-export const updateApp = API.make(() => ({
+export const updateApp: (
+  input: UpdateAppRequest,
+) => Effect.Effect<
+  UpdateAppResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateAppRequest,
   output: UpdateAppResponse,
   errors: [],
@@ -133,7 +146,13 @@ export type PatchAppResponse = unknown;
 export const PatchAppResponse =
   Schema.Unknown as unknown as Schema.Schema<PatchAppResponse>;
 
-export const patchApp = API.make(() => ({
+export const patchApp: (
+  input: PatchAppRequest,
+) => Effect.Effect<
+  PatchAppResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchAppRequest,
   output: PatchAppResponse,
   errors: [],
@@ -160,7 +179,13 @@ export type DeleteAppResponse = unknown;
 export const DeleteAppResponse =
   Schema.Unknown as unknown as Schema.Schema<DeleteAppResponse>;
 
-export const deleteApp = API.make(() => ({
+export const deleteApp: (
+  input: DeleteAppRequest,
+) => Effect.Effect<
+  DeleteAppResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteAppRequest,
   output: DeleteAppResponse,
   errors: [],
@@ -243,7 +268,13 @@ export const GetCfInterconnectResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<GetCfInterconnectResponse>;
 
-export const getCfInterconnect = API.make(() => ({
+export const getCfInterconnect: (
+  input: GetCfInterconnectRequest,
+) => Effect.Effect<
+  GetCfInterconnectResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetCfInterconnectRequest,
   output: GetCfInterconnectResponse,
   errors: [],
@@ -324,7 +355,13 @@ export const ListCfInterconnectsResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<ListCfInterconnectsResponse>;
 
-export const listCfInterconnects = API.make(() => ({
+export const listCfInterconnects: (
+  input: ListCfInterconnectsRequest,
+) => Effect.Effect<
+  ListCfInterconnectsResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: ListCfInterconnectsRequest,
   output: ListCfInterconnectsResponse,
   errors: [],
@@ -438,7 +475,13 @@ export const PutCfInterconnectResponse = Schema.Struct({
   ).pipe(T.JsonName("modified_interconnect")),
 }) as unknown as Schema.Schema<PutCfInterconnectResponse>;
 
-export const putCfInterconnect = API.make(() => ({
+export const putCfInterconnect: (
+  input: PutCfInterconnectRequest,
+) => Effect.Effect<
+  PutCfInterconnectResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutCfInterconnectRequest,
   output: PutCfInterconnectResponse,
   errors: [],
@@ -505,7 +548,13 @@ export const GetConnectorResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<GetConnectorResponse>;
 
-export const getConnector = API.make(() => ({
+export const getConnector: (
+  input: GetConnectorRequest,
+) => Effect.Effect<
+  GetConnectorResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetConnectorRequest,
   output: GetConnectorResponse,
   errors: [],
@@ -590,7 +639,13 @@ export const CreateConnectorResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<CreateConnectorResponse>;
 
-export const createConnector = API.make(() => ({
+export const createConnector: (
+  input: CreateConnectorRequest,
+) => Effect.Effect<
+  CreateConnectorResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateConnectorRequest,
   output: CreateConnectorResponse,
   errors: [],
@@ -672,7 +727,13 @@ export const UpdateConnectorResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<UpdateConnectorResponse>;
 
-export const updateConnector = API.make(() => ({
+export const updateConnector: (
+  input: UpdateConnectorRequest,
+) => Effect.Effect<
+  UpdateConnectorResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateConnectorRequest,
   output: UpdateConnectorResponse,
   errors: [],
@@ -754,7 +815,13 @@ export const PatchConnectorResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<PatchConnectorResponse>;
 
-export const patchConnector = API.make(() => ({
+export const patchConnector: (
+  input: PatchConnectorRequest,
+) => Effect.Effect<
+  PatchConnectorResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchConnectorRequest,
   output: PatchConnectorResponse,
   errors: [],
@@ -817,7 +884,13 @@ export const DeleteConnectorResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<DeleteConnectorResponse>;
 
-export const deleteConnector = API.make(() => ({
+export const deleteConnector: (
+  input: DeleteConnectorRequest,
+) => Effect.Effect<
+  DeleteConnectorResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteConnectorRequest,
   output: DeleteConnectorResponse,
   errors: [],
@@ -927,7 +1000,13 @@ export const GetConnectorEventResponse = Schema.Struct({
   t: Schema.Number,
 }) as unknown as Schema.Schema<GetConnectorEventResponse>;
 
-export const getConnectorEvent = API.make(() => ({
+export const getConnectorEvent: (
+  input: GetConnectorEventRequest,
+) => Effect.Effect<
+  GetConnectorEventResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetConnectorEventRequest,
   output: GetConnectorEventResponse,
   errors: [],
@@ -983,7 +1062,13 @@ export const ListConnectorEventsResponse = Schema.Struct({
   cursor: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<ListConnectorEventsResponse>;
 
-export const listConnectorEvents = API.make(() => ({
+export const listConnectorEvents: (
+  input: ListConnectorEventsRequest,
+) => Effect.Effect<
+  ListConnectorEventsResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: ListConnectorEventsRequest,
   output: ListConnectorEventsResponse,
   errors: [],
@@ -1095,7 +1180,13 @@ export const ListConnectorEventLatestsResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<ListConnectorEventLatestsResponse>;
 
-export const listConnectorEventLatests = API.make(() => ({
+export const listConnectorEventLatests: (
+  input: ListConnectorEventLatestsRequest,
+) => Effect.Effect<
+  ListConnectorEventLatestsResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: ListConnectorEventLatestsRequest,
   output: ListConnectorEventLatestsResponse,
   errors: [],
@@ -2169,7 +2260,13 @@ export const GetConnectorSnapshotResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<GetConnectorSnapshotResponse>;
 
-export const getConnectorSnapshot = API.make(() => ({
+export const getConnectorSnapshot: (
+  input: GetConnectorSnapshotRequest,
+) => Effect.Effect<
+  GetConnectorSnapshotResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetConnectorSnapshotRequest,
   output: GetConnectorSnapshotResponse,
   errors: [],
@@ -2220,7 +2317,13 @@ export const ListConnectorSnapshotsResponse = Schema.Struct({
   cursor: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<ListConnectorSnapshotsResponse>;
 
-export const listConnectorSnapshots = API.make(() => ({
+export const listConnectorSnapshots: (
+  input: ListConnectorSnapshotsRequest,
+) => Effect.Effect<
+  ListConnectorSnapshotsResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: ListConnectorSnapshotsRequest,
   output: ListConnectorSnapshotsResponse,
   errors: [],
@@ -3148,7 +3251,13 @@ export const ListConnectorSnapshotLatestsResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<ListConnectorSnapshotLatestsResponse>;
 
-export const listConnectorSnapshotLatests = API.make(() => ({
+export const listConnectorSnapshotLatests: (
+  input: ListConnectorSnapshotLatestsRequest,
+) => Effect.Effect<
+  ListConnectorSnapshotLatestsResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: ListConnectorSnapshotLatestsRequest,
   output: ListConnectorSnapshotLatestsResponse,
   errors: [],
@@ -3200,7 +3309,13 @@ export const PskGenerateIpsecTunnelResponse = Schema.Struct({
   ).pipe(T.JsonName("psk_metadata")),
 }) as unknown as Schema.Schema<PskGenerateIpsecTunnelResponse>;
 
-export const pskGenerateIpsecTunnel = API.make(() => ({
+export const pskGenerateIpsecTunnel: (
+  input: PskGenerateIpsecTunnelRequest,
+) => Effect.Effect<
+  PskGenerateIpsecTunnelResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PskGenerateIpsecTunnelRequest,
   output: PskGenerateIpsecTunnelResponse,
   errors: [],
@@ -3344,7 +3459,13 @@ export const GetGreTunnelResponse = Schema.Struct({
   ).pipe(T.JsonName("gre_tunnel")),
 }) as unknown as Schema.Schema<GetGreTunnelResponse>;
 
-export const getGreTunnel = API.make(() => ({
+export const getGreTunnel: (
+  input: GetGreTunnelRequest,
+) => Effect.Effect<
+  GetGreTunnelResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetGreTunnelRequest,
   output: GetGreTunnelResponse,
   errors: [],
@@ -3483,7 +3604,13 @@ export const ListGreTunnelsResponse = Schema.Struct({
   ).pipe(T.JsonName("gre_tunnels")),
 }) as unknown as Schema.Schema<ListGreTunnelsResponse>;
 
-export const listGreTunnels = API.make(() => ({
+export const listGreTunnels: (
+  input: ListGreTunnelsRequest,
+) => Effect.Effect<
+  ListGreTunnelsResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: ListGreTunnelsRequest,
   output: ListGreTunnelsResponse,
   errors: [],
@@ -3688,7 +3815,13 @@ export const CreateGreTunnelResponse = Schema.Struct({
   ttl: Schema.optional(Schema.Number),
 }) as unknown as Schema.Schema<CreateGreTunnelResponse>;
 
-export const createGreTunnel = API.make(() => ({
+export const createGreTunnel: (
+  input: CreateGreTunnelRequest,
+) => Effect.Effect<
+  CreateGreTunnelResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateGreTunnelRequest,
   output: CreateGreTunnelResponse,
   errors: [],
@@ -3889,7 +4022,13 @@ export const UpdateGreTunnelResponse = Schema.Struct({
   ).pipe(T.JsonName("modified_gre_tunnel")),
 }) as unknown as Schema.Schema<UpdateGreTunnelResponse>;
 
-export const updateGreTunnel = API.make(() => ({
+export const updateGreTunnel: (
+  input: UpdateGreTunnelRequest,
+) => Effect.Effect<
+  UpdateGreTunnelResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateGreTunnelRequest,
   output: UpdateGreTunnelResponse,
   errors: [],
@@ -4031,7 +4170,13 @@ export const DeleteGreTunnelResponse = Schema.Struct({
   ).pipe(T.JsonName("deleted_gre_tunnel")),
 }) as unknown as Schema.Schema<DeleteGreTunnelResponse>;
 
-export const deleteGreTunnel = API.make(() => ({
+export const deleteGreTunnel: (
+  input: DeleteGreTunnelRequest,
+) => Effect.Effect<
+  DeleteGreTunnelResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteGreTunnelRequest,
   output: DeleteGreTunnelResponse,
   errors: [],
@@ -4187,7 +4332,13 @@ export const GetIpsecTunnelResponse = Schema.Struct({
   ).pipe(T.JsonName("ipsec_tunnel")),
 }) as unknown as Schema.Schema<GetIpsecTunnelResponse>;
 
-export const getIpsecTunnel = API.make(() => ({
+export const getIpsecTunnel: (
+  input: GetIpsecTunnelRequest,
+) => Effect.Effect<
+  GetIpsecTunnelResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetIpsecTunnelRequest,
   output: GetIpsecTunnelResponse,
   errors: [],
@@ -4340,7 +4491,13 @@ export const ListIpsecTunnelsResponse = Schema.Struct({
   ).pipe(T.JsonName("ipsec_tunnels")),
 }) as unknown as Schema.Schema<ListIpsecTunnelsResponse>;
 
-export const listIpsecTunnels = API.make(() => ({
+export const listIpsecTunnels: (
+  input: ListIpsecTunnelsRequest,
+) => Effect.Effect<
+  ListIpsecTunnelsResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: ListIpsecTunnelsRequest,
   output: ListIpsecTunnelsResponse,
   errors: [],
@@ -4569,7 +4726,13 @@ export const CreateIpsecTunnelResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<CreateIpsecTunnelResponse>;
 
-export const createIpsecTunnel = API.make(() => ({
+export const createIpsecTunnel: (
+  input: CreateIpsecTunnelRequest,
+) => Effect.Effect<
+  CreateIpsecTunnelResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateIpsecTunnelRequest,
   output: CreateIpsecTunnelResponse,
   errors: [],
@@ -4795,7 +4958,13 @@ export const UpdateIpsecTunnelResponse = Schema.Struct({
   ).pipe(T.JsonName("modified_ipsec_tunnel")),
 }) as unknown as Schema.Schema<UpdateIpsecTunnelResponse>;
 
-export const updateIpsecTunnel = API.make(() => ({
+export const updateIpsecTunnel: (
+  input: UpdateIpsecTunnelRequest,
+) => Effect.Effect<
+  UpdateIpsecTunnelResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateIpsecTunnelRequest,
   output: UpdateIpsecTunnelResponse,
   errors: [],
@@ -4949,7 +5118,13 @@ export const DeleteIpsecTunnelResponse = Schema.Struct({
   ).pipe(T.JsonName("deleted_ipsec_tunnel")),
 }) as unknown as Schema.Schema<DeleteIpsecTunnelResponse>;
 
-export const deleteIpsecTunnel = API.make(() => ({
+export const deleteIpsecTunnel: (
+  input: DeleteIpsecTunnelRequest,
+) => Effect.Effect<
+  DeleteIpsecTunnelResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteIpsecTunnelRequest,
   output: DeleteIpsecTunnelResponse,
   errors: [],
@@ -5095,7 +5270,13 @@ export const GetPcapResponse = Schema.Union(
   }),
 ) as unknown as Schema.Schema<GetPcapResponse>;
 
-export const getPcap = API.make(() => ({
+export const getPcap: (
+  input: GetPcapRequest,
+) => Effect.Effect<
+  GetPcapResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetPcapRequest,
   output: GetPcapResponse,
   errors: [],
@@ -5230,7 +5411,13 @@ export const CreatePcapResponse = Schema.Union(
   }),
 ) as unknown as Schema.Schema<CreatePcapResponse>;
 
-export const createPcap = API.make(() => ({
+export const createPcap: (
+  input: CreatePcapRequest,
+) => Effect.Effect<
+  CreatePcapResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreatePcapRequest,
   output: CreatePcapResponse,
   errors: [],
@@ -5254,7 +5441,13 @@ export type StopPcapResponse = unknown;
 export const StopPcapResponse =
   Schema.Unknown as unknown as Schema.Schema<StopPcapResponse>;
 
-export const stopPcap = API.make(() => ({
+export const stopPcap: (
+  input: StopPcapRequest,
+) => Effect.Effect<
+  StopPcapResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: StopPcapRequest,
   output: StopPcapResponse,
   errors: [],
@@ -5285,7 +5478,13 @@ export type GetPcapDownloadResponse = unknown;
 export const GetPcapDownloadResponse =
   Schema.Unknown as unknown as Schema.Schema<GetPcapDownloadResponse>;
 
-export const getPcapDownload = API.make(() => ({
+export const getPcapDownload: (
+  input: GetPcapDownloadRequest,
+) => Effect.Effect<
+  GetPcapDownloadResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetPcapDownloadRequest,
   output: GetPcapDownloadResponse,
   errors: [],
@@ -5333,7 +5532,13 @@ export const CreatePcapOwnershipResponse = Schema.Struct({
   validated: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<CreatePcapOwnershipResponse>;
 
-export const createPcapOwnership = API.make(() => ({
+export const createPcapOwnership: (
+  input: CreatePcapOwnershipRequest,
+) => Effect.Effect<
+  CreatePcapOwnershipResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreatePcapOwnershipRequest,
   output: CreatePcapOwnershipResponse,
   errors: [],
@@ -5360,7 +5565,13 @@ export type DeletePcapOwnershipResponse = unknown;
 export const DeletePcapOwnershipResponse =
   Schema.Unknown as unknown as Schema.Schema<DeletePcapOwnershipResponse>;
 
-export const deletePcapOwnership = API.make(() => ({
+export const deletePcapOwnership: (
+  input: DeletePcapOwnershipRequest,
+) => Effect.Effect<
+  DeletePcapOwnershipResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeletePcapOwnershipRequest,
   output: DeletePcapOwnershipResponse,
   errors: [],
@@ -5410,7 +5621,13 @@ export const ValidatePcapOwnershipResponse = Schema.Struct({
   validated: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<ValidatePcapOwnershipResponse>;
 
-export const validatePcapOwnership = API.make(() => ({
+export const validatePcapOwnership: (
+  input: ValidatePcapOwnershipRequest,
+) => Effect.Effect<
+  ValidatePcapOwnershipResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: ValidatePcapOwnershipRequest,
   output: ValidatePcapOwnershipResponse,
   errors: [],
@@ -5500,7 +5717,13 @@ export const BulkPutCfInterconnectsResponse = Schema.Struct({
   ).pipe(T.JsonName("modified_interconnects")),
 }) as unknown as Schema.Schema<BulkPutCfInterconnectsResponse>;
 
-export const bulkPutCfInterconnects = API.make(() => ({
+export const bulkPutCfInterconnects: (
+  input: BulkPutCfInterconnectsRequest,
+) => Effect.Effect<
+  BulkPutCfInterconnectsResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: BulkPutCfInterconnectsRequest,
   output: BulkPutCfInterconnectsResponse,
   errors: [],
@@ -5648,7 +5871,13 @@ export const BulkPutGreTunnelsResponse = Schema.Struct({
   ).pipe(T.JsonName("modified_gre_tunnels")),
 }) as unknown as Schema.Schema<BulkPutGreTunnelsResponse>;
 
-export const bulkPutGreTunnels = API.make(() => ({
+export const bulkPutGreTunnels: (
+  input: BulkPutGreTunnelsRequest,
+) => Effect.Effect<
+  BulkPutGreTunnelsResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: BulkPutGreTunnelsRequest,
   output: BulkPutGreTunnelsResponse,
   errors: [],
@@ -5810,7 +6039,13 @@ export const BulkPutIpsecTunnelsResponse = Schema.Struct({
   ).pipe(T.JsonName("modified_ipsec_tunnels")),
 }) as unknown as Schema.Schema<BulkPutIpsecTunnelsResponse>;
 
-export const bulkPutIpsecTunnels = API.make(() => ({
+export const bulkPutIpsecTunnels: (
+  input: BulkPutIpsecTunnelsRequest,
+) => Effect.Effect<
+  BulkPutIpsecTunnelsResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: BulkPutIpsecTunnelsRequest,
   output: BulkPutIpsecTunnelsResponse,
   errors: [],
@@ -5890,7 +6125,13 @@ export const BulkPutRoutesResponse = Schema.Struct({
   ).pipe(T.JsonName("modified_routes")),
 }) as unknown as Schema.Schema<BulkPutRoutesResponse>;
 
-export const bulkPutRoutes = API.make(() => ({
+export const bulkPutRoutes: (
+  input: BulkPutRoutesRequest,
+) => Effect.Effect<
+  BulkPutRoutesResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: BulkPutRoutesRequest,
   output: BulkPutRoutesResponse,
   errors: [],
@@ -5948,7 +6189,13 @@ export const GetRouteResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<GetRouteResponse>;
 
-export const getRoute = API.make(() => ({
+export const getRoute: (
+  input: GetRouteRequest,
+) => Effect.Effect<
+  GetRouteResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetRouteRequest,
   output: GetRouteResponse,
   errors: [],
@@ -6001,7 +6248,13 @@ export const ListRoutesResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<ListRoutesResponse>;
 
-export const listRoutes = API.make(() => ({
+export const listRoutes: (
+  input: ListRoutesRequest,
+) => Effect.Effect<
+  ListRoutesResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: ListRoutesRequest,
   output: ListRoutesResponse,
   errors: [],
@@ -6087,7 +6340,13 @@ export const CreateRouteResponse = Schema.Struct({
   weight: Schema.optional(Schema.Number),
 }) as unknown as Schema.Schema<CreateRouteResponse>;
 
-export const createRoute = API.make(() => ({
+export const createRoute: (
+  input: CreateRouteRequest,
+) => Effect.Effect<
+  CreateRouteResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateRouteRequest,
   output: CreateRouteResponse,
   errors: [],
@@ -6170,7 +6429,13 @@ export const UpdateRouteResponse = Schema.Struct({
   ).pipe(T.JsonName("modified_route")),
 }) as unknown as Schema.Schema<UpdateRouteResponse>;
 
-export const updateRoute = API.make(() => ({
+export const updateRoute: (
+  input: UpdateRouteRequest,
+) => Effect.Effect<
+  UpdateRouteResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateRouteRequest,
   output: UpdateRouteResponse,
   errors: [],
@@ -6226,7 +6491,13 @@ export const DeleteRouteResponse = Schema.Struct({
   ).pipe(T.JsonName("deleted_route")),
 }) as unknown as Schema.Schema<DeleteRouteResponse>;
 
-export const deleteRoute = API.make(() => ({
+export const deleteRoute: (
+  input: DeleteRouteRequest,
+) => Effect.Effect<
+  DeleteRouteResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteRouteRequest,
   output: DeleteRouteResponse,
   errors: [],
@@ -6281,7 +6552,13 @@ export const EmptyRouteResponse = Schema.Struct({
   ).pipe(T.JsonName("deleted_routes")),
 }) as unknown as Schema.Schema<EmptyRouteResponse>;
 
-export const emptyRoute = API.make(() => ({
+export const emptyRoute: (
+  input: EmptyRouteRequest,
+) => Effect.Effect<
+  EmptyRouteResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: EmptyRouteRequest,
   output: EmptyRouteResponse,
   errors: [],
@@ -6345,7 +6622,13 @@ export const GetSiteResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<GetSiteResponse>;
 
-export const getSite = API.make(() => ({
+export const getSite: (
+  input: GetSiteRequest,
+) => Effect.Effect<
+  GetSiteResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetSiteRequest,
   output: GetSiteResponse,
   errors: [],
@@ -6420,7 +6703,13 @@ export const CreateSiteResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<CreateSiteResponse>;
 
-export const createSite = API.make(() => ({
+export const createSite: (
+  input: CreateSiteRequest,
+) => Effect.Effect<
+  CreateSiteResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateSiteRequest,
   output: CreateSiteResponse,
   errors: [],
@@ -6497,7 +6786,13 @@ export const UpdateSiteResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<UpdateSiteResponse>;
 
-export const updateSite = API.make(() => ({
+export const updateSite: (
+  input: UpdateSiteRequest,
+) => Effect.Effect<
+  UpdateSiteResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateSiteRequest,
   output: UpdateSiteResponse,
   errors: [],
@@ -6574,7 +6869,13 @@ export const PatchSiteResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<PatchSiteResponse>;
 
-export const patchSite = API.make(() => ({
+export const patchSite: (
+  input: PatchSiteRequest,
+) => Effect.Effect<
+  PatchSiteResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchSiteRequest,
   output: PatchSiteResponse,
   errors: [],
@@ -6629,7 +6930,13 @@ export const DeleteSiteResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<DeleteSiteResponse>;
 
-export const deleteSite = API.make(() => ({
+export const deleteSite: (
+  input: DeleteSiteRequest,
+) => Effect.Effect<
+  DeleteSiteResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteSiteRequest,
   output: DeleteSiteResponse,
   errors: [],
@@ -6720,7 +7027,13 @@ export const GetSiteAclResponse = Schema.Struct({
   unidirectional: Schema.optional(Schema.Boolean),
 }) as unknown as Schema.Schema<GetSiteAclResponse>;
 
-export const getSiteAcl = API.make(() => ({
+export const getSiteAcl: (
+  input: GetSiteAclRequest,
+) => Effect.Effect<
+  GetSiteAclResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetSiteAclRequest,
   output: GetSiteAclResponse,
   errors: [],
@@ -6858,7 +7171,13 @@ export const CreateSiteAclResponse = Schema.Struct({
   unidirectional: Schema.optional(Schema.Boolean),
 }) as unknown as Schema.Schema<CreateSiteAclResponse>;
 
-export const createSiteAcl = API.make(() => ({
+export const createSiteAcl: (
+  input: CreateSiteAclRequest,
+) => Effect.Effect<
+  CreateSiteAclResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateSiteAclRequest,
   output: CreateSiteAclResponse,
   errors: [],
@@ -7002,7 +7321,13 @@ export const UpdateSiteAclResponse = Schema.Struct({
   unidirectional: Schema.optional(Schema.Boolean),
 }) as unknown as Schema.Schema<UpdateSiteAclResponse>;
 
-export const updateSiteAcl = API.make(() => ({
+export const updateSiteAcl: (
+  input: UpdateSiteAclRequest,
+) => Effect.Effect<
+  UpdateSiteAclResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateSiteAclRequest,
   output: UpdateSiteAclResponse,
   errors: [],
@@ -7146,7 +7471,13 @@ export const PatchSiteAclResponse = Schema.Struct({
   unidirectional: Schema.optional(Schema.Boolean),
 }) as unknown as Schema.Schema<PatchSiteAclResponse>;
 
-export const patchSiteAcl = API.make(() => ({
+export const patchSiteAcl: (
+  input: PatchSiteAclRequest,
+) => Effect.Effect<
+  PatchSiteAclResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchSiteAclRequest,
   output: PatchSiteAclResponse,
   errors: [],
@@ -7233,7 +7564,13 @@ export const DeleteSiteAclResponse = Schema.Struct({
   unidirectional: Schema.optional(Schema.Boolean),
 }) as unknown as Schema.Schema<DeleteSiteAclResponse>;
 
-export const deleteSiteAcl = API.make(() => ({
+export const deleteSiteAcl: (
+  input: DeleteSiteAclRequest,
+) => Effect.Effect<
+  DeleteSiteAclResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteSiteAclRequest,
   output: DeleteSiteAclResponse,
   errors: [],
@@ -7360,7 +7697,13 @@ export const GetSiteLanResponse = Schema.Struct({
   vlanTag: Schema.optional(Schema.Number).pipe(T.JsonName("vlan_tag")),
 }) as unknown as Schema.Schema<GetSiteLanResponse>;
 
-export const getSiteLan = API.make(() => ({
+export const getSiteLan: (
+  input: GetSiteLanRequest,
+) => Effect.Effect<
+  GetSiteLanResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetSiteLanRequest,
   output: GetSiteLanResponse,
   errors: [],
@@ -7571,7 +7914,13 @@ export const PutSiteLanResponse = Schema.Struct({
   vlanTag: Schema.optional(Schema.Number).pipe(T.JsonName("vlan_tag")),
 }) as unknown as Schema.Schema<PutSiteLanResponse>;
 
-export const putSiteLan = API.make(() => ({
+export const putSiteLan: (
+  input: PutSiteLanRequest,
+) => Effect.Effect<
+  PutSiteLanResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutSiteLanRequest,
   output: PutSiteLanResponse,
   errors: [],
@@ -7782,7 +8131,13 @@ export const PatchSiteLanResponse = Schema.Struct({
   vlanTag: Schema.optional(Schema.Number).pipe(T.JsonName("vlan_tag")),
 }) as unknown as Schema.Schema<PatchSiteLanResponse>;
 
-export const patchSiteLan = API.make(() => ({
+export const patchSiteLan: (
+  input: PatchSiteLanRequest,
+) => Effect.Effect<
+  PatchSiteLanResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchSiteLanRequest,
   output: PatchSiteLanResponse,
   errors: [],
@@ -7905,7 +8260,13 @@ export const DeleteSiteLanResponse = Schema.Struct({
   vlanTag: Schema.optional(Schema.Number).pipe(T.JsonName("vlan_tag")),
 }) as unknown as Schema.Schema<DeleteSiteLanResponse>;
 
-export const deleteSiteLan = API.make(() => ({
+export const deleteSiteLan: (
+  input: DeleteSiteLanRequest,
+) => Effect.Effect<
+  DeleteSiteLanResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteSiteLanRequest,
   output: DeleteSiteLanResponse,
   errors: [],
@@ -7975,7 +8336,13 @@ export const GetSiteWanResponse = Schema.Struct({
   vlanTag: Schema.optional(Schema.Number).pipe(T.JsonName("vlan_tag")),
 }) as unknown as Schema.Schema<GetSiteWanResponse>;
 
-export const getSiteWan = API.make(() => ({
+export const getSiteWan: (
+  input: GetSiteWanRequest,
+) => Effect.Effect<
+  GetSiteWanResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetSiteWanRequest,
   output: GetSiteWanResponse,
   errors: [],
@@ -8068,7 +8435,13 @@ export const PutSiteWanResponse = Schema.Struct({
   vlanTag: Schema.optional(Schema.Number).pipe(T.JsonName("vlan_tag")),
 }) as unknown as Schema.Schema<PutSiteWanResponse>;
 
-export const putSiteWan = API.make(() => ({
+export const putSiteWan: (
+  input: PutSiteWanRequest,
+) => Effect.Effect<
+  PutSiteWanResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutSiteWanRequest,
   output: PutSiteWanResponse,
   errors: [],
@@ -8161,7 +8534,13 @@ export const PatchSiteWanResponse = Schema.Struct({
   vlanTag: Schema.optional(Schema.Number).pipe(T.JsonName("vlan_tag")),
 }) as unknown as Schema.Schema<PatchSiteWanResponse>;
 
-export const patchSiteWan = API.make(() => ({
+export const patchSiteWan: (
+  input: PatchSiteWanRequest,
+) => Effect.Effect<
+  PatchSiteWanResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchSiteWanRequest,
   output: PatchSiteWanResponse,
   errors: [],
@@ -8227,7 +8606,13 @@ export const DeleteSiteWanResponse = Schema.Struct({
   vlanTag: Schema.optional(Schema.Number).pipe(T.JsonName("vlan_tag")),
 }) as unknown as Schema.Schema<DeleteSiteWanResponse>;
 
-export const deleteSiteWan = API.make(() => ({
+export const deleteSiteWan: (
+  input: DeleteSiteWanRequest,
+) => Effect.Effect<
+  DeleteSiteWanResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteSiteWanRequest,
   output: DeleteSiteWanResponse,
   errors: [],

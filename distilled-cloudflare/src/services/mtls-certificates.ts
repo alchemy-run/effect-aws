@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -72,7 +73,13 @@ export const GetMtlsCertificateResponse = Schema.Struct({
   uploadedOn: Schema.optional(Schema.String).pipe(T.JsonName("uploaded_on")),
 }) as unknown as Schema.Schema<GetMtlsCertificateResponse>;
 
-export const getMtlsCertificate = API.make(() => ({
+export const getMtlsCertificate: (
+  input: GetMtlsCertificateRequest,
+) => Effect.Effect<
+  GetMtlsCertificateResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetMtlsCertificateRequest,
   output: GetMtlsCertificateResponse,
   errors: [],
@@ -139,7 +146,13 @@ export const CreateMtlsCertificateResponse = Schema.Struct({
   uploadedOn: Schema.optional(Schema.String).pipe(T.JsonName("uploaded_on")),
 }) as unknown as Schema.Schema<CreateMtlsCertificateResponse>;
 
-export const createMtlsCertificate = API.make(() => ({
+export const createMtlsCertificate: (
+  input: CreateMtlsCertificateRequest,
+) => Effect.Effect<
+  CreateMtlsCertificateResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateMtlsCertificateRequest,
   output: CreateMtlsCertificateResponse,
   errors: [],
@@ -196,7 +209,13 @@ export const DeleteMtlsCertificateResponse = Schema.Struct({
   uploadedOn: Schema.optional(Schema.String).pipe(T.JsonName("uploaded_on")),
 }) as unknown as Schema.Schema<DeleteMtlsCertificateResponse>;
 
-export const deleteMtlsCertificate = API.make(() => ({
+export const deleteMtlsCertificate: (
+  input: DeleteMtlsCertificateRequest,
+) => Effect.Effect<
+  DeleteMtlsCertificateResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteMtlsCertificateRequest,
   output: DeleteMtlsCertificateResponse,
   errors: [],

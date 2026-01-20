@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -46,7 +47,13 @@ export type GetByIdsIndexResponse = unknown;
 export const GetByIdsIndexResponse =
   Schema.Unknown as unknown as Schema.Schema<GetByIdsIndexResponse>;
 
-export const getByIdsIndex = API.make(() => ({
+export const getByIdsIndex: (
+  input: GetByIdsIndexRequest,
+) => Effect.Effect<
+  GetByIdsIndexResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetByIdsIndexRequest,
   output: GetByIdsIndexResponse,
   errors: [],
@@ -76,7 +83,13 @@ export type DeleteByIdsIndexResponse = unknown;
 export const DeleteByIdsIndexResponse =
   Schema.Unknown as unknown as Schema.Schema<DeleteByIdsIndexResponse>;
 
-export const deleteByIdsIndex = API.make(() => ({
+export const deleteByIdsIndex: (
+  input: DeleteByIdsIndexRequest,
+) => Effect.Effect<
+  DeleteByIdsIndexResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteByIdsIndexRequest,
   output: DeleteByIdsIndexResponse,
   errors: [],
@@ -107,7 +120,13 @@ export type GetIndexResponse = unknown;
 export const GetIndexResponse =
   Schema.Unknown as unknown as Schema.Schema<GetIndexResponse>;
 
-export const getIndex = API.make(() => ({
+export const getIndex: (
+  input: GetIndexRequest,
+) => Effect.Effect<
+  GetIndexResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetIndexRequest,
   output: GetIndexResponse,
   errors: [],
@@ -164,7 +183,13 @@ export type CreateIndexResponse = unknown;
 export const CreateIndexResponse =
   Schema.Unknown as unknown as Schema.Schema<CreateIndexResponse>;
 
-export const createIndex = API.make(() => ({
+export const createIndex: (
+  input: CreateIndexRequest,
+) => Effect.Effect<
+  CreateIndexResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateIndexRequest,
   output: CreateIndexResponse,
   errors: [],
@@ -191,7 +216,13 @@ export type DeleteIndexResponse = unknown;
 export const DeleteIndexResponse =
   Schema.Unknown as unknown as Schema.Schema<DeleteIndexResponse>;
 
-export const deleteIndex = API.make(() => ({
+export const deleteIndex: (
+  input: DeleteIndexRequest,
+) => Effect.Effect<
+  DeleteIndexResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteIndexRequest,
   output: DeleteIndexResponse,
   errors: [],
@@ -218,7 +249,13 @@ export type InfoIndexResponse = unknown;
 export const InfoIndexResponse =
   Schema.Unknown as unknown as Schema.Schema<InfoIndexResponse>;
 
-export const infoIndex = API.make(() => ({
+export const infoIndex: (
+  input: InfoIndexRequest,
+) => Effect.Effect<
+  InfoIndexResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: InfoIndexRequest,
   output: InfoIndexResponse,
   errors: [],
@@ -254,7 +291,13 @@ export type InsertIndexResponse = unknown;
 export const InsertIndexResponse =
   Schema.Unknown as unknown as Schema.Schema<InsertIndexResponse>;
 
-export const insertIndex = API.make(() => ({
+export const insertIndex: (
+  input: InsertIndexRequest,
+) => Effect.Effect<
+  InsertIndexResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: InsertIndexRequest,
   output: InsertIndexResponse,
   errors: [],
@@ -296,7 +339,13 @@ export type QueryIndexResponse = unknown;
 export const QueryIndexResponse =
   Schema.Unknown as unknown as Schema.Schema<QueryIndexResponse>;
 
-export const queryIndex = API.make(() => ({
+export const queryIndex: (
+  input: QueryIndexRequest,
+) => Effect.Effect<
+  QueryIndexResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: QueryIndexRequest,
   output: QueryIndexResponse,
   errors: [],
@@ -332,7 +381,13 @@ export type UpsertIndexResponse = unknown;
 export const UpsertIndexResponse =
   Schema.Unknown as unknown as Schema.Schema<UpsertIndexResponse>;
 
-export const upsertIndex = API.make(() => ({
+export const upsertIndex: (
+  input: UpsertIndexRequest,
+) => Effect.Effect<
+  UpsertIndexResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpsertIndexRequest,
   output: UpsertIndexResponse,
   errors: [],
@@ -363,7 +418,13 @@ export type ListIndexMetadataIndexesResponse = unknown;
 export const ListIndexMetadataIndexesResponse =
   Schema.Unknown as unknown as Schema.Schema<ListIndexMetadataIndexesResponse>;
 
-export const listIndexMetadataIndexes = API.make(() => ({
+export const listIndexMetadataIndexes: (
+  input: ListIndexMetadataIndexesRequest,
+) => Effect.Effect<
+  ListIndexMetadataIndexesResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: ListIndexMetadataIndexesRequest,
   output: ListIndexMetadataIndexesResponse,
   errors: [],
@@ -396,7 +457,13 @@ export type CreateIndexMetadataIndexResponse = unknown;
 export const CreateIndexMetadataIndexResponse =
   Schema.Unknown as unknown as Schema.Schema<CreateIndexMetadataIndexResponse>;
 
-export const createIndexMetadataIndex = API.make(() => ({
+export const createIndexMetadataIndex: (
+  input: CreateIndexMetadataIndexRequest,
+) => Effect.Effect<
+  CreateIndexMetadataIndexResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateIndexMetadataIndexRequest,
   output: CreateIndexMetadataIndexResponse,
   errors: [],
@@ -426,7 +493,13 @@ export type DeleteIndexMetadataIndexResponse = unknown;
 export const DeleteIndexMetadataIndexResponse =
   Schema.Unknown as unknown as Schema.Schema<DeleteIndexMetadataIndexResponse>;
 
-export const deleteIndexMetadataIndex = API.make(() => ({
+export const deleteIndexMetadataIndex: (
+  input: DeleteIndexMetadataIndexRequest,
+) => Effect.Effect<
+  DeleteIndexMetadataIndexResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteIndexMetadataIndexRequest,
   output: DeleteIndexMetadataIndexResponse,
   errors: [],
@@ -463,7 +536,13 @@ export type ListVectorsIndexResponse = unknown;
 export const ListVectorsIndexResponse =
   Schema.Unknown as unknown as Schema.Schema<ListVectorsIndexResponse>;
 
-export const listVectorsIndex = API.make(() => ({
+export const listVectorsIndex: (
+  input: ListVectorsIndexRequest,
+) => Effect.Effect<
+  ListVectorsIndexResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: ListVectorsIndexRequest,
   output: ListVectorsIndexResponse,
   errors: [],

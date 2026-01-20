@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -50,7 +51,13 @@ export const GetAccountSettingResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<GetAccountSettingResponse>;
 
-export const getAccountSetting = API.make(() => ({
+export const getAccountSetting: (
+  input: GetAccountSettingRequest,
+) => Effect.Effect<
+  GetAccountSettingResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetAccountSettingRequest,
   output: GetAccountSettingResponse,
   errors: [],
@@ -94,7 +101,13 @@ export const PutAccountSettingResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<PutAccountSettingResponse>;
 
-export const putAccountSetting = API.make(() => ({
+export const putAccountSetting: (
+  input: PutAccountSettingRequest,
+) => Effect.Effect<
+  PutAccountSettingResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutAccountSettingRequest,
   output: PutAccountSettingResponse,
   errors: [],
@@ -133,7 +146,13 @@ export const CreateAssetUploadResponse = Schema.Struct({
   jwt: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<CreateAssetUploadResponse>;
 
-export const createAssetUpload = API.make(() => ({
+export const createAssetUpload: (
+  input: CreateAssetUploadRequest,
+) => Effect.Effect<
+  CreateAssetUploadResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateAssetUploadRequest,
   output: CreateAssetUploadResponse,
   errors: [],
@@ -225,7 +244,13 @@ export const GetBetaWorkerResponse = Schema.Struct({
   updatedOn: Schema.String.pipe(T.JsonName("updated_on")),
 }) as unknown as Schema.Schema<GetBetaWorkerResponse>;
 
-export const getBetaWorker = API.make(() => ({
+export const getBetaWorker: (
+  input: GetBetaWorkerRequest,
+) => Effect.Effect<
+  GetBetaWorkerResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetBetaWorkerRequest,
   output: GetBetaWorkerResponse,
   errors: [],
@@ -365,7 +390,13 @@ export const CreateBetaWorkerResponse = Schema.Struct({
   updatedOn: Schema.String.pipe(T.JsonName("updated_on")),
 }) as unknown as Schema.Schema<CreateBetaWorkerResponse>;
 
-export const createBetaWorker = API.make(() => ({
+export const createBetaWorker: (
+  input: CreateBetaWorkerRequest,
+) => Effect.Effect<
+  CreateBetaWorkerResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateBetaWorkerRequest,
   output: CreateBetaWorkerResponse,
   errors: [],
@@ -510,7 +541,13 @@ export const UpdateBetaWorkerResponse = Schema.Struct({
   updatedOn: Schema.String.pipe(T.JsonName("updated_on")),
 }) as unknown as Schema.Schema<UpdateBetaWorkerResponse>;
 
-export const updateBetaWorker = API.make(() => ({
+export const updateBetaWorker: (
+  input: UpdateBetaWorkerRequest,
+) => Effect.Effect<
+  UpdateBetaWorkerResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateBetaWorkerRequest,
   output: UpdateBetaWorkerResponse,
   errors: [],
@@ -649,7 +686,13 @@ export const PatchBetaWorkerResponse = Schema.Struct({
   updatedOn: Schema.String.pipe(T.JsonName("updated_on")),
 }) as unknown as Schema.Schema<PatchBetaWorkerResponse>;
 
-export const patchBetaWorker = API.make(() => ({
+export const patchBetaWorker: (
+  input: PatchBetaWorkerRequest,
+) => Effect.Effect<
+  PatchBetaWorkerResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchBetaWorkerRequest,
   output: PatchBetaWorkerResponse,
   errors: [],
@@ -720,7 +763,13 @@ export const DeleteBetaWorkerResponse = Schema.Struct({
   success: Schema.Literal(true),
 }) as unknown as Schema.Schema<DeleteBetaWorkerResponse>;
 
-export const deleteBetaWorker = API.make(() => ({
+export const deleteBetaWorker: (
+  input: DeleteBetaWorkerRequest,
+) => Effect.Effect<
+  DeleteBetaWorkerResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteBetaWorkerRequest,
   output: DeleteBetaWorkerResponse,
   errors: [],
@@ -1150,7 +1199,13 @@ export const GetBetaWorkerVersionResponse = Schema.Struct({
   ).pipe(T.JsonName("usage_model")),
 }) as unknown as Schema.Schema<GetBetaWorkerVersionResponse>;
 
-export const getBetaWorkerVersion = API.make(() => ({
+export const getBetaWorkerVersion: (
+  input: GetBetaWorkerVersionRequest,
+) => Effect.Effect<
+  GetBetaWorkerVersionResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetBetaWorkerVersionRequest,
   output: GetBetaWorkerVersionResponse,
   errors: [],
@@ -1962,7 +2017,13 @@ export const CreateBetaWorkerVersionResponse = Schema.Struct({
   ).pipe(T.JsonName("usage_model")),
 }) as unknown as Schema.Schema<CreateBetaWorkerVersionResponse>;
 
-export const createBetaWorkerVersion = API.make(() => ({
+export const createBetaWorkerVersion: (
+  input: CreateBetaWorkerVersionRequest,
+) => Effect.Effect<
+  CreateBetaWorkerVersionResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateBetaWorkerVersionRequest,
   output: CreateBetaWorkerVersionResponse,
   errors: [],
@@ -2035,7 +2096,13 @@ export const DeleteBetaWorkerVersionResponse = Schema.Struct({
   success: Schema.Literal(true),
 }) as unknown as Schema.Schema<DeleteBetaWorkerVersionResponse>;
 
-export const deleteBetaWorkerVersion = API.make(() => ({
+export const deleteBetaWorkerVersion: (
+  input: DeleteBetaWorkerVersionRequest,
+) => Effect.Effect<
+  DeleteBetaWorkerVersionResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteBetaWorkerVersionRequest,
   output: DeleteBetaWorkerVersionResponse,
   errors: [],
@@ -2085,7 +2152,13 @@ export const GetDomainResponse = Schema.Struct({
   zoneName: Schema.optional(Schema.String).pipe(T.JsonName("zone_name")),
 }) as unknown as Schema.Schema<GetDomainResponse>;
 
-export const getDomain = API.make(() => ({
+export const getDomain: (
+  input: GetDomainRequest,
+) => Effect.Effect<
+  GetDomainResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetDomainRequest,
   output: GetDomainResponse,
   errors: [],
@@ -2138,7 +2211,13 @@ export const PutDomainResponse = Schema.Struct({
   zoneName: Schema.optional(Schema.String).pipe(T.JsonName("zone_name")),
 }) as unknown as Schema.Schema<PutDomainResponse>;
 
-export const putDomain = API.make(() => ({
+export const putDomain: (
+  input: PutDomainRequest,
+) => Effect.Effect<
+  PutDomainResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutDomainRequest,
   output: PutDomainResponse,
   errors: [],
@@ -2165,7 +2244,13 @@ export type DeleteDomainResponse = unknown;
 export const DeleteDomainResponse =
   Schema.Unknown as unknown as Schema.Schema<DeleteDomainResponse>;
 
-export const deleteDomain = API.make(() => ({
+export const deleteDomain: (
+  input: DeleteDomainRequest,
+) => Effect.Effect<
+  DeleteDomainResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteDomainRequest,
   output: DeleteDomainResponse,
   errors: [],
@@ -3226,7 +3311,13 @@ export const QueryObservabilityTelemetryResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<QueryObservabilityTelemetryResponse>;
 
-export const queryObservabilityTelemetry = API.make(() => ({
+export const queryObservabilityTelemetry: (
+  input: QueryObservabilityTelemetryRequest,
+) => Effect.Effect<
+  QueryObservabilityTelemetryResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: QueryObservabilityTelemetryRequest,
   output: QueryObservabilityTelemetryResponse,
   errors: [],
@@ -3264,7 +3355,13 @@ export const GetRouteResponse = Schema.Struct({
   script: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<GetRouteResponse>;
 
-export const getRoute = API.make(() => ({
+export const getRoute: (
+  input: GetRouteRequest,
+) => Effect.Effect<
+  GetRouteResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetRouteRequest,
   output: GetRouteResponse,
   errors: [],
@@ -3302,7 +3399,13 @@ export const CreateRouteResponse = Schema.Struct({
   script: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<CreateRouteResponse>;
 
-export const createRoute = API.make(() => ({
+export const createRoute: (
+  input: CreateRouteRequest,
+) => Effect.Effect<
+  CreateRouteResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateRouteRequest,
   output: CreateRouteResponse,
   errors: [],
@@ -3342,7 +3445,13 @@ export const UpdateRouteResponse = Schema.Struct({
   script: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<UpdateRouteResponse>;
 
-export const updateRoute = API.make(() => ({
+export const updateRoute: (
+  input: UpdateRouteRequest,
+) => Effect.Effect<
+  UpdateRouteResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateRouteRequest,
   output: UpdateRouteResponse,
   errors: [],
@@ -3373,7 +3482,13 @@ export const DeleteRouteResponse = Schema.Struct({
   id: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<DeleteRouteResponse>;
 
-export const deleteRoute = API.make(() => ({
+export const deleteRoute: (
+  input: DeleteRouteRequest,
+) => Effect.Effect<
+  DeleteRouteResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteRouteRequest,
   output: DeleteRouteResponse,
   errors: [],
@@ -3404,7 +3519,13 @@ export type GetScriptResponse = unknown;
 export const GetScriptResponse =
   Schema.Unknown as unknown as Schema.Schema<GetScriptResponse>;
 
-export const getScript = API.make(() => ({
+export const getScript: (
+  input: GetScriptRequest,
+) => Effect.Effect<
+  GetScriptResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetScriptRequest,
   output: GetScriptResponse,
   errors: [],
@@ -3974,7 +4095,13 @@ export const PutScriptResponse = Schema.Struct({
   ).pipe(T.JsonName("usage_model")),
 }) as unknown as Schema.Schema<PutScriptResponse>;
 
-export const putScript = API.make(() => ({
+export const putScript: (
+  input: PutScriptRequest,
+) => Effect.Effect<
+  PutScriptResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutScriptRequest,
   output: PutScriptResponse,
   errors: [],
@@ -4004,7 +4131,13 @@ export type DeleteScriptResponse = unknown;
 export const DeleteScriptResponse =
   Schema.Unknown as unknown as Schema.Schema<DeleteScriptResponse>;
 
-export const deleteScript = API.make(() => ({
+export const deleteScript: (
+  input: DeleteScriptRequest,
+) => Effect.Effect<
+  DeleteScriptResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteScriptRequest,
   output: DeleteScriptResponse,
   errors: [],
@@ -4069,7 +4202,13 @@ export const SearchScriptResponse = Schema.Array(
   }),
 ) as unknown as Schema.Schema<SearchScriptResponse>;
 
-export const searchScript = API.make(() => ({
+export const searchScript: (
+  input: SearchScriptRequest,
+) => Effect.Effect<
+  SearchScriptResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: SearchScriptRequest,
   output: SearchScriptResponse,
   errors: [],
@@ -4110,7 +4249,13 @@ export const CreateScriptAssetUploadResponse = Schema.Struct({
   jwt: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<CreateScriptAssetUploadResponse>;
 
-export const createScriptAssetUpload = API.make(() => ({
+export const createScriptAssetUpload: (
+  input: CreateScriptAssetUploadRequest,
+) => Effect.Effect<
+  CreateScriptAssetUploadResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateScriptAssetUploadRequest,
   output: CreateScriptAssetUploadResponse,
   errors: [],
@@ -4141,7 +4286,13 @@ export type GetScriptContentResponse = unknown;
 export const GetScriptContentResponse =
   Schema.Unknown as unknown as Schema.Schema<GetScriptContentResponse>;
 
-export const getScriptContent = API.make(() => ({
+export const getScriptContent: (
+  input: GetScriptContentRequest,
+) => Effect.Effect<
+  GetScriptContentResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetScriptContentRequest,
   output: GetScriptContentResponse,
   errors: [],
@@ -4190,7 +4341,13 @@ export type PutScriptContentResponse = unknown;
 export const PutScriptContentResponse =
   Schema.Unknown as unknown as Schema.Schema<PutScriptContentResponse>;
 
-export const putScriptContent = API.make(() => ({
+export const putScriptContent: (
+  input: PutScriptContentRequest,
+) => Effect.Effect<
+  PutScriptContentResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutScriptContentRequest,
   output: PutScriptContentResponse,
   errors: [],
@@ -4250,7 +4407,13 @@ export const GetScriptDeploymentResponse = Schema.Struct({
   authorEmail: Schema.optional(Schema.String).pipe(T.JsonName("author_email")),
 }) as unknown as Schema.Schema<GetScriptDeploymentResponse>;
 
-export const getScriptDeployment = API.make(() => ({
+export const getScriptDeployment: (
+  input: GetScriptDeploymentRequest,
+) => Effect.Effect<
+  GetScriptDeploymentResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetScriptDeploymentRequest,
   output: GetScriptDeploymentResponse,
   errors: [],
@@ -4315,7 +4478,13 @@ export const ListScriptDeploymentsResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<ListScriptDeploymentsResponse>;
 
-export const listScriptDeployments = API.make(() => ({
+export const listScriptDeployments: (
+  input: ListScriptDeploymentsRequest,
+) => Effect.Effect<
+  ListScriptDeploymentsResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: ListScriptDeploymentsRequest,
   output: ListScriptDeploymentsResponse,
   errors: [],
@@ -4390,7 +4559,13 @@ export const CreateScriptDeploymentResponse = Schema.Struct({
   authorEmail: Schema.optional(Schema.String).pipe(T.JsonName("author_email")),
 }) as unknown as Schema.Schema<CreateScriptDeploymentResponse>;
 
-export const createScriptDeployment = API.make(() => ({
+export const createScriptDeployment: (
+  input: CreateScriptDeploymentRequest,
+) => Effect.Effect<
+  CreateScriptDeploymentResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateScriptDeploymentRequest,
   output: CreateScriptDeploymentResponse,
   errors: [],
@@ -4463,7 +4638,13 @@ export const DeleteScriptDeploymentResponse = Schema.Struct({
   success: Schema.Literal(true),
 }) as unknown as Schema.Schema<DeleteScriptDeploymentResponse>;
 
-export const deleteScriptDeployment = API.make(() => ({
+export const deleteScriptDeployment: (
+  input: DeleteScriptDeploymentRequest,
+) => Effect.Effect<
+  DeleteScriptDeploymentResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteScriptDeploymentRequest,
   output: DeleteScriptDeploymentResponse,
   errors: [],
@@ -4505,7 +4686,13 @@ export const GetScriptScheduleResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<GetScriptScheduleResponse>;
 
-export const getScriptSchedule = API.make(() => ({
+export const getScriptSchedule: (
+  input: GetScriptScheduleRequest,
+) => Effect.Effect<
+  GetScriptScheduleResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetScriptScheduleRequest,
   output: GetScriptScheduleResponse,
   errors: [],
@@ -4550,7 +4737,13 @@ export const PutScriptScheduleResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<PutScriptScheduleResponse>;
 
-export const putScriptSchedule = API.make(() => ({
+export const putScriptSchedule: (
+  input: PutScriptScheduleRequest,
+) => Effect.Effect<
+  PutScriptScheduleResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutScriptScheduleRequest,
   output: PutScriptScheduleResponse,
   errors: [],
@@ -4938,7 +5131,13 @@ export const GetScriptScriptAndVersionSettingResponse = Schema.Struct({
   ).pipe(T.JsonName("usage_model")),
 }) as unknown as Schema.Schema<GetScriptScriptAndVersionSettingResponse>;
 
-export const getScriptScriptAndVersionSetting = API.make(() => ({
+export const getScriptScriptAndVersionSetting: (
+  input: GetScriptScriptAndVersionSettingRequest,
+) => Effect.Effect<
+  GetScriptScriptAndVersionSettingResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetScriptScriptAndVersionSettingRequest,
   output: GetScriptScriptAndVersionSettingResponse,
   errors: [],
@@ -5701,7 +5900,13 @@ export const PatchScriptScriptAndVersionSettingResponse = Schema.Struct({
   ).pipe(T.JsonName("usage_model")),
 }) as unknown as Schema.Schema<PatchScriptScriptAndVersionSettingResponse>;
 
-export const patchScriptScriptAndVersionSetting = API.make(() => ({
+export const patchScriptScriptAndVersionSetting: (
+  input: PatchScriptScriptAndVersionSettingRequest,
+) => Effect.Effect<
+  PatchScriptScriptAndVersionSettingResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchScriptScriptAndVersionSettingRequest,
   output: PatchScriptScriptAndVersionSettingResponse,
   errors: [],
@@ -5776,7 +5981,13 @@ export const GetScriptSecretResponse = Schema.Union(
   }),
 ) as unknown as Schema.Schema<GetScriptSecretResponse>;
 
-export const getScriptSecret = API.make(() => ({
+export const getScriptSecret: (
+  input: GetScriptSecretRequest,
+) => Effect.Effect<
+  GetScriptSecretResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetScriptSecretRequest,
   output: GetScriptSecretResponse,
   errors: [],
@@ -5839,7 +6050,13 @@ export const PutScriptSecretResponse = Schema.Union(
   }),
 ) as unknown as Schema.Schema<PutScriptSecretResponse>;
 
-export const putScriptSecret = API.make(() => ({
+export const putScriptSecret: (
+  input: PutScriptSecretRequest,
+) => Effect.Effect<
+  PutScriptSecretResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutScriptSecretRequest,
   output: PutScriptSecretResponse,
   errors: [],
@@ -5871,7 +6088,13 @@ export type DeleteScriptSecretResponse = unknown;
 export const DeleteScriptSecretResponse =
   Schema.Unknown as unknown as Schema.Schema<DeleteScriptSecretResponse>;
 
-export const deleteScriptSecret = API.make(() => ({
+export const deleteScriptSecret: (
+  input: DeleteScriptSecretRequest,
+) => Effect.Effect<
+  DeleteScriptSecretResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteScriptSecretRequest,
   output: DeleteScriptSecretResponse,
   errors: [],
@@ -5902,7 +6125,13 @@ export type GetScriptSettingResponse = unknown;
 export const GetScriptSettingResponse =
   Schema.Unknown as unknown as Schema.Schema<GetScriptSettingResponse>;
 
-export const getScriptSetting = API.make(() => ({
+export const getScriptSetting: (
+  input: GetScriptSettingRequest,
+) => Effect.Effect<
+  GetScriptSettingResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetScriptSettingRequest,
   output: GetScriptSettingResponse,
   errors: [],
@@ -5979,7 +6208,13 @@ export type PatchScriptSettingResponse = unknown;
 export const PatchScriptSettingResponse =
   Schema.Unknown as unknown as Schema.Schema<PatchScriptSettingResponse>;
 
-export const patchScriptSetting = API.make(() => ({
+export const patchScriptSetting: (
+  input: PatchScriptSettingRequest,
+) => Effect.Effect<
+  PatchScriptSettingResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchScriptSettingRequest,
   output: PatchScriptSettingResponse,
   errors: [],
@@ -6017,7 +6252,13 @@ export const GetScriptSubdomainResponse = Schema.Struct({
   previewsEnabled: Schema.Boolean.pipe(T.JsonName("previews_enabled")),
 }) as unknown as Schema.Schema<GetScriptSubdomainResponse>;
 
-export const getScriptSubdomain = API.make(() => ({
+export const getScriptSubdomain: (
+  input: GetScriptSubdomainRequest,
+) => Effect.Effect<
+  GetScriptSubdomainResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetScriptSubdomainRequest,
   output: GetScriptSubdomainResponse,
   errors: [],
@@ -6059,7 +6300,13 @@ export const CreateScriptSubdomainResponse = Schema.Struct({
   previewsEnabled: Schema.Boolean.pipe(T.JsonName("previews_enabled")),
 }) as unknown as Schema.Schema<CreateScriptSubdomainResponse>;
 
-export const createScriptSubdomain = API.make(() => ({
+export const createScriptSubdomain: (
+  input: CreateScriptSubdomainRequest,
+) => Effect.Effect<
+  CreateScriptSubdomainResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateScriptSubdomainRequest,
   output: CreateScriptSubdomainResponse,
   errors: [],
@@ -6093,7 +6340,13 @@ export const DeleteScriptSubdomainResponse = Schema.Struct({
   previewsEnabled: Schema.Boolean.pipe(T.JsonName("previews_enabled")),
 }) as unknown as Schema.Schema<DeleteScriptSubdomainResponse>;
 
-export const deleteScriptSubdomain = API.make(() => ({
+export const deleteScriptSubdomain: (
+  input: DeleteScriptSubdomainRequest,
+) => Effect.Effect<
+  DeleteScriptSubdomainResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteScriptSubdomainRequest,
   output: DeleteScriptSubdomainResponse,
   errors: [],
@@ -6132,7 +6385,13 @@ export const GetScriptTailResponse = Schema.Struct({
   url: Schema.String,
 }) as unknown as Schema.Schema<GetScriptTailResponse>;
 
-export const getScriptTail = API.make(() => ({
+export const getScriptTail: (
+  input: GetScriptTailRequest,
+) => Effect.Effect<
+  GetScriptTailResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetScriptTailRequest,
   output: GetScriptTailResponse,
   errors: [],
@@ -6170,7 +6429,13 @@ export const CreateScriptTailResponse = Schema.Struct({
   url: Schema.String,
 }) as unknown as Schema.Schema<CreateScriptTailResponse>;
 
-export const createScriptTail = API.make(() => ({
+export const createScriptTail: (
+  input: CreateScriptTailRequest,
+) => Effect.Effect<
+  CreateScriptTailResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateScriptTailRequest,
   output: CreateScriptTailResponse,
   errors: [],
@@ -6243,7 +6508,13 @@ export const DeleteScriptTailResponse = Schema.Struct({
   success: Schema.Literal(true),
 }) as unknown as Schema.Schema<DeleteScriptTailResponse>;
 
-export const deleteScriptTail = API.make(() => ({
+export const deleteScriptTail: (
+  input: DeleteScriptTailRequest,
+) => Effect.Effect<
+  DeleteScriptTailResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteScriptTailRequest,
   output: DeleteScriptTailResponse,
   errors: [],
@@ -6664,7 +6935,13 @@ export const GetScriptVersionResponse = Schema.Struct({
   number: Schema.optional(Schema.Number),
 }) as unknown as Schema.Schema<GetScriptVersionResponse>;
 
-export const getScriptVersion = API.make(() => ({
+export const getScriptVersion: (
+  input: GetScriptVersionRequest,
+) => Effect.Effect<
+  GetScriptVersionResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetScriptVersionRequest,
   output: GetScriptVersionResponse,
   errors: [],
@@ -7409,7 +7686,13 @@ export const CreateScriptVersionResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<CreateScriptVersionResponse>;
 
-export const createScriptVersion = API.make(() => ({
+export const createScriptVersion: (
+  input: CreateScriptVersionRequest,
+) => Effect.Effect<
+  CreateScriptVersionResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateScriptVersionRequest,
   output: CreateScriptVersionResponse,
   errors: [],
@@ -7438,7 +7721,13 @@ export const GetSubdomainResponse = Schema.Struct({
   subdomain: Schema.String,
 }) as unknown as Schema.Schema<GetSubdomainResponse>;
 
-export const getSubdomain = API.make(() => ({
+export const getSubdomain: (
+  input: GetSubdomainRequest,
+) => Effect.Effect<
+  GetSubdomainResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetSubdomainRequest,
   output: GetSubdomainResponse,
   errors: [],
@@ -7466,7 +7755,13 @@ export const PutSubdomainResponse = Schema.Struct({
   subdomain: Schema.String,
 }) as unknown as Schema.Schema<PutSubdomainResponse>;
 
-export const putSubdomain = API.make(() => ({
+export const putSubdomain: (
+  input: PutSubdomainRequest,
+) => Effect.Effect<
+  PutSubdomainResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutSubdomainRequest,
   output: PutSubdomainResponse,
   errors: [],

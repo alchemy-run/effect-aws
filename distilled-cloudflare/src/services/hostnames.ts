@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -67,7 +68,13 @@ export const PutSettingTlsResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<PutSettingTlsResponse>;
 
-export const putSettingTls = API.make(() => ({
+export const putSettingTls: (
+  input: PutSettingTlsRequest,
+) => Effect.Effect<
+  PutSettingTlsResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutSettingTlsRequest,
   output: PutSettingTlsResponse,
   errors: [],
@@ -116,7 +123,13 @@ export const DeleteSettingTlsResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<DeleteSettingTlsResponse>;
 
-export const deleteSettingTls = API.make(() => ({
+export const deleteSettingTls: (
+  input: DeleteSettingTlsRequest,
+) => Effect.Effect<
+  DeleteSettingTlsResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteSettingTlsRequest,
   output: DeleteSettingTlsResponse,
   errors: [],

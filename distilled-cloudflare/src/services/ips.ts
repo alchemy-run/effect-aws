@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -60,7 +61,13 @@ export const ListIPsResponse = Schema.Union(
   }),
 ) as unknown as Schema.Schema<ListIPsResponse>;
 
-export const listIPs = API.make(() => ({
+export const listIPs: (
+  input: ListIPsRequest,
+) => Effect.Effect<
+  ListIPsResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: ListIPsRequest,
   output: ListIPsResponse,
   errors: [],

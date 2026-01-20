@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -76,7 +77,13 @@ export const GetCniResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<GetCniResponse>;
 
-export const getCni = API.make(() => ({
+export const getCni: (
+  input: GetCniRequest,
+) => Effect.Effect<
+  GetCniResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetCniRequest,
   output: GetCniResponse,
   errors: [],
@@ -159,7 +166,13 @@ export const ListCnisResponse = Schema.Struct({
   next: Schema.optional(Schema.Union(Schema.Number, Schema.Null)),
 }) as unknown as Schema.Schema<ListCnisResponse>;
 
-export const listCnis = API.make(() => ({
+export const listCnis: (
+  input: ListCnisRequest,
+) => Effect.Effect<
+  ListCnisResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: ListCnisRequest,
   output: ListCnisResponse,
   errors: [],
@@ -248,7 +261,13 @@ export const CreateCniResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<CreateCniResponse>;
 
-export const createCni = API.make(() => ({
+export const createCni: (
+  input: CreateCniRequest,
+) => Effect.Effect<
+  CreateCniResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateCniRequest,
   output: CreateCniResponse,
   errors: [],
@@ -348,7 +367,13 @@ export const UpdateCniResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<UpdateCniResponse>;
 
-export const updateCni = API.make(() => ({
+export const updateCni: (
+  input: UpdateCniRequest,
+) => Effect.Effect<
+  UpdateCniResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateCniRequest,
   output: UpdateCniResponse,
   errors: [],
@@ -372,7 +397,13 @@ export type DeleteCniResponse = unknown;
 export const DeleteCniResponse =
   Schema.Unknown as unknown as Schema.Schema<DeleteCniResponse>;
 
-export const deleteCni = API.make(() => ({
+export const deleteCni: (
+  input: DeleteCniRequest,
+) => Effect.Effect<
+  DeleteCniResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteCniRequest,
   output: DeleteCniResponse,
   errors: [],
@@ -469,7 +500,13 @@ export const GetInterconnectResponse = Schema.Union(
   }),
 ) as unknown as Schema.Schema<GetInterconnectResponse>;
 
-export const getInterconnect = API.make(() => ({
+export const getInterconnect: (
+  input: GetInterconnectRequest,
+) => Effect.Effect<
+  GetInterconnectResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetInterconnectRequest,
   output: GetInterconnectResponse,
   errors: [],
@@ -586,7 +623,13 @@ export const ListInterconnectsResponse = Schema.Struct({
   next: Schema.optional(Schema.Union(Schema.Number, Schema.Null)),
 }) as unknown as Schema.Schema<ListInterconnectsResponse>;
 
-export const listInterconnects = API.make(() => ({
+export const listInterconnects: (
+  input: ListInterconnectsRequest,
+) => Effect.Effect<
+  ListInterconnectsResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: ListInterconnectsRequest,
   output: ListInterconnectsResponse,
   errors: [],
@@ -669,7 +712,13 @@ export const CreateInterconnectResponse = Schema.Union(
   }),
 ) as unknown as Schema.Schema<CreateInterconnectResponse>;
 
-export const createInterconnect = API.make(() => ({
+export const createInterconnect: (
+  input: CreateInterconnectRequest,
+) => Effect.Effect<
+  CreateInterconnectResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateInterconnectRequest,
   output: CreateInterconnectResponse,
   errors: [],
@@ -696,7 +745,13 @@ export type DeleteInterconnectResponse = unknown;
 export const DeleteInterconnectResponse =
   Schema.Unknown as unknown as Schema.Schema<DeleteInterconnectResponse>;
 
-export const deleteInterconnect = API.make(() => ({
+export const deleteInterconnect: (
+  input: DeleteInterconnectRequest,
+) => Effect.Effect<
+  DeleteInterconnectResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteInterconnectRequest,
   output: DeleteInterconnectResponse,
   errors: [],
@@ -741,7 +796,13 @@ export const StatusInterconnectResponse = Schema.Union(
   }),
 ) as unknown as Schema.Schema<StatusInterconnectResponse>;
 
-export const statusInterconnect = API.make(() => ({
+export const statusInterconnect: (
+  input: StatusInterconnectRequest,
+) => Effect.Effect<
+  StatusInterconnectResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: StatusInterconnectRequest,
   output: StatusInterconnectResponse,
   errors: [],
@@ -768,7 +829,13 @@ export type LoaInterconnectResponse = unknown;
 export const LoaInterconnectResponse =
   Schema.Unknown as unknown as Schema.Schema<LoaInterconnectResponse>;
 
-export const loaInterconnect = API.make(() => ({
+export const loaInterconnect: (
+  input: LoaInterconnectRequest,
+) => Effect.Effect<
+  LoaInterconnectResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: LoaInterconnectRequest,
   output: LoaInterconnectResponse,
   errors: [],
@@ -797,7 +864,13 @@ export const GetSettingResponse = Schema.Struct({
   defaultAsn: Schema.Number.pipe(T.JsonName("default_asn")),
 }) as unknown as Schema.Schema<GetSettingResponse>;
 
-export const getSetting = API.make(() => ({
+export const getSetting: (
+  input: GetSettingRequest,
+) => Effect.Effect<
+  GetSettingResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetSettingRequest,
   output: GetSettingResponse,
   errors: [],
@@ -827,7 +900,13 @@ export const PutSettingResponse = Schema.Struct({
   defaultAsn: Schema.Number.pipe(T.JsonName("default_asn")),
 }) as unknown as Schema.Schema<PutSettingResponse>;
 
-export const putSetting = API.make(() => ({
+export const putSetting: (
+  input: PutSettingRequest,
+) => Effect.Effect<
+  PutSettingResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutSettingRequest,
   output: PutSettingResponse,
   errors: [],
@@ -874,7 +953,13 @@ export const GetSlotResponse = Schema.Struct({
   account: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<GetSlotResponse>;
 
-export const getSlot = API.make(() => ({
+export const getSlot: (
+  input: GetSlotRequest,
+) => Effect.Effect<
+  GetSlotResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetSlotRequest,
   output: GetSlotResponse,
   errors: [],
@@ -950,7 +1035,13 @@ export const ListSlotsResponse = Schema.Struct({
   next: Schema.optional(Schema.Union(Schema.Number, Schema.Null)),
 }) as unknown as Schema.Schema<ListSlotsResponse>;
 
-export const listSlots = API.make(() => ({
+export const listSlots: (
+  input: ListSlotsRequest,
+) => Effect.Effect<
+  ListSlotsResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: ListSlotsRequest,
   output: ListSlotsResponse,
   errors: [],

@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -63,7 +64,13 @@ export const GetAddressResponse = Schema.Struct({
   verified: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<GetAddressResponse>;
 
-export const getAddress = API.make(() => ({
+export const getAddress: (
+  input: GetAddressRequest,
+) => Effect.Effect<
+  GetAddressResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetAddressRequest,
   output: GetAddressResponse,
   errors: [],
@@ -110,7 +117,13 @@ export const CreateAddressResponse = Schema.Struct({
   verified: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<CreateAddressResponse>;
 
-export const createAddress = API.make(() => ({
+export const createAddress: (
+  input: CreateAddressRequest,
+) => Effect.Effect<
+  CreateAddressResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateAddressRequest,
   output: CreateAddressResponse,
   errors: [],
@@ -158,7 +171,13 @@ export const DeleteAddressResponse = Schema.Struct({
   verified: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<DeleteAddressResponse>;
 
-export const deleteAddress = API.make(() => ({
+export const deleteAddress: (
+  input: DeleteAddressRequest,
+) => Effect.Effect<
+  DeleteAddressResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteAddressRequest,
   output: DeleteAddressResponse,
   errors: [],
@@ -330,7 +349,13 @@ export const GetDnsResponse = Schema.Union(
   }),
 ) as unknown as Schema.Schema<GetDnsResponse>;
 
-export const getDns = API.make(() => ({
+export const getDns: (
+  input: GetDnsRequest,
+) => Effect.Effect<
+  GetDnsResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetDnsRequest,
   output: GetDnsResponse,
   errors: [],
@@ -355,7 +380,13 @@ export type CreateDnsResponse = unknown;
 export const CreateDnsResponse =
   Schema.Unknown as unknown as Schema.Schema<CreateDnsResponse>;
 
-export const createDns = API.make(() => ({
+export const createDns: (
+  input: CreateDnsRequest,
+) => Effect.Effect<
+  CreateDnsResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateDnsRequest,
   output: CreateDnsResponse,
   errors: [],
@@ -380,7 +411,13 @@ export type PatchDnsResponse = unknown;
 export const PatchDnsResponse =
   Schema.Unknown as unknown as Schema.Schema<PatchDnsResponse>;
 
-export const patchDns = API.make(() => ({
+export const patchDns: (
+  input: PatchDnsRequest,
+) => Effect.Effect<
+  PatchDnsResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchDnsRequest,
   output: PatchDnsResponse,
   errors: [],
@@ -446,7 +483,13 @@ export const GetEmailRoutingResponse = Schema.Struct({
   tag: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<GetEmailRoutingResponse>;
 
-export const getEmailRouting = API.make(() => ({
+export const getEmailRouting: (
+  input: GetEmailRoutingRequest,
+) => Effect.Effect<
+  GetEmailRoutingResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetEmailRoutingRequest,
   output: GetEmailRoutingResponse,
   errors: [],
@@ -511,7 +554,13 @@ export const EnableEmailRoutingResponse = Schema.Struct({
   tag: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<EnableEmailRoutingResponse>;
 
-export const enableEmailRouting = API.make(() => ({
+export const enableEmailRouting: (
+  input: EnableEmailRoutingRequest,
+) => Effect.Effect<
+  EnableEmailRoutingResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: EnableEmailRoutingRequest,
   output: EnableEmailRoutingResponse,
   errors: [],
@@ -576,7 +625,13 @@ export const DisableEmailRoutingResponse = Schema.Struct({
   tag: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<DisableEmailRoutingResponse>;
 
-export const disableEmailRouting = API.make(() => ({
+export const disableEmailRouting: (
+  input: DisableEmailRoutingRequest,
+) => Effect.Effect<
+  DisableEmailRoutingResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DisableEmailRoutingRequest,
   output: DisableEmailRoutingResponse,
   errors: [],
@@ -644,7 +699,13 @@ export const GetRuleResponse = Schema.Struct({
   tag: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<GetRuleResponse>;
 
-export const getRule = API.make(() => ({
+export const getRule: (
+  input: GetRuleRequest,
+) => Effect.Effect<
+  GetRuleResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetRuleRequest,
   output: GetRuleResponse,
   errors: [],
@@ -729,7 +790,13 @@ export const CreateRuleResponse = Schema.Struct({
   tag: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<CreateRuleResponse>;
 
-export const createRule = API.make(() => ({
+export const createRule: (
+  input: CreateRuleRequest,
+) => Effect.Effect<
+  CreateRuleResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateRuleRequest,
   output: CreateRuleResponse,
   errors: [],
@@ -819,7 +886,13 @@ export const UpdateRuleResponse = Schema.Struct({
   tag: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<UpdateRuleResponse>;
 
-export const updateRule = API.make(() => ({
+export const updateRule: (
+  input: UpdateRuleRequest,
+) => Effect.Effect<
+  UpdateRuleResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateRuleRequest,
   output: UpdateRuleResponse,
   errors: [],
@@ -883,7 +956,13 @@ export const DeleteRuleResponse = Schema.Struct({
   tag: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<DeleteRuleResponse>;
 
-export const deleteRule = API.make(() => ({
+export const deleteRule: (
+  input: DeleteRuleRequest,
+) => Effect.Effect<
+  DeleteRuleResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteRuleRequest,
   output: DeleteRuleResponse,
   errors: [],
@@ -944,7 +1023,13 @@ export const GetRuleCatchAllResponse = Schema.Struct({
   tag: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<GetRuleCatchAllResponse>;
 
-export const getRuleCatchAll = API.make(() => ({
+export const getRuleCatchAll: (
+  input: GetRuleCatchAllRequest,
+) => Effect.Effect<
+  GetRuleCatchAllResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetRuleCatchAllRequest,
   output: GetRuleCatchAllResponse,
   errors: [],
@@ -1022,7 +1107,13 @@ export const PutRuleCatchAllResponse = Schema.Struct({
   tag: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<PutRuleCatchAllResponse>;
 
-export const putRuleCatchAll = API.make(() => ({
+export const putRuleCatchAll: (
+  input: PutRuleCatchAllRequest,
+) => Effect.Effect<
+  PutRuleCatchAllResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutRuleCatchAllRequest,
   output: PutRuleCatchAllResponse,
   errors: [],

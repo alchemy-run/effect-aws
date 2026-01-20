@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -64,7 +65,13 @@ export const CreateCustomNameserverResponse = Schema.Struct({
   nsSet: Schema.optional(Schema.Number).pipe(T.JsonName("ns_set")),
 }) as unknown as Schema.Schema<CreateCustomNameserverResponse>;
 
-export const createCustomNameserver = API.make(() => ({
+export const createCustomNameserver: (
+  input: CreateCustomNameserverRequest,
+) => Effect.Effect<
+  CreateCustomNameserverResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateCustomNameserverRequest,
   output: CreateCustomNameserverResponse,
   errors: [],

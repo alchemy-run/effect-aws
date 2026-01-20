@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -41,7 +42,13 @@ export const ListAvailableAlertsResponse = Schema.Struct(
   {},
 ) as unknown as Schema.Schema<ListAvailableAlertsResponse>;
 
-export const listAvailableAlerts = API.make(() => ({
+export const listAvailableAlerts: (
+  input: ListAvailableAlertsRequest,
+) => Effect.Effect<
+  ListAvailableAlertsResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: ListAvailableAlertsRequest,
   output: ListAvailableAlertsResponse,
   errors: [],
@@ -71,7 +78,13 @@ export const GetDestinationEligibleResponse = Schema.Struct(
   {},
 ) as unknown as Schema.Schema<GetDestinationEligibleResponse>;
 
-export const getDestinationEligible = API.make(() => ({
+export const getDestinationEligible: (
+  input: GetDestinationEligibleRequest,
+) => Effect.Effect<
+  GetDestinationEligibleResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetDestinationEligibleRequest,
   output: GetDestinationEligibleResponse,
   errors: [],
@@ -104,7 +117,13 @@ export const CreateDestinationPagerdutyResponse = Schema.Struct({
   id: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<CreateDestinationPagerdutyResponse>;
 
-export const createDestinationPagerduty = API.make(() => ({
+export const createDestinationPagerduty: (
+  input: CreateDestinationPagerdutyRequest,
+) => Effect.Effect<
+  CreateDestinationPagerdutyResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateDestinationPagerdutyRequest,
   output: CreateDestinationPagerdutyResponse,
   errors: [],
@@ -147,7 +166,13 @@ export const DeleteDestinationPagerdutyResponse = Schema.Struct({
   success: Schema.Literal(true),
 }) as unknown as Schema.Schema<DeleteDestinationPagerdutyResponse>;
 
-export const deleteDestinationPagerduty = API.make(() => ({
+export const deleteDestinationPagerduty: (
+  input: DeleteDestinationPagerdutyRequest,
+) => Effect.Effect<
+  DeleteDestinationPagerdutyResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteDestinationPagerdutyRequest,
   output: DeleteDestinationPagerdutyResponse,
   errors: [],
@@ -178,7 +203,13 @@ export const LinkDestinationPagerdutyResponse = Schema.Struct({
   id: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<LinkDestinationPagerdutyResponse>;
 
-export const linkDestinationPagerduty = API.make(() => ({
+export const linkDestinationPagerduty: (
+  input: LinkDestinationPagerdutyRequest,
+) => Effect.Effect<
+  LinkDestinationPagerdutyResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: LinkDestinationPagerdutyRequest,
   output: LinkDestinationPagerdutyResponse,
   errors: [],
@@ -250,7 +281,13 @@ export const GetDestinationWebhookResponse = Schema.Struct({
   url: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<GetDestinationWebhookResponse>;
 
-export const getDestinationWebhook = API.make(() => ({
+export const getDestinationWebhook: (
+  input: GetDestinationWebhookRequest,
+) => Effect.Effect<
+  GetDestinationWebhookResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetDestinationWebhookRequest,
   output: GetDestinationWebhookResponse,
   errors: [],
@@ -288,7 +325,13 @@ export const CreateDestinationWebhookResponse = Schema.Struct({
   id: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<CreateDestinationWebhookResponse>;
 
-export const createDestinationWebhook = API.make(() => ({
+export const createDestinationWebhook: (
+  input: CreateDestinationWebhookRequest,
+) => Effect.Effect<
+  CreateDestinationWebhookResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateDestinationWebhookRequest,
   output: CreateDestinationWebhookResponse,
   errors: [],
@@ -328,7 +371,13 @@ export const UpdateDestinationWebhookResponse = Schema.Struct({
   id: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<UpdateDestinationWebhookResponse>;
 
-export const updateDestinationWebhook = API.make(() => ({
+export const updateDestinationWebhook: (
+  input: UpdateDestinationWebhookRequest,
+) => Effect.Effect<
+  UpdateDestinationWebhookResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateDestinationWebhookRequest,
   output: UpdateDestinationWebhookResponse,
   errors: [],
@@ -373,7 +422,13 @@ export const DeleteDestinationWebhookResponse = Schema.Struct({
   success: Schema.Literal(true),
 }) as unknown as Schema.Schema<DeleteDestinationWebhookResponse>;
 
-export const deleteDestinationWebhook = API.make(() => ({
+export const deleteDestinationWebhook: (
+  input: DeleteDestinationWebhookRequest,
+) => Effect.Effect<
+  DeleteDestinationWebhookResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteDestinationWebhookRequest,
   output: DeleteDestinationWebhookResponse,
   errors: [],
@@ -758,7 +813,13 @@ export const GetPolicyResponse = Schema.Struct({
   name: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<GetPolicyResponse>;
 
-export const getPolicy = API.make(() => ({
+export const getPolicy: (
+  input: GetPolicyRequest,
+) => Effect.Effect<
+  GetPolicyResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetPolicyRequest,
   output: GetPolicyResponse,
   errors: [],
@@ -1129,7 +1190,13 @@ export const CreatePolicyResponse = Schema.Struct({
   id: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<CreatePolicyResponse>;
 
-export const createPolicy = API.make(() => ({
+export const createPolicy: (
+  input: CreatePolicyRequest,
+) => Effect.Effect<
+  CreatePolicyResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreatePolicyRequest,
   output: CreatePolicyResponse,
   errors: [],
@@ -1506,7 +1573,13 @@ export const UpdatePolicyResponse = Schema.Struct({
   id: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<UpdatePolicyResponse>;
 
-export const updatePolicy = API.make(() => ({
+export const updatePolicy: (
+  input: UpdatePolicyRequest,
+) => Effect.Effect<
+  UpdatePolicyResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdatePolicyRequest,
   output: UpdatePolicyResponse,
   errors: [],
@@ -1567,7 +1640,13 @@ export const DeletePolicyResponse = Schema.Struct({
   ).pipe(T.JsonName("result_info")),
 }) as unknown as Schema.Schema<DeletePolicyResponse>;
 
-export const deletePolicy = API.make(() => ({
+export const deletePolicy: (
+  input: DeletePolicyRequest,
+) => Effect.Effect<
+  DeletePolicyResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeletePolicyRequest,
   output: DeletePolicyResponse,
   errors: [],

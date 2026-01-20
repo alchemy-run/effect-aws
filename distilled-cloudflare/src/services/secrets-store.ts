@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -43,7 +44,13 @@ export const GetQuotaResponse = Schema.Struct({
   }),
 }) as unknown as Schema.Schema<GetQuotaResponse>;
 
-export const getQuota = API.make(() => ({
+export const getQuota: (
+  input: GetQuotaRequest,
+) => Effect.Effect<
+  GetQuotaResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetQuotaRequest,
   output: GetQuotaResponse,
   errors: [],
@@ -87,7 +94,13 @@ export const DeleteStoreResponse = Schema.Struct({
   name: Schema.String,
 }) as unknown as Schema.Schema<DeleteStoreResponse>;
 
-export const deleteStore = API.make(() => ({
+export const deleteStore: (
+  input: DeleteStoreRequest,
+) => Effect.Effect<
+  DeleteStoreResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteStoreRequest,
   output: DeleteStoreResponse,
   errors: [],
@@ -141,7 +154,13 @@ export const GetStoreSecretResponse = Schema.Struct({
   comment: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<GetStoreSecretResponse>;
 
-export const getStoreSecret = API.make(() => ({
+export const getStoreSecret: (
+  input: GetStoreSecretRequest,
+) => Effect.Effect<
+  GetStoreSecretResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetStoreSecretRequest,
   output: GetStoreSecretResponse,
   errors: [],
@@ -197,7 +216,13 @@ export const PatchStoreSecretResponse = Schema.Struct({
   comment: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<PatchStoreSecretResponse>;
 
-export const patchStoreSecret = API.make(() => ({
+export const patchStoreSecret: (
+  input: PatchStoreSecretRequest,
+) => Effect.Effect<
+  PatchStoreSecretResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchStoreSecretRequest,
   output: PatchStoreSecretResponse,
   errors: [],
@@ -247,7 +272,13 @@ export const DeleteStoreSecretResponse = Schema.Struct({
   comment: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<DeleteStoreSecretResponse>;
 
-export const deleteStoreSecret = API.make(() => ({
+export const deleteStoreSecret: (
+  input: DeleteStoreSecretRequest,
+) => Effect.Effect<
+  DeleteStoreSecretResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteStoreSecretRequest,
   output: DeleteStoreSecretResponse,
   errors: [],
@@ -306,7 +337,13 @@ export const DuplicateStoreSecretResponse = Schema.Struct({
   comment: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<DuplicateStoreSecretResponse>;
 
-export const duplicateStoreSecret = API.make(() => ({
+export const duplicateStoreSecret: (
+  input: DuplicateStoreSecretRequest,
+) => Effect.Effect<
+  DuplicateStoreSecretResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DuplicateStoreSecretRequest,
   output: DuplicateStoreSecretResponse,
   errors: [],

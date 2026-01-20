@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -53,7 +54,13 @@ export const GetConfigResponse = Schema.Struct({
   ).pipe(T.JsonName("warp_devices")),
 }) as unknown as Schema.Schema<GetConfigResponse>;
 
-export const getConfig = API.make(() => ({
+export const getConfig: (
+  input: GetConfigRequest,
+) => Effect.Effect<
+  GetConfigResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetConfigRequest,
   output: GetConfigResponse,
   errors: [],
@@ -114,7 +121,13 @@ export const CreateConfigResponse = Schema.Struct({
   ).pipe(T.JsonName("warp_devices")),
 }) as unknown as Schema.Schema<CreateConfigResponse>;
 
-export const createConfig = API.make(() => ({
+export const createConfig: (
+  input: CreateConfigRequest,
+) => Effect.Effect<
+  CreateConfigResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateConfigRequest,
   output: CreateConfigResponse,
   errors: [],
@@ -175,7 +188,13 @@ export const UpdateConfigResponse = Schema.Struct({
   ).pipe(T.JsonName("warp_devices")),
 }) as unknown as Schema.Schema<UpdateConfigResponse>;
 
-export const updateConfig = API.make(() => ({
+export const updateConfig: (
+  input: UpdateConfigRequest,
+) => Effect.Effect<
+  UpdateConfigResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateConfigRequest,
   output: UpdateConfigResponse,
   errors: [],
@@ -238,7 +257,13 @@ export const PatchConfigResponse = Schema.Struct({
   ).pipe(T.JsonName("warp_devices")),
 }) as unknown as Schema.Schema<PatchConfigResponse>;
 
-export const patchConfig = API.make(() => ({
+export const patchConfig: (
+  input: PatchConfigRequest,
+) => Effect.Effect<
+  PatchConfigResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchConfigRequest,
   output: PatchConfigResponse,
   errors: [],
@@ -276,7 +301,13 @@ export const DeleteConfigResponse = Schema.Struct({
   ).pipe(T.JsonName("warp_devices")),
 }) as unknown as Schema.Schema<DeleteConfigResponse>;
 
-export const deleteConfig = API.make(() => ({
+export const deleteConfig: (
+  input: DeleteConfigRequest,
+) => Effect.Effect<
+  DeleteConfigResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteConfigRequest,
   output: DeleteConfigResponse,
   errors: [],
@@ -301,7 +332,13 @@ export type GetConfigFullResponse = unknown;
 export const GetConfigFullResponse =
   Schema.Unknown as unknown as Schema.Schema<GetConfigFullResponse>;
 
-export const getConfigFull = API.make(() => ({
+export const getConfigFull: (
+  input: GetConfigFullRequest,
+) => Effect.Effect<
+  GetConfigFullResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetConfigFullRequest,
   output: GetConfigFullResponse,
   errors: [],
@@ -328,7 +365,13 @@ export type GetRuleResponse = unknown;
 export const GetRuleResponse =
   Schema.Unknown as unknown as Schema.Schema<GetRuleResponse>;
 
-export const getRule = API.make(() => ({
+export const getRule: (
+  input: GetRuleRequest,
+) => Effect.Effect<
+  GetRuleResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetRuleRequest,
   output: GetRuleResponse,
   errors: [],
@@ -381,7 +424,13 @@ export type CreateRuleResponse = unknown;
 export const CreateRuleResponse =
   Schema.Unknown as unknown as Schema.Schema<CreateRuleResponse>;
 
-export const createRule = API.make(() => ({
+export const createRule: (
+  input: CreateRuleRequest,
+) => Effect.Effect<
+  CreateRuleResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateRuleRequest,
   output: CreateRuleResponse,
   errors: [],
@@ -437,7 +486,13 @@ export type UpdateRuleResponse = unknown;
 export const UpdateRuleResponse =
   Schema.Unknown as unknown as Schema.Schema<UpdateRuleResponse>;
 
-export const updateRule = API.make(() => ({
+export const updateRule: (
+  input: UpdateRuleRequest,
+) => Effect.Effect<
+  UpdateRuleResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateRuleRequest,
   output: UpdateRuleResponse,
   errors: [],
@@ -488,7 +543,13 @@ export type PatchRuleResponse = unknown;
 export const PatchRuleResponse =
   Schema.Unknown as unknown as Schema.Schema<PatchRuleResponse>;
 
-export const patchRule = API.make(() => ({
+export const patchRule: (
+  input: PatchRuleRequest,
+) => Effect.Effect<
+  PatchRuleResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchRuleRequest,
   output: PatchRuleResponse,
   errors: [],
@@ -514,7 +575,13 @@ export type DeleteRuleResponse = unknown;
 export const DeleteRuleResponse =
   Schema.Unknown as unknown as Schema.Schema<DeleteRuleResponse>;
 
-export const deleteRule = API.make(() => ({
+export const deleteRule: (
+  input: DeleteRuleRequest,
+) => Effect.Effect<
+  DeleteRuleResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteRuleRequest,
   output: DeleteRuleResponse,
   errors: [],
@@ -548,7 +615,13 @@ export type PatchRuleAdvertisementResponse = unknown;
 export const PatchRuleAdvertisementResponse =
   Schema.Unknown as unknown as Schema.Schema<PatchRuleAdvertisementResponse>;
 
-export const patchRuleAdvertisement = API.make(() => ({
+export const patchRuleAdvertisement: (
+  input: PatchRuleAdvertisementRequest,
+) => Effect.Effect<
+  PatchRuleAdvertisementResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchRuleAdvertisementRequest,
   output: PatchRuleAdvertisementResponse,
   errors: [],
@@ -576,7 +649,13 @@ export type CreateVpcFlowTokenResponse = string;
 export const CreateVpcFlowTokenResponse =
   Schema.String as unknown as Schema.Schema<CreateVpcFlowTokenResponse>;
 
-export const createVpcFlowToken = API.make(() => ({
+export const createVpcFlowToken: (
+  input: CreateVpcFlowTokenRequest,
+) => Effect.Effect<
+  CreateVpcFlowTokenResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateVpcFlowTokenRequest,
   output: CreateVpcFlowTokenResponse,
   errors: [],

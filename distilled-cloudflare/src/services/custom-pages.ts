@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -77,7 +78,13 @@ export const GetCustomPageResponse = Schema.Struct({
   url: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<GetCustomPageResponse>;
 
-export const getCustomPage = API.make(() => ({
+export const getCustomPage: (
+  input: GetCustomPageRequest,
+) => Effect.Effect<
+  GetCustomPageResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetCustomPageRequest,
   output: GetCustomPageResponse,
   errors: [],
@@ -151,7 +158,13 @@ export const PutCustomPageResponse = Schema.Struct({
   url: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<PutCustomPageResponse>;
 
-export const putCustomPage = API.make(() => ({
+export const putCustomPage: (
+  input: PutCustomPageRequest,
+) => Effect.Effect<
+  PutCustomPageResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutCustomPageRequest,
   output: PutCustomPageResponse,
   errors: [],

@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -55,7 +56,13 @@ export const GetOriginPostQuantumEncryptionResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<GetOriginPostQuantumEncryptionResponse>;
 
-export const getOriginPostQuantumEncryption = API.make(() => ({
+export const getOriginPostQuantumEncryption: (
+  input: GetOriginPostQuantumEncryptionRequest,
+) => Effect.Effect<
+  GetOriginPostQuantumEncryptionResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetOriginPostQuantumEncryptionRequest,
   output: GetOriginPostQuantumEncryptionResponse,
   errors: [],
@@ -98,7 +105,13 @@ export const PutOriginPostQuantumEncryptionResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<PutOriginPostQuantumEncryptionResponse>;
 
-export const putOriginPostQuantumEncryption = API.make(() => ({
+export const putOriginPostQuantumEncryption: (
+  input: PutOriginPostQuantumEncryptionRequest,
+) => Effect.Effect<
+  PutOriginPostQuantumEncryptionResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutOriginPostQuantumEncryptionRequest,
   output: PutOriginPostQuantumEncryptionResponse,
   errors: [],

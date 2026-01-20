@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -152,7 +153,13 @@ export const GetMembershipResponse = Schema.Struct({
   status: Schema.optional(Schema.Literal("accepted", "pending", "rejected")),
 }) as unknown as Schema.Schema<GetMembershipResponse>;
 
-export const getMembership = API.make(() => ({
+export const getMembership: (
+  input: GetMembershipRequest,
+) => Effect.Effect<
+  GetMembershipResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetMembershipRequest,
   output: GetMembershipResponse,
   errors: [],
@@ -292,7 +299,13 @@ export const PutMembershipResponse = Schema.Struct({
   status: Schema.optional(Schema.Literal("accepted", "pending", "rejected")),
 }) as unknown as Schema.Schema<PutMembershipResponse>;
 
-export const putMembership = API.make(() => ({
+export const putMembership: (
+  input: PutMembershipRequest,
+) => Effect.Effect<
+  PutMembershipResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutMembershipRequest,
   output: PutMembershipResponse,
   errors: [],
@@ -317,7 +330,13 @@ export const DeleteMembershipResponse = Schema.Struct({
   id: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<DeleteMembershipResponse>;
 
-export const deleteMembership = API.make(() => ({
+export const deleteMembership: (
+  input: DeleteMembershipRequest,
+) => Effect.Effect<
+  DeleteMembershipResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteMembershipRequest,
   output: DeleteMembershipResponse,
   errors: [],

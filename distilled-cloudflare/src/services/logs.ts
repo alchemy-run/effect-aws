@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -40,7 +41,13 @@ export type GetControlCmbConfigResponse = unknown;
 export const GetControlCmbConfigResponse =
   Schema.Unknown as unknown as Schema.Schema<GetControlCmbConfigResponse>;
 
-export const getControlCmbConfig = API.make(() => ({
+export const getControlCmbConfig: (
+  input: GetControlCmbConfigRequest,
+) => Effect.Effect<
+  GetControlCmbConfigResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetControlCmbConfigRequest,
   output: GetControlCmbConfigResponse,
   errors: [],
@@ -73,7 +80,13 @@ export type CreateControlCmbConfigResponse = unknown;
 export const CreateControlCmbConfigResponse =
   Schema.Unknown as unknown as Schema.Schema<CreateControlCmbConfigResponse>;
 
-export const createControlCmbConfig = API.make(() => ({
+export const createControlCmbConfig: (
+  input: CreateControlCmbConfigRequest,
+) => Effect.Effect<
+  CreateControlCmbConfigResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateControlCmbConfigRequest,
   output: CreateControlCmbConfigResponse,
   errors: [],
@@ -98,7 +111,13 @@ export type DeleteControlCmbConfigResponse = unknown;
 export const DeleteControlCmbConfigResponse =
   Schema.Unknown as unknown as Schema.Schema<DeleteControlCmbConfigResponse>;
 
-export const deleteControlCmbConfig = API.make(() => ({
+export const deleteControlCmbConfig: (
+  input: DeleteControlCmbConfigRequest,
+) => Effect.Effect<
+  DeleteControlCmbConfigResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteControlCmbConfigRequest,
   output: DeleteControlCmbConfigResponse,
   errors: [],
@@ -127,7 +146,13 @@ export type GetControlRetentionResponse = unknown;
 export const GetControlRetentionResponse =
   Schema.Unknown as unknown as Schema.Schema<GetControlRetentionResponse>;
 
-export const getControlRetention = API.make(() => ({
+export const getControlRetention: (
+  input: GetControlRetentionRequest,
+) => Effect.Effect<
+  GetControlRetentionResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetControlRetentionRequest,
   output: GetControlRetentionResponse,
   errors: [],
@@ -155,7 +180,13 @@ export type CreateControlRetentionResponse = unknown;
 export const CreateControlRetentionResponse =
   Schema.Unknown as unknown as Schema.Schema<CreateControlRetentionResponse>;
 
-export const createControlRetention = API.make(() => ({
+export const createControlRetention: (
+  input: CreateControlRetentionRequest,
+) => Effect.Effect<
+  CreateControlRetentionResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateControlRetentionRequest,
   output: CreateControlRetentionResponse,
   errors: [],
@@ -191,7 +222,13 @@ export type GetRayidResponse = string;
 export const GetRayidResponse =
   Schema.String as unknown as Schema.Schema<GetRayidResponse>;
 
-export const getRayid = API.make(() => ({
+export const getRayid: (
+  input: GetRayidRequest,
+) => Effect.Effect<
+  GetRayidResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetRayidRequest,
   output: GetRayidResponse,
   errors: [],
@@ -239,7 +276,13 @@ export type GetReceivedResponse = string;
 export const GetReceivedResponse =
   Schema.String as unknown as Schema.Schema<GetReceivedResponse>;
 
-export const getReceived = API.make(() => ({
+export const getReceived: (
+  input: GetReceivedRequest,
+) => Effect.Effect<
+  GetReceivedResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetReceivedRequest,
   output: GetReceivedResponse,
   errors: [],
@@ -268,7 +311,13 @@ export const GetReceivedFieldResponse = Schema.Struct({
   key: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<GetReceivedFieldResponse>;
 
-export const getReceivedField = API.make(() => ({
+export const getReceivedField: (
+  input: GetReceivedFieldRequest,
+) => Effect.Effect<
+  GetReceivedFieldResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetReceivedFieldRequest,
   output: GetReceivedFieldResponse,
   errors: [],

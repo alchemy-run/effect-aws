@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -42,7 +43,13 @@ export type GetDomainResponse = unknown;
 export const GetDomainResponse =
   Schema.Unknown as unknown as Schema.Schema<GetDomainResponse>;
 
-export const getDomain = API.make(() => ({
+export const getDomain: (
+  input: GetDomainRequest,
+) => Effect.Effect<
+  GetDomainResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetDomainRequest,
   output: GetDomainResponse,
   errors: [],
@@ -78,7 +85,13 @@ export type PutDomainResponse = unknown;
 export const PutDomainResponse =
   Schema.Unknown as unknown as Schema.Schema<PutDomainResponse>;
 
-export const putDomain = API.make(() => ({
+export const putDomain: (
+  input: PutDomainRequest,
+) => Effect.Effect<
+  PutDomainResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutDomainRequest,
   output: PutDomainResponse,
   errors: [],

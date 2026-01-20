@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -45,7 +46,13 @@ export type CreateAnalyzeResponse = unknown;
 export const CreateAnalyzeResponse =
   Schema.Unknown as unknown as Schema.Schema<CreateAnalyzeResponse>;
 
-export const createAnalyze = API.make(() => ({
+export const createAnalyze: (
+  input: CreateAnalyzeRequest,
+) => Effect.Effect<
+  CreateAnalyzeResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateAnalyzeRequest,
   output: CreateAnalyzeResponse,
   errors: [],
@@ -76,7 +83,13 @@ export type GetCertificatePackResponse = unknown;
 export const GetCertificatePackResponse =
   Schema.Unknown as unknown as Schema.Schema<GetCertificatePackResponse>;
 
-export const getCertificatePack = API.make(() => ({
+export const getCertificatePack: (
+  input: GetCertificatePackRequest,
+) => Effect.Effect<
+  GetCertificatePackResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetCertificatePackRequest,
   output: GetCertificatePackResponse,
   errors: [],
@@ -254,7 +267,13 @@ export const CreateCertificatePackResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<CreateCertificatePackResponse>;
 
-export const createCertificatePack = API.make(() => ({
+export const createCertificatePack: (
+  input: CreateCertificatePackRequest,
+) => Effect.Effect<
+  CreateCertificatePackResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateCertificatePackRequest,
   output: CreateCertificatePackResponse,
   errors: [],
@@ -411,7 +430,13 @@ export const PatchCertificatePackResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<PatchCertificatePackResponse>;
 
-export const patchCertificatePack = API.make(() => ({
+export const patchCertificatePack: (
+  input: PatchCertificatePackRequest,
+) => Effect.Effect<
+  PatchCertificatePackResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchCertificatePackRequest,
   output: PatchCertificatePackResponse,
   errors: [],
@@ -442,7 +467,13 @@ export const DeleteCertificatePackResponse = Schema.Struct({
   id: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<DeleteCertificatePackResponse>;
 
-export const deleteCertificatePack = API.make(() => ({
+export const deleteCertificatePack: (
+  input: DeleteCertificatePackRequest,
+) => Effect.Effect<
+  DeleteCertificatePackResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteCertificatePackRequest,
   output: DeleteCertificatePackResponse,
   errors: [],
@@ -479,7 +510,13 @@ export const GetCertificatePackQuotaResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<GetCertificatePackQuotaResponse>;
 
-export const getCertificatePackQuota = API.make(() => ({
+export const getCertificatePackQuota: (
+  input: GetCertificatePackQuotaRequest,
+) => Effect.Effect<
+  GetCertificatePackQuotaResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetCertificatePackQuotaRequest,
   output: GetCertificatePackQuotaResponse,
   errors: [],
@@ -521,7 +558,13 @@ export const GetRecommendationResponse = Schema.Struct({
   ).pipe(T.JsonName("next_scheduled_scan")),
 }) as unknown as Schema.Schema<GetRecommendationResponse>;
 
-export const getRecommendation = API.make(() => ({
+export const getRecommendation: (
+  input: GetRecommendationRequest,
+) => Effect.Effect<
+  GetRecommendationResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetRecommendationRequest,
   output: GetRecommendationResponse,
   errors: [],
@@ -551,7 +594,13 @@ export const GetUniversalSettingResponse = Schema.Struct({
   enabled: Schema.optional(Schema.Boolean),
 }) as unknown as Schema.Schema<GetUniversalSettingResponse>;
 
-export const getUniversalSetting = API.make(() => ({
+export const getUniversalSetting: (
+  input: GetUniversalSettingRequest,
+) => Effect.Effect<
+  GetUniversalSettingResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetUniversalSettingRequest,
   output: GetUniversalSettingResponse,
   errors: [],
@@ -580,7 +629,13 @@ export const PatchUniversalSettingResponse = Schema.Struct({
   enabled: Schema.optional(Schema.Boolean),
 }) as unknown as Schema.Schema<PatchUniversalSettingResponse>;
 
-export const patchUniversalSetting = API.make(() => ({
+export const patchUniversalSetting: (
+  input: PatchUniversalSettingRequest,
+) => Effect.Effect<
+  PatchUniversalSettingResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchUniversalSettingRequest,
   output: PatchUniversalSettingResponse,
   errors: [],
@@ -670,7 +725,13 @@ export const GetVerificationResponse = Schema.Array(
   }),
 ) as unknown as Schema.Schema<GetVerificationResponse>;
 
-export const getVerification = API.make(() => ({
+export const getVerification: (
+  input: GetVerificationRequest,
+) => Effect.Effect<
+  GetVerificationResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetVerificationRequest,
   output: GetVerificationResponse,
   errors: [],
@@ -711,7 +772,13 @@ export const PatchVerificationResponse = Schema.Struct({
   ).pipe(T.JsonName("validation_method")),
 }) as unknown as Schema.Schema<PatchVerificationResponse>;
 
-export const patchVerification = API.make(() => ({
+export const patchVerification: (
+  input: PatchVerificationRequest,
+) => Effect.Effect<
+  PatchVerificationResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchVerificationRequest,
   output: PatchVerificationResponse,
   errors: [],

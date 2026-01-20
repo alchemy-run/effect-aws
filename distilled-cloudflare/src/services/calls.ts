@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -52,7 +53,13 @@ export const GetSfuResponse = Schema.Struct({
   uid: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<GetSfuResponse>;
 
-export const getSfu = API.make(() => ({
+export const getSfu: (
+  input: GetSfuRequest,
+) => Effect.Effect<
+  GetSfuResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetSfuRequest,
   output: GetSfuResponse,
   errors: [],
@@ -93,7 +100,13 @@ export const CreateSfuResponse = Schema.Struct({
   uid: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<CreateSfuResponse>;
 
-export const createSfu = API.make(() => ({
+export const createSfu: (
+  input: CreateSfuRequest,
+) => Effect.Effect<
+  CreateSfuResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateSfuRequest,
   output: CreateSfuResponse,
   errors: [],
@@ -133,7 +146,13 @@ export const UpdateSfuResponse = Schema.Struct({
   uid: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<UpdateSfuResponse>;
 
-export const updateSfu = API.make(() => ({
+export const updateSfu: (
+  input: UpdateSfuRequest,
+) => Effect.Effect<
+  UpdateSfuResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateSfuRequest,
   output: UpdateSfuResponse,
   errors: [],
@@ -173,7 +192,13 @@ export const DeleteSfuResponse = Schema.Struct({
   uid: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<DeleteSfuResponse>;
 
-export const deleteSfu = API.make(() => ({
+export const deleteSfu: (
+  input: DeleteSfuRequest,
+) => Effect.Effect<
+  DeleteSfuResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteSfuRequest,
   output: DeleteSfuResponse,
   errors: [],
@@ -217,7 +242,13 @@ export const GetTurnResponse = Schema.Struct({
   uid: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<GetTurnResponse>;
 
-export const getTurn = API.make(() => ({
+export const getTurn: (
+  input: GetTurnRequest,
+) => Effect.Effect<
+  GetTurnResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetTurnRequest,
   output: GetTurnResponse,
   errors: [],
@@ -258,7 +289,13 @@ export const CreateTurnResponse = Schema.Struct({
   uid: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<CreateTurnResponse>;
 
-export const createTurn = API.make(() => ({
+export const createTurn: (
+  input: CreateTurnRequest,
+) => Effect.Effect<
+  CreateTurnResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateTurnRequest,
   output: CreateTurnResponse,
   errors: [],
@@ -301,7 +338,13 @@ export const UpdateTurnResponse = Schema.Struct({
   uid: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<UpdateTurnResponse>;
 
-export const updateTurn = API.make(() => ({
+export const updateTurn: (
+  input: UpdateTurnRequest,
+) => Effect.Effect<
+  UpdateTurnResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateTurnRequest,
   output: UpdateTurnResponse,
   errors: [],
@@ -341,7 +384,13 @@ export const DeleteTurnResponse = Schema.Struct({
   uid: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<DeleteTurnResponse>;
 
-export const deleteTurn = API.make(() => ({
+export const deleteTurn: (
+  input: DeleteTurnRequest,
+) => Effect.Effect<
+  DeleteTurnResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteTurnRequest,
   output: DeleteTurnResponse,
   errors: [],

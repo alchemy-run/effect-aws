@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -60,7 +61,13 @@ export const GetConfigurationResponse = Schema.Struct({
   ).pipe(T.JsonName("auth_id_characteristics")),
 }) as unknown as Schema.Schema<GetConfigurationResponse>;
 
-export const getConfiguration = API.make(() => ({
+export const getConfiguration: (
+  input: GetConfigurationRequest,
+) => Effect.Effect<
+  GetConfigurationResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetConfigurationRequest,
   output: GetConfigurationResponse,
   errors: [],
@@ -107,7 +114,13 @@ export const PutConfigurationResponse = Schema.Struct({
   success: Schema.Literal(true),
 }) as unknown as Schema.Schema<PutConfigurationResponse>;
 
-export const putConfiguration = API.make(() => ({
+export const putConfiguration: (
+  input: PutConfigurationRequest,
+) => Effect.Effect<
+  PutConfigurationResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutConfigurationRequest,
   output: PutConfigurationResponse,
   errors: [],
@@ -138,7 +151,13 @@ export const GetDiscoveryResponse = Schema.Struct({
   timestamp: Schema.String,
 }) as unknown as Schema.Schema<GetDiscoveryResponse>;
 
-export const getDiscovery = API.make(() => ({
+export const getDiscovery: (
+  input: GetDiscoveryRequest,
+) => Effect.Effect<
+  GetDiscoveryResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetDiscoveryRequest,
   output: GetDiscoveryResponse,
   errors: [],
@@ -176,7 +195,13 @@ export const PatchDiscoveryOperationResponse = Schema.Struct({
   state: Schema.optional(Schema.Literal("review", "saved", "ignored")),
 }) as unknown as Schema.Schema<PatchDiscoveryOperationResponse>;
 
-export const patchDiscoveryOperation = API.make(() => ({
+export const patchDiscoveryOperation: (
+  input: PatchDiscoveryOperationRequest,
+) => Effect.Effect<
+  PatchDiscoveryOperationResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchDiscoveryOperationRequest,
   output: PatchDiscoveryOperationResponse,
   errors: [],
@@ -205,7 +230,13 @@ export const BulkPatchDiscoveryOperationsResponse = Schema.Struct(
   {},
 ) as unknown as Schema.Schema<BulkPatchDiscoveryOperationsResponse>;
 
-export const bulkPatchDiscoveryOperations = API.make(() => ({
+export const bulkPatchDiscoveryOperations: (
+  input: BulkPatchDiscoveryOperationsRequest,
+) => Effect.Effect<
+  BulkPatchDiscoveryOperationsResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: BulkPatchDiscoveryOperationsRequest,
   output: BulkPatchDiscoveryOperationsResponse,
   errors: [],
@@ -244,7 +275,13 @@ export const CreateExpressionTemplateFallthroughResponse = Schema.Struct({
   title: Schema.String,
 }) as unknown as Schema.Schema<CreateExpressionTemplateFallthroughResponse>;
 
-export const createExpressionTemplateFallthrough = API.make(() => ({
+export const createExpressionTemplateFallthrough: (
+  input: CreateExpressionTemplateFallthroughRequest,
+) => Effect.Effect<
+  CreateExpressionTemplateFallthroughResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateExpressionTemplateFallthroughRequest,
   output: CreateExpressionTemplateFallthroughResponse,
   errors: [],
@@ -479,7 +516,13 @@ export const GetOperationResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<GetOperationResponse>;
 
-export const getOperation = API.make(() => ({
+export const getOperation: (
+  input: GetOperationRequest,
+) => Effect.Effect<
+  GetOperationResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetOperationRequest,
   output: GetOperationResponse,
   errors: [],
@@ -729,7 +772,13 @@ export const CreateOperationResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<CreateOperationResponse>;
 
-export const createOperation = API.make(() => ({
+export const createOperation: (
+  input: CreateOperationRequest,
+) => Effect.Effect<
+  CreateOperationResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateOperationRequest,
   output: CreateOperationResponse,
   errors: [],
@@ -764,7 +813,13 @@ export const DeleteOperationResponse = Schema.Struct({
   success: Schema.Literal(true),
 }) as unknown as Schema.Schema<DeleteOperationResponse>;
 
-export const deleteOperation = API.make(() => ({
+export const deleteOperation: (
+  input: DeleteOperationRequest,
+) => Effect.Effect<
+  DeleteOperationResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteOperationRequest,
   output: DeleteOperationResponse,
   errors: [],
@@ -794,7 +849,13 @@ export const BulkDeleteOperationsResponse = Schema.Struct({
   success: Schema.Literal(true),
 }) as unknown as Schema.Schema<BulkDeleteOperationsResponse>;
 
-export const bulkDeleteOperations = API.make(() => ({
+export const bulkDeleteOperations: (
+  input: BulkDeleteOperationsRequest,
+) => Effect.Effect<
+  BulkDeleteOperationsResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: BulkDeleteOperationsRequest,
   output: BulkDeleteOperationsResponse,
   errors: [],
@@ -839,7 +900,13 @@ export const GetOperationSchemaValidationResponse = Schema.Struct({
   operationId: Schema.optional(Schema.String).pipe(T.JsonName("operation_id")),
 }) as unknown as Schema.Schema<GetOperationSchemaValidationResponse>;
 
-export const getOperationSchemaValidation = API.make(() => ({
+export const getOperationSchemaValidation: (
+  input: GetOperationSchemaValidationRequest,
+) => Effect.Effect<
+  GetOperationSchemaValidationResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetOperationSchemaValidationRequest,
   output: GetOperationSchemaValidationResponse,
   errors: [],
@@ -890,7 +957,13 @@ export const PutOperationSchemaValidationResponse = Schema.Struct({
   operationId: Schema.optional(Schema.String).pipe(T.JsonName("operation_id")),
 }) as unknown as Schema.Schema<PutOperationSchemaValidationResponse>;
 
-export const putOperationSchemaValidation = API.make(() => ({
+export const putOperationSchemaValidation: (
+  input: PutOperationSchemaValidationRequest,
+) => Effect.Effect<
+  PutOperationSchemaValidationResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutOperationSchemaValidationRequest,
   output: PutOperationSchemaValidationResponse,
   errors: [],
@@ -921,7 +994,13 @@ export const PatchOperationSchemaValidationResponse = Schema.Struct(
   {},
 ) as unknown as Schema.Schema<PatchOperationSchemaValidationResponse>;
 
-export const patchOperationSchemaValidation = API.make(() => ({
+export const patchOperationSchemaValidation: (
+  input: PatchOperationSchemaValidationRequest,
+) => Effect.Effect<
+  PatchOperationSchemaValidationResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchOperationSchemaValidationRequest,
   output: PatchOperationSchemaValidationResponse,
   errors: [],
@@ -962,7 +1041,13 @@ export const ListSchemasResponse = Schema.Struct({
   timestamp: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<ListSchemasResponse>;
 
-export const listSchemas = API.make(() => ({
+export const listSchemas: (
+  input: ListSchemasRequest,
+) => Effect.Effect<
+  ListSchemasResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: ListSchemasRequest,
   output: ListSchemasResponse,
   errors: [],
@@ -991,7 +1076,13 @@ export type GetSettingSchemaValidationResponse = unknown;
 export const GetSettingSchemaValidationResponse =
   Schema.Unknown as unknown as Schema.Schema<GetSettingSchemaValidationResponse>;
 
-export const getSettingSchemaValidation = API.make(() => ({
+export const getSettingSchemaValidation: (
+  input: GetSettingSchemaValidationRequest,
+) => Effect.Effect<
+  GetSettingSchemaValidationResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetSettingSchemaValidationRequest,
   output: GetSettingSchemaValidationResponse,
   errors: [],
@@ -1032,7 +1123,13 @@ export type PutSettingSchemaValidationResponse = unknown;
 export const PutSettingSchemaValidationResponse =
   Schema.Unknown as unknown as Schema.Schema<PutSettingSchemaValidationResponse>;
 
-export const putSettingSchemaValidation = API.make(() => ({
+export const putSettingSchemaValidation: (
+  input: PutSettingSchemaValidationRequest,
+) => Effect.Effect<
+  PutSettingSchemaValidationResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutSettingSchemaValidationRequest,
   output: PutSettingSchemaValidationResponse,
   errors: [],
@@ -1076,7 +1173,13 @@ export type PatchSettingSchemaValidationResponse = unknown;
 export const PatchSettingSchemaValidationResponse =
   Schema.Unknown as unknown as Schema.Schema<PatchSettingSchemaValidationResponse>;
 
-export const patchSettingSchemaValidation = API.make(() => ({
+export const patchSettingSchemaValidation: (
+  input: PatchSettingSchemaValidationRequest,
+) => Effect.Effect<
+  PatchSettingSchemaValidationResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchSettingSchemaValidationRequest,
   output: PatchSettingSchemaValidationResponse,
   errors: [],
@@ -1130,7 +1233,13 @@ export const GetUserSchemaResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<GetUserSchemaResponse>;
 
-export const getUserSchema = API.make(() => ({
+export const getUserSchema: (
+  input: GetUserSchemaRequest,
+) => Effect.Effect<
+  GetUserSchemaResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetUserSchemaRequest,
   output: GetUserSchemaResponse,
   errors: [],
@@ -1205,7 +1314,13 @@ export const CreateUserSchemaResponse = Schema.Struct({
   ).pipe(T.JsonName("upload_details")),
 }) as unknown as Schema.Schema<CreateUserSchemaResponse>;
 
-export const createUserSchema = API.make(() => ({
+export const createUserSchema: (
+  input: CreateUserSchemaRequest,
+) => Effect.Effect<
+  CreateUserSchemaResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateUserSchemaRequest,
   output: CreateUserSchemaResponse,
   errors: [],
@@ -1257,7 +1372,13 @@ export const PatchUserSchemaResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<PatchUserSchemaResponse>;
 
-export const patchUserSchema = API.make(() => ({
+export const patchUserSchema: (
+  input: PatchUserSchemaRequest,
+) => Effect.Effect<
+  PatchUserSchemaResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchUserSchemaRequest,
   output: PatchUserSchemaResponse,
   errors: [],
@@ -1292,7 +1413,13 @@ export const DeleteUserSchemaResponse = Schema.Struct({
   success: Schema.Literal(true),
 }) as unknown as Schema.Schema<DeleteUserSchemaResponse>;
 
-export const deleteUserSchema = API.make(() => ({
+export const deleteUserSchema: (
+  input: DeleteUserSchemaRequest,
+) => Effect.Effect<
+  DeleteUserSchemaResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteUserSchemaRequest,
   output: DeleteUserSchemaResponse,
   errors: [],

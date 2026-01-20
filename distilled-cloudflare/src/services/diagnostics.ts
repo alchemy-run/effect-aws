@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -55,7 +56,13 @@ export const GetEndpointHealthcheckResponse = Schema.Struct({
   name: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<GetEndpointHealthcheckResponse>;
 
-export const getEndpointHealthcheck = API.make(() => ({
+export const getEndpointHealthcheck: (
+  input: GetEndpointHealthcheckRequest,
+) => Effect.Effect<
+  GetEndpointHealthcheckResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetEndpointHealthcheckRequest,
   output: GetEndpointHealthcheckResponse,
   errors: [],
@@ -93,7 +100,13 @@ export const ListEndpointHealthchecksResponse = Schema.Struct({
   name: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<ListEndpointHealthchecksResponse>;
 
-export const listEndpointHealthchecks = API.make(() => ({
+export const listEndpointHealthchecks: (
+  input: ListEndpointHealthchecksRequest,
+) => Effect.Effect<
+  ListEndpointHealthchecksResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: ListEndpointHealthchecksRequest,
   output: ListEndpointHealthchecksResponse,
   errors: [],
@@ -140,7 +153,13 @@ export const CreateEndpointHealthcheckResponse = Schema.Struct({
   name: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<CreateEndpointHealthcheckResponse>;
 
-export const createEndpointHealthcheck = API.make(() => ({
+export const createEndpointHealthcheck: (
+  input: CreateEndpointHealthcheckRequest,
+) => Effect.Effect<
+  CreateEndpointHealthcheckResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateEndpointHealthcheckRequest,
   output: CreateEndpointHealthcheckResponse,
   errors: [],
@@ -189,7 +208,13 @@ export const UpdateEndpointHealthcheckResponse = Schema.Struct({
   name: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<UpdateEndpointHealthcheckResponse>;
 
-export const updateEndpointHealthcheck = API.make(() => ({
+export const updateEndpointHealthcheck: (
+  input: UpdateEndpointHealthcheckRequest,
+) => Effect.Effect<
+  UpdateEndpointHealthcheckResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateEndpointHealthcheckRequest,
   output: UpdateEndpointHealthcheckResponse,
   errors: [],
@@ -260,7 +285,13 @@ export const DeleteEndpointHealthcheckResponse = Schema.Struct({
   success: Schema.Literal(true),
 }) as unknown as Schema.Schema<DeleteEndpointHealthcheckResponse>;
 
-export const deleteEndpointHealthcheck = API.make(() => ({
+export const deleteEndpointHealthcheck: (
+  input: DeleteEndpointHealthcheckRequest,
+) => Effect.Effect<
+  DeleteEndpointHealthcheckResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteEndpointHealthcheckRequest,
   output: DeleteEndpointHealthcheckResponse,
   errors: [],

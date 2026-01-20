@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -63,7 +64,13 @@ export const PatchAudioTrackResponse = Schema.Struct({
   uid: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<PatchAudioTrackResponse>;
 
-export const patchAudioTrack = API.make(() => ({
+export const patchAudioTrack: (
+  input: PatchAudioTrackRequest,
+) => Effect.Effect<
+  PatchAudioTrackResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchAudioTrackRequest,
   output: PatchAudioTrackResponse,
   errors: [],
@@ -92,7 +99,13 @@ export type DeleteAudioTrackResponse = string;
 export const DeleteAudioTrackResponse =
   Schema.String as unknown as Schema.Schema<DeleteAudioTrackResponse>;
 
-export const deleteAudioTrack = API.make(() => ({
+export const deleteAudioTrack: (
+  input: DeleteAudioTrackRequest,
+) => Effect.Effect<
+  DeleteAudioTrackResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteAudioTrackRequest,
   output: DeleteAudioTrackResponse,
   errors: [],
@@ -138,7 +151,13 @@ export const CopyAudioTrackResponse = Schema.Struct({
   uid: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<CopyAudioTrackResponse>;
 
-export const copyAudioTrack = API.make(() => ({
+export const copyAudioTrack: (
+  input: CopyAudioTrackRequest,
+) => Effect.Effect<
+  CopyAudioTrackResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CopyAudioTrackRequest,
   output: CopyAudioTrackResponse,
   errors: [],
@@ -171,7 +190,13 @@ export type GetCaptionLanguageResponse = unknown;
 export const GetCaptionLanguageResponse =
   Schema.Unknown as unknown as Schema.Schema<GetCaptionLanguageResponse>;
 
-export const getCaptionLanguage = API.make(() => ({
+export const getCaptionLanguage: (
+  input: GetCaptionLanguageRequest,
+) => Effect.Effect<
+  GetCaptionLanguageResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetCaptionLanguageRequest,
   output: GetCaptionLanguageResponse,
   errors: [],
@@ -200,7 +225,13 @@ export type CreateCaptionLanguageResponse = unknown;
 export const CreateCaptionLanguageResponse =
   Schema.Unknown as unknown as Schema.Schema<CreateCaptionLanguageResponse>;
 
-export const createCaptionLanguage = API.make(() => ({
+export const createCaptionLanguage: (
+  input: CreateCaptionLanguageRequest,
+) => Effect.Effect<
+  CreateCaptionLanguageResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateCaptionLanguageRequest,
   output: CreateCaptionLanguageResponse,
   errors: [],
@@ -232,7 +263,13 @@ export type UpdateCaptionLanguageResponse = unknown;
 export const UpdateCaptionLanguageResponse =
   Schema.Unknown as unknown as Schema.Schema<UpdateCaptionLanguageResponse>;
 
-export const updateCaptionLanguage = API.make(() => ({
+export const updateCaptionLanguage: (
+  input: UpdateCaptionLanguageRequest,
+) => Effect.Effect<
+  UpdateCaptionLanguageResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateCaptionLanguageRequest,
   output: UpdateCaptionLanguageResponse,
   errors: [],
@@ -261,7 +298,13 @@ export type DeleteCaptionLanguageResponse = string;
 export const DeleteCaptionLanguageResponse =
   Schema.String as unknown as Schema.Schema<DeleteCaptionLanguageResponse>;
 
-export const deleteCaptionLanguage = API.make(() => ({
+export const deleteCaptionLanguage: (
+  input: DeleteCaptionLanguageRequest,
+) => Effect.Effect<
+  DeleteCaptionLanguageResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteCaptionLanguageRequest,
   output: DeleteCaptionLanguageResponse,
   errors: [],
@@ -294,7 +337,13 @@ export type GetCaptionLanguageVttResponse = unknown;
 export const GetCaptionLanguageVttResponse =
   Schema.Unknown as unknown as Schema.Schema<GetCaptionLanguageVttResponse>;
 
-export const getCaptionLanguageVtt = API.make(() => ({
+export const getCaptionLanguageVtt: (
+  input: GetCaptionLanguageVttRequest,
+) => Effect.Effect<
+  GetCaptionLanguageVttResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetCaptionLanguageVttRequest,
   output: GetCaptionLanguageVttResponse,
   errors: [],
@@ -421,7 +470,13 @@ export const CreateClipResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<CreateClipResponse>;
 
-export const createClip = API.make(() => ({
+export const createClip: (
+  input: CreateClipRequest,
+) => Effect.Effect<
+  CreateClipResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateClipRequest,
   output: CreateClipResponse,
   errors: [],
@@ -480,7 +535,13 @@ export type CreateCopyResponse = unknown;
 export const CreateCopyResponse =
   Schema.Unknown as unknown as Schema.Schema<CreateCopyResponse>;
 
-export const createCopy = API.make(() => ({
+export const createCopy: (
+  input: CreateCopyRequest,
+) => Effect.Effect<
+  CreateCopyResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateCopyRequest,
   output: CreateCopyResponse,
   errors: [],
@@ -557,7 +618,13 @@ export const CreateDirectUploadResponse = Schema.Struct({
   watermark: Schema.optional(Schema.Unknown),
 }) as unknown as Schema.Schema<CreateDirectUploadResponse>;
 
-export const createDirectUpload = API.make(() => ({
+export const createDirectUpload: (
+  input: CreateDirectUploadRequest,
+) => Effect.Effect<
+  CreateDirectUploadResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateDirectUploadRequest,
   output: CreateDirectUploadResponse,
   errors: [],
@@ -588,7 +655,13 @@ export type GetDownloadResponse = unknown;
 export const GetDownloadResponse =
   Schema.Unknown as unknown as Schema.Schema<GetDownloadResponse>;
 
-export const getDownload = API.make(() => ({
+export const getDownload: (
+  input: GetDownloadRequest,
+) => Effect.Effect<
+  GetDownloadResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetDownloadRequest,
   output: GetDownloadResponse,
   errors: [],
@@ -618,7 +691,13 @@ export type CreateDownloadResponse = unknown;
 export const CreateDownloadResponse =
   Schema.Unknown as unknown as Schema.Schema<CreateDownloadResponse>;
 
-export const createDownload = API.make(() => ({
+export const createDownload: (
+  input: CreateDownloadRequest,
+) => Effect.Effect<
+  CreateDownloadResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateDownloadRequest,
   output: CreateDownloadResponse,
   errors: [],
@@ -645,7 +724,13 @@ export type DeleteDownloadResponse = string;
 export const DeleteDownloadResponse =
   Schema.String as unknown as Schema.Schema<DeleteDownloadResponse>;
 
-export const deleteDownload = API.make(() => ({
+export const deleteDownload: (
+  input: DeleteDownloadRequest,
+) => Effect.Effect<
+  DeleteDownloadResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteDownloadRequest,
   output: DeleteDownloadResponse,
   errors: [],
@@ -676,7 +761,13 @@ export type GetEmbedResponse = unknown;
 export const GetEmbedResponse =
   Schema.Unknown as unknown as Schema.Schema<GetEmbedResponse>;
 
-export const getEmbed = API.make(() => ({
+export const getEmbed: (
+  input: GetEmbedRequest,
+) => Effect.Effect<
+  GetEmbedResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetEmbedRequest,
   output: GetEmbedResponse,
   errors: [],
@@ -718,7 +809,13 @@ export const CreateKeyResponse = Schema.Struct({
   pem: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<CreateKeyResponse>;
 
-export const createKey = API.make(() => ({
+export const createKey: (
+  input: CreateKeyRequest,
+) => Effect.Effect<
+  CreateKeyResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateKeyRequest,
   output: CreateKeyResponse,
   errors: [],
@@ -745,7 +842,13 @@ export type DeleteKeyResponse = string;
 export const DeleteKeyResponse =
   Schema.String as unknown as Schema.Schema<DeleteKeyResponse>;
 
-export const deleteKey = API.make(() => ({
+export const deleteKey: (
+  input: DeleteKeyRequest,
+) => Effect.Effect<
+  DeleteKeyResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteKeyRequest,
   output: DeleteKeyResponse,
   errors: [],
@@ -792,7 +895,13 @@ export const GetLiveInputResponse = Schema.Struct({
   uid: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<GetLiveInputResponse>;
 
-export const getLiveInput = API.make(() => ({
+export const getLiveInput: (
+  input: GetLiveInputRequest,
+) => Effect.Effect<
+  GetLiveInputResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetLiveInputRequest,
   output: GetLiveInputResponse,
   errors: [],
@@ -844,7 +953,13 @@ export const ListLiveInputsResponse = Schema.Struct({
   total: Schema.optional(Schema.Number),
 }) as unknown as Schema.Schema<ListLiveInputsResponse>;
 
-export const listLiveInputs = API.make(() => ({
+export const listLiveInputs: (
+  input: ListLiveInputsRequest,
+) => Effect.Effect<
+  ListLiveInputsResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: ListLiveInputsRequest,
   output: ListLiveInputsResponse,
   errors: [],
@@ -908,7 +1023,13 @@ export const CreateLiveInputResponse = Schema.Struct({
   uid: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<CreateLiveInputResponse>;
 
-export const createLiveInput = API.make(() => ({
+export const createLiveInput: (
+  input: CreateLiveInputRequest,
+) => Effect.Effect<
+  CreateLiveInputResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateLiveInputRequest,
   output: CreateLiveInputResponse,
   errors: [],
@@ -977,7 +1098,13 @@ export const UpdateLiveInputResponse = Schema.Struct({
   uid: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<UpdateLiveInputResponse>;
 
-export const updateLiveInput = API.make(() => ({
+export const updateLiveInput: (
+  input: UpdateLiveInputRequest,
+) => Effect.Effect<
+  UpdateLiveInputResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateLiveInputRequest,
   output: UpdateLiveInputResponse,
   errors: [],
@@ -1004,7 +1131,13 @@ export type DeleteLiveInputResponse = unknown;
 export const DeleteLiveInputResponse =
   Schema.Unknown as unknown as Schema.Schema<DeleteLiveInputResponse>;
 
-export const deleteLiveInput = API.make(() => ({
+export const deleteLiveInput: (
+  input: DeleteLiveInputRequest,
+) => Effect.Effect<
+  DeleteLiveInputResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteLiveInputRequest,
   output: DeleteLiveInputResponse,
   errors: [],
@@ -1057,7 +1190,13 @@ export const CreateLiveInputOutputResponse = Schema.Struct({
   url: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<CreateLiveInputOutputResponse>;
 
-export const createLiveInputOutput = API.make(() => ({
+export const createLiveInputOutput: (
+  input: CreateLiveInputOutputRequest,
+) => Effect.Effect<
+  CreateLiveInputOutputResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateLiveInputOutputRequest,
   output: CreateLiveInputOutputResponse,
   errors: [],
@@ -1102,7 +1241,13 @@ export const UpdateLiveInputOutputResponse = Schema.Struct({
   url: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<UpdateLiveInputOutputResponse>;
 
-export const updateLiveInputOutput = API.make(() => ({
+export const updateLiveInputOutput: (
+  input: UpdateLiveInputOutputRequest,
+) => Effect.Effect<
+  UpdateLiveInputOutputResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateLiveInputOutputRequest,
   output: UpdateLiveInputOutputResponse,
   errors: [],
@@ -1131,7 +1276,13 @@ export type DeleteLiveInputOutputResponse = unknown;
 export const DeleteLiveInputOutputResponse =
   Schema.Unknown as unknown as Schema.Schema<DeleteLiveInputOutputResponse>;
 
-export const deleteLiveInputOutput = API.make(() => ({
+export const deleteLiveInputOutput: (
+  input: DeleteLiveInputOutputRequest,
+) => Effect.Effect<
+  DeleteLiveInputOutputResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteLiveInputOutputRequest,
   output: DeleteLiveInputOutputResponse,
   errors: [],
@@ -1265,7 +1416,13 @@ export const GetStreamResponse = Schema.Struct({
   watermark: Schema.optional(Schema.Unknown),
 }) as unknown as Schema.Schema<GetStreamResponse>;
 
-export const getStream = API.make(() => ({
+export const getStream: (
+  input: GetStreamRequest,
+) => Effect.Effect<
+  GetStreamResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetStreamRequest,
   output: GetStreamResponse,
   errors: [],
@@ -1311,7 +1468,13 @@ export type CreateStreamResponse = unknown;
 export const CreateStreamResponse =
   Schema.Unknown as unknown as Schema.Schema<CreateStreamResponse>;
 
-export const createStream = API.make(() => ({
+export const createStream: (
+  input: CreateStreamRequest,
+) => Effect.Effect<
+  CreateStreamResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateStreamRequest,
   output: CreateStreamResponse,
   errors: [],
@@ -1338,7 +1501,13 @@ export type DeleteStreamResponse = unknown;
 export const DeleteStreamResponse =
   Schema.Unknown as unknown as Schema.Schema<DeleteStreamResponse>;
 
-export const deleteStream = API.make(() => ({
+export const deleteStream: (
+  input: DeleteStreamRequest,
+) => Effect.Effect<
+  DeleteStreamResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteStreamRequest,
   output: DeleteStreamResponse,
   errors: [],
@@ -1495,7 +1664,13 @@ export const EditStreamResponse = Schema.Struct({
   watermark: Schema.optional(Schema.Unknown),
 }) as unknown as Schema.Schema<EditStreamResponse>;
 
-export const editStream = API.make(() => ({
+export const editStream: (
+  input: EditStreamRequest,
+) => Effect.Effect<
+  EditStreamResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: EditStreamRequest,
   output: EditStreamResponse,
   errors: [],
@@ -1564,7 +1739,13 @@ export const CreateTokenResponse = Schema.Struct({
   token: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<CreateTokenResponse>;
 
-export const createToken = API.make(() => ({
+export const createToken: (
+  input: CreateTokenRequest,
+) => Effect.Effect<
+  CreateTokenResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateTokenRequest,
   output: CreateTokenResponse,
   errors: [],
@@ -1609,7 +1790,13 @@ export const StorageUsageVideoResponse = Schema.Struct({
   videoCount: Schema.optional(Schema.Number),
 }) as unknown as Schema.Schema<StorageUsageVideoResponse>;
 
-export const storageUsageVideo = API.make(() => ({
+export const storageUsageVideo: (
+  input: StorageUsageVideoRequest,
+) => Effect.Effect<
+  StorageUsageVideoResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: StorageUsageVideoRequest,
   output: StorageUsageVideoResponse,
   errors: [],
@@ -1674,7 +1861,13 @@ export const GetWatermarkResponse = Schema.Struct({
   width: Schema.optional(Schema.Number),
 }) as unknown as Schema.Schema<GetWatermarkResponse>;
 
-export const getWatermark = API.make(() => ({
+export const getWatermark: (
+  input: GetWatermarkRequest,
+) => Effect.Effect<
+  GetWatermarkResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetWatermarkRequest,
   output: GetWatermarkResponse,
   errors: [],
@@ -1748,7 +1941,13 @@ export const CreateWatermarkResponse = Schema.Struct({
   width: Schema.optional(Schema.Number),
 }) as unknown as Schema.Schema<CreateWatermarkResponse>;
 
-export const createWatermark = API.make(() => ({
+export const createWatermark: (
+  input: CreateWatermarkRequest,
+) => Effect.Effect<
+  CreateWatermarkResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateWatermarkRequest,
   output: CreateWatermarkResponse,
   errors: [],
@@ -1775,7 +1974,13 @@ export type DeleteWatermarkResponse = string;
 export const DeleteWatermarkResponse =
   Schema.String as unknown as Schema.Schema<DeleteWatermarkResponse>;
 
-export const deleteWatermark = API.make(() => ({
+export const deleteWatermark: (
+  input: DeleteWatermarkRequest,
+) => Effect.Effect<
+  DeleteWatermarkResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteWatermarkRequest,
   output: DeleteWatermarkResponse,
   errors: [],
@@ -1801,7 +2006,13 @@ export type GetWebhookResponse = unknown;
 export const GetWebhookResponse =
   Schema.Unknown as unknown as Schema.Schema<GetWebhookResponse>;
 
-export const getWebhook = API.make(() => ({
+export const getWebhook: (
+  input: GetWebhookRequest,
+) => Effect.Effect<
+  GetWebhookResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetWebhookRequest,
   output: GetWebhookResponse,
   errors: [],
@@ -1826,7 +2037,13 @@ export type PutWebhookResponse = unknown;
 export const PutWebhookResponse =
   Schema.Unknown as unknown as Schema.Schema<PutWebhookResponse>;
 
-export const putWebhook = API.make(() => ({
+export const putWebhook: (
+  input: PutWebhookRequest,
+) => Effect.Effect<
+  PutWebhookResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutWebhookRequest,
   output: PutWebhookResponse,
   errors: [],
@@ -1848,7 +2065,13 @@ export type DeleteWebhookResponse = string;
 export const DeleteWebhookResponse =
   Schema.String as unknown as Schema.Schema<DeleteWebhookResponse>;
 
-export const deleteWebhook = API.make(() => ({
+export const deleteWebhook: (
+  input: DeleteWebhookRequest,
+) => Effect.Effect<
+  DeleteWebhookResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteWebhookRequest,
   output: DeleteWebhookResponse,
   errors: [],

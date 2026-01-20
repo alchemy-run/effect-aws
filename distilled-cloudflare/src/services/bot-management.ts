@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -183,7 +184,13 @@ export const GetBotManagementResponse = Schema.Union(
   }),
 ) as unknown as Schema.Schema<GetBotManagementResponse>;
 
-export const getBotManagement = API.make(() => ({
+export const getBotManagement: (
+  input: GetBotManagementRequest,
+) => Effect.Effect<
+  GetBotManagementResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetBotManagementRequest,
   output: GetBotManagementResponse,
   errors: [],
@@ -346,7 +353,13 @@ export const PutBotManagementResponse = Schema.Union(
   }),
 ) as unknown as Schema.Schema<PutBotManagementResponse>;
 
-export const putBotManagement = API.make(() => ({
+export const putBotManagement: (
+  input: PutBotManagementRequest,
+) => Effect.Effect<
+  PutBotManagementResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutBotManagementRequest,
   output: PutBotManagementResponse,
   errors: [],

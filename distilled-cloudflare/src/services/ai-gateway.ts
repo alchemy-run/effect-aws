@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -163,7 +164,13 @@ export const GetAiGatewayResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<GetAiGatewayResponse>;
 
-export const getAiGateway = API.make(() => ({
+export const getAiGateway: (
+  input: GetAiGatewayRequest,
+) => Effect.Effect<
+  GetAiGatewayResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetAiGatewayRequest,
   output: GetAiGatewayResponse,
   errors: [],
@@ -366,7 +373,13 @@ export const CreateAiGatewayResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<CreateAiGatewayResponse>;
 
-export const createAiGateway = API.make(() => ({
+export const createAiGateway: (
+  input: CreateAiGatewayRequest,
+) => Effect.Effect<
+  CreateAiGatewayResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateAiGatewayRequest,
   output: CreateAiGatewayResponse,
   errors: [],
@@ -638,7 +651,13 @@ export const UpdateAiGatewayResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<UpdateAiGatewayResponse>;
 
-export const updateAiGateway = API.make(() => ({
+export const updateAiGateway: (
+  input: UpdateAiGatewayRequest,
+) => Effect.Effect<
+  UpdateAiGatewayResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateAiGatewayRequest,
   output: UpdateAiGatewayResponse,
   errors: [],
@@ -786,7 +805,13 @@ export const DeleteAiGatewayResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<DeleteAiGatewayResponse>;
 
-export const deleteAiGateway = API.make(() => ({
+export const deleteAiGateway: (
+  input: DeleteAiGatewayRequest,
+) => Effect.Effect<
+  DeleteAiGatewayResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteAiGatewayRequest,
   output: DeleteAiGatewayResponse,
   errors: [],
@@ -877,7 +902,13 @@ export const GetDatasetResponse = Schema.Struct({
   name: Schema.String,
 }) as unknown as Schema.Schema<GetDatasetResponse>;
 
-export const getDataset = API.make(() => ({
+export const getDataset: (
+  input: GetDatasetRequest,
+) => Effect.Effect<
+  GetDatasetResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetDatasetRequest,
   output: GetDatasetResponse,
   errors: [],
@@ -1011,7 +1042,13 @@ export const CreateDatasetResponse = Schema.Struct({
   name: Schema.String,
 }) as unknown as Schema.Schema<CreateDatasetResponse>;
 
-export const createDataset = API.make(() => ({
+export const createDataset: (
+  input: CreateDatasetRequest,
+) => Effect.Effect<
+  CreateDatasetResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateDatasetRequest,
   output: CreateDatasetResponse,
   errors: [],
@@ -1147,7 +1184,13 @@ export const UpdateDatasetResponse = Schema.Struct({
   name: Schema.String,
 }) as unknown as Schema.Schema<UpdateDatasetResponse>;
 
-export const updateDataset = API.make(() => ({
+export const updateDataset: (
+  input: UpdateDatasetRequest,
+) => Effect.Effect<
+  UpdateDatasetResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateDatasetRequest,
   output: UpdateDatasetResponse,
   errors: [],
@@ -1234,7 +1277,13 @@ export const DeleteDatasetResponse = Schema.Struct({
   name: Schema.String,
 }) as unknown as Schema.Schema<DeleteDatasetResponse>;
 
-export const deleteDataset = API.make(() => ({
+export const deleteDataset: (
+  input: DeleteDatasetRequest,
+) => Effect.Effect<
+  DeleteDatasetResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteDatasetRequest,
   output: DeleteDatasetResponse,
   errors: [],
@@ -1373,7 +1422,13 @@ export const GetEvaluationResponse = Schema.Struct({
   totalLogs: Schema.Number.pipe(T.JsonName("total_logs")),
 }) as unknown as Schema.Schema<GetEvaluationResponse>;
 
-export const getEvaluation = API.make(() => ({
+export const getEvaluation: (
+  input: GetEvaluationRequest,
+) => Effect.Effect<
+  GetEvaluationResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetEvaluationRequest,
   output: GetEvaluationResponse,
   errors: [],
@@ -1518,7 +1573,13 @@ export const CreateEvaluationResponse = Schema.Struct({
   totalLogs: Schema.Number.pipe(T.JsonName("total_logs")),
 }) as unknown as Schema.Schema<CreateEvaluationResponse>;
 
-export const createEvaluation = API.make(() => ({
+export const createEvaluation: (
+  input: CreateEvaluationRequest,
+) => Effect.Effect<
+  CreateEvaluationResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateEvaluationRequest,
   output: CreateEvaluationResponse,
   errors: [],
@@ -1653,7 +1714,13 @@ export const DeleteEvaluationResponse = Schema.Struct({
   totalLogs: Schema.Number.pipe(T.JsonName("total_logs")),
 }) as unknown as Schema.Schema<DeleteEvaluationResponse>;
 
-export const deleteEvaluation = API.make(() => ({
+export const deleteEvaluation: (
+  input: DeleteEvaluationRequest,
+) => Effect.Effect<
+  DeleteEvaluationResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteEvaluationRequest,
   output: DeleteEvaluationResponse,
   errors: [],
@@ -1752,7 +1819,13 @@ export const GetLogResponse = Schema.Struct({
   step: Schema.optional(Schema.Number),
 }) as unknown as Schema.Schema<GetLogResponse>;
 
-export const getLog = API.make(() => ({
+export const getLog: (
+  input: GetLogRequest,
+) => Effect.Effect<
+  GetLogResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetLogRequest,
   output: GetLogResponse,
   errors: [],
@@ -1790,7 +1863,13 @@ export type PatchLogResponse = unknown;
 export const PatchLogResponse =
   Schema.Unknown as unknown as Schema.Schema<PatchLogResponse>;
 
-export const patchLog = API.make(() => ({
+export const patchLog: (
+  input: PatchLogRequest,
+) => Effect.Effect<
+  PatchLogResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchLogRequest,
   output: PatchLogResponse,
   errors: [],
@@ -1929,7 +2008,13 @@ export const DeleteLogResponse = Schema.Struct({
   success: Schema.Boolean,
 }) as unknown as Schema.Schema<DeleteLogResponse>;
 
-export const deleteLog = API.make(() => ({
+export const deleteLog: (
+  input: DeleteLogRequest,
+) => Effect.Effect<
+  DeleteLogResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteLogRequest,
   output: DeleteLogResponse,
   errors: [],
@@ -1957,7 +2042,13 @@ export type RequestLogResponse = unknown;
 export const RequestLogResponse =
   Schema.Unknown as unknown as Schema.Schema<RequestLogResponse>;
 
-export const requestLog = API.make(() => ({
+export const requestLog: (
+  input: RequestLogRequest,
+) => Effect.Effect<
+  RequestLogResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: RequestLogRequest,
   output: RequestLogResponse,
   errors: [],
@@ -1985,7 +2076,13 @@ export type ResponseLogResponse = unknown;
 export const ResponseLogResponse =
   Schema.Unknown as unknown as Schema.Schema<ResponseLogResponse>;
 
-export const responseLog = API.make(() => ({
+export const responseLog: (
+  input: ResponseLogRequest,
+) => Effect.Effect<
+  ResponseLogResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: ResponseLogRequest,
   output: ResponseLogResponse,
   errors: [],
@@ -2017,7 +2114,13 @@ export type GetUrlResponse = string;
 export const GetUrlResponse =
   Schema.String as unknown as Schema.Schema<GetUrlResponse>;
 
-export const getUrl = API.make(() => ({
+export const getUrl: (
+  input: GetUrlRequest,
+) => Effect.Effect<
+  GetUrlResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetUrlRequest,
   output: GetUrlResponse,
   errors: [],

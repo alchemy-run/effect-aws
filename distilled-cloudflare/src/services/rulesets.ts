@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -265,7 +266,13 @@ export const GetPhasResponse = Schema.Struct({
   description: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<GetPhasResponse>;
 
-export const getPhas = API.make(() => ({
+export const getPhas: (
+  input: GetPhasRequest,
+) => Effect.Effect<
+  GetPhasResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetPhasRequest,
   output: GetPhasResponse,
   errors: [],
@@ -680,7 +687,13 @@ export const PutPhasResponse = Schema.Struct({
   description: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<PutPhasResponse>;
 
-export const putPhas = API.make(() => ({
+export const putPhas: (
+  input: PutPhasRequest,
+) => Effect.Effect<
+  PutPhasResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutPhasRequest,
   output: PutPhasResponse,
   errors: [],
@@ -938,7 +951,13 @@ export const GetPhasVersionResponse = Schema.Struct({
   description: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<GetPhasVersionResponse>;
 
-export const getPhasVersion = API.make(() => ({
+export const getPhasVersion: (
+  input: GetPhasVersionRequest,
+) => Effect.Effect<
+  GetPhasVersionResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetPhasVersionRequest,
   output: GetPhasVersionResponse,
   errors: [],
@@ -3333,7 +3352,13 @@ export const CreateRuleResponse = Schema.Struct({
   description: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<CreateRuleResponse>;
 
-export const createRule = API.make(() => ({
+export const createRule: (
+  input: CreateRuleRequest,
+) => Effect.Effect<
+  CreateRuleResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateRuleRequest,
   output: CreateRuleResponse,
   errors: [],
@@ -5726,7 +5751,13 @@ export const PatchRuleResponse = Schema.Struct({
   description: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<PatchRuleResponse>;
 
-export const patchRule = API.make(() => ({
+export const patchRule: (
+  input: PatchRuleRequest,
+) => Effect.Effect<
+  PatchRuleResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchRuleRequest,
   output: PatchRuleResponse,
   errors: [],
@@ -8119,7 +8150,13 @@ export const DeleteRuleResponse = Schema.Struct({
   description: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<DeleteRuleResponse>;
 
-export const deleteRule = API.make(() => ({
+export const deleteRule: (
+  input: DeleteRuleRequest,
+) => Effect.Effect<
+  DeleteRuleResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteRuleRequest,
   output: DeleteRuleResponse,
   errors: [],
@@ -8377,7 +8414,13 @@ export const GetRulesetResponse = Schema.Struct({
   description: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<GetRulesetResponse>;
 
-export const getRuleset = API.make(() => ({
+export const getRuleset: (
+  input: GetRulesetRequest,
+) => Effect.Effect<
+  GetRulesetResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetRulesetRequest,
   output: GetRulesetResponse,
   errors: [],
@@ -8845,7 +8888,13 @@ export const CreateRulesetResponse = Schema.Struct({
   description: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<CreateRulesetResponse>;
 
-export const createRuleset = API.make(() => ({
+export const createRuleset: (
+  input: CreateRulesetRequest,
+) => Effect.Effect<
+  CreateRulesetResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateRulesetRequest,
   output: CreateRulesetResponse,
   errors: [],
@@ -9317,7 +9366,13 @@ export const UpdateRulesetResponse = Schema.Struct({
   description: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<UpdateRulesetResponse>;
 
-export const updateRuleset = API.make(() => ({
+export const updateRuleset: (
+  input: UpdateRulesetRequest,
+) => Effect.Effect<
+  UpdateRulesetResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateRulesetRequest,
   output: UpdateRulesetResponse,
   errors: [],
@@ -9341,7 +9396,13 @@ export type DeleteRulesetResponse = unknown;
 export const DeleteRulesetResponse =
   Schema.Unknown as unknown as Schema.Schema<DeleteRulesetResponse>;
 
-export const deleteRuleset = API.make(() => ({
+export const deleteRuleset: (
+  input: DeleteRulesetRequest,
+) => Effect.Effect<
+  DeleteRulesetResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteRulesetRequest,
   output: DeleteRulesetResponse,
   errors: [],
@@ -9601,7 +9662,13 @@ export const GetVersionResponse = Schema.Struct({
   description: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<GetVersionResponse>;
 
-export const getVersion = API.make(() => ({
+export const getVersion: (
+  input: GetVersionRequest,
+) => Effect.Effect<
+  GetVersionResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetVersionRequest,
   output: GetVersionResponse,
   errors: [],
@@ -9627,7 +9694,13 @@ export type DeleteVersionResponse = unknown;
 export const DeleteVersionResponse =
   Schema.Unknown as unknown as Schema.Schema<DeleteVersionResponse>;
 
-export const deleteVersion = API.make(() => ({
+export const deleteVersion: (
+  input: DeleteVersionRequest,
+) => Effect.Effect<
+  DeleteVersionResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteVersionRequest,
   output: DeleteVersionResponse,
   errors: [],

@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -43,7 +44,13 @@ export const GetConfigAsnResponse = Schema.Struct({
   asn: Schema.optional(Schema.Number),
 }) as unknown as Schema.Schema<GetConfigAsnResponse>;
 
-export const getConfigAsn = API.make(() => ({
+export const getConfigAsn: (
+  input: GetConfigAsnRequest,
+) => Effect.Effect<
+  GetConfigAsnResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetConfigAsnRequest,
   output: GetConfigAsnResponse,
   errors: [],
@@ -73,7 +80,13 @@ export const DeleteConfigAsnResponse = Schema.Struct({
   asn: Schema.optional(Schema.Number),
 }) as unknown as Schema.Schema<DeleteConfigAsnResponse>;
 
-export const deleteConfigAsn = API.make(() => ({
+export const deleteConfigAsn: (
+  input: DeleteConfigAsnRequest,
+) => Effect.Effect<
+  DeleteConfigAsnResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteConfigAsnRequest,
   output: DeleteConfigAsnResponse,
   errors: [],
@@ -116,7 +129,13 @@ export const DayReportAsnResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<DayReportAsnResponse>;
 
-export const dayReportAsn = API.make(() => ({
+export const dayReportAsn: (
+  input: DayReportAsnRequest,
+) => Effect.Effect<
+  DayReportAsnResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DayReportAsnRequest,
   output: DayReportAsnResponse,
   errors: [],
@@ -152,7 +171,13 @@ export const FullReportAsnResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<FullReportAsnResponse>;
 
-export const fullReportAsn = API.make(() => ({
+export const fullReportAsn: (
+  input: FullReportAsnRequest,
+) => Effect.Effect<
+  FullReportAsnResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: FullReportAsnRequest,
   output: FullReportAsnResponse,
   errors: [],

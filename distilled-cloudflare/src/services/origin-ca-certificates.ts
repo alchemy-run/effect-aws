@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -70,7 +71,13 @@ export const GetOriginCACertificateResponse = Schema.Struct({
   expiresOn: Schema.optional(Schema.String).pipe(T.JsonName("expires_on")),
 }) as unknown as Schema.Schema<GetOriginCACertificateResponse>;
 
-export const getOriginCACertificate = API.make(() => ({
+export const getOriginCACertificate: (
+  input: GetOriginCACertificateRequest,
+) => Effect.Effect<
+  GetOriginCACertificateResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetOriginCACertificateRequest,
   output: GetOriginCACertificateResponse,
   errors: [],
@@ -139,7 +146,13 @@ export const CreateOriginCACertificateResponse = Schema.Struct({
   expiresOn: Schema.optional(Schema.String).pipe(T.JsonName("expires_on")),
 }) as unknown as Schema.Schema<CreateOriginCACertificateResponse>;
 
-export const createOriginCACertificate = API.make(() => ({
+export const createOriginCACertificate: (
+  input: CreateOriginCACertificateRequest,
+) => Effect.Effect<
+  CreateOriginCACertificateResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateOriginCACertificateRequest,
   output: CreateOriginCACertificateResponse,
   errors: [],
@@ -167,7 +180,13 @@ export const DeleteOriginCACertificateResponse = Schema.Struct({
   revokedAt: Schema.optional(Schema.String).pipe(T.JsonName("revoked_at")),
 }) as unknown as Schema.Schema<DeleteOriginCACertificateResponse>;
 
-export const deleteOriginCACertificate = API.make(() => ({
+export const deleteOriginCACertificate: (
+  input: DeleteOriginCACertificateRequest,
+) => Effect.Effect<
+  DeleteOriginCACertificateResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteOriginCACertificateRequest,
   output: DeleteOriginCACertificateResponse,
   errors: [],

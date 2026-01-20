@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -155,7 +156,13 @@ export const GetRateLimitResponse = Schema.Struct({
   threshold: Schema.optional(Schema.Number),
 }) as unknown as Schema.Schema<GetRateLimitResponse>;
 
-export const getRateLimit = API.make(() => ({
+export const getRateLimit: (
+  input: GetRateLimitRequest,
+) => Effect.Effect<
+  GetRateLimitResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetRateLimitRequest,
   output: GetRateLimitResponse,
   errors: [],
@@ -385,7 +392,13 @@ export const CreateRateLimitResponse = Schema.Struct({
   threshold: Schema.optional(Schema.Number),
 }) as unknown as Schema.Schema<CreateRateLimitResponse>;
 
-export const createRateLimit = API.make(() => ({
+export const createRateLimit: (
+  input: CreateRateLimitRequest,
+) => Effect.Effect<
+  CreateRateLimitResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateRateLimitRequest,
   output: CreateRateLimitResponse,
   errors: [],
@@ -528,7 +541,13 @@ export const DeleteRateLimitResponse = Schema.Struct({
   threshold: Schema.optional(Schema.Number),
 }) as unknown as Schema.Schema<DeleteRateLimitResponse>;
 
-export const deleteRateLimit = API.make(() => ({
+export const deleteRateLimit: (
+  input: DeleteRateLimitRequest,
+) => Effect.Effect<
+  DeleteRateLimitResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteRateLimitRequest,
   output: DeleteRateLimitResponse,
   errors: [],
@@ -760,7 +779,13 @@ export const EditRateLimitResponse = Schema.Struct({
   threshold: Schema.optional(Schema.Number),
 }) as unknown as Schema.Schema<EditRateLimitResponse>;
 
-export const editRateLimit = API.make(() => ({
+export const editRateLimit: (
+  input: EditRateLimitRequest,
+) => Effect.Effect<
+  EditRateLimitResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: EditRateLimitRequest,
   output: EditRateLimitResponse,
   errors: [],

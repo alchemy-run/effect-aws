@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -54,7 +55,13 @@ export const GetNamespaceResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<GetNamespaceResponse>;
 
-export const getNamespace = API.make(() => ({
+export const getNamespace: (
+  input: GetNamespaceRequest,
+) => Effect.Effect<
+  GetNamespaceResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetNamespaceRequest,
   output: GetNamespaceResponse,
   errors: [],
@@ -94,7 +101,13 @@ export const CreateNamespaceResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<CreateNamespaceResponse>;
 
-export const createNamespace = API.make(() => ({
+export const createNamespace: (
+  input: CreateNamespaceRequest,
+) => Effect.Effect<
+  CreateNamespaceResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateNamespaceRequest,
   output: CreateNamespaceResponse,
   errors: [],
@@ -136,7 +149,13 @@ export const UpdateNamespaceResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<UpdateNamespaceResponse>;
 
-export const updateNamespace = API.make(() => ({
+export const updateNamespace: (
+  input: UpdateNamespaceRequest,
+) => Effect.Effect<
+  UpdateNamespaceResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateNamespaceRequest,
   output: UpdateNamespaceResponse,
   errors: [],
@@ -163,7 +182,13 @@ export type DeleteNamespaceResponse = unknown;
 export const DeleteNamespaceResponse =
   Schema.Unknown as unknown as Schema.Schema<DeleteNamespaceResponse>;
 
-export const deleteNamespace = API.make(() => ({
+export const deleteNamespace: (
+  input: DeleteNamespaceRequest,
+) => Effect.Effect<
+  DeleteNamespaceResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteNamespaceRequest,
   output: DeleteNamespaceResponse,
   errors: [],
@@ -199,7 +224,13 @@ export type BulkGetNamespacesResponse = unknown;
 export const BulkGetNamespacesResponse =
   Schema.Unknown as unknown as Schema.Schema<BulkGetNamespacesResponse>;
 
-export const bulkGetNamespaces = API.make(() => ({
+export const bulkGetNamespaces: (
+  input: BulkGetNamespacesRequest,
+) => Effect.Effect<
+  BulkGetNamespacesResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: BulkGetNamespacesRequest,
   output: BulkGetNamespacesResponse,
   errors: [],
@@ -229,7 +260,13 @@ export type BulkDeleteNamespacesResponse = unknown;
 export const BulkDeleteNamespacesResponse =
   Schema.Unknown as unknown as Schema.Schema<BulkDeleteNamespacesResponse>;
 
-export const bulkDeleteNamespaces = API.make(() => ({
+export const bulkDeleteNamespaces: (
+  input: BulkDeleteNamespacesRequest,
+) => Effect.Effect<
+  BulkDeleteNamespacesResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: BulkDeleteNamespacesRequest,
   output: BulkDeleteNamespacesResponse,
   errors: [],
@@ -269,7 +306,13 @@ export type BulkGetNamespaceKeysResponse = unknown;
 export const BulkGetNamespaceKeysResponse =
   Schema.Unknown as unknown as Schema.Schema<BulkGetNamespaceKeysResponse>;
 
-export const bulkGetNamespaceKeys = API.make(() => ({
+export const bulkGetNamespaceKeys: (
+  input: BulkGetNamespaceKeysRequest,
+) => Effect.Effect<
+  BulkGetNamespaceKeysResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: BulkGetNamespaceKeysRequest,
   output: BulkGetNamespaceKeysResponse,
   errors: [],
@@ -299,7 +342,13 @@ export type BulkDeleteNamespaceKeysResponse = unknown;
 export const BulkDeleteNamespaceKeysResponse =
   Schema.Unknown as unknown as Schema.Schema<BulkDeleteNamespaceKeysResponse>;
 
-export const bulkDeleteNamespaceKeys = API.make(() => ({
+export const bulkDeleteNamespaceKeys: (
+  input: BulkDeleteNamespaceKeysRequest,
+) => Effect.Effect<
+  BulkDeleteNamespaceKeysResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: BulkDeleteNamespaceKeysRequest,
   output: BulkDeleteNamespaceKeysResponse,
   errors: [],
@@ -332,7 +381,13 @@ export type GetNamespaceMetadataResponse = unknown;
 export const GetNamespaceMetadataResponse =
   Schema.Unknown as unknown as Schema.Schema<GetNamespaceMetadataResponse>;
 
-export const getNamespaceMetadata = API.make(() => ({
+export const getNamespaceMetadata: (
+  input: GetNamespaceMetadataRequest,
+) => Effect.Effect<
+  GetNamespaceMetadataResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetNamespaceMetadataRequest,
   output: GetNamespaceMetadataResponse,
   errors: [],
@@ -365,7 +420,13 @@ export type GetNamespaceValueResponse = unknown;
 export const GetNamespaceValueResponse =
   Schema.Unknown as unknown as Schema.Schema<GetNamespaceValueResponse>;
 
-export const getNamespaceValue = API.make(() => ({
+export const getNamespaceValue: (
+  input: GetNamespaceValueRequest,
+) => Effect.Effect<
+  GetNamespaceValueResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetNamespaceValueRequest,
   output: GetNamespaceValueResponse,
   errors: [],
@@ -408,7 +469,13 @@ export type PutNamespaceValueResponse = unknown;
 export const PutNamespaceValueResponse =
   Schema.Unknown as unknown as Schema.Schema<PutNamespaceValueResponse>;
 
-export const putNamespaceValue = API.make(() => ({
+export const putNamespaceValue: (
+  input: PutNamespaceValueRequest,
+) => Effect.Effect<
+  PutNamespaceValueResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutNamespaceValueRequest,
   output: PutNamespaceValueResponse,
   errors: [],
@@ -437,7 +504,13 @@ export type DeleteNamespaceValueResponse = unknown;
 export const DeleteNamespaceValueResponse =
   Schema.Unknown as unknown as Schema.Schema<DeleteNamespaceValueResponse>;
 
-export const deleteNamespaceValue = API.make(() => ({
+export const deleteNamespaceValue: (
+  input: DeleteNamespaceValueRequest,
+) => Effect.Effect<
+  DeleteNamespaceValueResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteNamespaceValueRequest,
   output: DeleteNamespaceValueResponse,
   errors: [],
@@ -489,7 +562,13 @@ export type BulkPutNamespacesResponse = unknown;
 export const BulkPutNamespacesResponse =
   Schema.Unknown as unknown as Schema.Schema<BulkPutNamespacesResponse>;
 
-export const bulkPutNamespaces = API.make(() => ({
+export const bulkPutNamespaces: (
+  input: BulkPutNamespacesRequest,
+) => Effect.Effect<
+  BulkPutNamespacesResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: BulkPutNamespacesRequest,
   output: BulkPutNamespacesResponse,
   errors: [],
@@ -541,7 +620,13 @@ export type BulkPutNamespaceKeysResponse = unknown;
 export const BulkPutNamespaceKeysResponse =
   Schema.Unknown as unknown as Schema.Schema<BulkPutNamespaceKeysResponse>;
 
-export const bulkPutNamespaceKeys = API.make(() => ({
+export const bulkPutNamespaceKeys: (
+  input: BulkPutNamespaceKeysRequest,
+) => Effect.Effect<
+  BulkPutNamespaceKeysResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: BulkPutNamespaceKeysRequest,
   output: BulkPutNamespaceKeysResponse,
   errors: [],

@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -51,7 +52,13 @@ export const GetTotalTlResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<GetTotalTlResponse>;
 
-export const getTotalTl = API.make(() => ({
+export const getTotalTl: (
+  input: GetTotalTlRequest,
+) => Effect.Effect<
+  GetTotalTlResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetTotalTlRequest,
   output: GetTotalTlResponse,
   errors: [],
@@ -95,7 +102,13 @@ export const CreateTotalTlResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<CreateTotalTlResponse>;
 
-export const createTotalTl = API.make(() => ({
+export const createTotalTl: (
+  input: CreateTotalTlRequest,
+) => Effect.Effect<
+  CreateTotalTlResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateTotalTlRequest,
   output: CreateTotalTlResponse,
   errors: [],

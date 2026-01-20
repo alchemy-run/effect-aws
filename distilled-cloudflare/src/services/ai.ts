@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -142,7 +143,13 @@ export const RunAiResponse = Schema.Union(
   }),
 ) as unknown as Schema.Schema<RunAiResponse>;
 
-export const runAi = API.make(() => ({
+export const runAi: (
+  input: RunAiRequest,
+) => Effect.Effect<
+  RunAiResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: RunAiRequest,
   output: RunAiResponse,
   errors: [],
@@ -180,7 +187,13 @@ export const ListFinetunesResponse = Schema.Struct({
   description: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<ListFinetunesResponse>;
 
-export const listFinetunes = API.make(() => ({
+export const listFinetunes: (
+  input: ListFinetunesRequest,
+) => Effect.Effect<
+  ListFinetunesResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: ListFinetunesRequest,
   output: ListFinetunesResponse,
   errors: [],
@@ -229,7 +242,13 @@ export const CreateFinetuneResponse = Schema.Struct({
   description: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<CreateFinetuneResponse>;
 
-export const createFinetune = API.make(() => ({
+export const createFinetune: (
+  input: CreateFinetuneRequest,
+) => Effect.Effect<
+  CreateFinetuneResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateFinetuneRequest,
   output: CreateFinetuneResponse,
   errors: [],
@@ -270,7 +289,13 @@ export const CreateFinetuneAssetResponse = Schema.Struct({
   success: Schema.Boolean,
 }) as unknown as Schema.Schema<CreateFinetuneAssetResponse>;
 
-export const createFinetuneAsset = API.make(() => ({
+export const createFinetuneAsset: (
+  input: CreateFinetuneAssetRequest,
+) => Effect.Effect<
+  CreateFinetuneAssetResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateFinetuneAssetRequest,
   output: CreateFinetuneAssetResponse,
   errors: [],
@@ -299,7 +324,13 @@ export type GetModelSchemaResponse = unknown;
 export const GetModelSchemaResponse =
   Schema.Unknown as unknown as Schema.Schema<GetModelSchemaResponse>;
 
-export const getModelSchema = API.make(() => ({
+export const getModelSchema: (
+  input: GetModelSchemaRequest,
+) => Effect.Effect<
+  GetModelSchemaResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetModelSchemaRequest,
   output: GetModelSchemaResponse,
   errors: [],

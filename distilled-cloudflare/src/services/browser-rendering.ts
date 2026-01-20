@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -309,7 +310,13 @@ export type CreateContentResponse = string;
 export const CreateContentResponse =
   Schema.String as unknown as Schema.Schema<CreateContentResponse>;
 
-export const createContent = API.make(() => ({
+export const createContent: (
+  input: CreateContentRequest,
+) => Effect.Effect<
+  CreateContentResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateContentRequest,
   output: CreateContentResponse,
   errors: [],
@@ -634,7 +641,13 @@ export const CreateJsonResponse = Schema.Struct(
   {},
 ) as unknown as Schema.Schema<CreateJsonResponse>;
 
-export const createJson = API.make(() => ({
+export const createJson: (
+  input: CreateJsonRequest,
+) => Effect.Effect<
+  CreateJsonResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateJsonRequest,
   output: CreateJsonResponse,
   errors: [],
@@ -939,7 +952,13 @@ export const CreateLinkResponse = Schema.Array(
   Schema.String,
 ) as unknown as Schema.Schema<CreateLinkResponse>;
 
-export const createLink = API.make(() => ({
+export const createLink: (
+  input: CreateLinkRequest,
+) => Effect.Effect<
+  CreateLinkResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateLinkRequest,
   output: CreateLinkResponse,
   errors: [],
@@ -1237,7 +1256,13 @@ export type CreateMarkdownResponse = string;
 export const CreateMarkdownResponse =
   Schema.String as unknown as Schema.Schema<CreateMarkdownResponse>;
 
-export const createMarkdown = API.make(() => ({
+export const createMarkdown: (
+  input: CreateMarkdownRequest,
+) => Effect.Effect<
+  CreateMarkdownResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateMarkdownRequest,
   output: CreateMarkdownResponse,
   errors: [],
@@ -1611,7 +1636,13 @@ export type CreatePdfResponse = unknown;
 export const CreatePdfResponse =
   Schema.Unknown as unknown as Schema.Schema<CreatePdfResponse>;
 
-export const createPdf = API.make(() => ({
+export const createPdf: (
+  input: CreatePdfRequest,
+) => Effect.Effect<
+  CreatePdfResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreatePdfRequest,
   output: CreatePdfResponse,
   errors: [],
@@ -1944,7 +1975,13 @@ export const CreateScrapeResponse = Schema.Array(
   }),
 ) as unknown as Schema.Schema<CreateScrapeResponse>;
 
-export const createScrape = API.make(() => ({
+export const createScrape: (
+  input: CreateScrapeRequest,
+) => Effect.Effect<
+  CreateScrapeResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateScrapeRequest,
   output: CreateScrapeResponse,
   errors: [],
@@ -2300,7 +2337,13 @@ export const CreateScreenshotResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<CreateScreenshotResponse>;
 
-export const createScreenshot = API.make(() => ({
+export const createScreenshot: (
+  input: CreateScreenshotRequest,
+) => Effect.Effect<
+  CreateScreenshotResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateScreenshotRequest,
   output: CreateScreenshotResponse,
   errors: [],
@@ -2642,7 +2685,13 @@ export const CreateSnapshotResponse = Schema.Struct({
   screenshot: Schema.String,
 }) as unknown as Schema.Schema<CreateSnapshotResponse>;
 
-export const createSnapshot = API.make(() => ({
+export const createSnapshot: (
+  input: CreateSnapshotRequest,
+) => Effect.Effect<
+  CreateSnapshotResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateSnapshotRequest,
   output: CreateSnapshotResponse,
   errors: [],

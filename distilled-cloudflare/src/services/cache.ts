@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -32,7 +33,13 @@ export type PurgeCacheResponse = unknown;
 export const PurgeCacheResponse =
   Schema.Unknown as unknown as Schema.Schema<PurgeCacheResponse>;
 
-export const purgeCache = API.make(() => ({
+export const purgeCache: (
+  input: PurgeCacheRequest,
+) => Effect.Effect<
+  PurgeCacheResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PurgeCacheRequest,
   output: PurgeCacheResponse,
   errors: [],
@@ -73,7 +80,13 @@ export const GetCacheReserveResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<GetCacheReserveResponse>;
 
-export const getCacheReserve = API.make(() => ({
+export const getCacheReserve: (
+  input: GetCacheReserveRequest,
+) => Effect.Effect<
+  GetCacheReserveResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetCacheReserveRequest,
   output: GetCacheReserveResponse,
   errors: [],
@@ -113,7 +126,13 @@ export const PatchCacheReserveResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<PatchCacheReserveResponse>;
 
-export const patchCacheReserve = API.make(() => ({
+export const patchCacheReserve: (
+  input: PatchCacheReserveRequest,
+) => Effect.Effect<
+  PatchCacheReserveResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchCacheReserveRequest,
   output: PatchCacheReserveResponse,
   errors: [],
@@ -153,7 +172,13 @@ export const StatusCacheReserveResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<StatusCacheReserveResponse>;
 
-export const statusCacheReserve = API.make(() => ({
+export const statusCacheReserve: (
+  input: StatusCacheReserveRequest,
+) => Effect.Effect<
+  StatusCacheReserveResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: StatusCacheReserveRequest,
   output: StatusCacheReserveResponse,
   errors: [],
@@ -199,7 +224,13 @@ export const ClearCacheReserveResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<ClearCacheReserveResponse>;
 
-export const clearCacheReserve = API.make(() => ({
+export const clearCacheReserve: (
+  input: ClearCacheReserveRequest,
+) => Effect.Effect<
+  ClearCacheReserveResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: ClearCacheReserveRequest,
   output: ClearCacheReserveResponse,
   errors: [],
@@ -243,7 +274,13 @@ export const GetRegionalTieredCacheResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<GetRegionalTieredCacheResponse>;
 
-export const getRegionalTieredCache = API.make(() => ({
+export const getRegionalTieredCache: (
+  input: GetRegionalTieredCacheRequest,
+) => Effect.Effect<
+  GetRegionalTieredCacheResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetRegionalTieredCacheRequest,
   output: GetRegionalTieredCacheResponse,
   errors: [],
@@ -286,7 +323,13 @@ export const PatchRegionalTieredCacheResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<PatchRegionalTieredCacheResponse>;
 
-export const patchRegionalTieredCache = API.make(() => ({
+export const patchRegionalTieredCache: (
+  input: PatchRegionalTieredCacheRequest,
+) => Effect.Effect<
+  PatchRegionalTieredCacheResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchRegionalTieredCacheRequest,
   output: PatchRegionalTieredCacheResponse,
   errors: [],
@@ -330,7 +373,13 @@ export const GetSmartTieredCacheResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<GetSmartTieredCacheResponse>;
 
-export const getSmartTieredCache = API.make(() => ({
+export const getSmartTieredCache: (
+  input: GetSmartTieredCacheRequest,
+) => Effect.Effect<
+  GetSmartTieredCacheResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetSmartTieredCacheRequest,
   output: GetSmartTieredCacheResponse,
   errors: [],
@@ -373,7 +422,13 @@ export const PatchSmartTieredCacheResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<PatchSmartTieredCacheResponse>;
 
-export const patchSmartTieredCache = API.make(() => ({
+export const patchSmartTieredCache: (
+  input: PatchSmartTieredCacheRequest,
+) => Effect.Effect<
+  PatchSmartTieredCacheResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchSmartTieredCacheRequest,
   output: PatchSmartTieredCacheResponse,
   errors: [],
@@ -410,7 +465,13 @@ export const DeleteSmartTieredCacheResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<DeleteSmartTieredCacheResponse>;
 
-export const deleteSmartTieredCache = API.make(() => ({
+export const deleteSmartTieredCache: (
+  input: DeleteSmartTieredCacheRequest,
+) => Effect.Effect<
+  DeleteSmartTieredCacheResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteSmartTieredCacheRequest,
   output: DeleteSmartTieredCacheResponse,
   errors: [],
@@ -475,7 +536,13 @@ export const GetVariantResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<GetVariantResponse>;
 
-export const getVariant = API.make(() => ({
+export const getVariant: (
+  input: GetVariantRequest,
+) => Effect.Effect<
+  GetVariantResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetVariantRequest,
   output: GetVariantResponse,
   errors: [],
@@ -563,7 +630,13 @@ export const PatchVariantResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<PatchVariantResponse>;
 
-export const patchVariant = API.make(() => ({
+export const patchVariant: (
+  input: PatchVariantRequest,
+) => Effect.Effect<
+  PatchVariantResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchVariantRequest,
   output: PatchVariantResponse,
   errors: [],
@@ -597,7 +670,13 @@ export const DeleteVariantResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<DeleteVariantResponse>;
 
-export const deleteVariant = API.make(() => ({
+export const deleteVariant: (
+  input: DeleteVariantRequest,
+) => Effect.Effect<
+  DeleteVariantResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteVariantRequest,
   output: DeleteVariantResponse,
   errors: [],

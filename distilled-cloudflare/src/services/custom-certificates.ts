@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -97,7 +98,13 @@ export const GetCustomCertificateResponse = Schema.Struct({
   policy: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<GetCustomCertificateResponse>;
 
-export const getCustomCertificate = API.make(() => ({
+export const getCustomCertificate: (
+  input: GetCustomCertificateRequest,
+) => Effect.Effect<
+  GetCustomCertificateResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetCustomCertificateRequest,
   output: GetCustomCertificateResponse,
   errors: [],
@@ -198,7 +205,13 @@ export const CreateCustomCertificateResponse = Schema.Struct({
   policy: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<CreateCustomCertificateResponse>;
 
-export const createCustomCertificate = API.make(() => ({
+export const createCustomCertificate: (
+  input: CreateCustomCertificateRequest,
+) => Effect.Effect<
+  CreateCustomCertificateResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateCustomCertificateRequest,
   output: CreateCustomCertificateResponse,
   errors: [],
@@ -301,7 +314,13 @@ export const PatchCustomCertificateResponse = Schema.Struct({
   policy: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<PatchCustomCertificateResponse>;
 
-export const patchCustomCertificate = API.make(() => ({
+export const patchCustomCertificate: (
+  input: PatchCustomCertificateRequest,
+) => Effect.Effect<
+  PatchCustomCertificateResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchCustomCertificateRequest,
   output: PatchCustomCertificateResponse,
   errors: [],
@@ -332,7 +351,13 @@ export const DeleteCustomCertificateResponse = Schema.Struct({
   id: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<DeleteCustomCertificateResponse>;
 
-export const deleteCustomCertificate = API.make(() => ({
+export const deleteCustomCertificate: (
+  input: DeleteCustomCertificateRequest,
+) => Effect.Effect<
+  DeleteCustomCertificateResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteCustomCertificateRequest,
   output: DeleteCustomCertificateResponse,
   errors: [],

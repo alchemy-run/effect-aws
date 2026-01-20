@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -202,7 +203,13 @@ export const GetInstanceResponse = Schema.Struct({
   versionId: Schema.String,
 }) as unknown as Schema.Schema<GetInstanceResponse>;
 
-export const getInstance = API.make(() => ({
+export const getInstance: (
+  input: GetInstanceRequest,
+) => Effect.Effect<
+  GetInstanceResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetInstanceRequest,
   output: GetInstanceResponse,
   errors: [],
@@ -266,7 +273,13 @@ export const CreateInstanceResponse = Schema.Struct({
   workflowId: Schema.String.pipe(T.JsonName("workflow_id")),
 }) as unknown as Schema.Schema<CreateInstanceResponse>;
 
-export const createInstance = API.make(() => ({
+export const createInstance: (
+  input: CreateInstanceRequest,
+) => Effect.Effect<
+  CreateInstanceResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateInstanceRequest,
   output: CreateInstanceResponse,
   errors: [],
@@ -304,7 +317,13 @@ export type CreateInstanceEventResponse = unknown;
 export const CreateInstanceEventResponse =
   Schema.Unknown as unknown as Schema.Schema<CreateInstanceEventResponse>;
 
-export const createInstanceEvent = API.make(() => ({
+export const createInstanceEvent: (
+  input: CreateInstanceEventRequest,
+) => Effect.Effect<
+  CreateInstanceEventResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateInstanceEventRequest,
   output: CreateInstanceEventResponse,
   errors: [],
@@ -363,7 +382,13 @@ export const PatchInstanceStatusResponse = Schema.Struct({
   timestamp: Schema.String,
 }) as unknown as Schema.Schema<PatchInstanceStatusResponse>;
 
-export const patchInstanceStatus = API.make(() => ({
+export const patchInstanceStatus: (
+  input: PatchInstanceStatusRequest,
+) => Effect.Effect<
+  PatchInstanceStatusResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchInstanceStatusRequest,
   output: PatchInstanceStatusResponse,
   errors: [],
@@ -406,7 +431,13 @@ export const GetVersionResponse = Schema.Struct({
   workflowId: Schema.String.pipe(T.JsonName("workflow_id")),
 }) as unknown as Schema.Schema<GetVersionResponse>;
 
-export const getVersion = API.make(() => ({
+export const getVersion: (
+  input: GetVersionRequest,
+) => Effect.Effect<
+  GetVersionResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetVersionRequest,
   output: GetVersionResponse,
   errors: [],
@@ -473,7 +504,13 @@ export const GetWorkflowResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<GetWorkflowResponse>;
 
-export const getWorkflow = API.make(() => ({
+export const getWorkflow: (
+  input: GetWorkflowRequest,
+) => Effect.Effect<
+  GetWorkflowResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetWorkflowRequest,
   output: GetWorkflowResponse,
   errors: [],
@@ -529,7 +566,13 @@ export const PutWorkflowResponse = Schema.Struct({
   versionId: Schema.String.pipe(T.JsonName("version_id")),
 }) as unknown as Schema.Schema<PutWorkflowResponse>;
 
-export const putWorkflow = API.make(() => ({
+export const putWorkflow: (
+  input: PutWorkflowRequest,
+) => Effect.Effect<
+  PutWorkflowResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutWorkflowRequest,
   output: PutWorkflowResponse,
   errors: [],
@@ -560,7 +603,13 @@ export const DeleteWorkflowResponse = Schema.Struct({
   success: Schema.Union(Schema.Boolean, Schema.Null),
 }) as unknown as Schema.Schema<DeleteWorkflowResponse>;
 
-export const deleteWorkflow = API.make(() => ({
+export const deleteWorkflow: (
+  input: DeleteWorkflowRequest,
+) => Effect.Effect<
+  DeleteWorkflowResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteWorkflowRequest,
   output: DeleteWorkflowResponse,
   errors: [],

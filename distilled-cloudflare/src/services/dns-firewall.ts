@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -63,7 +64,13 @@ export type GetAnalyticReportResponse = unknown;
 export const GetAnalyticReportResponse =
   Schema.Unknown as unknown as Schema.Schema<GetAnalyticReportResponse>;
 
-export const getAnalyticReport = API.make(() => ({
+export const getAnalyticReport: (
+  input: GetAnalyticReportRequest,
+) => Effect.Effect<
+  GetAnalyticReportResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetAnalyticReportRequest,
   output: GetAnalyticReportResponse,
   errors: [],
@@ -141,7 +148,13 @@ export type GetAnalyticReportBytimeResponse = unknown;
 export const GetAnalyticReportBytimeResponse =
   Schema.Unknown as unknown as Schema.Schema<GetAnalyticReportBytimeResponse>;
 
-export const getAnalyticReportBytime = API.make(() => ({
+export const getAnalyticReportBytime: (
+  input: GetAnalyticReportBytimeRequest,
+) => Effect.Effect<
+  GetAnalyticReportBytimeResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetAnalyticReportBytimeRequest,
   output: GetAnalyticReportBytimeResponse,
   errors: [],
@@ -229,7 +242,13 @@ export const GetDnsFirewallResponse = Schema.Struct({
   ).pipe(T.JsonName("attack_mitigation")),
 }) as unknown as Schema.Schema<GetDnsFirewallResponse>;
 
-export const getDnsFirewall = API.make(() => ({
+export const getDnsFirewall: (
+  input: GetDnsFirewallRequest,
+) => Effect.Effect<
+  GetDnsFirewallResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetDnsFirewallRequest,
   output: GetDnsFirewallResponse,
   errors: [],
@@ -359,7 +378,13 @@ export const CreateDnsFirewallResponse = Schema.Struct({
   ).pipe(T.JsonName("attack_mitigation")),
 }) as unknown as Schema.Schema<CreateDnsFirewallResponse>;
 
-export const createDnsFirewall = API.make(() => ({
+export const createDnsFirewall: (
+  input: CreateDnsFirewallRequest,
+) => Effect.Effect<
+  CreateDnsFirewallResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateDnsFirewallRequest,
   output: CreateDnsFirewallResponse,
   errors: [],
@@ -496,7 +521,13 @@ export const PatchDnsFirewallResponse = Schema.Struct({
   ).pipe(T.JsonName("attack_mitigation")),
 }) as unknown as Schema.Schema<PatchDnsFirewallResponse>;
 
-export const patchDnsFirewall = API.make(() => ({
+export const patchDnsFirewall: (
+  input: PatchDnsFirewallRequest,
+) => Effect.Effect<
+  PatchDnsFirewallResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchDnsFirewallRequest,
   output: PatchDnsFirewallResponse,
   errors: [],
@@ -527,7 +558,13 @@ export const DeleteDnsFirewallResponse = Schema.Struct({
   id: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<DeleteDnsFirewallResponse>;
 
-export const deleteDnsFirewall = API.make(() => ({
+export const deleteDnsFirewall: (
+  input: DeleteDnsFirewallRequest,
+) => Effect.Effect<
+  DeleteDnsFirewallResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteDnsFirewallRequest,
   output: DeleteDnsFirewallResponse,
   errors: [],
@@ -562,7 +599,13 @@ export const GetReverseDnResponse = Schema.Struct({
   ptr: Schema.Struct({}),
 }) as unknown as Schema.Schema<GetReverseDnResponse>;
 
-export const getReverseDn = API.make(() => ({
+export const getReverseDn: (
+  input: GetReverseDnRequest,
+) => Effect.Effect<
+  GetReverseDnResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetReverseDnRequest,
   output: GetReverseDnResponse,
   errors: [],
@@ -596,7 +639,13 @@ export const PatchReverseDnResponse = Schema.Struct({
   ptr: Schema.Struct({}),
 }) as unknown as Schema.Schema<PatchReverseDnResponse>;
 
-export const patchReverseDn = API.make(() => ({
+export const patchReverseDn: (
+  input: PatchReverseDnRequest,
+) => Effect.Effect<
+  PatchReverseDnResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchReverseDnRequest,
   output: PatchReverseDnResponse,
   errors: [],

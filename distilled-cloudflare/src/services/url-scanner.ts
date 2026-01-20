@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -42,7 +43,13 @@ export type GetResponsResponse = unknown;
 export const GetResponsResponse =
   Schema.Unknown as unknown as Schema.Schema<GetResponsResponse>;
 
-export const getRespons = API.make(() => ({
+export const getRespons: (
+  input: GetResponsRequest,
+) => Effect.Effect<
+  GetResponsResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetResponsRequest,
   output: GetResponsResponse,
   errors: [],
@@ -853,7 +860,13 @@ export const GetScanResponse = Schema.Struct({
   }),
 }) as unknown as Schema.Schema<GetScanResponse>;
 
-export const getScan = API.make(() => ({
+export const getScan: (
+  input: GetScanRequest,
+) => Effect.Effect<
+  GetScanResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetScanRequest,
   output: GetScanResponse,
   errors: [],
@@ -925,7 +938,13 @@ export const ListScansResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<ListScansResponse>;
 
-export const listScans = API.make(() => ({
+export const listScans: (
+  input: ListScansRequest,
+) => Effect.Effect<
+  ListScansResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: ListScansRequest,
   output: ListScansResponse,
   errors: [],
@@ -1387,7 +1406,13 @@ export const CreateScanResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<CreateScanResponse>;
 
-export const createScan = API.make(() => ({
+export const createScan: (
+  input: CreateScanRequest,
+) => Effect.Effect<
+  CreateScanResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateScanRequest,
   output: CreateScanResponse,
   errors: [],
@@ -1451,7 +1476,13 @@ export const BulkCreateScansResponse = Schema.Array(
   }),
 ) as unknown as Schema.Schema<BulkCreateScansResponse>;
 
-export const bulkCreateScans = API.make(() => ({
+export const bulkCreateScans: (
+  input: BulkCreateScansRequest,
+) => Effect.Effect<
+  BulkCreateScansResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: BulkCreateScansRequest,
   output: BulkCreateScansResponse,
   errors: [],
@@ -1478,7 +1509,13 @@ export type DomScanResponse = unknown;
 export const DomScanResponse =
   Schema.Unknown as unknown as Schema.Schema<DomScanResponse>;
 
-export const domScan = API.make(() => ({
+export const domScan: (
+  input: DomScanRequest,
+) => Effect.Effect<
+  DomScanResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DomScanRequest,
   output: DomScanResponse,
   errors: [],
@@ -1617,7 +1654,13 @@ export const HarScanResponse = Schema.Struct({
   }),
 }) as unknown as Schema.Schema<HarScanResponse>;
 
-export const harScan = API.make(() => ({
+export const harScan: (
+  input: HarScanRequest,
+) => Effect.Effect<
+  HarScanResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: HarScanRequest,
   output: HarScanResponse,
   errors: [],
@@ -1649,7 +1692,13 @@ export type ScreenshotScanResponse = unknown;
 export const ScreenshotScanResponse =
   Schema.Unknown as unknown as Schema.Schema<ScreenshotScanResponse>;
 
-export const screenshotScan = API.make(() => ({
+export const screenshotScan: (
+  input: ScreenshotScanRequest,
+) => Effect.Effect<
+  ScreenshotScanResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: ScreenshotScanRequest,
   output: ScreenshotScanResponse,
   errors: [],

@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -146,7 +147,13 @@ export const GetBillingProfileResponse = Schema.Struct({
   zipcode: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<GetBillingProfileResponse>;
 
-export const getBillingProfile = API.make(() => ({
+export const getBillingProfile: (
+  input: GetBillingProfileRequest,
+) => Effect.Effect<
+  GetBillingProfileResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetBillingProfileRequest,
   output: GetBillingProfileResponse,
   errors: [],
@@ -214,7 +221,13 @@ export const GetInviteResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<GetInviteResponse>;
 
-export const getInvite = API.make(() => ({
+export const getInvite: (
+  input: GetInviteRequest,
+) => Effect.Effect<
+  GetInviteResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetInviteRequest,
   output: GetInviteResponse,
   errors: [],
@@ -281,7 +294,13 @@ export const PatchInviteResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<PatchInviteResponse>;
 
-export const patchInvite = API.make(() => ({
+export const patchInvite: (
+  input: PatchInviteRequest,
+) => Effect.Effect<
+  PatchInviteResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchInviteRequest,
   output: PatchInviteResponse,
   errors: [],
@@ -306,7 +325,13 @@ export type GetOrganizationResponse = unknown;
 export const GetOrganizationResponse =
   Schema.Unknown as unknown as Schema.Schema<GetOrganizationResponse>;
 
-export const getOrganization = API.make(() => ({
+export const getOrganization: (
+  input: GetOrganizationRequest,
+) => Effect.Effect<
+  GetOrganizationResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetOrganizationRequest,
   output: GetOrganizationResponse,
   errors: [],
@@ -331,7 +356,13 @@ export const DeleteOrganizationResponse = Schema.Struct({
   id: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<DeleteOrganizationResponse>;
 
-export const deleteOrganization = API.make(() => ({
+export const deleteOrganization: (
+  input: DeleteOrganizationRequest,
+) => Effect.Effect<
+  DeleteOrganizationResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteOrganizationRequest,
   output: DeleteOrganizationResponse,
   errors: [],
@@ -366,7 +397,13 @@ export const PutSubscriptionResponse = Schema.Union(
   Schema.Null,
 ) as unknown as Schema.Schema<PutSubscriptionResponse>;
 
-export const putSubscription = API.make(() => ({
+export const putSubscription: (
+  input: PutSubscriptionRequest,
+) => Effect.Effect<
+  PutSubscriptionResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutSubscriptionRequest,
   output: PutSubscriptionResponse,
   errors: [],
@@ -393,7 +430,13 @@ export const DeleteSubscriptionResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<DeleteSubscriptionResponse>;
 
-export const deleteSubscription = API.make(() => ({
+export const deleteSubscription: (
+  input: DeleteSubscriptionRequest,
+) => Effect.Effect<
+  DeleteSubscriptionResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteSubscriptionRequest,
   output: DeleteSubscriptionResponse,
   errors: [],
@@ -418,7 +461,13 @@ export type GetTokenResponse = unknown;
 export const GetTokenResponse =
   Schema.Unknown as unknown as Schema.Schema<GetTokenResponse>;
 
-export const getToken = API.make(() => ({
+export const getToken: (
+  input: GetTokenRequest,
+) => Effect.Effect<
+  GetTokenResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetTokenRequest,
   output: GetTokenResponse,
   errors: [],
@@ -506,7 +555,13 @@ export const CreateTokenResponse = Schema.Struct({
   value: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<CreateTokenResponse>;
 
-export const createToken = API.make(() => ({
+export const createToken: (
+  input: CreateTokenRequest,
+) => Effect.Effect<
+  CreateTokenResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateTokenRequest,
   output: CreateTokenResponse,
   errors: [],
@@ -555,7 +610,13 @@ export type UpdateTokenResponse = unknown;
 export const UpdateTokenResponse =
   Schema.Unknown as unknown as Schema.Schema<UpdateTokenResponse>;
 
-export const updateToken = API.make(() => ({
+export const updateToken: (
+  input: UpdateTokenRequest,
+) => Effect.Effect<
+  UpdateTokenResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateTokenRequest,
   output: UpdateTokenResponse,
   errors: [],
@@ -576,7 +637,13 @@ export type DeleteTokenResponse = unknown;
 export const DeleteTokenResponse =
   Schema.Unknown as unknown as Schema.Schema<DeleteTokenResponse>;
 
-export const deleteToken = API.make(() => ({
+export const deleteToken: (
+  input: DeleteTokenRequest,
+) => Effect.Effect<
+  DeleteTokenResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteTokenRequest,
   output: DeleteTokenResponse,
   errors: [],
@@ -606,7 +673,13 @@ export const VerifyTokenResponse = Schema.Struct({
   notBefore: Schema.optional(Schema.String).pipe(T.JsonName("not_before")),
 }) as unknown as Schema.Schema<VerifyTokenResponse>;
 
-export const verifyToken = API.make(() => ({
+export const verifyToken: (
+  input: VerifyTokenRequest,
+) => Effect.Effect<
+  VerifyTokenResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: VerifyTokenRequest,
   output: VerifyTokenResponse,
   errors: [],
@@ -631,7 +704,13 @@ export type PutTokenValueResponse = unknown;
 export const PutTokenValueResponse =
   Schema.Unknown as unknown as Schema.Schema<PutTokenValueResponse>;
 
-export const putTokenValue = API.make(() => ({
+export const putTokenValue: (
+  input: PutTokenValueRequest,
+) => Effect.Effect<
+  PutTokenValueResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutTokenValueRequest,
   output: PutTokenValueResponse,
   errors: [],
@@ -708,7 +787,13 @@ export const GetUserResponse = Schema.Struct({
   zipcode: Schema.optional(Schema.Union(Schema.String, Schema.Null)),
 }) as unknown as Schema.Schema<GetUserResponse>;
 
-export const getUser = API.make(() => ({
+export const getUser: (
+  input: GetUserRequest,
+) => Effect.Effect<
+  GetUserResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetUserRequest,
   output: GetUserResponse,
   errors: [],
@@ -802,7 +887,13 @@ export const PatchUserResponse = Schema.Struct({
   zipcode: Schema.optional(Schema.Union(Schema.String, Schema.Null)),
 }) as unknown as Schema.Schema<PatchUserResponse>;
 
-export const patchUser = API.make(() => ({
+export const patchUser: (
+  input: PatchUserRequest,
+) => Effect.Effect<
+  PatchUserResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchUserRequest,
   output: PatchUserResponse,
   errors: [],

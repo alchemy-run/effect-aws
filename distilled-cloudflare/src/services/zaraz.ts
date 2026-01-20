@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -147,7 +148,13 @@ export const GetConfigResponse = Schema.Struct({
   historyChange: Schema.optional(Schema.Boolean),
 }) as unknown as Schema.Schema<GetConfigResponse>;
 
-export const getConfig = API.make(() => ({
+export const getConfig: (
+  input: GetConfigRequest,
+) => Effect.Effect<
+  GetConfigResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetConfigRequest,
   output: GetConfigResponse,
   errors: [],
@@ -388,7 +395,13 @@ export const PutConfigResponse = Schema.Struct({
   historyChange: Schema.optional(Schema.Boolean),
 }) as unknown as Schema.Schema<PutConfigResponse>;
 
-export const putConfig = API.make(() => ({
+export const putConfig: (
+  input: PutConfigRequest,
+) => Effect.Effect<
+  PutConfigResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutConfigRequest,
   output: PutConfigResponse,
   errors: [],
@@ -414,7 +427,13 @@ export type GetDefaultResponse = unknown;
 export const GetDefaultResponse =
   Schema.Unknown as unknown as Schema.Schema<GetDefaultResponse>;
 
-export const getDefault = API.make(() => ({
+export const getDefault: (
+  input: GetDefaultRequest,
+) => Effect.Effect<
+  GetDefaultResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetDefaultRequest,
   output: GetDefaultResponse,
   errors: [],
@@ -440,7 +459,13 @@ export type GetExportResponse = unknown;
 export const GetExportResponse =
   Schema.Unknown as unknown as Schema.Schema<GetExportResponse>;
 
-export const getExport = API.make(() => ({
+export const getExport: (
+  input: GetExportRequest,
+) => Effect.Effect<
+  GetExportResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetExportRequest,
   output: GetExportResponse,
   errors: [],
@@ -469,7 +494,13 @@ export type PutHistoryResponse = unknown;
 export const PutHistoryResponse =
   Schema.Unknown as unknown as Schema.Schema<PutHistoryResponse>;
 
-export const putHistory = API.make(() => ({
+export const putHistory: (
+  input: PutHistoryRequest,
+) => Effect.Effect<
+  PutHistoryResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutHistoryRequest,
   output: PutHistoryResponse,
   errors: [],
@@ -502,7 +533,13 @@ export const GetHistoryConfigResponse = Schema.Struct(
   {},
 ) as unknown as Schema.Schema<GetHistoryConfigResponse>;
 
-export const getHistoryConfig = API.make(() => ({
+export const getHistoryConfig: (
+  input: GetHistoryConfigRequest,
+) => Effect.Effect<
+  GetHistoryConfigResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetHistoryConfigRequest,
   output: GetHistoryConfigResponse,
   errors: [],
@@ -531,7 +568,13 @@ export type CreatePublishResponse = string;
 export const CreatePublishResponse =
   Schema.String as unknown as Schema.Schema<CreatePublishResponse>;
 
-export const createPublish = API.make(() => ({
+export const createPublish: (
+  input: CreatePublishRequest,
+) => Effect.Effect<
+  CreatePublishResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreatePublishRequest,
   output: CreatePublishResponse,
   errors: [],
@@ -559,7 +602,13 @@ export const GetWorkflowResponse = Schema.Literal(
   "preview",
 ) as unknown as Schema.Schema<GetWorkflowResponse>;
 
-export const getWorkflow = API.make(() => ({
+export const getWorkflow: (
+  input: GetWorkflowRequest,
+) => Effect.Effect<
+  GetWorkflowResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetWorkflowRequest,
   output: GetWorkflowResponse,
   errors: [],
@@ -588,7 +637,13 @@ export type PutZarazResponse = unknown;
 export const PutZarazResponse =
   Schema.Unknown as unknown as Schema.Schema<PutZarazResponse>;
 
-export const putZaraz = API.make(() => ({
+export const putZaraz: (
+  input: PutZarazRequest,
+) => Effect.Effect<
+  PutZarazResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutZarazRequest,
   output: PutZarazResponse,
   errors: [],

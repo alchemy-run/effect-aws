@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -50,7 +51,13 @@ export const GetSmartRoutingResponse = Schema.Struct({
   modifiedOn: Schema.optional(Schema.String).pipe(T.JsonName("modified_on")),
 }) as unknown as Schema.Schema<GetSmartRoutingResponse>;
 
-export const getSmartRouting = API.make(() => ({
+export const getSmartRouting: (
+  input: GetSmartRoutingRequest,
+) => Effect.Effect<
+  GetSmartRoutingResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetSmartRoutingRequest,
   output: GetSmartRoutingResponse,
   errors: [],
@@ -88,7 +95,13 @@ export const PatchSmartRoutingResponse = Schema.Struct({
   modifiedOn: Schema.optional(Schema.String).pipe(T.JsonName("modified_on")),
 }) as unknown as Schema.Schema<PatchSmartRoutingResponse>;
 
-export const patchSmartRouting = API.make(() => ({
+export const patchSmartRouting: (
+  input: PatchSmartRoutingRequest,
+) => Effect.Effect<
+  PatchSmartRoutingResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchSmartRoutingRequest,
   output: PatchSmartRoutingResponse,
   errors: [],
@@ -129,7 +142,13 @@ export const GetTieredCachingResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<GetTieredCachingResponse>;
 
-export const getTieredCaching = API.make(() => ({
+export const getTieredCaching: (
+  input: GetTieredCachingRequest,
+) => Effect.Effect<
+  GetTieredCachingResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetTieredCachingRequest,
   output: GetTieredCachingResponse,
   errors: [],
@@ -169,7 +188,13 @@ export const PatchTieredCachingResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<PatchTieredCachingResponse>;
 
-export const patchTieredCaching = API.make(() => ({
+export const patchTieredCaching: (
+  input: PatchTieredCachingRequest,
+) => Effect.Effect<
+  PatchTieredCachingResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchTieredCachingRequest,
   output: PatchTieredCachingResponse,
   errors: [],

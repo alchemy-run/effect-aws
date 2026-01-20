@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -40,7 +41,13 @@ export type EnableContentScanningResponse = unknown;
 export const EnableContentScanningResponse =
   Schema.Unknown as unknown as Schema.Schema<EnableContentScanningResponse>;
 
-export const enableContentScanning = API.make(() => ({
+export const enableContentScanning: (
+  input: EnableContentScanningRequest,
+) => Effect.Effect<
+  EnableContentScanningResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: EnableContentScanningRequest,
   output: EnableContentScanningResponse,
   errors: [],
@@ -65,7 +72,13 @@ export type DisableContentScanningResponse = unknown;
 export const DisableContentScanningResponse =
   Schema.Unknown as unknown as Schema.Schema<DisableContentScanningResponse>;
 
-export const disableContentScanning = API.make(() => ({
+export const disableContentScanning: (
+  input: DisableContentScanningRequest,
+) => Effect.Effect<
+  DisableContentScanningResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DisableContentScanningRequest,
   output: DisableContentScanningResponse,
   errors: [],
@@ -101,7 +114,13 @@ export const GetSettingResponse = Schema.Struct({
   value: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<GetSettingResponse>;
 
-export const getSetting = API.make(() => ({
+export const getSetting: (
+  input: GetSettingRequest,
+) => Effect.Effect<
+  GetSettingResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetSettingRequest,
   output: GetSettingResponse,
   errors: [],

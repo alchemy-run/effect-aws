@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -114,7 +115,13 @@ export const GetPipelineResponse = Schema.Struct({
   version: Schema.Number,
 }) as unknown as Schema.Schema<GetPipelineResponse>;
 
-export const getPipeline = API.make(() => ({
+export const getPipeline: (
+  input: GetPipelineRequest,
+) => Effect.Effect<
+  GetPipelineResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetPipelineRequest,
   output: GetPipelineResponse,
   errors: [],
@@ -236,7 +243,13 @@ export const ListPipelinesResponse = Schema.Struct({
   success: Schema.Boolean,
 }) as unknown as Schema.Schema<ListPipelinesResponse>;
 
-export const listPipelines = API.make(() => ({
+export const listPipelines: (
+  input: ListPipelinesRequest,
+) => Effect.Effect<
+  ListPipelinesResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: ListPipelinesRequest,
   output: ListPipelinesResponse,
   errors: [],
@@ -404,7 +417,13 @@ export const CreatePipelineResponse = Schema.Struct({
   version: Schema.Number,
 }) as unknown as Schema.Schema<CreatePipelineResponse>;
 
-export const createPipeline = API.make(() => ({
+export const createPipeline: (
+  input: CreatePipelineRequest,
+) => Effect.Effect<
+  CreatePipelineResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreatePipelineRequest,
   output: CreatePipelineResponse,
   errors: [],
@@ -579,7 +598,13 @@ export const UpdatePipelineResponse = Schema.Struct({
   version: Schema.Number,
 }) as unknown as Schema.Schema<UpdatePipelineResponse>;
 
-export const updatePipeline = API.make(() => ({
+export const updatePipeline: (
+  input: UpdatePipelineRequest,
+) => Effect.Effect<
+  UpdatePipelineResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdatePipelineRequest,
   output: UpdatePipelineResponse,
   errors: [],
@@ -606,7 +631,13 @@ export type DeletePipelineResponse = unknown;
 export const DeletePipelineResponse =
   Schema.Unknown as unknown as Schema.Schema<DeletePipelineResponse>;
 
-export const deletePipeline = API.make(() => ({
+export const deletePipeline: (
+  input: DeletePipelineRequest,
+) => Effect.Effect<
+  DeletePipelineResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeletePipelineRequest,
   output: DeletePipelineResponse,
   errors: [],

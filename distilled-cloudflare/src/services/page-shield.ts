@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -42,7 +43,13 @@ export type GetConnectionResponse = unknown;
 export const GetConnectionResponse =
   Schema.Unknown as unknown as Schema.Schema<GetConnectionResponse>;
 
-export const getConnection = API.make(() => ({
+export const getConnection: (
+  input: GetConnectionRequest,
+) => Effect.Effect<
+  GetConnectionResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetConnectionRequest,
   output: GetConnectionResponse,
   errors: [],
@@ -73,7 +80,13 @@ export type GetCookyResponse = unknown;
 export const GetCookyResponse =
   Schema.Unknown as unknown as Schema.Schema<GetCookyResponse>;
 
-export const getCooky = API.make(() => ({
+export const getCooky: (
+  input: GetCookyRequest,
+) => Effect.Effect<
+  GetCookyResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetCookyRequest,
   output: GetCookyResponse,
   errors: [],
@@ -99,7 +112,13 @@ export type GetPageShieldResponse = unknown;
 export const GetPageShieldResponse =
   Schema.Unknown as unknown as Schema.Schema<GetPageShieldResponse>;
 
-export const getPageShield = API.make(() => ({
+export const getPageShield: (
+  input: GetPageShieldRequest,
+) => Effect.Effect<
+  GetPageShieldResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetPageShieldRequest,
   output: GetPageShieldResponse,
   errors: [],
@@ -151,7 +170,13 @@ export const PutPageShieldResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<PutPageShieldResponse>;
 
-export const putPageShield = API.make(() => ({
+export const putPageShield: (
+  input: PutPageShieldRequest,
+) => Effect.Effect<
+  PutPageShieldResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutPageShieldRequest,
   output: PutPageShieldResponse,
   errors: [],
@@ -182,7 +207,13 @@ export type GetPolicyResponse = unknown;
 export const GetPolicyResponse =
   Schema.Unknown as unknown as Schema.Schema<GetPolicyResponse>;
 
-export const getPolicy = API.make(() => ({
+export const getPolicy: (
+  input: GetPolicyRequest,
+) => Effect.Effect<
+  GetPolicyResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetPolicyRequest,
   output: GetPolicyResponse,
   errors: [],
@@ -219,7 +250,13 @@ export type CreatePolicyResponse = unknown;
 export const CreatePolicyResponse =
   Schema.Unknown as unknown as Schema.Schema<CreatePolicyResponse>;
 
-export const createPolicy = API.make(() => ({
+export const createPolicy: (
+  input: CreatePolicyRequest,
+) => Effect.Effect<
+  CreatePolicyResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreatePolicyRequest,
   output: CreatePolicyResponse,
   errors: [],
@@ -261,7 +298,13 @@ export type UpdatePolicyResponse = unknown;
 export const UpdatePolicyResponse =
   Schema.Unknown as unknown as Schema.Schema<UpdatePolicyResponse>;
 
-export const updatePolicy = API.make(() => ({
+export const updatePolicy: (
+  input: UpdatePolicyRequest,
+) => Effect.Effect<
+  UpdatePolicyResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdatePolicyRequest,
   output: UpdatePolicyResponse,
   errors: [],
@@ -288,7 +331,13 @@ export type DeletePolicyResponse = unknown;
 export const DeletePolicyResponse =
   Schema.Unknown as unknown as Schema.Schema<DeletePolicyResponse>;
 
-export const deletePolicy = API.make(() => ({
+export const deletePolicy: (
+  input: DeletePolicyRequest,
+) => Effect.Effect<
+  DeletePolicyResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeletePolicyRequest,
   output: DeletePolicyResponse,
   errors: [],
@@ -319,7 +368,13 @@ export type GetScriptResponse = unknown;
 export const GetScriptResponse =
   Schema.Unknown as unknown as Schema.Schema<GetScriptResponse>;
 
-export const getScript = API.make(() => ({
+export const getScript: (
+  input: GetScriptRequest,
+) => Effect.Effect<
+  GetScriptResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetScriptRequest,
   output: GetScriptResponse,
   errors: [],

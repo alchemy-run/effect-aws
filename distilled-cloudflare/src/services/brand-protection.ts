@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -49,7 +50,13 @@ export const SubmitBrandProtectionResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<SubmitBrandProtectionResponse>;
 
-export const submitBrandProtection = API.make(() => ({
+export const submitBrandProtection: (
+  input: SubmitBrandProtectionRequest,
+) => Effect.Effect<
+  SubmitBrandProtectionResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: SubmitBrandProtectionRequest,
   output: SubmitBrandProtectionResponse,
   errors: [],
@@ -98,7 +105,13 @@ export const CreateLogoResponse = Schema.Struct({
   uploadPath: Schema.optional(Schema.String).pipe(T.JsonName("upload_path")),
 }) as unknown as Schema.Schema<CreateLogoResponse>;
 
-export const createLogo = API.make(() => ({
+export const createLogo: (
+  input: CreateLogoRequest,
+) => Effect.Effect<
+  CreateLogoResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateLogoRequest,
   output: CreateLogoResponse,
   errors: [],
@@ -124,7 +137,13 @@ export type DeleteLogoResponse = unknown;
 export const DeleteLogoResponse =
   Schema.Unknown as unknown as Schema.Schema<DeleteLogoResponse>;
 
-export const deleteLogo = API.make(() => ({
+export const deleteLogo: (
+  input: DeleteLogoRequest,
+) => Effect.Effect<
+  DeleteLogoResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteLogoRequest,
   output: DeleteLogoResponse,
   errors: [],
@@ -169,7 +188,13 @@ export const GetLogoMatchResponse = Schema.Struct({
   total: Schema.optional(Schema.Number),
 }) as unknown as Schema.Schema<GetLogoMatchResponse>;
 
-export const getLogoMatch = API.make(() => ({
+export const getLogoMatch: (
+  input: GetLogoMatchRequest,
+) => Effect.Effect<
+  GetLogoMatchResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetLogoMatchRequest,
   output: GetLogoMatchResponse,
   errors: [],
@@ -210,7 +235,13 @@ export const DownloadLogoMatchResponse = Schema.Struct({
   total: Schema.optional(Schema.Number),
 }) as unknown as Schema.Schema<DownloadLogoMatchResponse>;
 
-export const downloadLogoMatch = API.make(() => ({
+export const downloadLogoMatch: (
+  input: DownloadLogoMatchRequest,
+) => Effect.Effect<
+  DownloadLogoMatchResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DownloadLogoMatchRequest,
   output: DownloadLogoMatchResponse,
   errors: [],
@@ -258,7 +289,13 @@ export const GetMatchResponse = Schema.Struct({
   total: Schema.optional(Schema.Number),
 }) as unknown as Schema.Schema<GetMatchResponse>;
 
-export const getMatch = API.make(() => ({
+export const getMatch: (
+  input: GetMatchRequest,
+) => Effect.Effect<
+  GetMatchResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetMatchRequest,
   output: GetMatchResponse,
   errors: [],
@@ -302,7 +339,13 @@ export const DownloadMatchResponse = Schema.Struct({
   total: Schema.optional(Schema.Number),
 }) as unknown as Schema.Schema<DownloadMatchResponse>;
 
-export const downloadMatch = API.make(() => ({
+export const downloadMatch: (
+  input: DownloadMatchRequest,
+) => Effect.Effect<
+  DownloadMatchResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DownloadMatchRequest,
   output: DownloadMatchResponse,
   errors: [],
@@ -361,7 +404,13 @@ export type CreateQueryResponse = unknown;
 export const CreateQueryResponse =
   Schema.Unknown as unknown as Schema.Schema<CreateQueryResponse>;
 
-export const createQuery = API.make(() => ({
+export const createQuery: (
+  input: CreateQueryRequest,
+) => Effect.Effect<
+  CreateQueryResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateQueryRequest,
   output: CreateQueryResponse,
   errors: [],
@@ -395,7 +444,13 @@ export type DeleteQueryResponse = unknown;
 export const DeleteQueryResponse =
   Schema.Unknown as unknown as Schema.Schema<DeleteQueryResponse>;
 
-export const deleteQuery = API.make(() => ({
+export const deleteQuery: (
+  input: DeleteQueryRequest,
+) => Effect.Effect<
+  DeleteQueryResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteQueryRequest,
   output: DeleteQueryResponse,
   errors: [],
@@ -423,7 +478,13 @@ export type BulkQueryResponse = unknown;
 export const BulkQueryResponse =
   Schema.Unknown as unknown as Schema.Schema<BulkQueryResponse>;
 
-export const bulkQuery = API.make(() => ({
+export const bulkQuery: (
+  input: BulkQueryRequest,
+) => Effect.Effect<
+  BulkQueryResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: BulkQueryRequest,
   output: BulkQueryResponse,
   errors: [],

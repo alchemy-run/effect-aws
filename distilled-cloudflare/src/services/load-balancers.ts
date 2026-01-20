@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -299,7 +300,13 @@ export const GetLoadBalancerResponse = Schema.Struct({
   zoneName: Schema.optional(Schema.String).pipe(T.JsonName("zone_name")),
 }) as unknown as Schema.Schema<GetLoadBalancerResponse>;
 
-export const getLoadBalancer = API.make(() => ({
+export const getLoadBalancer: (
+  input: GetLoadBalancerRequest,
+) => Effect.Effect<
+  GetLoadBalancerResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetLoadBalancerRequest,
   output: GetLoadBalancerResponse,
   errors: [],
@@ -821,7 +828,13 @@ export const CreateLoadBalancerResponse = Schema.Struct({
   zoneName: Schema.optional(Schema.String).pipe(T.JsonName("zone_name")),
 }) as unknown as Schema.Schema<CreateLoadBalancerResponse>;
 
-export const createLoadBalancer = API.make(() => ({
+export const createLoadBalancer: (
+  input: CreateLoadBalancerRequest,
+) => Effect.Effect<
+  CreateLoadBalancerResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateLoadBalancerRequest,
   output: CreateLoadBalancerResponse,
   errors: [],
@@ -1351,7 +1364,13 @@ export const UpdateLoadBalancerResponse = Schema.Struct({
   zoneName: Schema.optional(Schema.String).pipe(T.JsonName("zone_name")),
 }) as unknown as Schema.Schema<UpdateLoadBalancerResponse>;
 
-export const updateLoadBalancer = API.make(() => ({
+export const updateLoadBalancer: (
+  input: UpdateLoadBalancerRequest,
+) => Effect.Effect<
+  UpdateLoadBalancerResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateLoadBalancerRequest,
   output: UpdateLoadBalancerResponse,
   errors: [],
@@ -1882,7 +1901,13 @@ export const PatchLoadBalancerResponse = Schema.Struct({
   zoneName: Schema.optional(Schema.String).pipe(T.JsonName("zone_name")),
 }) as unknown as Schema.Schema<PatchLoadBalancerResponse>;
 
-export const patchLoadBalancer = API.make(() => ({
+export const patchLoadBalancer: (
+  input: PatchLoadBalancerRequest,
+) => Effect.Effect<
+  PatchLoadBalancerResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchLoadBalancerRequest,
   output: PatchLoadBalancerResponse,
   errors: [],
@@ -1911,7 +1936,13 @@ export const DeleteLoadBalancerResponse = Schema.Struct({
   id: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<DeleteLoadBalancerResponse>;
 
-export const deleteLoadBalancer = API.make(() => ({
+export const deleteLoadBalancer: (
+  input: DeleteLoadBalancerRequest,
+) => Effect.Effect<
+  DeleteLoadBalancerResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteLoadBalancerRequest,
   output: DeleteLoadBalancerResponse,
   errors: [],
@@ -2011,7 +2042,13 @@ export const GetMonitorResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<GetMonitorResponse>;
 
-export const getMonitor = API.make(() => ({
+export const getMonitor: (
+  input: GetMonitorRequest,
+) => Effect.Effect<
+  GetMonitorResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetMonitorRequest,
   output: GetMonitorResponse,
   errors: [],
@@ -2167,7 +2204,13 @@ export const CreateMonitorResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<CreateMonitorResponse>;
 
-export const createMonitor = API.make(() => ({
+export const createMonitor: (
+  input: CreateMonitorRequest,
+) => Effect.Effect<
+  CreateMonitorResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateMonitorRequest,
   output: CreateMonitorResponse,
   errors: [],
@@ -2325,7 +2368,13 @@ export const UpdateMonitorResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<UpdateMonitorResponse>;
 
-export const updateMonitor = API.make(() => ({
+export const updateMonitor: (
+  input: UpdateMonitorRequest,
+) => Effect.Effect<
+  UpdateMonitorResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateMonitorRequest,
   output: UpdateMonitorResponse,
   errors: [],
@@ -2483,7 +2532,13 @@ export const PatchMonitorResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<PatchMonitorResponse>;
 
-export const patchMonitor = API.make(() => ({
+export const patchMonitor: (
+  input: PatchMonitorRequest,
+) => Effect.Effect<
+  PatchMonitorResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchMonitorRequest,
   output: PatchMonitorResponse,
   errors: [],
@@ -2513,7 +2568,13 @@ export const DeleteMonitorResponse = Schema.Struct({
   id: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<DeleteMonitorResponse>;
 
-export const deleteMonitor = API.make(() => ({
+export const deleteMonitor: (
+  input: DeleteMonitorRequest,
+) => Effect.Effect<
+  DeleteMonitorResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteMonitorRequest,
   output: DeleteMonitorResponse,
   errors: [],
@@ -2576,7 +2637,13 @@ export const GetMonitorGroupResponse = Schema.Struct({
   updatedAt: Schema.optional(Schema.String).pipe(T.JsonName("updated_at")),
 }) as unknown as Schema.Schema<GetMonitorGroupResponse>;
 
-export const getMonitorGroup = API.make(() => ({
+export const getMonitorGroup: (
+  input: GetMonitorGroupRequest,
+) => Effect.Effect<
+  GetMonitorGroupResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetMonitorGroupRequest,
   output: GetMonitorGroupResponse,
   errors: [],
@@ -2654,7 +2721,13 @@ export const CreateMonitorGroupResponse = Schema.Struct({
   updatedAt: Schema.optional(Schema.String).pipe(T.JsonName("updated_at")),
 }) as unknown as Schema.Schema<CreateMonitorGroupResponse>;
 
-export const createMonitorGroup = API.make(() => ({
+export const createMonitorGroup: (
+  input: CreateMonitorGroupRequest,
+) => Effect.Effect<
+  CreateMonitorGroupResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateMonitorGroupRequest,
   output: CreateMonitorGroupResponse,
   errors: [],
@@ -2734,7 +2807,13 @@ export const UpdateMonitorGroupResponse = Schema.Struct({
   updatedAt: Schema.optional(Schema.String).pipe(T.JsonName("updated_at")),
 }) as unknown as Schema.Schema<UpdateMonitorGroupResponse>;
 
-export const updateMonitorGroup = API.make(() => ({
+export const updateMonitorGroup: (
+  input: UpdateMonitorGroupRequest,
+) => Effect.Effect<
+  UpdateMonitorGroupResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateMonitorGroupRequest,
   output: UpdateMonitorGroupResponse,
   errors: [],
@@ -2814,7 +2893,13 @@ export const PatchMonitorGroupResponse = Schema.Struct({
   updatedAt: Schema.optional(Schema.String).pipe(T.JsonName("updated_at")),
 }) as unknown as Schema.Schema<PatchMonitorGroupResponse>;
 
-export const patchMonitorGroup = API.make(() => ({
+export const patchMonitorGroup: (
+  input: PatchMonitorGroupRequest,
+) => Effect.Effect<
+  PatchMonitorGroupResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchMonitorGroupRequest,
   output: PatchMonitorGroupResponse,
   errors: [],
@@ -2873,7 +2958,13 @@ export const DeleteMonitorGroupResponse = Schema.Struct({
   updatedAt: Schema.optional(Schema.String).pipe(T.JsonName("updated_at")),
 }) as unknown as Schema.Schema<DeleteMonitorGroupResponse>;
 
-export const deleteMonitorGroup = API.make(() => ({
+export const deleteMonitorGroup: (
+  input: DeleteMonitorGroupRequest,
+) => Effect.Effect<
+  DeleteMonitorGroupResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteMonitorGroupRequest,
   output: DeleteMonitorGroupResponse,
   errors: [],
@@ -2972,7 +3063,13 @@ export const CreateMonitorPreviewResponse = Schema.Struct({
   previewId: Schema.optional(Schema.String).pipe(T.JsonName("preview_id")),
 }) as unknown as Schema.Schema<CreateMonitorPreviewResponse>;
 
-export const createMonitorPreview = API.make(() => ({
+export const createMonitorPreview: (
+  input: CreateMonitorPreviewRequest,
+) => Effect.Effect<
+  CreateMonitorPreviewResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateMonitorPreviewRequest,
   output: CreateMonitorPreviewResponse,
   errors: [],
@@ -3109,7 +3206,13 @@ export const GetPoolResponse = Schema.Struct({
   origins: Schema.optional(Schema.Array(Schema.Unknown)),
 }) as unknown as Schema.Schema<GetPoolResponse>;
 
-export const getPool = API.make(() => ({
+export const getPool: (
+  input: GetPoolRequest,
+) => Effect.Effect<
+  GetPoolResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetPoolRequest,
   output: GetPoolResponse,
   errors: [],
@@ -3291,7 +3394,13 @@ export const CreatePoolResponse = Schema.Struct({
   origins: Schema.optional(Schema.Array(Schema.Unknown)),
 }) as unknown as Schema.Schema<CreatePoolResponse>;
 
-export const createPool = API.make(() => ({
+export const createPool: (
+  input: CreatePoolRequest,
+) => Effect.Effect<
+  CreatePoolResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreatePoolRequest,
   output: CreatePoolResponse,
   errors: [],
@@ -3517,7 +3626,13 @@ export const UpdatePoolResponse = Schema.Struct({
   origins: Schema.optional(Schema.Array(Schema.Unknown)),
 }) as unknown as Schema.Schema<UpdatePoolResponse>;
 
-export const updatePool = API.make(() => ({
+export const updatePool: (
+  input: UpdatePoolRequest,
+) => Effect.Effect<
+  UpdatePoolResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdatePoolRequest,
   output: UpdatePoolResponse,
   errors: [],
@@ -3743,7 +3858,13 @@ export const PatchPoolResponse = Schema.Struct({
   origins: Schema.optional(Schema.Array(Schema.Unknown)),
 }) as unknown as Schema.Schema<PatchPoolResponse>;
 
-export const patchPool = API.make(() => ({
+export const patchPool: (
+  input: PatchPoolRequest,
+) => Effect.Effect<
+  PatchPoolResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchPoolRequest,
   output: PatchPoolResponse,
   errors: [],
@@ -3773,7 +3894,13 @@ export const DeletePoolResponse = Schema.Struct({
   id: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<DeletePoolResponse>;
 
-export const deletePool = API.make(() => ({
+export const deletePool: (
+  input: DeletePoolRequest,
+) => Effect.Effect<
+  DeletePoolResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeletePoolRequest,
   output: DeletePoolResponse,
   errors: [],
@@ -3843,7 +3970,13 @@ export const GetPoolHealthResponse = Schema.Struct({
   ).pipe(T.JsonName("pop_health")),
 }) as unknown as Schema.Schema<GetPoolHealthResponse>;
 
-export const getPoolHealth = API.make(() => ({
+export const getPoolHealth: (
+  input: GetPoolHealthRequest,
+) => Effect.Effect<
+  GetPoolHealthResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetPoolHealthRequest,
   output: GetPoolHealthResponse,
   errors: [],
@@ -3938,7 +4071,13 @@ export const CreatePoolHealthResponse = Schema.Struct({
   previewId: Schema.optional(Schema.String).pipe(T.JsonName("preview_id")),
 }) as unknown as Schema.Schema<CreatePoolHealthResponse>;
 
-export const createPoolHealth = API.make(() => ({
+export const createPoolHealth: (
+  input: CreatePoolHealthRequest,
+) => Effect.Effect<
+  CreatePoolHealthResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreatePoolHealthRequest,
   output: CreatePoolHealthResponse,
   errors: [],
@@ -3970,7 +4109,13 @@ export const GetPreviewResponse = Schema.Struct(
   {},
 ) as unknown as Schema.Schema<GetPreviewResponse>;
 
-export const getPreview = API.make(() => ({
+export const getPreview: (
+  input: GetPreviewRequest,
+) => Effect.Effect<
+  GetPreviewResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetPreviewRequest,
   output: GetPreviewResponse,
   errors: [],
@@ -4030,7 +4175,13 @@ export const GetRegionResponse = Schema.Union(
   Schema.Null,
 ) as unknown as Schema.Schema<GetRegionResponse>;
 
-export const getRegion = API.make(() => ({
+export const getRegion: (
+  input: GetRegionRequest,
+) => Effect.Effect<
+  GetRegionResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetRegionRequest,
   output: GetRegionResponse,
   errors: [],
@@ -4072,7 +4223,13 @@ export const ListRegionsResponse = Schema.Union(
   Schema.Null,
 ) as unknown as Schema.Schema<ListRegionsResponse>;
 
-export const listRegions = API.make(() => ({
+export const listRegions: (
+  input: ListRegionsRequest,
+) => Effect.Effect<
+  ListRegionsResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: ListRegionsRequest,
   output: ListRegionsResponse,
   errors: [],

@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -56,7 +57,13 @@ export const CreateDetectionResponse = Schema.Struct({
   username: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<CreateDetectionResponse>;
 
-export const createDetection = API.make(() => ({
+export const createDetection: (
+  input: CreateDetectionRequest,
+) => Effect.Effect<
+  CreateDetectionResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateDetectionRequest,
   output: CreateDetectionResponse,
   errors: [],
@@ -99,7 +106,13 @@ export const UpdateDetectionResponse = Schema.Struct({
   username: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<UpdateDetectionResponse>;
 
-export const updateDetection = API.make(() => ({
+export const updateDetection: (
+  input: UpdateDetectionRequest,
+) => Effect.Effect<
+  UpdateDetectionResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateDetectionRequest,
   output: UpdateDetectionResponse,
   errors: [],
@@ -126,7 +139,13 @@ export type DeleteDetectionResponse = unknown;
 export const DeleteDetectionResponse =
   Schema.Unknown as unknown as Schema.Schema<DeleteDetectionResponse>;
 
-export const deleteDetection = API.make(() => ({
+export const deleteDetection: (
+  input: DeleteDetectionRequest,
+) => Effect.Effect<
+  DeleteDetectionResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteDetectionRequest,
   output: DeleteDetectionResponse,
   errors: [],
@@ -156,7 +175,13 @@ export const GetLeakedCredentialCheckResponse = Schema.Struct({
   enabled: Schema.optional(Schema.Boolean),
 }) as unknown as Schema.Schema<GetLeakedCredentialCheckResponse>;
 
-export const getLeakedCredentialCheck = API.make(() => ({
+export const getLeakedCredentialCheck: (
+  input: GetLeakedCredentialCheckRequest,
+) => Effect.Effect<
+  GetLeakedCredentialCheckResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetLeakedCredentialCheckRequest,
   output: GetLeakedCredentialCheckResponse,
   errors: [],
@@ -185,7 +210,13 @@ export const CreateLeakedCredentialCheckResponse = Schema.Struct({
   enabled: Schema.optional(Schema.Boolean),
 }) as unknown as Schema.Schema<CreateLeakedCredentialCheckResponse>;
 
-export const createLeakedCredentialCheck = API.make(() => ({
+export const createLeakedCredentialCheck: (
+  input: CreateLeakedCredentialCheckRequest,
+) => Effect.Effect<
+  CreateLeakedCredentialCheckResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateLeakedCredentialCheckRequest,
   output: CreateLeakedCredentialCheckResponse,
   errors: [],

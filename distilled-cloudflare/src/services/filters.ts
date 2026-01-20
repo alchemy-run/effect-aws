@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -55,7 +56,13 @@ export const GetFilterResponse = Schema.Struct({
   ref: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<GetFilterResponse>;
 
-export const getFilter = API.make(() => ({
+export const getFilter: (
+  input: GetFilterRequest,
+) => Effect.Effect<
+  GetFilterResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetFilterRequest,
   output: GetFilterResponse,
   errors: [],
@@ -107,7 +114,13 @@ export const PutFilterResponse = Schema.Struct({
   ref: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<PutFilterResponse>;
 
-export const putFilter = API.make(() => ({
+export const putFilter: (
+  input: PutFilterRequest,
+) => Effect.Effect<
+  PutFilterResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutFilterRequest,
   output: PutFilterResponse,
   errors: [],
@@ -135,7 +148,13 @@ export const DeleteFilterResponse = Schema.Struct({
   id: Schema.String,
 }) as unknown as Schema.Schema<DeleteFilterResponse>;
 
-export const deleteFilter = API.make(() => ({
+export const deleteFilter: (
+  input: DeleteFilterRequest,
+) => Effect.Effect<
+  DeleteFilterResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteFilterRequest,
   output: DeleteFilterResponse,
   errors: [],
@@ -160,7 +179,13 @@ export type BulkDeleteFiltersResponse = unknown;
 export const BulkDeleteFiltersResponse =
   Schema.Unknown as unknown as Schema.Schema<BulkDeleteFiltersResponse>;
 
-export const bulkDeleteFilters = API.make(() => ({
+export const bulkDeleteFilters: (
+  input: BulkDeleteFiltersRequest,
+) => Effect.Effect<
+  BulkDeleteFiltersResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: BulkDeleteFiltersRequest,
   output: BulkDeleteFiltersResponse,
   errors: [],

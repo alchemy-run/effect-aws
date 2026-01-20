@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -238,7 +239,13 @@ export const GetPageRuleResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<GetPageRuleResponse>;
 
-export const getPageRule = API.make(() => ({
+export const getPageRule: (
+  input: GetPageRuleRequest,
+) => Effect.Effect<
+  GetPageRuleResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetPageRuleRequest,
   output: GetPageRuleResponse,
   errors: [],
@@ -474,7 +481,13 @@ export const ListPageRulesResponse = Schema.Array(
   }),
 ) as unknown as Schema.Schema<ListPageRulesResponse>;
 
-export const listPageRules = API.make(() => ({
+export const listPageRules: (
+  input: ListPageRulesRequest,
+) => Effect.Effect<
+  ListPageRulesResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: ListPageRulesRequest,
   output: ListPageRulesResponse,
   errors: [],
@@ -884,7 +897,13 @@ export const CreatePageRuleResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<CreatePageRuleResponse>;
 
-export const createPageRule = API.make(() => ({
+export const createPageRule: (
+  input: CreatePageRuleRequest,
+) => Effect.Effect<
+  CreatePageRuleResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreatePageRuleRequest,
   output: CreatePageRuleResponse,
   errors: [],
@@ -1296,7 +1315,13 @@ export const UpdatePageRuleResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<UpdatePageRuleResponse>;
 
-export const updatePageRule = API.make(() => ({
+export const updatePageRule: (
+  input: UpdatePageRuleRequest,
+) => Effect.Effect<
+  UpdatePageRuleResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdatePageRuleRequest,
   output: UpdatePageRuleResponse,
   errors: [],
@@ -1712,7 +1737,13 @@ export const PatchPageRuleResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<PatchPageRuleResponse>;
 
-export const patchPageRule = API.make(() => ({
+export const patchPageRule: (
+  input: PatchPageRuleRequest,
+) => Effect.Effect<
+  PatchPageRuleResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchPageRuleRequest,
   output: PatchPageRuleResponse,
   errors: [],
@@ -1736,7 +1767,13 @@ export type DeletePageRuleResponse = unknown;
 export const DeletePageRuleResponse =
   Schema.Unknown as unknown as Schema.Schema<DeletePageRuleResponse>;
 
-export const deletePageRule = API.make(() => ({
+export const deletePageRule: (
+  input: DeletePageRuleRequest,
+) => Effect.Effect<
+  DeletePageRuleResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeletePageRuleRequest,
   output: DeletePageRuleResponse,
   errors: [],

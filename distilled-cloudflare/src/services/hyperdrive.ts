@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -42,7 +43,13 @@ export type GetConfigResponse = unknown;
 export const GetConfigResponse =
   Schema.Unknown as unknown as Schema.Schema<GetConfigResponse>;
 
-export const getConfig = API.make(() => ({
+export const getConfig: (
+  input: GetConfigRequest,
+) => Effect.Effect<
+  GetConfigResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetConfigRequest,
   output: GetConfigResponse,
   errors: [],
@@ -147,7 +154,13 @@ export type CreateConfigResponse = unknown;
 export const CreateConfigResponse =
   Schema.Unknown as unknown as Schema.Schema<CreateConfigResponse>;
 
-export const createConfig = API.make(() => ({
+export const createConfig: (
+  input: CreateConfigRequest,
+) => Effect.Effect<
+  CreateConfigResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateConfigRequest,
   output: CreateConfigResponse,
   errors: [],
@@ -257,7 +270,13 @@ export type UpdateConfigResponse = unknown;
 export const UpdateConfigResponse =
   Schema.Unknown as unknown as Schema.Schema<UpdateConfigResponse>;
 
-export const updateConfig = API.make(() => ({
+export const updateConfig: (
+  input: UpdateConfigRequest,
+) => Effect.Effect<
+  UpdateConfigResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateConfigRequest,
   output: UpdateConfigResponse,
   errors: [],
@@ -360,7 +379,13 @@ export type PatchConfigResponse = unknown;
 export const PatchConfigResponse =
   Schema.Unknown as unknown as Schema.Schema<PatchConfigResponse>;
 
-export const patchConfig = API.make(() => ({
+export const patchConfig: (
+  input: PatchConfigRequest,
+) => Effect.Effect<
+  PatchConfigResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchConfigRequest,
   output: PatchConfigResponse,
   errors: [],
@@ -387,7 +412,13 @@ export type DeleteConfigResponse = unknown;
 export const DeleteConfigResponse =
   Schema.Unknown as unknown as Schema.Schema<DeleteConfigResponse>;
 
-export const deleteConfig = API.make(() => ({
+export const deleteConfig: (
+  input: DeleteConfigRequest,
+) => Effect.Effect<
+  DeleteConfigResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteConfigRequest,
   output: DeleteConfigResponse,
   errors: [],

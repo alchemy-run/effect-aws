@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -48,7 +49,13 @@ export const GetHostnameAssociationResponse = Schema.Struct({
   hostnames: Schema.optional(Schema.Array(Schema.String)),
 }) as unknown as Schema.Schema<GetHostnameAssociationResponse>;
 
-export const getHostnameAssociation = API.make(() => ({
+export const getHostnameAssociation: (
+  input: GetHostnameAssociationRequest,
+) => Effect.Effect<
+  GetHostnameAssociationResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetHostnameAssociationRequest,
   output: GetHostnameAssociationResponse,
   errors: [],
@@ -84,7 +91,13 @@ export const PutHostnameAssociationResponse = Schema.Struct({
   hostnames: Schema.optional(Schema.Array(Schema.String)),
 }) as unknown as Schema.Schema<PutHostnameAssociationResponse>;
 
-export const putHostnameAssociation = API.make(() => ({
+export const putHostnameAssociation: (
+  input: PutHostnameAssociationRequest,
+) => Effect.Effect<
+  PutHostnameAssociationResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutHostnameAssociationRequest,
   output: PutHostnameAssociationResponse,
   errors: [],

@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -88,7 +89,13 @@ export const RotateSecretWidgetResponse = Schema.Struct({
   sitekey: Schema.String,
 }) as unknown as Schema.Schema<RotateSecretWidgetResponse>;
 
-export const rotateSecretWidget = API.make(() => ({
+export const rotateSecretWidget: (
+  input: RotateSecretWidgetRequest,
+) => Effect.Effect<
+  RotateSecretWidgetResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: RotateSecretWidgetRequest,
   output: RotateSecretWidgetResponse,
   errors: [],
@@ -160,7 +167,13 @@ export const GetWidgetResponse = Schema.Struct({
   sitekey: Schema.String,
 }) as unknown as Schema.Schema<GetWidgetResponse>;
 
-export const getWidget = API.make(() => ({
+export const getWidget: (
+  input: GetWidgetRequest,
+) => Effect.Effect<
+  GetWidgetResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetWidgetRequest,
   output: GetWidgetResponse,
   errors: [],
@@ -267,7 +280,13 @@ export const CreateWidgetResponse = Schema.Struct({
   sitekey: Schema.String,
 }) as unknown as Schema.Schema<CreateWidgetResponse>;
 
-export const createWidget = API.make(() => ({
+export const createWidget: (
+  input: CreateWidgetRequest,
+) => Effect.Effect<
+  CreateWidgetResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateWidgetRequest,
   output: CreateWidgetResponse,
   errors: [],
@@ -363,7 +382,13 @@ export const UpdateWidgetResponse = Schema.Struct({
   sitekey: Schema.String,
 }) as unknown as Schema.Schema<UpdateWidgetResponse>;
 
-export const updateWidget = API.make(() => ({
+export const updateWidget: (
+  input: UpdateWidgetRequest,
+) => Effect.Effect<
+  UpdateWidgetResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateWidgetRequest,
   output: UpdateWidgetResponse,
   errors: [],
@@ -431,7 +456,13 @@ export const DeleteWidgetResponse = Schema.Struct({
   sitekey: Schema.String,
 }) as unknown as Schema.Schema<DeleteWidgetResponse>;
 
-export const deleteWidget = API.make(() => ({
+export const deleteWidget: (
+  input: DeleteWidgetRequest,
+) => Effect.Effect<
+  DeleteWidgetResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteWidgetRequest,
   output: DeleteWidgetResponse,
   errors: [],

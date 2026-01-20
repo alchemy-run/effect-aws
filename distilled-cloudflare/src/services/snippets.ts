@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -42,7 +43,13 @@ export type GetContentResponse = unknown;
 export const GetContentResponse =
   Schema.Unknown as unknown as Schema.Schema<GetContentResponse>;
 
-export const getContent = API.make(() => ({
+export const getContent: (
+  input: GetContentRequest,
+) => Effect.Effect<
+  GetContentResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetContentRequest,
   output: GetContentResponse,
   errors: [],
@@ -80,7 +87,13 @@ export const GetSnippetResponse = Schema.Struct({
   modifiedOn: Schema.optional(Schema.String).pipe(T.JsonName("modified_on")),
 }) as unknown as Schema.Schema<GetSnippetResponse>;
 
-export const getSnippet = API.make(() => ({
+export const getSnippet: (
+  input: GetSnippetRequest,
+) => Effect.Effect<
+  GetSnippetResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetSnippetRequest,
   output: GetSnippetResponse,
   errors: [],
@@ -119,7 +132,13 @@ export const PutSnippetResponse = Schema.Struct({
   modifiedOn: Schema.optional(Schema.String).pipe(T.JsonName("modified_on")),
 }) as unknown as Schema.Schema<PutSnippetResponse>;
 
-export const putSnippet = API.make(() => ({
+export const putSnippet: (
+  input: PutSnippetRequest,
+) => Effect.Effect<
+  PutSnippetResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutSnippetRequest,
   output: PutSnippetResponse,
   errors: [],
@@ -143,7 +162,13 @@ export type DeleteSnippetResponse = unknown;
 export const DeleteSnippetResponse =
   Schema.Unknown as unknown as Schema.Schema<DeleteSnippetResponse>;
 
-export const deleteSnippet = API.make(() => ({
+export const deleteSnippet: (
+  input: DeleteSnippetRequest,
+) => Effect.Effect<
+  DeleteSnippetResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteSnippetRequest,
   output: DeleteSnippetResponse,
   errors: [],

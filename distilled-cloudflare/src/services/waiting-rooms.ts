@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -135,7 +136,13 @@ export const GetEventResponse = Schema.Struct({
   ).pipe(T.JsonName("turnstile_mode")),
 }) as unknown as Schema.Schema<GetEventResponse>;
 
-export const getEvent = API.make(() => ({
+export const getEvent: (
+  input: GetEventRequest,
+) => Effect.Effect<
+  GetEventResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetEventRequest,
   output: GetEventResponse,
   errors: [],
@@ -333,7 +340,13 @@ export const CreateEventResponse = Schema.Struct({
   ).pipe(T.JsonName("turnstile_mode")),
 }) as unknown as Schema.Schema<CreateEventResponse>;
 
-export const createEvent = API.make(() => ({
+export const createEvent: (
+  input: CreateEventRequest,
+) => Effect.Effect<
+  CreateEventResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateEventRequest,
   output: CreateEventResponse,
   errors: [],
@@ -533,7 +546,13 @@ export const UpdateEventResponse = Schema.Struct({
   ).pipe(T.JsonName("turnstile_mode")),
 }) as unknown as Schema.Schema<UpdateEventResponse>;
 
-export const updateEvent = API.make(() => ({
+export const updateEvent: (
+  input: UpdateEventRequest,
+) => Effect.Effect<
+  UpdateEventResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateEventRequest,
   output: UpdateEventResponse,
   errors: [],
@@ -733,7 +752,13 @@ export const PatchEventResponse = Schema.Struct({
   ).pipe(T.JsonName("turnstile_mode")),
 }) as unknown as Schema.Schema<PatchEventResponse>;
 
-export const patchEvent = API.make(() => ({
+export const patchEvent: (
+  input: PatchEventRequest,
+) => Effect.Effect<
+  PatchEventResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchEventRequest,
   output: PatchEventResponse,
   errors: [],
@@ -765,7 +790,13 @@ export const DeleteEventResponse = Schema.Struct({
   id: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<DeleteEventResponse>;
 
-export const deleteEvent = API.make(() => ({
+export const deleteEvent: (
+  input: DeleteEventRequest,
+) => Effect.Effect<
+  DeleteEventResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteEventRequest,
   output: DeleteEventResponse,
   errors: [],
@@ -858,7 +889,13 @@ export const GetEventDetailResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<GetEventDetailResponse>;
 
-export const getEventDetail = API.make(() => ({
+export const getEventDetail: (
+  input: GetEventDetailRequest,
+) => Effect.Effect<
+  GetEventDetailResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetEventDetailRequest,
   output: GetEventDetailResponse,
   errors: [],
@@ -891,7 +928,13 @@ export const PreviewPageResponse = Schema.Struct({
   previewUrl: Schema.optional(Schema.String).pipe(T.JsonName("preview_url")),
 }) as unknown as Schema.Schema<PreviewPageResponse>;
 
-export const previewPage = API.make(() => ({
+export const previewPage: (
+  input: PreviewPageRequest,
+) => Effect.Effect<
+  PreviewPageResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PreviewPageRequest,
   output: PreviewPageResponse,
   errors: [],
@@ -923,7 +966,13 @@ export const GetSettingResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<GetSettingResponse>;
 
-export const getSetting = API.make(() => ({
+export const getSetting: (
+  input: GetSettingRequest,
+) => Effect.Effect<
+  GetSettingResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetSettingRequest,
   output: GetSettingResponse,
   errors: [],
@@ -956,7 +1005,13 @@ export const PutSettingResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<PutSettingResponse>;
 
-export const putSetting = API.make(() => ({
+export const putSetting: (
+  input: PutSettingRequest,
+) => Effect.Effect<
+  PutSettingResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutSettingRequest,
   output: PutSettingResponse,
   errors: [],
@@ -989,7 +1044,13 @@ export const PatchSettingResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<PatchSettingResponse>;
 
-export const patchSetting = API.make(() => ({
+export const patchSetting: (
+  input: PatchSettingRequest,
+) => Effect.Effect<
+  PatchSettingResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchSettingRequest,
   output: PatchSettingResponse,
   errors: [],
@@ -1044,7 +1105,13 @@ export const GetStatusResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<GetStatusResponse>;
 
-export const getStatus = API.make(() => ({
+export const getStatus: (
+  input: GetStatusRequest,
+) => Effect.Effect<
+  GetStatusResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetStatusRequest,
   output: GetStatusResponse,
   errors: [],
@@ -1284,7 +1351,13 @@ export const GetWaitingRoomResponse = Schema.Struct({
   ).pipe(T.JsonName("turnstile_mode")),
 }) as unknown as Schema.Schema<GetWaitingRoomResponse>;
 
-export const getWaitingRoom = API.make(() => ({
+export const getWaitingRoom: (
+  input: GetWaitingRoomRequest,
+) => Effect.Effect<
+  GetWaitingRoomResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetWaitingRoomRequest,
   output: GetWaitingRoomResponse,
   errors: [],
@@ -1703,7 +1776,13 @@ export const CreateWaitingRoomResponse = Schema.Struct({
   ).pipe(T.JsonName("turnstile_mode")),
 }) as unknown as Schema.Schema<CreateWaitingRoomResponse>;
 
-export const createWaitingRoom = API.make(() => ({
+export const createWaitingRoom: (
+  input: CreateWaitingRoomRequest,
+) => Effect.Effect<
+  CreateWaitingRoomResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateWaitingRoomRequest,
   output: CreateWaitingRoomResponse,
   errors: [],
@@ -2127,7 +2206,13 @@ export const UpdateWaitingRoomResponse = Schema.Struct({
   ).pipe(T.JsonName("turnstile_mode")),
 }) as unknown as Schema.Schema<UpdateWaitingRoomResponse>;
 
-export const updateWaitingRoom = API.make(() => ({
+export const updateWaitingRoom: (
+  input: UpdateWaitingRoomRequest,
+) => Effect.Effect<
+  UpdateWaitingRoomResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateWaitingRoomRequest,
   output: UpdateWaitingRoomResponse,
   errors: [],
@@ -2551,7 +2636,13 @@ export const PatchWaitingRoomResponse = Schema.Struct({
   ).pipe(T.JsonName("turnstile_mode")),
 }) as unknown as Schema.Schema<PatchWaitingRoomResponse>;
 
-export const patchWaitingRoom = API.make(() => ({
+export const patchWaitingRoom: (
+  input: PatchWaitingRoomRequest,
+) => Effect.Effect<
+  PatchWaitingRoomResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchWaitingRoomRequest,
   output: PatchWaitingRoomResponse,
   errors: [],
@@ -2581,7 +2672,13 @@ export const DeleteWaitingRoomResponse = Schema.Struct({
   id: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<DeleteWaitingRoomResponse>;
 
-export const deleteWaitingRoom = API.make(() => ({
+export const deleteWaitingRoom: (
+  input: DeleteWaitingRoomRequest,
+) => Effect.Effect<
+  DeleteWaitingRoomResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteWaitingRoomRequest,
   output: DeleteWaitingRoomResponse,
   errors: [],

@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -278,7 +279,13 @@ export const PutCertificatePackCertificateResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<PutCertificatePackCertificateResponse>;
 
-export const putCertificatePackCertificate = API.make(() => ({
+export const putCertificatePackCertificate: (
+  input: PutCertificatePackCertificateRequest,
+) => Effect.Effect<
+  PutCertificatePackCertificateResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutCertificatePackCertificateRequest,
   output: PutCertificatePackCertificateResponse,
   errors: [],
@@ -313,7 +320,13 @@ export const DeleteCertificatePackCertificateResponse = Schema.Struct({
   id: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<DeleteCertificatePackCertificateResponse>;
 
-export const deleteCertificatePackCertificate = API.make(() => ({
+export const deleteCertificatePackCertificate: (
+  input: DeleteCertificatePackCertificateRequest,
+) => Effect.Effect<
+  DeleteCertificatePackCertificateResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteCertificatePackCertificateRequest,
   output: DeleteCertificatePackCertificateResponse,
   errors: [],
@@ -570,7 +583,13 @@ export const GetCustomHostnameResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<GetCustomHostnameResponse>;
 
-export const getCustomHostname = API.make(() => ({
+export const getCustomHostname: (
+  input: GetCustomHostnameRequest,
+) => Effect.Effect<
+  GetCustomHostnameResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetCustomHostnameRequest,
   output: GetCustomHostnameResponse,
   errors: [],
@@ -886,7 +905,13 @@ export const CreateCustomHostnameResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<CreateCustomHostnameResponse>;
 
-export const createCustomHostname = API.make(() => ({
+export const createCustomHostname: (
+  input: CreateCustomHostnameRequest,
+) => Effect.Effect<
+  CreateCustomHostnameResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateCustomHostnameRequest,
   output: CreateCustomHostnameResponse,
   errors: [],
@@ -1216,7 +1241,13 @@ export const PatchCustomHostnameResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<PatchCustomHostnameResponse>;
 
-export const patchCustomHostname = API.make(() => ({
+export const patchCustomHostname: (
+  input: PatchCustomHostnameRequest,
+) => Effect.Effect<
+  PatchCustomHostnameResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchCustomHostnameRequest,
   output: PatchCustomHostnameResponse,
   errors: [],
@@ -1247,7 +1278,13 @@ export const DeleteCustomHostnameResponse = Schema.Struct({
   id: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<DeleteCustomHostnameResponse>;
 
-export const deleteCustomHostname = API.make(() => ({
+export const deleteCustomHostname: (
+  input: DeleteCustomHostnameRequest,
+) => Effect.Effect<
+  DeleteCustomHostnameResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteCustomHostnameRequest,
   output: DeleteCustomHostnameResponse,
   errors: [],
@@ -1307,7 +1344,13 @@ export const GetFallbackOriginResponse = Schema.Struct({
   updatedAt: Schema.optional(Schema.String).pipe(T.JsonName("updated_at")),
 }) as unknown as Schema.Schema<GetFallbackOriginResponse>;
 
-export const getFallbackOrigin = API.make(() => ({
+export const getFallbackOrigin: (
+  input: GetFallbackOriginRequest,
+) => Effect.Effect<
+  GetFallbackOriginResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetFallbackOriginRequest,
   output: GetFallbackOriginResponse,
   errors: [],
@@ -1366,7 +1409,13 @@ export const PutFallbackOriginResponse = Schema.Struct({
   updatedAt: Schema.optional(Schema.String).pipe(T.JsonName("updated_at")),
 }) as unknown as Schema.Schema<PutFallbackOriginResponse>;
 
-export const putFallbackOrigin = API.make(() => ({
+export const putFallbackOrigin: (
+  input: PutFallbackOriginRequest,
+) => Effect.Effect<
+  PutFallbackOriginResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutFallbackOriginRequest,
   output: PutFallbackOriginResponse,
   errors: [],
@@ -1422,7 +1471,13 @@ export const DeleteFallbackOriginResponse = Schema.Struct({
   updatedAt: Schema.optional(Schema.String).pipe(T.JsonName("updated_at")),
 }) as unknown as Schema.Schema<DeleteFallbackOriginResponse>;
 
-export const deleteFallbackOrigin = API.make(() => ({
+export const deleteFallbackOrigin: (
+  input: DeleteFallbackOriginRequest,
+) => Effect.Effect<
+  DeleteFallbackOriginResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteFallbackOriginRequest,
   output: DeleteFallbackOriginResponse,
   errors: [],

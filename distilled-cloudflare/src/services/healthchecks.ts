@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -181,7 +182,13 @@ export const GetHealthcheckResponse = Schema.Struct({
   type: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<GetHealthcheckResponse>;
 
-export const getHealthcheck = API.make(() => ({
+export const getHealthcheck: (
+  input: GetHealthcheckRequest,
+) => Effect.Effect<
+  GetHealthcheckResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetHealthcheckRequest,
   output: GetHealthcheckResponse,
   errors: [],
@@ -463,7 +470,13 @@ export const CreateHealthcheckResponse = Schema.Struct({
   type: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<CreateHealthcheckResponse>;
 
-export const createHealthcheck = API.make(() => ({
+export const createHealthcheck: (
+  input: CreateHealthcheckRequest,
+) => Effect.Effect<
+  CreateHealthcheckResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateHealthcheckRequest,
   output: CreateHealthcheckResponse,
   errors: [],
@@ -750,7 +763,13 @@ export const UpdateHealthcheckResponse = Schema.Struct({
   type: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<UpdateHealthcheckResponse>;
 
-export const updateHealthcheck = API.make(() => ({
+export const updateHealthcheck: (
+  input: UpdateHealthcheckRequest,
+) => Effect.Effect<
+  UpdateHealthcheckResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateHealthcheckRequest,
   output: UpdateHealthcheckResponse,
   errors: [],
@@ -1037,7 +1056,13 @@ export const PatchHealthcheckResponse = Schema.Struct({
   type: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<PatchHealthcheckResponse>;
 
-export const patchHealthcheck = API.make(() => ({
+export const patchHealthcheck: (
+  input: PatchHealthcheckRequest,
+) => Effect.Effect<
+  PatchHealthcheckResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchHealthcheckRequest,
   output: PatchHealthcheckResponse,
   errors: [],
@@ -1068,7 +1093,13 @@ export const DeleteHealthcheckResponse = Schema.Struct({
   id: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<DeleteHealthcheckResponse>;
 
-export const deleteHealthcheck = API.make(() => ({
+export const deleteHealthcheck: (
+  input: DeleteHealthcheckRequest,
+) => Effect.Effect<
+  DeleteHealthcheckResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteHealthcheckRequest,
   output: DeleteHealthcheckResponse,
   errors: [],
@@ -1099,7 +1130,13 @@ export type GetPreviewResponse = unknown;
 export const GetPreviewResponse =
   Schema.Unknown as unknown as Schema.Schema<GetPreviewResponse>;
 
-export const getPreview = API.make(() => ({
+export const getPreview: (
+  input: GetPreviewRequest,
+) => Effect.Effect<
+  GetPreviewResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetPreviewRequest,
   output: GetPreviewResponse,
   errors: [],
@@ -1207,7 +1244,13 @@ export type CreatePreviewResponse = unknown;
 export const CreatePreviewResponse =
   Schema.Unknown as unknown as Schema.Schema<CreatePreviewResponse>;
 
-export const createPreview = API.make(() => ({
+export const createPreview: (
+  input: CreatePreviewRequest,
+) => Effect.Effect<
+  CreatePreviewResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreatePreviewRequest,
   output: CreatePreviewResponse,
   errors: [],
@@ -1238,7 +1281,13 @@ export const DeletePreviewResponse = Schema.Struct({
   id: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<DeletePreviewResponse>;
 
-export const deletePreview = API.make(() => ({
+export const deletePreview: (
+  input: DeletePreviewRequest,
+) => Effect.Effect<
+  DeletePreviewResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeletePreviewRequest,
   output: DeletePreviewResponse,
   errors: [],

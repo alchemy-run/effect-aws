@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -80,7 +81,13 @@ export const ListRulesResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<ListRulesResponse>;
 
-export const listRules = API.make(() => ({
+export const listRules: (
+  input: ListRulesRequest,
+) => Effect.Effect<
+  ListRulesResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: ListRulesRequest,
   output: ListRulesResponse,
   errors: [],
@@ -139,7 +146,13 @@ export const CreateRuleResponse = Schema.Struct({
   priority: Schema.optional(Schema.Number),
 }) as unknown as Schema.Schema<CreateRuleResponse>;
 
-export const createRule = API.make(() => ({
+export const createRule: (
+  input: CreateRuleRequest,
+) => Effect.Effect<
+  CreateRuleResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateRuleRequest,
   output: CreateRuleResponse,
   errors: [],
@@ -200,7 +213,13 @@ export const UpdateRuleResponse = Schema.Struct({
   priority: Schema.optional(Schema.Number),
 }) as unknown as Schema.Schema<UpdateRuleResponse>;
 
-export const updateRule = API.make(() => ({
+export const updateRule: (
+  input: UpdateRuleRequest,
+) => Effect.Effect<
+  UpdateRuleResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateRuleRequest,
   output: UpdateRuleResponse,
   errors: [],
@@ -233,7 +252,13 @@ export const DeleteRuleResponse = Schema.Struct({
   id: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<DeleteRuleResponse>;
 
-export const deleteRule = API.make(() => ({
+export const deleteRule: (
+  input: DeleteRuleRequest,
+) => Effect.Effect<
+  DeleteRuleResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteRuleRequest,
   output: DeleteRuleResponse,
   errors: [],
@@ -322,7 +347,13 @@ export const BulkCreateRulesResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<BulkCreateRulesResponse>;
 
-export const bulkCreateRules = API.make(() => ({
+export const bulkCreateRules: (
+  input: BulkCreateRulesRequest,
+) => Effect.Effect<
+  BulkCreateRulesResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: BulkCreateRulesRequest,
   output: BulkCreateRulesResponse,
   errors: [],
@@ -385,7 +416,13 @@ export const GetSiteInfoResponse = Schema.Struct({
   snippet: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<GetSiteInfoResponse>;
 
-export const getSiteInfo = API.make(() => ({
+export const getSiteInfo: (
+  input: GetSiteInfoRequest,
+) => Effect.Effect<
+  GetSiteInfoResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetSiteInfoRequest,
   output: GetSiteInfoResponse,
   errors: [],
@@ -448,7 +485,13 @@ export const CreateSiteInfoResponse = Schema.Struct({
   snippet: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<CreateSiteInfoResponse>;
 
-export const createSiteInfo = API.make(() => ({
+export const createSiteInfo: (
+  input: CreateSiteInfoRequest,
+) => Effect.Effect<
+  CreateSiteInfoResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateSiteInfoRequest,
   output: CreateSiteInfoResponse,
   errors: [],
@@ -522,7 +565,13 @@ export const UpdateSiteInfoResponse = Schema.Struct({
   snippet: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<UpdateSiteInfoResponse>;
 
-export const updateSiteInfo = API.make(() => ({
+export const updateSiteInfo: (
+  input: UpdateSiteInfoRequest,
+) => Effect.Effect<
+  UpdateSiteInfoResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateSiteInfoRequest,
   output: UpdateSiteInfoResponse,
   errors: [],
@@ -553,7 +602,13 @@ export const DeleteSiteInfoResponse = Schema.Struct({
   siteTag: Schema.optional(Schema.String).pipe(T.JsonName("site_tag")),
 }) as unknown as Schema.Schema<DeleteSiteInfoResponse>;
 
-export const deleteSiteInfo = API.make(() => ({
+export const deleteSiteInfo: (
+  input: DeleteSiteInfoRequest,
+) => Effect.Effect<
+  DeleteSiteInfoResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteSiteInfoRequest,
   output: DeleteSiteInfoResponse,
   errors: [],

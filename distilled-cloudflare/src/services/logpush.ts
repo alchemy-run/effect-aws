@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -92,7 +93,13 @@ export type GetDatasetFieldResponse = unknown;
 export const GetDatasetFieldResponse =
   Schema.Unknown as unknown as Schema.Schema<GetDatasetFieldResponse>;
 
-export const getDatasetField = API.make(() => ({
+export const getDatasetField: (
+  input: GetDatasetFieldRequest,
+) => Effect.Effect<
+  GetDatasetFieldResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetDatasetFieldRequest,
   output: GetDatasetFieldResponse,
   errors: [],
@@ -127,7 +134,13 @@ export type CreateEdgeResponse = unknown;
 export const CreateEdgeResponse =
   Schema.Unknown as unknown as Schema.Schema<CreateEdgeResponse>;
 
-export const createEdge = API.make(() => ({
+export const createEdge: (
+  input: CreateEdgeRequest,
+) => Effect.Effect<
+  CreateEdgeResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateEdgeRequest,
   output: CreateEdgeResponse,
   errors: [],
@@ -162,7 +175,13 @@ export type DestinationExistsValidateResponse = unknown;
 export const DestinationExistsValidateResponse =
   Schema.Unknown as unknown as Schema.Schema<DestinationExistsValidateResponse>;
 
-export const destinationExistsValidate = API.make(() => ({
+export const destinationExistsValidate: (
+  input: DestinationExistsValidateRequest,
+) => Effect.Effect<
+  DestinationExistsValidateResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DestinationExistsValidateRequest,
   output: DestinationExistsValidateResponse,
   errors: [],
@@ -190,7 +209,13 @@ export type GetJobResponse = unknown;
 export const GetJobResponse =
   Schema.Unknown as unknown as Schema.Schema<GetJobResponse>;
 
-export const getJob = API.make(() => ({
+export const getJob: (
+  input: GetJobRequest,
+) => Effect.Effect<
+  GetJobResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetJobRequest,
   output: GetJobResponse,
   errors: [],
@@ -379,7 +404,13 @@ export type CreateJobResponse = unknown;
 export const CreateJobResponse =
   Schema.Unknown as unknown as Schema.Schema<CreateJobResponse>;
 
-export const createJob = API.make(() => ({
+export const createJob: (
+  input: CreateJobRequest,
+) => Effect.Effect<
+  CreateJobResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateJobRequest,
   output: CreateJobResponse,
   errors: [],
@@ -514,7 +545,13 @@ export type UpdateJobResponse = unknown;
 export const UpdateJobResponse =
   Schema.Unknown as unknown as Schema.Schema<UpdateJobResponse>;
 
-export const updateJob = API.make(() => ({
+export const updateJob: (
+  input: UpdateJobRequest,
+) => Effect.Effect<
+  UpdateJobResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateJobRequest,
   output: UpdateJobResponse,
   errors: [],
@@ -542,7 +579,13 @@ export const DeleteJobResponse = Schema.Struct({
   id: Schema.optional(Schema.Number),
 }) as unknown as Schema.Schema<DeleteJobResponse>;
 
-export const deleteJob = API.make(() => ({
+export const deleteJob: (
+  input: DeleteJobRequest,
+) => Effect.Effect<
+  DeleteJobResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteJobRequest,
   output: DeleteJobResponse,
   errors: [],
@@ -577,7 +620,13 @@ export type CreateOwnershipResponse = unknown;
 export const CreateOwnershipResponse =
   Schema.Unknown as unknown as Schema.Schema<CreateOwnershipResponse>;
 
-export const createOwnership = API.make(() => ({
+export const createOwnership: (
+  input: CreateOwnershipRequest,
+) => Effect.Effect<
+  CreateOwnershipResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateOwnershipRequest,
   output: CreateOwnershipResponse,
   errors: [],
@@ -611,7 +660,13 @@ export type ValidateOwnershipResponse = unknown;
 export const ValidateOwnershipResponse =
   Schema.Unknown as unknown as Schema.Schema<ValidateOwnershipResponse>;
 
-export const validateOwnership = API.make(() => ({
+export const validateOwnership: (
+  input: ValidateOwnershipRequest,
+) => Effect.Effect<
+  ValidateOwnershipResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: ValidateOwnershipRequest,
   output: ValidateOwnershipResponse,
   errors: [],
@@ -646,7 +701,13 @@ export type DestinationValidateResponse = unknown;
 export const DestinationValidateResponse =
   Schema.Unknown as unknown as Schema.Schema<DestinationValidateResponse>;
 
-export const destinationValidate = API.make(() => ({
+export const destinationValidate: (
+  input: DestinationValidateRequest,
+) => Effect.Effect<
+  DestinationValidateResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DestinationValidateRequest,
   output: DestinationValidateResponse,
   errors: [],
@@ -679,7 +740,13 @@ export type OriginValidateResponse = unknown;
 export const OriginValidateResponse =
   Schema.Unknown as unknown as Schema.Schema<OriginValidateResponse>;
 
-export const originValidate = API.make(() => ({
+export const originValidate: (
+  input: OriginValidateRequest,
+) => Effect.Effect<
+  OriginValidateResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: OriginValidateRequest,
   output: OriginValidateResponse,
   errors: [],

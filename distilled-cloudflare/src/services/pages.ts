@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -42,7 +43,13 @@ export type PurgeBuildCacheProjectResponse = unknown;
 export const PurgeBuildCacheProjectResponse =
   Schema.Unknown as unknown as Schema.Schema<PurgeBuildCacheProjectResponse>;
 
-export const purgeBuildCacheProject = API.make(() => ({
+export const purgeBuildCacheProject: (
+  input: PurgeBuildCacheProjectRequest,
+) => Effect.Effect<
+  PurgeBuildCacheProjectResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PurgeBuildCacheProjectRequest,
   output: PurgeBuildCacheProjectResponse,
   errors: [],
@@ -790,7 +797,13 @@ export const GetProjectResponse = Schema.Struct({
   subdomain: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<GetProjectResponse>;
 
-export const getProject = API.make(() => ({
+export const getProject: (
+  input: GetProjectRequest,
+) => Effect.Effect<
+  GetProjectResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetProjectRequest,
   output: GetProjectResponse,
   errors: [],
@@ -1782,7 +1795,13 @@ export const CreateProjectResponse = Schema.Struct({
   subdomain: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<CreateProjectResponse>;
 
-export const createProject = API.make(() => ({
+export const createProject: (
+  input: CreateProjectRequest,
+) => Effect.Effect<
+  CreateProjectResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateProjectRequest,
   output: CreateProjectResponse,
   errors: [],
@@ -2779,7 +2798,13 @@ export const PatchProjectResponse = Schema.Struct({
   subdomain: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<PatchProjectResponse>;
 
-export const patchProject = API.make(() => ({
+export const patchProject: (
+  input: PatchProjectRequest,
+) => Effect.Effect<
+  PatchProjectResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchProjectRequest,
   output: PatchProjectResponse,
   errors: [],
@@ -2806,7 +2831,13 @@ export type DeleteProjectResponse = unknown;
 export const DeleteProjectResponse =
   Schema.Unknown as unknown as Schema.Schema<DeleteProjectResponse>;
 
-export const deleteProject = API.make(() => ({
+export const deleteProject: (
+  input: DeleteProjectRequest,
+) => Effect.Effect<
+  DeleteProjectResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteProjectRequest,
   output: DeleteProjectResponse,
   errors: [],
@@ -2839,7 +2870,13 @@ export type GetProjectDeploymentResponse = unknown;
 export const GetProjectDeploymentResponse =
   Schema.Unknown as unknown as Schema.Schema<GetProjectDeploymentResponse>;
 
-export const getProjectDeployment = API.make(() => ({
+export const getProjectDeployment: (
+  input: GetProjectDeploymentRequest,
+) => Effect.Effect<
+  GetProjectDeploymentResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetProjectDeploymentRequest,
   output: GetProjectDeploymentResponse,
   errors: [],
@@ -2869,7 +2906,13 @@ export type CreateProjectDeploymentResponse = unknown;
 export const CreateProjectDeploymentResponse =
   Schema.Unknown as unknown as Schema.Schema<CreateProjectDeploymentResponse>;
 
-export const createProjectDeployment = API.make(() => ({
+export const createProjectDeployment: (
+  input: CreateProjectDeploymentRequest,
+) => Effect.Effect<
+  CreateProjectDeploymentResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateProjectDeploymentRequest,
   output: CreateProjectDeploymentResponse,
   errors: [],
@@ -2898,7 +2941,13 @@ export type DeleteProjectDeploymentResponse = unknown;
 export const DeleteProjectDeploymentResponse =
   Schema.Unknown as unknown as Schema.Schema<DeleteProjectDeploymentResponse>;
 
-export const deleteProjectDeployment = API.make(() => ({
+export const deleteProjectDeployment: (
+  input: DeleteProjectDeploymentRequest,
+) => Effect.Effect<
+  DeleteProjectDeploymentResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteProjectDeploymentRequest,
   output: DeleteProjectDeploymentResponse,
   errors: [],
@@ -2930,7 +2979,13 @@ export type RetryProjectDeploymentResponse = unknown;
 export const RetryProjectDeploymentResponse =
   Schema.Unknown as unknown as Schema.Schema<RetryProjectDeploymentResponse>;
 
-export const retryProjectDeployment = API.make(() => ({
+export const retryProjectDeployment: (
+  input: RetryProjectDeploymentRequest,
+) => Effect.Effect<
+  RetryProjectDeploymentResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: RetryProjectDeploymentRequest,
   output: RetryProjectDeploymentResponse,
   errors: [],
@@ -2962,7 +3017,13 @@ export type RollbackProjectDeploymentResponse = unknown;
 export const RollbackProjectDeploymentResponse =
   Schema.Unknown as unknown as Schema.Schema<RollbackProjectDeploymentResponse>;
 
-export const rollbackProjectDeployment = API.make(() => ({
+export const rollbackProjectDeployment: (
+  input: RollbackProjectDeploymentRequest,
+) => Effect.Effect<
+  RollbackProjectDeploymentResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: RollbackProjectDeploymentRequest,
   output: RollbackProjectDeploymentResponse,
   errors: [],
@@ -3011,7 +3072,13 @@ export const GetProjectDeploymentHistoryLogResponse = Schema.Struct({
   total: Schema.optional(Schema.Number),
 }) as unknown as Schema.Schema<GetProjectDeploymentHistoryLogResponse>;
 
-export const getProjectDeploymentHistoryLog = API.make(() => ({
+export const getProjectDeploymentHistoryLog: (
+  input: GetProjectDeploymentHistoryLogRequest,
+) => Effect.Effect<
+  GetProjectDeploymentHistoryLogResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetProjectDeploymentHistoryLogRequest,
   output: GetProjectDeploymentHistoryLogResponse,
   errors: [],
@@ -3044,7 +3111,13 @@ export type GetProjectDomainResponse = unknown;
 export const GetProjectDomainResponse =
   Schema.Unknown as unknown as Schema.Schema<GetProjectDomainResponse>;
 
-export const getProjectDomain = API.make(() => ({
+export const getProjectDomain: (
+  input: GetProjectDomainRequest,
+) => Effect.Effect<
+  GetProjectDomainResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetProjectDomainRequest,
   output: GetProjectDomainResponse,
   errors: [],
@@ -3074,7 +3147,13 @@ export type CreateProjectDomainResponse = unknown;
 export const CreateProjectDomainResponse =
   Schema.Unknown as unknown as Schema.Schema<CreateProjectDomainResponse>;
 
-export const createProjectDomain = API.make(() => ({
+export const createProjectDomain: (
+  input: CreateProjectDomainRequest,
+) => Effect.Effect<
+  CreateProjectDomainResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateProjectDomainRequest,
   output: CreateProjectDomainResponse,
   errors: [],
@@ -3106,7 +3185,13 @@ export type PatchProjectDomainResponse = unknown;
 export const PatchProjectDomainResponse =
   Schema.Unknown as unknown as Schema.Schema<PatchProjectDomainResponse>;
 
-export const patchProjectDomain = API.make(() => ({
+export const patchProjectDomain: (
+  input: PatchProjectDomainRequest,
+) => Effect.Effect<
+  PatchProjectDomainResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PatchProjectDomainRequest,
   output: PatchProjectDomainResponse,
   errors: [],
@@ -3135,7 +3220,13 @@ export type DeleteProjectDomainResponse = unknown;
 export const DeleteProjectDomainResponse =
   Schema.Unknown as unknown as Schema.Schema<DeleteProjectDomainResponse>;
 
-export const deleteProjectDomain = API.make(() => ({
+export const deleteProjectDomain: (
+  input: DeleteProjectDomainRequest,
+) => Effect.Effect<
+  DeleteProjectDomainResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteProjectDomainRequest,
   output: DeleteProjectDomainResponse,
   errors: [],

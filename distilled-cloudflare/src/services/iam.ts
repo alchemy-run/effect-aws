@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -57,7 +58,13 @@ export const GetPermissionGroupResponse = Schema.Struct({
   name: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<GetPermissionGroupResponse>;
 
-export const getPermissionGroup = API.make(() => ({
+export const getPermissionGroup: (
+  input: GetPermissionGroupRequest,
+) => Effect.Effect<
+  GetPermissionGroupResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetPermissionGroupRequest,
   output: GetPermissionGroupResponse,
   errors: [],
@@ -115,7 +122,13 @@ export const GetResourceGroupResponse = Schema.Struct({
   name: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<GetResourceGroupResponse>;
 
-export const getResourceGroup = API.make(() => ({
+export const getResourceGroup: (
+  input: GetResourceGroupRequest,
+) => Effect.Effect<
+  GetResourceGroupResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetResourceGroupRequest,
   output: GetResourceGroupResponse,
   errors: [],
@@ -172,7 +185,13 @@ export const CreateResourceGroupResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<CreateResourceGroupResponse>;
 
-export const createResourceGroup = API.make(() => ({
+export const createResourceGroup: (
+  input: CreateResourceGroupRequest,
+) => Effect.Effect<
+  CreateResourceGroupResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateResourceGroupRequest,
   output: CreateResourceGroupResponse,
   errors: [],
@@ -241,7 +260,13 @@ export const UpdateResourceGroupResponse = Schema.Struct({
   name: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<UpdateResourceGroupResponse>;
 
-export const updateResourceGroup = API.make(() => ({
+export const updateResourceGroup: (
+  input: UpdateResourceGroupRequest,
+) => Effect.Effect<
+  UpdateResourceGroupResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateResourceGroupRequest,
   output: UpdateResourceGroupResponse,
   errors: [],
@@ -268,7 +293,13 @@ export type DeleteResourceGroupResponse = unknown;
 export const DeleteResourceGroupResponse =
   Schema.Unknown as unknown as Schema.Schema<DeleteResourceGroupResponse>;
 
-export const deleteResourceGroup = API.make(() => ({
+export const deleteResourceGroup: (
+  input: DeleteResourceGroupRequest,
+) => Effect.Effect<
+  DeleteResourceGroupResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteResourceGroupRequest,
   output: DeleteResourceGroupResponse,
   errors: [],
@@ -341,7 +372,13 @@ export const GetUserGroupResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<GetUserGroupResponse>;
 
-export const getUserGroup = API.make(() => ({
+export const getUserGroup: (
+  input: GetUserGroupRequest,
+) => Effect.Effect<
+  GetUserGroupResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetUserGroupRequest,
   output: GetUserGroupResponse,
   errors: [],
@@ -429,7 +466,13 @@ export const CreateUserGroupResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<CreateUserGroupResponse>;
 
-export const createUserGroup = API.make(() => ({
+export const createUserGroup: (
+  input: CreateUserGroupRequest,
+) => Effect.Effect<
+  CreateUserGroupResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateUserGroupRequest,
   output: CreateUserGroupResponse,
   errors: [],
@@ -526,7 +569,13 @@ export const UpdateUserGroupResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<UpdateUserGroupResponse>;
 
-export const updateUserGroup = API.make(() => ({
+export const updateUserGroup: (
+  input: UpdateUserGroupRequest,
+) => Effect.Effect<
+  UpdateUserGroupResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateUserGroupRequest,
   output: UpdateUserGroupResponse,
   errors: [],
@@ -553,7 +602,13 @@ export type DeleteUserGroupResponse = unknown;
 export const DeleteUserGroupResponse =
   Schema.Unknown as unknown as Schema.Schema<DeleteUserGroupResponse>;
 
-export const deleteUserGroup = API.make(() => ({
+export const deleteUserGroup: (
+  input: DeleteUserGroupRequest,
+) => Effect.Effect<
+  DeleteUserGroupResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteUserGroupRequest,
   output: DeleteUserGroupResponse,
   errors: [],
@@ -601,7 +656,13 @@ export const CreateUserGroupMemberResponse = Schema.Struct({
   status: Schema.optional(Schema.Literal("accepted", "pending")),
 }) as unknown as Schema.Schema<CreateUserGroupMemberResponse>;
 
-export const createUserGroupMember = API.make(() => ({
+export const createUserGroupMember: (
+  input: CreateUserGroupMemberRequest,
+) => Effect.Effect<
+  CreateUserGroupMemberResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateUserGroupMemberRequest,
   output: CreateUserGroupMemberResponse,
   errors: [],
@@ -640,7 +701,13 @@ export const DeleteUserGroupMemberResponse = Schema.Struct({
   status: Schema.optional(Schema.Literal("accepted", "pending")),
 }) as unknown as Schema.Schema<DeleteUserGroupMemberResponse>;
 
-export const deleteUserGroupMember = API.make(() => ({
+export const deleteUserGroupMember: (
+  input: DeleteUserGroupMemberRequest,
+) => Effect.Effect<
+  DeleteUserGroupMemberResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteUserGroupMemberRequest,
   output: DeleteUserGroupMemberResponse,
   errors: [],

@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -126,7 +127,13 @@ export const CreateTraceResponse = Schema.Struct({
   trace: Schema.optional(Schema.Unknown),
 }) as unknown as Schema.Schema<CreateTraceResponse>;
 
-export const createTrace = API.make(() => ({
+export const createTrace: (
+  input: CreateTraceRequest,
+) => Effect.Effect<
+  CreateTraceResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateTraceRequest,
   output: CreateTraceResponse,
   errors: [],

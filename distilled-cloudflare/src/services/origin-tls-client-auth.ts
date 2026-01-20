@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -125,7 +126,13 @@ export const GetHostnameResponse = Schema.Struct({
   updatedAt: Schema.optional(Schema.String).pipe(T.JsonName("updated_at")),
 }) as unknown as Schema.Schema<GetHostnameResponse>;
 
-export const getHostname = API.make(() => ({
+export const getHostname: (
+  input: GetHostnameRequest,
+) => Effect.Effect<
+  GetHostnameResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetHostnameRequest,
   output: GetHostnameResponse,
   errors: [],
@@ -200,7 +207,13 @@ export const GetHostnameCertificateResponse = Schema.Struct({
   uploadedOn: Schema.optional(Schema.String).pipe(T.JsonName("uploaded_on")),
 }) as unknown as Schema.Schema<GetHostnameCertificateResponse>;
 
-export const getHostnameCertificate = API.make(() => ({
+export const getHostnameCertificate: (
+  input: GetHostnameCertificateRequest,
+) => Effect.Effect<
+  GetHostnameCertificateResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetHostnameCertificateRequest,
   output: GetHostnameCertificateResponse,
   errors: [],
@@ -275,7 +288,13 @@ export const CreateHostnameCertificateResponse = Schema.Struct({
   uploadedOn: Schema.optional(Schema.String).pipe(T.JsonName("uploaded_on")),
 }) as unknown as Schema.Schema<CreateHostnameCertificateResponse>;
 
-export const createHostnameCertificate = API.make(() => ({
+export const createHostnameCertificate: (
+  input: CreateHostnameCertificateRequest,
+) => Effect.Effect<
+  CreateHostnameCertificateResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateHostnameCertificateRequest,
   output: CreateHostnameCertificateResponse,
   errors: [],
@@ -346,7 +365,13 @@ export const DeleteHostnameCertificateResponse = Schema.Struct({
   uploadedOn: Schema.optional(Schema.String).pipe(T.JsonName("uploaded_on")),
 }) as unknown as Schema.Schema<DeleteHostnameCertificateResponse>;
 
-export const deleteHostnameCertificate = API.make(() => ({
+export const deleteHostnameCertificate: (
+  input: DeleteHostnameCertificateRequest,
+) => Effect.Effect<
+  DeleteHostnameCertificateResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteHostnameCertificateRequest,
   output: DeleteHostnameCertificateResponse,
   errors: [],
@@ -390,7 +415,13 @@ export const GetOriginTlsClientAuthResponse = Schema.Struct({
   privateKey: Schema.optional(Schema.String).pipe(T.JsonName("private_key")),
 }) as unknown as Schema.Schema<GetOriginTlsClientAuthResponse>;
 
-export const getOriginTlsClientAuth = API.make(() => ({
+export const getOriginTlsClientAuth: (
+  input: GetOriginTlsClientAuthRequest,
+) => Effect.Effect<
+  GetOriginTlsClientAuthResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetOriginTlsClientAuthRequest,
   output: GetOriginTlsClientAuthResponse,
   errors: [],
@@ -431,7 +462,13 @@ export const CreateOriginTlsClientAuthResponse = Schema.Struct({
   privateKey: Schema.optional(Schema.String).pipe(T.JsonName("private_key")),
 }) as unknown as Schema.Schema<CreateOriginTlsClientAuthResponse>;
 
-export const createOriginTlsClientAuth = API.make(() => ({
+export const createOriginTlsClientAuth: (
+  input: CreateOriginTlsClientAuthRequest,
+) => Effect.Effect<
+  CreateOriginTlsClientAuthResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateOriginTlsClientAuthRequest,
   output: CreateOriginTlsClientAuthResponse,
   errors: [],
@@ -471,7 +508,13 @@ export const DeleteOriginTlsClientAuthResponse = Schema.Struct({
   privateKey: Schema.optional(Schema.String).pipe(T.JsonName("private_key")),
 }) as unknown as Schema.Schema<DeleteOriginTlsClientAuthResponse>;
 
-export const deleteOriginTlsClientAuth = API.make(() => ({
+export const deleteOriginTlsClientAuth: (
+  input: DeleteOriginTlsClientAuthRequest,
+) => Effect.Effect<
+  DeleteOriginTlsClientAuthResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteOriginTlsClientAuthRequest,
   output: DeleteOriginTlsClientAuthResponse,
   errors: [],
@@ -504,7 +547,13 @@ export const GetSettingResponse = Schema.Struct({
   enabled: Schema.optional(Schema.Boolean),
 }) as unknown as Schema.Schema<GetSettingResponse>;
 
-export const getSetting = API.make(() => ({
+export const getSetting: (
+  input: GetSettingRequest,
+) => Effect.Effect<
+  GetSettingResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetSettingRequest,
   output: GetSettingResponse,
   errors: [],
@@ -536,7 +585,13 @@ export const PutSettingResponse = Schema.Struct({
   enabled: Schema.optional(Schema.Boolean),
 }) as unknown as Schema.Schema<PutSettingResponse>;
 
-export const putSetting = API.make(() => ({
+export const putSetting: (
+  input: PutSettingRequest,
+) => Effect.Effect<
+  PutSettingResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: PutSettingRequest,
   output: PutSettingResponse,
   errors: [],

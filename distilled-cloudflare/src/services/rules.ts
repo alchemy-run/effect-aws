@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -69,7 +70,13 @@ export const GetListResponse = Schema.Struct({
   description: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<GetListResponse>;
 
-export const getList = API.make(() => ({
+export const getList: (
+  input: GetListRequest,
+) => Effect.Effect<
+  GetListResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetListRequest,
   output: GetListResponse,
   errors: [],
@@ -127,7 +134,13 @@ export const CreateListResponse = Schema.Struct({
   description: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<CreateListResponse>;
 
-export const createList = API.make(() => ({
+export const createList: (
+  input: CreateListRequest,
+) => Effect.Effect<
+  CreateListResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateListRequest,
   output: CreateListResponse,
   errors: [],
@@ -184,7 +197,13 @@ export const UpdateListResponse = Schema.Struct({
   description: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<UpdateListResponse>;
 
-export const updateList = API.make(() => ({
+export const updateList: (
+  input: UpdateListRequest,
+) => Effect.Effect<
+  UpdateListResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateListRequest,
   output: UpdateListResponse,
   errors: [],
@@ -215,7 +234,13 @@ export const DeleteListResponse = Schema.Struct({
   id: Schema.String,
 }) as unknown as Schema.Schema<DeleteListResponse>;
 
-export const deleteList = API.make(() => ({
+export const deleteList: (
+  input: DeleteListRequest,
+) => Effect.Effect<
+  DeleteListResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteListRequest,
   output: DeleteListResponse,
   errors: [],
@@ -264,7 +289,13 @@ export const GetListBulkOperationResponse = Schema.Union(
   }),
 ) as unknown as Schema.Schema<GetListBulkOperationResponse>;
 
-export const getListBulkOperation = API.make(() => ({
+export const getListBulkOperation: (
+  input: GetListBulkOperationRequest,
+) => Effect.Effect<
+  GetListBulkOperationResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetListBulkOperationRequest,
   output: GetListBulkOperationResponse,
   errors: [],
@@ -353,7 +384,13 @@ export const GetListItemResponse = Schema.Union(
   }),
 ) as unknown as Schema.Schema<GetListItemResponse>;
 
-export const getListItem = API.make(() => ({
+export const getListItem: (
+  input: GetListItemRequest,
+) => Effect.Effect<
+  GetListItemResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetListItemRequest,
   output: GetListItemResponse,
   errors: [],
@@ -411,7 +448,13 @@ export const CreateListItemResponse = Schema.Struct({
   operationId: Schema.String.pipe(T.JsonName("operation_id")),
 }) as unknown as Schema.Schema<CreateListItemResponse>;
 
-export const createListItem = API.make(() => ({
+export const createListItem: (
+  input: CreateListItemRequest,
+) => Effect.Effect<
+  CreateListItemResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateListItemRequest,
   output: CreateListItemResponse,
   errors: [],
@@ -469,7 +512,13 @@ export const UpdateListItemResponse = Schema.Struct({
   operationId: Schema.String.pipe(T.JsonName("operation_id")),
 }) as unknown as Schema.Schema<UpdateListItemResponse>;
 
-export const updateListItem = API.make(() => ({
+export const updateListItem: (
+  input: UpdateListItemRequest,
+) => Effect.Effect<
+  UpdateListItemResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateListItemRequest,
   output: UpdateListItemResponse,
   errors: [],
@@ -503,7 +552,13 @@ export const DeleteListItemResponse = Schema.Struct({
   operationId: Schema.String.pipe(T.JsonName("operation_id")),
 }) as unknown as Schema.Schema<DeleteListItemResponse>;
 
-export const deleteListItem = API.make(() => ({
+export const deleteListItem: (
+  input: DeleteListItemRequest,
+) => Effect.Effect<
+  DeleteListItemResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteListItemRequest,
   output: DeleteListItemResponse,
   errors: [],

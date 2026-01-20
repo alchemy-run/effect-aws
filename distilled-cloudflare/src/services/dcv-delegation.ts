@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -41,7 +42,13 @@ export const GetDCVDelegationResponse = Schema.Struct({
   uuid: Schema.optional(Schema.String),
 }) as unknown as Schema.Schema<GetDCVDelegationResponse>;
 
-export const getDCVDelegation = API.make(() => ({
+export const getDCVDelegation: (
+  input: GetDCVDelegationRequest,
+) => Effect.Effect<
+  GetDCVDelegationResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetDCVDelegationRequest,
   output: GetDCVDelegationResponse,
   errors: [],

@@ -12,6 +12,7 @@ import * as API from "../client/api.ts";
 import * as T from "../traits.ts";
 import type { ApiToken } from "../auth.ts";
 import {
+  type CommonErrors,
   UnknownCloudflareError,
   CloudflareNetworkError,
   CloudflareHttpError,
@@ -87,7 +88,13 @@ export const GetRecipientResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<GetRecipientResponse>;
 
-export const getRecipient = API.make(() => ({
+export const getRecipient: (
+  input: GetRecipientRequest,
+) => Effect.Effect<
+  GetRecipientResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetRecipientRequest,
   output: GetRecipientResponse,
   errors: [],
@@ -162,7 +169,13 @@ export const CreateRecipientResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<CreateRecipientResponse>;
 
-export const createRecipient = API.make(() => ({
+export const createRecipient: (
+  input: CreateRecipientRequest,
+) => Effect.Effect<
+  CreateRecipientResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateRecipientRequest,
   output: CreateRecipientResponse,
   errors: [],
@@ -229,7 +242,13 @@ export const DeleteRecipientResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<DeleteRecipientResponse>;
 
-export const deleteRecipient = API.make(() => ({
+export const deleteRecipient: (
+  input: DeleteRecipientRequest,
+) => Effect.Effect<
+  DeleteRecipientResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteRecipientRequest,
   output: DeleteRecipientResponse,
   errors: [],
@@ -303,7 +322,13 @@ export const GetResourceResponse = Schema.Struct({
   status: Schema.Literal("active", "deleting", "deleted"),
 }) as unknown as Schema.Schema<GetResourceResponse>;
 
-export const getResource = API.make(() => ({
+export const getResource: (
+  input: GetResourceRequest,
+) => Effect.Effect<
+  GetResourceResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetResourceRequest,
   output: GetResourceResponse,
   errors: [],
@@ -396,7 +421,13 @@ export const CreateResourceResponse = Schema.Struct({
   status: Schema.Literal("active", "deleting", "deleted"),
 }) as unknown as Schema.Schema<CreateResourceResponse>;
 
-export const createResource = API.make(() => ({
+export const createResource: (
+  input: CreateResourceRequest,
+) => Effect.Effect<
+  CreateResourceResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateResourceRequest,
   output: CreateResourceResponse,
   errors: [],
@@ -469,7 +500,13 @@ export const UpdateResourceResponse = Schema.Struct({
   status: Schema.Literal("active", "deleting", "deleted"),
 }) as unknown as Schema.Schema<UpdateResourceResponse>;
 
-export const updateResource = API.make(() => ({
+export const updateResource: (
+  input: UpdateResourceRequest,
+) => Effect.Effect<
+  UpdateResourceResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateResourceRequest,
   output: UpdateResourceResponse,
   errors: [],
@@ -539,7 +576,13 @@ export const DeleteResourceResponse = Schema.Struct({
   status: Schema.Literal("active", "deleting", "deleted"),
 }) as unknown as Schema.Schema<DeleteResourceResponse>;
 
-export const deleteResource = API.make(() => ({
+export const deleteResource: (
+  input: DeleteResourceRequest,
+) => Effect.Effect<
+  DeleteResourceResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteResourceRequest,
   output: DeleteResourceResponse,
   errors: [],
@@ -669,7 +712,13 @@ export const GetResourceSharingResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<GetResourceSharingResponse>;
 
-export const getResourceSharing = API.make(() => ({
+export const getResourceSharing: (
+  input: GetResourceSharingRequest,
+) => Effect.Effect<
+  GetResourceSharingResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: GetResourceSharingRequest,
   output: GetResourceSharingResponse,
   errors: [],
@@ -824,7 +873,13 @@ export const CreateResourceSharingResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<CreateResourceSharingResponse>;
 
-export const createResourceSharing = API.make(() => ({
+export const createResourceSharing: (
+  input: CreateResourceSharingRequest,
+) => Effect.Effect<
+  CreateResourceSharingResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: CreateResourceSharingRequest,
   output: CreateResourceSharingResponse,
   errors: [],
@@ -943,7 +998,13 @@ export const UpdateResourceSharingResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<UpdateResourceSharingResponse>;
 
-export const updateResourceSharing = API.make(() => ({
+export const updateResourceSharing: (
+  input: UpdateResourceSharingRequest,
+) => Effect.Effect<
+  UpdateResourceSharingResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: UpdateResourceSharingRequest,
   output: UpdateResourceSharingResponse,
   errors: [],
@@ -1059,7 +1120,13 @@ export const DeleteResourceSharingResponse = Schema.Struct({
   ),
 }) as unknown as Schema.Schema<DeleteResourceSharingResponse>;
 
-export const deleteResourceSharing = API.make(() => ({
+export const deleteResourceSharing: (
+  input: DeleteResourceSharingRequest,
+) => Effect.Effect<
+  DeleteResourceSharingResponse,
+  CommonErrors,
+  ApiToken | HttpClient.HttpClient
+> = API.make(() => ({
   input: DeleteResourceSharingRequest,
   output: DeleteResourceSharingResponse,
   errors: [],
