@@ -168,7 +168,7 @@ export const spawn = <
     const send = (prompt: string) =>
       Effect.gen(function* () {
         yield* Effect.logInfo(
-          `[agent:${key}] Sending prompt: ${prompt.slice(0, 100)}...`,
+          `[agent:${key}] Sending prompt: ${prompt.slice(0, 100).split("\n")[0]}...`,
         );
 
         let finalText = "";

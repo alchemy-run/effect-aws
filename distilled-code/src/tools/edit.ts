@@ -2,7 +2,13 @@ import { Tool, Toolkit } from "@effect/ai";
 import * as FileSystem from "@effect/platform/FileSystem";
 import * as Path from "@effect/platform/Path";
 import * as Effect from "effect/Effect";
+import * as Option from "effect/Option";
 import * as S from "effect/Schema";
+import {
+  type Diagnostic,
+  DiagnosticSeverity,
+  LSPManager,
+} from "../lsp/index.ts";
 import { replace } from "../util/replace.ts";
 
 export const edit = Tool.make("AnthropicTextEditor", {
@@ -65,12 +71,27 @@ export const editTooklitLayer = editTooklit.toLayer(
           const writeResult = yield* fs
             .writeFileString(filePath, newString)
             .pipe(
-              Effect.map(() => `Created file: ${filePath}`),
               Effect.catchAll((e) =>
-                Effect.succeed(`Failed to create file: ${e}`),
+                Effect.succeed(`Failed to create file: ${e.message}` as const),
               ),
             );
-          return writeResult;
+
+          if (typeof writeResult === "string") {
+            return writeResult;
+          }
+
+          // Get diagnostics from LSP servers for new file
+          const diagnostics = yield* getDiagnosticsIfAvailable(
+            filePath,
+            newString,
+          );
+          const formatted = formatDiagnostics(diagnostics);
+
+          if (formatted) {
+            return `Created file: ${filePath}\n\n${formatted}`;
+          }
+
+          return `Created file: ${filePath}`;
         }
 
         const stat = yield* fs
@@ -129,14 +150,88 @@ export const editTooklitLayer = editTooklit.toLayer(
         const writeResult = yield* fs
           .writeFileString(filePath, replaceResult)
           .pipe(
-            Effect.map(() => `Edited file: ${filePath}`),
             Effect.catchAll((e) =>
-              Effect.succeed(`Failed to write file: ${e}`),
+              Effect.succeed(`Failed to write file: ${e}` as const),
             ),
           );
 
-        return writeResult;
+        if (typeof writeResult === "string") {
+          return writeResult;
+        }
+
+        // Get diagnostics from LSP servers
+        const diagnostics = yield* getDiagnosticsIfAvailable(
+          filePath,
+          replaceResult,
+        );
+        const formatted = formatDiagnostics(diagnostics);
+
+        if (formatted) {
+          return `Edited file: ${filePath}\n\n${formatted}`;
+        }
+
+        return `Edited file: ${filePath}`;
       }),
     };
   }),
 );
+
+const MAX_DIAGNOSTICS_PER_FILE = 10;
+
+/**
+ * Get diagnostics from LSP if available, otherwise return empty array.
+ */
+const getDiagnosticsIfAvailable = (
+  filePath: string,
+  content: string,
+): Effect.Effect<Diagnostic[]> =>
+  Effect.serviceOption(LSPManager).pipe(
+    Effect.flatMap((maybeManager) => {
+      if (Option.isNone(maybeManager)) {
+        return Effect.succeed([] as Diagnostic[]);
+      }
+      const manager = maybeManager.value;
+      return manager
+        .notifyFileChanged(filePath, content)
+        .pipe(Effect.andThen(manager.waitForDiagnostics(filePath)));
+    }),
+    Effect.catchAll(() => Effect.succeed([] as Diagnostic[])),
+  );
+
+/**
+ * Format a single diagnostic for display.
+ */
+const formatDiagnostic = (d: Diagnostic): string => {
+  const severityMap: Record<number, string> = {
+    [DiagnosticSeverity.Error]: "ERROR",
+    [DiagnosticSeverity.Warning]: "WARN",
+    [DiagnosticSeverity.Information]: "INFO",
+    [DiagnosticSeverity.Hint]: "HINT",
+  };
+  const severity = severityMap[d.severity ?? DiagnosticSeverity.Error];
+  const line = d.range.start.line + 1;
+  const col = d.range.start.character + 1;
+  return `${severity} [${line}:${col}] ${d.message}`;
+};
+
+/**
+ * Format diagnostics for display (matching opencode format).
+ * Only shows errors, limits output, and wraps in XML tags.
+ */
+const formatDiagnostics = (diagnostics: Diagnostic[]): string => {
+  const errors = diagnostics.filter(
+    (d) => d.severity === DiagnosticSeverity.Error,
+  );
+
+  if (errors.length === 0) {
+    return "";
+  }
+
+  const limited = errors.slice(0, MAX_DIAGNOSTICS_PER_FILE);
+  const suffix =
+    errors.length > MAX_DIAGNOSTICS_PER_FILE
+      ? `\n... and ${errors.length - MAX_DIAGNOSTICS_PER_FILE} more`
+      : "";
+
+  return `This file has errors, please fix\n<file_diagnostics>\n${limited.map(formatDiagnostic).join("\n")}${suffix}\n</file_diagnostics>`;
+};

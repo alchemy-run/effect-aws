@@ -3,10 +3,10 @@
  * distilled CLI
  *
  * Usage:
- *   distilled "implement the API"            # send prompt to all agents
- *   distilled "api/*" "implement the API"    # send prompt to agents matching api/*
- *   distilled --list                         # list all agents
- *   distilled --list "api/*"                 # list agents matching pattern
+ *   distilled "implement the API"                     # send prompt to all agents
+ *   distilled --filter "api/*" "implement the API"   # send prompt to agents matching api/*
+ *   distilled --list                                  # list all agents
+ *   distilled --list --filter "api/*"                # list agents matching pattern
  */
 import { AnthropicClient, AnthropicLanguageModel } from "@effect/ai-anthropic";
 import { Args, Command, Options } from "@effect/cli";
@@ -40,15 +40,16 @@ const Anthropic = AnthropicClient.layerConfig({
 const mainCommand = Command.make(
   "distilled",
   {
-    pattern: Args.text({ name: "pattern" }).pipe(
-      Args.withDescription(
-        "Glob pattern to match agents (default: '*' for all)",
-      ),
-      Args.optional,
-    ),
     prompt: Args.text({ name: "prompt" }).pipe(
       Args.withDescription("Prompt to send to matched agents"),
       Args.optional,
+    ),
+    filter: Options.text("filter").pipe(
+      Options.withAlias("f"),
+      Options.withDescription(
+        "Glob pattern to filter agents (default: '*' for all)",
+      ),
+      Options.optional,
     ),
     config: Options.text("config").pipe(
       Options.withAlias("c"),
@@ -64,21 +65,15 @@ const mainCommand = Command.make(
     ),
     list: Options.boolean("list").pipe(
       Options.withAlias("l"),
-      Options.withDescription("List agents (optionally filtered by pattern)"),
+      Options.withDescription("List agents (optionally filtered by --filter)"),
       Options.withDefault(false),
     ),
   },
-  ({ pattern, prompt, config, model, list }) =>
+  ({ prompt, filter, config, model, list }) =>
     Effect.gen(function* () {
       const configPath = Option.getOrUndefined(config);
-      let patternValue = Option.getOrUndefined(pattern);
-      let promptValue = Option.getOrUndefined(prompt);
-
-      // If only one arg provided, treat it as prompt (pattern defaults to "*")
-      if (patternValue && !promptValue) {
-        promptValue = patternValue;
-        patternValue = undefined;
-      }
+      const patternValue = Option.getOrUndefined(filter);
+      const promptValue = Option.getOrUndefined(prompt) ?? "do it";
 
       // Resolve config path
       const resolvedPath = yield* resolveConfigPath(configPath);
@@ -124,14 +119,6 @@ const mainCommand = Command.make(
         return;
       }
 
-      // Validate we have a prompt
-      if (!promptValue) {
-        yield* Console.error("Error: prompt is required");
-        yield* Console.error("Usage: distilled [pattern] <prompt>");
-        yield* Console.error("       distilled --list [pattern]");
-        return;
-      }
-
       // Match agents (default to all if no pattern)
       const matchedAgents = matchAgents(allAgents, patternValue ?? "*");
 
@@ -157,10 +144,6 @@ const mainCommand = Command.make(
       yield* Effect.all(
         matchedAgents.map((agentDef) =>
           Effect.gen(function* () {
-            yield* Console.log(`\n${"=".repeat(60)}`);
-            yield* Console.log(`Agent: ${agentDef.key}`);
-            yield* Console.log(`${"=".repeat(60)}\n`);
-
             yield* Effect.gen(function* () {
               const agent = yield* spawn(agentDef, {
                 onText: isParallel
