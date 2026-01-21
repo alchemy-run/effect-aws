@@ -8,22 +8,22 @@ Programmatic coding agent library with a simple CLI.
 
 ```bash
 # Send a prompt to all agents
-distilled "implement the API endpoints"
+distill "implement the API endpoints"
 
 # Send a prompt to agents matching a pattern
-distilled "api/*" "implement the API endpoints"
+distill "api/*" "implement the API endpoints"
 
 # List all configured agents
-distilled --list
+distill --list
 
 # List agents matching a pattern
-distilled --list "api/*"
+distill --list "api/*"
 
 # Use a specific config file
-distilled -c ./my.config.ts "implement the API"
+distill -c ./my.config.ts "implement the API"
 
 # Use a different model
-distilled -m claude-opus "implement the API"
+distill -m claude-opus "implement the API"
 ```
 
 Agents run in parallel by default.

@@ -2,7 +2,7 @@
   "name": "distilled-code",
   "version": "0.0.1",
   "bin": {
-    "distilled": "./bin/distilled.ts"
+    "distill": "./bin/distill.ts"
   },
   "type": "module",
   "publishConfig": {
@@ -16,7 +16,7 @@
     }
   },
   "scripts": {
-    "distilled": "bun run bin/distilled.ts",
+    "distill": "bun run bin/distill.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "download:env": "doppler secrets download --no-file --format env > .env"
