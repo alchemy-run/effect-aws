@@ -2,10 +2,13 @@
 export { agent, AgentScope } from "./agent.ts";
 export type {
   Agent,
-  AgentOptions,
   AgentScope as AgentScopeType,
+  LeafAgent,
+  LeafAgentOptions,
   ToolkitType,
+  WorkflowAgent,
   WorkflowFn,
+  WorkflowOptions,
 } from "./agent.ts";
 
 // Config
@@ -16,7 +19,7 @@ export {
   getAgents,
   loadConfig,
 } from "./config.ts";
-export type { DistilledConfig } from "./config.ts";
+export type { AnyAgent, DistilledConfig } from "./config.ts";
 
 // Prompt
 export * from "./prompt.ts";

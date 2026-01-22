@@ -160,7 +160,7 @@ export default defineConfig({
   agents: Effect.gen(function* () {
     const services = yield* parseCode({ basePath: "./src" });
 
-    return services.flatMap((s) =>
+    return yield* Effect.all(services.flatMap((s) =>
       s.operations.map((op) =>
         agent(`${s.name}/${op.name}`, {
           toolkit: "Coding",
@@ -168,7 +168,7 @@ export default defineConfig({
           description: `Test ${op.name}`,
         }),
       ),
-    );
+    ));
   }),
 });
 ```

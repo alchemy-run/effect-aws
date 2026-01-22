@@ -10,7 +10,6 @@ import { getSystemPrompt } from "./prompt.ts";
 import { AgentState } from "./services/state.ts";
 import { ToolCallFormatter } from "./services/tool-call-formatter.ts";
 import {
-  CodingTools,
   CodingToolsLayer,
   type CodingTools as CodingToolsType,
   PlanningTools,
@@ -56,47 +55,87 @@ export type ToolkitType =
   | ReadOnlyToolsType;
 
 // ============================================================================
-// Agent Interface - returned when you yield* agent(...)
+// Leaf Agent - LLM-powered agent with toolkit and chat capabilities
 // ============================================================================
 
-export interface Agent<
+/**
+ * Options for creating a leaf agent (LLM-powered).
+ */
+export interface LeafAgentOptions<
+  TToolkit extends ToolkitType = CodingToolsType,
+> {
+  /** The toolkit this agent uses. */
+  toolkit: TToolkit;
+  /** Description/context added to the system prompt. */
+  description: string;
+  /** Optional tags for filtering agents. */
+  tags?: string[];
+  /** Todo scope: "parent" inherits from workflow, "agent" uses agent key, or custom string. */
+  todoScope?: "parent" | "agent" | string;
+  /** Callback for streaming text deltas. */
+  onText?: (delta: string) => void;
+  /** Override the model ID. */
+  modelId?: string;
+}
+
+/**
+ * A leaf agent with full LLM capabilities.
+ */
+export interface LeafAgent<TToolkit extends ToolkitType = CodingToolsType> {
+  readonly key: string;
+  readonly tags?: string[];
+  readonly prompt: string;
+  readonly toolkit: TToolkit;
+  readonly send: (prompt: string) => Effect.Effect<string, AgentError, never>;
+  readonly query: <A, I extends Record<string, unknown>, R>(
+    prompt: string,
+    schema: Schema.Schema<A, I, R>,
+  ) => Effect.Effect<A, AgentError, R>;
+}
+
+// ============================================================================
+// Workflow Agent - Pure orchestration container (no LLM)
+// ============================================================================
+
+/**
+ * Options for creating a workflow agent (pure orchestration).
+ */
+export interface WorkflowOptions {
+  /** Optional tags for filtering agents. */
+  tags?: string[];
+  /** Todo scope for child agents to inherit. */
+  todoScope?: string;
+}
+
+/**
+ * Handler function for workflow agents.
+ */
+export type WorkflowFn<Out = string, Err = never, Req = never> = (
+  prompt: string,
+) => Effect.Effect<Out, Err, Req | AgentScope>;
+
+/**
+ * A workflow agent - pure orchestration, no LLM capabilities.
+ */
+export interface WorkflowAgent<Out = string, Err = never, Req = never> {
+  readonly key: string;
+  readonly tags?: string[];
+  readonly send: (prompt: string) => Effect.Effect<Out, Err | AgentError, Req>;
+}
+
+// ============================================================================
+// Legacy Agent type (for backwards compatibility)
+// ============================================================================
+
+/**
+ * @deprecated Use LeafAgent or WorkflowAgent instead.
+ */
+export type Agent<
   TReturn = string,
   TToolkit extends ToolkitType = CodingToolsType,
   SendReq = never,
   SendErr = AgentError,
-  QueryReq = never,
-  QueryErr = AgentError,
-> {
-  readonly key: string;
-  readonly tags?: string[];
-  readonly description?: string;
-  readonly toolkit: TToolkit;
-  readonly send: (prompt: string) => Effect.Effect<TReturn, SendErr, SendReq>;
-  readonly query: <A, I extends Record<string, unknown>, R>(
-    prompt: string,
-    schema: Schema.Schema<A, I, R>,
-  ) => Effect.Effect<A, QueryErr, R | QueryReq>;
-}
-
-// ============================================================================
-// Agent Options
-// ============================================================================
-
-export interface AgentOptions<TToolkit extends ToolkitType = CodingToolsType> {
-  toolkit?: TToolkit;
-  tags?: string[];
-  description?: string;
-  todoScope?: "parent" | "agent" | string;
-  onText?: (delta: string) => void;
-  modelId?: string;
-}
-
-export type WorkflowFn<
-  Args = string,
-  Out = string,
-  Err = never,
-  Req = never,
-> = (args: Args) => Effect.Effect<Out, Err, Req | AgentScope>;
+> = LeafAgent<TToolkit> | WorkflowAgent<TReturn, SendErr, SendReq>;
 
 // ============================================================================
 // Toolkit resolution
@@ -116,82 +155,89 @@ const getLayerForToolkit = <T extends ToolkitType>(
 };
 
 // ============================================================================
-// agent() - Single function for all agent types
+// agent() - Create leaf or workflow agents
 // ============================================================================
 
 /**
  * Create an agent. Returns an Effect that spawns when yielded.
  *
- * @example Leaf agent
+ * @example Leaf agent (LLM-powered)
  * ```ts
- * import { agent, CodingTools } from "distilled-code";
+ * import { agent, Toolkit } from "distilled-code";
  *
  * const myAgent = yield* agent("api/getTodo", {
- *   toolkit: CodingTools,
- *   tags: ["api"],
+ *   toolkit: Toolkit.Coding,
  *   description: "Implement GET /todos/:id",
+ *   tags: ["api"],
  * });
  * yield* myAgent.send("implement it");
  * ```
  *
- * @example Workflow agent
+ * @example Workflow agent (pure orchestration)
  * ```ts
- * import { agent, PlanningTools, CodingTools } from "distilled-code";
+ * import { agent, Toolkit } from "distilled-code";
  *
  * const workflow = yield* agent(
  *   "feature/implement",
+ *   { tags: ["feature"] },
  *   Effect.fn(function* (prompt) {
- *     const planner = yield* agent("planner", { toolkit: PlanningTools });
- *     const executor = yield* agent("executor", { toolkit: CodingTools });
+ *     const planner = yield* agent("planner", {
+ *       toolkit: Toolkit.Planning,
+ *       description: "Plan the implementation",
+ *     });
+ *     const executor = yield* agent("executor", {
+ *       toolkit: Toolkit.Coding,
+ *       description: "Execute the plan",
+ *     });
  *     yield* planner.send(prompt);
  *     yield* executor.send("complete todos");
+ *     return "done";
  *   }),
- *   { tags: ["feature"] },
  * );
  * yield* workflow.send("add auth");
  * ```
  */
-export function agent<TToolkit extends ToolkitType = CodingToolsType>(
+
+// Overload 1: Leaf agent - agent(key, options)
+export function agent<TToolkit extends ToolkitType>(
   key: string,
-  options?: AgentOptions<TToolkit>,
+  options: LeafAgentOptions<TToolkit>,
+): Effect.Effect<LeafAgent<TToolkit>, AgentError, AgentState>;
+
+// Overload 2: Workflow agent - agent(key, options, handler)
+export function agent<Out, Err, Req>(
+  key: string,
+  options: WorkflowOptions,
+  handler: WorkflowFn<Out, Err, Req>,
+): Effect.Effect<WorkflowAgent<Out, Err, Req>, AgentError, AgentState>;
+
+// Implementation
+export function agent<TToolkit extends ToolkitType, Out, Err, Req>(
+  key: string,
+  options: LeafAgentOptions<TToolkit> | WorkflowOptions,
+  handler?: WorkflowFn<Out, Err, Req>,
 ): Effect.Effect<
-  Agent<string, TToolkit, never, AgentError, never, AgentError>,
+  LeafAgent<TToolkit> | WorkflowAgent<Out, Err, Req>,
   AgentError,
   AgentState
->;
+> {
+  const isWorkflow = handler !== undefined;
 
-export function agent<
-  Out,
-  Err,
-  Req,
-  TToolkit extends ToolkitType = CodingToolsType,
->(
+  if (isWorkflow) {
+    return createWorkflowAgent(key, options as WorkflowOptions, handler);
+  } else {
+    return createLeafAgent(key, options as LeafAgentOptions<TToolkit>);
+  }
+}
+
+// ============================================================================
+// Leaf Agent Implementation
+// ============================================================================
+
+function createLeafAgent<TToolkit extends ToolkitType>(
   key: string,
-  workflow: WorkflowFn<string, Out, Err, Req>,
-  options?: AgentOptions<TToolkit>,
-): Effect.Effect<
-  Agent<Out, TToolkit, Req, Err | AgentError, never, AgentError>,
-  AgentError,
-  AgentState | Req
->;
-
-export function agent<Out, Err, Req, TToolkit extends ToolkitType>(
-  key: string,
-  workflowOrOptions?:
-    | WorkflowFn<string, Out, Err, Req>
-    | AgentOptions<TToolkit>,
-  maybeOptions?: AgentOptions<TToolkit>,
-): Effect.Effect<Agent, AgentError, AgentState | Req> {
-  // Parse overloaded arguments
-  const isWorkflow = typeof workflowOrOptions === "function";
-  const workflow = isWorkflow
-    ? (workflowOrOptions as WorkflowFn<string, Out, Err, Req>)
-    : undefined;
-  const options: AgentOptions<TToolkit> = isWorkflow
-    ? (maybeOptions ?? {})
-    : ((workflowOrOptions as AgentOptions<TToolkit>) ?? {});
-
-  // @ts-expect-error
+  options: LeafAgentOptions<TToolkit>,
+): Effect.Effect<LeafAgent<TToolkit>, AgentError, AgentState> {
   return Effect.gen(function* () {
     // Check for parent scope (nested agent in workflow)
     const parentScope = yield* Effect.serviceOption(AgentScope);
@@ -214,16 +260,13 @@ export function agent<Out, Err, Req, TToolkit extends ToolkitType>(
     }
 
     // Get toolkit and layer
-    const toolkit = (options.toolkit ?? CodingTools) as TToolkit;
+    const toolkit = options.toolkit;
     const layer = getLayerForToolkit(toolkit, {
       agentKey,
       todoScope,
     });
 
-    // ========================================================================
-    // Spawn the agent inline
-    // ========================================================================
-
+    // Get state and formatter
     const state = yield* AgentState;
 
     const customFormatter = yield* Effect.serviceOption(ToolCallFormatter).pipe(
@@ -238,12 +281,12 @@ export function agent<Out, Err, Req, TToolkit extends ToolkitType>(
       return formatToolCall(name, params);
     };
 
+    // Build system prompt with description
     const modelId = options.modelId;
     const systemPrompt = getSystemPrompt(modelId);
-    const contextPrompt = options.description
-      ? `${systemPrompt}\n\nContext: ${options.description}`
-      : systemPrompt;
+    const contextPrompt = `${systemPrompt}\n\nContext: ${options.description}`;
 
+    // Create chat session
     const chat = yield* Chat.fromPrompt([
       { role: "system", content: contextPrompt },
       ...(yield* state.getMessages(agentKey).pipe(
@@ -260,23 +303,9 @@ export function agent<Out, Err, Req, TToolkit extends ToolkitType>(
 
     const onText = options.onText;
 
-    // Send implementation
+    // Send implementation - agentic loop
     const send = (prompt: string) =>
       Effect.gen(function* () {
-        // If workflow, run it with AgentScope and return its result
-        if (workflow) {
-          yield* Effect.logInfo(`[workflow:${agentKey}] Starting`);
-          const result = yield* workflow(prompt).pipe(
-            Effect.provideService(AgentScope, {
-              path: agentKey,
-              todoScope: agentKey,
-            }),
-          );
-          yield* Effect.logInfo(`[workflow:${agentKey}] Complete`);
-          return result as string;
-        }
-
-        // Regular agent - agentic loop
         yield* Effect.logInfo(
           `[agent:${agentKey}] Sending prompt: ${prompt.slice(0, 100).split("\n")[0]}...`,
         );
@@ -366,15 +395,69 @@ export function agent<Out, Err, Req, TToolkit extends ToolkitType>(
     return {
       key: agentKey,
       tags: options.tags,
-      description: options.description,
+      prompt: options.description,
       toolkit,
       send,
       query,
-    };
+    } as LeafAgent<TToolkit>;
   }).pipe(
     Effect.mapError(
       (cause) =>
         new AgentError({ message: "Agent initialization failed", cause }),
+    ),
+  );
+}
+
+// ============================================================================
+// Workflow Agent Implementation
+// ============================================================================
+
+function createWorkflowAgent<Out, Err, Req>(
+  key: string,
+  options: WorkflowOptions,
+  handler: WorkflowFn<Out, Err, Req>,
+): Effect.Effect<WorkflowAgent<Out, Err, Req>, AgentError, AgentState> {
+  return Effect.gen(function* () {
+    // Check for parent scope (nested workflow)
+    const parentScope = yield* Effect.serviceOption(AgentScope);
+    const hasParent = Option.isSome(parentScope);
+
+    // Construct workflow key
+    const workflowKey = hasParent ? `${parentScope.value.path}/${key}` : key;
+
+    // Resolve todo scope for child agents
+    const todoScope = options.todoScope ?? workflowKey;
+
+    // Send implementation - just runs the handler
+    const send = (prompt: string) =>
+      Effect.gen(function* () {
+        yield* Effect.logInfo(`[workflow:${workflowKey}] Starting`);
+
+        const result = yield* handler(prompt).pipe(
+          Effect.provideService(AgentScope, {
+            path: workflowKey,
+            todoScope,
+          }),
+        );
+
+        yield* Effect.logInfo(`[workflow:${workflowKey}] Complete`);
+        return result;
+      }).pipe(
+        Effect.mapError(
+          (cause) =>
+            new AgentError({ message: "Workflow execution failed", cause }),
+        ),
+      );
+
+    return {
+      key: workflowKey,
+      tags: options.tags,
+      send,
+    } as WorkflowAgent<Out, Err, Req>;
+  }).pipe(
+    Effect.mapError(
+      (cause) =>
+        new AgentError({ message: "Workflow initialization failed", cause }),
     ),
   );
 }
