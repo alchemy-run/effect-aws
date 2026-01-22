@@ -23,6 +23,7 @@
     }
   },
   "scripts": {
+    "distill": "bun run ../distilled-code/bin/distill.ts",
     "download:env": "doppler secrets download --no-file --format env > .env",
     "generate": "bun scripts/generate-from-sdk.ts",
     "test:watch": "vitest watch",

@@ -239,9 +239,7 @@ export const spawn = <
           );
 
           if (finishReason !== "tool-calls") {
-            yield* Effect.logDebug(
-              `[agent:${key}] Done after ${loopCount} loops`,
-            );
+            yield* Effect.log(`[agent:${key}] Done after ${loopCount} loops`);
             break;
           }
         }

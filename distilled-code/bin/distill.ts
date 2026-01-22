@@ -23,6 +23,7 @@ import * as Config from "effect/Config";
 import * as ConfigProvider from "effect/ConfigProvider";
 import * as Console from "effect/Console";
 import * as Effect from "effect/Effect";
+import * as Layer from "effect/Layer";
 import * as Logger from "effect/Logger";
 import * as Option from "effect/Option";
 import { spawn } from "../src/agent.ts";
@@ -137,7 +138,7 @@ const mainCommand = Command.make(
       const lspLayer = LSPManagerLive(loadedConfig.lsp?.servers);
 
       // TODO: make this configurable
-      const isParallel = true;
+      const isParallel = false;
 
       // Run each agent
       yield* Effect.all(
@@ -159,16 +160,12 @@ const mainCommand = Command.make(
               yield* Console.log("\n");
             }).pipe(
               Effect.provide(CodingToolsLayer(agentDef.key)),
-              Effect.provide(modelLayer),
-              Effect.provide(Anthropic),
-              Effect.provide(NodeHttpClient.layer),
-              Effect.provide(lspLayer),
               Effect.scoped,
             );
           }),
         ),
         { concurrency: isParallel ? "unbounded" : 1 },
-      );
+      ).pipe(Effect.provide(Layer.mergeAll(lspLayer, modelLayer)));
       yield* Console.log("Done.");
     }),
 );
@@ -324,9 +321,12 @@ Effect.gen(function* () {
     process.env.DEBUG ? LogLevel.Debug : LogLevel.Info,
   ),
   Effect.scoped,
-  Effect.provide(FileSystemAgentState),
-  Effect.provide(NodeContext.layer),
-  Effect.provide(NodeHttpClient.layer),
-  Effect.provide(Persistence.layerMemory),
+  Effect.provide(
+    Layer.mergeAll(
+      Layer.provideMerge(Anthropic, NodeHttpClient.layer),
+      Layer.provideMerge(FileSystemAgentState, NodeContext.layer),
+      Persistence.layerMemory,
+    ),
+  ),
   NodeRuntime.runMain,
 );
