@@ -173,7 +173,7 @@ const withBucket = <A, E, R>(
 
 test(
   "create bucket, head bucket, get location, list buckets, and delete",
-  withBucket("itty-s3-lifecycle", (bucket) =>
+  withBucket("distilled-s3-lifecycle", (bucket) =>
     Effect.gen(function* () {
       // Head bucket to verify it exists
       yield* headBucket({ Bucket: bucket });
@@ -197,7 +197,7 @@ test(
 
 test(
   "bucket tagging: put, get, and delete tags",
-  withBucket("itty-s3-tagging", (bucket) =>
+  withBucket("distilled-s3-tagging", (bucket) =>
     Effect.gen(function* () {
       // Put tags
       yield* putBucketTagging({
@@ -205,7 +205,7 @@ test(
         Tagging: {
           TagSet: [
             { Key: "Environment", Value: "Test" },
-            { Key: "Project", Value: "itty-aws" },
+            { Key: "Project", Value: "distilled-aws" },
             { Key: "Team", Value: "Platform" },
           ],
         },
@@ -249,7 +249,7 @@ test(
 
 test(
   "bucket policy: put, get, and delete policy",
-  withBucket("itty-s3-policy", (bucket) =>
+  withBucket("distilled-s3-policy", (bucket) =>
     Effect.gen(function* () {
       // First we need to get the bucket owner account ID
       // We'll construct a simple policy
@@ -303,7 +303,7 @@ test(
 
 test(
   "bucket CORS: put, get, and delete CORS configuration",
-  withBucket("itty-s3-cors", (bucket) =>
+  withBucket("distilled-s3-cors", (bucket) =>
     Effect.gen(function* () {
       // Put CORS configuration
       yield* putBucketCors({
@@ -356,7 +356,7 @@ test(
 
 test(
   "bucket versioning: enable and suspend versioning",
-  withBucket("itty-s3-versioning", (bucket) =>
+  withBucket("distilled-s3-versioning", (bucket) =>
     Effect.gen(function* () {
       // Initially, versioning is not enabled
       yield* getBucketVersioning({
@@ -400,7 +400,7 @@ test(
 
 test(
   "bucket website: put, get, and delete website configuration",
-  withBucket("itty-s3-website", (bucket) =>
+  withBucket("distilled-s3-website", (bucket) =>
     Effect.gen(function* () {
       // Put website configuration
       yield* putBucketWebsite({
@@ -463,7 +463,7 @@ test(
 
 test(
   "bucket encryption: put, get, and delete encryption configuration",
-  withBucket("itty-s3-encryption", (bucket) =>
+  withBucket("distilled-s3-encryption", (bucket) =>
     Effect.gen(function* () {
       // Put encryption configuration (SSE-S3)
       yield* putBucketEncryption({
@@ -505,7 +505,7 @@ test(
 
 test(
   "bucket lifecycle: put, get, and delete lifecycle configuration",
-  withBucket("itty-s3-lifecycle-cfg", (bucket) =>
+  withBucket("distilled-s3-lifecycle-cfg", (bucket) =>
     Effect.gen(function* () {
       // Put lifecycle configuration
       yield* putBucketLifecycleConfiguration({
@@ -583,7 +583,7 @@ test(
 // Test various lifecycle configurations that have been reported to produce MalformedXML
 test(
   "bucket lifecycle: test various rule configurations",
-  withBucket("itty-s3-lifecycle-rules", (bucket) =>
+  withBucket("distilled-s3-lifecycle-rules", (bucket) =>
     Effect.gen(function* () {
       // Helper to wait for lifecycle configuration with eventual consistency
       const waitForLifecycle = <T>(
@@ -730,7 +730,7 @@ test(
 
 test(
   "bucket public access block: put, get, and delete",
-  withBucket("itty-s3-public-access", (bucket) =>
+  withBucket("distilled-s3-public-access", (bucket) =>
     Effect.gen(function* () {
       // Put public access block
       yield* putPublicAccessBlock({
@@ -787,7 +787,7 @@ test(
 
 test(
   "bucket ownership controls: put, get, and delete",
-  withBucket("itty-s3-ownership", (bucket) =>
+  withBucket("distilled-s3-ownership", (bucket) =>
     Effect.gen(function* () {
       // Put ownership controls - BucketOwnerEnforced disables ACLs
       yield* putBucketOwnershipControls({
@@ -849,7 +849,7 @@ test(
 
 test(
   "bucket ACL: get bucket ACL",
-  withBucket("itty-s3-acl", (bucket) =>
+  withBucket("distilled-s3-acl", (bucket) =>
     Effect.gen(function* () {
       // First set ownership to allow ACLs
       yield* putBucketOwnershipControls({
@@ -888,7 +888,7 @@ test(
 
 test(
   "bucket accelerate: put and get accelerate configuration",
-  withBucket("itty-s3-accelerate", (bucket) =>
+  withBucket("distilled-s3-accelerate", (bucket) =>
     Effect.gen(function* () {
       // Get initial state (should be Suspended or undefined)
       yield* getBucketAccelerateConfiguration({
@@ -933,7 +933,7 @@ test(
 
 test(
   "bucket request payment: put and get request payment configuration",
-  withBucket("itty-s3-payment", (bucket) =>
+  withBucket("distilled-s3-payment", (bucket) =>
     Effect.gen(function* () {
       // Get initial state (should be BucketOwner)
       const initialPayment = yield* getBucketRequestPayment({
@@ -978,10 +978,10 @@ test(
 
 test(
   "putObject and getObject with string body",
-  withBucket("itty-s3-string-obj", (bucket) =>
+  withBucket("distilled-s3-string-obj", (bucket) =>
     Effect.gen(function* () {
       const testKey = "test-string.txt";
-      const testContent = "Hello, itty-aws! This is a test string.";
+      const testContent = "Hello, distilled-aws! This is a test string.";
 
       // Put object with string body
       yield* putObject({
@@ -1015,7 +1015,7 @@ test(
 
 test(
   "putObject drops undefined values in Metadata map",
-  withBucket("itty-s3-undefined-meta", (bucket) =>
+  withBucket("distilled-s3-undefined-meta", (bucket) =>
     Effect.gen(function* () {
       const key = "test-undefined-metadata.txt";
 
@@ -1043,7 +1043,7 @@ test(
 
 test(
   "putObject with Uint8Array body",
-  withBucket("itty-s3-binary-obj", (bucket) =>
+  withBucket("distilled-s3-binary-obj", (bucket) =>
     Effect.gen(function* () {
       const testKey = "test-binary.bin";
       const testContent = new Uint8Array([
@@ -1097,7 +1097,7 @@ test(
 
 test(
   "putObject with Effect Stream body and explicit ContentLength",
-  withBucket("itty-s3-stream-obj", (bucket) =>
+  withBucket("distilled-s3-stream-obj", (bucket) =>
     Effect.gen(function* () {
       const testKey = "test-stream.txt";
       const testChunks = ["Hello, ", "Effect ", "Stream!"];
@@ -1144,7 +1144,7 @@ test(
 
 test(
   "putObject with Effect Stream body without ContentLength buffers and computes length",
-  withBucket("itty-s3-stream-buffered", (bucket) =>
+  withBucket("distilled-s3-stream-buffered", (bucket) =>
     Effect.gen(function* () {
       const testKey = "test-stream-buffered.txt";
       const testChunks = ["Buffered ", "stream ", "upload!"];
@@ -1184,7 +1184,7 @@ test(
 
 test(
   "getObject returns headers (ContentType, ContentLength, ETag)",
-  withBucket("itty-s3-headers", (bucket) =>
+  withBucket("distilled-s3-headers", (bucket) =>
     Effect.gen(function* () {
       const testKey = "test-headers.json";
       const testContent = JSON.stringify({ message: "hello" });
@@ -1226,7 +1226,7 @@ test(
 
 test(
   "apply multiple control plane configurations to a single bucket",
-  withBucket("itty-s3-multi-config", (bucket) =>
+  withBucket("distilled-s3-multi-config", (bucket) =>
     Effect.gen(function* () {
       // Apply multiple configurations in sequence
 
@@ -1319,7 +1319,7 @@ test(
 
 test(
   "putObject with streaming body and ChecksumAlgorithm triggers aws-chunked encoding",
-  withBucket("itty-s3-checksum", (bucket) =>
+  withBucket("distilled-s3-checksum", (bucket) =>
     Effect.gen(function* () {
       const testKey = "test-streaming-checksum.txt";
       const testChunks = ["Hello, ", "streaming ", "checksum ", "test!"];
@@ -1369,7 +1369,7 @@ test(
 
 test(
   "multipart upload with uploadPart streaming body and ChecksumAlgorithm",
-  withBucket("itty-s3-multipart", (bucket) =>
+  withBucket("distilled-s3-multipart", (bucket) =>
     Effect.gen(function* () {
       const testKey = "test-multipart-streaming-checksum.txt";
 
@@ -1501,7 +1501,7 @@ test(
 
 test(
   "streaming upload can be interrupted",
-  withBucket("itty-s3-interrupt", (bucket) =>
+  withBucket("distilled-s3-interrupt", (bucket) =>
     Effect.gen(function* () {
       const testKey = "test-interruption.txt";
 
@@ -1558,7 +1558,7 @@ test(
 
 test(
   "streaming upload interruption via Effect.raceFirst with Effect.interrupt",
-  withBucket("itty-s3-race-interrupt", (bucket) =>
+  withBucket("distilled-s3-race-interrupt", (bucket) =>
     Effect.gen(function* () {
       const testKey = "test-interruption-explicit.txt";
       let chunksRead = 0;
@@ -1609,7 +1609,7 @@ test(
 
 test(
   "listObjectsV2.pages() streams full response pages",
-  withBucket("itty-s3-pagination-pages", (bucket) =>
+  withBucket("distilled-s3-pagination-pages", (bucket) =>
     Effect.gen(function* () {
       // Create multiple test objects
       const objectCount = 5;
@@ -1658,7 +1658,7 @@ test(
 
 test(
   "listObjectsV2.items() returns empty stream when paginated trait has no items field",
-  withBucket("itty-s3-pagination-items", (bucket) =>
+  withBucket("distilled-s3-pagination-items", (bucket) =>
     Effect.gen(function* () {
       // Create test objects
       const objectKeys = ["item-test-001.txt", "item-test-002.txt"];
@@ -1695,7 +1695,7 @@ test(
 
 test(
   "listObjectsV2.pages() handles empty bucket",
-  withBucket("itty-s3-pagination-empty", (bucket) =>
+  withBucket("distilled-s3-pagination-empty", (bucket) =>
     Effect.gen(function* () {
       // Use .pages() on empty bucket
       const pages = yield* listObjectsV2
@@ -1712,7 +1712,7 @@ test(
 
 test(
   "listObjectsV2.pages() respects Prefix filter",
-  withBucket("itty-s3-pagination-prefix", (bucket) =>
+  withBucket("distilled-s3-pagination-prefix", (bucket) =>
     Effect.gen(function* () {
       // Create objects with different prefixes
       const objectKeys = [
@@ -1777,7 +1777,8 @@ test(
   Effect.gen(function* () {
     // Try to HEAD a key in a bucket that doesn't exist
     const result = yield* headObject({
-      Bucket: "itty-s3-bucket-that-definitely-does-not-exist-" + Date.now(),
+      Bucket:
+        "distilled-s3-bucket-that-definitely-does-not-exist-" + Date.now(),
       Key: "some-key.txt",
     }).pipe(
       Effect.map(() => "found" as const),
@@ -1794,7 +1795,7 @@ test(
 
 test(
   "headObject returns NotFound for non-existent key",
-  withBucket("itty-s3-head-notfound", (bucket) =>
+  withBucket("distilled-s3-head-notfound", (bucket) =>
     Effect.gen(function* () {
       // Try to HEAD a key that doesn't exist
       const result = yield* headObject({
@@ -1812,7 +1813,7 @@ test(
 
 test(
   "headObject returns object metadata for existing key",
-  withBucket("itty-s3-head-exists", (bucket) =>
+  withBucket("distilled-s3-head-exists", (bucket) =>
     Effect.gen(function* () {
       const testKey = "test-head-object.txt";
       const testContent = "Hello, HEAD!";
@@ -1843,7 +1844,7 @@ test(
 
 test(
   "deleteObject succeeds for non-existent key (S3 is idempotent)",
-  withBucket("itty-s3-delete-idempotent", (bucket) =>
+  withBucket("distilled-s3-delete-idempotent", (bucket) =>
     Effect.gen(function* () {
       // Delete a key that doesn't exist - should succeed (S3 delete is idempotent)
       yield* deleteObject({
@@ -1859,7 +1860,7 @@ test(
 
 test(
   "abortMultipartUpload handles non-existent upload",
-  withBucket("itty-s3-abort-notfound", (bucket) =>
+  withBucket("distilled-s3-abort-notfound", (bucket) =>
     Effect.gen(function* () {
       // Try to abort a multipart upload that doesn't exist
       // S3 returns 404 NoSuchUpload for this case
@@ -1885,7 +1886,7 @@ test(
 
 test(
   "abortMultipartUpload succeeds for existing upload",
-  withBucket("itty-s3-abort-existing", (bucket) =>
+  withBucket("distilled-s3-abort-existing", (bucket) =>
     Effect.gen(function* () {
       const testKey = "test-abort-upload.txt";
 

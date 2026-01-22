@@ -198,7 +198,7 @@ describe("Workers", () => {
 
 ### Resource Naming
 
-`itty-cf-{service}-{testname}` — deterministic, enables cleanup
+`distilled-cf-{service}-{testname}` — deterministic, enables cleanup
 
 ### TDD Loop
 

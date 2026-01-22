@@ -145,7 +145,7 @@ const withRole = <A, E, R>(
     const result = yield* createRole({
       RoleName: roleName,
       AssumeRolePolicyDocument: STEP_FUNCTIONS_TRUST_POLICY,
-      Description: "Test role for itty-aws Step Functions tests",
+      Description: "Test role for distilled-aws Step Functions tests",
     });
 
     const roleArn = result.Role!.Arn!;
@@ -232,13 +232,13 @@ const withStateMachine = <A, E, R>(
 
 test(
   "create activity, describe activity, list activities, and delete activity",
-  withActivity("itty-sfn-activity-lifecycle", (activityArn) =>
+  withActivity("distilled-sfn-activity-lifecycle", (activityArn) =>
     Effect.gen(function* () {
       expect(activityArn).toBeDefined();
 
       // Describe activity
       const describeResult = yield* describeActivity({ activityArn });
-      expect(describeResult.name).toEqual("itty-sfn-activity-lifecycle");
+      expect(describeResult.name).toEqual("distilled-sfn-activity-lifecycle");
       expect(describeResult.creationDate).toBeDefined();
 
       // List activities with retry for eventual consistency
@@ -269,8 +269,8 @@ test(
 test(
   "create state machine, describe, list, and delete",
   withStateMachine(
-    "itty-sfn-sm-lifecycle",
-    "itty-sfn-role-lifecycle",
+    "distilled-sfn-sm-lifecycle",
+    "distilled-sfn-role-lifecycle",
     PASS_STATE_MACHINE_DEFINITION,
     (stateMachineArn) =>
       Effect.gen(function* () {
@@ -278,7 +278,7 @@ test(
 
         // Describe state machine
         const describeResult = yield* describeStateMachine({ stateMachineArn });
-        expect(describeResult.name).toEqual("itty-sfn-sm-lifecycle");
+        expect(describeResult.name).toEqual("distilled-sfn-sm-lifecycle");
         expect(describeResult.status).toEqual("ACTIVE");
 
         // Verify definition matches (definition is a sensitive field)
@@ -317,12 +317,14 @@ test(
 test(
   "start execution, describe execution, and list executions",
   withStateMachine(
-    "itty-sfn-exec-sm",
-    "itty-sfn-role-exec",
+    "distilled-sfn-exec-sm",
+    "distilled-sfn-role-exec",
     PASS_STATE_MACHINE_DEFINITION,
     (stateMachineArn) =>
       Effect.gen(function* () {
-        const inputData = JSON.stringify({ message: "Hello from itty-aws" });
+        const inputData = JSON.stringify({
+          message: "Hello from distilled-aws",
+        });
 
         // Start execution (let AWS generate a unique name)
         const startResult = yield* startExecution({
@@ -372,8 +374,8 @@ test(
 test(
   "start execution and stop execution",
   withStateMachine(
-    "itty-sfn-stop-sm",
-    "itty-sfn-role-stop",
+    "distilled-sfn-stop-sm",
+    "distilled-sfn-role-stop",
     WAIT_STATE_MACHINE_DEFINITION,
     (stateMachineArn) =>
       Effect.gen(function* () {
@@ -394,7 +396,7 @@ test(
         yield* stopExecution({
           executionArn,
           error: "TestError",
-          cause: "Stopped by itty-aws test",
+          cause: "Stopped by distilled-aws test",
         });
 
         // Give it a moment to stop
@@ -414,8 +416,8 @@ test(
 test(
   "run multiple executions of the same state machine",
   withStateMachine(
-    "itty-sfn-multi-sm",
-    "itty-sfn-role-multi",
+    "distilled-sfn-multi-sm",
+    "distilled-sfn-role-multi",
     PASS_STATE_MACHINE_DEFINITION,
     (stateMachineArn) =>
       Effect.gen(function* () {

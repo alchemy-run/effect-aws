@@ -4,9 +4,9 @@
   - ```
     [08:58:06.504] ERROR (#1):
     AwsCredentialProviderError: An error has occurred
-    at catch (D:\code\OSS\alchemy\itty-aws-2\src\credentials.ts:31:20)
-    at <anonymous> (D:\code\OSS\alchemy\itty-aws-2\src\client.ts:25:28)
-    at <anonymous> (D:\code\OSS\alchemy\itty-aws-2\src\client.ts:25:41)
+    at catch (D:\code\OSS\alchemy\distilled-aws-2\src\credentials.ts:31:20)
+    at <anonymous> (D:\code\OSS\alchemy\distilled-aws-2\src\client.ts:25:28)
+    at <anonymous> (D:\code\OSS\alchemy\distilled-aws-2\src\client.ts:25:41)
     ```
 - apply categories based on prefixes of unknown errors
   - starts with `NoSuch` means its missing

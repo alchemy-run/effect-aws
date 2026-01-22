@@ -5,6 +5,7 @@
  * Usage:
  *   distilled "implement the API"                     # send prompt to all agents
  *   distilled --filter "api/*" "implement the API"   # send prompt to agents matching api/*
+ *   distilled --concurrency 10 "implement the API"   # run 10 agents in parallel
  *   distilled --list                                  # list all agents
  *   distilled --list --filter "api/*"                # list agents matching pattern
  */
@@ -70,8 +71,15 @@ const mainCommand = Command.make(
       Options.withDescription("List agents (optionally filtered by --filter)"),
       Options.withDefault(false),
     ),
+    concurrency: Options.integer("concurrency").pipe(
+      Options.withAlias("j"),
+      Options.withDescription(
+        "Number of agents to run in parallel (default: 1)",
+      ),
+      Options.withDefault(1),
+    ),
   },
-  Effect.fn(function* ({ prompt, filter, config, model, list }) {
+  Effect.fn(function* ({ prompt, filter, config, model, list, concurrency }) {
     const configPath = Option.getOrUndefined(config);
     const patternValue = Option.getOrUndefined(filter);
     const promptValue = Option.getOrUndefined(prompt) ?? "do it";
@@ -137,13 +145,10 @@ const mainCommand = Command.make(
         return;
       }
 
-      // TODO: make this configurable
-      const isParallel = false;
-
       // Run each matched agent
       yield* Effect.all(
-        matchedAgents.map((agent) => runAgent(agent, promptValue, isParallel)),
-        { concurrency: isParallel ? "unbounded" : 1 },
+        matchedAgents.map((agent) => runAgent(agent, promptValue)),
+        { concurrency },
       );
       yield* Console.log("Done.");
     }).pipe(Effect.provide(Layer.mergeAll(lspLayer, modelLayer)));
@@ -156,12 +161,11 @@ const mainCommand = Command.make(
 const runAgent = (
   agent: Agent,
   prompt: string,
-  _isParallel: boolean,
 ): Effect.Effect<void, unknown, never> =>
   Effect.gen(function* () {
     // Build the prompt with context from the agent
-    const contextPrompt = agent.description
-      ? `Context: ${agent.description}\n\n${prompt}`
+    const contextPrompt = agent.prompt
+      ? `Context: ${agent.prompt}\n\n${prompt}`
       : prompt;
 
     yield* agent.send(contextPrompt);

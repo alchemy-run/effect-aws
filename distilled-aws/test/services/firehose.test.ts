@@ -12,6 +12,13 @@ import {
   untagDeliveryStream,
 } from "../../src/services/firehose.ts";
 import {
+  createRole,
+  deleteRole,
+  deleteRolePolicy,
+  listRolePolicies,
+  putRolePolicy,
+} from "../../src/services/iam.ts";
+import {
   createBucket,
   deleteBucket,
   deleteObjects,
@@ -19,13 +26,6 @@ import {
   listObjectsV2,
   listObjectVersions,
 } from "../../src/services/s3.ts";
-import {
-  createRole,
-  deleteRole,
-  deleteRolePolicy,
-  listRolePolicies,
-  putRolePolicy,
-} from "../../src/services/iam.ts";
 import { getCallerIdentity } from "../../src/services/sts.ts";
 import { test } from "../test.ts";
 
@@ -285,9 +285,9 @@ const withDeliveryStream = <A, E, R>(
   testFn: (ctx: DeliveryStreamContext) => Effect.Effect<A, E, R>,
 ) =>
   Effect.gen(function* () {
-    const streamName = `itty-firehose-${testName}`;
-    const bucketName = `itty-firehose-${testName}`;
-    const roleName = `itty-firehose-${testName}-role`;
+    const streamName = `distilled-firehose-${testName}`;
+    const bucketName = `distilled-firehose-${testName}`;
+    const roleName = `distilled-firehose-${testName}-role`;
 
     // Verify we have valid credentials before proceeding
     yield* getCallerIdentity({});
@@ -456,7 +456,7 @@ test(
         DeliveryStreamName: ctx.streamName,
         Tags: [
           { Key: "Environment", Value: "Test" },
-          { Key: "Project", Value: "itty-aws" },
+          { Key: "Project", Value: "distilled-aws" },
           { Key: "Team", Value: "Platform" },
         ],
       });
@@ -471,7 +471,7 @@ test(
       expect(envTag?.Value).toEqual("Test");
 
       const projectTag = tagsResult.Tags?.find((t) => t.Key === "Project");
-      expect(projectTag?.Value).toEqual("itty-aws");
+      expect(projectTag?.Value).toEqual("distilled-aws");
 
       // Update a tag
       yield* tagDeliveryStream({

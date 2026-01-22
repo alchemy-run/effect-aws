@@ -30,7 +30,7 @@ const isLocalStack = process.env.LOCAL === "true" || process.env.LOCAL === "1";
 const BOT_ID = process.env.LEX_BOT_ID;
 const BOT_ALIAS_ID = process.env.LEX_BOT_ALIAS_ID || "TSTALIASID"; // Test alias
 const LOCALE_ID = process.env.LEX_LOCALE_ID || "en_US";
-const SESSION_ID = `itty-aws-test-${Date.now()}`;
+const SESSION_ID = `distilled-aws-test-${Date.now()}`;
 
 // ============================================================================
 // Basic RecognizeText Test (Non-streaming, works in LocalStack)

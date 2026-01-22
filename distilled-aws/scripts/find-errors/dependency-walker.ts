@@ -156,7 +156,7 @@ const EXTERNAL_DEPENDENCIES: Record<string, string> = {
  * Generate a unique name/description for a resource.
  */
 const generateResourceName = (resourceType: string): string => {
-  return `itty-dep-${resourceType.toLowerCase()}-${Date.now()}`;
+  return `distilled-dep-${resourceType.toLowerCase()}-${Date.now()}`;
 };
 
 /**
@@ -199,7 +199,9 @@ const generateTagSpecs = (resourceType: string): unknown[] => {
   return [
     {
       ResourceType: tagType,
-      Tags: [{ Key: "Name", Value: `itty-dep-${resourceType.toLowerCase()}` }],
+      Tags: [
+        { Key: "Name", Value: `distilled-dep-${resourceType.toLowerCase()}` },
+      ],
     },
   ];
 };
@@ -214,7 +216,7 @@ const SPECIAL_INPUTS: Record<
 > = {
   // Security Group needs both GroupName and Description
   SecurityGroupVpc: (parents) => ({
-    GroupName: `itty-dep-sg-${Date.now()}`,
+    GroupName: `distilled-dep-sg-${Date.now()}`,
     Description: "Dependency test security group",
     VpcId: parents.get("Vpc")?.id,
   }),
@@ -240,7 +242,7 @@ const SPECIAL_INPUTS: Record<
   }),
   // LaunchTemplate needs LaunchTemplateData
   LaunchTemplate: () => ({
-    LaunchTemplateName: `itty-dep-lt-${Date.now()}`,
+    LaunchTemplateName: `distilled-dep-lt-${Date.now()}`,
     LaunchTemplateData: {
       InstanceType: "t2.micro",
     },
@@ -271,19 +273,19 @@ const SPECIAL_INPUTS: Record<
   }),
   // ManagedPrefixList needs specific structure
   ManagedPrefixList: () => ({
-    PrefixListName: `itty-dep-pl-${Date.now()}`,
+    PrefixListName: `distilled-dep-pl-${Date.now()}`,
     MaxEntries: 10,
     AddressFamily: "IPv4",
     Entries: [{ Cidr: "10.0.0.0/8", Description: "Test entry" }],
   }),
   // PlacementGroup needs GroupName and Strategy
   PlacementGroup: () => ({
-    GroupName: `itty-dep-pg-${Date.now()}`,
+    GroupName: `distilled-dep-pg-${Date.now()}`,
     Strategy: "cluster",
   }),
   // KeyPair needs KeyName
   KeyPair: () => ({
-    KeyName: `itty-dep-kp-${Date.now()}`,
+    KeyName: `distilled-dep-kp-${Date.now()}`,
     KeyType: "ed25519",
   }),
   // NetworkInterface needs SubnetId
@@ -804,9 +806,7 @@ const createResources = (
       }
 
       if (!canCreate) {
-        yield* Console.log(
-          `   ⏭️  Skip ${resourceType} (missing dependencies)`,
-        );
+        yield* Console.log(`   ⏭️  Skip ${resourceType} (missing dependencies)`);
         continue;
       }
 

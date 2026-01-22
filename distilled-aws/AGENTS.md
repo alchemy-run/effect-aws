@@ -130,7 +130,7 @@ bun find ec2                 # Run again (should find fewer)
 ## Testing
 
 **File naming:** `test/services/{service}.test.ts`
-**Resource naming:** `itty-{service}-{test}` — NO random suffixes (enables cleanup)
+**Resource naming:** `distilled-{service}-{test}` — NO random suffixes (enables cleanup)
 
 **Patterns:**
 

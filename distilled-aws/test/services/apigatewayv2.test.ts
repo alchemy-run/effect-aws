@@ -86,12 +86,12 @@ const withApi = <A, E, R>(
 describe.sequential("API Gateway v2", () => {
   test(
     "create HTTP API, get, list, and delete",
-    withApi("itty-apigwv2-http", "HTTP", (apiId) =>
+    withApi("distilled-apigwv2-http", "HTTP", (apiId) =>
       Effect.gen(function* () {
         // Get API
         const api = yield* getApi({ ApiId: apiId });
         expect(api.ApiId).toBeDefined();
-        expect(api.Name).toEqual("itty-apigwv2-http");
+        expect(api.Name).toEqual("distilled-apigwv2-http");
         expect(api.ProtocolType).toEqual("HTTP");
 
         // List APIs
@@ -104,12 +104,12 @@ describe.sequential("API Gateway v2", () => {
 
   test(
     "create WebSocket API",
-    withApi("itty-apigwv2-ws", "WEBSOCKET", (apiId) =>
+    withApi("distilled-apigwv2-ws", "WEBSOCKET", (apiId) =>
       Effect.gen(function* () {
         // Get API
         const api = yield* getApi({ ApiId: apiId });
         expect(api.ApiId).toBeDefined();
-        expect(api.Name).toEqual("itty-apigwv2-ws");
+        expect(api.Name).toEqual("distilled-apigwv2-ws");
         expect(api.ProtocolType).toEqual("WEBSOCKET");
       }),
     ),
@@ -121,7 +121,7 @@ describe.sequential("API Gateway v2", () => {
 
   test(
     "create and manage integrations",
-    withApi("itty-apigwv2-integrations", "HTTP", (apiId) =>
+    withApi("distilled-apigwv2-integrations", "HTTP", (apiId) =>
       Effect.gen(function* () {
         // Create HTTP_PROXY integration (HTTP APIs only support proxy integrations)
         const integration = yield* createIntegration({
@@ -159,7 +159,7 @@ describe.sequential("API Gateway v2", () => {
 
   test(
     "create and manage routes",
-    withApi("itty-apigwv2-routes", "HTTP", (apiId) =>
+    withApi("distilled-apigwv2-routes", "HTTP", (apiId) =>
       Effect.gen(function* () {
         // Create route
         const route = yield* createRoute({
@@ -218,7 +218,7 @@ describe.sequential("API Gateway v2", () => {
 
   test(
     "create route with integration target",
-    withApi("itty-apigwv2-route-integration", "HTTP", (apiId) =>
+    withApi("distilled-apigwv2-route-integration", "HTTP", (apiId) =>
       Effect.gen(function* () {
         // Create HTTP_PROXY integration (HTTP APIs only support proxy integrations)
         const integration = yield* createIntegration({
@@ -255,7 +255,7 @@ describe.sequential("API Gateway v2", () => {
 
   test(
     "create deployment and manage stages",
-    withApi("itty-apigwv2-deploy", "HTTP", (apiId) =>
+    withApi("distilled-apigwv2-deploy", "HTTP", (apiId) =>
       Effect.gen(function* () {
         // Create integration and route first (required for deployment)
         const integration = yield* createIntegration({
@@ -343,7 +343,7 @@ describe.sequential("API Gateway v2", () => {
 
   test(
     "create stage with auto-deploy enabled",
-    withApi("itty-apigwv2-autodeploy", "HTTP", (apiId) =>
+    withApi("distilled-apigwv2-autodeploy", "HTTP", (apiId) =>
       Effect.gen(function* () {
         // Create stage with auto-deploy
         const stage = yield* createStage({
@@ -380,7 +380,7 @@ describe.sequential("API Gateway v2", () => {
 
   test(
     "tag and untag API resources",
-    withApi("itty-apigwv2-tags", "HTTP", (apiId) =>
+    withApi("distilled-apigwv2-tags", "HTTP", (apiId) =>
       Effect.gen(function* () {
         // Get the API to get its ARN
         const _api = yield* getApi({ ApiId: apiId });
@@ -393,14 +393,14 @@ describe.sequential("API Gateway v2", () => {
           ResourceArn: resourceArn,
           Tags: {
             Environment: "Test",
-            Project: "itty-aws",
+            Project: "distilled-aws",
           },
         });
 
         // Get tags
         const tags = yield* getTags({ ResourceArn: resourceArn });
         expect(tags.Tags?.Environment).toEqual("Test");
-        expect(tags.Tags?.Project).toEqual("itty-aws");
+        expect(tags.Tags?.Project).toEqual("distilled-aws");
 
         // Untag resource
         yield* untagResource({
@@ -422,7 +422,7 @@ describe.sequential("API Gateway v2", () => {
 
   test(
     "full API lifecycle: create API with routes, integrations, and stages",
-    withApi("itty-apigwv2-full-lifecycle", "HTTP", (apiId) =>
+    withApi("distilled-apigwv2-full-lifecycle", "HTTP", (apiId) =>
       Effect.gen(function* () {
         // Create HTTP_PROXY integration (HTTP APIs only support proxy integrations)
         const integration = yield* createIntegration({
@@ -517,7 +517,7 @@ describe.sequential("API Gateway v2", () => {
 
   test(
     "WebSocket API with routes",
-    withApi("itty-apigwv2-websocket", "WEBSOCKET", (apiId) =>
+    withApi("distilled-apigwv2-websocket", "WEBSOCKET", (apiId) =>
       Effect.gen(function* () {
         // Create $connect route
         const connectRoute = yield* createRoute({

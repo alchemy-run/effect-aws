@@ -54,25 +54,27 @@ describe("generateFakeId", () => {
   describe("name-based resources", () => {
     it.effect("generates fake bucket name", () =>
       Effect.sync(() => {
-        expect(generateFakeId("Bucket")).toBe("itty-fake-bucket-notfound");
+        expect(generateFakeId("Bucket")).toBe("distilled-fake-bucket-notfound");
       }),
     );
 
     it.effect("generates fake function name", () =>
       Effect.sync(() => {
-        expect(generateFakeId("Function")).toBe("itty-fake-function-notfound");
+        expect(generateFakeId("Function")).toBe(
+          "distilled-fake-function-notfound",
+        );
       }),
     );
 
     it.effect("generates fake table name", () =>
       Effect.sync(() => {
-        expect(generateFakeId("Table")).toBe("itty-fake-table-notfound");
+        expect(generateFakeId("Table")).toBe("distilled-fake-table-notfound");
       }),
     );
 
     it.effect("generates fake queue name", () =>
       Effect.sync(() => {
-        expect(generateFakeId("Queue")).toBe("itty-fake-queue-notfound");
+        expect(generateFakeId("Queue")).toBe("distilled-fake-queue-notfound");
       }),
     );
   });
@@ -154,7 +156,7 @@ describe("generateFakeId", () => {
       Effect.sync(() => {
         for (const resource of NAME_BASED_RESOURCES) {
           const id = generateFakeId(resource);
-          expect(id).toMatch(/^itty-fake-.*-notfound$/);
+          expect(id).toMatch(/^distilled-fake-.*-notfound$/);
         }
       }),
     );
@@ -476,7 +478,7 @@ describe("generateFakeInputs covers all EC2 delete operations", () => {
                 typeof v === "string" &&
                   (v.includes("-") ||
                     v.startsWith("arn:") ||
-                    v.startsWith("itty-")),
+                    v.startsWith("distilled-")),
               ).toBe(true);
             }
           }

@@ -116,23 +116,23 @@ const withFifoQueue = <A, E, R>(
 
 test(
   "create queue, get queue url, list queues, and delete",
-  withQueue("itty-sqs-lifecycle", (queueUrl) =>
+  withQueue("distilled-sqs-lifecycle", (queueUrl) =>
     Effect.gen(function* () {
       // Verify queue URL is returned
       expect(queueUrl).toBeDefined();
 
       // Get queue URL by name (retry for eventual consistency after create)
       const getUrlResult = yield* getQueueUrl({
-        QueueName: "itty-sqs-lifecycle",
+        QueueName: "distilled-sqs-lifecycle",
       }).pipe(Effect.retry(retryQueueNotExist));
       expect(getUrlResult.QueueUrl).toEqual(queueUrl);
 
       // List queues and verify our queue is in the list (retry for eventual consistency)
       const listResult = yield* listQueues({
-        QueueNamePrefix: "itty-sqs-lifecycle",
+        QueueNamePrefix: "distilled-sqs-lifecycle",
       }).pipe(Effect.retry(retryQueueNotExist));
       const foundQueue = listResult.QueueUrls?.find((url) =>
-        url.includes("itty-sqs-lifecycle"),
+        url.includes("distilled-sqs-lifecycle"),
       );
       expect(foundQueue).toBeDefined();
     }),
@@ -145,7 +145,7 @@ test(
 
 test(
   "set and get queue attributes",
-  withQueue("itty-sqs-attributes", (queueUrl) =>
+  withQueue("distilled-sqs-attributes", (queueUrl) =>
     Effect.gen(function* () {
       // Set queue attributes (retry for eventual consistency after create)
       yield* setQueueAttributes({
@@ -196,14 +196,14 @@ test(
 
 test(
   "tag queue, list tags, and untag queue",
-  withQueue("itty-sqs-tagging", (queueUrl) =>
+  withQueue("distilled-sqs-tagging", (queueUrl) =>
     Effect.gen(function* () {
       // Add tags to queue (retry for eventual consistency after create)
       yield* tagQueue({
         QueueUrl: queueUrl,
         Tags: {
           Environment: "Test",
-          Project: "itty-aws",
+          Project: "distilled-aws",
           Team: "Platform",
         },
       }).pipe(Effect.retry(retryQueueNotExist));
@@ -213,7 +213,7 @@ test(
         Effect.retry(retryQueueNotExist),
       );
       expect(tagsResult.Tags?.Environment).toEqual("Test");
-      expect(tagsResult.Tags?.Project).toEqual("itty-aws");
+      expect(tagsResult.Tags?.Project).toEqual("distilled-aws");
 
       // Update a tag (retry for eventual consistency)
       yield* tagQueue({
@@ -251,7 +251,7 @@ test(
 
 test(
   "send and receive message",
-  withQueue("itty-sqs-message", (queueUrl) =>
+  withQueue("distilled-sqs-message", (queueUrl) =>
     Effect.gen(function* () {
       const messageBody = "Hello, SQS!";
 
@@ -301,7 +301,7 @@ test(
 
 test(
   "send message with delay",
-  withQueue("itty-sqs-delay", (queueUrl) =>
+  withQueue("distilled-sqs-delay", (queueUrl) =>
     Effect.gen(function* () {
       const messageBody = "Delayed message";
 
@@ -345,7 +345,7 @@ test(
 
 test(
   "send message with message attributes",
-  withQueue("itty-sqs-attrs", (queueUrl) =>
+  withQueue("distilled-sqs-attrs", (queueUrl) =>
     Effect.gen(function* () {
       const messageBody = "Message with attributes";
 
@@ -387,7 +387,7 @@ test(
 
 test(
   "sendMessage drops undefined values in MessageAttributes map",
-  withQueue("itty-sqs-undefined-attrs", (queueUrl) =>
+  withQueue("distilled-sqs-undefined-attrs", (queueUrl) =>
     Effect.gen(function* () {
       // Send message with undefined attribute - should not fail
       const result = yield* sendMessage({
@@ -413,7 +413,7 @@ test(
 
 test(
   "change message visibility",
-  withQueue("itty-sqs-visibility", (queueUrl) =>
+  withQueue("distilled-sqs-visibility", (queueUrl) =>
     Effect.gen(function* () {
       const messageBody = "Visibility test";
 
@@ -467,7 +467,7 @@ test(
 
 test(
   "send multiple messages and delete them individually",
-  withQueue("itty-sqs-batch", (queueUrl) =>
+  withQueue("distilled-sqs-batch", (queueUrl) =>
     Effect.gen(function* () {
       // Send multiple messages individually (first one retries for eventual consistency)
       yield* sendMessage({
@@ -539,7 +539,7 @@ test(
 
 test(
   "purge queue",
-  withQueue("itty-sqs-purge", (queueUrl) =>
+  withQueue("distilled-sqs-purge", (queueUrl) =>
     Effect.gen(function* () {
       // Send multiple messages individually (first one retries for eventual consistency)
       yield* sendMessage({
@@ -584,7 +584,7 @@ test(
 
 test(
   "FIFO queue: send and receive with message group",
-  withFifoQueue("itty-sqs-fifo", (queueUrl) =>
+  withFifoQueue("distilled-sqs-fifo", (queueUrl) =>
     Effect.gen(function* () {
       // Send messages to same message group - they should be received in order
       // (first one retries for eventual consistency)
@@ -640,7 +640,7 @@ test(
 
 test(
   "FIFO queue: different message groups processed independently",
-  withFifoQueue("itty-sqs-fifo-groups", (queueUrl) =>
+  withFifoQueue("distilled-sqs-fifo-groups", (queueUrl) =>
     Effect.gen(function* () {
       // Send messages to different groups (first one retries for eventual consistency)
       yield* sendMessage({
@@ -691,7 +691,7 @@ test(
 
 test(
   "long polling with WaitTimeSeconds",
-  withQueue("itty-sqs-long-poll-test", (queueUrl) =>
+  withQueue("distilled-sqs-long-poll-test", (queueUrl) =>
     Effect.gen(function* () {
       // Send a message first (retry for eventual consistency after create)
       yield* sendMessage({
@@ -737,7 +737,7 @@ test(
 
 test(
   "receive message with system attributes",
-  withQueue("itty-sqs-sysattrs", (queueUrl) =>
+  withQueue("distilled-sqs-sysattrs", (queueUrl) =>
     Effect.gen(function* () {
       // Send a message (retry for eventual consistency after create)
       yield* sendMessage({

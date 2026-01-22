@@ -119,6 +119,7 @@ export type WorkflowFn<Out = string, Err = never, Req = never> = (
  */
 export interface WorkflowAgent<Out = string, Err = never, Req = never> {
   readonly key: string;
+  readonly prompt?: never;
   readonly tags?: string[];
   readonly send: (prompt: string) => Effect.Effect<Out, Err | AgentError, Req>;
 }

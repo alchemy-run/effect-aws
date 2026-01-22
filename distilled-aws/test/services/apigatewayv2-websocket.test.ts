@@ -81,12 +81,12 @@ const withWebSocketApi = <A, E, R>(
 
     test(
       "create WebSocket API, get, list, and delete",
-      withWebSocketApi("itty-ws-lifecycle", (apiId) =>
+      withWebSocketApi("distilled-ws-lifecycle", (apiId) =>
         Effect.gen(function* () {
           // Get WebSocket API
           const api = yield* getApi({ ApiId: apiId });
           expect(api.ApiId).toBeDefined();
-          expect(api.Name).toEqual("itty-ws-lifecycle");
+          expect(api.Name).toEqual("distilled-ws-lifecycle");
           expect(api.ProtocolType).toEqual("WEBSOCKET");
           expect(api.RouteSelectionExpression).toEqual("$request.body.action");
 
@@ -104,7 +104,7 @@ const withWebSocketApi = <A, E, R>(
 
     test(
       "create and manage WebSocket routes",
-      withWebSocketApi("itty-ws-routes", (apiId) =>
+      withWebSocketApi("distilled-ws-routes", (apiId) =>
         Effect.gen(function* () {
           // Create $connect route
           const connectRoute = yield* createRoute({
@@ -165,7 +165,7 @@ const withWebSocketApi = <A, E, R>(
 
     test(
       "create and manage WebSocket integrations",
-      withWebSocketApi("itty-ws-integrations", (apiId) =>
+      withWebSocketApi("distilled-ws-integrations", (apiId) =>
         Effect.gen(function* () {
           // Create MOCK integration
           const integration = yield* createIntegration({
@@ -199,7 +199,7 @@ const withWebSocketApi = <A, E, R>(
 
     test(
       "create deployment and stage for WebSocket API",
-      withWebSocketApi("itty-ws-deploy", (apiId) =>
+      withWebSocketApi("distilled-ws-deploy", (apiId) =>
         Effect.gen(function* () {
           // Create a route first (required for deployment)
           yield* createRoute({
@@ -270,7 +270,7 @@ const withWebSocketApi = <A, E, R>(
 
     test(
       "full WebSocket API lifecycle with routes and integrations",
-      withWebSocketApi("itty-ws-full-lifecycle", (apiId) =>
+      withWebSocketApi("distilled-ws-full-lifecycle", (apiId) =>
         Effect.gen(function* () {
           // Create MOCK integration for all routes
           const integration = yield* createIntegration({

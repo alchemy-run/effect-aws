@@ -14,7 +14,7 @@ import {
 } from "../../src/services/kms.ts";
 import { beforeAll, test } from "../test.ts";
 
-const TEST_ALIAS = "alias/itty-aws-test";
+const TEST_ALIAS = "alias/distilled-aws-test";
 
 // Clean up all keys before running tests
 beforeAll(
@@ -69,7 +69,7 @@ test(
   Effect.gen(function* () {
     // Create a symmetric encryption key
     const createResult = yield* createKey({
-      Description: "Test key for itty-aws",
+      Description: "Test key for distilled-aws",
       KeyUsage: "ENCRYPT_DECRYPT",
       KeySpec: "SYMMETRIC_DEFAULT",
     });

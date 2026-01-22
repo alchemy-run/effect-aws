@@ -39,7 +39,7 @@ const retrySchedule = Schedule.intersect(
   Schedule.spaced("1 second"),
 );
 
-const TEST_ROLE_NAME = "itty-aws-test-lambda-role";
+const TEST_ROLE_NAME = "distilled-aws-test-lambda-role";
 
 // Trust policy that allows Lambda to assume the role
 const LAMBDA_TRUST_POLICY = JSON.stringify({
@@ -283,7 +283,7 @@ beforeAll(
       const roleResult = yield* createRole({
         RoleName: TEST_ROLE_NAME,
         AssumeRolePolicyDocument: LAMBDA_TRUST_POLICY,
-        Description: "Test role for itty-aws Lambda tests",
+        Description: "Test role for distilled-aws Lambda tests",
       }).pipe(
         Effect.map((result) => result.Role.Arn),
         Effect.catchTag("EntityAlreadyExistsException", () =>
@@ -482,7 +482,7 @@ test(
         Resource: func.FunctionArn,
         Tags: {
           Environment: "test",
-          Project: "itty-aws",
+          Project: "distilled-aws",
           Team: "Platform",
         },
       });
@@ -494,7 +494,7 @@ test(
 
       expect(tags.Tags).toBeDefined();
       expect(tags.Tags?.["Environment"]).toEqual("test");
-      expect(tags.Tags?.["Project"]).toEqual("itty-aws");
+      expect(tags.Tags?.["Project"]).toEqual("distilled-aws");
       expect(tags.Tags?.["Team"]).toEqual("Platform");
 
       // Remove one tag
@@ -510,7 +510,7 @@ test(
 
       expect(updatedTags.Tags?.["Team"]).toBeUndefined();
       expect(updatedTags.Tags?.["Environment"]).toEqual("test");
-      expect(updatedTags.Tags?.["Project"]).toEqual("itty-aws");
+      expect(updatedTags.Tags?.["Project"]).toEqual("distilled-aws");
     }),
   ),
 );

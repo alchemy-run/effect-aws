@@ -376,7 +376,7 @@ const withInstanceProfile = <A, E, R>(
 
 test(
   "create user, get user, list users, and delete",
-  withUser("itty-iam-user-lifecycle", (userName) =>
+  withUser("distilled-iam-user-lifecycle", (userName) =>
     Effect.gen(function* () {
       // Get user to verify it exists
       const user = yield* getUser({ UserName: userName });
@@ -395,7 +395,7 @@ test(
 
 test(
   "update user path",
-  withUser("itty-iam-user-update", (userName) =>
+  withUser("distilled-iam-user-update", (userName) =>
     Effect.gen(function* () {
       // Update user path
       yield* updateUser({
@@ -416,7 +416,7 @@ test(
 
 test(
   "create group, get group, list groups, and delete",
-  withGroup("itty-iam-group-lifecycle", (groupName) =>
+  withGroup("distilled-iam-group-lifecycle", (groupName) =>
     Effect.gen(function* () {
       // Get group to verify it exists
       const group = yield* getGroup({ GroupName: groupName });
@@ -438,8 +438,8 @@ test(
 test(
   "update group name and path",
   Effect.gen(function* () {
-    const groupName = "itty-iam-group-update";
-    const newGroupName = "itty-iam-group-updated";
+    const groupName = "distilled-iam-group-update";
+    const newGroupName = "distilled-iam-group-updated";
 
     // Clean up both possible names from previous runs
     yield* cleanupGroup(groupName);
@@ -471,8 +471,8 @@ test(
 
 test(
   "add and remove user from group",
-  withGroup("itty-iam-membership-group", (groupName) =>
-    withUser("itty-iam-membership-user", (userName) =>
+  withGroup("distilled-iam-membership-group", (groupName) =>
+    withUser("distilled-iam-membership-user", (userName) =>
       Effect.gen(function* () {
         // Add user to group
         yield* addUserToGroup({
@@ -517,7 +517,7 @@ test(
 
 test(
   "create role, get role, list roles, and delete",
-  withRole("itty-iam-role-lifecycle", (roleName) =>
+  withRole("distilled-iam-role-lifecycle", (roleName) =>
     Effect.gen(function* () {
       // Get role to verify it exists
       const role = yield* getRole({ RoleName: roleName });
@@ -539,7 +539,7 @@ test(
 
 test(
   "update role description and max session duration",
-  withRole("itty-iam-role-update", (roleName) =>
+  withRole("distilled-iam-role-update", (roleName) =>
     Effect.gen(function* () {
       // Update role
       yield* updateRole({
@@ -558,7 +558,7 @@ test(
 
 test(
   "update assume role policy",
-  withRole("itty-iam-role-trust-policy", (roleName) =>
+  withRole("distilled-iam-role-trust-policy", (roleName) =>
     Effect.gen(function* () {
       // New trust policy allowing Lambda
       const newTrustPolicy = JSON.stringify({
@@ -599,7 +599,7 @@ test(
 
 test(
   "create policy, get policy, list policies, and delete",
-  withPolicy("itty-iam-policy-lifecycle", (policyArn) =>
+  withPolicy("distilled-iam-policy-lifecycle", (policyArn) =>
     Effect.gen(function* () {
       // Get policy to verify it exists
       const policy = yield* getPolicy({ PolicyArn: policyArn });
@@ -618,7 +618,7 @@ test(
 
 test(
   "create and manage policy versions",
-  withPolicy("itty-iam-policy-versions", (policyArn) =>
+  withPolicy("distilled-iam-policy-versions", (policyArn) =>
     Effect.gen(function* () {
       // Create a new policy version
       const newPolicyDocument = JSON.stringify({
@@ -676,8 +676,8 @@ test(
 
 test(
   "attach and detach policy from user",
-  withUser("itty-iam-attach-user", (userName) =>
-    withPolicy("itty-iam-attach-user-policy", (policyArn) =>
+  withUser("distilled-iam-attach-user", (userName) =>
+    withPolicy("distilled-iam-attach-user-policy", (policyArn) =>
       Effect.gen(function* () {
         // Attach policy to user
         yield* attachUserPolicy({
@@ -715,8 +715,8 @@ test(
 
 test(
   "attach and detach policy from group",
-  withGroup("itty-iam-attach-group", (groupName) =>
-    withPolicy("itty-iam-attach-group-policy", (policyArn) =>
+  withGroup("distilled-iam-attach-group", (groupName) =>
+    withPolicy("distilled-iam-attach-group-policy", (policyArn) =>
       Effect.gen(function* () {
         // Attach policy to group
         yield* attachGroupPolicy({
@@ -754,8 +754,8 @@ test(
 
 test(
   "attach and detach policy from role",
-  withRole("itty-iam-attach-role", (roleName) =>
-    withPolicy("itty-iam-attach-role-policy", (policyArn) =>
+  withRole("distilled-iam-attach-role", (roleName) =>
+    withPolicy("distilled-iam-attach-role-policy", (policyArn) =>
       Effect.gen(function* () {
         // Attach policy to role
         yield* attachRolePolicy({
@@ -797,7 +797,7 @@ test(
 
 test(
   "put, get, list, and delete inline user policy",
-  withUser("itty-iam-inline-user", (userName) =>
+  withUser("distilled-iam-inline-user", (userName) =>
     Effect.gen(function* () {
       const policyName = "InlineTestPolicy";
 
@@ -838,7 +838,7 @@ test(
 
 test(
   "put, get, list, and delete inline group policy",
-  withGroup("itty-iam-inline-group", (groupName) =>
+  withGroup("distilled-iam-inline-group", (groupName) =>
     Effect.gen(function* () {
       const policyName = "InlineGroupPolicy";
 
@@ -879,7 +879,7 @@ test(
 
 test(
   "put, get, list, and delete inline role policy",
-  withRole("itty-iam-inline-role", (roleName) =>
+  withRole("distilled-iam-inline-role", (roleName) =>
     Effect.gen(function* () {
       const policyName = "InlineRolePolicy";
 
@@ -924,8 +924,8 @@ test(
 
 test(
   "create instance profile, add/remove role, and delete",
-  withRole("itty-iam-profile-role", (roleName) =>
-    withInstanceProfile("itty-iam-instance-profile", (profileName) =>
+  withRole("distilled-iam-profile-role", (roleName) =>
+    withInstanceProfile("distilled-iam-instance-profile", (profileName) =>
       Effect.gen(function* () {
         // Get instance profile
         const profile = yield* getInstanceProfile({
@@ -992,7 +992,7 @@ test(
 
 test(
   "create, list, update, and delete access key",
-  withUser("itty-iam-access-key-user", (userName) =>
+  withUser("distilled-iam-access-key-user", (userName) =>
     Effect.gen(function* () {
       // Create access key
       const keyResult = yield* createAccessKey({ UserName: userName });
@@ -1081,10 +1081,10 @@ test(
 
 test(
   "create full IAM structure: user in group with role and policies",
-  withUser("itty-iam-full-test-user", (userName) =>
-    withGroup("itty-iam-full-test-group", (groupName) =>
-      withRole("itty-iam-full-test-role", (roleName) =>
-        withPolicy("itty-iam-full-test-policy", (policyArn) =>
+  withUser("distilled-iam-full-test-user", (userName) =>
+    withGroup("distilled-iam-full-test-group", (groupName) =>
+      withRole("distilled-iam-full-test-role", (roleName) =>
+        withPolicy("distilled-iam-full-test-policy", (policyArn) =>
           Effect.gen(function* () {
             // Set up relationships
             yield* addUserToGroup({

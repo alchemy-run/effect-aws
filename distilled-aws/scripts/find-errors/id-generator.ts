@@ -239,7 +239,7 @@ export const AWS_ID_PREFIXES: Record<string, string> = {
 
 /**
  * Resources that use name-based identifiers (not AWS-generated IDs).
- * These get fake names like "itty-fake-{resource}-notfound".
+ * These get fake names like "distilled-fake-{resource}-notfound".
  */
 export const NAME_BASED_RESOURCES = new Set([
   "Bucket", // S3 buckets use user-chosen names
@@ -287,13 +287,14 @@ export const SPECIAL_FORMAT_RESOURCES: Record<string, string> = {
 export const FIELD_FORMAT_OVERRIDES: Record<string, string> = {
   // SQS Queue URLs are full HTTPS URLs
   QueueUrl:
-    "https://sqs.us-east-1.amazonaws.com/123456789012/itty-fake-queue-notfound",
+    "https://sqs.us-east-1.amazonaws.com/123456789012/distilled-fake-queue-notfound",
   // SQS Source ARN for message move tasks
-  SourceArn: "arn:aws:sqs:us-east-1:123456789012:itty-fake-queue-notfound",
+  SourceArn: "arn:aws:sqs:us-east-1:123456789012:distilled-fake-queue-notfound",
   // SQS Destination ARN for message move tasks
-  DestinationArn: "arn:aws:sqs:us-east-1:123456789012:itty-fake-dlq-notfound",
+  DestinationArn:
+    "arn:aws:sqs:us-east-1:123456789012:distilled-fake-dlq-notfound",
   // SQS Task Handle for cancel operations
-  TaskHandle: "itty-fake-task-handle-notfound",
+  TaskHandle: "distilled-fake-task-handle-notfound",
 };
 
 // 17-char hex for resources
@@ -316,7 +317,7 @@ export const generateFakeId = (resourceType: string): string => {
 
   // Name-based resources get fake names
   if (NAME_BASED_RESOURCES.has(resourceType)) {
-    return `itty-fake-${resourceType.toLowerCase()}-notfound`;
+    return `distilled-fake-${resourceType.toLowerCase()}-notfound`;
   }
 
   // EC2-style resources get prefix-hex IDs

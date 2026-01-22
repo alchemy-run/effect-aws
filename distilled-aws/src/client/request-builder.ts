@@ -81,7 +81,7 @@ export const makeRequestBuilder = (
       ...request,
       headers: {
         ...request.headers,
-        "User-Agent": "itty-aws/1.0",
+        "User-Agent": "distilled-aws/1.0",
       },
     };
 

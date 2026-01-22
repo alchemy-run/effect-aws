@@ -103,7 +103,7 @@ const withTopic = <A, E, R>(
 
 test(
   "create topic, get attributes, list topics, and delete",
-  withTopic("itty-sns-lifecycle", (topicArn) =>
+  withTopic("distilled-sns-lifecycle", (topicArn) =>
     Effect.gen(function* () {
       // Get topic attributes
       const attributes = yield* getTopicAttributes({ TopicArn: topicArn });
@@ -124,7 +124,7 @@ test(
 
 test(
   "set topic attributes",
-  withTopic("itty-sns-attributes", (topicArn) =>
+  withTopic("distilled-sns-attributes", (topicArn) =>
     Effect.gen(function* () {
       // Set DisplayName attribute
       yield* setTopicAttributes({
@@ -161,14 +161,14 @@ test(
 
 test(
   "topic tagging: add, list, and remove tags",
-  withTopic("itty-sns-tagging", (topicArn) =>
+  withTopic("distilled-sns-tagging", (topicArn) =>
     Effect.gen(function* () {
       // Add tags
       yield* tagResource({
         ResourceArn: topicArn,
         Tags: [
           { Key: "Environment", Value: "Test" },
-          { Key: "Project", Value: "itty-aws" },
+          { Key: "Project", Value: "distilled-aws" },
           { Key: "Team", Value: "Platform" },
         ],
       });
@@ -214,7 +214,7 @@ test(
 
 test(
   "subscribe, list subscriptions, and unsubscribe",
-  withTopic("itty-sns-subscription", (topicArn) =>
+  withTopic("distilled-sns-subscription", (topicArn) =>
     Effect.gen(function* () {
       // Create a subscription using HTTPS endpoint
       // In real AWS, HTTPS subscriptions require confirmation so will be pending
@@ -239,7 +239,7 @@ test(
 
 test(
   "subscription attributes: get and set",
-  withTopic("itty-sns-sub-attributes", (topicArn) =>
+  withTopic("distilled-sns-sub-attributes", (topicArn) =>
     Effect.gen(function* () {
       // Create a subscription with HTTPS endpoint
       // Note: In real AWS, HTTPS subscriptions require confirmation so will be pending
@@ -315,12 +315,12 @@ test(
 
 test(
   "publish message to topic",
-  withTopic("itty-sns-publish", (topicArn) =>
+  withTopic("distilled-sns-publish", (topicArn) =>
     Effect.gen(function* () {
       // Publish a simple message
       const result = yield* publish({
         TopicArn: topicArn,
-        Message: "Hello from itty-aws!",
+        Message: "Hello from distilled-aws!",
         Subject: "Test Subject",
       });
 
@@ -331,7 +331,7 @@ test(
 
 test(
   "publish message with message attributes",
-  withTopic("itty-sns-publish-attributes", (topicArn) =>
+  withTopic("distilled-sns-publish-attributes", (topicArn) =>
     Effect.gen(function* () {
       // Publish a message with attributes
       const result = yield* publish({
@@ -356,7 +356,7 @@ test(
 
 test(
   "publish batch messages",
-  withTopic("itty-sns-publish-batch", (topicArn) =>
+  withTopic("distilled-sns-publish-batch", (topicArn) =>
     Effect.gen(function* () {
       // Publish multiple messages in a batch
       const result = yield* publishBatch({
@@ -387,7 +387,7 @@ test(
 
 test(
   "publish structured message (JSON)",
-  withTopic("itty-sns-publish-structured", (topicArn) =>
+  withTopic("distilled-sns-publish-structured", (topicArn) =>
     Effect.gen(function* () {
       // Publish a structured message for different protocols
       const messageStructure = JSON.stringify({
@@ -413,7 +413,7 @@ test(
 
 test(
   "topic permissions: add and remove",
-  withTopic("itty-sns-permissions", (topicArn) =>
+  withTopic("distilled-sns-permissions", (topicArn) =>
     Effect.gen(function* () {
       // Extract account ID from the topic ARN (format: arn:aws:sns:region:account-id:topic-name)
       const arnParts = topicArn.split(":");
@@ -466,7 +466,7 @@ test(
 
 test(
   "subscribe Lambda function to SNS topic (event source)",
-  withTopic("itty-sns-lambda-source", (topicArn) =>
+  withTopic("distilled-sns-lambda-source", (topicArn) =>
     Effect.gen(function* () {
       // Extract account ID and region from the topic ARN
       const arnParts = topicArn.split(":");
@@ -474,7 +474,7 @@ test(
       const accountId = arnParts[4];
 
       // Use an ARN that matches our account (will still be pending without Lambda permissions)
-      const lambdaArn = `arn:aws:lambda:${region}:${accountId}:function:itty-sns-test-lambda`;
+      const lambdaArn = `arn:aws:lambda:${region}:${accountId}:function:distilled-sns-test-lambda`;
 
       // Subscribe the Lambda function to the SNS topic
       const subscribeResult = yield* subscribe({
@@ -508,7 +508,7 @@ test(
 
 test(
   "subscribe SQS queue to SNS topic (fanout pattern)",
-  withTopic("itty-sns-sqs-fanout", (topicArn) =>
+  withTopic("distilled-sns-sqs-fanout", (topicArn) =>
     Effect.gen(function* () {
       // Extract account ID and region from the topic ARN
       const arnParts = topicArn.split(":");
@@ -516,7 +516,7 @@ test(
       const accountId = arnParts[4];
 
       // Use an ARN that matches our account
-      const sqsArn = `arn:aws:sqs:${region}:${accountId}:itty-sns-test-queue`;
+      const sqsArn = `arn:aws:sqs:${region}:${accountId}:distilled-sns-test-queue`;
 
       // Subscribe the SQS queue to the SNS topic
       // Note: In real AWS without proper permissions, subscription will be pending
@@ -567,7 +567,7 @@ test(
 
 test(
   "combined topic operations workflow",
-  withTopic("itty-sns-combined", (topicArn) =>
+  withTopic("distilled-sns-combined", (topicArn) =>
     Effect.gen(function* () {
       // 1. Set topic attributes
       yield* setTopicAttributes({

@@ -102,7 +102,7 @@ Design \`with${resources[0] || "Resource"}\` helper functions:
 - **Pattern:** cleanup first → create resource → run test → cleanup in finally
 - Use \`Effect.ensuring()\` for guaranteed cleanup
 - Cleanup should never throw: \`Effect.catchAll(() => Effect.void)\`
-- Use deterministic names: \`itty-cf-${service.name}-${op.operationName.toLowerCase()}\`
+- Use deterministic names: \`distilled-cf-${service.name}-${op.operationName.toLowerCase()}\`
 
 ### 4. Create Todo List
 Use the \`todowrite\` tool to create specific, actionable todos:
@@ -207,7 +207,7 @@ describe("ErrorTagName", () => {
 
 #### Helper Pattern
 \`\`\`typescript
-const RESOURCE_NAME = "itty-cf-${service.name}-${op.operationName.toLowerCase()}";
+const RESOURCE_NAME = "distilled-cf-${service.name}-${op.operationName.toLowerCase()}";
 
 const cleanup = (name: string) =>
 deleteResource({
@@ -253,7 +253,7 @@ When you see \`UnknownCloudflareError\` in test output:
 After implementing each todo, update its status to \`completed\` using \`todowrite\`.
 
 ## Important Conventions
-- **Resource names:** Always use \`itty-cf-${service.name}-{testname}\` (deterministic, no random values)
+- **Resource names:** Always use \`distilled-cf-${service.name}-{testname}\` (deterministic, no random values)
 - **Never use:** \`Date.now()\`, \`Math.random()\`, UUIDs
 - **Use \`yield*\`** to call operations (not \`await\`)
 - **Use \`Effect.gen(function* () { ... })\`** for test bodies
@@ -327,14 +327,14 @@ If helpers exist, verify:
 - Cleanup-first pattern (idempotent)
 - Uses \`Effect.ensuring()\` for guaranteed cleanup
 - Cleanup catches all errors: \`Effect.catchAll(() => Effect.void)\`
-- Uses deterministic names: \`itty-cf-${service.name}-*\`
+- Uses deterministic names: \`distilled-cf-${service.name}-*\`
 
 ### 6. Resource Naming
 Verify no random values:
 - No \`Date.now()\`
 - No \`Math.random()\`
 - No UUIDs
-- All names follow \`itty-cf-${service.name}-{testname}\` pattern
+- All names follow \`distilled-cf-${service.name}-{testname}\` pattern
 
 ## Your Response
 Return a structured response indicating:

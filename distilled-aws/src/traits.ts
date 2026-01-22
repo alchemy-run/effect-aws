@@ -18,7 +18,7 @@ import type { RuleSetObject } from "./rules-engine/expression.ts";
 /**
  * Internal symbol for annotation metadata storage
  */
-const annotationMetaSymbol = Symbol.for("itty-aws/annotation-meta");
+const annotationMetaSymbol = Symbol.for("distilled-aws/annotation-meta");
 
 /**
  * Any type that has an .annotations() method returning itself.
@@ -92,16 +92,16 @@ export function all(...annotations: Annotation[]): Annotation {
 // =============================================================================
 
 /** smithy.api#httpHeader - Bind member to an HTTP header */
-export const httpHeaderSymbol = Symbol.for("itty-aws/http-header");
+export const httpHeaderSymbol = Symbol.for("distilled-aws/http-header");
 export const HttpHeader = (name: string) =>
   makeAnnotation(httpHeaderSymbol, name);
 
 /** smithy.api#httpPayload - Bind member to the HTTP body */
-export const httpPayloadSymbol = Symbol.for("itty-aws/http-payload");
+export const httpPayloadSymbol = Symbol.for("distilled-aws/http-payload");
 export const HttpPayload = () => makeAnnotation(httpPayloadSymbol, true);
 
 /** smithy.api#httpLabel - Bind member to a URI label (path parameter) */
-export const httpLabelSymbol = Symbol.for("itty-aws/http-label");
+export const httpLabelSymbol = Symbol.for("distilled-aws/http-label");
 /**
  * HttpLabel trait - binds a member to a URI label (path parameter).
  * @param labelName - Optional. The name to use in the URI template. If provided, this name
@@ -113,24 +113,28 @@ export const HttpLabel = (labelName?: string) =>
   makeAnnotation(httpLabelSymbol, labelName ?? true);
 
 /** smithy.api#httpQuery - Bind member to a query string parameter */
-export const httpQuerySymbol = Symbol.for("itty-aws/http-query");
+export const httpQuerySymbol = Symbol.for("distilled-aws/http-query");
 export const HttpQuery = (name: string) =>
   makeAnnotation(httpQuerySymbol, name);
 
 /** smithy.api#httpQueryParams - Bind map members to query string parameters */
-export const httpQueryParamsSymbol = Symbol.for("itty-aws/http-query-params");
+export const httpQueryParamsSymbol = Symbol.for(
+  "distilled-aws/http-query-params",
+);
 export const HttpQueryParams = () =>
   makeAnnotation(httpQueryParamsSymbol, true);
 
 /** smithy.api#httpPrefixHeaders - Bind map members to prefixed HTTP headers */
 export const httpPrefixHeadersSymbol = Symbol.for(
-  "itty-aws/http-prefix-headers",
+  "distilled-aws/http-prefix-headers",
 );
 export const HttpPrefixHeaders = (prefix: string) =>
   makeAnnotation(httpPrefixHeadersSymbol, prefix);
 
 /** smithy.api#httpResponseCode - Bind member to the HTTP response status code */
-export const httpResponseCodeSymbol = Symbol.for("itty-aws/http-response-code");
+export const httpResponseCodeSymbol = Symbol.for(
+  "distilled-aws/http-response-code",
+);
 export const HttpResponseCode = () =>
   makeAnnotation(httpResponseCodeSymbol, true);
 
@@ -139,23 +143,23 @@ export const HttpResponseCode = () =>
 // =============================================================================
 
 /** smithy.api#xmlName - Custom XML element name */
-export const xmlNameSymbol = Symbol.for("itty-aws/xml-name");
+export const xmlNameSymbol = Symbol.for("distilled-aws/xml-name");
 export const XmlName = (name: string) => makeAnnotation(xmlNameSymbol, name);
 
 /** smithy.api#xmlFlattened - Flatten list/map (no wrapper element) */
-export const xmlFlattenedSymbol = Symbol.for("itty-aws/xml-flattened");
+export const xmlFlattenedSymbol = Symbol.for("distilled-aws/xml-flattened");
 export const XmlFlattened = () => makeAnnotation(xmlFlattenedSymbol, true);
 
 /** smithy.api#sparse - List/map may contain null values */
-export const sparseSymbol = Symbol.for("itty-aws/sparse");
+export const sparseSymbol = Symbol.for("distilled-aws/sparse");
 export const Sparse = () => makeAnnotation(sparseSymbol, true);
 
 /** smithy.api#xmlAttribute - Serialize as XML attribute instead of element */
-export const xmlAttributeSymbol = Symbol.for("itty-aws/xml-attribute");
+export const xmlAttributeSymbol = Symbol.for("distilled-aws/xml-attribute");
 export const XmlAttribute = () => makeAnnotation(xmlAttributeSymbol, true);
 
 /** smithy.api#xmlNamespace - XML namespace URI for the element */
-export const xmlNamespaceSymbol = Symbol.for("itty-aws/xml-namespace");
+export const xmlNamespaceSymbol = Symbol.for("distilled-aws/xml-namespace");
 export const XmlNamespace = (uri: string) =>
   makeAnnotation(xmlNamespaceSymbol, uri);
 
@@ -164,7 +168,7 @@ export const XmlNamespace = (uri: string) =>
 // =============================================================================
 
 /** smithy.api#jsonName - Custom JSON key name */
-export const jsonNameSymbol = Symbol.for("itty-aws/json-name");
+export const jsonNameSymbol = Symbol.for("distilled-aws/json-name");
 
 /** Symbol used to detect PropertySignature types */
 const propertySignatureSymbol = Symbol.for("effect/PropertySignature");
@@ -204,7 +208,7 @@ export const JsonName = (name: string) => {
 
 /** aws.protocols#ec2QueryName - Custom query key name for EC2 protocol */
 export const ec2QueryNameSymbol = Symbol.for(
-  "itty-aws/aws.protocols#ec2QueryName",
+  "distilled-aws/aws.protocols#ec2QueryName",
 );
 export const Ec2QueryName = (name: string) =>
   makeAnnotation(ec2QueryNameSymbol, name);
@@ -214,7 +218,9 @@ export const Ec2QueryName = (name: string) =>
 // =============================================================================
 
 /** smithy.api#timestampFormat - Timestamp serialization format */
-export const timestampFormatSymbol = Symbol.for("itty-aws/timestamp-format");
+export const timestampFormatSymbol = Symbol.for(
+  "distilled-aws/timestamp-format",
+);
 export type TimestampFormatType = "date-time" | "http-date" | "epoch-seconds";
 
 /**
@@ -254,7 +260,7 @@ export const TimestampFormat = (format: TimestampFormatType) => {
 // =============================================================================
 
 /** smithy.api#http - HTTP binding for an operation (applied to request schema) */
-export const httpSymbol = Symbol.for("itty-aws/smithy.api#http");
+export const httpSymbol = Symbol.for("distilled-aws/smithy.api#http");
 export interface HttpTrait {
   method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH" | "HEAD" | "OPTIONS";
   uri: string;
@@ -266,7 +272,7 @@ export const Http = (trait: HttpTrait) => makeAnnotation(httpSymbol, trait);
 // =============================================================================
 
 /** aws.api#service - AWS service identification */
-export const awsApiServiceSymbol = Symbol.for("itty-aws/aws.api#service");
+export const awsApiServiceSymbol = Symbol.for("distilled-aws/aws.api#service");
 export interface AwsApiServiceTrait {
   sdkId: string;
   arnNamespace?: string;
@@ -280,7 +286,7 @@ export const AwsApiService = (trait: AwsApiServiceTrait) =>
   makeAnnotation(awsApiServiceSymbol, trait);
 
 /** aws.auth#sigv4 - SigV4 authentication configuration */
-export const awsAuthSigv4Symbol = Symbol.for("itty-aws/aws.auth#sigv4");
+export const awsAuthSigv4Symbol = Symbol.for("distilled-aws/aws.auth#sigv4");
 export interface AwsAuthSigv4Trait {
   name: string;
 }
@@ -298,7 +304,7 @@ export interface ProtocolAnnotationValue {
 }
 
 /** Common symbol for discovering the protocol from any annotation */
-export const protocolSymbol = Symbol.for("itty-aws/protocol");
+export const protocolSymbol = Symbol.for("distilled-aws/protocol");
 
 /**
  * Helper to create protocol annotations with embedded implementation.
@@ -335,7 +341,7 @@ function makeProtocolAnnotation<T extends object = object>(
 
 /** aws.protocols#restXml */
 export const awsProtocolsRestXmlSymbol = Symbol.for(
-  "itty-aws/aws.protocols#restXml",
+  "distilled-aws/aws.protocols#restXml",
 );
 export interface AwsProtocolsRestXmlTrait {
   noErrorWrapping?: boolean;
@@ -345,7 +351,7 @@ export const AwsProtocolsRestXml = (trait?: AwsProtocolsRestXmlTrait) =>
 
 /** aws.protocols#restJson1 */
 export const awsProtocolsRestJson1Symbol = Symbol.for(
-  "itty-aws/aws.protocols#restJson1",
+  "distilled-aws/aws.protocols#restJson1",
 );
 export interface AwsProtocolsRestJson1Trait {
   http?: string[];
@@ -356,7 +362,7 @@ export const AwsProtocolsRestJson1 = (trait?: AwsProtocolsRestJson1Trait) =>
 
 /** aws.protocols#awsJson1_0 */
 export const awsProtocolsAwsJson1_0Symbol = Symbol.for(
-  "itty-aws/aws.protocols#awsJson1_0",
+  "distilled-aws/aws.protocols#awsJson1_0",
 );
 export interface AwsProtocolsAwsJson1_0Trait {
   http?: string[];
@@ -371,7 +377,7 @@ export const AwsProtocolsAwsJson1_0 = (trait?: AwsProtocolsAwsJson1_0Trait) =>
 
 /** aws.protocols#awsJson1_1 */
 export const awsProtocolsAwsJson1_1Symbol = Symbol.for(
-  "itty-aws/aws.protocols#awsJson1_1",
+  "distilled-aws/aws.protocols#awsJson1_1",
 );
 export interface AwsProtocolsAwsJson1_1Trait {
   http?: string[];
@@ -386,14 +392,14 @@ export const AwsProtocolsAwsJson1_1 = (trait?: AwsProtocolsAwsJson1_1Trait) =>
 
 /** aws.protocols#awsQuery */
 export const awsProtocolsAwsQuerySymbol = Symbol.for(
-  "itty-aws/aws.protocols#awsQuery",
+  "distilled-aws/aws.protocols#awsQuery",
 );
 export const AwsProtocolsAwsQuery = () =>
   makeProtocolAnnotation(awsProtocolsAwsQuerySymbol, awsQueryProtocol);
 
 /** aws.protocols#ec2Query */
 export const awsProtocolsEc2QuerySymbol = Symbol.for(
-  "itty-aws/aws.protocols#ec2Query",
+  "distilled-aws/aws.protocols#ec2Query",
 );
 export const AwsProtocolsEc2Query = () =>
   makeProtocolAnnotation(awsProtocolsEc2QuerySymbol, ec2QueryProtocol);
@@ -410,11 +416,11 @@ export interface MiddlewareAnnotationValue {
 }
 
 /** Common symbol for discovering middleware from annotations */
-export const middlewareSymbol = Symbol.for("itty-aws/middleware");
+export const middlewareSymbol = Symbol.for("distilled-aws/middleware");
 
 /** aws.protocols#httpChecksum - HTTP checksum configuration with embedded middleware */
 export const awsProtocolsHttpChecksumSymbol = Symbol.for(
-  "itty-aws/aws.protocols#httpChecksum",
+  "distilled-aws/aws.protocols#httpChecksum",
 );
 export interface AwsProtocolsHttpChecksumTrait {
   requestAlgorithmMember?: string;
@@ -456,7 +462,7 @@ function getMiddlewareList(
 // =============================================================================
 
 /** Service API version (from service shape's version property) */
-export const serviceVersionSymbol = Symbol.for("itty-aws/service-version");
+export const serviceVersionSymbol = Symbol.for("distilled-aws/service-version");
 export const ServiceVersion = (version: string) =>
   makeAnnotation(serviceVersionSymbol, version);
 
@@ -466,7 +472,7 @@ export const ServiceVersion = (version: string) =>
 
 /** smithy.rules#endpointRuleSet - Endpoint resolution rule set (legacy JSON) */
 export const endpointRuleSetSymbol = Symbol.for(
-  "itty-aws/smithy.rules#endpointRuleSet",
+  "distilled-aws/smithy.rules#endpointRuleSet",
 );
 export const EndpointRuleSet = (ruleSet: unknown) =>
   makeAnnotation(endpointRuleSetSymbol, ruleSet);
@@ -511,13 +517,15 @@ export type EndpointResolverFn = (
 ) => EndpointResolverResult;
 
 /** Endpoint resolver - compiled function for endpoint resolution */
-export const endpointResolverSymbol = Symbol.for("itty-aws/endpoint-resolver");
+export const endpointResolverSymbol = Symbol.for(
+  "distilled-aws/endpoint-resolver",
+);
 export const EndpointResolver = (resolver: EndpointResolverFn) =>
   makeAnnotation(endpointResolverSymbol, resolver);
 
 /** smithy.rules#clientContextParams - Client-level endpoint parameters */
 export const clientContextParamsSymbol = Symbol.for(
-  "itty-aws/smithy.rules#clientContextParams",
+  "distilled-aws/smithy.rules#clientContextParams",
 );
 export interface ClientContextParamDefinition {
   type: string;
@@ -528,29 +536,29 @@ export const ClientContextParams = (
 ) => makeAnnotation(clientContextParamsSymbol, params);
 
 /** smithy.rules#contextParam - Endpoint routing context parameter */
-export const contextParamSymbol = Symbol.for("itty-aws/context-param");
+export const contextParamSymbol = Symbol.for("distilled-aws/context-param");
 export const ContextParam = (name: string) =>
   makeAnnotation(contextParamSymbol, name);
 
 /** smithy.rules#staticContextParams - Static endpoint parameters for an operation */
 export const staticContextParamsSymbol = Symbol.for(
-  "itty-aws/smithy.rules#staticContextParams",
+  "distilled-aws/smithy.rules#staticContextParams",
 );
 export type StaticContextParamsDefinition = Record<string, { value: unknown }>;
 export const StaticContextParams = (params: StaticContextParamsDefinition) =>
   makeAnnotation(staticContextParamsSymbol, params);
 
 /** smithy.api#hostLabel - Bind member to a label in the endpoint hostPrefix */
-export const hostLabelSymbol = Symbol.for("itty-aws/host-label");
+export const hostLabelSymbol = Symbol.for("distilled-aws/host-label");
 export const HostLabel = () => makeAnnotation(hostLabelSymbol, true);
 
 /** smithy.api#httpError - Custom HTTP status code for error responses */
-export const httpErrorSymbol = Symbol.for("itty-aws/http-error");
+export const httpErrorSymbol = Symbol.for("distilled-aws/http-error");
 export const HttpError = (statusCode: number) =>
   makeAnnotation(httpErrorSymbol, statusCode);
 
 /** smithy.api#retryable - Indicates that an error MAY be retried by the client */
-export const retryableSymbol = Symbol.for("itty-aws/retryable");
+export const retryableSymbol = Symbol.for("distilled-aws/retryable");
 export interface RetryableTrait {
   throttling?: boolean;
 }
@@ -559,14 +567,14 @@ export const Retryable = (trait?: RetryableTrait) =>
 
 /** smithy.api#httpChecksumRequired - Indicates operation requires Content-MD5 checksum */
 export const httpChecksumRequiredSymbol = Symbol.for(
-  "itty-aws/http-checksum-required",
+  "distilled-aws/http-checksum-required",
 );
 export const HttpChecksumRequired = () =>
   makeAnnotation(httpChecksumRequiredSymbol, true);
 
 /** aws.protocols#awsQueryError - Custom error Code and HTTP response code for awsQuery protocol */
 export const awsQueryErrorSymbol = Symbol.for(
-  "itty-aws/aws.protocols#awsQueryError",
+  "distilled-aws/aws.protocols#awsQueryError",
 );
 export interface AwsQueryErrorTrait {
   code: string;
@@ -577,7 +585,7 @@ export const AwsQueryError = (trait: AwsQueryErrorTrait) =>
 
 /** aws.customizations#s3UnwrappedXmlOutput - S3 output not wrapped in operation-level XML node */
 export const s3UnwrappedXmlOutputSymbol = Symbol.for(
-  "itty-aws/aws.customizations#s3UnwrappedXmlOutput",
+  "distilled-aws/aws.customizations#s3UnwrappedXmlOutput",
 );
 export const S3UnwrappedXmlOutput = () =>
   makeAnnotation(s3UnwrappedXmlOutputSymbol, true);
@@ -590,7 +598,9 @@ export const S3UnwrappedXmlOutput = () =>
  * smithy.api#idempotencyToken - Marks a member as an idempotency token.
  * When set, the SDK will automatically generate a UUID if the value is not provided.
  */
-export const idempotencyTokenSymbol = Symbol.for("itty-aws/idempotency-token");
+export const idempotencyTokenSymbol = Symbol.for(
+  "distilled-aws/idempotency-token",
+);
 export const IdempotencyToken = () =>
   makeAnnotation(idempotencyTokenSymbol, true);
 
@@ -627,7 +637,7 @@ export const Blob = S.transform(
 // =============================================================================
 
 /** smithy.api#streaming - Marks a type as streaming/blob (raw body, not serialized) */
-export const streamingSymbol = Symbol.for("itty-aws/streaming");
+export const streamingSymbol = Symbol.for("distilled-aws/streaming");
 
 /**
  * Streaming trait - behavior depends on what it's applied to:
@@ -707,7 +717,7 @@ export const isStreamingType = (ast: AST.AST): boolean => {
  * many AWS services (including S3) don't support it. We buffer all streaming
  * bodies when Content-Length is not provided.
  */
-export const requiresLengthSymbol = Symbol.for("itty-aws/requires-length");
+export const requiresLengthSymbol = Symbol.for("distilled-aws/requires-length");
 export const RequiresLength = () => makeAnnotation(requiresLengthSymbol, true);
 
 /** Check if an AST has the requiresLength trait */
@@ -805,11 +815,11 @@ export const StreamBody = () =>
 // =============================================================================
 
 /** smithy.api#eventHeader - Bind member to an event stream header */
-export const eventHeaderSymbol = Symbol.for("itty-aws/event-header");
+export const eventHeaderSymbol = Symbol.for("distilled-aws/event-header");
 export const EventHeader = () => makeAnnotation(eventHeaderSymbol, true);
 
 /** smithy.api#eventPayload - Bind member to the event payload */
-export const eventPayloadSymbol = Symbol.for("itty-aws/event-payload");
+export const eventPayloadSymbol = Symbol.for("distilled-aws/event-payload");
 export const EventPayload = () => makeAnnotation(eventPayloadSymbol, true);
 
 /**
@@ -831,7 +841,9 @@ export const EventStream = <A, I, R>(
   });
 
 /** Symbol to identify input event streams (request direction) */
-export const inputEventStreamSymbol = Symbol.for("itty-aws/input-event-stream");
+export const inputEventStreamSymbol = Symbol.for(
+  "distilled-aws/input-event-stream",
+);
 
 /**
  * Input event stream schema helper - wraps a union schema into a Stream type for request bodies.

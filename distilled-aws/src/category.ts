@@ -28,13 +28,13 @@ export type Category =
   | typeof ThrottlingError
   | typeof TimeoutError;
 
-export const categoriesKey = "@alchemy-run/itty-aws/error/categories";
+export const categoriesKey = "@alchemy-run/distilled-aws/error/categories";
 
 /**
  * Key for storing retryable trait on error prototypes.
  * Mirrors Smithy's @retryable trait for runtime checking.
  */
-export const retryableKey = "@alchemy-run/itty-aws/error/retryable";
+export const retryableKey = "@alchemy-run/distilled-aws/error/retryable";
 
 export interface RetryableInfo {
   throttling?: boolean;

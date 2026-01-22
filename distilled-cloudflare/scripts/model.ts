@@ -239,7 +239,7 @@ export function computeOperationName(
 
 /**
  * Normalize operations for a service.
- * 
+ *
  * This applies post-processing that requires knowledge of ALL operations:
  * - Renames "update" to "put" for resources without a "create" operation
  * - Renames "bulkUpdate" to "bulkPut" for resources without a "bulkCreate"

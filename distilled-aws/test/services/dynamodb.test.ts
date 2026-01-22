@@ -14,7 +14,7 @@ import {
 } from "../../src/services/dynamodb.ts";
 import { afterAll, beforeAll, test } from "../test.ts";
 
-const TEST_TABLE_NAME = "itty-aws-test-table";
+const TEST_TABLE_NAME = "distilled-aws-test-table";
 
 const retrySchedule = Schedule.intersect(
   Schedule.recurs(30),

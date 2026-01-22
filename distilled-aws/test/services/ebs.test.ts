@@ -69,7 +69,7 @@ const withSnapshot = <A, E, R>(
     const startResult = yield* startSnapshot({
       VolumeSize: 1,
       Description: description,
-      Tags: [{ Key: "itty-test", Value: "ebs" }],
+      Tags: [{ Key: "distilled-test", Value: "ebs" }],
     });
 
     const snapshotId = startResult.SnapshotId!;
@@ -87,7 +87,7 @@ const withSnapshot = <A, E, R>(
 test(
   "start snapshot, write block, and complete",
   { timeout: 30_000 },
-  withSnapshot("itty-ebs-lifecycle", (snapshotId) =>
+  withSnapshot("distilled-ebs-lifecycle", (snapshotId) =>
     Effect.gen(function* () {
       // Generate test block data (512 KiB filled with 0x42 = 'B')
       const testData = new Uint8Array(BLOCK_SIZE).fill(0x42);
@@ -128,7 +128,7 @@ test(
 test.skip(
   "full lifecycle: write, complete, wait, and read snapshot",
   { timeout: 300_000 },
-  withSnapshot("itty-ebs-full-lifecycle", (snapshotId) =>
+  withSnapshot("distilled-ebs-full-lifecycle", (snapshotId) =>
     Effect.gen(function* () {
       const testData = new Uint8Array(BLOCK_SIZE).fill(0x42);
       const checksum = yield* sha256Base64(testData);
@@ -207,7 +207,7 @@ test(
 test.skip(
   "listSnapshotBlocks.pages() streams full response pages",
   { timeout: 300_000 },
-  withSnapshot("itty-ebs-pagination", (snapshotId) =>
+  withSnapshot("distilled-ebs-pagination", (snapshotId) =>
     Effect.gen(function* () {
       // Write multiple blocks to test pagination
       const blocksToWrite = 3;
@@ -260,8 +260,8 @@ test.skip(
     // Create first (parent) snapshot with block 0
     const parentResult = yield* startSnapshot({
       VolumeSize: 1,
-      Description: "itty-ebs-parent",
-      Tags: [{ Key: "itty-test", Value: "ebs" }],
+      Description: "distilled-ebs-parent",
+      Tags: [{ Key: "distilled-test", Value: "ebs" }],
     });
     const parentId = parentResult.SnapshotId!;
 
@@ -289,8 +289,8 @@ test.skip(
       const childResult = yield* startSnapshot({
         VolumeSize: 1,
         ParentSnapshotId: parentId,
-        Description: "itty-ebs-child",
-        Tags: [{ Key: "itty-test", Value: "ebs" }],
+        Description: "distilled-ebs-child",
+        Tags: [{ Key: "distilled-test", Value: "ebs" }],
       });
       const childId = childResult.SnapshotId!;
 
@@ -346,7 +346,7 @@ test.skip(
 test(
   "putSnapshotBlock with Effect Stream body",
   { timeout: 30_000 },
-  withSnapshot("itty-ebs-streaming-put", (snapshotId) =>
+  withSnapshot("distilled-ebs-streaming-put", (snapshotId) =>
     Effect.gen(function* () {
       // Create test data as multiple chunks
       const chunkSize = 65_536; // 64 KiB chunks
@@ -396,7 +396,7 @@ test(
 test.skip(
   "getSnapshotBlock streams output correctly",
   { timeout: 300_000 },
-  withSnapshot("itty-ebs-streaming-get", (snapshotId) =>
+  withSnapshot("distilled-ebs-streaming-get", (snapshotId) =>
     Effect.gen(function* () {
       // Write a block with pattern data
       const testData = new Uint8Array(BLOCK_SIZE);

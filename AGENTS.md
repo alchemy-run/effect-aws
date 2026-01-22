@@ -142,12 +142,12 @@ Repeat until all tests pass.
 Deterministic names enable cleanup of leaked resources:
 
 ```
-itty-{service}-{testname}
+distilled-{service}-{testname}
 ```
 
 Examples:
-- `itty-s3-cors-test`
-- `itty-cf-workers-upload`
+- `distilled-s3-cors-test`
+- `distilled-cf-workers-upload`
 
 Never use random suffixes like `Date.now()` or `uuid()`.
 

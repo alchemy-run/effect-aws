@@ -192,7 +192,7 @@ const withGraphqlApi = <A, E, R>(
       authenticationType: "API_KEY",
       tags: {
         Environment: "test",
-        Project: "itty-aws",
+        Project: "distilled-aws",
       },
     }).pipe(Effect.retry(retrySchedule));
 
@@ -232,7 +232,7 @@ const withDataSource = <A, E, R>(
       apiId,
       name: dataSourceName,
       type: "NONE",
-      description: "Test NONE data source for itty-aws",
+      description: "Test NONE data source for distilled-aws",
     }).pipe(Effect.retry(retrySchedule));
 
     return yield* testFn(dataSourceName).pipe(
@@ -250,13 +250,13 @@ const withDataSource = <A, E, R>(
 
   test(
     "create, get, list, and delete a GraphQL API",
-    withGraphqlApi("itty-appsync-lifecycle", {}, ({ apiId }) =>
+    withGraphqlApi("distilled-appsync-lifecycle", {}, ({ apiId }) =>
       Effect.gen(function* () {
         // Get API details
         const result = yield* getGraphqlApi({ apiId });
 
         expect(result.graphqlApi).toBeDefined();
-        expect(result.graphqlApi?.name).toEqual("itty-appsync-lifecycle");
+        expect(result.graphqlApi?.name).toEqual("distilled-appsync-lifecycle");
         expect(result.graphqlApi?.authenticationType).toEqual("API_KEY");
 
         // List APIs and verify our API is included
@@ -267,7 +267,7 @@ const withDataSource = <A, E, R>(
           (api) => api.apiId === apiId,
         );
         expect(found).toBeDefined();
-        expect(found?.name).toEqual("itty-appsync-lifecycle");
+        expect(found?.name).toEqual("distilled-appsync-lifecycle");
       }),
     ),
   );
@@ -278,7 +278,7 @@ const withDataSource = <A, E, R>(
 
   test(
     "create, get, list, and delete a NONE data source",
-    withGraphqlApi("itty-appsync-datasource", {}, ({ apiId }) =>
+    withGraphqlApi("distilled-appsync-datasource", {}, ({ apiId }) =>
       withDataSource(apiId, "itty_aws_test_datasource", (dataSourceName) =>
         Effect.gen(function* () {
           // Get the data source
@@ -309,7 +309,7 @@ const withDataSource = <A, E, R>(
 
   test(
     "create, get, list, and delete a type",
-    withGraphqlApi("itty-appsync-types", { withSchema: true }, ({ apiId }) =>
+    withGraphqlApi("distilled-appsync-types", { withSchema: true }, ({ apiId }) =>
       Effect.gen(function* () {
         const typeName = "TestCustomType";
         const typeDefinition = `
@@ -365,7 +365,7 @@ const withDataSource = <A, E, R>(
   test(
     "create, get, list, and delete a resolver",
     withGraphqlApi(
-      "itty-appsync-resolvers",
+      "distilled-appsync-resolvers",
       { withSchema: true },
       ({ apiId }) =>
         withDataSource(apiId, "itty_resolver_test_ds", (dataSourceName) =>
@@ -448,7 +448,7 @@ const withDataSource = <A, E, R>(
 
   test(
     "tag and untag GraphQL API",
-    withGraphqlApi("itty-appsync-tagging", {}, ({ arn }) =>
+    withGraphqlApi("distilled-appsync-tagging", {}, ({ arn }) =>
       Effect.gen(function* () {
         // List current tags (should have the initial tags from creation)
         const initialTags = yield* listTagsForResource({
@@ -457,7 +457,7 @@ const withDataSource = <A, E, R>(
 
         expect(initialTags.tags).toBeDefined();
         expect(initialTags.tags?.["Environment"]).toEqual("test");
-        expect(initialTags.tags?.["Project"]).toEqual("itty-aws");
+        expect(initialTags.tags?.["Project"]).toEqual("distilled-aws");
 
         // Add new tags
         yield* tagResource({
@@ -506,7 +506,7 @@ const withDataSource = <A, E, R>(
 
   test(
     "create schema for GraphQL API",
-    withGraphqlApi("itty-appsync-schema", {}, ({ apiId }) =>
+    withGraphqlApi("distilled-appsync-schema", {}, ({ apiId }) =>
       Effect.gen(function* () {
         // Start schema creation
         const result = yield* startSchemaCreation({

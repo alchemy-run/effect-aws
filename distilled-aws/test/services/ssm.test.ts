@@ -17,7 +17,7 @@ import {
 } from "../../src/services/ssm.ts";
 import { test } from "../test.ts";
 
-const MAINTENANCE_WINDOW_NAME = "itty-ssm-idempotency-test";
+const MAINTENANCE_WINDOW_NAME = "distilled-ssm-idempotency-test";
 
 /**
  * Helper to clean up maintenance window
@@ -92,7 +92,7 @@ test(
 test(
   "create maintenance window with explicit ClientToken",
   Effect.gen(function* () {
-    const windowName = "itty-ssm-explicit-token-test";
+    const windowName = "distilled-ssm-explicit-token-test";
     const explicitToken = "explicit-test-token-12345";
 
     // Clean up first
@@ -118,7 +118,7 @@ test(
 test(
   "idempotent create with same ClientToken returns same result",
   Effect.gen(function* () {
-    const windowName = "itty-ssm-idempotent-test";
+    const windowName = "distilled-ssm-idempotent-test";
     const clientToken = "idempotent-test-token-67890";
 
     // Clean up first
@@ -179,7 +179,7 @@ test(
 test(
   "create, get, and delete maintenance window lifecycle",
   Effect.gen(function* () {
-    const windowName = "itty-ssm-lifecycle-test";
+    const windowName = "distilled-ssm-lifecycle-test";
 
     // Clean up first
     yield* cleanupMaintenanceWindowByName(windowName);

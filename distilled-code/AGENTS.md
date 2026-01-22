@@ -13,6 +13,10 @@ distill "implement the API endpoints"
 # Filter agents by pattern
 distill --filter "api/*" "implement the API endpoints"
 
+# Run agents in parallel (default: 1)
+distill --concurrency 10 "implement the API endpoints"
+distill -j 10 "implement the API endpoints"  # short form
+
 # List all configured agents
 distill --list
 
@@ -25,6 +29,16 @@ distill -c ./my.config.ts "implement the API"
 # Use a different model
 distill -m claude-opus "implement the API"
 ```
+
+### CLI Options
+
+| Option | Alias | Description | Default |
+| ------ | ----- | ----------- | ------- |
+| `--filter` | `-f` | Glob pattern to filter agents | `*` (all) |
+| `--concurrency` | `-j` | Number of agents to run in parallel | `1` |
+| `--config` | `-c` | Path to config file | `./distilled.config.ts` |
+| `--model` | `-m` | Model to use | `claude-sonnet` |
+| `--list` | `-l` | List agents (optionally filtered) | `false` |
 
 ## Configuration
 

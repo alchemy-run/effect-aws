@@ -78,7 +78,7 @@ const withOriginAccessControl = <A, E, R>(
     const { id, etag } = yield* createOriginAccessControl({
       OriginAccessControlConfig: {
         Name: name,
-        Description: "Test OAC for itty-aws",
+        Description: "Test OAC for distilled-aws",
         SigningProtocol: "sigv4",
         SigningBehavior: "always",
         OriginAccessControlOriginType: "s3",
@@ -152,7 +152,7 @@ const withDistribution = <A, E, R>(
     const { id, etag, arn } = yield* createDistribution({
       DistributionConfig: {
         CallerReference: callerReference,
-        Comment: "itty-aws test distribution",
+        Comment: "distilled-aws test distribution",
         Enabled: false, // Disabled for testing
         Origins: {
           Quantity: 1,
@@ -216,14 +216,14 @@ test(
       return;
     }
 
-    yield* withOriginAccessControl("itty-cf-oac-lifecycle", (id, _etag) =>
+    yield* withOriginAccessControl("distilled-cf-oac-lifecycle", (id, _etag) =>
       Effect.gen(function* () {
         // Get origin access control to verify it exists
         const oac = yield* getOriginAccessControl({ Id: id });
         expect(oac.OriginAccessControl?.Id).toEqual(id);
         expect(
           oac.OriginAccessControl?.OriginAccessControlConfig?.Name,
-        ).toEqual("itty-cf-oac-lifecycle");
+        ).toEqual("distilled-cf-oac-lifecycle");
 
         // List origin access controls
         const listResult = yield* listOriginAccessControls({});
@@ -246,14 +246,14 @@ test(
       return;
     }
 
-    yield* withOriginAccessControl("itty-cf-oac-update", (id, etag) =>
+    yield* withOriginAccessControl("distilled-cf-oac-update", (id, etag) =>
       Effect.gen(function* () {
         // Update the OAC - keep the same name to avoid conflicts with previous runs
         const updateResult = yield* updateOriginAccessControl({
           Id: id,
           IfMatch: etag,
           OriginAccessControlConfig: {
-            Name: "itty-cf-oac-update", // Same name - only update description
+            Name: "distilled-cf-oac-update", // Same name - only update description
             Description: "Updated description",
             SigningProtocol: "sigv4",
             SigningBehavior: "always",
@@ -263,7 +263,7 @@ test(
 
         expect(
           updateResult.OriginAccessControl?.OriginAccessControlConfig?.Name,
-        ).toEqual("itty-cf-oac-update");
+        ).toEqual("distilled-cf-oac-update");
         expect(
           updateResult.OriginAccessControl?.OriginAccessControlConfig
             ?.Description,
@@ -293,7 +293,7 @@ test(
       return;
     }
 
-    yield* withDistribution("itty-cf-dist-lifecycle", (id, _etag, _arn) =>
+    yield* withDistribution("distilled-cf-dist-lifecycle", (id, _etag, _arn) =>
       Effect.gen(function* () {
         // Get distribution to verify it exists
         const dist = yield* getDistribution({ Id: id });
@@ -302,7 +302,7 @@ test(
         const comment = dist.Distribution?.DistributionConfig?.Comment;
         expect(
           Redacted.isRedacted(comment) ? Redacted.value(comment) : comment,
-        ).toEqual("itty-aws test distribution");
+        ).toEqual("distilled-aws test distribution");
 
         // Get distribution config
         const config = yield* getDistributionConfig({ Id: id });
@@ -333,13 +333,13 @@ test(
       return;
     }
 
-    yield* withDistribution("itty-cf-invalidation", (id, _etag, _arn) =>
+    yield* withDistribution("distilled-cf-invalidation", (id, _etag, _arn) =>
       Effect.gen(function* () {
         // Create an invalidation
         const invalidation = yield* createInvalidation({
           DistributionId: id,
           InvalidationBatch: {
-            CallerReference: "itty-cf-invalidation-batch",
+            CallerReference: "distilled-cf-invalidation-batch",
             Paths: {
               Quantity: 1,
               Items: ["/*"],
@@ -378,7 +378,7 @@ test(
       return;
     }
 
-    yield* withDistribution("itty-cf-tagging", (_id, _etag, arn) =>
+    yield* withDistribution("distilled-cf-tagging", (_id, _etag, arn) =>
       Effect.gen(function* () {
         // Add tags
         yield* tagResource({
@@ -386,7 +386,7 @@ test(
           Tags: {
             Items: [
               { Key: "Environment", Value: "Test" },
-              { Key: "Project", Value: "itty-aws" },
+              { Key: "Project", Value: "distilled-aws" },
             ],
           },
         });
@@ -417,7 +417,7 @@ test(
         const projectTag = tagsAfter.Tags?.Items?.find(
           (t) => t.Key === "Project",
         );
-        expect(projectTag?.Value).toEqual("itty-aws");
+        expect(projectTag?.Value).toEqual("distilled-aws");
       }),
     );
   }),

@@ -272,10 +272,10 @@ interface NetworkingResources {
   routeTableAssociationId: string;
 }
 
-const VPC_NAME = "itty-ecs-test-vpc";
-const SUBNET_NAME = "itty-ecs-test-subnet";
-const IGW_NAME = "itty-ecs-test-igw";
-const RT_NAME = "itty-ecs-test-rt";
+const VPC_NAME = "distilled-ecs-test-vpc";
+const SUBNET_NAME = "distilled-ecs-test-subnet";
+const IGW_NAME = "distilled-ecs-test-igw";
+const RT_NAME = "distilled-ecs-test-rt";
 
 // Module-level variable to hold networking resources
 let networking: NetworkingResources;
@@ -520,7 +520,7 @@ afterAll(cleanupNetworking);
 
 test(
   "create cluster, describe clusters, list clusters, and delete",
-  withCluster("itty-ecs-lifecycle-cluster", (clusterArn) =>
+  withCluster("distilled-ecs-lifecycle-cluster", (clusterArn) =>
     Effect.gen(function* () {
       // Describe cluster
       const describeResult = yield* describeClusters({
@@ -531,7 +531,7 @@ test(
       expect(describeResult.clusters!.length).toBeGreaterThan(0);
 
       const cluster = describeResult.clusters![0];
-      expect(cluster.clusterName).toEqual("itty-ecs-lifecycle-cluster");
+      expect(cluster.clusterName).toEqual("distilled-ecs-lifecycle-cluster");
       expect(cluster.status).toEqual("ACTIVE");
 
       // List clusters and verify our cluster is in the list with retry for eventual consistency
@@ -558,7 +558,7 @@ test(
 
 test(
   "create cluster with settings",
-  withCluster("itty-ecs-settings-cluster", (clusterArn) =>
+  withCluster("distilled-ecs-settings-cluster", (clusterArn) =>
     Effect.gen(function* () {
       // Note: We create the cluster in withCluster, but we need to verify settings
       // Let's update the cluster with settings
@@ -571,7 +571,7 @@ test(
 
       expect(describeResult.clusters?.length).toBeGreaterThan(0);
       const cluster = describeResult.clusters![0];
-      expect(cluster.clusterName).toEqual("itty-ecs-settings-cluster");
+      expect(cluster.clusterName).toEqual("distilled-ecs-settings-cluster");
 
       // Cluster settings should be present (may have default values)
       expect(cluster.settings).toBeDefined();
@@ -585,14 +585,14 @@ test(
 
 test(
   "tag cluster, list tags, and untag cluster",
-  withCluster("itty-ecs-tagging-cluster", (clusterArn) =>
+  withCluster("distilled-ecs-tagging-cluster", (clusterArn) =>
     Effect.gen(function* () {
       // Tag the cluster
       yield* tagResource({
         resourceArn: clusterArn,
         tags: [
           { key: "Environment", value: "Test" },
-          { key: "Project", value: "itty-aws" },
+          { key: "Project", value: "distilled-aws" },
           { key: "Team", value: "Platform" },
         ],
       });
@@ -621,7 +621,7 @@ test(
       expect(envTag?.value).toEqual("Test");
 
       const projectTag = tagsResult.tags?.find((t) => t.key === "Project");
-      expect(projectTag?.value).toEqual("itty-aws");
+      expect(projectTag?.value).toEqual("distilled-aws");
 
       // Remove a tag
       yield* untagResource({
@@ -663,12 +663,12 @@ test(
 
 test(
   "register task definition, list task definitions, and deregister",
-  withTaskDefinition("itty-ecs-taskdef-family", (taskDefinitionArn) =>
+  withTaskDefinition("distilled-ecs-taskdef-family", (taskDefinitionArn) =>
     Effect.gen(function* () {
       // List task definitions with retry for eventual consistency
       yield* Effect.gen(function* () {
         const listResult = yield* listTaskDefinitions({
-          familyPrefix: "itty-ecs-taskdef-family",
+          familyPrefix: "distilled-ecs-taskdef-family",
         });
 
         const found = listResult.taskDefinitionArns?.find(
@@ -693,7 +693,7 @@ test(
 test(
   "register task definition with multiple containers",
   Effect.gen(function* () {
-    const family = "itty-ecs-multi-container";
+    const family = "distilled-ecs-multi-container";
 
     // Clean up any leftover from previous runs
     yield* cleanupTaskDefinitionFamily(family);
@@ -752,8 +752,8 @@ test(
 test(
   "run task and stop task",
   Effect.gen(function* () {
-    const clusterName = "itty-ecs-run-task-cluster";
-    const taskFamily = "itty-ecs-run-task-family";
+    const clusterName = "distilled-ecs-run-task-cluster";
+    const taskFamily = "distilled-ecs-run-task-family";
 
     // Clean up any leftovers from previous runs
     yield* cleanupCluster(clusterName);
@@ -874,7 +874,7 @@ test(
       yield* stopTask({
         cluster: clusterArn,
         task: taskArn!,
-        reason: "Stopped by itty-aws test",
+        reason: "Stopped by distilled-aws test",
       });
 
       // Verify task is stopping/stopped with retry
@@ -913,9 +913,9 @@ test(
   "create multiple clusters and list them",
   Effect.gen(function* () {
     const clusterNames = [
-      "itty-ecs-multi-cluster-1",
-      "itty-ecs-multi-cluster-2",
-      "itty-ecs-multi-cluster-3",
+      "distilled-ecs-multi-cluster-1",
+      "distilled-ecs-multi-cluster-2",
+      "distilled-ecs-multi-cluster-3",
     ];
 
     // Clean up any leftovers from previous runs

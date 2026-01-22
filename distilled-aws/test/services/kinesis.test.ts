@@ -147,7 +147,7 @@ const withStream = <A, E, R>(
 test(
   "create stream, list streams, describe, and delete",
   { timeout: 300_000 },
-  withStream("itty-aws-kinesis-basic-test", (streamName) =>
+  withStream("distilled-aws-kinesis-basic-test", (streamName) =>
     Effect.gen(function* () {
       // List streams and verify our stream is in the list
       const listResult = yield* listStreams({});
@@ -167,7 +167,7 @@ test(
 test(
   "put record and get records",
   { timeout: 300_000 },
-  withStream("itty-aws-kinesis-putget-test", (streamName) =>
+  withStream("distilled-aws-kinesis-putget-test", (streamName) =>
     Effect.gen(function* () {
       // Put a record with retry in case of transient failures
       const testData = new TextEncoder().encode(
@@ -242,7 +242,7 @@ test(
 test(
   "subscribeToShard receives records matching sent data",
   { timeout: 300_000 },
-  withStream("itty-aws-kinesis-subscribe-test", (streamName) =>
+  withStream("distilled-aws-kinesis-subscribe-test", (streamName) =>
     Effect.gen(function* () {
       // Get stream ARN
       const describeResult = yield* describeStream({ StreamName: streamName });
@@ -403,7 +403,7 @@ test(
 test(
   "subscribeToShard handles continuous streaming",
   { timeout: 300_000 },
-  withStream("itty-aws-kinesis-continuous-test", (streamName) =>
+  withStream("distilled-aws-kinesis-continuous-test", (streamName) =>
     Effect.gen(function* () {
       // Get stream ARN
       const describeResult = yield* describeStream({ StreamName: streamName });

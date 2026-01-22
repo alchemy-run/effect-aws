@@ -198,21 +198,6 @@ export const listBuckets: (
   errors: [],
 }));
 
-export class BucketAlreadyExists extends Schema.TaggedError<BucketAlreadyExists>()(
-  "BucketAlreadyExists",
-  { code: Schema.Number, message: Schema.String },
-).pipe(T.HttpErrorMatchers([{ code: 10004 }])) {}
-
-export class InvalidBucketName extends Schema.TaggedError<InvalidBucketName>()(
-  "InvalidBucketName",
-  { code: Schema.Number, message: Schema.String },
-).pipe(T.HttpErrorMatchers([{ code: 10005 }])) {}
-
-export class InvalidObjectIdentifier extends Schema.TaggedError<InvalidObjectIdentifier>()(
-  "InvalidObjectIdentifier",
-  { code: Schema.Number, message: Schema.String },
-).pipe(T.HttpErrorMatchers([{ code: 7003 }])) {}
-
 export interface CreateBucketRequest {
   /** Path param: Account ID. */
   accountId: string;
@@ -259,20 +244,7 @@ export const CreateBucketResponse = Schema.Struct({
   ),
   jurisdiction: Schema.optional(Schema.Literal("default", "eu", "fedramp")),
   location: Schema.optional(
-    Schema.Literal(
-      "apac",
-      "eeur",
-      "enam",
-      "weur",
-      "wnam",
-      "oc",
-      "APAC",
-      "EEUR",
-      "ENAM",
-      "WEUR",
-      "WNAM",
-      "OC",
-    ),
+    Schema.Literal("apac", "eeur", "enam", "weur", "wnam", "oc"),
   ),
   name: Schema.optional(Schema.String),
   storageClass: Schema.optional(
@@ -284,15 +256,12 @@ export const createBucket: (
   input: CreateBucketRequest,
 ) => Effect.Effect<
   CreateBucketResponse,
-  | CommonErrors
-  | BucketAlreadyExists
-  | InvalidBucketName
-  | InvalidObjectIdentifier,
+  CommonErrors,
   ApiToken | HttpClient.HttpClient
 > = API.make(() => ({
   input: CreateBucketRequest,
   output: CreateBucketResponse,
-  errors: [BucketAlreadyExists, InvalidBucketName, InvalidObjectIdentifier],
+  errors: [],
 }));
 
 export interface PatchBucketRequest {
@@ -758,6 +727,16 @@ export const listBucketDomainCustoms: (
   errors: [],
 }));
 
+export class NoSuchBucket extends Schema.TaggedError<NoSuchBucket>()(
+  "NoSuchBucket",
+  { code: Schema.Number, message: Schema.String },
+).pipe(T.HttpErrorMatchers([{ code: 10006 }])) {}
+
+export class InvalidBucketName extends Schema.TaggedError<InvalidBucketName>()(
+  "InvalidBucketName",
+  { code: Schema.Number, message: Schema.String },
+).pipe(T.HttpErrorMatchers([{ code: 10005 }])) {}
+
 export interface CreateBucketDomainCustomRequest {
   bucketName: string;
   /** Path param: Account ID. */
@@ -816,12 +795,12 @@ export const createBucketDomainCustom: (
   input: CreateBucketDomainCustomRequest,
 ) => Effect.Effect<
   CreateBucketDomainCustomResponse,
-  CommonErrors,
+  CommonErrors | NoSuchBucket | InvalidBucketName,
   ApiToken | HttpClient.HttpClient
 > = API.make(() => ({
   input: CreateBucketDomainCustomRequest,
   output: CreateBucketDomainCustomResponse,
-  errors: [],
+  errors: [NoSuchBucket, InvalidBucketName],
 }));
 
 export interface UpdateBucketDomainCustomRequest {

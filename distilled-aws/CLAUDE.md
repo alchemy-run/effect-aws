@@ -426,9 +426,9 @@ import { cleanService, generateCleanupPlan } from "./cleaner.ts";
 // Preview what would be cleaned
 const plan = await generateCleanupPlan("ec2");
 
-// Clean all resources with "itty-" prefix (test resources)
+// Clean all resources with "distilled-" prefix (test resources)
 await cleanService("ec2", ec2Module, {
-  prefix: "itty-",
+  prefix: "distilled-",
   dryRun: true  // Preview first!
 });
 ```
@@ -468,7 +468,7 @@ These features could be added to the cleaner:
 bun clean:aws --list ec2
 
 # Clean only resources matching a prefix
-bun clean:aws --prefix itty- ec2
+bun clean:aws --prefix distilled- ec2
 
 # Show cleanup plan (deletion order)
 bun clean:aws --plan ec2
@@ -537,7 +537,7 @@ Add improvements to:
 
 ### Cleanup Best Practices
 
-1. **Use test prefixes** - All test resources should have `itty-{service}-` prefix
+1. **Use test prefixes** - All test resources should have `distilled-{service}-` prefix
 2. **Clean before and after** - Run cleanup before starting and after finishing
 3. **Dry run first** - Always preview with `--dry-run` before real cleanup
 4. **Check for orphans** - Manually verify via AWS Console periodically

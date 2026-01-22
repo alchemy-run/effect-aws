@@ -155,11 +155,11 @@ const withQueue = <A, E, R>(
 
 test(
   "create event bus, describe, list, and delete",
-  withEventBus("itty-eventbridge-lifecycle", (eventBusArn, eventBusName) =>
+  withEventBus("distilled-eventbridge-lifecycle", (eventBusArn, eventBusName) =>
     Effect.gen(function* () {
       // Verify event bus ARN is returned
       expect(eventBusArn).toBeDefined();
-      expect(eventBusArn).toContain("itty-eventbridge-lifecycle");
+      expect(eventBusArn).toContain("distilled-eventbridge-lifecycle");
 
       // Describe the event bus
       const describeResult = yield* describeEventBus({ Name: eventBusName });
@@ -168,7 +168,7 @@ test(
 
       // List event buses and verify our bus is in the list
       const listResult = yield* listEventBuses({
-        NamePrefix: "itty-eventbridge",
+        NamePrefix: "distilled-eventbridge",
       });
       const foundBus = listResult.EventBuses?.find(
         (bus) => bus.Name === eventBusName,
@@ -186,26 +186,30 @@ test(
 test(
   "create rule, describe, list, and delete on default event bus",
   withRule(
-    "itty-eventbridge-rule-lifecycle",
+    "distilled-eventbridge-rule-lifecycle",
     undefined,
-    JSON.stringify({ source: ["itty-aws.test"] }),
+    JSON.stringify({ source: ["distilled-aws.test"] }),
     (ruleArn) =>
       Effect.gen(function* () {
         expect(ruleArn).toBeDefined();
 
         // Describe the rule
         const describeResult = yield* describeRule({
-          Name: "itty-eventbridge-rule-lifecycle",
+          Name: "distilled-eventbridge-rule-lifecycle",
         });
-        expect(describeResult.Name).toEqual("itty-eventbridge-rule-lifecycle");
+        expect(describeResult.Name).toEqual(
+          "distilled-eventbridge-rule-lifecycle",
+        );
         expect(describeResult.Arn).toEqual(ruleArn);
         expect(describeResult.State).toEqual("ENABLED");
         expect(describeResult.EventPattern).toBeDefined();
 
         // List rules and verify our rule is present
-        const listResult = yield* listRules({ NamePrefix: "itty-eventbridge" });
+        const listResult = yield* listRules({
+          NamePrefix: "distilled-eventbridge",
+        });
         const foundRule = listResult.Rules?.find(
-          (r) => r.Name === "itty-eventbridge-rule-lifecycle",
+          (r) => r.Name === "distilled-eventbridge-rule-lifecycle",
         );
         expect(foundRule).toBeDefined();
         expect(foundRule?.Arn).toEqual(ruleArn);
@@ -216,12 +220,12 @@ test(
 test(
   "enable and disable rule",
   withRule(
-    "itty-eventbridge-rule-toggle",
+    "distilled-eventbridge-rule-toggle",
     undefined,
-    JSON.stringify({ source: ["itty-aws.test"] }),
+    JSON.stringify({ source: ["distilled-aws.test"] }),
     (_ruleArn) =>
       Effect.gen(function* () {
-        const ruleName = "itty-eventbridge-rule-toggle";
+        const ruleName = "distilled-eventbridge-rule-toggle";
 
         // Verify initially enabled
         const initialState = yield* describeRule({ Name: ruleName });
@@ -246,31 +250,35 @@ test(
 
 test(
   "create rule on custom event bus",
-  withEventBus("itty-eventbridge-custom-bus", (_eventBusArn, eventBusName) =>
-    withRule(
-      "itty-eventbridge-custom-rule",
-      eventBusName,
-      JSON.stringify({ source: ["itty-aws.custom"] }),
-      (ruleArn) =>
-        Effect.gen(function* () {
-          expect(ruleArn).toBeDefined();
+  withEventBus(
+    "distilled-eventbridge-custom-bus",
+    (_eventBusArn, eventBusName) =>
+      withRule(
+        "distilled-eventbridge-custom-rule",
+        eventBusName,
+        JSON.stringify({ source: ["distilled-aws.custom"] }),
+        (ruleArn) =>
+          Effect.gen(function* () {
+            expect(ruleArn).toBeDefined();
 
-          // Describe rule on custom bus
-          const describeResult = yield* describeRule({
-            Name: "itty-eventbridge-custom-rule",
-            EventBusName: eventBusName,
-          });
-          expect(describeResult.Name).toEqual("itty-eventbridge-custom-rule");
-          expect(describeResult.EventBusName).toEqual(eventBusName);
+            // Describe rule on custom bus
+            const describeResult = yield* describeRule({
+              Name: "distilled-eventbridge-custom-rule",
+              EventBusName: eventBusName,
+            });
+            expect(describeResult.Name).toEqual(
+              "distilled-eventbridge-custom-rule",
+            );
+            expect(describeResult.EventBusName).toEqual(eventBusName);
 
-          // List rules on custom bus
-          const listResult = yield* listRules({ EventBusName: eventBusName });
-          const foundRule = listResult.Rules?.find(
-            (r) => r.Name === "itty-eventbridge-custom-rule",
-          );
-          expect(foundRule).toBeDefined();
-        }),
-    ),
+            // List rules on custom bus
+            const listResult = yield* listRules({ EventBusName: eventBusName });
+            const foundRule = listResult.Rules?.find(
+              (r) => r.Name === "distilled-eventbridge-custom-rule",
+            );
+            expect(foundRule).toBeDefined();
+          }),
+      ),
   ),
 );
 
@@ -280,14 +288,14 @@ test(
 
 test(
   "put targets, list targets, and remove targets",
-  withQueue("itty-eventbridge-target-queue", (queueUrl, queueArn) =>
+  withQueue("distilled-eventbridge-target-queue", (queueUrl, queueArn) =>
     withRule(
-      "itty-eventbridge-targets",
+      "distilled-eventbridge-targets",
       undefined,
-      JSON.stringify({ source: ["itty-aws.test"] }),
+      JSON.stringify({ source: ["distilled-aws.test"] }),
       (_ruleArn) =>
         Effect.gen(function* () {
-          const ruleName = "itty-eventbridge-targets";
+          const ruleName = "distilled-eventbridge-targets";
 
           // Put targets using SQS queue
           const putResult = yield* putTargets({
@@ -349,11 +357,11 @@ test(
     const result = yield* putEvents({
       Entries: [
         {
-          Source: "itty-aws.test",
+          Source: "distilled-aws.test",
           DetailType: "TestEvent",
           Detail: JSON.stringify({
             action: "test",
-            data: "Hello from itty-aws!",
+            data: "Hello from distilled-aws!",
           }),
         },
       ],
@@ -375,17 +383,17 @@ test(
     const result = yield* putEvents({
       Entries: [
         {
-          Source: "itty-aws.test",
+          Source: "distilled-aws.test",
           DetailType: "BatchEvent",
           Detail: JSON.stringify({ message: "Event 1" }),
         },
         {
-          Source: "itty-aws.test",
+          Source: "distilled-aws.test",
           DetailType: "BatchEvent",
           Detail: JSON.stringify({ message: "Event 2" }),
         },
         {
-          Source: "itty-aws.test",
+          Source: "distilled-aws.test",
           DetailType: "BatchEvent",
           Detail: JSON.stringify({ message: "Event 3" }),
         },
@@ -407,13 +415,13 @@ test(
 
 test(
   "put events to custom event bus",
-  withEventBus("itty-eventbridge-events", (_eventBusArn, eventBusName) =>
+  withEventBus("distilled-eventbridge-events", (_eventBusArn, eventBusName) =>
     Effect.gen(function* () {
       // Send event to custom event bus
       const result = yield* putEvents({
         Entries: [
           {
-            Source: "itty-aws.custom",
+            Source: "distilled-aws.custom",
             DetailType: "CustomBusEvent",
             Detail: JSON.stringify({ target: "custom-bus" }),
             EventBusName: eventBusName,
@@ -438,7 +446,7 @@ test(
     const result = yield* putEvents({
       Entries: [
         {
-          Source: "itty-aws.test",
+          Source: "distilled-aws.test",
           DetailType: "ResourceEvent",
           Detail: JSON.stringify({ action: "update" }),
           Resources: [
@@ -462,14 +470,14 @@ test(
 
 test(
   "tag event bus, list tags, and untag",
-  withEventBus("itty-eventbridge-tagging", (eventBusArn, _eventBusName) =>
+  withEventBus("distilled-eventbridge-tagging", (eventBusArn, _eventBusName) =>
     Effect.gen(function* () {
       // Add tags
       yield* tagResource({
         ResourceARN: eventBusArn,
         Tags: [
           { Key: "Environment", Value: "Test" },
-          { Key: "Project", Value: "itty-aws" },
+          { Key: "Project", Value: "distilled-aws" },
           { Key: "Team", Value: "Platform" },
         ],
       });
@@ -519,9 +527,9 @@ test(
 test(
   "tag rule, list tags, and untag",
   withRule(
-    "itty-eventbridge-rule-tagging",
+    "distilled-eventbridge-rule-tagging",
     undefined,
-    JSON.stringify({ source: ["itty-aws.test"] }),
+    JSON.stringify({ source: ["distilled-aws.test"] }),
     (ruleArn) =>
       Effect.gen(function* () {
         // Add tags to rule
@@ -560,7 +568,7 @@ test(
 test(
   "create rule with schedule expression",
   Effect.gen(function* () {
-    const ruleName = "itty-eventbridge-scheduled";
+    const ruleName = "distilled-eventbridge-scheduled";
 
     // Clean up any leftover from previous runs
     yield* cleanupRule(ruleName, undefined);
@@ -604,103 +612,107 @@ test(
 
 test(
   "complete eventbridge workflow: bus, rule, targets, events",
-  withQueue("itty-eventbridge-workflow-queue", (queueUrl, queueArn) =>
-    withEventBus("itty-eventbridge-workflow", (eventBusArn, eventBusName) =>
-      Effect.gen(function* () {
-        const ruleName = "itty-workflow-rule";
-        const eventPattern = JSON.stringify({
-          source: ["itty-aws.workflow"],
-          "detail-type": ["WorkflowEvent"],
-        });
+  withQueue("distilled-eventbridge-workflow-queue", (queueUrl, queueArn) =>
+    withEventBus(
+      "distilled-eventbridge-workflow",
+      (eventBusArn, eventBusName) =>
+        Effect.gen(function* () {
+          const ruleName = "distilled-workflow-rule";
+          const eventPattern = JSON.stringify({
+            source: ["distilled-aws.workflow"],
+            "detail-type": ["WorkflowEvent"],
+          });
 
-        // 1. Tag the event bus
-        yield* tagResource({
-          ResourceARN: eventBusArn,
-          Tags: [{ Key: "Workflow", Value: "Complete" }],
-        });
+          // 1. Tag the event bus
+          yield* tagResource({
+            ResourceARN: eventBusArn,
+            Tags: [{ Key: "Workflow", Value: "Complete" }],
+          });
 
-        // 2. Create a rule on the custom bus
-        const ruleResult = yield* putRule({
-          Name: ruleName,
-          EventPattern: eventPattern,
-          EventBusName: eventBusName,
-          Description: "Workflow test rule",
-          State: "ENABLED",
-        });
+          // 2. Create a rule on the custom bus
+          const ruleResult = yield* putRule({
+            Name: ruleName,
+            EventPattern: eventPattern,
+            EventBusName: eventBusName,
+            Description: "Workflow test rule",
+            State: "ENABLED",
+          });
 
-        const ruleArn = ruleResult.RuleArn!;
+          const ruleArn = ruleResult.RuleArn!;
 
-        yield* Effect.ensuring(
-          Effect.gen(function* () {
-            // 3. Add a target to the rule using SQS queue
-            yield* putTargets({
-              Rule: ruleName,
-              EventBusName: eventBusName,
-              Targets: [
-                {
-                  Id: "workflow-target",
-                  Arn: queueArn,
-                },
-              ],
-            });
+          yield* Effect.ensuring(
+            Effect.gen(function* () {
+              // 3. Add a target to the rule using SQS queue
+              yield* putTargets({
+                Rule: ruleName,
+                EventBusName: eventBusName,
+                Targets: [
+                  {
+                    Id: "workflow-target",
+                    Arn: queueArn,
+                  },
+                ],
+              });
 
-            // 4. Tag the rule
-            yield* tagResource({
-              ResourceARN: ruleArn,
-              Tags: [{ Key: "Type", Value: "Workflow" }],
-            });
+              // 4. Tag the rule
+              yield* tagResource({
+                ResourceARN: ruleArn,
+                Tags: [{ Key: "Type", Value: "Workflow" }],
+              });
 
-            // 5. Send an event to the custom bus
-            const putResult = yield* putEvents({
-              Entries: [
-                {
-                  Source: "itty-aws.workflow",
-                  DetailType: "WorkflowEvent",
-                  Detail: JSON.stringify({
-                    step: "complete",
-                    timestamp: new Date().toISOString(),
+              // 5. Send an event to the custom bus
+              const putResult = yield* putEvents({
+                Entries: [
+                  {
+                    Source: "distilled-aws.workflow",
+                    DetailType: "WorkflowEvent",
+                    Detail: JSON.stringify({
+                      step: "complete",
+                      timestamp: new Date().toISOString(),
+                    }),
+                    EventBusName: eventBusName,
+                  },
+                ],
+              });
+
+              expect(putResult.Entries![0].EventId).toBeDefined();
+
+              // 6. Verify everything is set up correctly
+              const [busDesc, ruleDesc, targets, busTags, ruleTags] =
+                yield* Effect.all([
+                  describeEventBus({ Name: eventBusName }),
+                  describeRule({ Name: ruleName, EventBusName: eventBusName }),
+                  listTargetsByRule({
+                    Rule: ruleName,
+                    EventBusName: eventBusName,
                   }),
-                  EventBusName: eventBusName,
-                },
-              ],
-            });
+                  listTagsForResource({ ResourceARN: eventBusArn }),
+                  listTagsForResource({ ResourceARN: ruleArn }),
+                ]);
 
-            expect(putResult.Entries![0].EventId).toBeDefined();
+              expect(busDesc.Name).toEqual(eventBusName);
+              expect(ruleDesc.Name).toEqual(ruleName);
+              expect(targets.Targets!.length).toEqual(1);
+              expect(
+                busTags.Tags!.find((t) => t.Key === "Workflow"),
+              ).toBeDefined();
+              expect(
+                ruleTags.Tags!.find((t) => t.Key === "Type"),
+              ).toBeDefined();
 
-            // 6. Verify everything is set up correctly
-            const [busDesc, ruleDesc, targets, busTags, ruleTags] =
-              yield* Effect.all([
-                describeEventBus({ Name: eventBusName }),
-                describeRule({ Name: ruleName, EventBusName: eventBusName }),
-                listTargetsByRule({
-                  Rule: ruleName,
-                  EventBusName: eventBusName,
-                }),
-                listTagsForResource({ ResourceARN: eventBusArn }),
-                listTagsForResource({ ResourceARN: ruleArn }),
-              ]);
+              // Cleanup targets before rule deletion
+              yield* removeTargets({
+                Rule: ruleName,
+                EventBusName: eventBusName,
+                Ids: ["workflow-target"],
+              });
+            }),
+            cleanupRule(ruleName, eventBusName),
+          );
 
-            expect(busDesc.Name).toEqual(eventBusName);
-            expect(ruleDesc.Name).toEqual(ruleName);
-            expect(targets.Targets!.length).toEqual(1);
-            expect(
-              busTags.Tags!.find((t) => t.Key === "Workflow"),
-            ).toBeDefined();
-            expect(ruleTags.Tags!.find((t) => t.Key === "Type")).toBeDefined();
-
-            // Cleanup targets before rule deletion
-            yield* removeTargets({
-              Rule: ruleName,
-              EventBusName: eventBusName,
-              Ids: ["workflow-target"],
-            });
-          }),
-          cleanupRule(ruleName, eventBusName),
-        );
-
-        // Keep queueUrl reference to avoid unused variable warning
-        void queueUrl;
-      }),
+          // Keep queueUrl reference to avoid unused variable warning
+          void queueUrl;
+        }),
     ),
   ),
 );
