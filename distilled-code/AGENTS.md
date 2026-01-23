@@ -32,13 +32,13 @@ distill -m claude-opus "implement the API"
 
 ### CLI Options
 
-| Option | Alias | Description | Default |
-| ------ | ----- | ----------- | ------- |
-| `--filter` | `-f` | Glob pattern to filter agents | `*` (all) |
-| `--concurrency` | `-j` | Number of agents to run in parallel | `1` |
-| `--config` | `-c` | Path to config file | `./distilled.config.ts` |
-| `--model` | `-m` | Model to use | `claude-sonnet` |
-| `--list` | `-l` | List agents (optionally filtered) | `false` |
+| Option          | Alias | Description                         | Default                 |
+| --------------- | ----- | ----------------------------------- | ----------------------- |
+| `--filter`      | `-f`  | Glob pattern to filter agents       | `*` (all)               |
+| `--concurrency` | `-j`  | Number of agents to run in parallel | `1`                     |
+| `--config`      | `-c`  | Path to config file                 | `./distilled.config.ts` |
+| `--model`       | `-m`  | Model to use                        | `claude-sonnet`         |
+| `--list`        | `-l`  | List agents (optionally filtered)   | `false`                 |
 
 ## Configuration
 
@@ -143,11 +143,11 @@ interface AgentOptions {
 
 ### Toolkits
 
-| Toolkit | Description | Tools |
-| ------- | ----------- | ----- |
-| `Coding` | Full toolkit | bash, edit, write, read, glob, grep, todo |
-| `Planning` | Read/write, no bash | edit, write, read, glob, grep, todo |
-| `ReadOnly` | Analysis only | read, glob, grep, todo (read) |
+| Toolkit    | Description         | Tools                                     |
+| ---------- | ------------------- | ----------------------------------------- |
+| `Coding`   | Full toolkit        | bash, edit, write, read, glob, grep, todo |
+| `Planning` | Read/write, no bash | edit, write, read, glob, grep, todo       |
+| `ReadOnly` | Analysis only       | read, glob, grep, todo (read)             |
 
 ### Todo Scoping
 

@@ -33,21 +33,21 @@ cloudflare-typescript/src/resources/*.ts → Generator → src/services/*.ts →
 
 ## Key Files
 
-| File                                     | Purpose                                                 |
-| ---------------------------------------- | ------------------------------------------------------- |
-| `scripts/generate-from-sdk.ts`           | Code generator entrypoint                               |
-| `scripts/parse.ts`                       | AST parsing + operation discovery                       |
-| `scripts/model.ts`                       | Type registry + type resolution helpers                 |
-| `patch/{service}/{operation}.json`       | Error patches per operation (expression DSL)            |
-| `src/expr.ts`                            | Expression DSL types for error matching                 |
-| `src/services/{service}.ts`              | Generated client (DO NOT EDIT)                          |
-| `src/client/request-builder.ts`          | Builds HTTP requests from annotated schemas             |
-| `src/client/response-parser.ts`          | Parses responses and matches errors                     |
-| `src/traits.ts`                          | Schema annotations for HTTP bindings and error matching |
-| `src/schemas.ts`                         | Common schemas (file uploads, etc.)                     |
-| `distilled.config.ts`                    | Agent definitions for test generation                   |
-| `test/services/{service}/helpers.ts`     | Test helpers (withBucket, withQueue, etc.)              |
-| `test/services/{service}/{op}.test.ts`   | Tests per operation                                     |
+| File                                   | Purpose                                                 |
+| -------------------------------------- | ------------------------------------------------------- |
+| `scripts/generate-from-sdk.ts`         | Code generator entrypoint                               |
+| `scripts/parse.ts`                     | AST parsing + operation discovery                       |
+| `scripts/model.ts`                     | Type registry + type resolution helpers                 |
+| `patch/{service}/{operation}.json`     | Error patches per operation (expression DSL)            |
+| `src/expr.ts`                          | Expression DSL types for error matching                 |
+| `src/services/{service}.ts`            | Generated client (DO NOT EDIT)                          |
+| `src/client/request-builder.ts`        | Builds HTTP requests from annotated schemas             |
+| `src/client/response-parser.ts`        | Parses responses and matches errors                     |
+| `src/traits.ts`                        | Schema annotations for HTTP bindings and error matching |
+| `src/schemas.ts`                       | Common schemas (file uploads, etc.)                     |
+| `distilled.config.ts`                  | Agent definitions for test generation                   |
+| `test/services/{service}/helpers.ts`   | Test helpers (withBucket, withQueue, etc.)              |
+| `test/services/{service}/{op}.test.ts` | Tests per operation                                     |
 
 ## Traits
 
@@ -123,11 +123,11 @@ Each error tag maps to an array of matchers. The error is matched if ANY matcher
 
 **Matcher Fields:**
 
-| Field     | Required | Description                               |
-| --------- | -------- | ----------------------------------------- |
-| `code`    | Yes      | Cloudflare error code                     |
-| `status`  | No       | HTTP status code (for disambiguation)     |
-| `message` | No       | Message matcher object                    |
+| Field     | Required | Description                           |
+| --------- | -------- | ------------------------------------- |
+| `code`    | Yes      | Cloudflare error code                 |
+| `status`  | No       | HTTP status code (for disambiguation) |
+| `message` | No       | Message matcher object                |
 
 **Message Matcher Options:**
 
@@ -252,12 +252,14 @@ distilled "r2/*" "Complete the test implementations"
 When the config runs, it generates skeleton files before spawning agents:
 
 **Test skeleton** (`test/services/{service}/{operation}.test.ts`):
+
 - Correct imports already in place
 - Describe blocks for success and error cases
 - TODO comments guiding implementation
 - Example error test structure in comments
 
 **Helpers skeleton** (`test/services/{service}/helpers.ts`):
+
 - withXYZ helper patterns for each resource
 - Cleanup-first pattern for idempotency
 - Effect.ensuring for guaranteed cleanup

@@ -5,15 +5,15 @@
     "distill": "./bin/distill.ts"
   },
   "type": "module",
-  "publishConfig": {
-    "access": "public"
-  },
   "exports": {
     ".": {
       "types": "./lib/index.d.ts",
       "bun": "./src/index.ts",
       "default": "./lib/index.js"
     }
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "distill": "bun run bin/distill.ts",

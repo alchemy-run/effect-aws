@@ -5,6 +5,7 @@ Let me update the test file to use the proper error types, since after regenerat
 **Changes made:**
 
 1. **Created patch file** `patch/r2/putBucketDomainManaged.json`:
+
    ```json
    {
      "errors": {
@@ -18,11 +19,12 @@ Let me update the test file to use the proper error types, since after regenerat
    - Imports `NoSuchBucket` and `InvalidBucketName` from `~/services/r2.ts`
    - Removed `UnknownCloudflareError` import
    - Error tests now use proper `_tag` assertions:
-     - `expect(e._tag).toBe("NoSuchBucket")` 
+     - `expect(e._tag).toBe("NoSuchBucket")`
      - `expect(e).toBeInstanceOf(NoSuchBucket)`
      - `expect(e._tag).toBe("InvalidBucketName")`
      - `expect(e).toBeInstanceOf(InvalidBucketName)`
 
 **Note:** The service needs to be regenerated with `bun run generate --service r2` to apply the patch. The generator will:
+
 - Reuse the existing `NoSuchBucket` and `InvalidBucketName` classes (already defined by `createBucketDomainCustom.json`)
 - Add them to the `errors` array for `putBucketDomainManaged`

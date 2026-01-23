@@ -1,7 +1,8 @@
 {
   "include": [
     "src/**/*.ts",
-    "src/**/*.tsx"
+    "src/**/*.tsx",
+    "src/context/passthrough.ts"
   ],
   "compilerOptions": {
     "rootDir": "./src",
@@ -34,7 +35,7 @@
     "declaration": true,
     "declarationMap": true,
     "noErrorTruncation": true,
-    "jsx": "react-jsx",
+    "jsx": "react-jsx"
     // "jsxImportSource": "@opentui/solid"
   }
 }

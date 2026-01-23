@@ -1,12 +1,11 @@
+import type { Subprocess } from "bun";
 import * as Effect from "effect/Effect";
 import * as HashMap from "effect/HashMap";
 import * as Option from "effect/Option";
 import * as PubSub from "effect/PubSub";
 import * as Ref from "effect/Ref";
 import * as S from "effect/Schema";
-import * as Scope from "effect/Scope";
 import * as Stream from "effect/Stream";
-import type { Subprocess } from "bun";
 import { make as makeJsonRpc } from "./jsonrpc.ts";
 
 /**
@@ -251,9 +250,9 @@ export const makeLSPClient = (id: string, proc: Subprocess, root: string) =>
       ) => Ref.update(diagnosticCallbacks, (cbs) => [...cbs, callback]),
 
       shutdown: Effect.gen(function* () {
-        yield* rpc.request("shutdown", null).pipe(
-          Effect.catchAll(() => Effect.void),
-        );
+        yield* rpc
+          .request("shutdown", null)
+          .pipe(Effect.catchAll(() => Effect.void));
         yield* rpc.notify("exit", null);
         yield* rpc.shutdown;
       }),

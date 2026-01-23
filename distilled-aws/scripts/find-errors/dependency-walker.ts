@@ -806,7 +806,9 @@ const createResources = (
       }
 
       if (!canCreate) {
-        yield* Console.log(`   ⏭️  Skip ${resourceType} (missing dependencies)`);
+        yield* Console.log(
+          `   ⏭️  Skip ${resourceType} (missing dependencies)`,
+        );
         continue;
       }
 

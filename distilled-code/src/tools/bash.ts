@@ -1,15 +1,53 @@
-import { Tool, Toolkit } from "@effect/ai";
 import * as Command from "@effect/platform/Command";
-import { CommandExecutor } from "@effect/platform/CommandExecutor";
 import * as Effect from "effect/Effect";
+import { pipe } from "effect/Function";
 import * as Option from "effect/Option";
 import * as S from "effect/Schema";
+import * as Stream from "effect/Stream";
+import * as String from "effect/String";
+import { input } from "../input.ts";
+import { output } from "../output.ts";
+import { tool } from "../tool.ts";
 import { CommandValidator } from "../util/command-validator.ts";
 
-export const bash = Tool.make("AnthropicBash", {
-  description: `Executes a given bash command in a persistent shell session with optional timeout, ensuring proper handling and security measures.
+export const command = input("command")`The command to execute`;
 
-All commands run in ${process.cwd()} by default. Use the \`workdir\` parameter if you need to run a command in a different directory. AVOID using \`cd <directory> && <command>\` patterns - use \`workdir\` instead.
+export const timeout = input(
+  "timeout",
+  S.optional(S.Number),
+)`Optional timeout in milliseconds`;
+
+export const workdir = input(
+  "workdir",
+  S.optional(S.String),
+)`The working directory to run the command in. Defaults to ${process.cwd()}. Use this instead of 'cd' commands.`;
+
+export const description = input(
+  "description",
+)`Clear, concise description of what this command does in 5-10 words. Examples:
+Input: ls
+Output: Lists files in current directory
+
+Input: git status
+Output: Shows working tree status
+
+Input: npm install
+Output: Installs package dependencies
+
+Input: mkdir foo
+Output: Creates directory 'foo'`;
+
+export const exitCode = output("exitCode", S.Number);
+export const stdout = output("stdout");
+export const stderr = output("stderr");
+
+export const bash = tool("bash", {
+  alias: (model) => (model.includes("claude") ? "AnthropicBash" : undefined),
+})`Executes a given bash ${command} in a persistent shell session with optional ${timeout}, ensuring proper handling and security measures.
+Returns the ${exitCode}, ${stdout} and ${stderr}.
+If the command is invalid, an error will be returned as a ${S.String}
+
+All commands run in ${process.cwd()} by default. Use the ${workdir} parameter if you need to run a command in a different directory. AVOID using \`cd <directory> && <command>\` patterns - use \`workdir\` instead.
 
 IMPORTANT: This tool is for terminal operations like git, npm, docker, etc. DO NOT use it for file operations (reading, writing, editing, searching, finding files) - use the specialized tools for this instead.
 
@@ -32,7 +70,7 @@ Before executing the command, please follow these steps:
 Usage notes:
   - The command argument is required.
   - You can specify an optional timeout in milliseconds (up to 600000ms / 10 minutes). If not specified, commands will time out after 120000ms (2 minutes).
-  - It is very helpful if you write a clear, concise description of what this command does in 5-10 words.
+  - It is very helpful if you write a clear, concise ${description} of what this command does in 5-10 words.
   - If the output exceeds 30000 characters, output will be truncated before being returned to you.
   - You can use the \`run_in_background\` parameter to run the command in the background, which allows you to continue working while the command runs. You can monitor the output using the Bash tool as it becomes available. You do not need to use '&' at the end of the command when using this parameter.
 
@@ -123,56 +161,54 @@ Important:
 
 # Other common operations
 - View comments on a Github PR: gh api repos/foo/bar/pulls/123/comments
-`,
-  success: S.String,
-  failure: S.Never,
-  dependencies: [CommandExecutor],
-  parameters: {
-    command: S.String.annotations({
-      description: "The command to execute",
-    }),
-    // timeout: S.optional(S.Number).annotations({
-    //   description: "Optional timeout in milliseconds",
-    // }),
-    // workdir: S.optional(S.String).annotations({
-    //   description: `The working directory to run the command in. Defaults to ${process.cwd()}. Use this instead of 'cd' commands.`,
-    // }),
-    description: S.String.annotations({
-      description:
-        "Clear, concise description of what this command does in 5-10 words. Examples:\nInput: ls\nOutput: Lists files in current directory\n\nInput: git status\nOutput: Shows working tree status\n\nInput: npm install\nOutput: Installs package dependencies\n\nInput: mkdir foo\nOutput: Creates directory 'foo'",
-    }),
-  },
+`(function* ({ command, workdir }) {
+  const validator = yield* Effect.serviceOption(CommandValidator).pipe(
+    Effect.map(Option.getOrUndefined),
+  );
+  yield* Effect.logDebug(`[bash] command=${command}`);
+
+  if (validator) {
+    const validationError = yield* validator.validate(command).pipe(
+      Effect.map(() => null),
+      Effect.catchAll((e) => Effect.succeed(`${e}`)),
+    );
+    if (validationError) {
+      return `Security violation: ${validationError}`;
+    }
+  }
+
+  const cmd = Command.make(command).pipe(
+    Command.runInShell(true),
+    Command.workingDirectory(workdir ?? process.cwd()),
+  );
+
+  const [exitCode, stdout, stderr] = yield* pipe(
+    // Start running the command and return a handle to the running process
+    Command.start(cmd),
+    Effect.flatMap((process) =>
+      Effect.all(
+        [
+          // Waits for the process to exit and returns
+          // the ExitCode of the command that was run
+          process.exitCode,
+          // The standard output stream of the process
+          runString(process.stdout),
+          // The standard error stream of the process
+          runString(process.stderr),
+        ],
+        { concurrency: 3 },
+      ),
+    ),
+  );
+
+  return {
+    exitCode,
+    stdout,
+    stderr,
+  };
 });
 
-export const bashTooklit = Toolkit.make(bash);
-
-export const bashTooklitLayer = bashTooklit.toLayer(
-  Effect.gen(function* () {
-    const validator = yield* Effect.serviceOption(CommandValidator).pipe(
-      Effect.map(Option.getOrUndefined),
-    );
-    return {
-      AnthropicBash: Effect.fn(function* (params) {
-        yield* Effect.logDebug(`[bash] command=${params.command}`);
-
-        if (validator) {
-          const validationError = yield* validator
-            .validate(params.command)
-            .pipe(
-              Effect.map(() => null),
-              Effect.catchAll((e) => Effect.succeed(String(e))),
-            );
-          if (validationError) {
-            return `Security violation: ${validationError}`;
-          }
-        }
-
-        const result = yield* Command.string(
-          Command.make(params.command).pipe(Command.runInShell(true)),
-        ).pipe(Effect.catchAll((e) => Effect.succeed(`Command failed: ${e}`)));
-
-        return result;
-      }),
-    };
-  }),
-);
+const runString = <E, R>(
+  stream: Stream.Stream<Uint8Array, E, R>,
+): Effect.Effect<string, E, R> =>
+  stream.pipe(Stream.decodeText(), Stream.runFold(String.empty, String.concat));

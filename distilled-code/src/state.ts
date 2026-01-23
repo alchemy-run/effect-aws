@@ -6,7 +6,6 @@ import * as Data from "effect/Data";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import * as S from "effect/Schema";
-import { Todo } from "../tools/todo.ts";
 
 export type { MessageEncoded };
 
@@ -17,12 +16,6 @@ export type { MessageEncoded };
 export const AgentStateData = S.Struct({
   /** Chat messages for this agent */
   messages: S.Array(Message),
-  /** Todo items for this agent */
-  todos: S.Array(Todo),
-  /** Files created by this agent (absolute paths) */
-  filesCreated: S.Array(S.String),
-  /** Files edited by this agent (absolute paths) */
-  filesEdited: S.Array(S.String),
   /** Last updated timestamp */
   updatedAt: S.Number,
 });
@@ -33,9 +26,6 @@ export type AgentStateData = S.Schema.Type<typeof AgentStateData>;
  */
 const emptyState = (): AgentStateData => ({
   messages: [],
-  todos: [],
-  filesCreated: [],
-  filesEdited: [],
   updatedAt: Date.now(),
 });
 
@@ -62,23 +52,6 @@ export interface AgentState {
   saveMessages(
     agentKey: string,
     messages: string,
-  ): Effect.Effect<void, AgentStateError>;
-
-  // Todo operations
-  getTodos(agentKey: string): Effect.Effect<readonly Todo[], AgentStateError>;
-  updateTodos(
-    agentKey: string,
-    todos: readonly Todo[],
-  ): Effect.Effect<void, AgentStateError>;
-
-  // File tracking operations
-  trackFileCreated(
-    agentKey: string,
-    filePath: string,
-  ): Effect.Effect<void, AgentStateError>;
-  trackFileEdited(
-    agentKey: string,
-    filePath: string,
   ): Effect.Effect<void, AgentStateError>;
 
   // Management operations
@@ -244,42 +217,6 @@ export const FileSystemAgentState = Layer.effect(
               }),
           ),
         ),
-
-      getTodos: (agentKey) =>
-        readState(agentKey).pipe(Effect.map((state) => state.todos)),
-
-      updateTodos: (agentKey, todos) =>
-        updateState(agentKey, (state) => ({
-          ...state,
-          todos: [...todos],
-        })),
-
-      trackFileCreated: (agentKey, filePath) =>
-        updateState(agentKey, (state) => {
-          // Avoid duplicates
-          if (state.filesCreated.includes(filePath)) {
-            return state;
-          }
-          return {
-            ...state,
-            filesCreated: [...state.filesCreated, filePath],
-          };
-        }),
-
-      trackFileEdited: (agentKey, filePath) =>
-        updateState(agentKey, (state) => {
-          // Avoid duplicates and don't track if it was created by this agent
-          if (
-            state.filesEdited.includes(filePath) ||
-            state.filesCreated.includes(filePath)
-          ) {
-            return state;
-          }
-          return {
-            ...state,
-            filesEdited: [...state.filesEdited, filePath],
-          };
-        }),
 
       listAgents: () =>
         Effect.gen(function* () {

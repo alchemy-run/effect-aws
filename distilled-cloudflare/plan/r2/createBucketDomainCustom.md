@@ -44,8 +44,8 @@ Let me verify the current state of the files and identify what needs to be fixed
 
 ### Required Changes
 
-| File | Change |
-|------|--------|
+| File                                                | Change                                                                   |
+| --------------------------------------------------- | ------------------------------------------------------------------------ |
 | `test/services/r2/createBucketDomainCustom.test.ts` | Remove unused `withBucket`, `cleanup`, `BUCKET_NAME`, and unused imports |
 
 ### Target Test File

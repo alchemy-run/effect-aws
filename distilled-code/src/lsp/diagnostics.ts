@@ -1,10 +1,6 @@
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
-import {
-  type Diagnostic,
-  DiagnosticSeverity,
-  LSPManager,
-} from "../lsp/index.ts";
+import { type Diagnostic, DiagnosticSeverity, LSPManager } from "./index.ts";
 
 const MAX_DIAGNOSTICS_PER_FILE = 10;
 
