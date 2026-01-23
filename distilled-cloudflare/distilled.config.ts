@@ -14,7 +14,7 @@ const SDK_PATH = "../../cloudflare-typescript/src/resources";
 
 const services = await loadModel({ basePath: SDK_PATH });
 
-export default class Project extends Agent("Project")`
+export default class DistilledCloudflare extends Agent("Project")`
 Cloudflare API test suite coordinator.
 
 ## Services (${services.length} services, ${services.reduce((n, s) => n + s.operations.length, 0)} operations)
@@ -46,13 +46,6 @@ ${service.operations.map((op) => `- ${op.operationName} (${op.httpMethod})`)}
 
 ## Sub-Agents
 ${service.operations.map((op) => {
-  const pathParams =
-    op.pathParams.map((p) => `  - ${p.name}: ${p.type.kind}`).join("\n") ||
-    "  (none)";
-  const queryParams =
-    op.queryParams
-      .map((p) => `  - ${p.name}${p.required ? "" : "?"}: ${p.type.kind}`)
-      .join("\n") || "  (none)";
   const resources = op.resources;
 
   // Files for this operation
@@ -71,9 +64,9 @@ Test plan for ${service}/${op.operationName}.
 - **Method:** ${op.httpMethod} ${op.urlTemplate}
 - **Resource:** ${op.resourceName}
 - **Path params:**
-${pathParams}
+${op.pathParams}
 - **Query params:**
-${queryParams}
+${op.queryParams}
 
 ## Coverage
 1. Happy path with minimal params
@@ -103,8 +96,8 @@ Design tests for ${op.operationName}. Read ${ServiceClient} for signatures.
 
 ## Operation
 - ${op.httpMethod} ${op.urlTemplate}
-- Path: ${pathParams}
-- Query: ${queryParams}
+- Path: ${op.pathParams}
+- Query: ${op.queryParams}
 
 ## Design
 1. **Happy Path:** inputs, assertions, optional params
@@ -171,6 +164,7 @@ Review ${TestFile} against ${TestPlan}.
 - [ ] No Date.now/Math.random/UUIDs
 
 Check ${ErrorPatch} for any patches.
+Cross-reference with other ${ErrorPatch} files from other services and operations to ensure consistent names.
 ` {}
 
   // Operation coordinator
