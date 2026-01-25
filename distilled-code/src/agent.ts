@@ -16,6 +16,10 @@ import { output } from "./output.ts";
 import { AgentState, AgentStateError, type MessageEncoded } from "./state.ts";
 import { tool } from "./tool/tool.ts";
 import { Toolkit } from "./toolkit/toolkit.ts";
+import {
+  schemaFromJsonSchema,
+  type JsonSchema7Root,
+} from "./util/json-schema.ts";
 
 type _ = MessageEncoded;
 
@@ -52,7 +56,7 @@ export interface AgentInstance<A extends Agent<string, any[]>> {
   send: (
     prompt: string,
   ) => Effect.Effect<
-    void,
+    string,
     AiError | AgentStateError,
     LanguageModel | Handler<string> | AgentState
   >;
@@ -68,36 +72,71 @@ export interface AgentInstance<A extends Agent<string, any[]>> {
 
 export const spawn: <A extends Agent<string, any[]>>(
   agent: A,
+  scope?: string,
 ) => Effect.Effect<
   AgentInstance<A>,
   AiError | AgentStateError,
   LanguageModel | Handler<string> | AgentState | FileSystem
-> = Effect.fn(function* <A extends Agent<string, any[]>>(agent: A) {
+> = Effect.fn(function* <A extends Agent<string, any[]>>(
+  agent: A,
+  scope: string = agent.id,
+) {
   const state = yield* AgentState;
 
-  const agentState = yield* state.get(agent.id);
+  // Compute scoped key: root agent uses scope directly, children use scope/agentId
+  const agentKey = scope === agent.id ? scope : `${scope}/${agent.id}`;
+
+  const agentState = yield* state.get(agentKey);
 
   const chat = yield* Chat.fromPrompt(agentState.messages);
+
+  const saveState = Effect.fnUntraced(function* () {
+    const exported = yield* chat.exportJson;
+    yield* state.saveMessages(agentKey, exported);
+  });
 
   // TODO(sam): support interrupts/parallel threads
   const sem = yield* Effect.makeSemaphore(1);
   const locked = <A, E, R>(fn: Effect.Effect<A, E, R>) =>
     sem.withPermits(1)(fn);
+  const self = agent;
 
-  const children = yield* Effect.all(
-    agent.references.filter(isAgent).map(spawn),
-  );
+  // Build a map of agent ID -> Agent for O(1) lookups
+  const agents = new Map<string, Agent>();
+  (function collectAgents(agent: Agent): void {
+    if (agents.has(agent.id) || agent.id === self.id) return;
+    agents.set(agent.id, agent);
+    agent.references.filter(isAgent).forEach(collectAgents);
+  })(agent);
+
+  // Map of spawned agent instances (lazy - spawned on first use)
+  const spawned = new Map<string, AgentInstance<any>>();
+
+  // Get or spawn a child agent by ID
+  const lookupAgent = Effect.fn(function* (recipient: string) {
+    if (!spawned.has(recipient)) {
+      const childAgent = agents.get(recipient);
+      if (!childAgent) {
+        return yield* Effect.fail(
+          `Agent "${recipient}" not found. Available agents: ${[...agents.keys()].join(", ")}`,
+        );
+      }
+      spawned.set(recipient, yield* spawn(childAgent, scope));
+    }
+    return spawned.get(recipient)!;
+  });
 
   const message = input("message")`The message to send`;
   const recipient = input(
     "recipient",
-    S.Literal(...children.map((a) => a.agent.id)),
-  )`The recipient agent, can be one of:${children}`;
+    // we shouldn't do this because more agents can be discovered later
+    // S.Literal(...children.map((a) => a.agent.id)),
+  )`The recipient agent.`;
   const send = tool(
     "send",
   )`Send a ${message} to ${recipient}, receive a response as a ${S.String}`(
     function* ({ message, recipient }) {
-      return "TODO(sam): implement send";
+      return yield* (yield* lookupAgent(recipient)).send(message);
     },
   );
 
@@ -106,9 +145,14 @@ export const spawn: <A extends Agent<string, any[]>>(
   const query = tool(
     "query",
   )`Send a query ${message} to the ${recipient} agent and receive back a structured ${object} with the expected schema ${schema}`(
-    function* ({ recipient, schema, message }) {
+    function* ({ recipient, message, schema: jsonSchema }) {
       return {
-        object: "TODO(sam): implement query",
+        object: (yield* (yield* lookupAgent(recipient)).query(
+          message,
+          schemaFromJsonSchema(
+            JSON.parse(jsonSchema) as JsonSchema7Root,
+          ) as any,
+        )).value,
       };
     },
   );
@@ -116,7 +160,7 @@ export const spawn: <A extends Agent<string, any[]>>(
   class Comms extends Toolkit(
     "Comms",
   )`Tools for communicating with other agents. Use these tools to coordinate work with other agents.
-${[query, schema]}` {}
+${[send, query]}` {}
 
   const context = yield* createContext(agent, {
     tools: [Comms],
@@ -126,9 +170,40 @@ ${[query, schema]}` {}
     agent,
     send: (prompt: string) =>
       locked(
-        Stream.runForEach(
-          chat.streamText({
+        Effect.gen(function* () {
+          let text = "";
+          yield* Stream.runForEach(
+            chat.streamText({
+              toolkit: context.toolkit,
+              prompt: [
+                ...context.messages,
+                {
+                  role: "user" as const,
+                  content: prompt,
+                },
+              ],
+            }),
+            (part) =>
+              Effect.sync(() => {
+                if (part.type === "text-start") {
+                  // we only want to collect the final message
+                  text = "";
+                } else if (part.type === "text-delta") {
+                  // process.stdout.write(part.delta);
+                  text += part.delta;
+                }
+              }),
+          );
+          yield* saveState();
+          return text;
+        }),
+      ),
+    query: <A>(prompt: string, schema: S.Schema<A, any>) =>
+      locked(
+        Effect.gen(function* () {
+          const result = yield* chat.generateObject({
             toolkit: context.toolkit,
+            schema,
             prompt: [
               ...context.messages,
               {
@@ -136,29 +211,10 @@ ${[query, schema]}` {}
                 content: prompt,
               },
             ],
-          }),
-          (part) =>
-            Effect.sync(() => {
-              switch (part.type) {
-                case "text-delta":
-                  process.stdout.write(part.delta);
-                  break;
-              }
-            }),
-        ),
-      ),
-    query: <A>(prompt: string, schema: S.Schema<A, any>) =>
-      locked(
-        chat.generateObject({
-          toolkit: context.toolkit,
-          schema,
-          prompt: [
-            ...context.messages,
-            {
-              role: "user" as const,
-              content: prompt,
-            },
-          ],
+          });
+          // Persist updated chat history
+          yield* saveState();
+          return result;
         }),
       ),
   } satisfies AgentInstance<A>;

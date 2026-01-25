@@ -40,23 +40,47 @@ export class AgentStateError extends Data.TaggedError("AgentStateError")<{
 /**
  * AgentState service interface for managing all agent state.
  * Consolidates todos, file tracking, chat history, and other agent metadata.
+ *
+ * Agent keys can be scoped to support hierarchical state management:
+ * - Root agent: `agentKey = "agentId"` → stored at `.distilled/state/agentId.state.json`
+ * - Child agent: `agentKey = "scope/agentId"` → stored at `.distilled/state/scope/agentId.state.json`
+ *
+ * This allows the caller (scope owner) to manage conversation threads with agents it interacts with.
  */
 export interface AgentState {
-  /** Get full state for an agent */
+  /**
+   * Get full state for an agent.
+   * @param agentKey - Agent identifier, may include scope prefix (e.g., "scope/agentId")
+   */
   get(agentKey: string): Effect.Effect<AgentStateData, AgentStateError>;
 
-  // Chat history operations
+  /**
+   * Get chat messages for an agent.
+   * @param agentKey - Agent identifier, may include scope prefix
+   */
   getMessages(
     agentKey: string,
   ): Effect.Effect<readonly MessageEncoded[], AgentStateError>;
+
+  /**
+   * Save chat messages for an agent. Accepts the JSON output from Chat.exportJson.
+   * @param agentKey - Agent identifier, may include scope prefix
+   * @param messages - JSON string from Chat.exportJson containing { content: MessageEncoded[] }
+   */
   saveMessages(
     agentKey: string,
     messages: string,
   ): Effect.Effect<void, AgentStateError>;
 
-  // Management operations
+  /**
+   * List all agent keys, including scoped keys (e.g., "scope/agentId").
+   */
   listAgents(): Effect.Effect<readonly string[], AgentStateError>;
-  /** Delete all state and files created by an agent */
+
+  /**
+   * Delete all state for an agent.
+   * @param agentKey - Agent identifier, may include scope prefix
+   */
   delete(agentKey: string): Effect.Effect<void, AgentStateError>;
 }
 
@@ -64,7 +88,11 @@ export const AgentState = Context.GenericTag<AgentState>("AgentState");
 
 /**
  * FileSystem implementation of AgentState.
+ *
  * State is stored in .distilled/state/{agent-key}.state.json files.
+ * Scoped keys like "scope/agentId" result in nested paths:
+ * - `.distilled/state/scope/agentId.state.json`
+ *
  * Uses semaphores to ensure exclusive write access per agent.
  */
 export const FileSystemAgentState = Layer.effect(
