@@ -64,7 +64,7 @@ export const AgentState = Context.GenericTag<AgentState>("AgentState");
 
 /**
  * FileSystem implementation of AgentState.
- * State is stored in .distilled/{agent-key}.state.json files.
+ * State is stored in .distilled/state/{agent-key}.state.json files.
  * Uses semaphores to ensure exclusive write access per agent.
  */
 export const FileSystemAgentState = Layer.effect(
@@ -98,7 +98,7 @@ export const FileSystemAgentState = Layer.effect(
       });
 
     const getPath = (agentKey: string) =>
-      path.join(".distilled", `${agentKey}.state.json`);
+      path.join(".distilled", "state", `${agentKey}.state.json`);
 
     const readState = (
       agentKey: string,
@@ -220,15 +220,15 @@ export const FileSystemAgentState = Layer.effect(
 
       listAgents: () =>
         Effect.gen(function* () {
-          const distilledDir = ".distilled";
+          const stateDir = path.join(".distilled", "state");
           const exists = yield* fs
-            .exists(distilledDir)
+            .exists(stateDir)
             .pipe(Effect.catchAll(() => Effect.succeed(false)));
           if (!exists) {
             return [];
           }
 
-          // Recursively find all .state.json files
+          // Recursively find all .state.json files in .distilled/state/
           const agents: string[] = [];
           const scanDir = (dir: string, prefix: string): Effect.Effect<void> =>
             Effect.gen(function* () {
@@ -254,7 +254,7 @@ export const FileSystemAgentState = Layer.effect(
               }
             });
 
-          yield* scanDir(distilledDir, "");
+          yield* scanDir(stateDir, "");
           return agents;
         }).pipe(Effect.catchAll(() => Effect.succeed([]))),
 

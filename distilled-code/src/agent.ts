@@ -130,12 +130,9 @@ ${[query, schema]}` {}
           chat.streamText({
             toolkit: context.toolkit,
             prompt: [
+              ...context.messages,
               {
-                role: "system",
-                content: context.system,
-              },
-              {
-                role: "user",
+                role: "user" as const,
                 content: prompt,
               },
             ],
@@ -156,12 +153,9 @@ ${[query, schema]}` {}
           toolkit: context.toolkit,
           schema,
           prompt: [
+            ...context.messages,
             {
-              role: "system",
-              content: context.system,
-            },
-            {
-              role: "user",
+              role: "user" as const,
               content: prompt,
             },
           ],

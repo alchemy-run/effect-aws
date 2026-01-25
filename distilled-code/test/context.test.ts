@@ -23,7 +23,12 @@ describe("createContext", () => {
 
       const ctx = yield* createContext(SimpleAgent);
 
-      expect(ctx.system).toEqual(`${createPreamble("simple")}Hello world`);
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("simple")}Hello world`,
+        },
+      ]);
     }).pipe(Effect.provide(TestLayer)),
   );
 
@@ -43,23 +48,37 @@ describe("createContext", () => {
 
       const ctx = yield* createContext(MyAgent);
 
-      expect(ctx.system)
-        .toEqual(`${createPreamble("app")}Uses [app.ts](test/fixtures/app.ts) for main logic
-
----
-
-## Files
-
-In this section, we document important files that you must be aware of and may need to read, write, or request another agent interact with.
-
-### test/fixtures/app.ts
-
-App entry point
-
-\`\`\`typescript
-export const app = 'hello';
-\`\`\`
-`);
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("app")}Uses [app.ts](test/fixtures/app.ts) for main logic`,
+        },
+        {
+          role: "assistant",
+          content: [
+            {
+              type: "tool-call",
+              id: "ctx-file-0",
+              name: "read",
+              params: { filePath: "test/fixtures/app.ts" },
+              providerExecuted: false,
+            },
+          ],
+        },
+        {
+          role: "tool",
+          content: [
+            {
+              type: "tool-result",
+              id: "ctx-file-0",
+              name: "read",
+              isFailure: false,
+              result: { content: "export const app = 'hello';" },
+              providerExecuted: false,
+            },
+          ],
+        },
+      ]);
     }).pipe(Effect.provide(TestLayer)),
   );
 
@@ -70,18 +89,37 @@ export const app = 'hello';
 
       const ctx = yield* createContext(ParentAgent);
 
-      expect(ctx.system).toEqual(`${createPreamble("parent")}Delegates to @child
-
----
-
-## Agents
-
-Below is a list and description of each agent you can delegate tasks to, their role, and their capabilities.
-
-### child
-
-I am the child
-`);
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("parent")}Delegates to @child`,
+        },
+        {
+          role: "assistant",
+          content: [
+            {
+              type: "tool-call",
+              id: "ctx-agent-0",
+              name: "read",
+              params: { filePath: ".distilled/agents/child.md" },
+              providerExecuted: false,
+            },
+          ],
+        },
+        {
+          role: "tool",
+          content: [
+            {
+              type: "tool-result",
+              id: "ctx-agent-0",
+              name: "read",
+              isFailure: false,
+              result: { content: "# @child\n\nI am the child" },
+              providerExecuted: false,
+            },
+          ],
+        },
+      ]);
     }).pipe(Effect.provide(TestLayer)),
   );
 
@@ -91,7 +129,10 @@ I am the child
 
       const ctx = yield* createContext(MyAgent);
 
-      expect(ctx.system).toEqual(`${createPreamble("worker")}Uses 🧰Coding
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("worker")}Uses 🧰Coding
 
 ---
 
@@ -110,7 +151,9 @@ A set of tools for reading, writing, and editing code:
 - 🛠️grep
 - 🛠️read
 - 🛠️write
-`);
+`,
+        },
+      ]);
 
       // Verify the toolkit contains the expected tools
       expect(Object.keys(ctx.toolkit.tools).sort()).toEqual([
@@ -135,23 +178,62 @@ A set of tools for reading, writing, and editing code:
 
       const ctx = yield* createContext(Root);
 
-      // Agent1 and Agent2 should appear exactly once each
-      expect(ctx.system).toEqual(`${createPreamble("root")}Has @a1 and @a2
-
----
-
-## Agents
-
-Below is a list and description of each agent you can delegate tasks to, their role, and their capabilities.
-
-### a1
-
-I handle task A
-
-### a2
-
-I handle task B
-`);
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("root")}Has @a1 and @a2`,
+        },
+        {
+          role: "assistant",
+          content: [
+            {
+              type: "tool-call",
+              id: "ctx-agent-0",
+              name: "read",
+              params: { filePath: ".distilled/agents/a1.md" },
+              providerExecuted: false,
+            },
+          ],
+        },
+        {
+          role: "tool",
+          content: [
+            {
+              type: "tool-result",
+              id: "ctx-agent-0",
+              name: "read",
+              isFailure: false,
+              result: { content: "# @a1\n\nI handle task A" },
+              providerExecuted: false,
+            },
+          ],
+        },
+        {
+          role: "assistant",
+          content: [
+            {
+              type: "tool-call",
+              id: "ctx-agent-1",
+              name: "read",
+              params: { filePath: ".distilled/agents/a2.md" },
+              providerExecuted: false,
+            },
+          ],
+        },
+        {
+          role: "tool",
+          content: [
+            {
+              type: "tool-result",
+              id: "ctx-agent-1",
+              name: "read",
+              isFailure: false,
+              result: { content: "# @a2\n\nI handle task B" },
+              providerExecuted: false,
+            },
+          ],
+        },
+      ]);
     }).pipe(Effect.provide(TestLayer)),
   );
 
@@ -171,39 +253,87 @@ I handle task B
 
       const ctx = yield* createContext(MyAgent);
 
-      expect(ctx.system)
-        .toEqual(`${createPreamble("order")}[a.ts](test/fixtures/a.ts) then [b.ts](test/fixtures/b.ts) then [c.ts](test/fixtures/c.ts)
-
----
-
-## Files
-
-In this section, we document important files that you must be aware of and may need to read, write, or request another agent interact with.
-
-### test/fixtures/a.ts
-
-A
-
-\`\`\`typescript
-// a
-\`\`\`
-
-### test/fixtures/b.ts
-
-B
-
-\`\`\`typescript
-// b
-\`\`\`
-
-### test/fixtures/c.ts
-
-C
-
-\`\`\`typescript
-// c
-\`\`\`
-`);
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("order")}[a.ts](test/fixtures/a.ts) then [b.ts](test/fixtures/b.ts) then [c.ts](test/fixtures/c.ts)`,
+        },
+        {
+          role: "assistant",
+          content: [
+            {
+              type: "tool-call",
+              id: "ctx-file-0",
+              name: "read",
+              params: { filePath: "test/fixtures/a.ts" },
+              providerExecuted: false,
+            },
+          ],
+        },
+        {
+          role: "tool",
+          content: [
+            {
+              type: "tool-result",
+              id: "ctx-file-0",
+              name: "read",
+              isFailure: false,
+              result: { content: "// a" },
+              providerExecuted: false,
+            },
+          ],
+        },
+        {
+          role: "assistant",
+          content: [
+            {
+              type: "tool-call",
+              id: "ctx-file-1",
+              name: "read",
+              params: { filePath: "test/fixtures/b.ts" },
+              providerExecuted: false,
+            },
+          ],
+        },
+        {
+          role: "tool",
+          content: [
+            {
+              type: "tool-result",
+              id: "ctx-file-1",
+              name: "read",
+              isFailure: false,
+              result: { content: "// b" },
+              providerExecuted: false,
+            },
+          ],
+        },
+        {
+          role: "assistant",
+          content: [
+            {
+              type: "tool-call",
+              id: "ctx-file-2",
+              name: "read",
+              params: { filePath: "test/fixtures/c.ts" },
+              providerExecuted: false,
+            },
+          ],
+        },
+        {
+          role: "tool",
+          content: [
+            {
+              type: "tool-result",
+              id: "ctx-file-2",
+              name: "read",
+              isFailure: false,
+              result: { content: "// c" },
+              providerExecuted: false,
+            },
+          ],
+        },
+      ]);
     }).pipe(Effect.provide(TestLayer)),
   );
 
@@ -216,23 +346,37 @@ C
 
       const ctx = yield* createContext(MyAgent);
 
-      expect(ctx.system)
-        .toEqual(`${createPreamble("missing")}Uses [exist.ts](does/not/exist.ts)
-
----
-
-## Files
-
-In this section, we document important files that you must be aware of and may need to read, write, or request another agent interact with.
-
-### does/not/exist.ts
-
-Missing file
-
-\`\`\`typescript
-// File not found
-\`\`\`
-`);
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("missing")}Uses [exist.ts](does/not/exist.ts)`,
+        },
+        {
+          role: "assistant",
+          content: [
+            {
+              type: "tool-call",
+              id: "ctx-file-0",
+              name: "read",
+              params: { filePath: "does/not/exist.ts" },
+              providerExecuted: false,
+            },
+          ],
+        },
+        {
+          role: "tool",
+          content: [
+            {
+              type: "tool-result",
+              id: "ctx-file-0",
+              name: "read",
+              isFailure: false,
+              result: { content: "// File not found" },
+              providerExecuted: false,
+            },
+          ],
+        },
+      ]);
     }).pipe(Effect.provide(TestLayer)),
   );
 
@@ -247,9 +391,12 @@ Missing file
 
       const ctx = yield* createContext(MyAgent);
 
-      expect(ctx.system).toEqual(
-        `${createPreamble("primitives")}Count: 42, Name: Alice, Active: true`,
-      );
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("primitives")}Count: 42, Name: Alice, Active: true`,
+        },
+      ]);
     }).pipe(Effect.provide(TestLayer)),
   );
 
@@ -260,9 +407,14 @@ Missing file
 
       const ctx = yield* createContext(MyAgent);
 
-      expect(ctx.system).toEqual(`${createPreamble("arrays")}Items:
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("arrays")}Items:
 - hello
-- world`);
+- world`,
+        },
+      ]);
     }).pipe(Effect.provide(TestLayer)),
   );
 
@@ -273,9 +425,14 @@ Missing file
 
       const ctx = yield* createContext(MyAgent);
 
-      expect(ctx.system).toEqual(`${createPreamble("sets")}Tags:
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("sets")}Tags:
 - typescript
-- effect`);
+- effect`,
+        },
+      ]);
     }).pipe(Effect.provide(TestLayer)),
   );
 
@@ -286,9 +443,14 @@ Missing file
 
       const ctx = yield* createContext(MyAgent);
 
-      expect(ctx.system).toEqual(`${createPreamble("objects")}Config:
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("objects")}Config:
 host: localhost
-port: 3000`);
+port: 3000`,
+        },
+      ]);
     }).pipe(Effect.provide(TestLayer)),
   );
 
@@ -302,12 +464,17 @@ port: 3000`);
 
       const ctx = yield* createContext(MyAgent);
 
-      expect(ctx.system).toEqual(`${createPreamble("nested")}Data:
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("nested")}Data:
 names:
   - Sam
   - John
 settings:
-  debug: true`);
+  debug: true`,
+        },
+      ]);
     }).pipe(Effect.provide(TestLayer)),
   );
 
@@ -321,11 +488,16 @@ settings:
 
       const ctx = yield* createContext(MyAgent);
 
-      expect(ctx.system).toEqual(`${createPreamble("array-objects")}Users:
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("array-objects")}Users:
 - name: Alice
   age: 30
 - name: Bob
-  age: 25`);
+  age: 25`,
+        },
+      ]);
     }).pipe(Effect.provide(TestLayer)),
   );
 
@@ -348,9 +520,10 @@ A simple echo toolkit:
 
       const ctx = yield* createContext(MyAgent);
 
-      // Verify system prompt
-      expect(ctx.system)
-        .toEqual(`${createPreamble("echo-agent")}Uses 🧰EchoToolkit
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("echo-agent")}Uses 🧰EchoToolkit
 
 ---
 
@@ -362,7 +535,9 @@ You can (and should) use the following tools to accomplish your tasks. Tool defi
 
 A simple echo toolkit:
 - 🛠️echo
-`);
+`,
+        },
+      ]);
 
       // Verify toolkit contains the echo tool
       expect(Object.keys(ctx.toolkit.tools)).toEqual(["echo"]);
@@ -420,22 +595,12 @@ Configuration tools:
 
       const ctx = yield* createContext(MyAgent);
 
-      expect(ctx.system)
-        .toEqual(`${createPreamble("config-agent")}Uses 🧰ConfigToolkit
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("config-agent")}Uses 🧰ConfigToolkit
 
 ---
-
-## Files
-
-In this section, we document important files that you must be aware of and may need to read, write, or request another agent interact with.
-
-### test/fixtures/config.json
-
-Configuration file
-
-\`\`\`json
-{ "key": "value" }
-\`\`\`
 
 ## Toolkits
 
@@ -445,7 +610,34 @@ You can (and should) use the following tools to accomplish your tasks. Tool defi
 
 Configuration tools:
 - 🛠️loadConfig
-`);
+`,
+        },
+        {
+          role: "assistant",
+          content: [
+            {
+              type: "tool-call",
+              id: "ctx-file-0",
+              name: "read",
+              params: { filePath: "test/fixtures/config.json" },
+              providerExecuted: false,
+            },
+          ],
+        },
+        {
+          role: "tool",
+          content: [
+            {
+              type: "tool-result",
+              id: "ctx-file-0",
+              name: "read",
+              isFailure: false,
+              result: { content: '{ "key": "value" }' },
+              providerExecuted: false,
+            },
+          ],
+        },
+      ]);
 
       // Verify tool description includes file reference
       expect(ctx.toolkit.tools.loadConfig).toMatchObject({
@@ -479,18 +671,12 @@ Delegation tools:
 
       const ctx = yield* createContext(MyAgent);
 
-      expect(ctx.system)
-        .toEqual(`${createPreamble("delegator")}Uses 🧰DelegationToolkit to work with @helper
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("delegator")}Uses 🧰DelegationToolkit to work with @helper
 
 ---
-
-## Agents
-
-Below is a list and description of each agent you can delegate tasks to, their role, and their capabilities.
-
-### helper
-
-I help with tasks
 
 ## Toolkits
 
@@ -500,7 +686,34 @@ You can (and should) use the following tools to accomplish your tasks. Tool defi
 
 Delegation tools:
 - 🛠️delegate
-`);
+`,
+        },
+        {
+          role: "assistant",
+          content: [
+            {
+              type: "tool-call",
+              id: "ctx-agent-0",
+              name: "read",
+              params: { filePath: ".distilled/agents/helper.md" },
+              providerExecuted: false,
+            },
+          ],
+        },
+        {
+          role: "tool",
+          content: [
+            {
+              type: "tool-result",
+              id: "ctx-agent-0",
+              name: "read",
+              isFailure: false,
+              result: { content: "# @helper\n\nI help with tasks" },
+              providerExecuted: false,
+            },
+          ],
+        },
+      ]);
 
       // Verify tool description includes agent reference
       expect(ctx.toolkit.tools.delegate).toMatchObject({
@@ -540,30 +753,12 @@ Data processing tools:
 
       const ctx = yield* createContext(MyAgent);
 
-      expect(ctx.system)
-        .toEqual(`${createPreamble("data-agent")}Uses 🧰DataToolkit
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("data-agent")}Uses 🧰DataToolkit
 
 ---
-
-## Agents
-
-Below is a list and description of each agent you can delegate tasks to, their role, and their capabilities.
-
-### processor
-
-Processes data
-
-## Files
-
-In this section, we document important files that you must be aware of and may need to read, write, or request another agent interact with.
-
-### test/fixtures/data.json
-
-Data storage file
-
-\`\`\`json
-{ "items": [] }
-\`\`\`
 
 ## Toolkits
 
@@ -573,7 +768,59 @@ You can (and should) use the following tools to accomplish your tasks. Tool defi
 
 Data processing tools:
 - 🛠️process
-`);
+`,
+        },
+        {
+          role: "assistant",
+          content: [
+            {
+              type: "tool-call",
+              id: "ctx-agent-0",
+              name: "read",
+              params: { filePath: ".distilled/agents/processor.md" },
+              providerExecuted: false,
+            },
+          ],
+        },
+        {
+          role: "tool",
+          content: [
+            {
+              type: "tool-result",
+              id: "ctx-agent-0",
+              name: "read",
+              isFailure: false,
+              result: { content: "# @processor\n\nProcesses data" },
+              providerExecuted: false,
+            },
+          ],
+        },
+        {
+          role: "assistant",
+          content: [
+            {
+              type: "tool-call",
+              id: "ctx-file-1",
+              name: "read",
+              params: { filePath: "test/fixtures/data.json" },
+              providerExecuted: false,
+            },
+          ],
+        },
+        {
+          role: "tool",
+          content: [
+            {
+              type: "tool-result",
+              id: "ctx-file-1",
+              name: "read",
+              isFailure: false,
+              result: { content: '{ "items": [] }' },
+              providerExecuted: false,
+            },
+          ],
+        },
+      ]);
 
       // Verify tool description includes both references
       expect(ctx.toolkit.tools.process).toMatchObject({
@@ -604,8 +851,10 @@ Math operations:
 
       const ctx = yield* createContext(MyAgent);
 
-      expect(ctx.system)
-        .toEqual(`${createPreamble("math-agent")}Uses 🧰MathToolkit
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("math-agent")}Uses 🧰MathToolkit
 
 ---
 
@@ -617,7 +866,9 @@ You can (and should) use the following tools to accomplish your tasks. Tool defi
 
 Math operations:
 - 🛠️add
-`);
+`,
+        },
+      ]);
 
       // Verify toolkit contains the add tool with correct schema
       expect(JSONSchema.make(ctx.toolkit.tools.add.parametersSchema)).toEqual({
@@ -667,8 +918,10 @@ Math operations:
 
       const ctx = yield* createContext(MultiAgent);
 
-      expect(ctx.system)
-        .toEqual(`${createPreamble("multi")}Uses 🧰ToolkitA and 🧰ToolkitB
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("multi")}Uses 🧰ToolkitA and 🧰ToolkitB
 
 ---
 
@@ -683,7 +936,9 @@ Has 🛠️toolA
 ### ToolkitB
 
 Has 🛠️toolB
-`);
+`,
+        },
+      ]);
 
       // Verify both tools are merged into the toolkit
       expect(Object.keys(ctx.toolkit.tools).sort()).toEqual(["toolA", "toolB"]);
@@ -712,18 +967,37 @@ Nested toolkit with ${nestedTool}
 
       // With depth-limited context, toolkits from nested agents are NOT embedded
       // The child agent is listed, but its toolkit is not included
-      expect(ctx.system).toEqual(`${createPreamble("parent")}Delegates to @child
-
----
-
-## Agents
-
-Below is a list and description of each agent you can delegate tasks to, their role, and their capabilities.
-
-### child
-
-Uses 🧰NestedToolkit
-`);
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("parent")}Delegates to @child`,
+        },
+        {
+          role: "assistant",
+          content: [
+            {
+              type: "tool-call",
+              id: "ctx-agent-0",
+              name: "read",
+              params: { filePath: ".distilled/agents/child.md" },
+              providerExecuted: false,
+            },
+          ],
+        },
+        {
+          role: "tool",
+          content: [
+            {
+              type: "tool-result",
+              id: "ctx-agent-0",
+              name: "read",
+              isFailure: false,
+              result: { content: "# @child\n\nUses 🧰NestedToolkit" },
+              providerExecuted: false,
+            },
+          ],
+        },
+      ]);
 
       // Toolkit from nested agent is NOT included - accessible via send/query tools
       expect(Object.keys(ctx.toolkit.tools)).toEqual([]);
@@ -736,7 +1010,12 @@ Uses 🧰NestedToolkit
 
       const ctx = yield* createContext(SimpleAgent);
 
-      expect(ctx.system).toEqual(`${createPreamble("simple")}No toolkits here`);
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("simple")}No toolkits here`,
+        },
+      ]);
 
       expect(ctx.toolkit.tools).toEqual({});
     }).pipe(Effect.provide(TestLayer)),
@@ -766,22 +1045,62 @@ Shared: ${sharedTool}
         const ctx = yield* createContext(RootAgent);
 
         // With depth-limited context, toolkits from nested agents are NOT embedded
-        expect(ctx.system).toEqual(`${createPreamble("root")}Has @a1 and @a2
-
----
-
-## Agents
-
-Below is a list and description of each agent you can delegate tasks to, their role, and their capabilities.
-
-### a1
-
-Uses 🧰SharedToolkit
-
-### a2
-
-Also uses 🧰SharedToolkit
-`);
+        expect(ctx.messages).toEqual([
+          {
+            role: "system",
+            content: `${createPreamble("root")}Has @a1 and @a2`,
+          },
+          {
+            role: "assistant",
+            content: [
+              {
+                type: "tool-call",
+                id: "ctx-agent-0",
+                name: "read",
+                params: { filePath: ".distilled/agents/a1.md" },
+                providerExecuted: false,
+              },
+            ],
+          },
+          {
+            role: "tool",
+            content: [
+              {
+                type: "tool-result",
+                id: "ctx-agent-0",
+                name: "read",
+                isFailure: false,
+                result: { content: "# @a1\n\nUses 🧰SharedToolkit" },
+                providerExecuted: false,
+              },
+            ],
+          },
+          {
+            role: "assistant",
+            content: [
+              {
+                type: "tool-call",
+                id: "ctx-agent-1",
+                name: "read",
+                params: { filePath: ".distilled/agents/a2.md" },
+                providerExecuted: false,
+              },
+            ],
+          },
+          {
+            role: "tool",
+            content: [
+              {
+                type: "tool-result",
+                id: "ctx-agent-1",
+                name: "read",
+                isFailure: false,
+                result: { content: "# @a2\n\nAlso uses 🧰SharedToolkit" },
+                providerExecuted: false,
+              },
+            ],
+          },
+        ]);
 
         // Toolkit from nested agents is NOT included
         expect(Object.keys(ctx.toolkit.tools)).toEqual([]);
@@ -806,11 +1125,14 @@ Also uses 🧰SharedToolkit
 
         // Note: References embedded in arrays are serialized as quoted strings
         // and are NOT automatically collected into the Agents section
-        expect(ctx.system).toEqual(
-          `${createPreamble("orchestrator")}Available workers:
+        expect(ctx.messages).toEqual([
+          {
+            role: "system",
+            content: `${createPreamble("orchestrator")}Available workers:
 - "@worker-a"
 - "@worker-b"`,
-        );
+          },
+        ]);
       }).pipe(Effect.provide(TestLayer)),
   );
 
@@ -826,12 +1148,15 @@ Also uses 🧰SharedToolkit
       const ctx = yield* createContext(MyAgent);
 
       // Verify the array is rendered as YAML with quoted references
-      expect(ctx.system).toEqual(
-        `${createPreamble("coordinator")}Coordinate between these agents:
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("coordinator")}Coordinate between these agents:
 - "@alpha"
 - "@beta"
 - "@gamma" to complete tasks.`,
-      );
+        },
+      ]);
     }).pipe(Effect.provide(TestLayer)),
   );
 
@@ -855,11 +1180,14 @@ Also uses 🧰SharedToolkit
 
       // Note: Files embedded in arrays are serialized as quoted markdown links
       // but are NOT collected into the Files section
-      expect(ctx.system).toEqual(
-        `${createPreamble("codebase")}Important files:
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("codebase")}Important files:
 - "[main.ts](test/fixtures/main.ts)"
 - "[utils.ts](test/fixtures/utils.ts)"`,
-      );
+        },
+      ]);
     }).pipe(Effect.provide(TestLayer)),
   );
 
@@ -882,11 +1210,14 @@ Also uses 🧰SharedToolkit
       const ctx = yield* createContext(MyAgent);
 
       // Verify array is rendered as YAML list with quoted links
-      expect(ctx.system).toEqual(
-        `${createPreamble("assets")}Required assets:
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("assets")}Required assets:
 - "[config.json](test/fixtures/config.json)"
 - "[styles.css](test/fixtures/styles.css)"`,
-      );
+        },
+      ]);
     }).pipe(Effect.provide(TestLayer)),
   );
 
@@ -903,11 +1234,14 @@ Also uses 🧰SharedToolkit
 
       // Note: Agents embedded in objects are serialized as quoted strings
       // but are NOT collected into the Agents section
-      expect(ctx.system).toEqual(
-        `${createPreamble("team")}Team structure:
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("team")}Team structure:
 leader: "@leader"
 worker: "@worker"`,
-      );
+        },
+      ]);
     }).pipe(Effect.provide(TestLayer)),
   );
 
@@ -925,12 +1259,15 @@ worker: "@worker"`,
       const ctx = yield* createContext(MyAgent);
 
       // Verify object is rendered as YAML with quoted agent references
-      expect(ctx.system).toEqual(
-        `${createPreamble("project")}Project roles:
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("project")}Project roles:
 ui: "@frontend"
 api: "@backend"
 infra: "@devops"`,
-      );
+        },
+      ]);
     }).pipe(Effect.provide(TestLayer)),
   );
 
@@ -957,11 +1294,14 @@ infra: "@devops"`,
       const ctx = yield* createContext(MyAgent);
 
       // Verify object is rendered as YAML with quoted file links
-      expect(ctx.system).toEqual(
-        `${createPreamble("docs")}Documentation files:
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("docs")}Documentation files:
 schema: "[schema.json](test/fixtures/schema.json)"
 readme: "[readme.md](test/fixtures/readme.md)"`,
-      );
+        },
+      ]);
     }).pipe(Effect.provide(TestLayer)),
   );
 
@@ -982,24 +1322,38 @@ readme: "[readme.md](test/fixtures/readme.md)"`,
 
       const ctx = yield* createContext(MyAgent);
 
-      // Direct reference includes file content
-      expect(ctx.system)
-        .toEqual(`${createPreamble("config")}Configuration file: [app.config.ts](test/fixtures/app.config.ts)
-
----
-
-## Files
-
-In this section, we document important files that you must be aware of and may need to read, write, or request another agent interact with.
-
-### test/fixtures/app.config.ts
-
-Application config
-
-\`\`\`typescript
-export default { port: 3000 };
-\`\`\`
-`);
+      // Direct reference includes file content via tool call
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("config")}Configuration file: [app.config.ts](test/fixtures/app.config.ts)`,
+        },
+        {
+          role: "assistant",
+          content: [
+            {
+              type: "tool-call",
+              id: "ctx-file-0",
+              name: "read",
+              params: { filePath: "test/fixtures/app.config.ts" },
+              providerExecuted: false,
+            },
+          ],
+        },
+        {
+          role: "tool",
+          content: [
+            {
+              type: "tool-result",
+              id: "ctx-file-0",
+              name: "read",
+              isFailure: false,
+              result: { content: "export default { port: 3000 };" },
+              providerExecuted: false,
+            },
+          ],
+        },
+      ]);
     }).pipe(Effect.provide(TestLayer)),
   );
 
@@ -1016,14 +1370,17 @@ export default { port: 3000 };
       const ctx = yield* createContext(MyAgent);
 
       // Verify nested structure is rendered correctly with quoted references
-      expect(ctx.system).toEqual(
-        `${createPreamble("workflow")}Workflow:
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("workflow")}Workflow:
 reviewers:
   - "@reviewer-a"
   - "@reviewer-b"
 approvers:
   - "@approver-a"`,
-      );
+        },
+      ]);
     }).pipe(Effect.provide(TestLayer)),
   );
 
@@ -1056,14 +1413,17 @@ approvers:
       const ctx = yield* createContext(MyAgent);
 
       // Verify deeply nested structure with quoted links
-      expect(ctx.system).toEqual(
-        `${createPreamble("codebase")}Code structure:
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("codebase")}Code structure:
 source:
   entry: "[index-src.ts](test/fixtures/index-src.ts)"
   types: "[types-src.ts](test/fixtures/types-src.ts)"
 tests:
   - "[main-test.ts](test/fixtures/main-test.ts)"`,
-      );
+        },
+      ]);
     }).pipe(Effect.provide(TestLayer)),
   );
 
@@ -1101,12 +1461,15 @@ tests:
         const ctx = yield* createContext(MyAgent);
 
         // Verify mixed references in object with appropriate symbols
-        expect(ctx.system).toEqual(
-          `${createPreamble("project")}Project:
+        expect(ctx.messages).toEqual([
+          {
+            role: "system",
+            content: `${createPreamble("project")}Project:
 spec: "[spec.md](test/fixtures/spec.md)"
 agent: "@implementer"
 toolkit: 🧰TaskToolkit`,
-        );
+          },
+        ]);
       }).pipe(Effect.provide(TestLayer)),
   );
 
@@ -1122,13 +1485,16 @@ toolkit: 🧰TaskToolkit`,
       const ctx = yield* createContext(MyAgent);
 
       // Verify array of objects with references
-      expect(ctx.system).toEqual(
-        `${createPreamble("manager")}Tasks:
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("manager")}Tasks:
 - name: Task 1
   assignee: "@agent-a"
 - name: Task 2
   assignee: "@agent-b"`,
-      );
+        },
+      ]);
     }).pipe(Effect.provide(TestLayer)),
   );
 
@@ -1521,7 +1887,10 @@ pipeline:
 
         // Note: References in input templates are NOT collected into system prompt
         // The collection only walks direct references, not nested in input templates
-        expect(ctx.system).toEqual(`${createPreamble("sender")}Uses 🧰SendToolkit
+        expect(ctx.messages).toEqual([
+          {
+            role: "system",
+            content: `${createPreamble("sender")}Uses 🧰SendToolkit
 
 ---
 
@@ -1532,7 +1901,9 @@ You can (and should) use the following tools to accomplish your tasks. Tool defi
 ### SendToolkit
 
 Send tools: 🛠️send
-`);
+`,
+          },
+        ]);
       }).pipe(Effect.provide(TestLayer)),
   );
 
@@ -1593,7 +1964,10 @@ Send tools: 🛠️send
 
         // Note: References in input templates are NOT collected into system prompt
         // The collection only walks direct references, not nested in input templates
-        expect(ctx.system).toEqual(`${createPreamble("formatter")}Uses 🧰FormatToolkit
+        expect(ctx.messages).toEqual([
+          {
+            role: "system",
+            content: `${createPreamble("formatter")}Uses 🧰FormatToolkit
 
 ---
 
@@ -1604,7 +1978,9 @@ You can (and should) use the following tools to accomplish your tasks. Tool defi
 ### FormatToolkit
 
 Format tools: 🛠️format
-`);
+`,
+          },
+        ]);
       }).pipe(Effect.provide(TestLayer)),
   );
 
@@ -1622,18 +1998,37 @@ Format tools: 🛠️format
 
       const ctx = yield* createContext(ParentAgent);
 
-      expect(ctx.system).toEqual(`${createPreamble("parent")}Delegates to @child
-
----
-
-## Agents
-
-Below is a list and description of each agent you can delegate tasks to, their role, and their capabilities.
-
-### child
-
-I am the child
-`);
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("parent")}Delegates to @child`,
+        },
+        {
+          role: "assistant",
+          content: [
+            {
+              type: "tool-call",
+              id: "ctx-agent-0",
+              name: "read",
+              params: { filePath: ".distilled/agents/child.md" },
+              providerExecuted: false,
+            },
+          ],
+        },
+        {
+          role: "tool",
+          content: [
+            {
+              type: "tool-result",
+              id: "ctx-agent-0",
+              name: "read",
+              isFailure: false,
+              result: { content: "# @child\n\nI am the child" },
+              providerExecuted: false,
+            },
+          ],
+        },
+      ]);
     }).pipe(Effect.provide(TestLayer)),
   );
 
@@ -1648,23 +2043,62 @@ I am the child
 
       const ctx = yield* createContext(Orchestrator);
 
-      expect(ctx.system)
-        .toEqual(`${createPreamble("orchestrator")}Coordinates @worker-a and @worker-b
-
----
-
-## Agents
-
-Below is a list and description of each agent you can delegate tasks to, their role, and their capabilities.
-
-### worker-a
-
-I handle task A
-
-### worker-b
-
-I handle task B
-`);
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("orchestrator")}Coordinates @worker-a and @worker-b`,
+        },
+        {
+          role: "assistant",
+          content: [
+            {
+              type: "tool-call",
+              id: "ctx-agent-0",
+              name: "read",
+              params: { filePath: ".distilled/agents/worker-a.md" },
+              providerExecuted: false,
+            },
+          ],
+        },
+        {
+          role: "tool",
+          content: [
+            {
+              type: "tool-result",
+              id: "ctx-agent-0",
+              name: "read",
+              isFailure: false,
+              result: { content: "# @worker-a\n\nI handle task A" },
+              providerExecuted: false,
+            },
+          ],
+        },
+        {
+          role: "assistant",
+          content: [
+            {
+              type: "tool-call",
+              id: "ctx-agent-1",
+              name: "read",
+              params: { filePath: ".distilled/agents/worker-b.md" },
+              providerExecuted: false,
+            },
+          ],
+        },
+        {
+          role: "tool",
+          content: [
+            {
+              type: "tool-result",
+              id: "ctx-agent-1",
+              name: "read",
+              isFailure: false,
+              result: { content: "# @worker-b\n\nI handle task B" },
+              providerExecuted: false,
+            },
+          ],
+        },
+      ]);
     }).pipe(Effect.provide(TestLayer)),
   );
 
@@ -1684,23 +2118,37 @@ I handle task B
 
       const ctx = yield* createContext(MyAgent);
 
-      expect(ctx.system)
-        .toEqual(`${createPreamble("reader")}Reads [forward-ref.ts](test/fixtures/forward-ref.ts)
-
----
-
-## Files
-
-In this section, we document important files that you must be aware of and may need to read, write, or request another agent interact with.
-
-### test/fixtures/forward-ref.ts
-
-Config file
-
-\`\`\`typescript
-export const value = 42;
-\`\`\`
-`);
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("reader")}Reads [forward-ref.ts](test/fixtures/forward-ref.ts)`,
+        },
+        {
+          role: "assistant",
+          content: [
+            {
+              type: "tool-call",
+              id: "ctx-file-0",
+              name: "read",
+              params: { filePath: "test/fixtures/forward-ref.ts" },
+              providerExecuted: false,
+            },
+          ],
+        },
+        {
+          role: "tool",
+          content: [
+            {
+              type: "tool-result",
+              id: "ctx-file-0",
+              name: "read",
+              isFailure: false,
+              result: { content: "export const value = 42;" },
+              providerExecuted: false,
+            },
+          ],
+        },
+      ]);
     }).pipe(Effect.provide(TestLayer)),
   );
 
@@ -1720,7 +2168,10 @@ export const value = 42;
 
       const ctx = yield* createContext(MyAgent);
 
-      expect(ctx.system).toEqual(`${createPreamble("worker")}Uses 🧰MyToolkit
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("worker")}Uses 🧰MyToolkit
 
 ---
 
@@ -1731,7 +2182,9 @@ You can (and should) use the following tools to accomplish your tasks. Tool defi
 ### MyToolkit
 
 Tools: 🛠️myTool
-`);
+`,
+        },
+      ]);
       expect(Object.keys(ctx.toolkit.tools)).toEqual(["myTool"]);
     }).pipe(Effect.provide(TestLayer)),
   );
@@ -1746,22 +2199,62 @@ Tools: 🛠️myTool
 
       const ctx = yield* createContext(MyAgent);
 
-      expect(ctx.system).toEqual(`${createPreamble("mixed")}Has @direct and @forward
-
----
-
-## Agents
-
-Below is a list and description of each agent you can delegate tasks to, their role, and their capabilities.
-
-### direct
-
-I am direct
-
-### forward
-
-I am forward
-`);
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("mixed")}Has @direct and @forward`,
+        },
+        {
+          role: "assistant",
+          content: [
+            {
+              type: "tool-call",
+              id: "ctx-agent-0",
+              name: "read",
+              params: { filePath: ".distilled/agents/direct.md" },
+              providerExecuted: false,
+            },
+          ],
+        },
+        {
+          role: "tool",
+          content: [
+            {
+              type: "tool-result",
+              id: "ctx-agent-0",
+              name: "read",
+              isFailure: false,
+              result: { content: "# @direct\n\nI am direct" },
+              providerExecuted: false,
+            },
+          ],
+        },
+        {
+          role: "assistant",
+          content: [
+            {
+              type: "tool-call",
+              id: "ctx-agent-1",
+              name: "read",
+              params: { filePath: ".distilled/agents/forward.md" },
+              providerExecuted: false,
+            },
+          ],
+        },
+        {
+          role: "tool",
+          content: [
+            {
+              type: "tool-result",
+              id: "ctx-agent-1",
+              name: "read",
+              isFailure: false,
+              result: { content: "# @forward\n\nI am forward" },
+              providerExecuted: false,
+            },
+          ],
+        },
+      ]);
     }).pipe(Effect.provide(TestLayer)),
   );
 
@@ -1776,9 +2269,14 @@ I am forward
       const ctx = yield* createContext(MyAgent);
 
       // Forward refs in arrays are resolved and serialized (not collected)
-      expect(ctx.system).toEqual(`${createPreamble("coordinator")}Workers:
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("coordinator")}Workers:
 - "@worker-x"
-- "@worker-y"`);
+- "@worker-y"`,
+        },
+      ]);
     }).pipe(Effect.provide(TestLayer)),
   );
 
@@ -1794,9 +2292,14 @@ I am forward
       const ctx = yield* createContext(MyAgent);
 
       // Forward refs in objects are resolved and serialized (not collected)
-      expect(ctx.system).toEqual(`${createPreamble("team")}Team:
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("team")}Team:
 leader: "@leader"
-member: "@member"`);
+member: "@member"`,
+        },
+      ]);
     }).pipe(Effect.provide(TestLayer)),
   );
 
@@ -1814,12 +2317,17 @@ member: "@member"`);
       const ctx = yield* createContext(MyAgent);
 
       // Refs in nested objects are serialized (not collected)
-      expect(ctx.system).toEqual(`${createPreamble("workflow")}Workflow:
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("workflow")}Workflow:
 stages:
   - name: build
     agent: "@build"
   - name: deploy
-    agent: "@deploy"`);
+    agent: "@deploy"`,
+        },
+      ]);
     }).pipe(Effect.provide(TestLayer)),
   );
 
@@ -1837,22 +2345,62 @@ stages:
 
         // SharedAgent should NOT appear in the output (depth > 1)
         // Agent1 and Agent2 should appear (depth = 1)
-        expect(ctx.system).toEqual(`${createPreamble("root")}Has @a1 and @a2
-
----
-
-## Agents
-
-Below is a list and description of each agent you can delegate tasks to, their role, and their capabilities.
-
-### a1
-
-Uses @shared
-
-### a2
-
-Also uses @shared
-`);
+        expect(ctx.messages).toEqual([
+          {
+            role: "system",
+            content: `${createPreamble("root")}Has @a1 and @a2`,
+          },
+          {
+            role: "assistant",
+            content: [
+              {
+                type: "tool-call",
+                id: "ctx-agent-0",
+                name: "read",
+                params: { filePath: ".distilled/agents/a1.md" },
+                providerExecuted: false,
+              },
+            ],
+          },
+          {
+            role: "tool",
+            content: [
+              {
+                type: "tool-result",
+                id: "ctx-agent-0",
+                name: "read",
+                isFailure: false,
+                result: { content: "# @a1\n\nUses @shared" },
+                providerExecuted: false,
+              },
+            ],
+          },
+          {
+            role: "assistant",
+            content: [
+              {
+                type: "tool-call",
+                id: "ctx-agent-1",
+                name: "read",
+                params: { filePath: ".distilled/agents/a2.md" },
+                providerExecuted: false,
+              },
+            ],
+          },
+          {
+            role: "tool",
+            content: [
+              {
+                type: "tool-result",
+                id: "ctx-agent-1",
+                name: "read",
+                isFailure: false,
+                result: { content: "# @a2\n\nAlso uses @shared" },
+                providerExecuted: false,
+              },
+            ],
+          },
+        ]);
       }).pipe(Effect.provide(TestLayer)),
   );
 
@@ -1882,18 +2430,37 @@ Tools: ${sharedTool}
         expect(Object.keys(ctx.toolkit.tools)).toEqual([]);
 
         // Child agent is listed but its toolkit is not included
-        expect(ctx.system).toEqual(`${createPreamble("parent")}Uses @child
-
----
-
-## Agents
-
-Below is a list and description of each agent you can delegate tasks to, their role, and their capabilities.
-
-### child
-
-Has 🧰SharedToolkit
-`);
+        expect(ctx.messages).toEqual([
+          {
+            role: "system",
+            content: `${createPreamble("parent")}Uses @child`,
+          },
+          {
+            role: "assistant",
+            content: [
+              {
+                type: "tool-call",
+                id: "ctx-agent-0",
+                name: "read",
+                params: { filePath: ".distilled/agents/child.md" },
+                providerExecuted: false,
+              },
+            ],
+          },
+          {
+            role: "tool",
+            content: [
+              {
+                type: "tool-result",
+                id: "ctx-agent-0",
+                name: "read",
+                isFailure: false,
+                result: { content: "# @child\n\nHas 🧰SharedToolkit" },
+                providerExecuted: false,
+              },
+            ],
+          },
+        ]);
       }).pipe(Effect.provide(TestLayer)),
   );
 
@@ -1975,7 +2542,10 @@ Echo toolkit: ${echoTool}
 
       const ctx = yield* createContext(SimpleAgent, { tools: [EchoToolkit] });
 
-      expect(ctx.system).toEqual(`${createPreamble("simple")}A simple agent
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("simple")}A simple agent
 
 ---
 
@@ -1986,7 +2556,9 @@ You can (and should) use the following tools to accomplish your tasks. Tool defi
 ### EchoToolkit
 
 Echo toolkit: 🛠️echo
-`);
+`,
+        },
+      ]);
 
       expect(Object.keys(ctx.toolkit.tools)).toEqual(["echo"]);
     }).pipe(Effect.provide(TestLayer)),
@@ -2019,7 +2591,10 @@ Echo toolkit: 🛠️echo
         tools: [ToolkitOne, ToolkitTwo],
       });
 
-      expect(ctx.system).toEqual(`${createPreamble("simple")}A simple agent
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("simple")}A simple agent
 
 ---
 
@@ -2034,7 +2609,9 @@ Has 🛠️toolOne
 ### ToolkitTwo
 
 Has 🛠️toolTwo
-`);
+`,
+        },
+      ]);
 
       expect(Object.keys(ctx.toolkit.tools).sort()).toEqual([
         "toolOne",
@@ -2075,8 +2652,10 @@ Additional: ${addTool}
         tools: [AdditionalToolkit],
       });
 
-      expect(ctx.system)
-        .toEqual(`${createPreamble("merger")}Uses 🧰ReferencedToolkit
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("merger")}Uses 🧰ReferencedToolkit
 
 ---
 
@@ -2091,7 +2670,9 @@ Referenced: 🛠️refTool
 ### AdditionalToolkit
 
 Additional: 🛠️addTool
-`);
+`,
+        },
+      ]);
 
       expect(Object.keys(ctx.toolkit.tools).sort()).toEqual([
         "addTool",
@@ -2121,8 +2702,10 @@ Shared: ${sharedTool}
 
         const ctx = yield* createContext(MyAgent, { tools: [SharedToolkit] });
 
-        expect(ctx.system)
-          .toEqual(`${createPreamble("dedup")}Uses 🧰SharedToolkit
+        expect(ctx.messages).toEqual([
+          {
+            role: "system",
+            content: `${createPreamble("dedup")}Uses 🧰SharedToolkit
 
 ---
 
@@ -2133,7 +2716,9 @@ You can (and should) use the following tools to accomplish your tasks. Tool defi
 ### SharedToolkit
 
 Shared: 🛠️sharedTool
-`);
+`,
+          },
+        ]);
 
         expect(Object.keys(ctx.toolkit.tools)).toEqual(["sharedTool"]);
       }).pipe(Effect.provide(TestLayer)),
@@ -2146,9 +2731,12 @@ Shared: 🛠️sharedTool
       // Call without options - should work as before
       const ctx = yield* createContext(SimpleAgent);
 
-      expect(ctx.system).toEqual(
-        `${createPreamble("backward")}No toolkits here`,
-      );
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("backward")}No toolkits here`,
+        },
+      ]);
       expect(ctx.toolkit.tools).toEqual({});
     }).pipe(Effect.provide(TestLayer)),
   );
@@ -2159,7 +2747,12 @@ Shared: 🛠️sharedTool
 
       const ctx = yield* createContext(SimpleAgent, { tools: [] });
 
-      expect(ctx.system).toEqual(`${createPreamble("empty")}No toolkits`);
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${createPreamble("empty")}No toolkits`,
+        },
+      ]);
       expect(ctx.toolkit.tools).toEqual({});
     }).pipe(Effect.provide(TestLayer)),
   );
@@ -2180,18 +2773,37 @@ Shared: 🛠️sharedTool
         const ctx = yield* createContext(CEO);
 
         // VP should be included (depth = 1), Developer should NOT (depth = 2)
-        expect(ctx.system).toEqual(`${createPreamble("ceo")}I lead @vp
-
----
-
-## Agents
-
-Below is a list and description of each agent you can delegate tasks to, their role, and their capabilities.
-
-### vp
-
-I manage @developer
-`);
+        expect(ctx.messages).toEqual([
+          {
+            role: "system",
+            content: `${createPreamble("ceo")}I lead @vp`,
+          },
+          {
+            role: "assistant",
+            content: [
+              {
+                type: "tool-call",
+                id: "ctx-agent-0",
+                name: "read",
+                params: { filePath: ".distilled/agents/vp.md" },
+                providerExecuted: false,
+              },
+            ],
+          },
+          {
+            role: "tool",
+            content: [
+              {
+                type: "tool-result",
+                id: "ctx-agent-0",
+                name: "read",
+                isFailure: false,
+                result: { content: "# @vp\n\nI manage @developer" },
+                providerExecuted: false,
+              },
+            ],
+          },
+        ]);
       }).pipe(Effect.provide(TestLayer)),
   );
 
@@ -2223,31 +2835,65 @@ I manage @developer
 
         // CEOReport should be included (direct reference)
         // DeveloperCode should NOT be included (referenced by nested agent)
-        expect(ctx.system)
-          .toEqual(`${createPreamble("ceo")}Reviews [ceo-report.md](test/fixtures/ceo-report.md) and leads @developer
-
----
-
-## Agents
-
-Below is a list and description of each agent you can delegate tasks to, their role, and their capabilities.
-
-### developer
-
-Uses [developer-code.ts](test/fixtures/developer-code.ts)
-
-## Files
-
-In this section, we document important files that you must be aware of and may need to read, write, or request another agent interact with.
-
-### test/fixtures/ceo-report.md
-
-CEO quarterly report
-
-\`\`\`markdown
-# CEO Report
-\`\`\`
-`);
+        expect(ctx.messages).toEqual([
+          {
+            role: "system",
+            content: `${createPreamble("ceo")}Reviews [ceo-report.md](test/fixtures/ceo-report.md) and leads @developer`,
+          },
+          {
+            role: "assistant",
+            content: [
+              {
+                type: "tool-call",
+                id: "ctx-agent-0",
+                name: "read",
+                params: { filePath: ".distilled/agents/developer.md" },
+                providerExecuted: false,
+              },
+            ],
+          },
+          {
+            role: "tool",
+            content: [
+              {
+                type: "tool-result",
+                id: "ctx-agent-0",
+                name: "read",
+                isFailure: false,
+                result: {
+                  content:
+                    "# @developer\n\nUses [developer-code.ts](test/fixtures/developer-code.ts)",
+                },
+                providerExecuted: false,
+              },
+            ],
+          },
+          {
+            role: "assistant",
+            content: [
+              {
+                type: "tool-call",
+                id: "ctx-file-1",
+                name: "read",
+                params: { filePath: "test/fixtures/ceo-report.md" },
+                providerExecuted: false,
+              },
+            ],
+          },
+          {
+            role: "tool",
+            content: [
+              {
+                type: "tool-result",
+                id: "ctx-file-1",
+                name: "read",
+                isFailure: false,
+                result: { content: "# CEO Report" },
+                providerExecuted: false,
+              },
+            ],
+          },
+        ]);
       }).pipe(Effect.provide(TestLayer)),
   );
 
@@ -2270,18 +2916,37 @@ Developer tools: ${reviewTool}
         const ctx = yield* createContext(CEO);
 
         // Developer is listed but CodingToolkit is NOT included (from nested agent)
-        expect(ctx.system).toEqual(`${createPreamble("ceo")}Leads @developer
-
----
-
-## Agents
-
-Below is a list and description of each agent you can delegate tasks to, their role, and their capabilities.
-
-### developer
-
-Uses 🧰CodingToolkit
-`);
+        expect(ctx.messages).toEqual([
+          {
+            role: "system",
+            content: `${createPreamble("ceo")}Leads @developer`,
+          },
+          {
+            role: "assistant",
+            content: [
+              {
+                type: "tool-call",
+                id: "ctx-agent-0",
+                name: "read",
+                params: { filePath: ".distilled/agents/developer.md" },
+                providerExecuted: false,
+              },
+            ],
+          },
+          {
+            role: "tool",
+            content: [
+              {
+                type: "tool-result",
+                id: "ctx-agent-0",
+                name: "read",
+                isFailure: false,
+                result: { content: "# @developer\n\nUses 🧰CodingToolkit" },
+                providerExecuted: false,
+              },
+            ],
+          },
+        ]);
         expect(Object.keys(ctx.toolkit.tools)).toEqual([]);
       }).pipe(Effect.provide(TestLayer)),
   );
@@ -2315,18 +2980,12 @@ Developer tools: ${codeTool}
 
         // PlanningToolkit is included (direct reference)
         // CodingToolkit is NOT included (from nested agent)
-        expect(ctx.system)
-          .toEqual(`${createPreamble("ceo")}Uses 🧰PlanningToolkit and leads @developer
+        expect(ctx.messages).toEqual([
+          {
+            role: "system",
+            content: `${createPreamble("ceo")}Uses 🧰PlanningToolkit and leads @developer
 
 ---
-
-## Agents
-
-Below is a list and description of each agent you can delegate tasks to, their role, and their capabilities.
-
-### developer
-
-Uses 🧰CodingToolkit
 
 ## Toolkits
 
@@ -2335,7 +2994,34 @@ You can (and should) use the following tools to accomplish your tasks. Tool defi
 ### PlanningToolkit
 
 CEO tools: 🛠️plan
-`);
+`,
+          },
+          {
+            role: "assistant",
+            content: [
+              {
+                type: "tool-call",
+                id: "ctx-agent-0",
+                name: "read",
+                params: { filePath: ".distilled/agents/developer.md" },
+                providerExecuted: false,
+              },
+            ],
+          },
+          {
+            role: "tool",
+            content: [
+              {
+                type: "tool-result",
+                id: "ctx-agent-0",
+                name: "read",
+                isFailure: false,
+                result: { content: "# @developer\n\nUses 🧰CodingToolkit" },
+                providerExecuted: false,
+              },
+            ],
+          },
+        ]);
         expect(Object.keys(ctx.toolkit.tools)).toEqual(["plan"]);
       }).pipe(Effect.provide(TestLayer)),
   );
@@ -2349,7 +3035,12 @@ CEO tools: 🛠️plan
         const ctx = yield* createContext(SimpleAgent);
 
         // Verify full context with agent communication section in preamble
-        expect(ctx.system).toEqual(`${createPreamble("test")}Test agent`);
+        expect(ctx.messages).toEqual([
+          {
+            role: "system",
+            content: `${createPreamble("test")}Test agent`,
+          },
+        ]);
       }).pipe(Effect.provide(TestLayer)),
   );
 
@@ -2367,18 +3058,37 @@ CEO tools: 🛠️plan
         const ctx = yield* createContext(A);
 
         // Only B should be included (depth = 1), C/D/E should NOT (depth > 1)
-        expect(ctx.system).toEqual(`${createPreamble("a")}Level A, uses @b
-
----
-
-## Agents
-
-Below is a list and description of each agent you can delegate tasks to, their role, and their capabilities.
-
-### b
-
-Level B, uses @c
-`);
+        expect(ctx.messages).toEqual([
+          {
+            role: "system",
+            content: `${createPreamble("a")}Level A, uses @b`,
+          },
+          {
+            role: "assistant",
+            content: [
+              {
+                type: "tool-call",
+                id: "ctx-agent-0",
+                name: "read",
+                params: { filePath: ".distilled/agents/b.md" },
+                providerExecuted: false,
+              },
+            ],
+          },
+          {
+            role: "tool",
+            content: [
+              {
+                type: "tool-result",
+                id: "ctx-agent-0",
+                name: "read",
+                isFailure: false,
+                result: { content: "# @b\n\nLevel B, uses @c" },
+                providerExecuted: false,
+              },
+            ],
+          },
+        ]);
       }).pipe(Effect.provide(TestLayer)),
   );
 });

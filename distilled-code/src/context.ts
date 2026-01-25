@@ -1,3 +1,9 @@
+import type {
+  AssistantMessageEncoded,
+  MessageEncoded,
+  SystemMessageEncoded,
+  ToolMessageEncoded,
+} from "@effect/ai/Prompt";
 import * as EffectTool from "@effect/ai/Tool";
 import * as EffectToolkit from "@effect/ai/Toolkit";
 import * as FileSystem from "@effect/platform/FileSystem";
@@ -10,6 +16,7 @@ import { isInput } from "./input.ts";
 import { isOutput } from "./output.ts";
 import { isTool, type Tool } from "./tool/tool.ts";
 import { isToolkit, type Toolkit } from "./toolkit/toolkit.ts";
+export type { MessageEncoded } from "@effect/ai/Prompt";
 export type { Toolkit } from "./toolkit/toolkit.ts";
 
 /**
@@ -45,7 +52,7 @@ export const resolveThunk = <T>(value: T | Thunk<T>): T =>
   isThunk(value) ? value() : value;
 
 export interface AgentContext {
-  system: string;
+  messages: MessageEncoded[];
   toolkit: EffectToolkit.Toolkit<Record<string, EffectTool.Any>>;
 }
 
@@ -72,7 +79,7 @@ export const createContext: (
   options?: CreateContextOptions,
 ) => Effect.Effect<
   {
-    system: string;
+    messages: MessageEncoded[];
     toolkit: EffectToolkit.Toolkit<{
       readonly [x: string]: EffectTool.Any;
     }>;
@@ -176,47 +183,84 @@ export const createContext: (
     });
   }
 
-  // Build sections
-  const sections: string[] = [createPreamble(agent.id), rootContent];
+  // Local counter for generating unique tool call IDs within this context
+  let toolCallIdCounter = 0;
+  const createToolCallId = (prefix: string): string =>
+    `ctx-${prefix}-${toolCallIdCounter++}`;
 
-  if (agents.length > 0 || files.length > 0 || toolkits.length > 0) {
-    sections.push("\n\n---\n");
-  }
+  // Build the messages array
+  const messages: MessageEncoded[] = [];
 
-  if (agents.length > 0) {
-    sections.push("\n## Agents\n\n");
-    sections.push(
-      "Below is a list and description of each agent you can delegate tasks to, their role, and their capabilities.\n\n",
-    );
-    sections.push(
-      agents.map((a) => `### ${a.id}\n\n${a.content}`).join("\n\n"),
-    );
-    sections.push("\n");
-  }
-  if (files.length > 0) {
-    sections.push("\n## Files\n\n");
-    sections.push(
-      "In this section, we document important files that you must be aware of and may need to read, write, or request another agent interact with.\n\n",
-    );
-    sections.push(
-      files
-        .map(
-          (f) =>
-            `### ${f.id}\n\n${f.description}\n\n\`\`\`${f.language}\n${f.content}\n\`\`\``,
-        )
-        .join("\n\n"),
-    );
-    sections.push("\n");
-  }
+  // Build system message with preamble, root content, and toolkit descriptions
+  const systemParts: string[] = [createPreamble(agent.id), rootContent];
+
   if (toolkits.length > 0) {
-    sections.push("\n## Toolkits\n\n");
-    sections.push(
+    systemParts.push("\n\n---\n");
+    systemParts.push("\n## Toolkits\n\n");
+    systemParts.push(
       "You can (and should) use the following tools to accomplish your tasks. Tool definitions are provided separately.\n\n",
     );
-    sections.push(
+    systemParts.push(
       toolkits.map((t) => `### ${t.id}\n\n${t.content}`).join("\n\n"),
     );
-    sections.push("\n");
+    systemParts.push("\n");
+  }
+
+  const systemMessage: SystemMessageEncoded = {
+    role: "system",
+    content: systemParts.join(""),
+  };
+  messages.push(systemMessage);
+
+  // Write agent context files and add read tool messages for each agent
+  if (agents.length > 0) {
+    // Ensure .distilled/agents directory exists
+    yield* fs
+      .makeDirectory(".distilled/agents", { recursive: true })
+      .pipe(Effect.catchAll(() => Effect.void));
+
+    for (const a of agents) {
+      const agentContent = `# @${a.id}\n\n${a.content}`;
+      const agentFilePath = `.distilled/agents/${a.id}.md`;
+
+      // Write the agent context file
+      yield* fs
+        .writeFileString(agentFilePath, agentContent)
+        .pipe(Effect.catchAll(() => Effect.void));
+
+      // Add read tool messages for this agent
+      const [assistantMsg, toolMsg] = createAgentReadMessages(
+        createToolCallId("agent"),
+        a.id,
+        agentContent,
+      );
+      messages.push(assistantMsg, toolMsg);
+    }
+  }
+
+  // Add read/glob tool messages for each file/folder
+  for (const f of files) {
+    if (f.language === "folder") {
+      // For folders, use glob to list contents
+      const folderFiles = f.content
+        .split("\n")
+        .filter((line) => line.trim() !== "");
+      const [assistantMsg, toolMsg] = createGlobToolMessages(
+        createToolCallId("folder"),
+        f.id,
+        "**/*",
+        folderFiles,
+      );
+      messages.push(assistantMsg, toolMsg);
+    } else {
+      // For regular files, use read
+      const [assistantMsg, toolMsg] = createReadToolMessages(
+        createToolCallId("file"),
+        f.id,
+        f.content,
+      );
+      messages.push(assistantMsg, toolMsg);
+    }
   }
 
   // Build the combined Effect toolkit from all collected and additional toolkits
@@ -228,7 +272,7 @@ export const createContext: (
       : EffectToolkit.empty;
 
   return {
-    system: sections.join(""),
+    messages,
     toolkit: effectToolkit,
   } satisfies AgentContext;
 });
@@ -264,6 +308,118 @@ forming a delegation chain. Don't hesitate to ask your collaborators for help.
 ---
 
 `;
+
+/**
+ * Creates a pair of messages simulating a read tool call and its result.
+ * Used for embedding file content in the agent context.
+ */
+export const createReadToolMessages = (
+  id: string,
+  filePath: string,
+  content: string,
+): [AssistantMessageEncoded, ToolMessageEncoded] => [
+  {
+    role: "assistant",
+    content: [
+      {
+        type: "tool-call",
+        id,
+        name: "read",
+        params: { filePath },
+        providerExecuted: false,
+      },
+    ],
+  },
+  {
+    role: "tool",
+    content: [
+      {
+        type: "tool-result",
+        id,
+        name: "read",
+        isFailure: false,
+        result: { content },
+        providerExecuted: false,
+      },
+    ],
+  },
+];
+
+/**
+ * Creates a pair of messages simulating a glob tool call and its result.
+ * Used for embedding folder listings in the agent context.
+ */
+export const createGlobToolMessages = (
+  id: string,
+  path: string,
+  pattern: string,
+  files: string[],
+): [AssistantMessageEncoded, ToolMessageEncoded] => [
+  {
+    role: "assistant",
+    content: [
+      {
+        type: "tool-call",
+        id,
+        name: "glob",
+        params: { pattern, path },
+        providerExecuted: false,
+      },
+    ],
+  },
+  {
+    role: "tool",
+    content: [
+      {
+        type: "tool-result",
+        id,
+        name: "glob",
+        isFailure: false,
+        result: { files: files.join("\n") },
+        providerExecuted: false,
+      },
+    ],
+  },
+];
+
+/**
+ * Creates a pair of messages simulating reading an agent context file.
+ * Agent context is stored in .distilled/agents/{agent-id}.md
+ */
+export const createAgentReadMessages = (
+  id: string,
+  agentId: string,
+  content: string,
+): [AssistantMessageEncoded, ToolMessageEncoded] => {
+  const filePath = `.distilled/agents/${agentId}.md`;
+  return [
+    {
+      role: "assistant",
+      content: [
+        {
+          type: "tool-call",
+          id,
+          name: "read",
+          params: { filePath },
+          providerExecuted: false,
+        },
+      ],
+    },
+    {
+      role: "tool",
+      content: [
+        {
+          type: "tool-result",
+          id,
+          name: "read",
+          isFailure: false,
+          result: { content },
+          providerExecuted: false,
+        },
+      ],
+    },
+  ];
+};
 
 /**
  * Recursively serialize a value, replacing references with their string representations.
