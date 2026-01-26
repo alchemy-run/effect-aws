@@ -38,13 +38,12 @@ Input: mkdir foo
 Output: Creates directory 'foo'`;
 
 const exitCode = output("exitCode", S.Number);
-const stdout = output("stdout");
-const stderr = output("stderr");
+const out = output("output", S.String);
 
 export const bash = tool("bash", {
   alias: (model) => (model.includes("claude") ? "AnthropicBash" : undefined),
 })`Executes a given bash ${command} in a persistent shell session with optional ${timeout}, ensuring proper handling and security measures.
-Returns the ${exitCode}, ${stdout} and ${stderr}.
+Returns the ${exitCode} and ${out} containing both stdout and stderr.
 If the command is invalid, an error will be returned as a ${S.String}
 
 All commands run in ${process.cwd()} by default. Use the ${workdir} parameter if you need to run a command in a different directory. AVOID using \`cd <directory> && <command>\` patterns - use \`workdir\` instead.
@@ -182,7 +181,7 @@ Important:
     Command.workingDirectory(workdir ?? process.cwd()),
   );
 
-  const [exitCode, stdout, stderr] = yield* pipe(
+  const [exitCode, output] = yield* pipe(
     // Start running the command and return a handle to the running process
     Command.start(cmd),
     Effect.flatMap((process) =>
@@ -192,9 +191,9 @@ Important:
           // the ExitCode of the command that was run
           process.exitCode,
           // The standard output stream of the process
-          runString(process.stdout),
-          // The standard error stream of the process
-          runString(process.stderr),
+          Stream.merge(process.stdout, process.stderr)
+            .pipe(Stream.decodeText())
+            .pipe(Stream.mkString),
         ],
         { concurrency: 3 },
       ),
@@ -203,8 +202,7 @@ Important:
 
   return {
     exitCode,
-    stdout,
-    stderr,
+    output,
   };
 });
 
