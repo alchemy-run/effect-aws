@@ -25,6 +25,11 @@
       "types": "./lib/toolkit/index.d.ts",
       "bun": "./src/toolkit/index.ts",
       "default": "./lib/toolkit/index.js"
+    },
+    "./tui": {
+      "types": "./lib/tui/index.d.ts",
+      "bun": "./src/tui/index.tsx",
+      "default": "./lib/tui/index.js"
     }
   },
   "publishConfig": {
@@ -45,8 +50,12 @@
     "@effect/platform": "catalog:",
     "@effect/platform-node": "catalog:",
     "@libsql/client": "^0.17.0",
+    "@opentui/core": "^0.1.75",
+    "@opentui/solid": "^0.1.75",
     "diff": "catalog:",
     "effect": "catalog:",
+    "fuzzysort": "^3.1.0",
+    "solid-js": "^1.9.10",
     "web-tree-sitter": "catalog:",
     "yaml": "catalog:"
   },

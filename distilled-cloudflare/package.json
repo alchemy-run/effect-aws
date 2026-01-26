@@ -33,7 +33,9 @@
   },
   "dependencies": {
     "@effect/platform": "catalog:",
-    "effect": "catalog:"
+    "@opentui/solid": "^0.1.75",
+    "effect": "catalog:",
+    "solid-js": "^1.9.11"
   },
   "devDependencies": {
     "@effect/cli": "catalog:",

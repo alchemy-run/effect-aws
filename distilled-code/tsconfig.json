@@ -32,7 +32,7 @@
     "declaration": true,
     "declarationMap": true,
     "noErrorTruncation": true,
-    "jsx": "react-jsx"
-    // "jsxImportSource": "@opentui/solid"
+    "jsx": "preserve",
+    "jsxImportSource": "@opentui/solid"
   }
 }

@@ -48,16 +48,16 @@ ${service.operations.map((op) => `- ${op.operationName} (${op.httpMethod})`)}
 Delegate tasks to the corresponding sub-agents (each operation has its own dedicated team).
 ${service.operations.map((op) => {
   // Files for this operation
-  class ServiceClient extends File.TypeScript(`src/services/${service}.ts`)`
-Generated Effect-based service client for the ${service} Cloudflare service.
+  class ServiceClient extends File.TypeScript(`src/services/${service.name}.ts`)`
+Generated Effect-based service client for the ${service.name} Cloudflare service.
 Contains operation functions, schemas, and error classes.
-Regenerate with: \`bun generate --service ${service}\`
+Regenerate with: \`bun generate --service ${service.name}\`
 ` {}
 
-  class TestPlan extends File.Document(
-    `plan/${service}/${op.operationName}.md`,
+  class TestPlan extends File.Markdown(
+    `plan/${service.name}/${op.operationName}.md`,
   )`
-Test plan for ${service}/${op.operationName}.
+Test plan for ${service.name}/${op.operationName}.
 
 ## Operation
 - **Method:** ${op.httpMethod} ${op.urlTemplate}
@@ -75,22 +75,22 @@ ${op.queryParams}
 ` {}
 
   class TestFile extends File.TypeScript(
-    `test/services/${service}/${op.operationName}.test.ts`,
+    `test/services/${service.name}/${op.operationName}.test.ts`,
   )`
-Test implementation for ${service}/${op.operationName}.
+Test implementation for ${service.name}/${op.operationName}.
 Uses \`test()\` from \`../../test.ts\`, \`Effect.gen\`, \`yield*\`, and \`Effect.flip\` for errors.
 ` {}
 
-  class ErrorPatch extends File.Document(
-    `patch/${service}/${op.operationName}.json`,
+  class ErrorPatch extends File.Json(
+    `patch/${service.name}/${op.operationName}.json`,
   )`
 Error patch mapping discovered error codes to typed classes.
 Format: \`{ "errors": { "ErrorTag": [{ "code": XXXX }] } }\`
-After updating: \`bun generate --service ${service}\`
+After updating: \`bun generate --service ${service.name}\`
 ` {}
 
   // Agents for this operation
-  class Designer extends Agent(`${service}/${op.operationName}/Designer`)`
+  class Designer extends Agent(`${service.name}/${op.operationName}/Designer`)`
 Design tests for ${op.operationName}. Read ${ServiceClient} for signatures.
 
 ## Operation
@@ -103,12 +103,12 @@ Design tests for ${op.operationName}. Read ${ServiceClient} for signatures.
 2. **Errors:** NotFound, BadRequest, Forbidden, Conflict with descriptive tags
 3. **Helpers:** \`with${op.resources[0] || "Resource"}\` using cleanup-first pattern
  - \`Effect.ensuring()\` for cleanup
- - Names: \`distilled-cf-${service}-${op.operationName.toLowerCase()}\`
+ - Names: \`distilled-cf-${service.name}-${op.operationName.toLowerCase()}\`
 
 Write plan to ${TestPlan}.
 ` {}
 
-  class Developer extends Agent(`${service}/${op.operationName}/Developer`)`
+  class Developer extends Agent(`${service.name}/${op.operationName}/Developer`)`
 Implement tests per ${TestPlan} using ${Toolkit.Coding}.
 
 ## Files
@@ -120,10 +120,10 @@ Implement tests per ${TestPlan} using ${Toolkit.Coding}.
 \`\`\`typescript
 import { describe, expect } from "@effect/vitest";
 import * as Effect from "effect/Effect";
-import { ${op.operationName} } from "~/services/${service}.ts";
+import { ${op.operationName} } from "~/services/${service.name}.ts";
 import { getAccountId, test } from "../../test.ts";
 
-describe("${service}/${op.operationName}", () => {
+describe("${service.name}/${op.operationName}", () => {
 describe("success", () => {
   test("works", () => Effect.gen(function* () {
     const result = yield* ${op.operationName}({ accountId: getAccountId() });
@@ -143,14 +143,14 @@ describe("ErrorTag", () => {
 ## On UnknownCloudflareError
 1. Extract code from failure
 2. Update ${ErrorPatch}
-3. Run \`bun generate --service ${service}\`
+3. Run \`bun generate --service ${service.name}\`
 4. Import new error, update test
 
-Run: \`bun vitest run test/services/${service}/${op.operationName}.test.ts\`
-Names: \`distilled-cf-${service}-${op.operationName.toLowerCase()}\`
+Run: \`bun vitest run test/services/${service.name}/${op.operationName}.test.ts\`
+Names: \`distilled-cf-${service.name}-${op.operationName.toLowerCase()}\`
 ` {}
 
-  class Reviewer extends Agent(`${service}/${op.operationName}/Reviewer`)`
+  class Reviewer extends Agent(`${service.name}/${op.operationName}/Reviewer`)`
 Review ${TestFile} against ${TestPlan}.
 
 ## Checklist
@@ -159,7 +159,7 @@ Review ${TestFile} against ${TestPlan}.
 - [ ] Uses \`yield*\` not await
 - [ ] Error tests use \`Effect.flip\`
 - [ ] Helpers use cleanup-first + \`Effect.ensuring()\`
-- [ ] Names: \`distilled-cf-${service}-*\`
+- [ ] Names: \`distilled-cf-${service.name}-*\`
 - [ ] No Date.now/Math.random/UUIDs
 
 Check ${ErrorPatch} for any patches.
@@ -167,8 +167,8 @@ Cross-reference with other ${ErrorPatch} files from other services and operation
 ` {}
 
   // Operation coordinator
-  return class Operation extends Agent(`${service}/${op.operationName}`)`
-Coordinate ${service}/${op.operationName} test implementation.
+  return class Operation extends Agent(`${service.name}/${op.operationName}`)`
+Coordinate ${service.name}/${op.operationName} test implementation.
 
 ## Operation
 - ${op.httpMethod} ${op.urlTemplate}
@@ -188,7 +188,7 @@ Coordinate ${service}/${op.operationName} test implementation.
 ## Workflow
 1. ${Designer} creates ${TestPlan}
 2. ${Developer} implements ${TestFile}
-3. Run: \`bun vitest run test/services/${service}/${op.operationName}.test.ts\`
+3. Run: \`bun vitest run test/services/${service.name}/${op.operationName}.test.ts\`
 4. On UnknownCloudflareError: update ${ErrorPatch}, regenerate, retry
 5. ${Reviewer} approves or requests changes
 6. Loop until approved, then commit

@@ -2,12 +2,12 @@
 /**
  * distilled CLI
  *
+ * Launches the Agent Browser TUI.
+ *
  * Usage:
- *   distilled "implement the API"                     # send prompt to all agents
- *   distilled --filter "api/*" "implement the API"   # send prompt to agents matching api/*
- *   distilled --concurrency 10 "implement the API"   # run 10 agents in parallel
- *   distilled --list                                  # list all agents
- *   distilled --list --filter "api/*"                # list agents matching pattern
+ *   distilled                          # launch TUI with ./distilled.config.ts
+ *   distilled ./path/to/config.ts      # launch TUI with custom config
+ *   distilled --model claude-opus      # use a specific model
  */
 import { AnthropicClient, AnthropicLanguageModel } from "@effect/ai-anthropic";
 import { Args, Command, Options } from "@effect/cli";
@@ -26,10 +26,10 @@ import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import * as Logger from "effect/Logger";
 import * as Option from "effect/Option";
-import * as Stream from "effect/Stream";
-import { isAgent, spawn, type Agent } from "../src/agent.ts";
-import { SqliteStateStore, StateStore } from "../src/state/index.ts";
-import { match } from "../src/util/wildcard.ts";
+import { isAgent, type Agent } from "../src/agent.ts";
+import { BunSqlite, sqliteStateStore } from "../src/state/index.ts";
+import { tui } from "../src/tui/index.tsx";
+import { log, logError } from "../src/util/log.ts";
 
 const DEFAULT_CONFIG_FILE = "distilled.config.ts";
 
@@ -40,12 +40,29 @@ const Anthropic = AnthropicClient.layerConfig({
 /**
  * Recursively collect all agents from an agent's references.
  * Walks the agent tree and returns a flat list of all agents.
+ * Handles nested arrays of agents (from .map() in template literals).
  */
 const collectAgents = (agent: Agent, visited = new Set<string>()): Agent[] => {
   if (visited.has(agent.id)) return [];
   visited.add(agent.id);
 
-  const nested = agent.references
+  // Flatten references - they may contain nested arrays from .map() calls
+  const flattenRefs = (refs: any[]): any[] => {
+    const result: any[] = [];
+    for (const ref of refs) {
+      if (Array.isArray(ref)) {
+        result.push(...flattenRefs(ref));
+      } else {
+        result.push(ref);
+      }
+    }
+    return result;
+  };
+
+  const flatRefs = flattenRefs(agent.references);
+  log("collectAgents", `Agent ${agent.id} has ${flatRefs.length} flat references`);
+
+  const nested = flatRefs
     .filter(isAgent)
     .flatMap((ref) => collectAgents(ref, visited));
 
@@ -67,154 +84,6 @@ const loadAgentConfig = async (configPath: string): Promise<Agent> => {
   }
 
   return defaultExport;
-};
-
-const mainCommand = Command.make(
-  "distilled",
-  {
-    prompt: Args.text({ name: "prompt" }).pipe(
-      Args.withDescription("Prompt to send to matched agents"),
-      Args.optional,
-    ),
-    filter: Options.text("filter").pipe(
-      Options.withAlias("f"),
-      Options.withDescription(
-        "Glob pattern to filter agents (default: '*' for all)",
-      ),
-      Options.optional,
-    ),
-    config: Options.text("config").pipe(
-      Options.withAlias("c"),
-      Options.withDescription(
-        "Path to config file (default: ./distilled.config.ts)",
-      ),
-      Options.optional,
-    ),
-    model: Options.text("model").pipe(
-      Options.withAlias("m"),
-      Options.withDescription("Model to use (default: claude-sonnet)"),
-      Options.withDefault("claude-sonnet"),
-    ),
-    list: Options.boolean("list").pipe(
-      Options.withAlias("l"),
-      Options.withDescription("List agents (optionally filtered by --filter)"),
-      Options.withDefault(false),
-    ),
-    concurrency: Options.integer("concurrency").pipe(
-      Options.withAlias("j"),
-      Options.withDescription(
-        "Number of agents to run in parallel (default: 1)",
-      ),
-      Options.withDefault(1),
-    ),
-  },
-  Effect.fn(function* ({ prompt, filter, config, model, list, concurrency }) {
-    const configPath = Option.getOrUndefined(config);
-    const patternValue = Option.getOrUndefined(filter);
-    const promptValue = Option.getOrUndefined(prompt) ?? "do it";
-
-    // Resolve config path
-    const resolvedPath = yield* resolveConfigPath(configPath);
-
-    if (!resolvedPath) {
-      yield* Console.error("No distilled.config.ts found.");
-      yield* Console.error(
-        "Create a distilled.config.ts with a default Agent export.",
-      );
-      return;
-    }
-
-    // Load the root agent from config
-    const rootAgent = yield* Effect.tryPromise(() =>
-      loadAgentConfig(resolvedPath),
-    );
-
-    // Create model layer
-    const modelLayer = getModelLayer(model);
-
-    // Collect all agents from the tree
-    const allAgents = collectAgents(rootAgent);
-
-    // List agents mode
-    if (list) {
-      const agents = patternValue
-        ? matchAgents(allAgents, patternValue)
-        : allAgents;
-
-      if (agents.length === 0) {
-        yield* Console.log(
-          patternValue
-            ? `No agents matching "${patternValue}".`
-            : "No agents configured.",
-        );
-      } else {
-        yield* Console.log(
-          patternValue
-            ? `Agents matching "${patternValue}":\n`
-            : "Configured agents:\n",
-        );
-        const sortedAgents = [...agents].sort((a, b) =>
-          a.id.localeCompare(b.id),
-        );
-        for (const agent of sortedAgents) {
-          yield* Console.log(`  ${agent.id}`);
-        }
-        yield* Console.log();
-      }
-      return;
-    }
-
-    // Match agents (default to root only if no pattern, all if pattern is "*")
-    const matchedAgents = patternValue
-      ? matchAgents(allAgents, patternValue)
-      : [rootAgent];
-
-    if (matchedAgents.length === 0) {
-      yield* Console.error(`No agents matching "${patternValue}".`);
-      yield* Console.error("Use --list to see available agents.");
-      return;
-    }
-
-    // Run each matched agent
-    yield* Effect.all(
-      matchedAgents.map((agent) => runAgent(agent, promptValue)),
-      { concurrency },
-    ).pipe(Effect.provide(modelLayer));
-
-    yield* Console.log("Done.");
-  }),
-);
-
-/**
- * Run a single agent with the given prompt.
- *
- * Note: The spawn function requires Handler<string> service which is provided
- * internally by the agent's toolkit. We cast the types here as a workaround
- * until the @effect/ai integration is fully resolved.
- */
-const runAgent = (agent: Agent, prompt: string) =>
-  Effect.gen(function* () {
-    yield* Console.log(`Running agent: ${agent.id}`);
-    const instance = yield* spawn(agent);
-    yield* Stream.runDrain(instance.send(prompt));
-    yield* Console.log("\n");
-  }) as Effect.Effect<void, never, never>;
-
-const getModelLayer = (modelName: string) => {
-  const modelMap: Record<string, string> = {
-    "claude-sonnet": "claude-sonnet-4-20250514",
-    "claude-haiku": "claude-haiku-4-5",
-    "claude-opus": "claude-opus-4-20250514",
-  };
-  const resolvedModel = modelMap[modelName] || modelName;
-  return AnthropicLanguageModel.model(resolvedModel as any);
-};
-
-/**
- * Filter agents by glob pattern.
- */
-const matchAgents = (agents: Agent[], pattern: string): Agent[] => {
-  return agents.filter((agent) => match(agent.id, pattern));
 };
 
 /**
@@ -249,56 +118,111 @@ const resolveConfigPath = Effect.fn(function* (inputPath: string | undefined) {
   return pathService.resolve(targetPath);
 });
 
-/**
- * Clean command - removes thread state.
- */
-const cleanCommand = Command.make(
-  "clean",
+const getModelLayer = (modelName: string) => {
+  const modelMap: Record<string, string> = {
+    "claude-sonnet": "claude-sonnet-4-20250514",
+    "claude-haiku": "claude-haiku-4-5",
+    "claude-opus": "claude-opus-4-20250514",
+  };
+  const resolvedModel = modelMap[modelName] || modelName;
+  return AnthropicLanguageModel.model(resolvedModel as any);
+};
+
+const mainCommand = Command.make(
+  "distilled",
   {
-    filter: Options.text("filter").pipe(
-      Options.withAlias("f"),
-      Options.withDescription(
-        "Glob pattern to filter threads (default: '*' for all)",
-      ),
-      Options.optional,
+    config: Args.text({ name: "config" }).pipe(
+      Args.withDescription("Path to config file (default: ./distilled.config.ts)"),
+      Args.optional,
     ),
-    dryRun: Options.boolean("dry-run").pipe(
-      Options.withDescription("Show what would be deleted without deleting"),
-      Options.withDefault(false),
+    model: Options.text("model").pipe(
+      Options.withAlias("m"),
+      Options.withDescription("Model to use (default: claude-sonnet)"),
+      Options.withDefault("claude-sonnet"),
     ),
   },
-  ({ filter, dryRun }) =>
-    Effect.gen(function* () {
-      const store = yield* StateStore;
+  Effect.fn(function* ({ config, model }) {
+    log("CLI", "Starting distilled CLI", { config, model });
 
-      const allThreads = yield* store.listThreads();
+    const configPath = Option.getOrUndefined(config);
+    log("CLI", "Config path from args", { configPath });
 
-      const pattern = Option.getOrElse(filter, () => "*");
-      // Match against "agentId/threadId" format for pattern matching
-      const matchedThreads = allThreads.filter((t) =>
-        match(`${t.agentId}/${t.threadId}`, pattern),
+    // Resolve config path
+    const resolvedPath = yield* resolveConfigPath(configPath);
+    log("CLI", "Resolved config path", { resolvedPath });
+
+    if (!resolvedPath) {
+      log("CLI", "No config file found");
+      yield* Console.error("No distilled.config.ts found.");
+      yield* Console.error(
+        "Create a distilled.config.ts with a default Agent export.",
       );
+      return;
+    }
 
-      if (matchedThreads.length === 0) {
-        yield* Console.log("No thread state to clean.");
-        return;
-      }
+    // Load the root agent from config
+    log("CLI", "Loading agent config...");
+    const rootAgent = yield* Effect.tryPromise(() =>
+      loadAgentConfig(resolvedPath),
+    ).pipe(
+      Effect.tapError((err) =>
+        Effect.sync(() => logError("CLI", "Failed to load config", err)),
+      ),
+    );
+    log("CLI", "Loaded root agent", { id: rootAgent.id });
 
-      const prefix = dryRun ? "would delete" : "deleted";
+    // Collect all agents from the tree
+    const allAgents = collectAgents(rootAgent);
+    log("CLI", "Collected agents", {
+      count: allAgents.length,
+      ids: allAgents.map((a) => a.id),
+    });
 
-      for (const thread of matchedThreads) {
-        if (!dryRun) {
-          yield* store.deleteThread(thread.agentId, thread.threadId);
-        }
-        yield* Console.log(`${prefix}: ${thread.agentId}/${thread.threadId}`);
-      }
-    }),
+    // Create the layer with model + state store
+    log("CLI", "Creating layer with model", { model });
+    const modelLayer = getModelLayer(model);
+    const stateStoreLayer = Layer.provideMerge(
+      sqliteStateStore(),
+      Layer.merge(BunSqlite, NodeContext.layer),
+    );
+    const layer = Layer.merge(modelLayer, stateStoreLayer);
+    log("CLI", "Layer created");
+
+    // Launch the TUI
+    log("CLI", "Launching TUI...");
+    yield* Effect.tryPromise(() =>
+      tui({
+        agents: allAgents,
+        layer: layer as any,
+      }),
+    ).pipe(
+      Effect.tapError((err) =>
+        Effect.sync(() => logError("CLI", "TUI failed", err)),
+      ),
+    );
+    log("CLI", "TUI exited");
+  }),
 );
 
-const cli = Command.run(Command.withSubcommands(mainCommand, [cleanCommand]), {
+const cli = Command.run(mainCommand, {
   name: "distilled",
   version: "0.1.0",
 });
+
+// Global error handlers
+process.on("uncaughtException", (err) => {
+  logError("PROCESS", "Uncaught exception", err);
+  console.error("Uncaught exception:", err);
+  process.exit(1);
+});
+
+process.on("unhandledRejection", (reason) => {
+  logError("PROCESS", "Unhandled rejection", reason);
+  console.error("Unhandled rejection:", reason);
+  process.exit(1);
+});
+
+log("CLI", "Starting CLI process");
 
 Effect.gen(function* () {
   const dotEnvProvider = yield* PlatformConfigProvider.fromDotEnv(".env").pipe(
@@ -313,7 +237,7 @@ Effect.gen(function* () {
   Effect.provide(
     Layer.mergeAll(
       Layer.provideMerge(Anthropic, NodeHttpClient.layer),
-      Layer.provideMerge(SqliteStateStore, NodeContext.layer),
+      NodeContext.layer,
     ),
   ),
   NodeRuntime.runMain,
