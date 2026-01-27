@@ -158,7 +158,7 @@ export function MessageStream(props: MessageStreamProps) {
   const messages = createMemo(() => accumulateMessages(props.parts()));
 
   return (
-    <scrollbox height={props.height}>
+    <scrollbox height={props.height} stickyScroll={true} stickyStart="bottom">
       <box flexDirection="column" padding={1}>
         <Show
           when={messages().length > 0}
