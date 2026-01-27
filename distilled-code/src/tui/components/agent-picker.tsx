@@ -1,144 +1,72 @@
 /**
  * AgentPicker Component
  *
- * Full-screen fuzzy search for selecting agents and threads.
- * This is the home screen of the TUI.
+ * Full-screen fuzzy search for selecting agents.
+ * Displays agents as a tree structure based on path hierarchy.
  */
 
 import { TextAttributes, type InputRenderable } from "@opentui/core";
 import { useKeyboard, useTerminalDimensions } from "@opentui/solid";
-import * as Effect from "effect/Effect";
-import * as fuzzysort from "fuzzysort";
 import { createEffect, createMemo, createSignal, For, onMount, Show } from "solid-js";
-import { StateStore } from "../../state/index.ts";
-import { log } from "../../util/log.ts";
 import { useRegistry } from "../context/registry.tsx";
-import { useStore } from "../context/store.tsx";
-
-/**
- * Option item in the picker
- */
-export interface PickerOption {
-  id: string;
-  title: string;
-  category: "agent" | "thread";
-  agentId: string;
-  threadId?: string;
-}
+import { useAgentTree, type DisplayRow } from "../hooks/use-agent-tree.ts";
 
 /**
  * Props for AgentPicker
  */
 export interface AgentPickerProps {
-  /**
-   * Callback when an agent/thread is selected
-   */
   onSelect: (agentId: string, threadId?: string) => void;
-
-  /**
-   * Callback when user wants to exit
-   */
   onExit: () => void;
 }
 
 /**
- * Full-screen fuzzy search picker for agents and threads
+ * Full-screen fuzzy search picker with tree display
  */
 export function AgentPicker(props: AgentPickerProps) {
   const dimensions = useTerminalDimensions();
   const registry = useRegistry();
-  const store = useStore();
 
   const [filter, setFilter] = createSignal("");
   const [selectedIndex, setSelectedIndex] = createSignal(0);
-  const [threads, setThreads] = createSignal<ReadonlyArray<{ agentId: string; threadId: string }>>([]);
   let inputRef: InputRenderable | undefined;
-
-  // Load existing threads on mount using runtime.runPromise
-  onMount(() => {
-    log("AgentPicker", "Loading threads");
-    store.runtime
-      .runPromise(
-        Effect.gen(function* () {
-          const stateStore = yield* StateStore;
-          return yield* stateStore.listThreads();
-        }),
-      )
-      .then((result) => {
-        log("AgentPicker", "Threads loaded", { count: result.length });
-        setThreads(result);
-      })
-      .catch((err) => {
-        log("AgentPicker", "Failed to load threads", err);
-      });
-  });
 
   // Focus input on mount
   onMount(() => {
     setTimeout(() => inputRef?.focus(), 10);
   });
 
-  // Build options from agents and threads
-  const allOptions = createMemo((): PickerOption[] => {
-    const options: PickerOption[] = [];
+  // All agent paths
+  const allAgentPaths = createMemo(() => registry.agents.map((a) => a.id));
 
-    // Add agent definitions
-    for (const agent of registry.agents) {
-      options.push({
-        id: `agent:${agent.id}`,
-        title: agent.id,
-        category: "agent",
-        agentId: agent.id,
-      });
-    }
+  // Build tree from agent paths
+  const { displayRows, selectableRows } = useAgentTree(allAgentPaths, filter);
 
-    // Add existing threads
-    for (const thread of threads()) {
-      // Skip if it's just the default thread for an agent
-      if (thread.threadId === thread.agentId) continue;
-
-      options.push({
-        id: `thread:${thread.agentId}:${thread.threadId}`,
-        title: `${thread.agentId} / ${thread.threadId}`,
-        category: "thread",
-        agentId: thread.agentId,
-        threadId: thread.threadId,
-      });
-    }
-
-    return options;
-  });
-
-  // Filter options using fuzzysort
-  const filteredOptions = createMemo(() => {
-    const needle = filter().toLowerCase().trim();
-    const options = allOptions();
-
-    if (!needle) return options;
-
-    const result = fuzzysort
-      .go(needle, options, {
-        keys: ["title", "category"],
-        threshold: -10000,
-      })
-      .map((r) => r.obj);
-
-    return result;
-  });
-
-  // Limit visible options for performance
-  const MAX_VISIBLE = 50;
-  const visibleOptions = createMemo(() => {
-    const all = filteredOptions();
-    return all.slice(0, MAX_VISIBLE);
-  });
-  const hasMore = createMemo(() => filteredOptions().length > MAX_VISIBLE);
+  // Limit visible rows for performance
+  const MAX_VISIBLE = 100;
+  const visibleRows = createMemo(() => displayRows().slice(0, MAX_VISIBLE));
+  const hasMore = createMemo(() => displayRows().length > MAX_VISIBLE);
 
   // Reset selection when filter changes
   createEffect(() => {
     filter();
     setSelectedIndex(0);
   });
+
+  // Get currently selected agent
+  const selectedAgent = createMemo(() => {
+    const rows = selectableRows();
+    const idx = selectedIndex();
+    if (idx >= 0 && idx < rows.length) {
+      return rows[idx];
+    }
+    return null;
+  });
+
+  // Check if a row is selected
+  const isSelected = (row: DisplayRow) => {
+    const selected = selectedAgent();
+    return selected && row.key === selected.key;
+  };
 
   // Handle keyboard input
   useKeyboard((evt) => {
@@ -162,18 +90,17 @@ export function AgentPicker(props: AgentPickerProps) {
     if (evt.name === "down" || (evt.ctrl && evt.name === "j")) {
       evt.preventDefault();
       evt.stopPropagation();
-      setSelectedIndex((i) => Math.min(visibleOptions().length - 1, i + 1));
+      setSelectedIndex((i) => Math.min(selectableRows().length - 1, i + 1));
       return;
     }
 
     // Selection
     if (evt.name === "return") {
-      const options = visibleOptions();
-      if (options.length > 0 && selectedIndex() < options.length) {
+      const selected = selectedAgent();
+      if (selected?.agentId) {
         evt.preventDefault();
         evt.stopPropagation();
-        const selected = options[selectedIndex()];
-        props.onSelect(selected.agentId, selected.threadId);
+        props.onSelect(selected.agentId);
       }
       return;
     }
@@ -206,7 +133,7 @@ export function AgentPicker(props: AgentPickerProps) {
           Select Agent
         </text>
         <text fg="#6a6a6a">
-          {filteredOptions().length} of {allOptions().length}
+          {selectableRows().length} of {allAgentPaths().length}
         </text>
       </box>
 
@@ -225,26 +152,38 @@ export function AgentPicker(props: AgentPickerProps) {
         />
       </box>
 
-      {/* Options list */}
+      {/* Tree list */}
       <scrollbox height={dimensions().height - 10}>
         <box flexDirection="column">
-          <For each={visibleOptions()}>
-            {(option, index) => (
-              <box backgroundColor={index() === selectedIndex() ? "#2a2a4e" : undefined}>
-                <text fg={index() === selectedIndex() ? "#ffffff" : "#a0a0a0"}>
-                  {index() === selectedIndex() ? "> " : "  "}
-                  {option.title}
+          <For each={visibleRows()}>
+            {(row) => (
+              <box backgroundColor={isSelected(row) ? "#2a2a4e" : undefined}>
+                <text
+                  fg={
+                    isSelected(row)
+                      ? "#ffffff"
+                      : row.isAgent
+                        ? "#a0a0a0"
+                        : "#6a6a6a"
+                  }
+                >
+                  {isSelected(row) ? "> " : "  "}
+                  {"  ".repeat(row.indent)}
+                  {row.label}
+                  {row.hasChildren && !row.isAgent ? "/" : ""}
                 </text>
               </box>
             )}
           </For>
 
           <Show when={hasMore()}>
-            <text fg="#6a6a6a">  ... {filteredOptions().length - MAX_VISIBLE} more (type to filter)</text>
+            <text fg="#6a6a6a">
+              {"  "}... {displayRows().length - MAX_VISIBLE} more (type to filter)
+            </text>
           </Show>
 
-          <Show when={visibleOptions().length === 0}>
-            <text fg="#6a6a6a">  No matches found</text>
+          <Show when={visibleRows().length === 0}>
+            <text fg="#6a6a6a">{"  "}No matches found</text>
           </Show>
         </box>
       </scrollbox>

@@ -7,9 +7,9 @@
 // Re-export components for custom TUI building
 export { App } from "./app.tsx";
 export { AgentPicker } from "./components/agent-picker.tsx";
-export { ChatView } from "./components/chat-view.tsx";
 export { InputBox } from "./components/input-box.tsx";
 export { MessageStream } from "./components/message-stream.tsx";
+export { ChatView } from "./components/chat-view.tsx";
 export { RegistryProvider, useRegistry } from "./context/registry.tsx";
 export { StoreProvider, useStore } from "./context/store.tsx";
 
@@ -72,7 +72,7 @@ export function tui(options: TuiOptions): Promise<void> {
       log("TUI", "About to call render()");
       const renderer = render(
         () => {
-          log("TUI", "Render factory called");
+          log("TUI", "Render function executing");
           try {
             return (
               <RegistryProvider agents={options.agents}>
@@ -88,8 +88,7 @@ export function tui(options: TuiOptions): Promise<void> {
         },
         {
           targetFps: 60,
-          exitOnCtrlC: false,
-          useKittyKeyboard: {},
+          exitOnCtrlC: true, // Re-enable Ctrl+C to exit
         },
       );
       log("TUI", "render() returned", { renderer: typeof renderer });

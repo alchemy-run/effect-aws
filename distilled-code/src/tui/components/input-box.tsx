@@ -5,6 +5,7 @@
  */
 
 import type { InputRenderable } from "@opentui/core";
+import { useKeyboard } from "@opentui/solid";
 import { createSignal, onMount } from "solid-js";
 
 /**
@@ -25,6 +26,16 @@ export interface InputBoxProps {
    * Whether the input is disabled
    */
   disabled?: boolean;
+
+  /**
+   * Whether the input is focused
+   */
+  focused?: boolean;
+
+  /**
+   * Callback when Ctrl+P is pressed (to open agent picker)
+   */
+  onOpenPicker?: () => void;
 }
 
 /**
@@ -34,9 +45,19 @@ export function InputBox(props: InputBoxProps) {
   const [value, setValue] = createSignal("");
   let inputRef: InputRenderable | undefined;
 
-  // Focus on mount
   onMount(() => {
-    setTimeout(() => inputRef?.focus(), 10);
+    if (props.focused && inputRef) {
+      inputRef.focus();
+    }
+  });
+
+  // Handle global shortcuts even when input is focused
+  useKeyboard((evt) => {
+    // Ctrl+P: Open agent picker
+    if (evt.ctrl && evt.name === "p") {
+      props.onOpenPicker?.();
+      return;
+    }
   });
 
   const handleInput = (text: string) => {
@@ -49,7 +70,7 @@ export function InputBox(props: InputBoxProps) {
     if (message && !props.disabled) {
       props.onSubmit(message);
       setValue("");
-      // Clear the input
+      // Clear the input by setting an empty value
       if (inputRef) {
         (inputRef as any).text = "";
       }
@@ -61,7 +82,7 @@ export function InputBox(props: InputBoxProps) {
       width="100%"
       padding={1}
       borderStyle="rounded"
-      borderColor="#fab283"
+      borderColor={props.focused ? "#fab283" : "#3a3a3a"}
       backgroundColor="#1a1a2e"
     >
       <input

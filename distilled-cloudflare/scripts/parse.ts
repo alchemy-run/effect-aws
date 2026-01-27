@@ -126,9 +126,7 @@ const loadCache = (hash: string) =>
     }
 
     return deserializeServices(data.services);
-  }).pipe(
-    Effect.catchAll(() => Effect.succeed(undefined)),
-  );
+  }).pipe(Effect.catchAll(() => Effect.succeed(undefined)));
 
 /**
  * Save parsed model to cache
@@ -1092,21 +1090,15 @@ const parseServiceFiles = (
     if (!force && !serviceFilter && hash) {
       const cached = yield* loadCache(hash);
       if (cached) {
-        yield* Effect.logInfo(`Using cached model for ${hash.slice(0, 8)}`);
         return cached;
       }
     }
 
-    // Parse the SDK
-    yield* Effect.logInfo(
-      `Parsing cloudflare-typescript${serviceFilter ? ` (${serviceFilter})` : ""}...`,
-    );
     const services = yield* parseServiceFilesCore(basePath, serviceFilter);
 
     // Save to cache (only if not filtering by service)
     if (!serviceFilter && hash) {
       yield* saveCache(hash, services);
-      yield* Effect.logInfo(`Cached model for ${hash.slice(0, 8)}`);
     }
 
     return services;
