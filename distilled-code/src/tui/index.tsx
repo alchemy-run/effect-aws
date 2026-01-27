@@ -4,12 +4,16 @@
  * Terminal UI for browsing agents, viewing message streams, and sending messages.
  */
 
+// IMPORTANT: Initialize parsers FIRST, before any component imports
+// This must be the first import to ensure tree-sitter is ready for <code> elements
+import "./parsers/init.ts";
+
 // Re-export components for custom TUI building
 export { App } from "./app.tsx";
 export { AgentPicker } from "./components/agent-picker.tsx";
+export { ChatView } from "./components/chat-view.tsx";
 export { InputBox } from "./components/input-box.tsx";
 export { MessageStream } from "./components/message-stream.tsx";
-export { ChatView } from "./components/chat-view.tsx";
 export { RegistryProvider, useRegistry } from "./context/registry.tsx";
 export { StoreProvider, useStore } from "./context/store.tsx";
 

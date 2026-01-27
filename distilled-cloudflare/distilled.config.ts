@@ -121,26 +121,26 @@ Implement tests per ${TestPlan} using ${Toolkit.Coding}.
 - ${ErrorPatch} - patch errors
 
 ## Template
-\`\`\`typescript
+\`\`\`ts
 import { describe, expect } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import { ${op.operationName} } from "~/services/${service.name}.ts";
 import { getAccountId, test } from "../../test.ts";
 
 describe("${service.name}/${op.operationName}", () => {
-describe("success", () => {
-  test("works", () => Effect.gen(function* () {
-    const result = yield* ${op.operationName}({ accountId: getAccountId() });
-    expect(result).toBeDefined();
-  }));
-});
-describe("ErrorTag", () => {
-  test("returns error", () =>
-    ${op.operationName}({ accountId: getAccountId() }).pipe(
-      Effect.flip,
-      Effect.map((e) => expect(e._tag).toBe("ErrorTag")),
-    ));
-});
+  describe("success", () => {
+    test("works", () => Effect.gen(function* () {
+      const result = yield* ${op.operationName}({ accountId: getAccountId() });
+      expect(result).toBeDefined();
+    }));
+  });
+  describe("ErrorTag", () => {
+    test("returns error", () =>
+      ${op.operationName}({ accountId: getAccountId() }).pipe(
+        Effect.flip,
+        Effect.map((e) => expect(e._tag).toBe("ErrorTag")),
+      ));
+  });
 });
 \`\`\`
 

@@ -42,7 +42,7 @@
       "pathe": "^2.0.3",
       "typescript": "^5",
       "vitest": "latest",
-      "web-tree-sitter": "latest",
+      "web-tree-sitter": "0.25.10",
       "yaml": "^2.8.2"
     }
   },

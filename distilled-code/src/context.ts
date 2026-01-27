@@ -2,7 +2,9 @@ import type {
   AssistantMessageEncoded,
   MessageEncoded,
   SystemMessageEncoded,
+  ToolCallPartEncoded,
   ToolMessageEncoded,
+  ToolResultPartEncoded,
 } from "@effect/ai/Prompt";
 import * as EffectTool from "@effect/ai/Tool";
 import * as EffectToolkit from "@effect/ai/Toolkit";
@@ -185,7 +187,11 @@ export const createContext: (
   };
   messages.push(systemMessage);
 
-  // Write agent context files and add read tool messages for each agent
+  // Collect all tool calls and results for batching
+  const toolCalls: ToolCallPartEncoded[] = [];
+  const toolResults: ToolResultPartEncoded[] = [];
+
+  // Write agent context files and collect read tool parts for each agent
   if (agents.length > 0) {
     // Ensure .distilled/agents directory exists
     yield* fs
@@ -201,39 +207,55 @@ export const createContext: (
         .writeFileString(agentFilePath, agentContent)
         .pipe(Effect.catchAll(() => Effect.void));
 
-      // Add read tool messages for this agent
-      const [assistantMsg, toolMsg] = createAgentReadMessages(
+      // Collect tool call and result parts for this agent
+      const [toolCall, toolResult] = createAgentReadParts(
         createToolCallId("agent"),
         a.id,
         agentContent,
       );
-      messages.push(assistantMsg, toolMsg);
+      toolCalls.push(toolCall);
+      toolResults.push(toolResult);
     }
   }
 
-  // Add read/glob tool messages for each file/folder
+  // Collect read/glob tool parts for each file/folder
   for (const f of files) {
     if (f.language === "folder") {
       // For folders, use glob to list contents
       const folderFiles = f.content
         .split("\n")
         .filter((line) => line.trim() !== "");
-      const [assistantMsg, toolMsg] = createGlobToolMessages(
+      const [toolCall, toolResult] = createGlobToolParts(
         createToolCallId("folder"),
         f.id,
         "**/*",
         folderFiles,
       );
-      messages.push(assistantMsg, toolMsg);
+      toolCalls.push(toolCall);
+      toolResults.push(toolResult);
     } else {
       // For regular files, use read
-      const [assistantMsg, toolMsg] = createReadToolMessages(
+      const [toolCall, toolResult] = createReadToolParts(
         createToolCallId("file"),
         f.id,
         f.content,
       );
-      messages.push(assistantMsg, toolMsg);
+      toolCalls.push(toolCall);
+      toolResults.push(toolResult);
     }
+  }
+
+  // Add single batched message pair if there are any tool calls
+  if (toolCalls.length > 0) {
+    const assistantMsg: AssistantMessageEncoded = {
+      role: "assistant",
+      content: toolCalls,
+    };
+    const toolMsg: ToolMessageEncoded = {
+      role: "tool",
+      content: toolResults,
+    };
+    messages.push(assistantMsg, toolMsg);
   }
 
   // Build the combined Effect toolkit from all collected and additional toolkits
@@ -285,6 +307,7 @@ forming a delegation chain. Don't hesitate to ask your collaborators for help.
 /**
  * Creates a pair of messages simulating a read tool call and its result.
  * Used for embedding file content in the agent context.
+ * @deprecated Use createReadToolParts for batched tool calls
  */
 export const createReadToolMessages = (
   id: string,
@@ -321,6 +344,7 @@ export const createReadToolMessages = (
 /**
  * Creates a pair of messages simulating a glob tool call and its result.
  * Used for embedding folder listings in the agent context.
+ * @deprecated Use createGlobToolParts for batched tool calls
  */
 export const createGlobToolMessages = (
   id: string,
@@ -358,6 +382,7 @@ export const createGlobToolMessages = (
 /**
  * Creates a pair of messages simulating reading an agent context file.
  * Agent context is stored in .distilled/agents/{agent-id}.md
+ * @deprecated Use createAgentReadParts for batched tool calls
  */
 export const createAgentReadMessages = (
   id: string,
@@ -394,6 +419,88 @@ export const createAgentReadMessages = (
   ];
 };
 
+/**
+ * Creates tool call and result parts for reading a file.
+ * Used for batching multiple file reads into a single message pair.
+ */
+export const createReadToolParts = (
+  id: string,
+  filePath: string,
+  content: string,
+): [ToolCallPartEncoded, ToolResultPartEncoded] => [
+  {
+    type: "tool-call",
+    id,
+    name: "read",
+    params: { filePath },
+    providerExecuted: false,
+  },
+  {
+    type: "tool-result",
+    id,
+    name: "read",
+    isFailure: false,
+    result: { content },
+    providerExecuted: false,
+  },
+];
+
+/**
+ * Creates tool call and result parts for a glob operation.
+ * Used for batching multiple folder listings into a single message pair.
+ */
+export const createGlobToolParts = (
+  id: string,
+  path: string,
+  pattern: string,
+  files: string[],
+): [ToolCallPartEncoded, ToolResultPartEncoded] => [
+  {
+    type: "tool-call",
+    id,
+    name: "glob",
+    params: { pattern, path },
+    providerExecuted: false,
+  },
+  {
+    type: "tool-result",
+    id,
+    name: "glob",
+    isFailure: false,
+    result: { files: files.join("\n") },
+    providerExecuted: false,
+  },
+];
+
+/**
+ * Creates tool call and result parts for reading an agent context file.
+ * Agent context is stored in .distilled/agents/{agent-id}.md
+ * Used for batching multiple agent reads into a single message pair.
+ */
+export const createAgentReadParts = (
+  id: string,
+  agentId: string,
+  content: string,
+): [ToolCallPartEncoded, ToolResultPartEncoded] => {
+  const filePath = `.distilled/agents/${agentId}.md`;
+  return [
+    {
+      type: "tool-call",
+      id,
+      name: "read",
+      params: { filePath },
+      providerExecuted: false,
+    },
+    {
+      type: "tool-result",
+      id,
+      name: "read",
+      isFailure: false,
+      result: { content },
+      providerExecuted: false,
+    },
+  ];
+};
 
 /**
  * Collects toolkits from an agent's direct references only.

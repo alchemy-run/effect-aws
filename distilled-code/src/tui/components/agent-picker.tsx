@@ -16,12 +16,14 @@ import {
   onMount,
   Show,
 } from "solid-js";
-import { renderAgentTemplate } from "../../util/render-template.ts";
-import { useRegistry } from "../context/registry.tsx";
 import {
   filterAgentPaths,
   type FuzzySearchResult,
 } from "../../util/fuzzy-search.ts";
+import { renderAgentTemplate } from "../../util/render-template.ts";
+import { useRegistry } from "../context/registry.tsx";
+import { useTheme } from "../context/theme.tsx";
+
 
 /**
  * Props for HighlightedText component
@@ -105,6 +107,9 @@ export function AgentPicker(props: AgentPickerProps) {
   const [filter, setFilter] = createSignal("");
   const [selectedIndex, setSelectedIndex] = createSignal(0);
   let inputRef: InputRenderable | undefined;
+
+  // Get theme and syntax highlighting from context
+  const { theme, syntax } = useTheme();
 
   // Focus input on mount
   onMount(() => {
@@ -355,7 +360,7 @@ export function AgentPicker(props: AgentPickerProps) {
             <text fg="#3a3a3a">{"─".repeat(previewWidth() - 4)}</text>
           </box>
 
-          {/* Preview content */}
+          {/* Preview content with markdown highlighting */}
           <scrollbox height={innerHeight() - 5}>
             <box flexDirection="column" paddingLeft={1} paddingRight={1}>
               <Show
@@ -364,7 +369,13 @@ export function AgentPicker(props: AgentPickerProps) {
                   <text fg="#6a6a6a">Select an agent to preview</text>
                 }
               >
-                <text fg="#c0c0c0">{previewContent()}</text>
+                <code
+                  filetype="markdown"
+                  streaming={false}
+                  syntaxStyle={syntax()}
+                  content={previewContent()!}
+                  conceal={false}
+                />
               </Show>
             </box>
           </scrollbox>

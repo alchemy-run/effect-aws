@@ -5,12 +5,16 @@
  * Simple two-screen architecture: home (agent picker) and chat.
  */
 
-import { createSignal, Match, Switch } from "solid-js";
+// Initialize parsers before any component that uses <code>
+import "./parsers/init.ts";
+
 import { useRenderer, useTerminalDimensions } from "@opentui/solid";
+import { createSignal, Match, Switch } from "solid-js";
+import { log } from "../util/log.ts";
 import { AgentPicker } from "./components/agent-picker.tsx";
 import { ChatView } from "./components/chat-view.tsx";
 import { useStore } from "./context/store.tsx";
-import { log } from "../util/log.ts";
+import { ThemeProvider } from "./context/theme.tsx";
 
 /**
  * Screen state - either home (picker) or chat
@@ -54,30 +58,32 @@ export function App() {
   };
 
   return (
-    <box
-      width={dimensions().width}
-      height={dimensions().height}
-      backgroundColor="#0f0f1a"
-    >
-      <Switch>
-        <Match when={screen().type === "home"}>
-          <AgentPicker onSelect={handleSelect} onExit={handleExit} />
-        </Match>
-        <Match when={screen().type === "chat"}>
-          {(() => {
-            const s = screen();
-            if (s.type !== "chat") return null;
-            return (
-              <ChatView
-                agentId={s.agentId}
-                threadId={s.threadId}
-                onBack={handleBack}
-                onExit={handleExit}
-              />
-            );
-          })()}
-        </Match>
-      </Switch>
-    </box>
+    <ThemeProvider mode="dark">
+      <box
+        width={dimensions().width}
+        height={dimensions().height}
+        backgroundColor="#0f0f1a"
+      >
+        <Switch>
+          <Match when={screen().type === "home"}>
+            <AgentPicker onSelect={handleSelect} onExit={handleExit} />
+          </Match>
+          <Match when={screen().type === "chat"}>
+            {(() => {
+              const s = screen();
+              if (s.type !== "chat") return null;
+              return (
+                <ChatView
+                  agentId={s.agentId}
+                  threadId={s.threadId}
+                  onBack={handleBack}
+                  onExit={handleExit}
+                />
+              );
+            })()}
+          </Match>
+        </Switch>
+      </box>
+    </ThemeProvider>
   );
 }

@@ -1,7 +1,6 @@
 import * as Effect from "effect/Effect";
 import { fileURLToPath } from "node:url";
-import { Language } from "web-tree-sitter";
-import { Parser } from "web-tree-sitter";
+import { Language, Parser } from "web-tree-sitter";
 
 export const resolveWasm = (asset: string) => {
   if (asset.startsWith("file://")) return fileURLToPath(asset);
@@ -14,7 +13,7 @@ export const loadParser = Effect.fn("loadParser")(function* (wasmPath: string) {
   const treeWasm = yield* Effect.promise(
     () =>
       // @ts-expect-error
-      import("web-tree-sitter/web-tree-sitter.wasm", {
+      import("web-tree-sitter/tree-sitter.wasm", {
         with: { type: "wasm" },
       }),
   );

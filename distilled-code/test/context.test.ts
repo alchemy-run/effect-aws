@@ -193,6 +193,13 @@ A set of tools for reading, writing, and editing code:
               params: { filePath: ".distilled/agents/a1.md" },
               providerExecuted: false,
             },
+            {
+              type: "tool-call",
+              id: "ctx-agent-1",
+              name: "read",
+              params: { filePath: ".distilled/agents/a2.md" },
+              providerExecuted: false,
+            },
           ],
         },
         {
@@ -206,23 +213,6 @@ A set of tools for reading, writing, and editing code:
               result: { content: "# @a1\n\nI handle task A" },
               providerExecuted: false,
             },
-          ],
-        },
-        {
-          role: "assistant",
-          content: [
-            {
-              type: "tool-call",
-              id: "ctx-agent-1",
-              name: "read",
-              params: { filePath: ".distilled/agents/a2.md" },
-              providerExecuted: false,
-            },
-          ],
-        },
-        {
-          role: "tool",
-          content: [
             {
               type: "tool-result",
               id: "ctx-agent-1",
@@ -268,6 +258,20 @@ A set of tools for reading, writing, and editing code:
               params: { filePath: "test/fixtures/a.ts" },
               providerExecuted: false,
             },
+            {
+              type: "tool-call",
+              id: "ctx-file-1",
+              name: "read",
+              params: { filePath: "test/fixtures/b.ts" },
+              providerExecuted: false,
+            },
+            {
+              type: "tool-call",
+              id: "ctx-file-2",
+              name: "read",
+              params: { filePath: "test/fixtures/c.ts" },
+              providerExecuted: false,
+            },
           ],
         },
         {
@@ -281,23 +285,6 @@ A set of tools for reading, writing, and editing code:
               result: { content: "// a" },
               providerExecuted: false,
             },
-          ],
-        },
-        {
-          role: "assistant",
-          content: [
-            {
-              type: "tool-call",
-              id: "ctx-file-1",
-              name: "read",
-              params: { filePath: "test/fixtures/b.ts" },
-              providerExecuted: false,
-            },
-          ],
-        },
-        {
-          role: "tool",
-          content: [
             {
               type: "tool-result",
               id: "ctx-file-1",
@@ -306,23 +293,6 @@ A set of tools for reading, writing, and editing code:
               result: { content: "// b" },
               providerExecuted: false,
             },
-          ],
-        },
-        {
-          role: "assistant",
-          content: [
-            {
-              type: "tool-call",
-              id: "ctx-file-2",
-              name: "read",
-              params: { filePath: "test/fixtures/c.ts" },
-              providerExecuted: false,
-            },
-          ],
-        },
-        {
-          role: "tool",
-          content: [
             {
               type: "tool-result",
               id: "ctx-file-2",
@@ -780,6 +750,13 @@ Data processing tools:
               params: { filePath: ".distilled/agents/processor.md" },
               providerExecuted: false,
             },
+            {
+              type: "tool-call",
+              id: "ctx-file-1",
+              name: "read",
+              params: { filePath: "test/fixtures/data.json" },
+              providerExecuted: false,
+            },
           ],
         },
         {
@@ -793,23 +770,6 @@ Data processing tools:
               result: { content: "# @processor\n\nProcesses data" },
               providerExecuted: false,
             },
-          ],
-        },
-        {
-          role: "assistant",
-          content: [
-            {
-              type: "tool-call",
-              id: "ctx-file-1",
-              name: "read",
-              params: { filePath: "test/fixtures/data.json" },
-              providerExecuted: false,
-            },
-          ],
-        },
-        {
-          role: "tool",
-          content: [
             {
               type: "tool-result",
               id: "ctx-file-1",
@@ -1058,6 +1018,13 @@ Shared: ${sharedTool}
               params: { filePath: ".distilled/agents/a1.md" },
               providerExecuted: false,
             },
+            {
+              type: "tool-call",
+              id: "ctx-agent-1",
+              name: "read",
+              params: { filePath: ".distilled/agents/a2.md" },
+              providerExecuted: false,
+            },
           ],
         },
         {
@@ -1071,23 +1038,6 @@ Shared: ${sharedTool}
               result: { content: "# @a1\n\nUses 🧰SharedToolkit" },
               providerExecuted: false,
             },
-          ],
-        },
-        {
-          role: "assistant",
-          content: [
-            {
-              type: "tool-call",
-              id: "ctx-agent-1",
-              name: "read",
-              params: { filePath: ".distilled/agents/a2.md" },
-              providerExecuted: false,
-            },
-          ],
-        },
-        {
-          role: "tool",
-          content: [
             {
               type: "tool-result",
               id: "ctx-agent-1",
@@ -2056,6 +2006,13 @@ Format tools: 🛠️format
               params: { filePath: ".distilled/agents/worker-a.md" },
               providerExecuted: false,
             },
+            {
+              type: "tool-call",
+              id: "ctx-agent-1",
+              name: "read",
+              params: { filePath: ".distilled/agents/worker-b.md" },
+              providerExecuted: false,
+            },
           ],
         },
         {
@@ -2069,23 +2026,6 @@ Format tools: 🛠️format
               result: { content: "# @worker-a\n\nI handle task A" },
               providerExecuted: false,
             },
-          ],
-        },
-        {
-          role: "assistant",
-          content: [
-            {
-              type: "tool-call",
-              id: "ctx-agent-1",
-              name: "read",
-              params: { filePath: ".distilled/agents/worker-b.md" },
-              providerExecuted: false,
-            },
-          ],
-        },
-        {
-          role: "tool",
-          content: [
             {
               type: "tool-result",
               id: "ctx-agent-1",
@@ -2212,6 +2152,13 @@ Tools: 🛠️myTool
               params: { filePath: ".distilled/agents/direct.md" },
               providerExecuted: false,
             },
+            {
+              type: "tool-call",
+              id: "ctx-agent-1",
+              name: "read",
+              params: { filePath: ".distilled/agents/forward.md" },
+              providerExecuted: false,
+            },
           ],
         },
         {
@@ -2225,23 +2172,6 @@ Tools: 🛠️myTool
               result: { content: "# @direct\n\nI am direct" },
               providerExecuted: false,
             },
-          ],
-        },
-        {
-          role: "assistant",
-          content: [
-            {
-              type: "tool-call",
-              id: "ctx-agent-1",
-              name: "read",
-              params: { filePath: ".distilled/agents/forward.md" },
-              providerExecuted: false,
-            },
-          ],
-        },
-        {
-          role: "tool",
-          content: [
             {
               type: "tool-result",
               id: "ctx-agent-1",
@@ -2358,6 +2288,13 @@ stages:
                 params: { filePath: ".distilled/agents/a1.md" },
                 providerExecuted: false,
               },
+              {
+                type: "tool-call",
+                id: "ctx-agent-1",
+                name: "read",
+                params: { filePath: ".distilled/agents/a2.md" },
+                providerExecuted: false,
+              },
             ],
           },
           {
@@ -2371,23 +2308,6 @@ stages:
                 result: { content: "# @a1\n\nUses @shared" },
                 providerExecuted: false,
               },
-            ],
-          },
-          {
-            role: "assistant",
-            content: [
-              {
-                type: "tool-call",
-                id: "ctx-agent-1",
-                name: "read",
-                params: { filePath: ".distilled/agents/a2.md" },
-                providerExecuted: false,
-              },
-            ],
-          },
-          {
-            role: "tool",
-            content: [
               {
                 type: "tool-result",
                 id: "ctx-agent-1",
@@ -2843,6 +2763,13 @@ Shared: 🛠️sharedTool
               params: { filePath: ".distilled/agents/developer.md" },
               providerExecuted: false,
             },
+            {
+              type: "tool-call",
+              id: "ctx-file-1",
+              name: "read",
+              params: { filePath: "test/fixtures/ceo-report.md" },
+              providerExecuted: false,
+            },
           ],
         },
         {
@@ -2859,23 +2786,6 @@ Shared: 🛠️sharedTool
               },
               providerExecuted: false,
             },
-          ],
-        },
-        {
-          role: "assistant",
-          content: [
-            {
-              type: "tool-call",
-              id: "ctx-file-1",
-              name: "read",
-              params: { filePath: "test/fixtures/ceo-report.md" },
-              providerExecuted: false,
-            },
-          ],
-        },
-        {
-          role: "tool",
-          content: [
             {
               type: "tool-result",
               id: "ctx-file-1",
