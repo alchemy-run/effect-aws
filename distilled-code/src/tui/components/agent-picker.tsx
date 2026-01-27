@@ -1,15 +1,24 @@
 /**
  * AgentPicker Component
  *
- * Full-screen fuzzy search for selecting agents.
- * Displays agents as a tree structure based on path hierarchy.
+ * Telescope-style fuzzy search for selecting agents.
+ * Two-column layout: Results on left, Preview on right.
+ * Search input at bottom.
  */
 
 import { TextAttributes, type InputRenderable } from "@opentui/core";
 import { useKeyboard, useTerminalDimensions } from "@opentui/solid";
-import { createEffect, createMemo, createSignal, For, onMount, Show } from "solid-js";
+import {
+  createEffect,
+  createMemo,
+  createSignal,
+  For,
+  onMount,
+  Show,
+} from "solid-js";
+import { renderAgentTemplate } from "../../util/render-template.ts";
 import { useRegistry } from "../context/registry.tsx";
-import { useAgentTree, type DisplayRow } from "../hooks/use-agent-tree.ts";
+import { filterAgentPaths } from "../hooks/use-agent-tree.ts";
 
 /**
  * Props for AgentPicker
@@ -20,7 +29,7 @@ export interface AgentPickerProps {
 }
 
 /**
- * Full-screen fuzzy search picker with tree display
+ * Telescope-style fuzzy search picker
  */
 export function AgentPicker(props: AgentPickerProps) {
   const dimensions = useTerminalDimensions();
@@ -35,16 +44,31 @@ export function AgentPicker(props: AgentPickerProps) {
     setTimeout(() => inputRef?.focus(), 10);
   });
 
+  // Layout constants
+  const PADDING = 2;
+  const SEARCH_HEIGHT = 3;
+  const RESULTS_WIDTH_RATIO = 0.35;
+
+  // Calculate available dimensions
+  const innerWidth = createMemo(() => dimensions().width - PADDING * 2);
+  const innerHeight = createMemo(() => dimensions().height - PADDING * 2);
+  const resultsWidth = createMemo(() =>
+    Math.floor(innerWidth() * RESULTS_WIDTH_RATIO),
+  );
+  const previewWidth = createMemo(() => innerWidth() - resultsWidth());
+  const contentHeight = createMemo(() => innerHeight() - SEARCH_HEIGHT);
+
   // All agent paths
   const allAgentPaths = createMemo(() => registry.agents.map((a) => a.id));
 
-  // Build tree from agent paths
-  const { displayRows, selectableRows } = useAgentTree(allAgentPaths, filter);
+  // Filtered paths (FZF score order when filtering, original order when not)
+  const filteredPaths = createMemo(() =>
+    filterAgentPaths(allAgentPaths(), filter()),
+  );
 
   // Limit visible rows for performance
   const MAX_VISIBLE = 100;
-  const visibleRows = createMemo(() => displayRows().slice(0, MAX_VISIBLE));
-  const hasMore = createMemo(() => displayRows().length > MAX_VISIBLE);
+  const visiblePaths = createMemo(() => filteredPaths().slice(0, MAX_VISIBLE));
 
   // Reset selection when filter changes
   createEffect(() => {
@@ -52,21 +76,31 @@ export function AgentPicker(props: AgentPickerProps) {
     setSelectedIndex(0);
   });
 
-  // Get currently selected agent
-  const selectedAgent = createMemo(() => {
-    const rows = selectableRows();
+  // Get currently selected path
+  const selectedPath = createMemo(() => {
+    const paths = filteredPaths();
     const idx = selectedIndex();
-    if (idx >= 0 && idx < rows.length) {
-      return rows[idx];
+    if (idx >= 0 && idx < paths.length) {
+      return paths[idx];
     }
     return null;
   });
 
-  // Check if a row is selected
-  const isSelected = (row: DisplayRow) => {
-    const selected = selectedAgent();
-    return selected && row.key === selected.key;
-  };
+  // Get selected agent and render its context
+  const selectedAgent = createMemo(() => {
+    const path = selectedPath();
+    if (!path) return null;
+    return registry.getAgent(path) ?? null;
+  });
+
+  // Render preview content for selected agent
+  const previewContent = createMemo(() => {
+    const agent = selectedAgent();
+    if (!agent) return null;
+
+    const rendered = renderAgentTemplate(agent);
+    return `# @${agent.id}\n\n${rendered}`;
+  });
 
   // Handle keyboard input
   useKeyboard((evt) => {
@@ -90,23 +124,23 @@ export function AgentPicker(props: AgentPickerProps) {
     if (evt.name === "down" || (evt.ctrl && evt.name === "j")) {
       evt.preventDefault();
       evt.stopPropagation();
-      setSelectedIndex((i) => Math.min(selectableRows().length - 1, i + 1));
+      setSelectedIndex((i) => Math.min(filteredPaths().length - 1, i + 1));
       return;
     }
 
     // Selection
     if (evt.name === "return") {
-      const selected = selectedAgent();
-      if (selected?.agentId) {
+      const selected = selectedPath();
+      if (selected) {
         evt.preventDefault();
         evt.stopPropagation();
-        props.onSelect(selected.agentId);
+        props.onSelect(selected);
       }
       return;
     }
 
-    // q to quit (when input is empty)
-    if (evt.name === "q" && filter() === "") {
+    // Escape or q to quit (when input is empty)
+    if (evt.name === "escape" || (evt.name === "q" && filter() === "")) {
       evt.preventDefault();
       evt.stopPropagation();
       props.onExit();
@@ -119,86 +153,146 @@ export function AgentPicker(props: AgentPickerProps) {
       width={dimensions().width}
       height={dimensions().height}
       flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
       backgroundColor="#0f0f1a"
     >
-      {/* Header */}
-      <box
-        padding={1}
-        flexDirection="row"
-        justifyContent="space-between"
-        borderStyle="single"
-        borderColor="#3a3a3a"
-      >
-        <text fg="#fab283" attributes={TextAttributes.BOLD}>
-          Select Agent
-        </text>
-        <text fg="#6a6a6a">
-          {selectableRows().length} of {allAgentPaths().length}
-        </text>
-      </box>
+      {/* Main container with padding */}
+      <box width={innerWidth()} height={innerHeight()} flexDirection="row">
+        {/* Left column: Results + Search */}
+        <box
+          width={resultsWidth()}
+          height={innerHeight()}
+          flexDirection="column"
+        >
+          {/* Results panel */}
+          <box
+            width={resultsWidth()}
+            height={contentHeight()}
+            flexDirection="column"
+            borderStyle="single"
+            borderColor="#3a3a3a"
+          >
+            {/* Results header */}
+            <box paddingLeft={1} paddingRight={1}>
+              <text fg="#fab283" attributes={TextAttributes.BOLD}>
+                Results
+              </text>
+            </box>
 
-      {/* Search input */}
-      <box padding={1}>
-        <input
-          ref={(r) => {
-            inputRef = r;
-          }}
-          onInput={(e) => setFilter(e)}
-          placeholder="Type to search..."
-          backgroundColor="#1a1a2e"
-          focusedBackgroundColor="#2a2a4e"
-          cursorColor="#fab283"
-          focusedTextColor="#eaeaea"
-        />
-      </box>
+            {/* Separator line using text */}
+            <box paddingLeft={1} paddingRight={1}>
+              <text fg="#3a3a3a">{"─".repeat(resultsWidth() - 4)}</text>
+            </box>
 
-      {/* Tree list */}
-      <scrollbox height={dimensions().height - 10}>
-        <box flexDirection="column">
-          <For each={visibleRows()}>
-            {(row) => (
-              <box backgroundColor={isSelected(row) ? "#2a2a4e" : undefined}>
-                <text
-                  fg={
-                    isSelected(row)
-                      ? "#ffffff"
-                      : row.isAgent
-                        ? "#a0a0a0"
-                        : "#6a6a6a"
-                  }
-                >
-                  {isSelected(row) ? "> " : "  "}
-                  {"  ".repeat(row.indent)}
-                  {row.label}
-                  {row.hasChildren && !row.isAgent ? "/" : ""}
-                </text>
+            {/* Results list */}
+            <scrollbox height={contentHeight() - 5}>
+              <box flexDirection="column">
+                <For each={visiblePaths()}>
+                  {(path) => (
+                    <box
+                      backgroundColor={
+                        path === selectedPath() ? "#2a2a4e" : undefined
+                      }
+                      paddingLeft={1}
+                    >
+                      <text
+                        fg={path === selectedPath() ? "#ffffff" : "#a0a0a0"}
+                      >
+                        {path === selectedPath() ? "> " : "  "}
+                        {path}
+                      </text>
+                    </box>
+                  )}
+                </For>
+
+                <Show when={visiblePaths().length === 0}>
+                  <box paddingLeft={1}>
+                    <text fg="#6a6a6a">No matches found</text>
+                  </box>
+                </Show>
               </box>
-            )}
-          </For>
+            </scrollbox>
+          </box>
 
-          <Show when={hasMore()}>
-            <text fg="#6a6a6a">
-              {"  "}... {displayRows().length - MAX_VISIBLE} more (type to filter)
-            </text>
-          </Show>
+          {/* Search bar (bottom of left column) */}
+          <box
+            width={resultsWidth()}
+            height={SEARCH_HEIGHT}
+            flexDirection="column"
+            justifyContent="center"
+            borderStyle="single"
+            borderColor="#3a3a3a"
+          >
+            {/* Inner row for content */}
+            <box
+              flexDirection="row"
+              paddingLeft={1}
+              paddingRight={1}
+            >
+              {/* Prompt prefix */}
+              <text fg="#fab283">{"> "}</text>
 
-          <Show when={visibleRows().length === 0}>
-            <text fg="#6a6a6a">{"  "}No matches found</text>
-          </Show>
+              {/* Search input - takes remaining space */}
+              <box flexGrow={1}>
+                <input
+                  ref={(r) => {
+                    inputRef = r;
+                  }}
+                  width={resultsWidth() - 12}
+                  onInput={(e) => setFilter(e)}
+                  placeholder="Find agents..."
+                  backgroundColor="#0f0f1a"
+                  focusedBackgroundColor="#0f0f1a"
+                  cursorColor="#fab283"
+                  focusedTextColor="#eaeaea"
+                />
+              </box>
+
+              {/* Counter */}
+              <text fg="#6a6a6a">
+                {" "}
+                {filteredPaths().length > 0 ? selectedIndex() + 1 : 0}/
+                {filteredPaths().length}
+              </text>
+            </box>
+          </box>
         </box>
-      </scrollbox>
 
-      {/* Footer hints */}
-      <box
-        padding={1}
-        flexDirection="row"
-        justifyContent="space-between"
-        borderStyle="single"
-        borderColor="#3a3a3a"
-      >
-        <text fg="#6a6a6a">↑↓ navigate</text>
-        <text fg="#6a6a6a">enter select</text>
-        <text fg="#6a6a6a">q quit</text>
+        {/* Preview panel (right) - full height */}
+        <box
+          width={previewWidth()}
+          height={innerHeight()}
+          flexDirection="column"
+          borderStyle="single"
+          borderColor="#3a3a3a"
+        >
+          {/* Preview header */}
+          <box paddingLeft={1} paddingRight={1}>
+            <text fg="#8383fa" attributes={TextAttributes.BOLD}>
+              Preview
+            </text>
+          </box>
+
+          {/* Separator line using text */}
+          <box paddingLeft={1} paddingRight={1}>
+            <text fg="#3a3a3a">{"─".repeat(previewWidth() - 4)}</text>
+          </box>
+
+          {/* Preview content */}
+          <scrollbox height={innerHeight() - 5}>
+            <box flexDirection="column" paddingLeft={1} paddingRight={1}>
+              <Show
+                when={previewContent()}
+                fallback={
+                  <text fg="#6a6a6a">Select an agent to preview</text>
+                }
+              >
+                <text fg="#c0c0c0">{previewContent()}</text>
+              </Show>
+            </box>
+          </scrollbox>
+        </box>
       </box>
     </box>
   );
