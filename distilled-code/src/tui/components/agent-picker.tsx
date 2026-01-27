@@ -18,7 +18,74 @@ import {
 } from "solid-js";
 import { renderAgentTemplate } from "../../util/render-template.ts";
 import { useRegistry } from "../context/registry.tsx";
-import { filterAgentPaths } from "../hooks/use-agent-tree.ts";
+import {
+  filterAgentPaths,
+  type FuzzySearchResult,
+} from "../../util/fuzzy-search.ts";
+
+/**
+ * Props for HighlightedText component
+ */
+interface HighlightedTextProps {
+  text: string;
+  positions: Set<number>;
+  isSelected: boolean;
+}
+
+/**
+ * Renders text with matched characters highlighted
+ * Groups consecutive matches for cleaner rendering
+ */
+function HighlightedText(props: HighlightedTextProps) {
+  const segments = createMemo(() => {
+    const result: Array<{ text: string; isMatch: boolean }> = [];
+    const chars = props.text.split("");
+    let currentSegment = "";
+    let currentIsMatch = false;
+
+    for (let i = 0; i < chars.length; i++) {
+      const isMatch = props.positions.has(i);
+
+      if (i === 0) {
+        currentIsMatch = isMatch;
+        currentSegment = chars[i];
+      } else if (isMatch === currentIsMatch) {
+        currentSegment += chars[i];
+      } else {
+        result.push({ text: currentSegment, isMatch: currentIsMatch });
+        currentSegment = chars[i];
+        currentIsMatch = isMatch;
+      }
+    }
+
+    if (currentSegment) {
+      result.push({ text: currentSegment, isMatch: currentIsMatch });
+    }
+
+    return result;
+  });
+
+  return (
+    <box flexDirection="row">
+      <For each={segments()}>
+        {(segment) => (
+          <text
+            fg={
+              segment.isMatch
+                ? "#fab283" // Orange highlight for matches
+                : props.isSelected
+                  ? "#ffffff"
+                  : "#a0a0a0"
+            }
+            attributes={segment.isMatch ? TextAttributes.BOLD : undefined}
+          >
+            {segment.text}
+          </text>
+        )}
+      </For>
+    </box>
+  );
+}
 
 /**
  * Props for AgentPicker
@@ -61,14 +128,16 @@ export function AgentPicker(props: AgentPickerProps) {
   // All agent paths
   const allAgentPaths = createMemo(() => registry.agents.map((a) => a.id));
 
-  // Filtered paths (FZF score order when filtering, original order when not)
-  const filteredPaths = createMemo(() =>
+  // Filtered results with match positions (FZF score order when filtering, original order when not)
+  const filteredResults = createMemo(() =>
     filterAgentPaths(allAgentPaths(), filter()),
   );
 
   // Limit visible rows for performance
   const MAX_VISIBLE = 100;
-  const visiblePaths = createMemo(() => filteredPaths().slice(0, MAX_VISIBLE));
+  const visibleResults = createMemo(() =>
+    filteredResults().slice(0, MAX_VISIBLE),
+  );
 
   // Reset selection when filter changes
   createEffect(() => {
@@ -76,15 +145,18 @@ export function AgentPicker(props: AgentPickerProps) {
     setSelectedIndex(0);
   });
 
-  // Get currently selected path
-  const selectedPath = createMemo(() => {
-    const paths = filteredPaths();
+  // Get currently selected result
+  const selectedResult = createMemo((): FuzzySearchResult | null => {
+    const results = filteredResults();
     const idx = selectedIndex();
-    if (idx >= 0 && idx < paths.length) {
-      return paths[idx];
+    if (idx >= 0 && idx < results.length) {
+      return results[idx];
     }
     return null;
   });
+
+  // Get currently selected path (for compatibility)
+  const selectedPath = createMemo(() => selectedResult()?.item ?? null);
 
   // Get selected agent and render its context
   const selectedAgent = createMemo(() => {
@@ -124,7 +196,7 @@ export function AgentPicker(props: AgentPickerProps) {
     if (evt.name === "down" || (evt.ctrl && evt.name === "j")) {
       evt.preventDefault();
       evt.stopPropagation();
-      setSelectedIndex((i) => Math.min(filteredPaths().length - 1, i + 1));
+      setSelectedIndex((i) => Math.min(filteredResults().length - 1, i + 1));
       return;
     }
 
@@ -188,25 +260,29 @@ export function AgentPicker(props: AgentPickerProps) {
             {/* Results list */}
             <scrollbox height={contentHeight() - 5}>
               <box flexDirection="column">
-                <For each={visiblePaths()}>
-                  {(path) => (
-                    <box
-                      backgroundColor={
-                        path === selectedPath() ? "#2a2a4e" : undefined
-                      }
-                      paddingLeft={1}
-                    >
-                      <text
-                        fg={path === selectedPath() ? "#ffffff" : "#a0a0a0"}
+                <For each={visibleResults()}>
+                  {(result) => {
+                    const isSelected = () => result.item === selectedPath();
+                    return (
+                      <box
+                        backgroundColor={isSelected() ? "#2a2a4e" : undefined}
+                        paddingLeft={1}
+                        flexDirection="row"
                       >
-                        {path === selectedPath() ? "> " : "  "}
-                        {path}
-                      </text>
-                    </box>
-                  )}
+                        <text fg={isSelected() ? "#ffffff" : "#a0a0a0"}>
+                          {isSelected() ? "> " : "  "}
+                        </text>
+                        <HighlightedText
+                          text={result.item}
+                          positions={result.positions}
+                          isSelected={isSelected()}
+                        />
+                      </box>
+                    );
+                  }}
                 </For>
 
-                <Show when={visiblePaths().length === 0}>
+                <Show when={visibleResults().length === 0}>
                   <box paddingLeft={1}>
                     <text fg="#6a6a6a">No matches found</text>
                   </box>
@@ -252,8 +328,8 @@ export function AgentPicker(props: AgentPickerProps) {
               {/* Counter */}
               <text fg="#6a6a6a">
                 {" "}
-                {filteredPaths().length > 0 ? selectedIndex() + 1 : 0}/
-                {filteredPaths().length}
+                {filteredResults().length > 0 ? selectedIndex() + 1 : 0}/
+                {filteredResults().length}
               </text>
             </box>
           </box>
