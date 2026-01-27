@@ -189,6 +189,22 @@ export function AgentPicker(props: AgentPickerProps) {
       return;
     }
 
+    // Ctrl+W: Delete word - update filter signal, input is controlled by value={filter()}
+    if (evt.ctrl && evt.name === "w") {
+      evt.preventDefault();
+      evt.stopPropagation();
+      setFilter((current) => current.replace(/\s*\S*\s*$/, ""));
+      return;
+    }
+
+    // Ctrl+U: Clear line
+    if (evt.ctrl && evt.name === "u") {
+      evt.preventDefault();
+      evt.stopPropagation();
+      setFilter("");
+      return;
+    }
+
     // Navigation up
     if (evt.name === "up" || (evt.ctrl && evt.name === "k")) {
       evt.preventDefault();
@@ -321,6 +337,7 @@ export function AgentPicker(props: AgentPickerProps) {
                     inputRef = r;
                   }}
                   width={resultsWidth() - 12}
+                  value={filter()}
                   onInput={(e) => setFilter(e)}
                   placeholder="Find agents..."
                   backgroundColor="#0f0f1a"

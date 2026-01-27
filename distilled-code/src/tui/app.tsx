@@ -10,7 +10,6 @@ import "./parsers/init.ts";
 
 import { useRenderer, useTerminalDimensions } from "@opentui/solid";
 import { createSignal, Match, Switch } from "solid-js";
-import { log } from "../util/log.ts";
 import { AgentPicker } from "./components/agent-picker.tsx";
 import { ChatView } from "./components/chat-view.tsx";
 import { useStore } from "./context/store.tsx";
@@ -29,8 +28,6 @@ type Screen =
  * No global keyboard handler - each screen handles its own keyboard events.
  */
 export function App() {
-  log("App", "App component initializing");
-
   const dimensions = useTerminalDimensions();
   const renderer = useRenderer();
   const store = useStore();
@@ -40,19 +37,16 @@ export function App() {
 
   // Navigate to chat when agent is selected
   const handleSelect = (agentId: string, threadId?: string) => {
-    log("App", "Agent selected", { agentId, threadId });
     setScreen({ type: "chat", agentId, threadId });
   };
 
   // Navigate back to home
   const handleBack = () => {
-    log("App", "Back to home");
     setScreen({ type: "home" });
   };
 
   // Exit the app
   const handleExit = () => {
-    log("App", "Exit requested");
     renderer.destroy();
     store.exit();
   };

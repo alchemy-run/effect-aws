@@ -4,7 +4,7 @@
 import * as fs from "fs";
 import * as path from "path";
 
-const LOG_FILE = path.join(process.cwd(), ".effect-code.log");
+const LOG_FILE = path.join(process.cwd(), ".distilled-code.log");
 
 // Clear log file on startup
 try {

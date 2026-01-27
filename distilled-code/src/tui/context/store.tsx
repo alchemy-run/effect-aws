@@ -8,7 +8,6 @@
 import type { Layer } from "effect/Layer";
 import * as ManagedRuntime from "effect/ManagedRuntime";
 import { createContext, useContext, type JSX } from "solid-js";
-import { log, logError } from "../../util/log.ts";
 
 /**
  * Store context value - exposes runtime directly for simple usage
@@ -57,32 +56,21 @@ export interface StoreProviderProps<R, E> {
  * The layer determines what services are available to Effects run through the store.
  */
 export function StoreProvider<R, E>(props: StoreProviderProps<R, E>) {
-  try {
-    log("StoreProvider", "Creating StoreProvider");
+  // Create a managed runtime from the layer
+  const runtime = ManagedRuntime.make(props.layer);
 
-    // Create a managed runtime from the layer
-    log("StoreProvider", "Creating ManagedRuntime from layer");
-    const runtime = ManagedRuntime.make(props.layer);
-    log("StoreProvider", "ManagedRuntime created");
+  const value: StoreContextValue<R> = {
+    runtime: runtime as ManagedRuntime.ManagedRuntime<R, never>,
+    exit: () => {
+      props.onExit();
+    },
+  };
 
-    const value: StoreContextValue<R> = {
-      runtime: runtime as ManagedRuntime.ManagedRuntime<R, never>,
-      exit: () => {
-        log("StoreProvider", "exit called");
-        props.onExit();
-      },
-    };
-
-    log("StoreProvider", "Rendering children");
-    return (
-      <StoreContext.Provider value={value as StoreContextValue}>
-        {props.children}
-      </StoreContext.Provider>
-    );
-  } catch (err) {
-    logError("StoreProvider", "Error in StoreProvider", err);
-    throw err;
-  }
+  return (
+    <StoreContext.Provider value={value as StoreContextValue}>
+      {props.children}
+    </StoreContext.Provider>
+  );
 }
 
 /**

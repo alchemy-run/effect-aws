@@ -6,7 +6,6 @@
 
 import { createContext, useContext, type JSX } from "solid-js";
 import type { Agent } from "../../agent.ts";
-import { log, logError } from "../../util/log.ts";
 
 /**
  * Registry context value
@@ -44,32 +43,21 @@ export interface RegistryProviderProps {
  * Provider component for agent registry
  */
 export function RegistryProvider(props: RegistryProviderProps) {
-  try {
-    log("RegistryProvider", "Creating RegistryProvider", {
-      agentCount: props.agents.length,
-    });
-
-    const agentMap = new Map<string, Agent>();
-    for (const agent of props.agents) {
-      agentMap.set(agent.id, agent);
-    }
-    log("RegistryProvider", "Registered all agents");
-
-    const value: RegistryContextValue = {
-      agents: props.agents,
-      getAgent: (id: string) => agentMap.get(id),
-    };
-
-    log("RegistryProvider", "Rendering children");
-    return (
-      <RegistryContext.Provider value={value}>
-        {props.children}
-      </RegistryContext.Provider>
-    );
-  } catch (err) {
-    logError("RegistryProvider", "Error in RegistryProvider", err);
-    throw err;
+  const agentMap = new Map<string, Agent>();
+  for (const agent of props.agents) {
+    agentMap.set(agent.id, agent);
   }
+
+  const value: RegistryContextValue = {
+    agents: props.agents,
+    getAgent: (id: string) => agentMap.get(id),
+  };
+
+  return (
+    <RegistryContext.Provider value={value}>
+      {props.children}
+    </RegistryContext.Provider>
+  );
 }
 
 /**

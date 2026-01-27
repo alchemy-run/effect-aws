@@ -22,7 +22,6 @@ import { render } from "@opentui/solid";
 import type { Layer } from "effect/Layer";
 import type { Agent } from "../agent.ts";
 import type { StateStore, StateStoreError } from "../state/index.ts";
-import { log, logError } from "../util/log.ts";
 import { App } from "./app.tsx";
 import { RegistryProvider } from "./context/registry.tsx";
 import { StoreProvider } from "./context/store.tsx";
@@ -59,45 +58,26 @@ export interface TuiOptions {
  * ```
  */
 export function tui(options: TuiOptions): Promise<void> {
-  log("TUI", "Starting TUI", { agentCount: options.agents.length });
-  log(
-    "TUI",
-    "Agents",
-    options.agents.map((a) => a.id),
-  );
-
   return new Promise<void>((resolve, reject) => {
     const onExit = () => {
-      log("TUI", "Exit callback triggered");
       resolve();
     };
 
     try {
-      log("TUI", "About to call render()");
-      const renderer = render(
-        () => {
-          log("TUI", "Render function executing");
-          try {
-            return (
-              <RegistryProvider agents={options.agents}>
-                <StoreProvider layer={options.layer} onExit={onExit}>
-                  <App />
-                </StoreProvider>
-              </RegistryProvider>
-            );
-          } catch (err) {
-            logError("TUI", "Error in render function", err);
-            throw err;
-          }
-        },
+      render(
+        () => (
+          <RegistryProvider agents={options.agents}>
+            <StoreProvider layer={options.layer} onExit={onExit}>
+              <App />
+            </StoreProvider>
+          </RegistryProvider>
+        ),
         {
           targetFps: 60,
           exitOnCtrlC: true, // Re-enable Ctrl+C to exit
         },
       );
-      log("TUI", "render() returned", { renderer: typeof renderer });
     } catch (err) {
-      logError("TUI", "Error calling render()", err);
       reject(err);
     }
   });

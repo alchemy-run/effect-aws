@@ -12,7 +12,6 @@ import * as Stream from "effect/Stream";
 import { createSignal, onCleanup, onMount, Show } from "solid-js";
 import { spawn } from "../../agent.ts";
 import { StateStore, type MessagePart } from "../../state/index.ts";
-import { log } from "../../util/log.ts";
 import { useRegistry } from "../context/registry.tsx";
 import { useStore } from "../context/store.tsx";
 import { InputBox } from "./input-box.tsx";
@@ -62,8 +61,6 @@ export function ChatView(props: ChatViewProps) {
 
   // Load existing parts and subscribe to new ones
   onMount(() => {
-    log("ChatView", "Loading parts", { agentId: props.agentId, threadId: threadId() });
-
     // Load and subscribe in one effect
     const effect = Effect.gen(function* () {
       const stateStore = yield* StateStore;
@@ -71,7 +68,6 @@ export function ChatView(props: ChatViewProps) {
       // Read existing parts
       const existingParts = yield* stateStore.readThreadParts(props.agentId, threadId());
       setParts(existingParts);
-      log("ChatView", "Loaded existing parts", { count: existingParts.length });
 
       // Subscribe to new parts
       const stream = yield* stateStore.subscribeThread(props.agentId, threadId());
@@ -86,7 +82,6 @@ export function ChatView(props: ChatViewProps) {
     }).pipe(
       Effect.catchAll((e) =>
         Effect.sync(() => {
-          log("ChatView", "Error loading parts", e);
           setError(String(e));
         }),
       ),
@@ -123,7 +118,6 @@ export function ChatView(props: ChatViewProps) {
 
   // Handle sending messages
   const handleSubmit = (message: string) => {
-    log("ChatView", "Sending message", { message });
     setError(undefined);
     setLoading(true);
 
@@ -150,7 +144,6 @@ export function ChatView(props: ChatViewProps) {
     }).pipe(
       Effect.catchAll((e) =>
         Effect.sync(() => {
-          log("ChatView", "Error sending message", e);
           setError(String(e));
         }),
       ),
