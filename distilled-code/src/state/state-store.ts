@@ -143,10 +143,11 @@ export const createStateStore = (
 
     // Override appendThreadPart to publish to PubSub (daemon persists)
     appendThreadPart: Effect.fnUntraced(function* (agentId, threadId, part) {
+      const pubsub = yield* getPubSub(agentId, threadId);
       yield* Effect.all(
         [
           persistence.appendThreadPart(agentId, threadId, part),
-          PubSub.publish(yield* getPubSub(agentId, threadId), part),
+          PubSub.publish(pubsub, part),
         ],
         { concurrency: "unbounded" },
       );
@@ -160,7 +161,8 @@ export const createStateStore = (
 
     // Streaming is handled here, not in persistence
     subscribeThread: Effect.fnUntraced(function* (agentId, threadId) {
-      return Stream.fromPubSub(yield* getPubSub(agentId, threadId));
+      const pubsub = yield* getPubSub(agentId, threadId);
+      return Stream.fromPubSub(pubsub);
     }),
   } satisfies StateStore;
 };

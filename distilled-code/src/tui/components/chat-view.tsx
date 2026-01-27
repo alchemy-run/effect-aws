@@ -88,6 +88,11 @@ export function ChatView(props: ChatViewProps) {
     );
 
     subscriptionFiber = store.runtime.runFork(effect);
+    
+    // Observe the fiber for errors (e.g., layer initialization failures)
+    Effect.runPromise(Fiber.join(subscriptionFiber)).catch((err) => {
+      setError(String(err));
+    });
   });
 
   // Cleanup on unmount
@@ -133,14 +138,9 @@ export function ChatView(props: ChatViewProps) {
       const instance = yield* spawn(agent, threadId());
 
       // Send the message and consume the stream
-      yield* instance.send(message).pipe(
-        Stream.runForEach(() =>
-          Effect.sync(() => {
-            // Parts are automatically persisted by the agent
-            // We'll receive them via our subscription
-          }),
-        ),
-      );
+      // Parts are automatically persisted by the agent
+      // We receive them via our subscription
+      yield* instance.send(message).pipe(Stream.runDrain);
     }).pipe(
       Effect.catchAll((e) =>
         Effect.sync(() => {
@@ -150,7 +150,11 @@ export function ChatView(props: ChatViewProps) {
       Effect.ensuring(Effect.sync(() => setLoading(false))),
     );
 
-    store.runtime.runFork(sendEffect);
+    // Use runPromise to catch any layer initialization errors
+    store.runtime.runPromise(sendEffect).catch((err) => {
+      setError(String(err));
+      setLoading(false);
+    });
   };
 
   // Calculate heights

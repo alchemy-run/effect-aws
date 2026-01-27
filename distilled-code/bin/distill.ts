@@ -204,7 +204,10 @@ const mainCommand = Command.make(
       sqliteStateStore(),
       Layer.merge(BunSqlite, NodeContext.layer),
     );
-    const layer = Layer.merge(modelLayer, stateStoreLayer);
+    // The model layer needs AnthropicClient, which needs HttpClient
+    const anthropicLayer = Layer.provideMerge(Anthropic, NodeHttpClient.layer);
+    const fullModelLayer = Layer.provideMerge(modelLayer, anthropicLayer);
+    const layer = Layer.merge(fullModelLayer, stateStoreLayer);
     log("CLI", "Layer created");
 
     // Launch the TUI
