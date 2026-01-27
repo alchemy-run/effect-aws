@@ -18,11 +18,10 @@ Cloudflare API test suite coordinator.
 
 ## Services (${services.length} services, ${services.reduce((n, s) => n + s.operations.length, 0)} operations)
 
-${services.map(
-  (s) => `
-### ${s.name} (${s.operations.length})
-${s.operations.map((o) => `- ${o.operationName}`)}`,
-)}
+${services
+  .sort((a, b) => a.name.localeCompare(b.name))
+  .map((s) => `- ${s.name} (${s.operations.length} operations)`)
+  .join("\n")}
 
 ## Commands
 - Parse: \`bun scripts/parse.ts\`

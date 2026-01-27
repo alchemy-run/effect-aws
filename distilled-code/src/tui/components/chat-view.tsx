@@ -206,6 +206,7 @@ export function ChatView(props: ChatViewProps) {
       <InputBox
         onSubmit={handleSubmit}
         disabled={loading()}
+        focused={true}
         placeholder={loading() ? "Waiting for response..." : "Type a message..."}
       />
     </box>
