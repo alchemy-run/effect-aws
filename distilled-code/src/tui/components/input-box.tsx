@@ -61,7 +61,7 @@ export function InputBox(props: InputBoxProps) {
   });
 
   const handleInput = (text: string) => {
-    if (props.disabled) return;
+    // Allow typing even while disabled (loading) so user can compose next message
     setValue(text);
   };
 
@@ -70,10 +70,6 @@ export function InputBox(props: InputBoxProps) {
     if (message && !props.disabled) {
       props.onSubmit(message);
       setValue("");
-      // Clear the input by setting an empty value
-      if (inputRef) {
-        (inputRef as any).text = "";
-      }
     }
   };
 
@@ -89,6 +85,7 @@ export function InputBox(props: InputBoxProps) {
         ref={(r) => {
           inputRef = r;
         }}
+        value={value()}
         onInput={handleInput}
         onSubmit={handleSubmit}
         placeholder={props.placeholder || "Type a message..."}

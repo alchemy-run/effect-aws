@@ -394,7 +394,5 @@ export const runMigrations = (conn: SqliteConnection) =>
               }),
           ),
         );
-
-      yield* Effect.log(`[sqlite] Applied migration: ${migration.version}`);
     }
   });
