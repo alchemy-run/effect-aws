@@ -4,8 +4,8 @@
  * Text input for sending messages to agents.
  */
 
-import { createSignal, onMount } from "solid-js";
 import type { InputRenderable } from "@opentui/core";
+import { createSignal, onMount } from "solid-js";
 
 /**
  * Props for InputBox
@@ -25,11 +25,6 @@ export interface InputBoxProps {
    * Whether the input is disabled
    */
   disabled?: boolean;
-
-  /**
-   * Whether the input is focused
-   */
-  focused?: boolean;
 }
 
 /**
@@ -39,10 +34,9 @@ export function InputBox(props: InputBoxProps) {
   const [value, setValue] = createSignal("");
   let inputRef: InputRenderable | undefined;
 
+  // Focus on mount
   onMount(() => {
-    if (props.focused && inputRef) {
-      inputRef.focus();
-    }
+    setTimeout(() => inputRef?.focus(), 10);
   });
 
   const handleInput = (text: string) => {
@@ -55,7 +49,7 @@ export function InputBox(props: InputBoxProps) {
     if (message && !props.disabled) {
       props.onSubmit(message);
       setValue("");
-      // Clear the input by setting an empty value
+      // Clear the input
       if (inputRef) {
         (inputRef as any).text = "";
       }
@@ -67,7 +61,7 @@ export function InputBox(props: InputBoxProps) {
       width="100%"
       padding={1}
       borderStyle="rounded"
-      borderColor={props.focused ? "#fab283" : "#3a3a3a"}
+      borderColor="#fab283"
       backgroundColor="#1a1a2e"
     >
       <input

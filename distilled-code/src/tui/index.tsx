@@ -7,9 +7,9 @@
 // Re-export components for custom TUI building
 export { App } from "./app.tsx";
 export { AgentPicker } from "./components/agent-picker.tsx";
+export { ChatView } from "./components/chat-view.tsx";
 export { InputBox } from "./components/input-box.tsx";
 export { MessageStream } from "./components/message-stream.tsx";
-export { SessionView } from "./components/session-view.tsx";
 export { RegistryProvider, useRegistry } from "./context/registry.tsx";
 export { StoreProvider, useStore } from "./context/store.tsx";
 
@@ -88,7 +88,8 @@ export function tui(options: TuiOptions): Promise<void> {
         },
         {
           targetFps: 60,
-          exitOnCtrlC: true,
+          exitOnCtrlC: false,
+          useKittyKeyboard: {},
         },
       );
       log("TUI", "render() returned", { renderer: typeof renderer });

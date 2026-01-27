@@ -5,26 +5,23 @@
  * The layer provided to StoreProvider determines what services are available.
  */
 
-import { createContext, useContext, type JSX } from "solid-js";
 import type { Layer } from "effect/Layer";
-import * as Fiber from "effect/Fiber";
-import * as Effect from "effect/Effect";
 import * as ManagedRuntime from "effect/ManagedRuntime";
+import { createContext, useContext, type JSX } from "solid-js";
 import { log, logError } from "../../util/log.ts";
 
 /**
- * Store context value - minimal API for Effect-native UI
+ * Store context value - exposes runtime directly for simple usage
  *
- * Effects run through runFork can require any services provided by the layer.
- * Type safety is ensured at the call site.
+ * Components can call:
+ * - store.runtime.runPromise(effect) - for async operations
+ * - store.runtime.runFork(effect) - for fire-and-forget
  */
-export interface StoreContextValue {
+export interface StoreContextValue<R = unknown> {
   /**
-   * Fork an Effect with the store's layer, returning the fiber for cancellation
+   * The managed runtime - use runPromise() or runFork() directly
    */
-  runFork: <A, E, R>(
-    effect: Effect.Effect<A, E, R>,
-  ) => Fiber.RuntimeFiber<A, E>;
+  runtime: ManagedRuntime.ManagedRuntime<R, never>;
 
   /**
    * Exit the TUI
@@ -68,13 +65,8 @@ export function StoreProvider<R, E>(props: StoreProviderProps<R, E>) {
     const runtime = ManagedRuntime.make(props.layer);
     log("StoreProvider", "ManagedRuntime created");
 
-    const value: StoreContextValue = {
-      runFork: <A, Err, Req>(
-        effect: Effect.Effect<A, Err, Req>,
-      ): Fiber.RuntimeFiber<A, Err> => {
-        log("StoreProvider", "runFork called");
-        return runtime.runFork(effect as any) as Fiber.RuntimeFiber<A, Err>;
-      },
+    const value: StoreContextValue<R> = {
+      runtime: runtime as ManagedRuntime.ManagedRuntime<R, never>,
       exit: () => {
         log("StoreProvider", "exit called");
         props.onExit();
@@ -83,7 +75,7 @@ export function StoreProvider<R, E>(props: StoreProviderProps<R, E>) {
 
     log("StoreProvider", "Rendering children");
     return (
-      <StoreContext.Provider value={value}>
+      <StoreContext.Provider value={value as StoreContextValue}>
         {props.children}
       </StoreContext.Provider>
     );

@@ -48,7 +48,9 @@ ${service.operations.map((op) => `- ${op.operationName} (${op.httpMethod})`)}
 Delegate tasks to the corresponding sub-agents (each operation has its own dedicated team).
 ${service.operations.map((op) => {
   // Files for this operation
-  class ServiceClient extends File.TypeScript(`src/services/${service.name}.ts`)`
+  class ServiceClient extends File.TypeScript(
+    `src/services/${service.name}.ts`,
+  )`
 Generated Effect-based service client for the ${service.name} Cloudflare service.
 Contains operation functions, schemas, and error classes.
 Regenerate with: \`bun generate --service ${service.name}\`
@@ -108,7 +110,9 @@ Design tests for ${op.operationName}. Read ${ServiceClient} for signatures.
 Write plan to ${TestPlan}.
 ` {}
 
-  class Developer extends Agent(`${service.name}/${op.operationName}/Developer`)`
+  class Developer extends Agent(
+    `${service.name}/${op.operationName}/Developer`,
+  )`
 Implement tests per ${TestPlan} using ${Toolkit.Coding}.
 
 ## Files

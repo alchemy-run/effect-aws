@@ -8,6 +8,7 @@
  *   distilled                          # launch TUI with ./distilled.config.ts
  *   distilled ./path/to/config.ts      # launch TUI with custom config
  *   distilled --model claude-opus      # use a specific model
+ *   distilled --cwd ../distilled-cloudflare  # run from another directory
  */
 import { AnthropicClient, AnthropicLanguageModel } from "@effect/ai-anthropic";
 import { Args, Command, Options } from "@effect/cli";
@@ -60,7 +61,10 @@ const collectAgents = (agent: Agent, visited = new Set<string>()): Agent[] => {
   };
 
   const flatRefs = flattenRefs(agent.references);
-  log("collectAgents", `Agent ${agent.id} has ${flatRefs.length} flat references`);
+  log(
+    "collectAgents",
+    `Agent ${agent.id} has ${flatRefs.length} flat references`,
+  );
 
   const nested = flatRefs
     .filter(isAgent)
@@ -132,7 +136,9 @@ const mainCommand = Command.make(
   "distilled",
   {
     config: Args.text({ name: "config" }).pipe(
-      Args.withDescription("Path to config file (default: ./distilled.config.ts)"),
+      Args.withDescription(
+        "Path to config file (default: ./distilled.config.ts)",
+      ),
       Args.optional,
     ),
     model: Options.text("model").pipe(
@@ -140,9 +146,22 @@ const mainCommand = Command.make(
       Options.withDescription("Model to use (default: claude-sonnet)"),
       Options.withDefault("claude-sonnet"),
     ),
+    cwd: Options.directory("cwd").pipe(
+      Options.withAlias("C"),
+      Options.withDescription("Change to this directory before running"),
+      Options.optional,
+    ),
   },
-  Effect.fn(function* ({ config, model }) {
-    log("CLI", "Starting distilled CLI", { config, model });
+  Effect.fn(function* ({ config, model, cwd }) {
+    log("CLI", "Starting distilled CLI", { config, model, cwd });
+
+    // Change to the specified directory if provided
+    const cwdPath = Option.getOrUndefined(cwd);
+    if (cwdPath) {
+      log("CLI", "Changing directory", { cwd: cwdPath });
+      process.chdir(cwdPath);
+      log("CLI", "Changed to directory", { cwd: process.cwd() });
+    }
 
     const configPath = Option.getOrUndefined(config);
     log("CLI", "Config path from args", { configPath });

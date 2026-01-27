@@ -1,4 +1,4 @@
-import { FileSystem } from "@effect/platform";
+import { Command, FileSystem } from "@effect/platform";
 import { NodeContext } from "@effect/platform-node";
 import { Effect } from "effect";
 import * as path from "node:path";
@@ -22,7 +22,138 @@ import {
 interface ParseOptions {
   basePath: string;
   serviceFilter?: string;
+  /**
+   * Force re-parsing even if a cached model exists
+   * @default false
+   */
+  force?: boolean;
 }
+
+// =============================================================================
+// Cache Serialization
+// =============================================================================
+
+interface SerializedTypeRegistry {
+  types: Array<[string, ParsedInterface]>;
+  typeAliases: Array<[string, TypeInfo]>;
+}
+
+interface SerializedOperation extends Omit<ParsedOperation, "registry"> {
+  registry: SerializedTypeRegistry;
+}
+
+interface SerializedServiceInfo {
+  name: string;
+  operations: SerializedOperation[];
+}
+
+interface CacheData {
+  version: 1;
+  hash: string;
+  timestamp: number;
+  services: SerializedServiceInfo[];
+}
+
+function serializeRegistry(registry: TypeRegistry): SerializedTypeRegistry {
+  return {
+    types: Array.from(registry.types.entries()),
+    typeAliases: Array.from(registry.typeAliases.entries()),
+  };
+}
+
+function deserializeRegistry(data: SerializedTypeRegistry): TypeRegistry {
+  return {
+    types: new Map(data.types),
+    typeAliases: new Map(data.typeAliases),
+  };
+}
+
+function serializeServices(services: ServiceInfo[]): SerializedServiceInfo[] {
+  return services.map((service) => ({
+    name: service.name,
+    operations: service.operations.map((op) => ({
+      ...op,
+      registry: serializeRegistry(op.registry),
+    })),
+  }));
+}
+
+function deserializeServices(data: SerializedServiceInfo[]): ServiceInfo[] {
+  return data.map((service) => ({
+    name: service.name,
+    operations: service.operations.map((op) => ({
+      ...op,
+      registry: deserializeRegistry(op.registry),
+    })),
+  }));
+}
+
+// =============================================================================
+// Git Hash & Caching
+// =============================================================================
+
+const CACHE_DIR = ".distilled/cache";
+
+/**
+ * Get the git commit hash of the cloudflare-typescript repo
+ */
+const getGitHash = (repoPath: string) =>
+  Command.make("git", "rev-parse", "HEAD").pipe(
+    Command.workingDirectory(repoPath),
+    Command.string,
+    Effect.map((s) => s.trim()),
+    Effect.catchAll(() => Effect.succeed("")),
+  );
+
+/**
+ * Try to load cached model for the given git hash
+ */
+const loadCache = (hash: string) =>
+  Effect.gen(function* () {
+    if (!hash) return undefined;
+
+    const fs = yield* FileSystem.FileSystem;
+    const cachePath = path.join(CACHE_DIR, `${hash}.json`);
+
+    const exists = yield* fs.exists(cachePath);
+    if (!exists) return undefined;
+
+    const content = yield* fs.readFileString(cachePath);
+    const data = JSON.parse(content) as CacheData;
+
+    if (data.version !== 1 || data.hash !== hash) {
+      return undefined;
+    }
+
+    return deserializeServices(data.services);
+  }).pipe(
+    Effect.catchAll(() => Effect.succeed(undefined)),
+  );
+
+/**
+ * Save parsed model to cache
+ */
+const saveCache = (hash: string, services: ServiceInfo[]) =>
+  Effect.gen(function* () {
+    if (!hash) return;
+
+    const fs = yield* FileSystem.FileSystem;
+    const cachePath = path.join(CACHE_DIR, `${hash}.json`);
+
+    // Ensure cache directory exists
+    yield* fs.makeDirectory(CACHE_DIR, { recursive: true });
+
+    const data: CacheData = {
+      version: 1,
+      hash,
+      timestamp: Date.now(),
+      services: serializeServices(services),
+    };
+
+    yield* fs.writeFileString(cachePath, JSON.stringify(data));
+  }).pipe(
+    Effect.catchAll((e) => Effect.logWarning(`Failed to save cache: ${e}`)),
+  );
 
 /**
  * Create a type registry from a source file
@@ -879,7 +1010,7 @@ const collectTypeScriptFiles = (
     return nested.flat();
   });
 
-const parseServiceFiles = (basePath: string, serviceFilter?: string) =>
+const parseServiceFilesCore = (basePath: string, serviceFilter?: string) =>
   Effect.gen(function* () {
     const fs = yield* FileSystem.FileSystem;
     // Find all TypeScript files
@@ -945,9 +1076,45 @@ const parseServiceFiles = (basePath: string, serviceFilter?: string) =>
     return services;
   });
 
+const parseServiceFiles = (
+  basePath: string,
+  serviceFilter?: string,
+  force?: boolean,
+) =>
+  Effect.gen(function* () {
+    // Resolve the repo root (basePath is like "../../cloudflare-typescript/src/resources")
+    const repoRoot = path.resolve(basePath, "../..");
+
+    // Get git hash for caching
+    const hash = yield* getGitHash(repoRoot);
+
+    // Try to load from cache (unless force is true or filtering by service)
+    if (!force && !serviceFilter && hash) {
+      const cached = yield* loadCache(hash);
+      if (cached) {
+        yield* Effect.logInfo(`Using cached model for ${hash.slice(0, 8)}`);
+        return cached;
+      }
+    }
+
+    // Parse the SDK
+    yield* Effect.logInfo(
+      `Parsing cloudflare-typescript${serviceFilter ? ` (${serviceFilter})` : ""}...`,
+    );
+    const services = yield* parseServiceFilesCore(basePath, serviceFilter);
+
+    // Save to cache (only if not filtering by service)
+    if (!serviceFilter && hash) {
+      yield* saveCache(hash, services);
+      yield* Effect.logInfo(`Cached model for ${hash.slice(0, 8)}`);
+    }
+
+    return services;
+  });
+
 export const parseCode = (options: ParseOptions) => {
-  const { basePath, serviceFilter } = options;
-  return parseServiceFiles(basePath, serviceFilter);
+  const { basePath, serviceFilter, force } = options;
+  return parseServiceFiles(basePath, serviceFilter, force);
 };
 
 export const loadModel = (options: ParseOptions) =>
