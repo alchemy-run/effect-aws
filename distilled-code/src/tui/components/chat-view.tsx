@@ -4,6 +4,7 @@
  * Chat view for a selected agent/thread with message stream and input.
  */
 
+import type { MessageEncoded } from "@effect/ai/Prompt";
 import { TextAttributes } from "@opentui/core";
 import { useKeyboard, useTerminalDimensions } from "@opentui/solid";
 import * as Cause from "effect/Cause";
@@ -58,6 +59,9 @@ export function ChatView(props: ChatViewProps) {
   const registry = useRegistry();
   const store = useStore();
 
+  // Historical messages from the messages table (permanent storage)
+  const [messages, setMessages] = createSignal<readonly MessageEncoded[]>([]);
+  // Streaming parts for the current turn (temporary buffer)
   const [parts, setParts] = createSignal<MessagePart[]>([]);
   const [error, setError] = createSignal<string>();
   const [loading, setLoading] = createSignal(false);
@@ -75,7 +79,7 @@ export function ChatView(props: ChatViewProps) {
     }
   };
 
-  // Load existing parts and subscribe to new ones when agent/thread changes
+  // Load existing messages/parts and subscribe to new ones when agent/thread changes
   createEffect(
     on(
       () => [props.agentId, threadId()] as const,
@@ -84,6 +88,7 @@ export function ChatView(props: ChatViewProps) {
         cleanupSubscription();
 
         // Clear previous state
+        setMessages([]);
         setParts([]);
         setError(undefined);
 
@@ -91,12 +96,25 @@ export function ChatView(props: ChatViewProps) {
         const effect = Effect.gen(function* () {
           const stateStore = yield* StateStore;
 
-          // Read existing parts
-          const existingParts = yield* stateStore.readThreadParts(agentId, currentThreadId);
-          setParts(existingParts);
+          // Read historical messages (permanent storage)
+          const storedMessages = yield* stateStore.readThreadMessages(
+            agentId,
+            currentThreadId,
+          );
+          setMessages(storedMessages);
 
-          // Subscribe to new parts
-          const stream = yield* stateStore.subscribeThread(agentId, currentThreadId);
+          // Read pending parts (in-progress conversation, not yet flushed)
+          const pendingParts = yield* stateStore.readThreadParts(
+            agentId,
+            currentThreadId,
+          );
+          setParts(pendingParts);
+
+          // Subscribe to new streaming parts
+          const stream = yield* stateStore.subscribeThread(
+            agentId,
+            currentThreadId,
+          );
 
           yield* stream.pipe(
             Stream.runForEach((part) =>
@@ -105,7 +123,7 @@ export function ChatView(props: ChatViewProps) {
               }),
             ),
           );
-        }        ).pipe(
+        }).pipe(
           Effect.catchAllCause((cause) =>
             Effect.sync(() => {
               // Only log if it's not an interruption (normal cleanup)
@@ -240,7 +258,7 @@ export function ChatView(props: ChatViewProps) {
       </box>
 
       {/* Message stream */}
-      <MessageStream parts={parts} height={messageHeight()} />
+      <MessageStream messages={messages} parts={parts} height={messageHeight()} />
 
       {/* Error display */}
       <Show when={error()}>
