@@ -1,5 +1,5 @@
-import { createVariant } from "./file.ts";
+import { defineFile } from "./file.ts";
 
 export type JsonID = `${string}.json` | `${string}.jsonc`;
 
-export const Json = createVariant("json");
+export const Json = defineFile("json");

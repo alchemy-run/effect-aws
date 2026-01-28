@@ -2,17 +2,19 @@
  * Agent Registry Context
  *
  * Provides available agent definitions to the TUI components.
+ * Automatically discovers all agents from the reference graph.
  */
 
 import { createContext, useContext, type JSX } from "solid-js";
 import type { Agent } from "../../agent.ts";
+import { discoverAgents } from "../util/discover-agents.ts";
 
 /**
  * Registry context value
  */
 export interface RegistryContextValue {
   /**
-   * Available agent definitions
+   * Available agent definitions (all discovered agents)
    */
   agents: Agent[];
 
@@ -29,7 +31,7 @@ const RegistryContext = createContext<RegistryContextValue>();
  */
 export interface RegistryProviderProps {
   /**
-   * Available agent definitions
+   * Root agent definitions - will discover all referenced agents recursively
    */
   agents: Agent[];
 
@@ -40,16 +42,22 @@ export interface RegistryProviderProps {
 }
 
 /**
- * Provider component for agent registry
+ * Provider component for agent registry.
+ *
+ * Automatically walks the reference graph starting from the provided agents
+ * to discover ALL agents in the system.
  */
 export function RegistryProvider(props: RegistryProviderProps) {
+  // Discover all agents from the reference graph
+  const allAgents = discoverAgents(props.agents);
+
   const agentMap = new Map<string, Agent>();
-  for (const agent of props.agents) {
+  for (const agent of allAgents) {
     agentMap.set(agent.id, agent);
   }
 
   const value: RegistryContextValue = {
-    agents: props.agents,
+    agents: allAgents,
     getAgent: (id: string) => agentMap.get(id),
   };
 

@@ -1,5 +1,5 @@
-import { createVariant } from "./file.ts";
+import { defineFile } from "./file.ts";
 
 export type HtmlID = `${string}.html` | `${string}.htm`;
 
-export const Html = createVariant("html");
+export const Html = defineFile("html");

@@ -1,5 +1,5 @@
-import { createVariant } from "./file.ts";
+import { defineFile } from "./file.ts";
 
 export type TomlID = `${string}.toml`;
 
-export const Toml = createVariant("toml");
+export const Toml = defineFile("toml");

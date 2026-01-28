@@ -32,6 +32,11 @@ export interface ChatViewProps {
   threadId?: string;
 
   /**
+   * Whether the chat view is focused (vs sidebar)
+   */
+  focused?: boolean;
+
+  /**
    * Callback to go back to agent picker
    */
   onBack: () => void;
@@ -164,8 +169,8 @@ export function ChatView(props: ChatViewProps) {
 
   return (
     <box
-      width={dimensions().width}
-      height={dimensions().height}
+      width="100%"
+      height="100%"
       flexDirection="column"
       backgroundColor="#0f0f1a"
     >
@@ -210,7 +215,7 @@ export function ChatView(props: ChatViewProps) {
       <InputBox
         onSubmit={handleSubmit}
         disabled={loading()}
-        focused={true}
+        focused={props.focused ?? true}
         placeholder={loading() ? "Waiting for response..." : "Type a message..."}
       />
     </box>

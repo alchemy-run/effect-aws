@@ -9,6 +9,8 @@ import { JSONSchema } from "effect";
 import * as Effect from "effect/Effect";
 import * as S from "effect/Schema";
 import { Agent } from "../src/agent.ts";
+import { Channel } from "../src/chat/channel.ts";
+import { Group } from "../src/chat/group.ts";
 import { createContext, preamble } from "../src/context.ts";
 import * as File from "../src/file/index.ts";
 import { input } from "../src/input.ts";
@@ -3198,5 +3200,254 @@ A set of tools for reading, writing, and editing code:
           },
         ]);
       }).pipe(Effect.provide(TestLayer)),
+  );
+
+  // ============================================================
+  // Tests for Channel and Group entities
+  // ============================================================
+
+  it.effect("renders agent with channel reference", () =>
+    Effect.gen(function* () {
+      class CodeReviewer extends Agent("code-reviewer")`Reviews pull requests` {}
+      class Architect extends Agent("architect")`Designs system architecture` {}
+
+      class Engineering extends Channel("engineering")`
+Engineering channel for technical discussions.
+
+Members:
+- ${CodeReviewer}
+- ${Architect}
+` {}
+
+      class MyAgent extends Agent("coordinator")`Uses ${Engineering} for coordination` {}
+
+      const ctx = yield* createContext(MyAgent);
+
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${preamble("coordinator")}Uses #engineering for coordination`,
+        },
+        {
+          role: "assistant",
+          content: [
+            {
+              type: "tool-call",
+              id: "ctx-agent-0",
+              name: "read",
+              params: { filePath: ".distilled/agents/code-reviewer.md" },
+              providerExecuted: false,
+            },
+            {
+              type: "tool-call",
+              id: "ctx-agent-1",
+              name: "read",
+              params: { filePath: ".distilled/agents/architect.md" },
+              providerExecuted: false,
+            },
+            {
+              type: "tool-call",
+              id: "ctx-channel-2",
+              name: "read",
+              params: { filePath: ".distilled/channels/engineering.md" },
+              providerExecuted: false,
+            },
+          ],
+        },
+        {
+          role: "tool",
+          content: [
+            {
+              type: "tool-result",
+              id: "ctx-agent-0",
+              name: "read",
+              isFailure: false,
+              result: { content: "# @code-reviewer\n\nReviews pull requests" },
+              providerExecuted: false,
+            },
+            {
+              type: "tool-result",
+              id: "ctx-agent-1",
+              name: "read",
+              isFailure: false,
+              result: { content: "# @architect\n\nDesigns system architecture" },
+              providerExecuted: false,
+            },
+            {
+              type: "tool-result",
+              id: "ctx-channel-2",
+              name: "read",
+              isFailure: false,
+              result: {
+                content: `# #engineering
+
+
+Engineering channel for technical discussions.
+
+Members:
+- @code-reviewer
+- @architect
+`,
+              },
+              providerExecuted: false,
+            },
+          ],
+        },
+      ]);
+    }).pipe(Effect.provide(TestLayer)),
+  );
+
+  it.effect("renders agent with group reference", () =>
+    Effect.gen(function* () {
+      class Frontend extends Agent("frontend")`Frontend developer` {}
+      class Backend extends Agent("backend")`Backend developer` {}
+
+      class FeatureTeam extends Group("feature-team")`
+Feature development group.
+
+Team:
+- ${Frontend}
+- ${Backend}
+` {}
+
+      class MyAgent extends Agent("pm")`Works with ${FeatureTeam}` {}
+
+      const ctx = yield* createContext(MyAgent);
+
+      expect(ctx.messages).toEqual([
+        {
+          role: "system",
+          content: `${preamble("pm")}Works with @{frontend, backend}`,
+        },
+        {
+          role: "assistant",
+          content: [
+            {
+              type: "tool-call",
+              id: "ctx-agent-0",
+              name: "read",
+              params: { filePath: ".distilled/agents/frontend.md" },
+              providerExecuted: false,
+            },
+            {
+              type: "tool-call",
+              id: "ctx-agent-1",
+              name: "read",
+              params: { filePath: ".distilled/agents/backend.md" },
+              providerExecuted: false,
+            },
+            {
+              type: "tool-call",
+              id: "ctx-group-2",
+              name: "read",
+              params: { filePath: ".distilled/groups/feature-team.md" },
+              providerExecuted: false,
+            },
+          ],
+        },
+        {
+          role: "tool",
+          content: [
+            {
+              type: "tool-result",
+              id: "ctx-agent-0",
+              name: "read",
+              isFailure: false,
+              result: { content: "# @frontend\n\nFrontend developer" },
+              providerExecuted: false,
+            },
+            {
+              type: "tool-result",
+              id: "ctx-agent-1",
+              name: "read",
+              isFailure: false,
+              result: { content: "# @backend\n\nBackend developer" },
+              providerExecuted: false,
+            },
+            {
+              type: "tool-result",
+              id: "ctx-group-2",
+              name: "read",
+              isFailure: false,
+              result: {
+                content: `# feature-team
+
+
+Feature development group.
+
+Team:
+- @frontend
+- @backend
+`,
+              },
+              providerExecuted: false,
+            },
+          ],
+        },
+      ]);
+    }).pipe(Effect.provide(TestLayer)),
+  );
+
+  it.effect("renders channel with file reference", () =>
+    Effect.gen(function* () {
+      const fs = yield* FileSystem.FileSystem;
+      yield* fs.writeFileString("test/fixtures/design.md", "# Design Docs");
+
+      class DesignDocs extends File.Markdown(
+        "test/fixtures/design.md",
+      )`Design documentation` {}
+      class Architect extends Agent("architect")`Designs systems` {}
+
+      class DesignReview extends Channel("design-review")`
+Channel for reviewing ${DesignDocs}.
+
+Members:
+- ${Architect}
+` {}
+
+      class MyAgent extends Agent("reviewer")`Participates in ${DesignReview}` {}
+
+      const ctx = yield* createContext(MyAgent);
+
+      expect(ctx.messages[0]).toEqual({
+        role: "system",
+        content: `${preamble("reviewer")}Participates in #design-review`,
+      });
+
+      // Verify file content is included
+      const toolResults = ctx.messages[2];
+      expect(toolResults).toBeDefined();
+    }).pipe(Effect.provide(TestLayer)),
+  );
+
+  it.effect("renders simple channel without members", () =>
+    Effect.gen(function* () {
+      class GeneralChannel extends Channel("general")`General discussion channel` {}
+
+      class MyAgent extends Agent("user")`Uses ${GeneralChannel}` {}
+
+      const ctx = yield* createContext(MyAgent);
+
+      expect(ctx.messages[0]).toEqual({
+        role: "system",
+        content: `${preamble("user")}Uses #general`,
+      });
+    }).pipe(Effect.provide(TestLayer)),
+  );
+
+  it.effect("renders group with no agent members shows group ID", () =>
+    Effect.gen(function* () {
+      class EmptyGroup extends Group("empty-group")`An empty group` {}
+
+      class MyAgent extends Agent("admin")`Manages ${EmptyGroup}` {}
+
+      const ctx = yield* createContext(MyAgent);
+
+      // When no agent members, shows @{group-id}
+      expect(ctx.messages[0]).toEqual({
+        role: "system",
+        content: `${preamble("admin")}Manages @{empty-group}`,
+      });
+    }).pipe(Effect.provide(TestLayer)),
   );
 });

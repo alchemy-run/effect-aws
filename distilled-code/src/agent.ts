@@ -11,7 +11,7 @@ import * as Effect from "effect/Effect";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
 import { createContext } from "./context.ts";
-import type { Fragment } from "./fragment.ts";
+import { createFragment, type Fragment } from "./fragment.ts";
 import { input } from "./input.ts";
 import { output } from "./output.ts";
 import {
@@ -28,33 +28,26 @@ import {
 } from "./util/json-schema.ts";
 import { log } from "./util/log.ts";
 
-export const isAgent = (x: any): x is Agent => x?.type === "agent";
-
-export interface IAgent<
-  Name extends string,
-  References extends any[],
-> extends Fragment<"agent", Name, References> {}
-
-export type Agent<
+/**
+ * Agent type - an AI agent defined via template.
+ * Extends Fragment for template support.
+ */
+export interface Agent<
   Name extends string = string,
   References extends any[] = any[],
-> = IAgent<Name, References> & {
-  new (_: never): IAgent<Name, References>;
-};
+> extends Fragment<"agent", Name, References> {
+  new (_: never): this;
+}
 
-export const Agent =
-  <ID extends string>(id: ID) =>
-  <References extends any[]>(
-    template: TemplateStringsArray,
-    ...references: References
-  ) =>
-    class {
-      static readonly type = "agent";
-      static readonly id = id;
-      static readonly references = references;
-      static readonly template = template;
-      constructor(_: never) {}
-    } as Agent<ID, References>;
+/**
+ * Create an Agent - an AI agent that can be spawned and communicate with other agents.
+ */
+export const Agent = createFragment("agent")();
+
+/**
+ * Type guard for Agent entities
+ */
+export const isAgent = Agent.is<Agent>;
 
 export interface AgentInstance<A extends Agent<string, any[]>> {
   agent: A;

@@ -16,6 +16,7 @@ export { InputBox } from "./components/input-box.tsx";
 export { MessageStream } from "./components/message-stream.tsx";
 export { RegistryProvider, useRegistry } from "./context/registry.tsx";
 export { StoreProvider, useStore } from "./context/store.tsx";
+export { discoverAgents } from "./util/discover-agents.ts";
 
 import type { LanguageModel } from "@effect/ai/LanguageModel";
 import { render } from "@opentui/solid";

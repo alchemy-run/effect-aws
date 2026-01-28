@@ -7,6 +7,8 @@
 import * as S from "effect/Schema";
 import * as yaml from "yaml";
 import { isAgent, type Agent } from "../agent.ts";
+import { isChannel, type Channel } from "../chat/channel.ts";
+import { isGroup, type Group } from "../chat/group.ts";
 import { isFile, type File } from "../file/file.ts";
 import { isInput } from "../input.ts";
 import { isOutput } from "../output.ts";
@@ -22,13 +24,15 @@ export type Thunk<T = unknown> = () => T;
  * Checks if a value is a thunk (a function that returns a reference).
  * Thunks are zero-argument arrow functions that return references.
  * They are distinguished from other function-like constructs by:
- * - Not being agents, files, toolkits, tools, inputs, outputs, or Effect Schemas
+ * - Not being agents, channels, groups, files, toolkits, tools, inputs, outputs, or Effect Schemas
  * - Having no arguments (length === 0)
  */
 export const isThunk = (value: unknown): value is Thunk =>
   typeof value === "function" &&
   (value as Function).length === 0 &&
   !isAgent(value) &&
+  !isChannel(value) &&
+  !isGroup(value) &&
   !isFile(value) &&
   !isToolkit(value) &&
   !isTool(value) &&
@@ -50,9 +54,17 @@ export function serialize(rawValue: unknown): unknown {
   // Resolve thunks first to get the actual value
   const value = resolveThunk(rawValue);
 
-  // Handle Agent, File, Toolkit, Tool, Input, Output references
+  // Handle Agent, Channel, Group, File, Toolkit, Tool, Input, Output references
   // These can be classes (functions) so check before typeof checks
   if (isAgent(value)) return `@${value.id}`;
+  if (isChannel(value)) return `#${value.id}`;
+  if (isGroup(value)) {
+    // Extract agent members from references and format as @{member1, member2}
+    const members = value.references
+      .filter((ref: unknown) => isAgent(resolveThunk(ref)))
+      .map((ref: unknown) => (resolveThunk(ref) as Agent).id);
+    return members.length > 0 ? `@{${members.join(", ")}}` : `@{${value.id}}`;
+  }
   if (isFile(value)) {
     const filename = value.id.split("/").pop() || value.id;
     return `[${filename}](${value.id})`;
@@ -91,6 +103,8 @@ export function serialize(rawValue: unknown): unknown {
  * - Primitives: converted to string
  * - Arrays/Sets/Objects: serialized to YAML
  * - Agent: @{id} reference link
+ * - Channel: #{id} channel reference
+ * - Group: 👥{id} group reference
  * - File: [filename](path) markdown link
  * - Toolkit: 🧰{id}
  * - Tool: 🛠️{id}
@@ -102,8 +116,16 @@ export function stringify(rawValue: unknown): string {
   // Resolve thunks first to get the actual value
   const value = resolveThunk(rawValue);
 
-  // Handle Agent, File, Toolkit, Tool, Input, Output references
+  // Handle Agent, Channel, Group, File, Toolkit, Tool, Input, Output references
   if (isAgent(value)) return `@${value.id}`;
+  if (isChannel(value)) return `#${value.id}`;
+  if (isGroup(value)) {
+    // Extract agent members from references and format as @{member1, member2}
+    const members = value.references
+      .filter((ref: unknown) => isAgent(resolveThunk(ref)))
+      .map((ref: unknown) => (resolveThunk(ref) as Agent).id);
+    return members.length > 0 ? `@{${members.join(", ")}}` : `@{${value.id}}`;
+  }
   if (isFile(value)) {
     const filename = value.id.split("/").pop() || value.id;
     return `[${filename}](${value.id})`;
@@ -145,4 +167,18 @@ export function renderTemplate(
  */
 export function renderAgentTemplate(agent: Agent): string {
   return renderTemplate(agent.template, agent.references);
+}
+
+/**
+ * Renders a channel's template to a displayable string.
+ */
+export function renderChannelTemplate(channel: Channel): string {
+  return renderTemplate(channel.template, channel.references);
+}
+
+/**
+ * Renders a group's template to a displayable string.
+ */
+export function renderGroupTemplate(group: Group): string {
+  return renderTemplate(group.template, group.references);
 }

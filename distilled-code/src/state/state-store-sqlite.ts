@@ -309,11 +309,31 @@ export const MIGRATIONS: Migration[] = [
       `CREATE INDEX IF NOT EXISTS idx_parts_thread ON parts(thread_id, agent_id)`,
     ],
   },
-  // Add new migrations here:
-  // {
-  //   version: "002_add_some_column",
-  //   sql: `ALTER TABLE threads ADD COLUMN some_column TEXT;`,
-  // },
+  {
+    version: "002_conversations_and_thread_replies",
+    statements: [
+      // Conversations table for DMs, Groups, and Channels
+      `CREATE TABLE IF NOT EXISTS conversations (
+        id TEXT PRIMARY KEY,
+        channel_type TEXT NOT NULL CHECK (channel_type IN ('dm', 'group', 'channel')),
+        channel_id TEXT NOT NULL,
+        created_at INTEGER NOT NULL DEFAULT (unixepoch()),
+        updated_at INTEGER NOT NULL DEFAULT (unixepoch()),
+        UNIQUE (channel_type, channel_id)
+      )`,
+      // Index for looking up conversations by channel
+      `CREATE INDEX IF NOT EXISTS idx_conversations_channel ON conversations(channel_type, channel_id)`,
+      // Update threads table to support thread replies
+      `ALTER TABLE threads ADD COLUMN conversation_id TEXT REFERENCES conversations(id)`,
+      `ALTER TABLE threads ADD COLUMN parent_message_id INTEGER`,
+      `ALTER TABLE threads ADD COLUMN channel_type TEXT`,
+      `ALTER TABLE threads ADD COLUMN channel_id TEXT`,
+      // Index for finding threads by conversation
+      `CREATE INDEX IF NOT EXISTS idx_threads_conversation ON threads(conversation_id)`,
+      // Index for finding reply threads
+      `CREATE INDEX IF NOT EXISTS idx_threads_parent ON threads(parent_message_id)`,
+    ],
+  },
 ];
 
 /**

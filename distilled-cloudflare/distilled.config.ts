@@ -24,39 +24,30 @@ const services = await loadModel({ basePath: SDK_PATH });
 class CEO extends Agent("ceo")`
 # Chief Executive Officer
 
-## Responsibility
+## Responsibility 
 Set direction and make high-level decisions.
 You are the ultimate escalation point and receive status reports.
 
 ## Organization
 
-\`\`\`
-                    ┌──────────────┐
-                    │ ${() => CEO} │
-                    │  Direction   │
-                    └──────┬───────┘
-                           │
-           ┌───────────────┼───────────────┐
-           │               │               │
-    ┌──────▼──────┐ ┌──────▼──────┐ ┌──────▼──────┐
-    │ ${() => CTO}│ │${() => VPE} │ │${() => Writer}│
-    │   Quality   │ │  Delivery   │ │    Docs     │
-    └──────┬──────┘ └──────┬──────┘ └─────────────┘
-           │               │
-           │        ┌──────▼──────┐
-           │        │ ${() => PM} │
-           │        │   Design    │
-           │        └──────┬──────┘
-           │               │
-           │        ┌──────▼──────┐
-           └───────►│${() => SDET}│◄───────┐
-                    │   Testing   │        │
-                    └──────┬──────┘        │
-                           │               │
-                    ┌──────▼──────┐        │
-                    │${() => SDE} │────────┘
-                    │  Patching   │
-                    └─────────────┘
+\`\`\`mermaid
+flowchart TD
+    CEO["${() => CEO}<br/>Direction"]
+    CTO["${() => CTO}<br/>Quality"]
+    VPE["${() => VPE}<br/>Delivery"]
+    Writer["${() => Writer}<br/>Docs"]
+    PM["${() => PM}<br/>Design"]
+    SDET["${() => SDET}<br/>Testing"]
+    SDE["${() => SDE}<br/>Patching"]
+
+    CEO --> CTO
+    CEO --> VPE
+    CEO --> Writer
+    VPE --> PM
+    PM --> SDET
+    CTO --> SDET
+    SDET --> SDE
+    SDE --> SDET
 \`\`\`
 
 ## Direct Reports
@@ -450,16 +441,15 @@ ${services.map((s) => `- [${s.name}](./${s.name}/index.md) - ${s.operations.leng
 
 ## Workflow
 
-\`\`\`
-${() => PM} designs expected errors
-       ↓
-${() => SDET} writes tests
-       ↓
-${() => SDE} patches discovered errors
-       ↓
-${() => SDET} verifies all errors
-       ↓
-${() => CTO} approves service
+\`\`\`mermaid
+flowchart TD
+    A["${() => PM} designs expected errors"]
+    B["${() => SDET} writes tests"]
+    C["${() => SDE} patches discovered errors"]
+    D["${() => SDET} verifies all errors"]
+    E["${() => CTO} approves service"]
+
+    A --> B --> C --> D --> E
 \`\`\`
 
 ## Commands

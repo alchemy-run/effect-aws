@@ -14,6 +14,8 @@ import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import * as S from "effect/Schema";
 import { isAgent, type Agent } from "./agent.ts";
+import { isChannel, type Channel } from "./chat/channel.ts";
+import { isGroup, type Group } from "./chat/group.ts";
 import { isFile, type File } from "./file/file.ts";
 import { isTool, type Tool } from "./tool/tool.ts";
 import { isToolkit, type Toolkit } from "./toolkit/toolkit.ts";
@@ -74,6 +76,8 @@ export const createContext: (
 
     const visited = new Set<string>();
     const agents: Array<{ id: string; content: string }> = [];
+    const channels: Array<{ id: string; content: string }> = [];
+    const groups: Array<{ id: string; content: string }> = [];
     const files: Array<FileEntry> = [];
     const toolkits: Array<{ id: string; content: string }> = [];
 
@@ -108,6 +112,26 @@ export const createContext: (
           });
         }
         // Do NOT recurse into agent references - transitive agents are accessed via tools
+      } else if (isChannel(ref)) {
+        // Only embed direct channel references (depth=1)
+        if (depth <= 1) {
+          channels.push({
+            id: ref.id,
+            content: renderTemplate(ref.template, ref.references),
+          });
+          // Continue collecting from channel references (agents, files, etc.)
+          ref.references.forEach((r: any) => collect(r, depth));
+        }
+      } else if (isGroup(ref)) {
+        // Only embed direct group references (depth=1)
+        if (depth <= 1) {
+          groups.push({
+            id: ref.id,
+            content: renderTemplate(ref.template, ref.references),
+          });
+          // Continue collecting from group references (agents, files, etc.)
+          ref.references.forEach((r: any) => collect(r, depth));
+        }
       } else if (isFile(ref)) {
         // Only embed files from direct references (depth=1)
         if (depth <= 1) {
@@ -225,6 +249,60 @@ export const createContext: (
       }
     }
 
+    // Write channel context files and collect read tool parts for each channel
+    if (channels.length > 0) {
+      // Ensure .distilled/channels directory exists
+      yield* fs
+        .makeDirectory(".distilled/channels", { recursive: true })
+        .pipe(Effect.catchAll(() => Effect.void));
+
+      for (const c of channels) {
+        const channelContent = `# #${c.id}\n\n${c.content}`;
+        const channelFilePath = `.distilled/channels/${c.id}.md`;
+
+        // Write the channel context file
+        yield* fs
+          .writeFileString(channelFilePath, channelContent)
+          .pipe(Effect.catchAll(() => Effect.void));
+
+        // Collect tool call and result parts for this channel
+        const [toolCall, toolResult] = createChannelReadParts(
+          createToolCallId("channel"),
+          c.id,
+          channelContent,
+        );
+        toolCalls.push(toolCall);
+        toolResults.push(toolResult);
+      }
+    }
+
+    // Write group context files and collect read tool parts for each group
+    if (groups.length > 0) {
+      // Ensure .distilled/groups directory exists
+      yield* fs
+        .makeDirectory(".distilled/groups", { recursive: true })
+        .pipe(Effect.catchAll(() => Effect.void));
+
+      for (const g of groups) {
+        const groupContent = `# ${g.id}\n\n${g.content}`;
+        const groupFilePath = `.distilled/groups/${g.id}.md`;
+
+        // Write the group context file
+        yield* fs
+          .writeFileString(groupFilePath, groupContent)
+          .pipe(Effect.catchAll(() => Effect.void));
+
+        // Collect tool call and result parts for this group
+        const [toolCall, toolResult] = createGroupReadParts(
+          createToolCallId("group"),
+          g.id,
+          groupContent,
+        );
+        toolCalls.push(toolCall);
+        toolResults.push(toolResult);
+      }
+    }
+
     // Collect read/glob tool parts for each file/folder
     for (const f of files) {
       if (f.language === "folder") {
@@ -296,6 +374,8 @@ export const preamble = (agentId: string): string =>
 Throughout this context, you will see the following symbols:
 
 - \`@name\` - References an agent you can communicate with
+- \`#name\` - References a channel for group communication
+- \`@{member1, member2}\` - References a group chat with the listed members
 - \`🧰name\` - References a toolkit containing related tools
 - \`🛠️name\` - References a tool you can use
 - \`[filename](path)\` - References a file in the codebase
@@ -496,6 +576,66 @@ export const createAgentReadParts = (
   content: string,
 ): [ToolCallPartEncoded, ToolResultPartEncoded] => {
   const filePath = `.distilled/agents/${agentId}.md`;
+  return [
+    {
+      type: "tool-call",
+      id,
+      name: "read",
+      params: { filePath },
+      providerExecuted: false,
+    },
+    {
+      type: "tool-result",
+      id,
+      name: "read",
+      isFailure: false,
+      result: { content },
+      providerExecuted: false,
+    },
+  ];
+};
+
+/**
+ * Creates tool call and result parts for reading a channel context file.
+ * Channel context is stored in .distilled/channels/{channel-id}.md
+ * Used for batching multiple channel reads into a single message pair.
+ */
+export const createChannelReadParts = (
+  id: string,
+  channelId: string,
+  content: string,
+): [ToolCallPartEncoded, ToolResultPartEncoded] => {
+  const filePath = `.distilled/channels/${channelId}.md`;
+  return [
+    {
+      type: "tool-call",
+      id,
+      name: "read",
+      params: { filePath },
+      providerExecuted: false,
+    },
+    {
+      type: "tool-result",
+      id,
+      name: "read",
+      isFailure: false,
+      result: { content },
+      providerExecuted: false,
+    },
+  ];
+};
+
+/**
+ * Creates tool call and result parts for reading a group context file.
+ * Group context is stored in .distilled/groups/{group-id}.md
+ * Used for batching multiple group reads into a single message pair.
+ */
+export const createGroupReadParts = (
+  id: string,
+  groupId: string,
+  content: string,
+): [ToolCallPartEncoded, ToolResultPartEncoded] => {
+  const filePath = `.distilled/groups/${groupId}.md`;
   return [
     {
       type: "tool-call",

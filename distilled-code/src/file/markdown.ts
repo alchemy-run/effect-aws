@@ -1,5 +1,5 @@
-import { createVariant } from "./file.ts";
+import { defineFile } from "./file.ts";
 
 export type MarkdownID = `${string}.md`;
 
-export const Markdown = createVariant("markdown");
+export const Markdown = defineFile("markdown");

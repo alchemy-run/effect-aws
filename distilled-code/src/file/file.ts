@@ -1,23 +1,23 @@
 import type { Fragment } from "../fragment.ts";
 
-export const isFile = (x: any): x is File => x?.type === "file";
-
-export interface IFile<
-  Name extends string,
-  Language extends string,
-  References extends any[],
-> extends Fragment<"file", Name, References> {
-  readonly language: Language;
-  readonly description: string;
-}
-
-export type File<
+/**
+ * File type - a file reference defined via template.
+ * Extends Fragment for template support with additional language and description properties.
+ */
+export interface File<
   Name extends string = string,
   Language extends string = string,
   References extends any[] = any[],
-> = IFile<Name, Language, References> & {
-  new (_: never): IFile<Name, Language, References>;
-};
+> extends Fragment<"file", Name, References> {
+  readonly language: Language;
+  readonly description: string;
+  new (_: never): this;
+}
+
+/**
+ * Type guard for File entities
+ */
+export const isFile = (x: any): x is File => x?.type === "file";
 
 /**
  * Creates a File class from a name, language, path template, and description template.
@@ -43,7 +43,7 @@ export const File =
       static readonly language = language;
       static readonly description = descriptionTemplate.join("").trim();
       constructor(_: never) {}
-    } as any as File<Name, Language, References>;
+    } as unknown as File<Name, Language, References>;
 
 /**
  * Creates a language-specific file variant builder.
@@ -54,7 +54,7 @@ export const File =
  *
  * @example
  * ```ts
- * export const Folder = createVariant("folder");
+ * export const Folder = defineFile("folder");
  *
  * // Usage with explicit string ID:
  * class Docs extends Folder("docs/")`
@@ -67,7 +67,7 @@ export const File =
  * ` {}
  * ```
  */
-export const createVariant = <const Language extends string>(
+export const defineFile = <const Language extends string>(
   language: Language,
 ) => {
   // This function handles both calling conventions
@@ -138,7 +138,7 @@ function createDescriptionBuilder<
       static readonly language = language;
       static readonly description = description;
       constructor(_: never) {}
-    } as any as File<ID, Language, References>;
+    } as unknown as File<ID, Language, References>;
   };
 }
 
