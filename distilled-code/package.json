@@ -7,28 +7,28 @@
   "type": "module",
   "exports": {
     ".": {
-      "types": "./lib/index.d.ts",
       "bun": "./src/index.ts",
+      "types": "./lib/index.d.ts",
       "default": "./lib/index.js"
     },
     "./file": {
-      "types": "./lib/file/index.d.ts",
       "bun": "./src/file/index.ts",
+      "types": "./lib/file/index.d.ts",
       "default": "./lib/file/index.js"
     },
     "./tool": {
-      "types": "./lib/tool/index.d.ts",
       "bun": "./src/tool/index.ts",
+      "types": "./lib/tool/index.d.ts",
       "default": "./lib/tool/index.js"
     },
     "./toolkit": {
-      "types": "./lib/toolkit/index.d.ts",
       "bun": "./src/toolkit/index.ts",
+      "types": "./lib/toolkit/index.d.ts",
       "default": "./lib/toolkit/index.js"
     },
     "./tui": {
-      "types": "./lib/tui/index.d.ts",
       "bun": "./src/tui/index.tsx",
+      "types": "./lib/tui/index.d.ts",
       "default": "./lib/tui/index.js"
     }
   },

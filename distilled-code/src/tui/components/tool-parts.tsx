@@ -9,6 +9,7 @@ import type { RGBA } from "@opentui/core";
 import { TextAttributes } from "@opentui/core";
 import path from "node:path";
 import { createMemo, createSignal, For, Match, Show, Switch, type JSX } from "solid-js";
+import { log } from "../../util/log.ts";
 import { useTheme } from "../context/theme.tsx";
 
 /**
@@ -188,13 +189,23 @@ export function BlockTool(props: BlockToolProps) {
 export function BashTool(props: { tool: ToolState }) {
   const { theme } = useTheme();
   const [expanded, setExpanded] = createSignal(false);
+  log("BashTool", "props", props);
 
-  const command = createMemo(() => (props.tool.params.command as string) ?? "");
-  const description = createMemo(() => (props.tool.params.description as string) ?? "Shell");
-  const workdir = createMemo(() => props.tool.params.workdir as string | undefined);
+  // Guard against undefined tool
+  if (!props.tool) {
+    return (
+      <box>
+        <text fg="#fa8383">Error: BashTool received undefined tool</text>
+      </box>
+    );
+  }
+
+  const command = createMemo(() => (props.tool?.params?.command as string) ?? "");
+  const description = createMemo(() => (props.tool?.params?.description as string) ?? "Shell");
+  const workdir = createMemo(() => props.tool?.params?.workdir as string | undefined);
 
   const output = createMemo(() => {
-    if (!props.tool.result) return undefined;
+    if (!props.tool?.result) return undefined;
     if (typeof props.tool.result === "string") return props.tool.result.trim();
     if (typeof props.tool.result === "object" && props.tool.result !== null) {
       const r = props.tool.result as Record<string, unknown>;
@@ -630,6 +641,10 @@ const TOOL_COMPONENTS: Record<string, (props: { tool: ToolState }) => JSX.Elemen
   bash: BashTool,
   AnthropicBash: BashTool,
 
+  // Agent communication tools
+  send: GenericTool,
+  query: GenericTool,
+
   // File read tools
   Read: ReadTool,
   read: ReadTool,
@@ -688,8 +703,21 @@ const TOOL_COMPONENTS: Record<string, (props: { tool: ToolState }) => JSX.Elemen
  * Automatically selects the appropriate tool renderer based on tool name.
  */
 export function ToolPart(props: { tool: ToolState }) {
+  log("ToolPart", "received props", { tool: props.tool, hasProps: !!props });
+
+  // Guard against undefined tool
+  if (!props.tool) {
+    log("ToolPart", "ERROR: tool is undefined", { props });
+    return (
+      <box>
+        <text fg="#fa8383">Error: Tool state is undefined</text>
+      </box>
+    );
+  }
+
   const Component = createMemo(() => {
-    const name = props.tool.name;
+    const name = props.tool?.name ?? "unknown";
+    log("ToolPart", "selecting component", { name, hasComponent: !!TOOL_COMPONENTS[name] });
     return TOOL_COMPONENTS[name] ?? TOOL_COMPONENTS[name.toLowerCase()] ?? GenericTool;
   });
 

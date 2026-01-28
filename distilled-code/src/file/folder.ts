@@ -1,11 +1,7 @@
-import { File } from "./file.ts";
+import { createVariant } from "./file.ts";
 
 export type FolderID = `${string}/`;
 
-export const Folder =
-  <ID extends FolderID>(id: ID) =>
-  <References extends any[]>(
-    template: TemplateStringsArray,
-    ...references: References
-  ) =>
-    File(id, "folder")(template, ...references);
+export const Folder = createVariant("folder");
+
+class _ extends Folder`${""}${1}``` {}

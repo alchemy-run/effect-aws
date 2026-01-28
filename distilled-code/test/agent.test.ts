@@ -3,6 +3,7 @@ import * as Effect from "effect/Effect";
 import * as Stream from "effect/Stream";
 import { describe, expect } from "vitest";
 import { Agent, spawn } from "../src/agent.ts";
+import * as File from "../src/file/index.ts";
 import { toText } from "../src/stream.ts";
 import { Coding } from "../src/toolkit/coding.ts";
 import { test } from "./test.ts";
@@ -184,6 +185,72 @@ describe("Agent", () => {
 
       // The tool result should contain the secret from the helper
       expect((sendResult as any).result).toContain("OMEGA");
+    }),
+  );
+
+  test(
+    "agent with multiple file refs and duplicate refs works with API",
+    { timeout: 120_000 },
+    Effect.gen(function* () {
+      const fs = yield* FileSystem.FileSystem;
+
+      // Create test fixture files
+      yield* fs.writeFileString(
+        "test/fixtures/agent-test-service.ts",
+        "// service client",
+      );
+      yield* fs.writeFileString(
+        "test/fixtures/agent-test-plan.md",
+        "# Test Plan",
+      );
+      yield* fs.writeFileString(
+        "test/fixtures/agent-test-impl.ts",
+        "// test implementation",
+      );
+      yield* fs.writeFileString(
+        "test/fixtures/agent-test-errors.json",
+        '{"errors": {}}',
+      );
+
+      // Define file classes
+      class ServiceClient extends File.TypeScript(
+        "test/fixtures/agent-test-service.ts",
+      )`Service client` {}
+      class TestPlan extends File.Markdown(
+        "test/fixtures/agent-test-plan.md",
+      )`Test plan` {}
+      class TestImpl extends File.TypeScript(
+        "test/fixtures/agent-test-impl.ts",
+      )`Test implementation` {}
+      class ErrorPatch extends File.Json(
+        "test/fixtures/agent-test-errors.json",
+      )`Error patches` {}
+
+      // Mirrors Developer agent from distilled-cloudflare with duplicate ErrorPatch ref
+      class DeveloperAgent extends Agent("developer-api-test")`
+Implement tests per ${TestPlan} using ${Coding}.
+
+## Files
+- ${ServiceClient} - signatures
+- ${TestImpl} - implement here
+- ${ErrorPatch} - patch errors
+
+## On Error
+1. Update ${ErrorPatch}
+2. Regenerate
+` {}
+
+      const uniqueThreadId = `developer-api-test-${Date.now()}`;
+      const developer = yield* spawn(DeveloperAgent, uniqueThreadId);
+
+      // Send a simple message - if duplicate IDs exist, the API will reject with:
+      // "messages.1.content.2: tool_use ids must be unique"
+      const response = yield* developer
+        .send("Say hello and confirm you can see the test files.")
+        .pipe(toText("last-message"));
+
+      // If we get here without an error, the context was valid (no duplicate IDs)
+      expect(response.length).toBeGreaterThan(0);
     }),
   );
 });

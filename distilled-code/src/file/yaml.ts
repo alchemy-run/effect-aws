@@ -1,11 +1,5 @@
-import { File } from "./file.ts";
+import { createVariant } from "./file.ts";
 
 export type YamlID = `${string}.yaml` | `${string}.yml`;
 
-export const Yaml =
-  <ID extends YamlID>(id: ID) =>
-  <References extends any[]>(
-    template: TemplateStringsArray,
-    ...references: References
-  ) =>
-    File(id, "yaml")(template, ...references);
+export const Yaml = createVariant("yaml");

@@ -26,6 +26,7 @@ import {
   schemaFromJsonSchema,
   type JsonSchema7Root,
 } from "./util/json-schema.ts";
+import { log } from "./util/log.ts";
 
 export const isAgent = (x: any): x is Agent => x?.type === "agent";
 
@@ -74,17 +75,42 @@ export interface AgentInstance<A extends Agent<string, any[]>> {
   >;
 }
 
+/**
+ * Options for spawning an agent instance.
+ */
+export interface SpawnOptions {
+  /**
+   * Optional thread ID for the agent. Defaults to the agent's ID.
+   */
+  threadId?: string;
+
+  /**
+   * Optional model name for tool aliasing.
+   * Used to register tools with provider-specific names (e.g., "AnthropicBash" for Claude).
+   * If not provided, attempts to read from ANTHROPIC_MODEL_ID environment variable.
+   */
+  model?: string;
+}
+
 export const spawn: <A extends Agent<string, any[]>>(
   agent: A,
-  threadId?: string,
+  threadIdOrOptions?: string | SpawnOptions,
 ) => Effect.Effect<
   AgentInstance<A>,
   AiError | StateStoreError,
   LanguageModel | Handler<string> | StateStore | FileSystem
 > = Effect.fn(function* <A extends Agent<string, any[]>>(
   agent: A,
-  threadId: string = agent.id,
+  threadIdOrOptions?: string | SpawnOptions,
 ) {
+  // Handle both old signature (threadId?: string) and new signature (options?: SpawnOptions)
+  const options: SpawnOptions =
+    typeof threadIdOrOptions === "string"
+      ? { threadId: threadIdOrOptions }
+      : (threadIdOrOptions ?? {});
+  const threadId = options.threadId ?? agent.id;
+  const model =
+    options.model ?? process.env.ANTHROPIC_MODEL_ID ?? "claude-sonnet-4-5";
   const store = yield* StateStore;
 
   // Agent ID is the agent's unique identifier
@@ -94,8 +120,14 @@ export const spawn: <A extends Agent<string, any[]>>(
   yield* flush(store, agentId, threadId);
 
   // Get messages to hydrate chat
-  const messages = yield* store.readThreadMessages(agentId, threadId);
-  const chat = yield* Chat.fromPrompt(messages);
+  const storedMessages = yield* store.readThreadMessages(agentId, threadId);
+  log("spawn", "loaded chat history", JSON.stringify(storedMessages, null, 2));
+
+  // Track whether context messages have been sent
+  // They should only be sent once at the start of a conversation
+  let contextSent = storedMessages.length > 0;
+
+  const chat = yield* Chat.fromPrompt(storedMessages);
 
   // Semaphore for exclusive access
   const sem = yield* Effect.makeSemaphore(1);
@@ -140,8 +172,9 @@ export const spawn: <A extends Agent<string, any[]>>(
     "send",
   )`Send a ${message} to ${recipient}, receive a response as a ${S.String}`(
     function* ({ message, recipient }) {
-      const childAgent = yield* lookupAgent(recipient);
-      return yield* toText("last-message", childAgent.send(message));
+      return yield* (yield* lookupAgent(recipient))
+        .send(message)
+        .pipe(toText("last-message"));
     },
   );
 
@@ -171,6 +204,7 @@ export const spawn: <A extends Agent<string, any[]>>(
 
   const context = yield* createContext(agent, {
     tools: [Comms],
+    model,
   });
 
   return {
@@ -189,20 +223,49 @@ export const spawn: <A extends Agent<string, any[]>>(
             // Flush user input immediately
             yield* flush(store, agentId, threadId);
 
-            return chat
-              .streamText({
-                toolkit: context.toolkit,
-                prompt: [
+            // Only include context messages on first call (when history is empty)
+            // Otherwise the context messages are already in the chat history
+            // and including them again would create duplicate tool_use IDs
+            const includeContext = !contextSent;
+            const fullPrompt = includeContext
+              ? [
                   ...context.messages,
                   {
                     role: "user" as const,
                     content: prompt,
                   },
-                ],
+                ]
+              : [
+                  {
+                    role: "user" as const,
+                    content: prompt,
+                  },
+                ];
+
+            // Mark context as sent for subsequent calls
+            contextSent = true;
+
+            log(
+              "send",
+              "prompt",
+              JSON.stringify(
+                { includeContext, messageCount: fullPrompt.length },
+                null,
+                2,
+              ),
+            );
+
+            return chat
+              .streamText({
+                toolkit: context.toolkit,
+                prompt: fullPrompt,
               })
               .pipe(
                 // Provide the handler layer for tool execution
                 Stream.provideLayer(context.toolkitHandlers),
+                Stream.tapError((error) =>
+                  Effect.sync(() => log("send", "error", error)),
+                ),
                 // Forward parts to store
                 Stream.tap((part) => {
                   const threadPart = part as MessagePart;
@@ -226,17 +289,23 @@ export const spawn: <A extends Agent<string, any[]>>(
     query: <A>(prompt: string, schema: S.Schema<A, any>) =>
       locked(
         Effect.provide(
-          chat.generateObject({
-            toolkit: context.toolkit,
-            schema,
-            prompt: [
-              ...context.messages,
-              {
-                role: "user" as const,
-                content: prompt,
-              },
-            ],
-          }),
+          chat
+            .generateObject({
+              toolkit: context.toolkit,
+              schema,
+              prompt: [
+                ...context.messages,
+                {
+                  role: "user" as const,
+                  content: prompt,
+                },
+              ],
+            })
+            .pipe(
+              Effect.tapError((error) =>
+                Effect.sync(() => log("query", "error", error)),
+              ),
+            ),
           context.toolkitHandlers,
         ),
       ),
@@ -264,6 +333,15 @@ const flush = (
 ): Effect.Effect<void, StateStoreError> =>
   Effect.gen(function* () {
     const parts = yield* store.readThreadParts(agentId, threadId);
+    log(
+      "flush",
+      "parts",
+      JSON.stringify(
+        parts.map((p) => ({ type: p.type, id: (p as any).id })),
+        null,
+        2,
+      ),
+    );
     if (parts.length === 0) return;
 
     // Check for user-input first (not a Response part)
@@ -299,6 +377,23 @@ const flush = (
     );
 
     if (messages.length > 0) {
+      log(
+        "flush",
+        "writing messages",
+        JSON.stringify(
+          messages.map((m: any) => ({
+            role: m.role,
+            contentLength: Array.isArray(m.content) ? m.content.length : 1,
+            toolCallIds: Array.isArray(m.content)
+              ? m.content
+                  .filter((c: any) => c.type === "tool-call")
+                  .map((c: any) => c.id)
+              : [],
+          })),
+          null,
+          2,
+        ),
+      );
       const currentMessages = yield* store.readThreadMessages(
         agentId,
         threadId,

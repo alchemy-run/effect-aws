@@ -48,6 +48,12 @@ export interface CreateContextOptions {
    * These are merged with toolkits discovered from the agent's references.
    */
   tools?: Toolkit[];
+
+  /**
+   * Model name for determining tool aliases.
+   * Used to register tools with provider-specific names (e.g., "AnthropicBash" for Claude models).
+   */
+  model?: string;
 }
 
 interface FileEntry {
@@ -63,6 +69,7 @@ export const createContext: (
 ) => Effect.Effect<AgentContext, never, FileSystem.FileSystem> = Effect.fn(
   function* (agent: Agent, options?: CreateContextOptions) {
     const additionalToolkits = options?.tools ?? [];
+    const model = options?.model;
     const fs = yield* FileSystem.FileSystem;
 
     const visited = new Set<string>();
@@ -263,7 +270,9 @@ export const createContext: (
     const allToolkits = [...collectedToolkits, ...additionalToolkits];
     const effectToolkit =
       allToolkits.length > 0
-        ? EffectToolkit.merge(...allToolkits.map(createEffectToolkit))
+        ? EffectToolkit.merge(
+            ...allToolkits.map((tk) => createEffectToolkit(tk, model)),
+          )
         : EffectToolkit.empty;
 
     // Create the handler layer from all toolkits
@@ -271,7 +280,7 @@ export const createContext: (
     return {
       messages,
       toolkit: effectToolkit,
-      toolkitHandlers: createHandlerLayer(allToolkits) as any,
+      toolkitHandlers: createHandlerLayer(allToolkits, model) as any,
     } satisfies AgentContext;
   },
 );
@@ -521,11 +530,17 @@ export const collectToolkits = (agent: Agent): Toolkit[] =>
 
 /**
  * Converts a distilled-code Toolkit to an @effect/ai Toolkit.
+ *
+ * @param toolkit - The distilled-code toolkit to convert
+ * @param model - Optional model name to determine tool aliases
  */
 export const createEffectToolkit = <T extends Toolkit>(
   toolkit: T,
+  model?: string,
 ): EffectToolkit.Toolkit<EffectToolkit.ToolsByName<EffectTool.Any[]>> => {
-  const effectTools = toolkit.tools.map(createEffectTool);
+  const effectTools = toolkit.tools.map((tool) =>
+    createEffectTool(tool, model),
+  );
   return EffectToolkit.make(...effectTools);
 };
 
@@ -535,6 +550,7 @@ export const createEffectToolkit = <T extends Toolkit>(
  */
 export const createHandlerLayer = (
   toolkits: Toolkit[],
+  model?: string,
 ): Layer.Layer<EffectTool.Handler<string>, never, never> => {
   if (toolkits.length === 0) {
     return Layer.empty as any;
@@ -544,16 +560,23 @@ export const createHandlerLayer = (
   const allTools = toolkits.flatMap((tk) => tk.tools);
 
   // Build handlers map from the original distilled-code tools
+  // The handler name must match the tool name in the Effect toolkit
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handlers: any = {};
   for (const tool of allTools) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    handlers[tool.id] = (params: any) => (tool.handler as any)(params);
+    const handler = (params: any) => (tool.handler as any)(params);
+
+    // Determine the tool name - must match what's used in createEffectTool
+    const toolName =
+      model && tool.alias ? (tool.alias(model) ?? tool.id) : tool.id;
+
+    handlers[toolName] = handler;
   }
 
   // Create the @effect/ai toolkit from all toolkits
   const effectToolkit = EffectToolkit.merge(
-    ...toolkits.map(createEffectToolkit),
+    ...toolkits.map((tk) => createEffectToolkit(tk, model)),
   );
 
   // Use toLayer to create the handler layer
@@ -563,8 +586,14 @@ export const createHandlerLayer = (
 /**
  * Converts a distilled-code Tool to an @effect/ai Tool.
  * Extracts the description from the template and maps input/output schemas.
+ *
+ * @param tool - The distilled-code tool to convert
+ * @param model - Optional model name to determine alias (e.g., "claude-3-5-sonnet")
  */
-export const createEffectTool = <T extends Tool>(tool: T): EffectTool.Any => {
+export const createEffectTool = <T extends Tool>(
+  tool: T,
+  model?: string,
+): EffectTool.Any => {
   // Render the description from the tool's template
   const description = renderTemplate(tool.template, tool.references);
 
@@ -579,7 +608,11 @@ export const createEffectTool = <T extends Tool>(tool: T): EffectTool.Any => {
   // Get the output schema
   const outputSchema = tool.output ?? S.Any;
 
-  return EffectTool.make(tool.id, {
+  // Determine the tool name - use alias for provider-specific naming
+  const toolName =
+    model && tool.alias ? (tool.alias(model) ?? tool.id) : tool.id;
+
+  return EffectTool.make(toolName, {
     description,
     parameters,
     success: outputSchema,

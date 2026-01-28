@@ -1,3 +1,7 @@
+import type {
+  AssistantMessageEncoded,
+  ToolCallPartEncoded,
+} from "@effect/ai/Prompt";
 import { NodeContext } from "@effect/platform-node";
 import * as FileSystem from "@effect/platform/FileSystem";
 import { describe, expect, it } from "@effect/vitest";
@@ -2985,5 +2989,214 @@ CEO tools: 🛠️plan
         },
       ]);
     }).pipe(Effect.provide(TestLayer)),
+  );
+
+  // ============================================================
+  // Tests for duplicate ID prevention
+  // ============================================================
+
+  it.effect(
+    "handles duplicate file references without generating duplicate IDs",
+    () =>
+      Effect.gen(function* () {
+        const fs = yield* FileSystem.FileSystem;
+        yield* fs.writeFileString("test/fixtures/config.ts", "// config");
+
+        // Same file referenced twice in template (like ErrorPatch in Developer agent)
+        class ConfigFile extends File.TypeScript(
+          "test/fixtures/config.ts",
+        )`Config` {}
+        class MyAgent extends Agent("dup-ref-test")`
+Uses ${ConfigFile} for setup.
+Also update ${ConfigFile} when done.
+` {}
+
+        const ctx = yield* createContext(MyAgent);
+
+        // Assert exact structure of all messages
+        expect(ctx.messages).toEqual([
+          {
+            role: "system",
+            content: `${preamble("dup-ref-test")}
+Uses [config.ts](test/fixtures/config.ts) for setup.
+Also update [config.ts](test/fixtures/config.ts) when done.
+`,
+          },
+          {
+            role: "assistant",
+            content: [
+              {
+                type: "tool-call",
+                id: "ctx-file-0",
+                name: "read",
+                params: { filePath: "test/fixtures/config.ts" },
+                providerExecuted: false,
+              },
+            ],
+          },
+          {
+            role: "tool",
+            content: [
+              {
+                type: "tool-result",
+                id: "ctx-file-0",
+                name: "read",
+                isFailure: false,
+                result: { content: "// config" },
+                providerExecuted: false,
+              },
+            ],
+          },
+        ]);
+      }).pipe(Effect.provide(TestLayer)),
+  );
+
+  it.effect(
+    "stress test: Developer agent structure with multiple file refs",
+    () =>
+      Effect.gen(function* () {
+        const fs = yield* FileSystem.FileSystem;
+        yield* fs.writeFileString("test/fixtures/service.ts", "// service");
+        yield* fs.writeFileString("test/fixtures/plan.md", "# plan");
+        yield* fs.writeFileString("test/fixtures/test-file.ts", "// test");
+        yield* fs.writeFileString("test/fixtures/errors.json", "{}");
+
+        class ServiceClient extends File.TypeScript(
+          "test/fixtures/service.ts",
+        )`Service` {}
+        class TestPlan extends File.Markdown(
+          "test/fixtures/plan.md",
+        )`Plan` {}
+        class TestFile extends File.TypeScript(
+          "test/fixtures/test-file.ts",
+        )`Test` {}
+        class ErrorPatch extends File.Json(
+          "test/fixtures/errors.json",
+        )`Errors` {}
+
+        // Mirrors Developer agent from distilled-cloudflare
+        class Developer extends Agent("stress-test-developer")`
+Implement tests per ${TestPlan} using ${Toolkit.Coding}.
+
+## Files
+- ${ServiceClient} - signatures
+- ${TestFile} - implement here
+- ${ErrorPatch} - patch errors
+
+## On Error
+1. Update ${ErrorPatch}
+2. Regenerate
+` {}
+
+        const ctx = yield* createContext(Developer);
+
+        // Assert exact structure of all messages
+        expect(ctx.messages).toEqual([
+          {
+            role: "system",
+            content: `${preamble("stress-test-developer")}
+Implement tests per [plan.md](test/fixtures/plan.md) using 🧰Coding.
+
+## Files
+- [service.ts](test/fixtures/service.ts) - signatures
+- [test-file.ts](test/fixtures/test-file.ts) - implement here
+- [errors.json](test/fixtures/errors.json) - patch errors
+
+## On Error
+1. Update [errors.json](test/fixtures/errors.json)
+2. Regenerate
+
+
+---
+
+## Toolkits
+
+You can (and should) use the following tools to accomplish your tasks. Tool definitions are provided separately.
+
+### Coding
+
+A set of tools for reading, writing, and editing code:
+
+- 🛠️bash
+- 🛠️readlints
+- 🛠️edit
+- 🛠️glob
+- 🛠️grep
+- 🛠️read
+- 🛠️write
+`,
+          },
+          {
+            role: "assistant",
+            content: [
+              {
+                type: "tool-call",
+                id: "ctx-file-0",
+                name: "read",
+                params: { filePath: "test/fixtures/plan.md" },
+                providerExecuted: false,
+              },
+              {
+                type: "tool-call",
+                id: "ctx-file-1",
+                name: "read",
+                params: { filePath: "test/fixtures/service.ts" },
+                providerExecuted: false,
+              },
+              {
+                type: "tool-call",
+                id: "ctx-file-2",
+                name: "read",
+                params: { filePath: "test/fixtures/test-file.ts" },
+                providerExecuted: false,
+              },
+              {
+                type: "tool-call",
+                id: "ctx-file-3",
+                name: "read",
+                params: { filePath: "test/fixtures/errors.json" },
+                providerExecuted: false,
+              },
+            ],
+          },
+          {
+            role: "tool",
+            content: [
+              {
+                type: "tool-result",
+                id: "ctx-file-0",
+                name: "read",
+                isFailure: false,
+                result: { content: "# plan" },
+                providerExecuted: false,
+              },
+              {
+                type: "tool-result",
+                id: "ctx-file-1",
+                name: "read",
+                isFailure: false,
+                result: { content: "// service" },
+                providerExecuted: false,
+              },
+              {
+                type: "tool-result",
+                id: "ctx-file-2",
+                name: "read",
+                isFailure: false,
+                result: { content: "// test" },
+                providerExecuted: false,
+              },
+              {
+                type: "tool-result",
+                id: "ctx-file-3",
+                name: "read",
+                isFailure: false,
+                result: { content: "{}" },
+                providerExecuted: false,
+              },
+            ],
+          },
+        ]);
+      }).pipe(Effect.provide(TestLayer)),
   );
 });

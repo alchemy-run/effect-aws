@@ -3,6 +3,9 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "clean": "git clean -fqdx . -e .env -e ./distilled-code/.env -e ./distilled-cloudflare/.env",
+    "clean:install": "bun clean && bun i",
+    "build:clean": "bun run clean && bun i && bun tsc -b",
     "build": "bun tsgo -b",
     "format": "bun oxfmt ./distilled-* '!node_modules/' '!lib/'"
   },

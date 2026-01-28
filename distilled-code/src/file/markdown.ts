@@ -1,11 +1,5 @@
-import { File } from "./file.ts";
+import { createVariant } from "./file.ts";
 
 export type MarkdownID = `${string}.md`;
 
-export const Markdown =
-  <ID extends MarkdownID>(id: ID) =>
-  <References extends any[]>(
-    template: TemplateStringsArray,
-    ...references: References
-  ) =>
-    File(id, "markdown")(template, ...references);
+export const Markdown = createVariant("markdown");
