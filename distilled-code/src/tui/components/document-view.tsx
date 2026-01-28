@@ -10,7 +10,7 @@ import { useTerminalDimensions } from "@opentui/solid";
 import { createMemo, Show } from "solid-js";
 import { renderAgentTemplate } from "../../util/render-template.ts";
 import { useRegistry } from "../context/registry.tsx";
-import { useTheme } from "../context/theme.tsx";
+import { MarkdownContent } from "./markdown-content.tsx";
 
 /**
  * Props for DocumentView
@@ -28,7 +28,6 @@ export interface DocumentViewProps {
 export function DocumentView(props: DocumentViewProps) {
   const dimensions = useTerminalDimensions();
   const registry = useRegistry();
-  const { syntax } = useTheme();
 
   // Get the agent from registry
   const agent = createMemo(() => registry.getAgent(props.id) ?? null);
@@ -79,13 +78,7 @@ export function DocumentView(props: DocumentViewProps) {
               <text fg="#fa8383">Agent "{props.id}" not found</text>
             }
           >
-            <code
-              filetype="markdown"
-              streaming={false}
-              syntaxStyle={syntax()}
-              content={content()!}
-              conceal={false}
-            />
+            <MarkdownContent content={content()!} streaming={false} />
           </Show>
         </box>
       </scrollbox>

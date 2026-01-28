@@ -184,12 +184,8 @@ export const createSqliteStateStoreFromConnection = (conn: SqliteConnection) =>
           return rows.map((row) => JSON.parse(row.content) as MessagePart);
         }).pipe(mapError("read parts")),
 
-      appendThreadPart: (agentId, threadId, part) => {
-        const stack = new Error().stack?.split("\n").slice(1, 5).join("\n");
-        console.error(
-          `[appendThreadPart] type=${part.type} id=${"id" in part ? (part as any).id : "n/a"}\nStack:\n${stack}`,
-        );
-        return conn
+      appendThreadPart: (agentId, threadId, part) =>
+        conn
           .batch([
             // Ensure thread exists
             {
@@ -213,8 +209,7 @@ export const createSqliteStateStoreFromConnection = (conn: SqliteConnection) =>
               ],
             },
           ])
-          .pipe(mapError("append part"));
-      },
+          .pipe(mapError("append part")),
 
       truncateThreadParts: (agentId, threadId) =>
         stmts.deleteParts

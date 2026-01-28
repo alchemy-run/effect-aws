@@ -8,8 +8,8 @@
  */
 
 import { isAgent, type Agent } from "../agent.ts";
-import { isChannel, type Channel } from "../chat/channel.ts";
-import { isGroupChat, type GroupChat } from "../chat/group-chat.ts";
+import { type Channel } from "../chat/channel.ts";
+import { type GroupChat } from "../chat/group-chat.ts";
 import { isTool, type Tool } from "../tool/tool.ts";
 import { isToolkit, type Toolkit } from "../toolkit/toolkit.ts";
 import { resolveThunk } from "../util/render-template.ts";

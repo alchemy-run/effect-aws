@@ -10,9 +10,8 @@ import {
   copyCanvas,
   determineDirection,
   drawBox,
-  drawLine,
-  drawText,
   drawingToString,
+  drawLine,
   getArrowHead,
   getBoxStartChar,
   getCornerChar,
@@ -235,7 +234,10 @@ function reserveSpotInGrid(
   // Reserve 3x3 grid for the node
   for (let x = 0; x < 3; x++) {
     for (let y = 0; y < 3; y++) {
-      graph.grid.set(coordKey({ x: requested.x + x, y: requested.y + y }), node);
+      graph.grid.set(
+        coordKey({ x: requested.x + x, y: requested.y + y }),
+        node,
+      );
     }
   }
 
@@ -1031,7 +1033,8 @@ function drawSubgraphLabels(graph: Graph): Drawing {
     // Draw label centered at top (Go: labelY = from.y + 1)
     const labelY = sg.minY + 1;
     // Go: labelX = from.x + width/2 - len(sg.name)/2
-    const labelX = sg.minX + Math.floor(width / 2) - Math.floor(sg.name.length / 2);
+    const labelX =
+      sg.minX + Math.floor(width / 2) - Math.floor(sg.name.length / 2);
 
     // Ensure label is at least 1 char from left border
     const adjustedLabelX = Math.max(sg.minX + 1, labelX);
@@ -1107,7 +1110,9 @@ function createMapping(graph: Graph): void {
   // Separate root nodes by whether they're in subgraphs, but only if we have both types
   // AND there are edges in subgraphs (indicating intentional layout structure)
   const shouldSeparate =
-    graph.graphDirection === "LR" && hasExternalRoots && hasSubgraphRootsWithEdges;
+    graph.graphDirection === "LR" &&
+    hasExternalRoots &&
+    hasSubgraphRootsWithEdges;
 
   const externalRootNodes: Node[] = [];
   const subgraphRootNodes: Node[] = [];

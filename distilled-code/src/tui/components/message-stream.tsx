@@ -9,14 +9,8 @@ import { TextAttributes } from "@opentui/core";
 import { createEffect, For, on, Show } from "solid-js";
 import { createStore, produce } from "solid-js/store";
 import type { MessagePart } from "../../state/index.ts";
-import { logError } from "../../util/log.ts";
 import { useTheme } from "../context/theme.tsx";
-import {
-  hasMermaidBlocks,
-  render as renderMermaid,
-  splitMarkdownContent,
-  type ContentSegment,
-} from "../mermaid-ascii/index.ts";
+import { MarkdownContent } from "./markdown-content.tsx";
 import { ToolPart } from "./tool-parts.tsx";
 
 /**
@@ -53,7 +47,7 @@ interface AccumulatedMessage {
  * Render a single message
  */
 function Message(props: { message: AccumulatedMessage }) {
-  const { theme, syntax } = useTheme();
+  const { theme } = useTheme();
 
   const roleColor = () => {
     switch (props.message.role) {
@@ -108,119 +102,13 @@ function Message(props: { message: AccumulatedMessage }) {
           when={props.message.role === "assistant"}
           fallback={<text fg={theme.text}>{props.message.content}</text>}
         >
-          <AssistantContent
+          <MarkdownContent
             content={props.message.content}
-            isStreaming={props.message.isStreaming}
+            streaming={props.message.isStreaming}
           />
         </Show>
       </box>
     </box>
-  );
-}
-
-/**
- * Props for AssistantContent
- */
-interface AssistantContentProps {
-  content: string;
-  isStreaming: boolean;
-}
-
-/**
- * Render a mermaid diagram as ASCII art in a box
- */
-function MermaidDiagram(props: { source: string; isComplete: boolean }) {
-  const { theme } = useTheme();
-
-  // Render the mermaid diagram to ASCII
-  const asciiOutput = () => {
-    try {
-      // Don't render incomplete diagrams
-      if (!props.isComplete) {
-        return props.source;
-      }
-      return renderMermaid(props.source);
-    } catch (err) {
-      // Log the error and show the source as fallback
-      logError("MermaidDiagram", "mermaid rendering failed", err);
-      return props.source;
-    }
-  };
-
-  return (
-    <box
-      borderStyle="single"
-      borderColor={theme.border}
-      padding={1}
-      marginTop={1}
-      marginBottom={1}
-    >
-      <text fg={theme.text}>{asciiOutput()}</text>
-    </box>
-  );
-}
-
-/**
- * Render assistant content with mermaid diagram support
- * 
- * Splits content into segments and renders mermaid blocks
- * as diagrams while rendering other content as markdown.
- */
-function AssistantContent(props: AssistantContentProps) {
-  const { theme, syntax } = useTheme();
-
-  // Check if content contains mermaid blocks
-  const containsMermaid = () => hasMermaidBlocks(props.content);
-
-  // Split content into segments (only when mermaid blocks present)
-  const segments = (): ContentSegment[] => {
-    if (!containsMermaid()) {
-      return [];
-    }
-    return splitMarkdownContent(props.content);
-  };
-
-  // Use Show for reactive conditional rendering
-  return (
-    <Show
-      when={containsMermaid()}
-      fallback={
-        <code
-          filetype="markdown"
-          streaming={props.isStreaming}
-          syntaxStyle={syntax()}
-          content={props.content}
-          conceal={false}
-          fg={theme.text}
-        />
-      }
-    >
-      {/* Render segments with mermaid diagrams */}
-      <box flexDirection="column">
-        <For each={segments()}>
-          {(segment) => (
-            <Show
-              when={segment.type === "mermaid"}
-              fallback={
-                <code
-                  filetype="markdown"
-                  streaming={false}
-                  syntaxStyle={syntax()}
-                  content={segment.content}
-                  conceal={false}
-                  fg={theme.text}
-                />
-              }
-            >
-              <MermaidDiagram
-                source={segment.content}
-                isComplete={segment.isComplete}
-              />
-            </Show>
-          )}
-        </For>
-      </box>
-    </Show>
   );
 }
 

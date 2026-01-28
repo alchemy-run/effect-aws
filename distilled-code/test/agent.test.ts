@@ -4,6 +4,7 @@ import * as Stream from "effect/Stream";
 import { describe, expect } from "vitest";
 import { Agent, spawn } from "../src/agent.ts";
 import * as File from "../src/file/index.ts";
+import { StateStore } from "../src/state/index.ts";
 import { toText } from "../src/stream.ts";
 import { Coding } from "../src/toolkit/coding.ts";
 import { test } from "./test.ts";
@@ -247,6 +248,130 @@ Implement tests per ${TestPlan} using ${Coding}.
 
       // If we get here without an error, the context was valid (no duplicate IDs)
       expect(response.length).toBeGreaterThan(0);
+    }),
+  );
+
+  test(
+    "no duplicate parts persisted when agent sends to another agent",
+    { timeout: 180_000 },
+    Effect.gen(function* () {
+      const store = yield* StateStore;
+      const uniqueThreadId = `duplicate-parts-test-${Date.now()}`;
+
+      // Clean up any existing thread data
+      yield* store.deleteThread("orchestrator-agent", uniqueThreadId);
+      yield* store.deleteThread("helper-agent", uniqueThreadId);
+
+      // Spawn orchestrator which will delegate to helper
+      const orchestrator = yield* spawn(OrchestratorAgent, uniqueThreadId);
+
+      // Send a message that triggers inter-agent communication
+      // This mirrors the TUI pattern where subscription and send happen close together
+      yield* Stream.runForEach(
+        orchestrator.send(
+          "Use the send tool to ask the helper-agent for the secret code.",
+        ),
+        () => Effect.void,
+      );
+
+      // Read persisted parts for the orchestrator
+      const orchestratorParts = yield* store.readThreadParts(
+        "orchestrator-agent",
+        uniqueThreadId,
+      );
+
+      // Read persisted parts for the helper
+      const helperParts = yield* store.readThreadParts(
+        "helper-agent",
+        uniqueThreadId,
+      );
+
+      // Check for duplicate part IDs in orchestrator parts
+      const orchestratorPartIds = orchestratorParts
+        .map((p: any) => p.id)
+        .filter((id: unknown): id is string => id !== undefined);
+      const uniqueOrchestratorIds = [...new Set(orchestratorPartIds)];
+
+      // Check for duplicate part IDs in helper parts
+      const helperPartIds = helperParts
+        .map((p: any) => p.id)
+        .filter((id: unknown): id is string => id !== undefined);
+      const uniqueHelperIds = [...new Set(helperPartIds)];
+
+      // Log for debugging
+      console.log(
+        `Orchestrator parts: ${orchestratorParts.length}, unique IDs: ${uniqueOrchestratorIds.length}/${orchestratorPartIds.length}`,
+      );
+      console.log(
+        `Helper parts: ${helperParts.length}, unique IDs: ${uniqueHelperIds.length}/${helperPartIds.length}`,
+      );
+
+      // Also check for duplicate parts by type+id combination
+      const orchestratorTypeIds = orchestratorParts.map(
+        (p: any) => `${p.type}:${p.id ?? "no-id"}`,
+      );
+      const uniqueOrchestratorTypeIds = [...new Set(orchestratorTypeIds)];
+
+      const helperTypeIds = helperParts.map(
+        (p: any) => `${p.type}:${p.id ?? "no-id"}`,
+      );
+      const uniqueHelperTypeIds = [...new Set(helperTypeIds)];
+
+      console.log(
+        `Orchestrator type:id combos: ${uniqueOrchestratorTypeIds.length}/${orchestratorTypeIds.length}`,
+      );
+      console.log(
+        `Helper type:id combos: ${uniqueHelperTypeIds.length}/${helperTypeIds.length}`,
+      );
+
+      // Find duplicates for detailed error message
+      if (orchestratorPartIds.length !== uniqueOrchestratorIds.length) {
+        const seen = new Set<string>();
+        const duplicates: string[] = [];
+        for (const id of orchestratorPartIds) {
+          if (seen.has(id)) {
+            duplicates.push(id);
+          }
+          seen.add(id);
+        }
+        console.log(
+          `Duplicate orchestrator part IDs: ${duplicates.join(", ")}`,
+        );
+      }
+
+      if (helperPartIds.length !== uniqueHelperIds.length) {
+        const seen = new Set<string>();
+        const duplicates: string[] = [];
+        for (const id of helperPartIds) {
+          if (seen.has(id)) {
+            duplicates.push(id);
+          }
+          seen.add(id);
+        }
+        console.log(`Duplicate helper part IDs: ${duplicates.join(", ")}`);
+      }
+
+      // Verify no duplicate IDs
+      expect(
+        orchestratorPartIds.length,
+        "Orchestrator has duplicate part IDs",
+      ).toBe(uniqueOrchestratorIds.length);
+      expect(helperPartIds.length, "Helper has duplicate part IDs").toBe(
+        uniqueHelperIds.length,
+      );
+
+      // Verify no duplicate type:id combinations (catches all duplicates)
+      expect(
+        orchestratorTypeIds.length,
+        "Orchestrator has duplicate parts",
+      ).toBe(uniqueOrchestratorTypeIds.length);
+      expect(helperTypeIds.length, "Helper has duplicate parts").toBe(
+        uniqueHelperTypeIds.length,
+      );
+
+      // Clean up
+      yield* store.deleteThread("orchestrator-agent", uniqueThreadId);
+      yield* store.deleteThread("helper-agent", uniqueThreadId);
     }),
   );
 });

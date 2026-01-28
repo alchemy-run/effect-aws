@@ -23,6 +23,7 @@ import {
 import { renderAgentTemplate } from "../../util/render-template.ts";
 import { useRegistry } from "../context/registry.tsx";
 import { useTheme } from "../context/theme.tsx";
+import { MarkdownContent } from "./markdown-content.tsx";
 
 
 /**
@@ -386,13 +387,7 @@ export function AgentPicker(props: AgentPickerProps) {
                   <text fg="#6a6a6a">Select an agent to preview</text>
                 }
               >
-                <code
-                  filetype="markdown"
-                  streaming={false}
-                  syntaxStyle={syntax()}
-                  content={previewContent()!}
-                  conceal={false}
-                />
+                <MarkdownContent content={previewContent()!} streaming={false} />
               </Show>
             </box>
           </scrollbox>

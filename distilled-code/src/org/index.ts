@@ -15,8 +15,8 @@
  * - Channel/GroupChat references Group → All members are participants
  */
 
-export { Role, isRole, type Role as RoleType } from "./role.ts";
 export { Group, isGroup, type Group as GroupType } from "./group.ts";
+export { Role, isRole, type Role as RoleType } from "./role.ts";
 
 // Lazy query functions (use collect-references, no pre-built index)
 export {

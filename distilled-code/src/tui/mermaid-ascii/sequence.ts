@@ -182,7 +182,8 @@ function calculateLayout(sd: SequenceDiagram): DiagramLayout {
   }
 
   const last = sd.participants.length - 1;
-  const totalWidth = centers[last] + Math.floor((widths[last] + BOX_BORDER_WIDTH) / 2);
+  const totalWidth =
+    centers[last] + Math.floor((widths[last] + BOX_BORDER_WIDTH) / 2);
 
   return {
     participantWidths: widths,
@@ -253,7 +254,8 @@ function renderMessage(
   if (label) {
     const start = Math.min(from, to) + LABEL_LEFT_MARGIN;
     const labelWidth = label.length;
-    const w = Math.max(layout.totalWidth, start + labelWidth) + LABEL_BUFFER_SPACE;
+    const w =
+      Math.max(layout.totalWidth, start + labelWidth) + LABEL_BUFFER_SPACE;
 
     const lifeline = buildLifeline(layout, chars).split("");
     while (lifeline.length < w) lifeline.push(" ");

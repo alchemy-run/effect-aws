@@ -7,11 +7,11 @@ import * as S from "effect/Schema";
 import { Agent } from "../src/agent.ts";
 import { Channel } from "../src/chat/channel.ts";
 import { GroupChat } from "../src/chat/group-chat.ts";
-import { Group } from "../src/org/group.ts";
-import { Role } from "../src/org/role.ts";
 import { createContext, preamble } from "../src/context.ts";
 import * as File from "../src/file/index.ts";
 import { input } from "../src/input.ts";
+import { Group } from "../src/org/group.ts";
+import { Role } from "../src/org/role.ts";
 import { output } from "../src/output.ts";
 import { tool } from "../src/tool/tool.ts";
 import * as Toolkit from "../src/toolkit/index.ts";
@@ -3441,20 +3441,24 @@ Members:
     }).pipe(Effect.provide(TestLayer)),
   );
 
-  it.effect("renders group chat with no agent members shows group chat ID", () =>
-    Effect.gen(function* () {
-      class EmptyGroupChat extends GroupChat("empty-group-chat")`An empty group chat` {}
+  it.effect(
+    "renders group chat with no agent members shows group chat ID",
+    () =>
+      Effect.gen(function* () {
+        class EmptyGroupChat extends GroupChat(
+          "empty-group-chat",
+        )`An empty group chat` {}
 
-      class MyAgent extends Agent("admin")`Manages ${EmptyGroupChat}` {}
+        class MyAgent extends Agent("admin")`Manages ${EmptyGroupChat}` {}
 
-      const ctx = yield* createContext(MyAgent);
+        const ctx = yield* createContext(MyAgent);
 
-      // When no agent members, shows @{group-chat-id}
-      expect(ctx.messages[0]).toEqual({
-        role: "system",
-        content: `${preamble("admin")}Manages @{empty-group-chat}`,
-      });
-    }).pipe(Effect.provide(TestLayer)),
+        // When no agent members, shows @{group-chat-id}
+        expect(ctx.messages[0]).toEqual({
+          role: "system",
+          content: `${preamble("admin")}Manages @{empty-group-chat}`,
+        });
+      }).pipe(Effect.provide(TestLayer)),
   );
 
   // ============================================================

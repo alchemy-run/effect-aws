@@ -23,15 +23,19 @@ import { test } from "./test.ts";
  */
 const buildConversation = (
   threadId: string,
-  messages: Array<{ role: "user" | "assistant"; speaker?: string; content: string }>,
+  messages: Array<{
+    role: "user" | "assistant";
+    speaker?: string;
+    content: string;
+  }>,
 ) =>
   Effect.gen(function* () {
     const store = yield* StateStore;
-    
+
     const encoded: MessageEncoded[] = messages.map((msg) => {
       if (msg.role === "user") {
         // User messages directed at a specific agent
-        const content = msg.speaker 
+        const content = msg.speaker
           ? `[User to @${msg.speaker}]: ${msg.content}`
           : msg.content;
         return {
@@ -49,7 +53,7 @@ const buildConversation = (
         };
       }
     });
-    
+
     // Write all messages at once under "dev" (first participant)
     // so the coordinator can read the full conversation
     yield* store.writeThreadMessages("dev", threadId, encoded);
@@ -61,7 +65,9 @@ const buildConversation = (
 
 class Dev extends Agent("dev")`A developer who writes code and reviews PRs` {}
 class Tester extends Agent("tester")`A QA engineer who writes and runs tests` {}
-class Designer extends Agent("designer")`A UI/UX designer who creates mockups and designs` {}
+class Designer extends Agent(
+  "designer",
+)`A UI/UX designer who creates mockups and designs` {}
 
 // =============================================================================
 // Test Channels/Groups
@@ -89,8 +95,7 @@ describe("ThreadCoordinator", () => {
     test("extracts single @mention", () =>
       Effect.sync(() => {
         expect(parseMentions("Hey @dev can you help?")).toEqual(["dev"]);
-      }),
-    );
+      }));
 
     test("extracts multiple @mentions", () =>
       Effect.sync(() => {
@@ -98,39 +103,33 @@ describe("ThreadCoordinator", () => {
           "dev",
           "tester",
         ]);
-      }),
-    );
+      }));
 
     test("returns empty array when no mentions", () =>
       Effect.sync(() => {
         expect(parseMentions("Hello everyone")).toEqual([]);
-      }),
-    );
+      }));
 
     test("handles hyphenated agent names", () =>
       Effect.sync(() => {
         expect(parseMentions("Ask @code-reviewer for help")).toEqual([
           "code-reviewer",
         ]);
-      }),
-    );
+      }));
 
     test("handles multiple mentions of same agent", () =>
       Effect.sync(() => {
-        expect(parseMentions("@dev can you help? Also @dev check this")).toEqual([
-          "dev",
-          "dev",
-        ]);
-      }),
-    );
+        expect(
+          parseMentions("@dev can you help? Also @dev check this"),
+        ).toEqual(["dev", "dev"]);
+      }));
 
     test("handles mentions at start, middle, and end", () =>
       Effect.sync(() => {
         expect(
           parseMentions("@dev please help @tester with this @designer"),
         ).toEqual(["dev", "tester", "designer"]);
-      }),
-    );
+      }));
   });
 
   // ---------------------------------------------------------------------------
@@ -145,8 +144,7 @@ describe("ThreadCoordinator", () => {
         expect(ids).toContain("tester");
         expect(ids).toContain("designer");
         expect(ids).toHaveLength(3);
-      }),
-    );
+      }));
 
     test("extracts agents from group chat references", () =>
       Effect.sync(() => {
@@ -156,8 +154,7 @@ describe("ThreadCoordinator", () => {
         expect(ids).toContain("tester");
         expect(ids).not.toContain("designer");
         expect(ids).toHaveLength(2);
-      }),
-    );
+      }));
   });
 
   // ---------------------------------------------------------------------------
@@ -179,7 +176,7 @@ describe("ThreadCoordinator", () => {
           .pipe(collect);
 
         // Find respond tool calls from coordinator (before agent responses)
-        // The coordinator's tool calls are internal, but we can verify 
+        // The coordinator's tool calls are internal, but we can verify
         // the agent streams are tagged correctly
         const agentIds = [...new Set(parts.map((p) => p.agentId))];
 
@@ -271,12 +268,38 @@ describe("ThreadCoordinator", () => {
 
         // Tester promised to investigate something earlier
         yield* buildConversation(threadId, [
-          { role: "user", speaker: "tester", content: "The CI pipeline is failing intermittently" },
-          { role: "assistant", speaker: "tester", content: "I'll investigate the flaky tests and get back to you with findings." },
-          { role: "user", speaker: "dev", content: "Thanks! In the meantime I'll work on the feature code" },
-          { role: "assistant", speaker: "dev", content: "I've pushed the initial implementation to the feature branch." },
-          { role: "user", speaker: "designer", content: "The mockups are ready for review" },
-          { role: "assistant", speaker: "designer", content: "I've uploaded them to Figma." },
+          {
+            role: "user",
+            speaker: "tester",
+            content: "The CI pipeline is failing intermittently",
+          },
+          {
+            role: "assistant",
+            speaker: "tester",
+            content:
+              "I'll investigate the flaky tests and get back to you with findings.",
+          },
+          {
+            role: "user",
+            speaker: "dev",
+            content: "Thanks! In the meantime I'll work on the feature code",
+          },
+          {
+            role: "assistant",
+            speaker: "dev",
+            content:
+              "I've pushed the initial implementation to the feature branch.",
+          },
+          {
+            role: "user",
+            speaker: "designer",
+            content: "The mockups are ready for review",
+          },
+          {
+            role: "assistant",
+            speaker: "designer",
+            content: "I've uploaded them to Figma.",
+          },
         ]);
 
         const coordinator = yield* createThreadCoordinator(
@@ -304,12 +327,37 @@ describe("ThreadCoordinator", () => {
 
         // Designer raised an issue earlier in the conversation
         yield* buildConversation(threadId, [
-          { role: "user", speaker: "dev", content: "I've added the new button component" },
-          { role: "assistant", speaker: "dev", content: "The component is ready for styling" },
-          { role: "user", speaker: "designer", content: "The button contrast ratio doesn't meet accessibility standards - it's only 3.2:1 and we need 4.5:1" },
-          { role: "assistant", speaker: "designer", content: "This needs to be fixed before we ship" },
-          { role: "user", speaker: "tester", content: "I'll add accessibility tests once the fix is in" },
-          { role: "assistant", speaker: "tester", content: "I have the testing framework ready" },
+          {
+            role: "user",
+            speaker: "dev",
+            content: "I've added the new button component",
+          },
+          {
+            role: "assistant",
+            speaker: "dev",
+            content: "The component is ready for styling",
+          },
+          {
+            role: "user",
+            speaker: "designer",
+            content:
+              "The button contrast ratio doesn't meet accessibility standards - it's only 3.2:1 and we need 4.5:1",
+          },
+          {
+            role: "assistant",
+            speaker: "designer",
+            content: "This needs to be fixed before we ship",
+          },
+          {
+            role: "user",
+            speaker: "tester",
+            content: "I'll add accessibility tests once the fix is in",
+          },
+          {
+            role: "assistant",
+            speaker: "tester",
+            content: "I have the testing framework ready",
+          },
         ]);
 
         const coordinator = yield* createThreadCoordinator(
@@ -337,12 +385,37 @@ describe("ThreadCoordinator", () => {
 
         // Dev struggled with a testing problem, tester helped before
         yield* buildConversation(threadId, [
-          { role: "user", speaker: "dev", content: "I'm stuck on mocking the database in my tests" },
-          { role: "assistant", speaker: "dev", content: "The dependency injection isn't working as expected" },
-          { role: "user", speaker: "tester", content: "Try using jest.mock() at the top of your test file" },
-          { role: "assistant", speaker: "tester", content: "You need to mock the module before importing the code under test" },
-          { role: "user", speaker: "designer", content: "I finished the error state designs" },
-          { role: "assistant", speaker: "designer", content: "They're in the shared folder" },
+          {
+            role: "user",
+            speaker: "dev",
+            content: "I'm stuck on mocking the database in my tests",
+          },
+          {
+            role: "assistant",
+            speaker: "dev",
+            content: "The dependency injection isn't working as expected",
+          },
+          {
+            role: "user",
+            speaker: "tester",
+            content: "Try using jest.mock() at the top of your test file",
+          },
+          {
+            role: "assistant",
+            speaker: "tester",
+            content:
+              "You need to mock the module before importing the code under test",
+          },
+          {
+            role: "user",
+            speaker: "designer",
+            content: "I finished the error state designs",
+          },
+          {
+            role: "assistant",
+            speaker: "designer",
+            content: "They're in the shared folder",
+          },
         ]);
 
         const coordinator = yield* createThreadCoordinator(
@@ -372,13 +445,38 @@ describe("ThreadCoordinator", () => {
 
         // Dev and tester were having a technical discussion
         yield* buildConversation(threadId, [
-          { role: "user", speaker: "dev", content: "Should we use Jest or Vitest for the new module?" },
-          { role: "assistant", speaker: "dev", content: "I'm leaning towards Vitest for the speed improvements" },
-          { role: "user", speaker: "tester", content: "Vitest is good but we need to check snapshot compatibility" },
-          { role: "assistant", speaker: "tester", content: "Let me test the migration path" },
+          {
+            role: "user",
+            speaker: "dev",
+            content: "Should we use Jest or Vitest for the new module?",
+          },
+          {
+            role: "assistant",
+            speaker: "dev",
+            content: "I'm leaning towards Vitest for the speed improvements",
+          },
+          {
+            role: "user",
+            speaker: "tester",
+            content:
+              "Vitest is good but we need to check snapshot compatibility",
+          },
+          {
+            role: "assistant",
+            speaker: "tester",
+            content: "Let me test the migration path",
+          },
           // Designer chimes in about something unrelated
-          { role: "user", speaker: "designer", content: "BTW the new icons are ready" },
-          { role: "assistant", speaker: "designer", content: "I've exported them in SVG format" },
+          {
+            role: "user",
+            speaker: "designer",
+            content: "BTW the new icons are ready",
+          },
+          {
+            role: "assistant",
+            speaker: "designer",
+            content: "I've exported them in SVG format",
+          },
         ]);
 
         const coordinator = yield* createThreadCoordinator(
@@ -396,7 +494,9 @@ describe("ThreadCoordinator", () => {
         // Dev and/or tester should respond - they were discussing testing frameworks
         // Designer should NOT respond - this is clearly about the earlier technical discussion
         expect(agentIds).not.toContain("designer");
-        expect(agentIds.some(id => id === "dev" || id === "tester")).toBe(true);
+        expect(agentIds.some((id) => id === "dev" || id === "tester")).toBe(
+          true,
+        );
       }),
     );
 
@@ -408,12 +508,37 @@ describe("ThreadCoordinator", () => {
 
         // Each agent made different points
         yield* buildConversation(threadId, [
-          { role: "user", speaker: "dev", content: "We should use TypeScript strict mode" },
-          { role: "assistant", speaker: "dev", content: "It catches more bugs at compile time" },
-          { role: "user", speaker: "tester", content: "We should add integration tests for the API" },
-          { role: "assistant", speaker: "tester", content: "Unit tests alone aren't catching the edge cases" },
-          { role: "user", speaker: "designer", content: "We should use a consistent color palette across all pages" },
-          { role: "assistant", speaker: "designer", content: "Right now we have 47 different shades of blue" },
+          {
+            role: "user",
+            speaker: "dev",
+            content: "We should use TypeScript strict mode",
+          },
+          {
+            role: "assistant",
+            speaker: "dev",
+            content: "It catches more bugs at compile time",
+          },
+          {
+            role: "user",
+            speaker: "tester",
+            content: "We should add integration tests for the API",
+          },
+          {
+            role: "assistant",
+            speaker: "tester",
+            content: "Unit tests alone aren't catching the edge cases",
+          },
+          {
+            role: "user",
+            speaker: "designer",
+            content:
+              "We should use a consistent color palette across all pages",
+          },
+          {
+            role: "assistant",
+            speaker: "designer",
+            content: "Right now we have 47 different shades of blue",
+          },
         ]);
 
         const coordinator = yield* createThreadCoordinator(
@@ -423,7 +548,9 @@ describe("ThreadCoordinator", () => {
 
         // Reference what designer said about colors
         const parts = yield* coordinator
-          .process("About the color inconsistency you mentioned - how should we consolidate?")
+          .process(
+            "About the color inconsistency you mentioned - how should we consolidate?",
+          )
           .pipe(collect);
 
         const agentIds = [...new Set(parts.map((p) => p.agentId))];
@@ -441,12 +568,38 @@ describe("ThreadCoordinator", () => {
 
         // Dev was explaining something but got interrupted
         yield* buildConversation(threadId, [
-          { role: "user", speaker: "dev", content: "Let me explain the architecture. First, we have the API layer which handles..." },
-          { role: "assistant", speaker: "dev", content: "The API layer uses Express middleware for auth, then routes to controllers" },
-          { role: "user", speaker: "tester", content: "Quick question - is the staging env down?" },
-          { role: "assistant", speaker: "tester", content: "Never mind, it's back up now" },
-          { role: "user", speaker: "designer", content: "Sorry to interrupt - where are the API docs?" },
-          { role: "assistant", speaker: "designer", content: "Found them, thanks" },
+          {
+            role: "user",
+            speaker: "dev",
+            content:
+              "Let me explain the architecture. First, we have the API layer which handles...",
+          },
+          {
+            role: "assistant",
+            speaker: "dev",
+            content:
+              "The API layer uses Express middleware for auth, then routes to controllers",
+          },
+          {
+            role: "user",
+            speaker: "tester",
+            content: "Quick question - is the staging env down?",
+          },
+          {
+            role: "assistant",
+            speaker: "tester",
+            content: "Never mind, it's back up now",
+          },
+          {
+            role: "user",
+            speaker: "designer",
+            content: "Sorry to interrupt - where are the API docs?",
+          },
+          {
+            role: "assistant",
+            speaker: "designer",
+            content: "Found them, thanks",
+          },
         ]);
 
         const coordinator = yield* createThreadCoordinator(
@@ -474,12 +627,37 @@ describe("ThreadCoordinator", () => {
 
         // Others discussing tester's work without them participating recently
         yield* buildConversation(threadId, [
-          { role: "user", speaker: "tester", content: "I've written 50 new E2E tests for the checkout flow" },
-          { role: "assistant", speaker: "tester", content: "They cover all the edge cases we found in production" },
-          { role: "user", speaker: "dev", content: "Those tests are failing in CI now after my refactor" },
-          { role: "assistant", speaker: "dev", content: "I changed the checkout API contract" },
-          { role: "user", speaker: "designer", content: "The checkout flow UI also changed, might affect selectors" },
-          { role: "assistant", speaker: "designer", content: "I updated the button class names" },
+          {
+            role: "user",
+            speaker: "tester",
+            content: "I've written 50 new E2E tests for the checkout flow",
+          },
+          {
+            role: "assistant",
+            speaker: "tester",
+            content: "They cover all the edge cases we found in production",
+          },
+          {
+            role: "user",
+            speaker: "dev",
+            content: "Those tests are failing in CI now after my refactor",
+          },
+          {
+            role: "assistant",
+            speaker: "dev",
+            content: "I changed the checkout API contract",
+          },
+          {
+            role: "user",
+            speaker: "designer",
+            content:
+              "The checkout flow UI also changed, might affect selectors",
+          },
+          {
+            role: "assistant",
+            speaker: "designer",
+            content: "I updated the button class names",
+          },
         ]);
 
         const coordinator = yield* createThreadCoordinator(
@@ -514,18 +692,21 @@ describe("ThreadCoordinator", () => {
           threadId,
         );
 
-        const parts = yield* coordinator.process("@dev say hello").pipe(collect);
+        const parts = yield* coordinator
+          .process("@dev say hello")
+          .pipe(collect);
 
         // Should have parts from the dev agent's response
         const devParts = parts.filter((p) => p.agentId === "dev");
         expect(devParts.length).toBeGreaterThan(0);
 
         // Should have some response content (text or tool calls)
-        const responseParts = devParts.filter((p) => 
-          p.part?.type === "text-delta" || 
-          p.part?.type === "text-start" ||
-          p.part?.type === "tool-call" ||
-          p.part?.type === "finish"
+        const responseParts = devParts.filter(
+          (p) =>
+            p.part?.type === "text-delta" ||
+            p.part?.type === "text-start" ||
+            p.part?.type === "tool-call" ||
+            p.part?.type === "finish",
         );
         expect(responseParts.length).toBeGreaterThan(0);
       }),

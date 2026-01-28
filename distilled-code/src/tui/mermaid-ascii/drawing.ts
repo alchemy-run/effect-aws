@@ -5,12 +5,7 @@
  * Ported from the Go implementation (cmd/draw.go).
  */
 
-import {
-  type BoxChars,
-  getBoxChars,
-  isJunctionChar,
-  mergeJunctions,
-} from "./chars.ts";
+import { type BoxChars, isJunctionChar, mergeJunctions } from "./chars.ts";
 import {
   type Coord,
   Direction,

@@ -1,4 +1,5 @@
 import { describe, expect, it } from "@effect/vitest";
+import * as S from "effect/Schema";
 import { Agent } from "../src/agent.ts";
 import { Channel } from "../src/chat/channel.ts";
 import { GroupChat } from "../src/chat/group-chat.ts";
@@ -127,11 +128,7 @@ describe("discoverAgents", () => {
     const agents = discoverAgents([Manager]);
 
     expect(agents).toHaveLength(3);
-    expect(agents.map((a) => a.id).sort()).toEqual([
-      "alice",
-      "bob",
-      "manager",
-    ]);
+    expect(agents.map((a) => a.id).sort()).toEqual(["alice", "bob", "manager"]);
   });
 
   it("discovers agents through nested org groups", () => {
@@ -141,7 +138,9 @@ describe("discoverAgents", () => {
 
     class SubTeam extends Group("sub")`${Alice}` {}
     class ParentTeam extends Group("parent")`${SubTeam}, ${Bob}` {}
-    class Manager extends Agent("manager")`Manages ${ParentTeam} and ${Carol}` {}
+    class Manager extends Agent(
+      "manager",
+    )`Manages ${ParentTeam} and ${Carol}` {}
 
     const agents = discoverAgents([Manager]);
 
@@ -170,7 +169,9 @@ describe("discoverAgents", () => {
     class Bob extends Agent("bob")`Bob` {}
 
     class BaseRole extends Role("base")`Base with ${Alice}` {}
-    class ExtendedRole extends Role("extended")`Extended with ${BaseRole} and ${Bob}` {}
+    class ExtendedRole extends Role(
+      "extended",
+    )`Extended with ${BaseRole} and ${Bob}` {}
     class Root extends Agent("root")`Has ${ExtendedRole}` {}
 
     const agents = discoverAgents([Root]);
@@ -192,5 +193,46 @@ describe("discoverAgents", () => {
 
     expect(agents).toHaveLength(3);
     expect(agents.map((a) => a.id).sort()).toEqual(["alice", "bob", "root"]);
+  });
+
+  // ============================================================
+  // Regression test for class constructors in references
+  // ============================================================
+
+  it("ignores Effect Schema classes in references without throwing", () => {
+    // This test ensures that class constructors (like Effect Schema classes)
+    // in agent references don't cause discoverAgents to throw.
+    // Previously, any function was treated as a thunk and invoked, which would
+    // throw "Cannot call a class constructor without 'new'" for class constructors.
+    const UserSchema = S.Struct({
+      name: S.String,
+      age: S.Number,
+    });
+
+    class DataAgent extends Agent(
+      "data-agent",
+    )`Handles data with schema: ${UserSchema}` {}
+
+    // This should NOT throw
+    const agents = discoverAgents([DataAgent]);
+
+    expect(agents).toHaveLength(1);
+    expect(agents[0].id).toBe("data-agent");
+  });
+
+  it("ignores multiple Schema classes and still discovers nested agents", () => {
+    const InputSchema = S.Struct({ query: S.String });
+    const OutputSchema = S.Struct({ result: S.Array(S.String) });
+
+    class Worker extends Agent("worker")`Worker agent` {}
+    class Orchestrator extends Agent("orchestrator")`
+      Uses schemas ${InputSchema} and ${OutputSchema}
+      Delegates to ${() => Worker}
+    ` {}
+
+    const agents = discoverAgents([Orchestrator]);
+
+    expect(agents).toHaveLength(2);
+    expect(agents.map((a) => a.id).sort()).toEqual(["orchestrator", "worker"]);
   });
 });

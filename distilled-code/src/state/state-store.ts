@@ -114,13 +114,16 @@ export const createStateStore = (
       return existing;
     }
 
-    const pubsub = yield* PubSub.unbounded<MessagePart>({ replay: Infinity });
+    // Use replay: 0 - ChatView reads existing parts from persistence,
+    // then subscribes for new parts only. Using replay: Infinity caused duplicates.
+    const pubsub = yield* PubSub.unbounded<MessagePart>({ replay: 0 });
 
-    // Daemon that persists parts as they are published
+    // Daemon keeps the PubSub alive for streaming to UI subscribers.
+    // NOTE: The daemon does NOT persist parts - persistence happens directly in
+    // appendThreadPart. Removing the persistence call here fixes the
+    // "duplicate tool_use ids" bug that occurred when both appendThreadPart
+    // AND the daemon were persisting the same parts.
     const daemon = yield* Stream.fromPubSub(pubsub).pipe(
-      Stream.mapEffect((part) =>
-        persistence.appendThreadPart(agentId, threadId, part),
-      ),
       Stream.runDrain,
       Effect.forkDaemon,
     );
@@ -141,7 +144,8 @@ export const createStateStore = (
     // Delegate to persistence
     ...persistence,
 
-    // Override appendThreadPart to publish to PubSub (daemon persists)
+    // Override appendThreadPart: persist directly AND publish to PubSub for UI streaming.
+    // The daemon should NOT persist - it's only for providing the PubSub subscription.
     appendThreadPart: Effect.fnUntraced(function* (agentId, threadId, part) {
       const pubsub = yield* getPubSub(agentId, threadId);
       yield* Effect.all(

@@ -12,8 +12,8 @@ import {
   getChannelParticipants as getChannelParticipantsFromIndex,
   getGroupChatParticipants as getGroupChatParticipantsFromIndex,
   getGroupMembers as getGroupMembersFromIndex,
-  type OrgConfig as ResolverOrgConfig,
   type OrgIndex,
+  type OrgConfig as ResolverOrgConfig,
 } from "../org/resolver.ts";
 import type { Role } from "../org/role.ts";
 import type { Tool } from "../tool/tool.ts";

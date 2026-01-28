@@ -40,7 +40,7 @@ const exitCode = output("exitCode", S.Number);
 const out = output("output", S.String);
 
 export const bash = tool("bash", {
-  alias: (model) => (model.includes("claude") ? "AnthropicBash" : undefined),
+  alias: (model) => (model?.includes("claude") ? "AnthropicBash" : undefined),
 })`Executes a given bash ${command} in a persistent shell session with optional ${timeout}, ensuring proper handling and security measures.
 Returns the ${exitCode} and ${out} containing both stdout and stderr.
 If the command is invalid, an error will be returned as a ${S.String}

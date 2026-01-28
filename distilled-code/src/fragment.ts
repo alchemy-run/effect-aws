@@ -28,6 +28,22 @@ export interface FragmentClass<
 }
 
 /**
+ * Check if a value matches the Fragment shape.
+ */
+export function isFragment(
+  value: unknown,
+): value is Fragment<string, string, any[]> {
+  return (
+    typeof value === "function" &&
+    "type" in value &&
+    typeof value.type === "string" &&
+    "id" in value &&
+    "template" in value &&
+    "references" in value
+  );
+}
+
+/**
  * Factory that creates a fragment builder with optional extra properties.
  *
  * @example

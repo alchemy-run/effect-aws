@@ -18,21 +18,31 @@
  * │    SDE ─── Patches error specs (reports to VPE)                         │
  * ├─────────────────────────────────────────────────────────────────────────┤
  * │  ORGANIZATIONAL UNITS (Groups)                                          │
- * │    Leadership, Management, Engineering, AllHands                        │
+ * │    Leadership, Management, Engineering                                  │
  * ├─────────────────────────────────────────────────────────────────────────┤
  * │  COMMUNICATION (Channels & GroupChats)                                  │
  * │    #engineering, #testing, #status                                      │
  * │    TestToPatch, DesignToTest, ReviewQueue                               │
  * ├─────────────────────────────────────────────────────────────────────────┤
- * │  CAPABILITIES (Roles)                                                   │
- * │    Reviewer, Designer, Tester, Patcher, Documenter                      │
+ * │  TOOLKITS & ROLES (Capabilities)                                        │
+ * │    Coding, Testing, Reviewing toolkits                                  │
+ * │    Reviewer, Designer, Tester, Patcher, Documenter roles                │
  * ├─────────────────────────────────────────────────────────────────────────┤
  * │  ARTIFACTS (Files & Folders)                                            │
  * │    Design docs, Generated clients, Tests, Patches                       │
  * └─────────────────────────────────────────────────────────────────────────┘
  */
 
-import { Agent, Chat, File, Org } from "distilled-code";
+import { Agent, Chat, File, Org, Toolkit } from "distilled-code";
+import {
+  bash,
+  edit,
+  glob,
+  grep,
+  read,
+  readlints,
+  write,
+} from "distilled-code/tool";
 import { loadModel } from "./scripts/parse.ts";
 
 const SDK_PATH = "../../cloudflare-typescript/src/resources";
@@ -77,7 +87,6 @@ flowchart TD
 
 ## Membership
 - ${() => Leadership} (leader)
-- ${() => AllHands}
 
 ## Direct Reports
 - ${() => CTO} - Technical direction and quality
@@ -124,7 +133,6 @@ You are the quality gate before work is considered done.
 
 ## Membership
 - ${() => Leadership}
-- ${() => AllHands}
 
 ## Roles
 ${() => ReviewerRole}
@@ -175,7 +183,6 @@ You ensure work flows smoothly and priorities are clear.
 
 ## Membership
 - ${() => Management}
-- ${() => AllHands}
 
 ## Reports to
 ${() => CEO}
@@ -227,7 +234,6 @@ Maintain documentation consistency and clarity.
 
 ## Membership
 - ${() => Engineering}
-- ${() => AllHands}
 
 ## Roles
 ${() => DocumenterRole}
@@ -272,7 +278,6 @@ You are the source of truth for what errors SHOULD exist.
 
 ## Membership
 - ${() => Management}
-- ${() => AllHands}
 
 ## Roles
 ${() => DesignerRole}
@@ -326,7 +331,6 @@ You are the primary driver of the TDD loop.
 
 ## Membership
 - ${() => Engineering}
-- ${() => AllHands}
 
 ## Roles
 ${() => TesterRole}
@@ -373,7 +377,6 @@ You translate discovered error codes into typed error classes.
 
 ## Membership
 - ${() => Engineering}
-- ${() => AllHands}
 
 ## Roles
 ${() => PatcherRole}
@@ -473,20 +476,6 @@ ${() => PatcherRole}
 ${() => DocumenterRole}
 ` {}
 
-/**
- * All Hands - Everyone in the organization.
- */
-class AllHands extends Org.Group("all-hands")`
-## All Hands
-
-Entire organization.
-
-### Groups
-- ${() => Leadership}
-- ${() => Management}
-- ${() => Engineering}
-` {}
-
 // ============================================================================
 // COMMUNICATION CHANNELS
 // ============================================================================
@@ -500,7 +489,9 @@ class EngineeringChannel extends Chat.Channel("engineering")`
 Technical discussions and decisions.
 
 ### Members
-${() => AllHands}
+${() => Leadership}
+${() => Management}
+${() => Engineering}
 
 ### Topics
 - Architecture decisions
@@ -539,7 +530,9 @@ class StatusChannel extends Chat.Channel("status")`
 Progress updates and blockers.
 
 ### Members
-${() => AllHands}
+${() => Leadership}
+${() => Management}
+${() => Engineering}
 
 ### Topics
 - Daily progress
@@ -612,7 +605,52 @@ When ${() => SDET} completes verification:
 ` {}
 
 // ============================================================================
-// ROLES - Shared responsibilities and capabilities (LEAF NODES)
+// TOOLKITS - Tool bundles assigned to roles
+// ============================================================================
+
+/**
+ * Coding Toolkit - Full read/write/edit access for development work.
+ */
+class Coding extends Toolkit.Toolkit("Coding")`
+Tools for reading, writing, and editing code:
+
+- ${bash}      - Execute shell commands (run tests, regenerate)
+- ${edit}      - Edit existing files
+- ${glob}      - Find files by pattern
+- ${grep}      - Search file contents
+- ${read}      - Read file contents
+- ${readlints} - Check for linter errors
+- ${write}     - Create new files
+` {}
+
+/**
+ * Testing Toolkit - Read access plus test execution.
+ */
+class Testing extends Toolkit.Toolkit("Testing")`
+Tools for testing and verification (read-only + test execution):
+
+- ${bash}      - Run tests, regenerate clients
+- ${glob}      - Find files by pattern
+- ${grep}      - Search file contents
+- ${read}      - Read file contents
+- ${readlints} - Check for linter errors
+` {}
+
+/**
+ * Reviewing Toolkit - Read-only access for code review.
+ */
+class Reviewing extends Toolkit.Toolkit("Reviewing")`
+Tools for code review (read-only access):
+
+- ${bash}      - Run tests to verify
+- ${glob}      - Find files by pattern
+- ${grep}      - Search file contents
+- ${read}      - Read file contents
+- ${readlints} - Check for linter errors
+` {}
+
+// ============================================================================
+// ROLES - Shared responsibilities and capabilities
 // ============================================================================
 
 /**
@@ -621,7 +659,7 @@ When ${() => SDET} completes verification:
 class ReviewerRole extends Org.Role("reviewer")`
 ## Review Responsibilities
 
-Can review and approve completed work.
+Can review and approve completed work. Use the ${Reviewing} tools to read code, run tests, and verify quality standards.
 
 ### Checklist
 - [ ] All expected errors verified
@@ -641,7 +679,7 @@ Can review and approve completed work.
 class DesignerRole extends Org.Role("designer")`
 ## Design Responsibilities
 
-Can define expected error tags and test plans.
+Can define expected error tags and test plans. Use the ${Testing} tools to research APIs, read existing code, and verify designs work.
 
 ### Process
 1. Research the API (Cloudflare docs, similar services)
@@ -662,7 +700,7 @@ Can define expected error tags and test plans.
 class TesterRole extends Org.Role("tester")`
 ## Testing Responsibilities
 
-Can write tests that discover and verify error tags.
+Can write tests that discover and verify error tags. Use the ${Coding} tools to write test files, run tests, and edit code.
 
 ### Process
 1. Read design doc for expected errors
@@ -684,7 +722,7 @@ Can write tests that discover and verify error tags.
 class PatcherRole extends Org.Role("patcher")`
 ## Patching Responsibilities
 
-Can patch error specs when tests discover undocumented errors.
+Can patch error specs when tests discover undocumented errors. Use the ${Coding} tools to create patch files, edit specs, and regenerate clients.
 
 ### Process
 1. Get error details (code, status, message pattern)
@@ -712,7 +750,7 @@ Most specific wins: code + status + message > code + status > code + message > c
 class DocumenterRole extends Org.Role("documenter")`
 ## Documentation Responsibilities
 
-Can maintain documentation consistency and clarity.
+Can maintain documentation consistency and clarity. Use the ${Coding} tools to edit documentation files, update status tables, and maintain formatting.
 
 ### Standards
 - Status symbols: ⬜ pending, ✅ complete, 🔄 in progress

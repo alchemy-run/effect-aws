@@ -7,32 +7,10 @@
 import { isAgent, type Agent } from "../../agent.ts";
 import { isChannel } from "../../chat/channel.ts";
 import { isGroupChat } from "../../chat/group-chat.ts";
-import type { Fragment } from "../../fragment.ts";
+import { isFragment } from "../../fragment.ts";
 import { isGroup } from "../../org/group.ts";
 import { isRole } from "../../org/role.ts";
-
-/**
- * Resolve a potential thunk to its value
- */
-function resolveThunk<T>(value: T | (() => T)): T {
-  return typeof value === "function" && !isFragment(value)
-    ? (value as () => T)()
-    : (value as T);
-}
-
-/**
- * Check if something is a Fragment (Agent, Channel, Group, File, etc.)
- */
-function isFragment(value: unknown): value is Fragment<string, string, any[]> {
-  return (
-    typeof value === "function" &&
-    "type" in value &&
-    typeof value.type === "string" &&
-    "id" in value &&
-    "template" in value &&
-    "references" in value
-  );
-}
+import { resolveThunk } from "../../util/render-template.ts";
 
 /**
  * Recursively discover all agents starting from a root agent or list of agents.
