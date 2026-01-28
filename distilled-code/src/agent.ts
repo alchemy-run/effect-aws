@@ -192,6 +192,13 @@ export interface SpawnOptions {
    * If not provided, attempts to read from ANTHROPIC_MODEL_ID environment variable.
    */
   model?: string;
+
+  /**
+   * If true, skip appending user input to the thread.
+   * Used when the user input was already stored by the coordinator.
+   * @default false
+   */
+  skipUserInput?: boolean;
 }
 
 export const spawn: <A extends Agent<string, any[]>>(
@@ -219,10 +226,10 @@ export const spawn: <A extends Agent<string, any[]>>(
   const agentId = agent.id;
 
   // Recover from crash: flush any partial parts from previous session
-  yield* flush(store, agentId, threadId);
+  yield* flush(store, threadId);
 
   // Get messages to hydrate chat
-  const rawStoredMessages = yield* store.readThreadMessages(agentId, threadId);
+  const rawStoredMessages = yield* store.readThreadMessages(threadId);
   log("spawn", "loaded chat history", JSON.stringify(rawStoredMessages, null, 2));
 
   // Validate and repair messages to ensure unique tool_use IDs
@@ -230,7 +237,7 @@ export const spawn: <A extends Agent<string, any[]>>(
 
   // If messages were repaired, persist the fixed version
   if (storedMessages !== rawStoredMessages) {
-    yield* store.writeThreadMessages(agentId, threadId, storedMessages);
+    yield* store.writeThreadMessages(threadId, storedMessages);
     log("spawn", "persisted repaired messages");
   }
 
@@ -361,15 +368,18 @@ export const spawn: <A extends Agent<string, any[]>>(
       Stream.unwrap(
         locked(
           Effect.gen(function* () {
-            // Append user input part
-            yield* store.appendThreadPart(agentId, threadId, {
-              type: "user-input",
-              content: prompt,
-              timestamp: Date.now(),
-            });
+            // Append user input part (unless already stored by coordinator)
+            if (!options.skipUserInput) {
+              yield* store.appendThreadPart(threadId, {
+                type: "user-input",
+                content: prompt,
+                timestamp: Date.now(),
+              });
+            }
 
-            // Flush user input immediately (protected by flush semaphore)
-            yield* lockedFlush(flush(store, agentId, threadId));
+            // Always flush to convert any pending user input to a message
+            // (either appended above or by the coordinator)
+            yield* lockedFlush(flush(store, threadId));
 
             // Only include context messages on first call (when history is empty)
             // Otherwise the context messages are already in the chat history
@@ -424,15 +434,11 @@ export const spawn: <A extends Agent<string, any[]>>(
                 Stream.tap((part) => {
                   const threadPart = part as MessagePart;
                   return Effect.gen(function* () {
-                    yield* store.appendThreadPart(
-                      agentId,
-                      threadId,
-                      threadPart,
-                    );
+                    yield* store.appendThreadPart(threadId, threadPart);
                     // Check if message boundary reached
                     // Use lockedFlush to prevent race conditions in concurrent streams
                     if (isMessageBoundary(threadPart)) {
-                      yield* lockedFlush(flush(store, agentId, threadId));
+                      yield* lockedFlush(flush(store, threadId));
                     }
                   });
                 }),
@@ -519,11 +525,10 @@ const aiRetrySchedule = Schedule.intersect(
  */
 const flush = (
   store: StateStore,
-  agentId: string,
   threadId: string,
 ): Effect.Effect<void, StateStoreError> =>
   Effect.gen(function* () {
-    const parts = yield* store.readThreadParts(agentId, threadId);
+    const parts = yield* store.readThreadParts(threadId);
     log(
       "flush",
       "parts",
@@ -539,18 +544,15 @@ const flush = (
     const firstPart = parts[0];
     if (firstPart.type === "user-input") {
       // User input becomes a user message
-      const currentMessages = yield* store.readThreadMessages(
-        agentId,
-        threadId,
-      );
-      yield* store.writeThreadMessages(agentId, threadId, [
+      const currentMessages = yield* store.readThreadMessages(threadId);
+      yield* store.writeThreadMessages(threadId, [
         ...currentMessages,
         {
           role: "user" as const,
           content: firstPart.content,
         },
       ]);
-      yield* store.truncateThreadParts(agentId, threadId);
+      yield* store.truncateThreadParts(threadId);
       return;
     }
 
@@ -585,10 +587,7 @@ const flush = (
           2,
         ),
       );
-      const currentMessages = yield* store.readThreadMessages(
-        agentId,
-        threadId,
-      );
+      const currentMessages = yield* store.readThreadMessages(threadId);
 
       // Collect existing tool_use IDs to prevent duplicates
       const existingToolIds = new Set<string>();
@@ -616,7 +615,6 @@ const flush = (
             if (existingToolIds.has(block.id)) {
               log("flush", "WARNING: Skipping duplicate tool_use ID", {
                 id: block.id,
-                agentId,
                 threadId,
               });
               return false;
@@ -639,12 +637,12 @@ const flush = (
       }).filter((msg): msg is MessageEncoded => msg !== null);
 
       if (deduplicatedMessages.length > 0) {
-        yield* store.writeThreadMessages(agentId, threadId, [
+        yield* store.writeThreadMessages(threadId, [
           ...currentMessages,
           ...deduplicatedMessages,
         ]);
       }
     }
 
-    yield* store.truncateThreadParts(agentId, threadId);
+    yield* store.truncateThreadParts(threadId);
   });

@@ -13,11 +13,11 @@ export const passthrough = Layer.effect(
     const store = yield* StateStore;
 
     return {
-      prepareContext: ({ agentId, threadId, systemPrompt }) =>
+      prepareContext: ({ threadId, systemPrompt }) =>
         Effect.gen(function* () {
           // Load messages from state, filter out old system messages
           const messages = yield* store
-            .readThreadMessages(agentId, threadId)
+            .readThreadMessages(threadId)
             .pipe(
               Effect.map((msgs) => msgs.filter((m) => m.role !== "system")),
               Effect.catchAll(() => Effect.succeed([] as MessageEncoded[])),

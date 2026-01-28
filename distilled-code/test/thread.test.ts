@@ -54,9 +54,9 @@ const buildConversation = (
       }
     });
 
-    // Write all messages at once under "dev" (first participant)
-    // so the coordinator can read the full conversation
-    yield* store.writeThreadMessages("dev", threadId, encoded);
+    // Write all messages at once to the thread
+    // All participants share the same conversation history
+    yield* store.writeThreadMessages(threadId, encoded);
   });
 
 // =============================================================================

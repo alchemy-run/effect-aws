@@ -17,77 +17,64 @@ export class StateStoreError extends Data.TaggedError("StateStoreError")<{
 export const StateStore = Context.GenericTag<StateStore>("StateStore");
 
 /**
- * StateStore provides storage operations for agent thread state.
- * Uses explicit agentId and threadId parameters instead of concatenated keys.
+ * StateStore provides storage operations for thread state.
+ * All methods are keyed by threadId only - all participants in a thread
+ * share the same conversation history.
  *
  * This interface includes streaming/PubSub functionality for real-time updates.
  */
 export interface StateStore {
   /**
-   * Read messages for an agent's thread.
+   * Read messages for a thread.
    */
   readThreadMessages(
-    agentId: string,
     threadId: string,
   ): Effect.Effect<readonly MessageEncoded[], StateStoreError>;
 
   /**
-   * Write messages for an agent's thread.
+   * Write messages for a thread.
    */
   writeThreadMessages(
-    agentId: string,
     threadId: string,
     messages: readonly MessageEncoded[],
   ): Effect.Effect<void, StateStoreError>;
 
   /**
-   * Read all parts for an agent's thread.
+   * Read all parts for a thread.
    */
   readThreadParts(
-    agentId: string,
     threadId: string,
   ): Effect.Effect<MessagePart[], StateStoreError>;
 
   /**
-   * Append a part to an agent's thread.
+   * Append a part to a thread.
    */
   appendThreadPart(
-    agentId: string,
     threadId: string,
     part: MessagePart,
   ): Effect.Effect<void, StateStoreError>;
 
   /**
-   * Clear all parts for an agent's thread.
+   * Clear all parts for a thread.
    */
   truncateThreadParts(
-    agentId: string,
     threadId: string,
   ): Effect.Effect<void, StateStoreError>;
 
   /**
-   * List all threads, optionally filtered by agentId.
+   * List all threads.
    */
-  listThreads(
-    agentId?: string,
-  ): Effect.Effect<
-    readonly { agentId: string; threadId: string }[],
-    StateStoreError
-  >;
+  listThreads(): Effect.Effect<readonly { threadId: string }[], StateStoreError>;
 
   /**
-   * Delete all data for an agent's thread.
+   * Delete all data for a thread.
    */
-  deleteThread(
-    agentId: string,
-    threadId: string,
-  ): Effect.Effect<void, StateStoreError>;
+  deleteThread(threadId: string): Effect.Effect<void, StateStoreError>;
 
   /**
    * Subscribe to thread stream (replays history + live updates).
    */
   subscribeThread(
-    agentId: string,
     threadId: string,
   ): Effect.Effect<Stream.Stream<MessagePart, never, never>, StateStoreError>;
 }
@@ -98,18 +85,11 @@ export interface StateStore {
 export const createStateStore = (
   persistence: Omit<StateStore, "subscribeThread">,
 ) => {
-  // Map of PubSubs per thread key for streaming
+  // Map of PubSubs per thread for streaming
   const threads = new Map<string, Thread>();
 
-  const getThreadKey = (agentId: string, threadId: string) =>
-    `${agentId}:${threadId}`;
-
-  const getThread = Effect.fnUntraced(function* (
-    agentId: string,
-    threadId: string,
-  ) {
-    const key = getThreadKey(agentId, threadId);
-    const existing = threads.get(key);
+  const getThread = Effect.fnUntraced(function* (threadId: string) {
+    const existing = threads.get(threadId);
     if (existing) {
       return existing;
     }
@@ -129,15 +109,12 @@ export const createStateStore = (
     );
 
     const thread = { pubsub, daemon } satisfies Thread;
-    threads.set(key, thread);
+    threads.set(threadId, thread);
     return thread;
   });
 
-  const getPubSub = Effect.fnUntraced(function* (
-    agentId: string,
-    threadId: string,
-  ) {
-    return (yield* getThread(agentId, threadId)).pubsub;
+  const getPubSub = Effect.fnUntraced(function* (threadId: string) {
+    return (yield* getThread(threadId)).pubsub;
   });
 
   return {
@@ -146,11 +123,11 @@ export const createStateStore = (
 
     // Override appendThreadPart: persist directly AND publish to PubSub for UI streaming.
     // The daemon should NOT persist - it's only for providing the PubSub subscription.
-    appendThreadPart: Effect.fnUntraced(function* (agentId, threadId, part) {
-      const pubsub = yield* getPubSub(agentId, threadId);
+    appendThreadPart: Effect.fnUntraced(function* (threadId, part) {
+      const pubsub = yield* getPubSub(threadId);
       yield* Effect.all(
         [
-          persistence.appendThreadPart(agentId, threadId, part),
+          persistence.appendThreadPart(threadId, part),
           PubSub.publish(pubsub, part),
         ],
         { concurrency: "unbounded" },
@@ -158,14 +135,14 @@ export const createStateStore = (
     }),
 
     // Override deleteThread to also clean up thread
-    deleteThread: Effect.fnUntraced(function* (agentId, threadId) {
-      yield* persistence.deleteThread(agentId, threadId);
-      threads.delete(getThreadKey(agentId, threadId));
+    deleteThread: Effect.fnUntraced(function* (threadId) {
+      yield* persistence.deleteThread(threadId);
+      threads.delete(threadId);
     }),
 
     // Streaming is handled here, not in persistence
-    subscribeThread: Effect.fnUntraced(function* (agentId, threadId) {
-      const pubsub = yield* getPubSub(agentId, threadId);
+    subscribeThread: Effect.fnUntraced(function* (threadId) {
+      const pubsub = yield* getPubSub(threadId);
       return Stream.fromPubSub(pubsub);
     }),
   } satisfies StateStore;

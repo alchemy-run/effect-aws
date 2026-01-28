@@ -80,96 +80,88 @@ export const createSqliteStateStoreFromConnection = (conn: SqliteConnection) =>
     const stmts = yield* Effect.gen(function* () {
       return {
         upsertThread: yield* conn.prepare(`
-          INSERT INTO threads (thread_id, agent_id, created_at, updated_at)
-          VALUES (?, ?, unixepoch(), unixepoch())
-          ON CONFLICT (thread_id, agent_id) DO UPDATE SET updated_at = unixepoch()
+          INSERT INTO threads (thread_id, created_at, updated_at)
+          VALUES (?, unixepoch(), unixepoch())
+          ON CONFLICT (thread_id) DO UPDATE SET updated_at = unixepoch()
         `),
 
         selectMessages: yield* conn.prepare<{ role: string; content: string }>(`
           SELECT role, content FROM messages
-          WHERE thread_id = ? AND agent_id = ?
+          WHERE thread_id = ?
           ORDER BY position ASC
         `),
         deleteMessages: yield* conn.prepare(`
-          DELETE FROM messages WHERE thread_id = ? AND agent_id = ?
+          DELETE FROM messages WHERE thread_id = ?
         `),
         insertMessage: yield* conn.prepare(`
-          INSERT INTO messages (thread_id, agent_id, role, content, position)
-          VALUES (?, ?, ?, ?, ?)
+          INSERT INTO messages (thread_id, role, content, position)
+          VALUES (?, ?, ?, ?)
         `),
 
         selectParts: yield* conn.prepare<{ type: string; content: string }>(`
           SELECT type, content FROM parts
-          WHERE thread_id = ? AND agent_id = ?
+          WHERE thread_id = ?
           ORDER BY position ASC
         `),
         insertPart: yield* conn.prepare(`
-          INSERT INTO parts (thread_id, agent_id, type, content, position)
-          VALUES (?, ?, ?, ?, ?)
+          INSERT INTO parts (thread_id, type, content, position)
+          VALUES (?, ?, ?, ?)
         `),
         countParts: yield* conn.prepare<{ count: number }>(`
-          SELECT COUNT(*) as count FROM parts WHERE thread_id = ? AND agent_id = ?
+          SELECT COUNT(*) as count FROM parts WHERE thread_id = ?
         `),
         deleteParts: yield* conn.prepare(`
-          DELETE FROM parts WHERE thread_id = ? AND agent_id = ?
+          DELETE FROM parts WHERE thread_id = ?
         `),
 
         listAllThreads: yield* conn.prepare<{
-          agent_id: string;
           thread_id: string;
         }>(`
-          SELECT DISTINCT agent_id, thread_id FROM threads ORDER BY agent_id, thread_id
-        `),
-        listAgentThreads: yield* conn.prepare<{
-          agent_id: string;
-          thread_id: string;
-        }>(`
-          SELECT DISTINCT agent_id, thread_id FROM threads WHERE agent_id = ? ORDER BY thread_id
+          SELECT DISTINCT thread_id FROM threads ORDER BY thread_id
         `),
         deleteThread: yield* conn.prepare(`
-          DELETE FROM threads WHERE thread_id = ? AND agent_id = ?
+          DELETE FROM threads WHERE thread_id = ?
         `),
         deleteThreadMessages: yield* conn.prepare(`
-          DELETE FROM messages WHERE thread_id = ? AND agent_id = ?
+          DELETE FROM messages WHERE thread_id = ?
         `),
         deleteThreadParts: yield* conn.prepare(`
-          DELETE FROM parts WHERE thread_id = ? AND agent_id = ?
+          DELETE FROM parts WHERE thread_id = ?
         `),
       };
     }).pipe(mapError("prepare statements"));
 
     return createStateStore({
-      readThreadMessages: (agentId, threadId) =>
+      readThreadMessages: (threadId) =>
         Effect.gen(function* () {
-          const rows = yield* stmts.selectMessages.all(threadId, agentId);
+          const rows = yield* stmts.selectMessages.all(threadId);
           return rows.map((row) => ({
             role: row.role as MessageEncoded["role"],
             content: JSON.parse(row.content),
           })) as readonly MessageEncoded[];
         }).pipe(mapError("read messages")),
 
-      writeThreadMessages: (agentId, threadId, messages) =>
+      writeThreadMessages: (threadId, messages) =>
         conn
           .batch([
             // Ensure thread exists
             {
-              sql: `INSERT INTO threads (thread_id, agent_id, created_at, updated_at)
-                    VALUES (?, ?, unixepoch(), unixepoch())
-                    ON CONFLICT (thread_id, agent_id) DO UPDATE SET updated_at = unixepoch()`,
-              params: [threadId, agentId],
+              sql: `INSERT INTO threads (thread_id, created_at, updated_at)
+                    VALUES (?, unixepoch(), unixepoch())
+                    ON CONFLICT (thread_id) DO UPDATE SET updated_at = unixepoch()`,
+              params: [threadId],
             },
             // Clear existing messages
             {
-              sql: `DELETE FROM messages WHERE thread_id = ? AND agent_id = ?`,
-              params: [threadId, agentId],
+              sql: `DELETE FROM messages WHERE thread_id = ?`,
+              params: [threadId],
             },
             // Insert all new messages
             ...messages.map((msg, i) => ({
-              sql: `INSERT INTO messages (thread_id, agent_id, role, content, position)
-                    VALUES (?, ?, ?, ?, ?)`,
+              sql: `INSERT INTO messages (thread_id, role, content, position)
+                    VALUES (?, ?, ?, ?)`,
               params: [
                 threadId,
-                agentId,
                 msg.role,
                 JSON.stringify(msg.content),
                 i,
@@ -178,76 +170,63 @@ export const createSqliteStateStoreFromConnection = (conn: SqliteConnection) =>
           ])
           .pipe(mapError("write messages")),
 
-      readThreadParts: (agentId, threadId) =>
+      readThreadParts: (threadId) =>
         Effect.gen(function* () {
-          const rows = yield* stmts.selectParts.all(threadId, agentId);
+          const rows = yield* stmts.selectParts.all(threadId);
           return rows.map((row) => JSON.parse(row.content) as MessagePart);
         }).pipe(mapError("read parts")),
 
-      appendThreadPart: (agentId, threadId, part) =>
+      appendThreadPart: (threadId, part) =>
         conn
           .batch([
             // Ensure thread exists
             {
-              sql: `INSERT INTO threads (thread_id, agent_id, created_at, updated_at)
-                    VALUES (?, ?, unixepoch(), unixepoch())
-                    ON CONFLICT (thread_id, agent_id) DO UPDATE SET updated_at = unixepoch()`,
-              params: [threadId, agentId],
+              sql: `INSERT INTO threads (thread_id, created_at, updated_at)
+                    VALUES (?, unixepoch(), unixepoch())
+                    ON CONFLICT (thread_id) DO UPDATE SET updated_at = unixepoch()`,
+              params: [threadId],
             },
             // Insert part with position from subquery (atomic within batch transaction)
             {
-              sql: `INSERT INTO parts (thread_id, agent_id, type, content, position)
-                    SELECT ?, ?, ?, ?, COALESCE(MAX(position) + 1, 0)
-                    FROM parts WHERE thread_id = ? AND agent_id = ?`,
+              sql: `INSERT INTO parts (thread_id, type, content, position)
+                    SELECT ?, ?, ?, COALESCE(MAX(position) + 1, 0)
+                    FROM parts WHERE thread_id = ?`,
               params: [
                 threadId,
-                agentId,
                 part.type,
                 JSON.stringify(part),
                 threadId,
-                agentId,
               ],
             },
           ])
           .pipe(mapError("append part")),
 
-      truncateThreadParts: (agentId, threadId) =>
-        stmts.deleteParts
-          .run(threadId, agentId)
-          .pipe(mapError("truncate parts")),
+      truncateThreadParts: (threadId) =>
+        stmts.deleteParts.run(threadId).pipe(mapError("truncate parts")),
 
-      listThreads: (agentId) =>
+      listThreads: () =>
         Effect.gen(function* () {
-          if (agentId !== undefined) {
-            const rows = yield* stmts.listAgentThreads.all(agentId);
-            return rows.map((row) => ({
-              agentId: row.agent_id,
-              threadId: row.thread_id,
-            }));
-          } else {
-            const rows = yield* stmts.listAllThreads.all();
-            return rows.map((row) => ({
-              agentId: row.agent_id,
-              threadId: row.thread_id,
-            }));
-          }
+          const rows = yield* stmts.listAllThreads.all();
+          return rows.map((row) => ({
+            threadId: row.thread_id,
+          }));
         }).pipe(mapError("list threads")),
 
-      deleteThread: (agentId, threadId) =>
+      deleteThread: (threadId) =>
         // Batch is already atomic in libsql, no need for explicit transaction
         conn
           .batch([
             {
-              sql: `DELETE FROM parts WHERE thread_id = ? AND agent_id = ?`,
-              params: [threadId, agentId],
+              sql: `DELETE FROM parts WHERE thread_id = ?`,
+              params: [threadId],
             },
             {
-              sql: `DELETE FROM messages WHERE thread_id = ? AND agent_id = ?`,
-              params: [threadId, agentId],
+              sql: `DELETE FROM messages WHERE thread_id = ?`,
+              params: [threadId],
             },
             {
-              sql: `DELETE FROM threads WHERE thread_id = ? AND agent_id = ?`,
-              params: [threadId, agentId],
+              sql: `DELETE FROM threads WHERE thread_id = ?`,
+              params: [threadId],
             },
           ])
           .pipe(mapError("delete thread")),
@@ -327,6 +306,57 @@ export const MIGRATIONS: Migration[] = [
       `CREATE INDEX IF NOT EXISTS idx_threads_conversation ON threads(conversation_id)`,
       // Index for finding reply threads
       `CREATE INDEX IF NOT EXISTS idx_threads_parent ON threads(parent_message_id)`,
+    ],
+  },
+  {
+    version: "003_unify_thread_storage",
+    statements: [
+      // Create new tables without agent_id in primary keys
+      // All participants in a thread share the same conversation history
+      `CREATE TABLE threads_v2 (
+        thread_id TEXT PRIMARY KEY,
+        created_at INTEGER NOT NULL DEFAULT (unixepoch()),
+        updated_at INTEGER NOT NULL DEFAULT (unixepoch())
+      )`,
+      `CREATE TABLE messages_v2 (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        thread_id TEXT NOT NULL,
+        role TEXT NOT NULL,
+        content TEXT NOT NULL,
+        position INTEGER NOT NULL,
+        created_at INTEGER NOT NULL DEFAULT (unixepoch())
+      )`,
+      `CREATE TABLE parts_v2 (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        thread_id TEXT NOT NULL,
+        type TEXT NOT NULL,
+        content TEXT NOT NULL,
+        position INTEGER NOT NULL,
+        created_at INTEGER NOT NULL DEFAULT (unixepoch())
+      )`,
+      `CREATE INDEX idx_messages_v2_thread ON messages_v2(thread_id)`,
+      `CREATE INDEX idx_parts_v2_thread ON parts_v2(thread_id)`,
+      // Migrate existing data - group by thread_id, keeping unique threads
+      `INSERT OR REPLACE INTO threads_v2 (thread_id, created_at, updated_at)
+       SELECT thread_id, MIN(created_at), MAX(updated_at) FROM threads GROUP BY thread_id`,
+      // Migrate messages (for DMs, threadId == agentId so we just take one copy)
+      `INSERT INTO messages_v2 (thread_id, role, content, position, created_at)
+       SELECT thread_id, role, content, position, created_at FROM messages
+       WHERE rowid IN (
+         SELECT MIN(rowid) FROM messages GROUP BY thread_id, position
+       )`,
+      // Drop old tables and indexes
+      `DROP INDEX IF EXISTS idx_messages_thread`,
+      `DROP INDEX IF EXISTS idx_parts_thread`,
+      `DROP INDEX IF EXISTS idx_threads_conversation`,
+      `DROP INDEX IF EXISTS idx_threads_parent`,
+      `DROP TABLE parts`,
+      `DROP TABLE messages`,
+      `DROP TABLE threads`,
+      // Rename new tables
+      `ALTER TABLE threads_v2 RENAME TO threads`,
+      `ALTER TABLE messages_v2 RENAME TO messages`,
+      `ALTER TABLE parts_v2 RENAME TO parts`,
     ],
   },
 ];

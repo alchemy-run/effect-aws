@@ -41,11 +41,11 @@ export const compaction = (
       const model = yield* LLM.LanguageModel;
 
       return {
-        prepareContext: ({ agentId, threadId, systemPrompt }) =>
+        prepareContext: ({ threadId, systemPrompt }) =>
           Effect.gen(function* () {
             // Load messages from state
             const allMessages = yield* store
-              .readThreadMessages(agentId, threadId)
+              .readThreadMessages(threadId)
               .pipe(
                 Effect.map((msgs) => msgs.filter((m) => m.role !== "system")),
                 Effect.catchAll(() => Effect.succeed([] as MessageEncoded[])),
@@ -92,7 +92,7 @@ export const compaction = (
 
             // Persist compacted state
             yield* store
-              .writeThreadMessages(agentId, threadId, compactedMessages)
+              .writeThreadMessages(threadId, compactedMessages)
               .pipe(Effect.catchAll(() => Effect.void));
 
             yield* Effect.logInfo(

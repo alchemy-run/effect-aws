@@ -13,6 +13,7 @@ import * as Stream from "effect/Stream";
 import { isAgent, spawn, type Agent } from "./agent.ts";
 import type { Channel } from "./chat/channel.ts";
 import type { GroupChat } from "./chat/group-chat.ts";
+import { isGroup } from "./org/group.ts";
 import { StateStore, type MessagePart, type StateStoreError } from "./state/index.ts";
 import { collectReferences } from "./util/collect-references.ts";
 import { log } from "./util/log.ts";
@@ -73,9 +74,13 @@ export const parseMentions = (message: string): string[] => {
 /**
  * Extract agent participants from a Channel or GroupChat fragment.
  * Uses collectReferences to gather all agents from the fragment's references.
+ * Recurses into Groups to find all member agents.
  */
 export const extractParticipants = (fragment: Channel | GroupChat): Agent[] =>
-  collectReferences(fragment.references, { matches: isAgent });
+  collectReferences(fragment.references, {
+    matches: isAgent,
+    shouldRecurse: isGroup,
+  });
 
 // =============================================================================
 // Coordinator Prompt
@@ -214,14 +219,22 @@ export const createThreadCoordinator: (
     process: (message: string) =>
       Stream.unwrap(
         Effect.gen(function* () {
+          // Store the user message ONCE before any agent processing
+          // This ensures the message is always visible, even if no agents respond
+          yield* store.appendThreadPart(threadId, {
+            type: "user-input",
+            content: message,
+            timestamp: Date.now(),
+          });
+          log("coordinator", "stored user message");
+
           // Parse @mentions from the message
           const mentions = parseMentions(message);
           log("coordinator", "mentions", mentions.join(", ") || "(none)");
 
           // Get recent messages for context
-          // Use first participant's perspective (they all share the same thread)
-          const contextAgentId = participants[0]?.id ?? "coordinator";
-          const recentMessages = yield* store.readThreadMessages(contextAgentId, threadId);
+          // All participants share the same thread
+          const recentMessages = yield* store.readThreadMessages(threadId);
           log("coordinator", "recent messages", `${recentMessages.length} messages`);
 
           // Build the coordinator prompt
@@ -265,6 +278,7 @@ export const createThreadCoordinator: (
           log("coordinator", "agents to respond", agentsToRespond.join(", ") || "(none)");
 
           // If no agents should respond, return empty stream
+          // The user message was already stored above
           if (agentsToRespond.length === 0) {
             return Stream.empty;
           }
@@ -273,6 +287,7 @@ export const createThreadCoordinator: (
           const uniqueAgents = [...new Set(agentsToRespond)];
 
           // Spawn each agent and tag their streams
+          // Use skipUserInput: true since we already stored the user message above
           const spawnAndTag = (agentId: string) =>
             Effect.gen(function* () {
               const agent = participantMap.get(agentId);
@@ -281,7 +296,10 @@ export const createThreadCoordinator: (
                 return Stream.empty;
               }
 
-              const instance = yield* spawn(agent, threadId);
+              const instance = yield* spawn(agent, {
+                threadId,
+                skipUserInput: true,
+              });
               return instance.send(message).pipe(
                 Stream.map((part) => ({ agentId, part })),
               );

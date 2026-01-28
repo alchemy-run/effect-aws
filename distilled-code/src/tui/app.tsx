@@ -14,6 +14,7 @@ import { createMemo, createSignal, For, Show } from "solid-js";
 import type { ChannelType } from "../state/thread.ts";
 import { ChatView } from "./components/chat-view.tsx";
 import { DocumentView } from "./components/document-view.tsx";
+import { MembersSidebar } from "./components/members-sidebar.tsx";
 import { useRegistry } from "./context/registry.tsx";
 import { useStore } from "./context/store.tsx";
 import { ThemeProvider } from "./context/theme.tsx";
@@ -136,7 +137,16 @@ export function App() {
 
   // Layout dimensions
   const sidebarWidth = () => Math.min(30, Math.floor(dimensions().width * 0.25));
-  const contentWidth = () => dimensions().width - sidebarWidth();
+  const membersSidebarWidth = () => Math.min(24, Math.floor(dimensions().width * 0.18));
+  // Show members sidebar for channels and groups
+  const showMembersSidebar = () => {
+    const sel = currentSelection();
+    return sel && (sel.type === "channel" || sel.type === "group");
+  };
+  const contentWidth = () => {
+    const base = dimensions().width - sidebarWidth();
+    return showMembersSidebar() ? base - membersSidebarWidth() : base;
+  };
 
   // Exit the app
   const handleExit = () => {
@@ -337,12 +347,23 @@ export function App() {
               <Show
                 when={viewMode() === "document"}
                 fallback={
-                  <ChatView
-                    agentId={selection().id}
-                    focused={chatFocused()}
-                    onBack={handleBack}
-                    onExit={handleExit}
-                  />
+                  <box flexDirection="row" width="100%" height="100%">
+                    <ChatView
+                      type={selection().type}
+                      id={selection().id}
+                      focused={chatFocused()}
+                      onBack={handleBack}
+                      onExit={handleExit}
+                    />
+                    <Show when={showMembersSidebar()}>
+                      <MembersSidebar
+                        type={selection().type}
+                        id={selection().id}
+                        width={membersSidebarWidth()}
+                        height={dimensions().height}
+                      />
+                    </Show>
+                  </box>
                 }
               >
                 <DocumentView id={selection().id} />

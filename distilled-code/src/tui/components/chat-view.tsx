@@ -1,7 +1,7 @@
 /**
  * ChatView Component
  *
- * Chat view for a selected agent/thread with message stream and input.
+ * Chat view for a selected agent/channel/group with message stream and input.
  */
 
 import type { MessageEncoded } from "@effect/ai/Prompt";
@@ -15,6 +15,8 @@ import * as Stream from "effect/Stream";
 import { createEffect, createSignal, on, onCleanup, Show } from "solid-js";
 import { spawn } from "../../agent.ts";
 import { StateStore, type MessagePart } from "../../state/index.ts";
+import type { ChannelType } from "../../state/thread.ts";
+import { createThreadCoordinator } from "../../thread.ts";
 import { logError } from "../../util/log.ts";
 import { useRegistry } from "../context/registry.tsx";
 import { useStore } from "../context/store.tsx";
@@ -26,12 +28,17 @@ import { MessageStream } from "./message-stream.tsx";
  */
 export interface ChatViewProps {
   /**
-   * Agent ID for this session
+   * Type of the selected item (dm, channel, or group)
    */
-  agentId: string;
+  type: ChannelType;
 
   /**
-   * Thread ID (optional, defaults to agentId)
+   * ID of the agent, channel, or group
+   */
+  id: string;
+
+  /**
+   * Thread ID (optional, defaults to id)
    */
   threadId?: string;
 
@@ -66,7 +73,19 @@ export function ChatView(props: ChatViewProps) {
   const [error, setError] = createSignal<string>();
   const [loading, setLoading] = createSignal(false);
 
-  const threadId = () => props.threadId || props.agentId;
+  const threadId = () => props.threadId || props.id;
+
+  // Get the display prefix based on type
+  const displayPrefix = () => {
+    switch (props.type) {
+      case "channel":
+        return "#";
+      case "group":
+        return "&";
+      default:
+        return "@";
+    }
+  };
 
   // Track subscription fiber for cleanup
   let subscriptionFiber: Fiber.RuntimeFiber<void, unknown> | undefined;
@@ -79,11 +98,11 @@ export function ChatView(props: ChatViewProps) {
     }
   };
 
-  // Load existing messages/parts and subscribe to new ones when agent/thread changes
+  // Load existing messages/parts and subscribe to new ones when selection changes
   createEffect(
     on(
-      () => [props.agentId, threadId()] as const,
-      ([agentId, currentThreadId]) => {
+      () => [props.type, props.id, threadId()] as const,
+      ([_type, _id, currentThreadId]) => {
         // Cleanup previous subscription
         cleanupSubscription();
 
@@ -97,24 +116,15 @@ export function ChatView(props: ChatViewProps) {
           const stateStore = yield* StateStore;
 
           // Read historical messages (permanent storage)
-          const storedMessages = yield* stateStore.readThreadMessages(
-            agentId,
-            currentThreadId,
-          );
+          const storedMessages = yield* stateStore.readThreadMessages(currentThreadId);
           setMessages(storedMessages);
 
           // Read pending parts (in-progress conversation, not yet flushed)
-          const pendingParts = yield* stateStore.readThreadParts(
-            agentId,
-            currentThreadId,
-          );
+          const pendingParts = yield* stateStore.readThreadParts(currentThreadId);
           setParts(pendingParts);
 
           // Subscribe to new streaming parts
-          const stream = yield* stateStore.subscribeThread(
-            agentId,
-            currentThreadId,
-          );
+          const stream = yield* stateStore.subscribeThread(currentThreadId);
 
           yield* stream.pipe(
             Stream.runForEach((part) =>
@@ -181,23 +191,27 @@ export function ChatView(props: ChatViewProps) {
     setError(undefined);
     setLoading(true);
 
-    const agent = registry.getAgent(props.agentId);
-    if (!agent) {
-      const errorMsg = `Agent "${props.agentId}" not found`;
-      logError("ChatView", "agent not found", new Error(errorMsg));
-      setError(errorMsg);
-      setLoading(false);
-      return;
-    }
-
     const sendEffect = Effect.gen(function* () {
-      // Spawn the agent
-      const instance = yield* spawn(agent, threadId());
-
-      // Send the message and consume the stream
-      // Parts are automatically persisted by the agent
-      // We receive them via our subscription
-      yield* instance.send(message).pipe(Stream.runDrain);
+      if (props.type === "dm") {
+        // Direct message to agent
+        const agent = registry.getAgent(props.id);
+        if (!agent) {
+          throw new Error(`Agent "${props.id}" not found`);
+        }
+        const instance = yield* spawn(agent, threadId());
+        yield* instance.send(message).pipe(Stream.runDrain);
+      } else {
+        // Channel or group chat - use coordinator
+        const fragment =
+          props.type === "channel"
+            ? registry.getChannel(props.id)
+            : registry.getGroupChat(props.id);
+        if (!fragment) {
+          throw new Error(`${props.type} "${props.id}" not found`);
+        }
+        const coordinator = yield* createThreadCoordinator(fragment, threadId());
+        yield* coordinator.process(message).pipe(Stream.runDrain);
+      }
     }).pipe(
       Effect.catchAllCause((cause) =>
         Effect.sync(() => {
@@ -242,9 +256,9 @@ export function ChatView(props: ChatViewProps) {
       >
         <box flexDirection="row" gap={2}>
           <text fg="#fab283" attributes={TextAttributes.BOLD}>
-            {props.agentId}
+            {displayPrefix()}{props.id}
           </text>
-          <Show when={props.threadId && props.threadId !== props.agentId}>
+          <Show when={props.threadId && props.threadId !== props.id}>
             <text fg="#6a6a6a">/</text>
             <text fg="#8383fa">{props.threadId}</text>
           </Show>
