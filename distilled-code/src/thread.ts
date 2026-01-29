@@ -219,14 +219,15 @@ export const createThreadCoordinator: (
     process: (message: string) =>
       Stream.unwrap(
         Effect.gen(function* () {
-          // Store the user message ONCE before any agent processing
-          // This ensures the message is always visible, even if no agents respond
+          // NOTE: User input is stored by MessagingService before calling process()
+          // We don't store it here to avoid duplication
+
+          // Emit coordinator-thinking event so UI can show "Thinking..."
           yield* store.appendThreadPart(threadId, {
-            type: "user-input",
-            content: message,
+            type: "coordinator-thinking",
             timestamp: Date.now(),
           });
-          log("coordinator", "stored user message");
+          log("coordinator", "emitted thinking event");
 
           // Parse @mentions from the message
           const mentions = parseMentions(message);
@@ -278,7 +279,6 @@ export const createThreadCoordinator: (
           log("coordinator", "agents to respond", agentsToRespond.join(", ") || "(none)");
 
           // If no agents should respond, return empty stream
-          // The user message was already stored above
           if (agentsToRespond.length === 0) {
             return Stream.empty;
           }
@@ -286,8 +286,16 @@ export const createThreadCoordinator: (
           // Deduplicate agents
           const uniqueAgents = [...new Set(agentsToRespond)];
 
+          // Emit coordinator-invoke event so UI can show "Invoking @agent..." bubbles
+          yield* store.appendThreadPart(threadId, {
+            type: "coordinator-invoke",
+            agents: uniqueAgents,
+            timestamp: Date.now(),
+          });
+          log("coordinator", "emitted invoke event", uniqueAgents.join(", "));
+
           // Spawn each agent and tag their streams
-          // Use skipUserInput: true since we already stored the user message above
+          // Use skipUserInput: true since MessagingService already stored the user message
           const spawnAndTag = (agentId: string) =>
             Effect.gen(function* () {
               const agent = participantMap.get(agentId);
@@ -300,8 +308,26 @@ export const createThreadCoordinator: (
                 threadId,
                 skipUserInput: true,
               });
+              
+              // Wrap the stream to emit invoke-complete when agent finishes
               return instance.send(message).pipe(
                 Stream.map((part) => ({ agentId, part })),
+                Stream.ensuring(
+                  store
+                    .appendThreadPart(threadId, {
+                      type: "coordinator-invoke-complete",
+                      agentId,
+                      timestamp: Date.now(),
+                    })
+                    .pipe(
+                      Effect.tap(() =>
+                        Effect.sync(() =>
+                          log("coordinator", "emitted invoke-complete", agentId),
+                        ),
+                      ),
+                      Effect.ignore, // Ignore errors in cleanup
+                    ),
+                ),
               );
             });
 

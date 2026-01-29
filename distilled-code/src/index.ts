@@ -3,6 +3,7 @@ export * as Chat from "./chat/index.ts";
 export * as File from "./file/index.ts";
 export * from "./fragment.ts";
 export * from "./input.ts";
+export * from "./messaging-service.ts";
 export * as Org from "./org/index.ts";
 export * from "./output.ts";
 export * from "./state/index.ts";

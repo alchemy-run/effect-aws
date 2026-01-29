@@ -4,7 +4,7 @@ import * as Data from "effect/Data";
 import * as Effect from "effect/Effect";
 import * as PubSub from "effect/PubSub";
 import * as Stream from "effect/Stream";
-import type { MessagePart, Thread } from "./thread.ts";
+import type { MessagePart, MessageWithSender, Thread } from "./thread.ts";
 
 /**
  * Error that occurs when a StateStore operation fails.
@@ -25,18 +25,33 @@ export const StateStore = Context.GenericTag<StateStore>("StateStore");
  */
 export interface StateStore {
   /**
-   * Read messages for a thread.
+   * Read messages for a thread (without sender info, for backwards compatibility).
    */
   readThreadMessages(
     threadId: string,
   ): Effect.Effect<readonly MessageEncoded[], StateStoreError>;
 
   /**
-   * Write messages for a thread.
+   * Read messages for a thread with sender attribution.
+   */
+  readThreadMessagesWithSender(
+    threadId: string,
+  ): Effect.Effect<readonly MessageWithSender[], StateStoreError>;
+
+  /**
+   * Write messages for a thread (without sender info, for backwards compatibility).
    */
   writeThreadMessages(
     threadId: string,
     messages: readonly MessageEncoded[],
+  ): Effect.Effect<void, StateStoreError>;
+
+  /**
+   * Write messages for a thread with sender attribution.
+   */
+  writeThreadMessagesWithSender(
+    threadId: string,
+    messages: readonly MessageWithSender[],
   ): Effect.Effect<void, StateStoreError>;
 
   /**
@@ -47,9 +62,28 @@ export interface StateStore {
   ): Effect.Effect<MessagePart[], StateStoreError>;
 
   /**
-   * Append a part to a thread.
+   * Read parts for a specific agent in a thread.
+   * Used for agent-scoped flush operations.
+   */
+  readAgentParts(
+    threadId: string,
+    sender: string,
+  ): Effect.Effect<MessagePart[], StateStoreError>;
+
+  /**
+   * Append a part to a thread (persists to parts table AND publishes to PubSub).
    */
   appendThreadPart(
+    threadId: string,
+    part: MessagePart,
+  ): Effect.Effect<void, StateStoreError>;
+
+  /**
+   * Publish a part to the thread's PubSub stream WITHOUT persisting to parts table.
+   * Use this for user-input parts that are already stored in the messages table.
+   * This prevents duplicate storage that leads to duplicate display on reload.
+   */
+  publishThreadPart(
     threadId: string,
     part: MessagePart,
   ): Effect.Effect<void, StateStoreError>;
@@ -60,6 +94,23 @@ export interface StateStore {
   truncateThreadParts(
     threadId: string,
   ): Effect.Effect<void, StateStoreError>;
+
+  /**
+   * Clear parts for a specific agent in a thread.
+   * Used for agent-scoped flush operations.
+   */
+  truncateAgentParts(
+    threadId: string,
+    sender: string,
+  ): Effect.Effect<void, StateStoreError>;
+
+  /**
+   * Get agents that have pending (incomplete) parts in a thread.
+   * Used to display "typing" indicators for channels/groups.
+   */
+  getTypingAgents(
+    threadId: string,
+  ): Effect.Effect<readonly string[], StateStoreError>;
 
   /**
    * List all threads.
@@ -132,6 +183,14 @@ export const createStateStore = (
         ],
         { concurrency: "unbounded" },
       );
+    }),
+
+    // Publish to PubSub WITHOUT persisting - for user-input that's already in messages table.
+    // This fixes duplicate display: user input goes to messages (persist) + PubSub (stream),
+    // never to parts table (which would cause duplicates on reload).
+    publishThreadPart: Effect.fnUntraced(function* (threadId, part) {
+      const pubsub = yield* getPubSub(threadId);
+      yield* PubSub.publish(pubsub, part);
     }),
 
     // Override deleteThread to also clean up thread

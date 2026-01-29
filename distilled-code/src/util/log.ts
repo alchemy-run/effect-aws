@@ -1,9 +1,9 @@
 /**
  * Simple file-based logging for debugging
  */
+import { Cause, Exit } from "effect";
 import * as fs from "fs";
 import * as path from "path";
-import { Cause, Exit } from "effect";
 
 const LOG_FILE = path.join(process.cwd(), ".distilled-code.log");
 
@@ -54,7 +54,9 @@ function formatError(error: unknown): string {
 
     // Try to get more details from common error structures
     if ("body" in error) {
-      parts.push(`\nResponse Body: ${JSON.stringify((error as any).body, null, 2)}`);
+      parts.push(
+        `\nResponse Body: ${JSON.stringify((error as any).body, null, 2)}`,
+      );
     }
 
     if (error instanceof Error && error.stack) {

@@ -2,9 +2,9 @@
  * ChatView Component
  *
  * Chat view for a selected agent/channel/group with message stream and input.
+ * Now simplified to just subscribe to MessagingService and render DisplayEvents.
  */
 
-import type { MessageEncoded } from "@effect/ai/Prompt";
 import { TextAttributes } from "@opentui/core";
 import { useKeyboard, useTerminalDimensions } from "@opentui/solid";
 import * as Cause from "effect/Cause";
@@ -12,11 +12,19 @@ import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";
 import * as Fiber from "effect/Fiber";
 import * as Stream from "effect/Stream";
-import { createEffect, createSignal, on, onCleanup, Show } from "solid-js";
-import { spawn } from "../../agent.ts";
-import { StateStore, type MessagePart } from "../../state/index.ts";
-import type { ChannelType } from "../../state/thread.ts";
-import { createThreadCoordinator } from "../../thread.ts";
+import {
+  createEffect,
+  createSignal,
+  on,
+  onCleanup,
+  onMount,
+  Show,
+} from "solid-js";
+import {
+  createMessagingService,
+  type MessagingService,
+} from "../../messaging-service.ts";
+import type { ChannelType, DisplayEvent } from "../../state/thread.ts";
 import { logError } from "../../util/log.ts";
 import { useRegistry } from "../context/registry.tsx";
 import { useStore } from "../context/store.tsx";
@@ -66,12 +74,28 @@ export function ChatView(props: ChatViewProps) {
   const registry = useRegistry();
   const store = useStore();
 
-  // Historical messages from the messages table (permanent storage)
-  const [messages, setMessages] = createSignal<readonly MessageEncoded[]>([]);
-  // Streaming parts for the current turn (temporary buffer)
-  const [parts, setParts] = createSignal<MessagePart[]>([]);
+  // Display events from MessagingService - the single source of truth
+  // No more separate messages/parts - just display events
+  const [displayEvents, setDisplayEvents] = createSignal<DisplayEvent[]>([]);
   const [error, setError] = createSignal<string>();
   const [loading, setLoading] = createSignal(false);
+
+  // Cache the MessagingService - created once on mount, reused for all operations
+  const [messagingService, setMessagingService] = createSignal<
+    MessagingService | undefined
+  >();
+
+  onMount(() => {
+    // Create the MessagingService once when the component mounts
+    const effect = createMessagingService(registry);
+    store.runtime.runPromise(effect).then(
+      (service) => setMessagingService(service),
+      (err) => {
+        logError("ChatView", "failed to create messaging service", err);
+        setError(err instanceof Error ? err.message : String(err));
+      },
+    );
+  });
 
   const threadId = () => props.threadId || props.id;
 
@@ -98,38 +122,38 @@ export function ChatView(props: ChatViewProps) {
     }
   };
 
-  // Load existing messages/parts and subscribe to new ones when selection changes
+  // Subscribe to display events when selection or service changes
   createEffect(
     on(
-      () => [props.type, props.id, threadId()] as const,
-      ([_type, _id, currentThreadId]) => {
+      () => [props.type, props.id, threadId(), messagingService()] as const,
+      ([channelType, _id, currentThreadId, service]) => {
         // Cleanup previous subscription
         cleanupSubscription();
 
         // Clear previous state
-        setMessages([]);
-        setParts([]);
+        setDisplayEvents([]);
         setError(undefined);
 
-        // Load and subscribe in one effect
+        // Need service to subscribe
+        if (!service) {
+          return;
+        }
+
+        // Subscribe to display events from MessagingService
+        // This is the single source of truth - no direct StateStore access
         const effect = Effect.gen(function* () {
-          const stateStore = yield* StateStore;
-
-          // Read historical messages (permanent storage)
-          const storedMessages = yield* stateStore.readThreadMessages(currentThreadId);
-          setMessages(storedMessages);
-
-          // Read pending parts (in-progress conversation, not yet flushed)
-          const pendingParts = yield* stateStore.readThreadParts(currentThreadId);
-          setParts(pendingParts);
-
-          // Subscribe to new streaming parts
-          const stream = yield* stateStore.subscribeThread(currentThreadId);
+          // MessagingService.subscribe() returns a stream that:
+          // - Loads historical messages and converts to display events
+          // - Subscribes to raw parts and transforms based on channel type
+          // - For DMs: streams text deltas in real-time
+          // - For channels/groups: buffers text, emits complete messages only
+          const stream = yield* service.subscribe(channelType, currentThreadId);
 
           yield* stream.pipe(
-            Stream.runForEach((part) =>
+            Stream.runForEach((event) =>
               Effect.sync(() => {
-                setParts((prev) => [...prev, part]);
+                // Just accumulate display events - all processing is done by backend
+                setDisplayEvents((prev) => [...prev, event]);
               }),
             ),
           );
@@ -148,7 +172,6 @@ export function ChatView(props: ChatViewProps) {
         subscriptionFiber = store.runtime.runFork(effect);
 
         // Observe the fiber for errors (e.g., layer initialization failures)
-        // Use Fiber.await to get an Exit which provides proper error details
         Effect.runPromise(Fiber.await(subscriptionFiber)).then((exit) => {
           if (Exit.isFailure(exit)) {
             const cause = exit.cause;
@@ -187,45 +210,36 @@ export function ChatView(props: ChatViewProps) {
   });
 
   // Handle sending messages
+  // ChatView is now thin - it just calls MessagingService.send()
+  // Display updates come from the subscription
   const handleSubmit = (message: string) => {
+    const service = messagingService();
+    if (!service) {
+      setError("MessagingService not ready yet");
+      return;
+    }
+
     setError(undefined);
     setLoading(true);
 
-    const sendEffect = Effect.gen(function* () {
-      if (props.type === "dm") {
-        // Direct message to agent
-        const agent = registry.getAgent(props.id);
-        if (!agent) {
-          throw new Error(`Agent "${props.id}" not found`);
-        }
-        const instance = yield* spawn(agent, threadId());
-        yield* instance.send(message).pipe(Stream.runDrain);
-      } else {
-        // Channel or group chat - use coordinator
-        const fragment =
-          props.type === "channel"
-            ? registry.getChannel(props.id)
-            : registry.getGroupChat(props.id);
-        if (!fragment) {
-          throw new Error(`${props.type} "${props.id}" not found`);
-        }
-        const coordinator = yield* createThreadCoordinator(fragment, threadId());
-        yield* coordinator.process(message).pipe(Stream.runDrain);
-      }
-    }).pipe(
-      Effect.catchAllCause((cause) =>
-        Effect.sync(() => {
-          logError("ChatView", "send message error", cause);
-          setError(Cause.pretty(cause));
-        }),
-      ),
-      Effect.ensuring(Effect.sync(() => setLoading(false))),
-    );
+    // MessagingService.send() now returns Effect<void>
+    // It writes user message to DB, publishes to stream, and spawns agents
+    // Display updates come from our subscription to service.subscribe()
+    const sendEffect = service
+      .send(props.type, props.id, threadId(), message)
+      .pipe(
+        Effect.catchAllCause((cause) =>
+          Effect.sync(() => {
+            logError("ChatView", "send message error", cause);
+            setError(Cause.pretty(cause));
+          }),
+        ),
+        Effect.ensuring(Effect.sync(() => setLoading(false))),
+      );
 
     // Use runPromise to catch any layer initialization errors
     store.runtime.runPromise(sendEffect).catch((err) => {
       logError("ChatView", "layer initialization error", err);
-      // Format the error properly for display
       const errorStr = err instanceof Error ? err.message : String(err);
       setError(errorStr);
       setLoading(false);
@@ -271,8 +285,11 @@ export function ChatView(props: ChatViewProps) {
         </box>
       </box>
 
-      {/* Message stream */}
-      <MessageStream messages={messages} parts={parts} height={messageHeight()} />
+      {/* Message stream - just renders DisplayEvents, no processing needed */}
+      <MessageStream
+        events={displayEvents}
+        height={messageHeight()}
+      />
 
       {/* Error display */}
       <Show when={error()}>

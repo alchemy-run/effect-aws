@@ -16,7 +16,7 @@ import {
   StateStore,
   StateStoreError,
 } from "./state-store.ts";
-import type { MessagePart } from "./thread.ts";
+import type { MessagePart, MessageWithSender } from "./thread.ts";
 
 /**
  * Configuration for SQLite state store.
@@ -90,6 +90,15 @@ export const createSqliteStateStoreFromConnection = (conn: SqliteConnection) =>
           WHERE thread_id = ?
           ORDER BY position ASC
         `),
+        selectMessagesWithSender: yield* conn.prepare<{
+          role: string;
+          content: string;
+          sender: string | null;
+        }>(`
+          SELECT role, content, sender FROM messages
+          WHERE thread_id = ?
+          ORDER BY position ASC
+        `),
         deleteMessages: yield* conn.prepare(`
           DELETE FROM messages WHERE thread_id = ?
         `),
@@ -103,6 +112,14 @@ export const createSqliteStateStoreFromConnection = (conn: SqliteConnection) =>
           WHERE thread_id = ?
           ORDER BY position ASC
         `),
+        selectAgentParts: yield* conn.prepare<{
+          type: string;
+          content: string;
+        }>(`
+          SELECT type, content FROM parts
+          WHERE thread_id = ? AND sender = ?
+          ORDER BY position ASC
+        `),
         insertPart: yield* conn.prepare(`
           INSERT INTO parts (thread_id, type, content, position)
           VALUES (?, ?, ?, ?)
@@ -112,6 +129,20 @@ export const createSqliteStateStoreFromConnection = (conn: SqliteConnection) =>
         `),
         deleteParts: yield* conn.prepare(`
           DELETE FROM parts WHERE thread_id = ?
+        `),
+        deleteAgentParts: yield* conn.prepare(`
+          DELETE FROM parts WHERE thread_id = ? AND sender = ?
+        `),
+        // Get distinct senders that have incomplete message streams
+        // An agent is "typing" if they have parts but no text-end yet
+        selectTypingAgents: yield* conn.prepare<{ sender: string }>(`
+          SELECT DISTINCT sender FROM parts
+          WHERE thread_id = ? 
+            AND sender IS NOT NULL
+            AND sender NOT IN (
+              SELECT DISTINCT sender FROM parts 
+              WHERE thread_id = ? AND type = 'text-end' AND sender IS NOT NULL
+            )
         `),
 
         listAllThreads: yield* conn.prepare<{
@@ -140,6 +171,16 @@ export const createSqliteStateStoreFromConnection = (conn: SqliteConnection) =>
             content: JSON.parse(row.content),
           })) as readonly MessageEncoded[];
         }).pipe(mapError("read messages")),
+
+      readThreadMessagesWithSender: (threadId) =>
+        Effect.gen(function* () {
+          const rows = yield* stmts.selectMessagesWithSender.all(threadId);
+          return rows.map((row) => ({
+            role: row.role as MessageEncoded["role"],
+            content: JSON.parse(row.content),
+            sender: row.sender ?? undefined,
+          })) as readonly MessageWithSender[];
+        }).pipe(mapError("read messages with sender")),
 
       writeThreadMessages: (threadId, messages) =>
         conn
@@ -170,11 +211,47 @@ export const createSqliteStateStoreFromConnection = (conn: SqliteConnection) =>
           ])
           .pipe(mapError("write messages")),
 
+      writeThreadMessagesWithSender: (threadId, messages) =>
+        conn
+          .batch([
+            // Ensure thread exists
+            {
+              sql: `INSERT INTO threads (thread_id, created_at, updated_at)
+                    VALUES (?, unixepoch(), unixepoch())
+                    ON CONFLICT (thread_id) DO UPDATE SET updated_at = unixepoch()`,
+              params: [threadId],
+            },
+            // Clear existing messages
+            {
+              sql: `DELETE FROM messages WHERE thread_id = ?`,
+              params: [threadId],
+            },
+            // Insert all new messages with sender
+            ...messages.map((msg, i) => ({
+              sql: `INSERT INTO messages (thread_id, role, content, position, sender)
+                    VALUES (?, ?, ?, ?, ?)`,
+              params: [
+                threadId,
+                msg.role,
+                JSON.stringify(msg.content),
+                i,
+                msg.sender ?? null,
+              ],
+            })),
+          ])
+          .pipe(mapError("write messages with sender")),
+
       readThreadParts: (threadId) =>
         Effect.gen(function* () {
           const rows = yield* stmts.selectParts.all(threadId);
           return rows.map((row) => JSON.parse(row.content) as MessagePart);
         }).pipe(mapError("read parts")),
+
+      readAgentParts: (threadId, sender) =>
+        Effect.gen(function* () {
+          const rows = yield* stmts.selectAgentParts.all(threadId, sender);
+          return rows.map((row) => JSON.parse(row.content) as MessagePart);
+        }).pipe(mapError("read agent parts")),
 
       appendThreadPart: (threadId, part) =>
         conn
@@ -187,22 +264,39 @@ export const createSqliteStateStoreFromConnection = (conn: SqliteConnection) =>
               params: [threadId],
             },
             // Insert part with position from subquery (atomic within batch transaction)
+            // Include sender from the part object
             {
-              sql: `INSERT INTO parts (thread_id, type, content, position)
-                    SELECT ?, ?, ?, COALESCE(MAX(position) + 1, 0)
+              sql: `INSERT INTO parts (thread_id, type, content, position, sender)
+                    SELECT ?, ?, ?, COALESCE(MAX(position) + 1, 0), ?
                     FROM parts WHERE thread_id = ?`,
               params: [
                 threadId,
                 part.type,
                 JSON.stringify(part),
+                (part as any).sender ?? null,
                 threadId,
               ],
             },
           ])
           .pipe(mapError("append part")),
 
+      // No-op for SQLite layer - PubSub handling is in createStateStore wrapper.
+      // User input is published to PubSub for real-time UI but not persisted to parts table.
+      publishThreadPart: () => Effect.void,
+
       truncateThreadParts: (threadId) =>
         stmts.deleteParts.run(threadId).pipe(mapError("truncate parts")),
+
+      truncateAgentParts: (threadId, sender) =>
+        stmts.deleteAgentParts
+          .run(threadId, sender)
+          .pipe(mapError("truncate agent parts")),
+
+      getTypingAgents: (threadId) =>
+        Effect.gen(function* () {
+          const rows = yield* stmts.selectTypingAgents.all(threadId, threadId);
+          return rows.map((row) => row.sender);
+        }).pipe(mapError("get typing agents")),
 
       listThreads: () =>
         Effect.gen(function* () {
@@ -357,6 +451,17 @@ export const MIGRATIONS: Migration[] = [
       `ALTER TABLE threads_v2 RENAME TO threads`,
       `ALTER TABLE messages_v2 RENAME TO messages`,
       `ALTER TABLE parts_v2 RENAME TO parts`,
+    ],
+  },
+  {
+    version: "004_add_sender_column",
+    statements: [
+      // Add sender column to parts table for tracking which agent produced each part
+      `ALTER TABLE parts ADD COLUMN sender TEXT`,
+      // Add sender column to messages table for tracking message attribution
+      `ALTER TABLE messages ADD COLUMN sender TEXT`,
+      // Index for efficient querying of parts by sender (for agent-scoped flush and typing indicators)
+      `CREATE INDEX idx_parts_sender ON parts(thread_id, sender)`,
     ],
   },
 ];

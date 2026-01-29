@@ -19,6 +19,7 @@ import {
   StateStore,
   StateStoreError,
   type MessagePart,
+  type MessageWithSender,
 } from "./state/index.ts";
 import { toText } from "./stream.ts";
 import { tool } from "./tool/tool.ts";
@@ -226,7 +227,8 @@ export const spawn: <A extends Agent<string, any[]>>(
   const agentId = agent.id;
 
   // Recover from crash: flush any partial parts from previous session
-  yield* flush(store, threadId);
+  // Use agentId to only flush this agent's parts
+  yield* flush(store, threadId, agentId);
 
   // Get messages to hydrate chat
   const rawStoredMessages = yield* store.readThreadMessages(threadId);
@@ -368,18 +370,9 @@ export const spawn: <A extends Agent<string, any[]>>(
       Stream.unwrap(
         locked(
           Effect.gen(function* () {
-            // Append user input part (unless already stored by coordinator)
-            if (!options.skipUserInput) {
-              yield* store.appendThreadPart(threadId, {
-                type: "user-input",
-                content: prompt,
-                timestamp: Date.now(),
-              });
-            }
-
-            // Always flush to convert any pending user input to a message
-            // (either appended above or by the coordinator)
-            yield* lockedFlush(flush(store, threadId));
+            // NOTE: User input is now stored by MessagingService before calling send()
+            // This ensures user input goes directly to messages table, not parts buffer,
+            // which fixes agent isolation issues in multi-agent channels.
 
             // Only include context messages on first call (when history is empty)
             // Otherwise the context messages are already in the chat history
@@ -430,19 +423,20 @@ export const spawn: <A extends Agent<string, any[]>>(
                 Stream.tapError((error) =>
                   Effect.sync(() => log("send", "error", error)),
                 ),
-                // Forward parts to store
+                // Forward parts to store with sender attribution
                 Stream.tap((part) => {
-                  const threadPart = part as MessagePart;
+                  // Add sender (agentId) to the part for attribution
+                  const threadPart = { ...part, sender: agentId } as MessagePart;
                   return Effect.gen(function* () {
                     yield* store.appendThreadPart(threadId, threadPart);
                     // Check if message boundary reached
                     // Use lockedFlush to prevent race conditions in concurrent streams
                     if (isMessageBoundary(threadPart)) {
-                      yield* lockedFlush(flush(store, threadId));
+                      yield* lockedFlush(flush(store, threadId, agentId));
                     }
                   });
                 }),
-                Stream.map((part) => part as MessagePart),
+                Stream.map((part) => ({ ...part, sender: agentId }) as MessagePart),
               );
           }),
         ),
@@ -522,45 +516,57 @@ const aiRetrySchedule = Schedule.intersect(
 /**
  * Flush parts to messages: reads accumulated parts, converts them to messages
  * using Prompt.fromResponseParts, writes messages, and truncates parts.
+ *
+ * This is now always agent-scoped. User input is handled by MessagingService
+ * and goes directly to messages, bypassing the parts buffer entirely.
+ *
+ * @param store - The state store to use
+ * @param threadId - The thread to flush
+ * @param agentId - Agent ID for scoped flush (required)
  */
 const flush = (
   store: StateStore,
   threadId: string,
+  agentId: string,
 ): Effect.Effect<void, StateStoreError> =>
   Effect.gen(function* () {
-    const parts = yield* store.readThreadParts(threadId);
+    // Read only this agent's parts
+    const parts = yield* store.readAgentParts(threadId, agentId);
+
     log(
       "flush",
       "parts",
       JSON.stringify(
-        parts.map((p) => ({ type: p.type, id: (p as any).id })),
+        parts.map((p) => ({
+          type: p.type,
+          id: (p as any).id,
+          sender: (p as any).sender,
+        })),
         null,
         2,
       ),
     );
     if (parts.length === 0) return;
 
-    // Check for user-input first (not a Response part)
-    const firstPart = parts[0];
-    if (firstPart.type === "user-input") {
-      // User input becomes a user message
-      const currentMessages = yield* store.readThreadMessages(threadId);
-      yield* store.writeThreadMessages(threadId, [
-        ...currentMessages,
-        {
-          role: "user" as const,
-          content: firstPart.content,
-        },
-      ]);
-      yield* store.truncateThreadParts(threadId);
+    // Filter out any non-AI parts (user-input, coordinator events)
+    // These shouldn't be in agent parts, but filter defensively
+    const aiParts = parts.filter(
+      (p) =>
+        p.type !== "user-input" &&
+        p.type !== "coordinator-thinking" &&
+        p.type !== "coordinator-invoke" &&
+        p.type !== "coordinator-invoke-complete",
+    );
+
+    if (aiParts.length === 0) {
+      // Only non-AI parts, just truncate
+      yield* store.truncateAgentParts(threadId, agentId);
       return;
     }
 
     // Use @effect/ai's Prompt.fromResponseParts for all AI response parts
     // It handles all the streaming accumulation logic properly
-    const prompt = Prompt.fromResponseParts(
-      parts.filter((p) => p.type !== "user-input") as any[],
-    );
+    const prompt = Prompt.fromResponseParts(aiParts as any[]);
 
     const encode = S.encode(Prompt.Message);
 
@@ -569,6 +575,9 @@ const flush = (
       prompt.content.map((msg) => encode(msg).pipe(Effect.orDie)),
     );
 
+    // Use agentId as sender (always agent-scoped now)
+    const sender = agentId;
+
     if (messages.length > 0) {
       log(
         "flush",
@@ -576,6 +585,7 @@ const flush = (
         JSON.stringify(
           messages.map((m: any) => ({
             role: m.role,
+            sender,
             contentLength: Array.isArray(m.content) ? m.content.length : 1,
             toolCallIds: Array.isArray(m.content)
               ? m.content
@@ -587,7 +597,8 @@ const flush = (
           2,
         ),
       );
-      const currentMessages = yield* store.readThreadMessages(threadId);
+      const currentMessages =
+        yield* store.readThreadMessagesWithSender(threadId);
 
       // Collect existing tool_use IDs to prevent duplicates
       const existingToolIds = new Set<string>();
@@ -598,51 +609,64 @@ const flush = (
       }
 
       // Deduplicate new messages - remove any tool-call blocks with existing IDs
-      const deduplicatedMessages = messages.map((msg: MessageEncoded) => {
-        if (!Array.isArray(msg.content)) {
-          return msg;
-        }
-
-        const filteredContent = msg.content.filter((block: any) => {
-          if (
-            typeof block === "object" &&
-            block !== null &&
-            "type" in block &&
-            block.type === "tool-call" &&
-            "id" in block &&
-            typeof block.id === "string"
-          ) {
-            if (existingToolIds.has(block.id)) {
-              log("flush", "WARNING: Skipping duplicate tool_use ID", {
-                id: block.id,
-                threadId,
-              });
-              return false;
-            }
-            // Track this ID so we don't duplicate within the new messages either
-            existingToolIds.add(block.id);
+      // Also add sender attribution to each message
+      const deduplicatedMessages = messages
+        .map((msg: MessageEncoded) => {
+          if (!Array.isArray(msg.content)) {
+            return { ...msg, sender } as MessageWithSender;
           }
-          return true;
-        });
 
-        // Skip messages that are now empty
-        if (filteredContent.length === 0) {
-          return null;
-        }
+          const filteredContent = msg.content.filter((block: any) => {
+            if (
+              typeof block === "object" &&
+              block !== null &&
+              "type" in block &&
+              block.type === "tool-call" &&
+              "id" in block &&
+              typeof block.id === "string"
+            ) {
+              if (existingToolIds.has(block.id)) {
+                log("flush", "WARNING: Skipping duplicate tool_use ID", {
+                  id: block.id,
+                  threadId,
+                });
+                return false;
+              }
+              // Track this ID so we don't duplicate within the new messages either
+              existingToolIds.add(block.id);
+            }
+            return true;
+          });
 
-        return {
-          ...msg,
-          content: filteredContent,
-        };
-      }).filter((msg): msg is MessageEncoded => msg !== null);
+          // Skip messages that are now empty
+          if (filteredContent.length === 0) {
+            return null;
+          }
+
+          return {
+            ...msg,
+            content: filteredContent,
+            sender,
+          } as MessageWithSender;
+        })
+        .filter((msg): msg is MessageWithSender => msg !== null);
 
       if (deduplicatedMessages.length > 0) {
-        yield* store.writeThreadMessages(threadId, [
+        log(
+          "flush",
+          `Writing ${deduplicatedMessages.length} new messages. Total will be ${currentMessages.length + deduplicatedMessages.length}`,
+        );
+        yield* store.writeThreadMessagesWithSender(threadId, [
           ...currentMessages,
           ...deduplicatedMessages,
         ]);
+        log("flush", `Messages written successfully`);
+      } else {
+        log("flush", `No new messages to write`);
       }
     }
 
-    yield* store.truncateThreadParts(threadId);
+    // Truncate this agent's parts
+    log("flush", `Truncating parts for agent ${agentId}`);
+    yield* store.truncateAgentParts(threadId, agentId);
   });
